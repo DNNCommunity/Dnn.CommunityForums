@@ -87,7 +87,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 };
 
                 if (SocialGroupId > 0)
+                {
                     @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                }
 
                 Response.Redirect(NavigateUrl(ForumTabId, "", @params.ToArray()));
             }

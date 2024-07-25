@@ -190,9 +190,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             else
                             {
                                 if (i > 1)
+                                {
                                     sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + BaseURL + i + "/" + qs + "\">" + i + "</a></td>");
+                                }
                                 else
+                                {
                                     sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + BaseURL + qs + "\">" + i + "</a></td>");
+                                }
                             }
                         }
                         else
@@ -203,8 +207,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     if (i == PageCount)
+                    {
                         break;
-
+                    }
                 }
 
                 if (CurrentPage != PageCount)

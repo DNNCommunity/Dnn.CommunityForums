@@ -70,16 +70,22 @@ namespace DotNetNuke.Modules.ActiveForums
         internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
             if (string.IsNullOrEmpty(template))
+            {
                 return string.Empty;
+            }
 
             if (!(template.Contains(Globals.ForumsControlsRegisterAMTag)))
+            {
                 template = Globals.ForumsControlsRegisterAMTag + template;
+            }
 
             template = ParseSpacer(template);
 
             var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokensList(moduleId, group);
             if (li != null)
+            {
                 template = li.Aggregate(template, (current, tk) => current.Replace(tk.TokenTag, tk.TokenReplace));
+            }
 
             template = template.Replace("[PARAMKEYS:GROUPID]", ParamKeys.GroupId);
             template = template.Replace("[PARAMKEYS:FORUMID]", ParamKeys.ForumId);
@@ -104,7 +110,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var sPath = filePath;
 
             if (!(sPath.Contains(@"\\")) && !(sPath.Contains(@":\")))
+            {
                 sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(filePath);
+            }
 
             var sContents = string.Empty;
             if (File.Exists(sPath))
@@ -149,14 +157,22 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = template.Replace("[AF:TB:MySubscriptions]", string.Format("<a href=\"{0}\"><i class=\"fa fa-envelope fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:MySubscriptions]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MySubscriptions, 1, -1, -1)));
 
                 if (currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.SuperUser)
+                {
                     template = template.Replace("[AF:TB:ControlPanel]", string.Format("<a href=\"{0}\"><i class=\"fa fa-bars fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:ControlPanel]</span></a>", NavigateURL(forumTabId, "EDIT", "mid=" + forumModuleId)));
+                }
                 else
+                {
                     template = template.Replace("[AF:TB:ControlPanel]", string.Empty);
+                }
 
                 if (currentUserType == CurrentUserTypes.ForumMod || currentUserType == CurrentUserTypes.SuperUser || currentUserType == CurrentUserTypes.Admin)
+                {
                     template = template.Replace("[AF:TB:ModList]", string.Format("<a href=\"{0}\"><i class=\"fa fa-wrench fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Moderate]</span></a>", NavigateURL(tabId, "", ParamKeys.ViewType + "=" + Views.ModerateTopics)));
+                }
                 else
+                {
                     template = template.Replace("[AF:TB:ModList]", string.Empty);
+                }
             }
             else
             {
@@ -205,7 +221,9 @@ namespace DotNetNuke.Modules.ActiveForums
             text = Regex.Replace(text, @"[^\w]", "-");
             text = Regex.Replace(text, @"([-]+)", "-");
             if (text.EndsWith("-"))
+            {
                 text = text.Substring(0, text.Length - 1);
+            }
 
             return text;
         }
@@ -236,15 +254,21 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             // Never trust users with trust level -1 (This overrides everything)
             if (userTrustLevel == -1)
+            {
                 return false;
+            }
 
             // Always trust users with trust level 1 or in a trusted role or the forum trusts by default
             if (userTrustLevel == 1 || isTrustedRole || forumTrustLevel > 0)
+            {
                 return true;
+            }
 
             // Check to see if the user should be trusted based on post count settings
             if (autoTrustLevel > 0 && userPostCount >= autoTrustLevel)
+            {
                 return true;
+            }
 
             // If we get this far, the user must not be trusted.
             return false;
@@ -339,7 +363,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string NavigateURL(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
+            {
                 return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, additionalParameters);
+            }
 
             var ti = new TabController().GetTab(tabId, portalId, false);
             var sURL = additionalParameters.ToList().Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
@@ -356,23 +382,31 @@ namespace DotNetNuke.Modules.ActiveForums
             var values = Enum.GetValues(enumType);
 
             if (addEmptyValue)
+            {
                 pDDL.Items.Add(new ListItem(string.Empty, "-1"));
+            }
 
             for (var i = 0; i < values.Length; i++)
             {
                 if (i == excludeIndex)
+                {
                     continue;
+                }
 
                 var key = Convert.ToInt32(Enum.Parse(enumType, values.GetValue(i).ToString()));
                 var text = Convert.ToString(Enum.Parse(enumType, values.GetValue(i).ToString()));
                 if (localize)
+                {
                     text = string.Concat("[RESX:", text, "]");
+                }
 
                 pDDL.Items.Add(new ListItem(text, key.ToString()));
             }
 
             if (pColValue != string.Empty)
+            {
                 pDDL.SelectedValue = Enum.Parse(enumType, pColValue).ToString();
+            }
         }
 
         internal static string PrepareForEdit(int portalId, int moduleId, string themePath, string text, bool allowHTML, EditorTypes editorType)
@@ -411,27 +445,39 @@ namespace DotNetNuke.Modules.ActiveForums
             const string inSite = "<a href=\"{0}\">{1}</a>";
             var url = match.Value;
             if (url.ToLowerInvariant().Contains("jpg") || url.ToLowerInvariant().Contains("gif") || url.ToLowerInvariant().Contains("png") || url.ToLowerInvariant().Contains("jpeg"))
+            {
                 return url;
+            }
 
             //
             // Ignore it when there is a preceeding a or img.
             //
             var xStart = 0;
             if ((match.Index - 10) > 0)
+            {
                 xStart = match.Index - 10;
+            }
 
             if (text.Substring(xStart, 10).ToLowerInvariant().Contains("href"))
+            {
                 return url;
+            }
 
             if (text.Substring(xStart, 10).ToLowerInvariant().Contains("src"))
+            {
                 return url;
+            }
 
             if (text.Substring(xStart, 10).ToLowerInvariant().Contains("="))
+            {
                 return url;
+            }
 
             var urlText = match.Value;
             if (urlText.Length > maxLengthAutoLinkLabel)
+            {
                 urlText = string.Concat(match.Value.Substring(0, maxLengthAutoLinkLabel - 22), "...", match.Value.Substring(match.Value.Length - 20));
+            }
 
             return url.ToLowerInvariant().Contains(currentSite.ToLowerInvariant()) ? string.Format(inSite, url, urlText) : string.Format(outSite, url, urlText);
         }
@@ -445,13 +491,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Replace encoded url with decoded url
                 foreach (Match m in Regex.Matches(text, encodedHref, RegexOptions.IgnoreCase))
+                {
                     text = text.Replace(m.Value, HttpUtility.HtmlDecode(m.Value));
+                }
 
                 const string regHref = "<a.*?href=[\"'](?<url>.*?)[\"'].*?>(?<http>http[s]?.*?)</a>";
 
                 // Remove all exiting <A> anchors, so they will be treated by the ReplaceLink function. (adding target=_blank & nofollow)
                 foreach (Match m in Regex.Matches(text, regHref, RegexOptions.IgnoreCase))
+                {
                     text = text.Replace(m.Value, m.Groups["http"].Value.Contains("...") ? m.Groups["url"].Value : m.Groups["http"].Value);
+                }
 
                 // Handle Empty string
                 if (string.IsNullOrEmpty(text))
@@ -494,7 +544,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     var sEnd = match.Groups[3].Value;
 
                     if (sText.Length > 55)
+                    {
                         sClean = sClean.Replace(sNewURL, sStart + sText.Substring(0, 35) + "..." + sText.Substring(sText.Length - 10) + sEnd);
+                    }
                 }
 
                 if (!allowScript)
@@ -532,7 +584,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
                     if (useFilter)
+                    {
                         strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
+                    }
 
                     strMessage = HttpUtility.HtmlEncode(strMessage);
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
@@ -549,10 +603,14 @@ namespace DotNetNuke.Modules.ActiveForums
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
                     if (!allowHTML)
+                    {
                         strMessage = HttpUtility.HtmlEncode(strMessage);
+                    }
 
                     if (useFilter)
+                    {
                         strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
+                    }
 
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
                 }
@@ -574,7 +632,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 var sCode = strMessage.Substring(intStart, intEnd - intStart);
                 strMessage = strMessage.Replace(sCode, "[CODEHOLDER]");
                 if (useFilter)
+                {
                     strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
+                }
 
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
@@ -584,7 +644,9 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 if (useFilter)
+                {
                     strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
+                }
 
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
@@ -600,9 +662,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 var chrLower = char.ToLower(chrCurrent);
                 var chrUpper = char.ToUpper(chrCurrent);
                 if (chrUpper == chrLower)
+                {
                     strReturn = strReturn + chrCurrent;
+                }
                 else
+                {
                     strReturn = string.Concat(strReturn, "[", chrLower, chrUpper, "]");
+                }
             }
 
             return strReturn;
@@ -611,12 +677,16 @@ namespace DotNetNuke.Modules.ActiveForums
         public static bool InputIsValid(string body)
         {
             if (string.IsNullOrEmpty(body))
+            {
                 return false;
+            }
 
             body = body.Trim();
 
             if (string.IsNullOrEmpty(StripHTMLTag(body)) && !(body.ToUpper().Contains("<CODE")))
+            {
                 return false;
+            }
 
             return !string.IsNullOrEmpty(body.Replace("&nbsp;", string.Empty));
         }
@@ -624,7 +694,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string StripHTMLTag(string sText)
         {
             if (string.IsNullOrEmpty(sText))
+            {
                 return string.Empty;
+            }
 
             const string pattern = @"<(.|\n)*?>";
             return Regex.Replace(sText, pattern, string.Empty).Trim();
@@ -633,7 +705,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public static bool HasHTML(string sText)
         {
             if (string.IsNullOrEmpty(sText))
+            {
                 return false;
+            }
 
             const string pattern = @"<(.|\n)*?>";
             return Regex.IsMatch(sText, pattern);
@@ -658,10 +732,14 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             const string pattern = "<style.*/*>|</style>|<script.*/*>|</script>|<[a-zA-Z][^>]*=[`'\"]+javascript:\\w+.*[`'\"]+>|<\\w+[^>]*\\son\\w+.*[ /]*>|<[a-zA-Z][^>].*=javascript:.*>|<\\w+[^>]*[\\x00-\\x20]*=[\\x00-\\x20]*[`'\"]*[\\x00-\\x20]*j[\\x00-\\x20]*a[\\x00-\\x20]*v[\\x00-\\x20]*a[\\x00-\\x20]*s[\\x00-\\x20]*c[\\x00-\\x20]*r[\\x00-\\x20]*i[\\x00-\\x20]*p[\\x00-\\x20]*t[\\x00-\\x20]*(.|\\n)*?";
             foreach (Match m in Regex.Matches(sText, pattern, RegexOptions.IgnoreCase))
+            {
                 sText = sText.Replace(m.Value, StrongEncode(m.Value));
+            }
 
             if (removeHTML)
+            {
                 sText = StripHTMLTag(sText);
+            }
 
             return sText;
         }
@@ -757,10 +835,14 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var currentName = name;
             if (name == "-1")
+            {
                 return "-1";
+            }
 
             if (string.IsNullOrEmpty(name))
+            {
                 return string.Empty;
+            }
 
             name = name.Trim();
             var chars = "_$%#@!*?;:~`+=()[]{}|\\'<>,/^&\".".ToCharArray();
@@ -774,7 +856,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var strChar = chars.GetValue(i).ToString();
                 if (name.Contains(strChar))
+                {
                     name = name.Replace(strChar, string.Empty);
+                }
             }
             name = name.Replace("--", "-");
             name = name.Replace("---", "-");
@@ -867,7 +951,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var sPath = filePath;
             if (!(sPath.Contains(@":\")) && !(sPath.Contains(@"\\")))
+            {
                 sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(sPath);
+            }
 
             var sContents = string.Empty;
             if (File.Exists(sPath))
@@ -1062,10 +1148,14 @@ namespace DotNetNuke.Modules.ActiveForums
             if (lastPostID != 0)
             {
                 if (subject.Length > length & length > 0)
+                {
                     subject = subject.Substring(0, length) + "...";
+                }
 
                 if (parentPostID != 0)
+                {
                     lastPostID = parentPostID;
+                }
 
                 if (replyCount > 1)
                 {
@@ -1113,7 +1203,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceLocation);
 
             if (stream == null)
+            {
                 return null;
+            }
 
             var sr = new StreamReader(stream);
             var contents = sr.ReadToEnd();
@@ -1154,15 +1246,23 @@ namespace DotNetNuke.Modules.ActiveForums
                 string sReplace;
 
                 if (isAdmin)
+                {
                     sReplace = GetSharedResource(match.Value, true);
+                }
                 else if (resourceFile != string.Empty)
+                {
                     sReplace = GetSharedResource(match.Value, resourceFile);
+                }
                 else
+                {
                     sReplace = GetSharedResource(match.Value);
+                }
 
                 var newValue = match.Value;
                 if (!(string.IsNullOrEmpty(sReplace)))
+                {
                     newValue = sReplace;
+                }
 
                 if (scriptSafe)
                 {
@@ -1193,16 +1293,24 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 if (fileSize >= 1073741824)
+                {
                     return (fileSize / 1024.0 / 1024.0 / 1024.0).ToString("#0.00") + " GB";
+                }
 
                 if (fileSize >= 1048576)
+                {
                     return (fileSize / 1024.0 / 1024.0).ToString("#0.00") + " MB";
+                }
 
                 if (fileSize >= 1024)
+                {
                     return (fileSize / 1024.0).ToString("#0.00") + " KB";
+                }
 
                 if (fileSize < 1024)
+                {
                     return string.Concat(fileSize, " Bytes");
+                }
             }
             catch (Exception ex)
             {
@@ -1223,14 +1331,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 foreach (string k in ht.Keys)
                 {
                     if (k.ToLowerInvariant() != sKey.ToLowerInvariant())
+                    {
                         continue;
+                    }
 
                     sValue = ht[k].ToString();
                     break;
                 }
 
                 if (string.IsNullOrEmpty(sValue))
+                {
                     continue;
+                }
 
                 object obj = null;
                 switch (pItem.PropertyType.ToString())
@@ -1304,10 +1416,14 @@ namespace DotNetNuke.Modules.ActiveForums
         public static bool SafeConvertBool(object value, bool defaultValue = false)
         {
             if (value == null)
+            {
                 return defaultValue;
+            }
 
             if (value is bool)
+            {
                 return (bool)value;
+            }
 
             var s = value as string;
             if (s != null)
@@ -1337,10 +1453,14 @@ namespace DotNetNuke.Modules.ActiveForums
         public static int SafeConvertInt(object value, int defaultValue = 0)
         {
             if (value == null)
+            {
                 return defaultValue;
+            }
 
             if (value is int)
+            {
                 return (int)value;
+            }
 
             var s = value as string;
             if (s != null)
@@ -1362,10 +1482,14 @@ namespace DotNetNuke.Modules.ActiveForums
         public static long SafeConvertLong(object value, long defaultValue = 0)
         {
             if (value == null)
+            {
                 return defaultValue;
+            }
 
             if (value is long)
+            {
                 return (long)value;
+            }
 
             var s = value as string;
             if (s != null)
@@ -1387,10 +1511,14 @@ namespace DotNetNuke.Modules.ActiveForums
         public static double SafeConvertDouble(object value, double defaultValue = 0.0)
         {
             if (value == null)
+            {
                 return defaultValue;
+            }
 
             if (value is int)
+            {
                 return (int)value;
+            }
 
             var s = value as string;
             if (s != null)
@@ -1412,10 +1540,14 @@ namespace DotNetNuke.Modules.ActiveForums
         public static DateTime SafeConvertDateTime(object value, DateTime? defaultValue = null)
         {
             if (value == null)
+            {
                 return defaultValue.HasValue ? defaultValue.Value : NullDate();
+            }
 
             if (value is DateTime)
+            {
                 return (DateTime)value;
+            }
 
             var s = value as string;
             if (s != null)
@@ -1423,7 +1555,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 DateTime parsedValue;
 
                 if (DateTime.TryParse(s, DateTimeStringCultureInfo, DateTimeStyles.AssumeLocal, out parsedValue))
+                {
                     return parsedValue;
+                }
             }
 
             try
@@ -1449,27 +1583,35 @@ namespace DotNetNuke.Modules.ActiveForums
         public static void SelectListItemByValue(ListControl dropDownList, object value)
         {
             if (dropDownList == null)
+            {
                 return;
+            }
 
             dropDownList.ClearSelection();
 
             var selectedItem = dropDownList.Items.FindByValue(value == null ? string.Empty : value.ToString());
 
             if (selectedItem != null)
+            {
                 selectedItem.Selected = true;
+            }
         }
 
         public static void SelectListItemByValue(ListControl dropDownList, object value, object defaultValue)
         {
             if (dropDownList == null)
+            {
                 return;
+            }
 
             dropDownList.ClearSelection();
 
             var selectedItem = dropDownList.Items.FindByValue(value == null ? (defaultValue == null ? string.Empty : defaultValue.ToString()) : value.ToString());
 
             if (selectedItem != null)
+            {
                 selectedItem.Selected = true;
+            }
         }
 
         internal static int GetForumModuleId(int ModuleId, int TabId)

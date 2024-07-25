@@ -180,7 +180,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Save the rss to cache if it's enabled
             if (Settings.RSSCacheTimeout > 0)
+            {
                 DataCache.SettingsCacheStore(ModuleId,CacheKey, rss);
+            }
 
             // Render the output
             writer.Write(rss);

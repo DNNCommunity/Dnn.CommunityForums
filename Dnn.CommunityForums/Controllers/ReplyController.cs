@@ -73,7 +73,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             Utilities.UpdateModuleLastContentModifiedOnDate(ri.ModuleId);
             if (DelBehavior != 0)
+            {
                 return;
+            }
 
             // If it's a hard delete, delete associated attachments
             var attachmentController = new Data.AttachController();
@@ -89,7 +91,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 // Only delete the file if it exists in the attachment folder
                 if (file != null && file.FolderId == attachmentFolder.FolderID)
+                {
                     fileManager.DeleteFile(file);
+                }
             }
         }
 

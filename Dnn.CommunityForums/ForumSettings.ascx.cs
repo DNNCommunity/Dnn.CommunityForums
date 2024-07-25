@@ -243,7 +243,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 UseSkinBreadCrumb = Utilities.SafeConvertBool(rdUseSkinBreadCrumb.SelectedValue);
 
                 if(drpMessagingTab.SelectedItem != null)
-                    MessagingTabId = Utilities.SafeConvertInt(drpMessagingTab.SelectedValue);              
+                {
+                    MessagingTabId = Utilities.SafeConvertInt(drpMessagingTab.SelectedValue);
+                }
 
                 PrefixURLBase = txtURLPrefixBase.Text;
                 PrefixURLCategory = txtURLPrefixCategory.Text;
@@ -355,7 +357,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             var selectedMessagingType = drpMessagingType.Items.FindByValue(MessagingType.ToString());
             if (selectedMessagingType != null)
+            {
                 selectedMessagingType.Selected = true;
+            }
 
             BindPrivateMessagingTab();
         }
@@ -371,7 +375,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
             {
                 if (!mi.DesktopModule.ModuleName.Contains("DnnForge - PrivateMessages") || mi.IsDeleted)
+                {
                     continue;
+                }
 
                 var ti = tc.GetTab(mi.TabID, PortalId, false);
                 if (ti != null && !ti.IsDeleted)

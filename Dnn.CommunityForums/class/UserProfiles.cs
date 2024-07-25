@@ -36,14 +36,19 @@ namespace DotNetNuke.Modules.ActiveForums
             PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 
             if (portalSettings == null)
+            {
                 return string.Empty;
+            }
 
             //GIF files when reduced using DNN class losses its animation, so for gifs send them as is
             var user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userID);
             string imgUrl = string.Empty;
             
-            if (user != null) imgUrl = user.Profile.PhotoURL;
-            
+            if (user != null)
+            {
+                imgUrl = user.Profile.PhotoURL;
+            }
+
             if (!string.IsNullOrWhiteSpace(imgUrl) && imgUrl.ToLower().EndsWith("gif"))
             {
                 return string.Format("<img class='af-avatar' alt='' src='{0}' height='{1}px' width='{2}px' />", imgUrl, avatarHeight, avatarWidth);
@@ -102,7 +107,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 if (linkProfile && portalSettings.UserTabId != null && portalSettings.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger && portalSettings.UserTabId != -1)
+                {
                     outputTemplate = string.Concat("<a href='", Utilities.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }), "' class='", profileLinkClass, "' rel='nofollow'>{0}</a>");
+                }
             }
 
             var displayMode = mainSettings.UserNameDisplay + string.Empty;
@@ -172,7 +179,9 @@ namespace DotNetNuke.Modules.ActiveForums
             outputName = Utilities.SafeTrim(outputName);
 
             if (string.IsNullOrWhiteSpace(outputName))
+            {
                 outputName = userId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+            }
 
             outputName = HttpUtility.HtmlEncode(outputName);
 

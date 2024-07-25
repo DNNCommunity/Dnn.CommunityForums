@@ -122,7 +122,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var task = request.Content.ReadAsMultipartAsync(provider).ContinueWith(t =>
             {
                 if (t.IsFaulted || t.IsCanceled)
+                {
                     throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                }
 
                 // Make sure a temp file was uploaded and that it exists
                 var file = provider.FileData.FirstOrDefault();
@@ -302,7 +304,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 // IE<=9 Hack - can't return application/json
                 var mediaType = "application/json";
                 if (!request.Headers.Accept.Any(h => h.MediaType.Equals("application/json", StringComparison.OrdinalIgnoreCase)))
+                {
                     mediaType = "text/html";
+                }
 
                 File.Delete(file.LocalFileName);
 
@@ -335,7 +339,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var file = fileManager.GetFile(FileId);
 
             if (file == null)
+            {
                 return Request.CreateResponse(HttpStatusCode.Accepted, "File not found");
+            }
 
             const string fullpath = "/Portals/{0}/{1}{2}";
             var userInfo = PortalSettings.UserInfo;
@@ -410,7 +416,10 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpPost]
         public HttpResponseMessage CreateSplit(CreateSplitDTO dto)
         {
-            if (dto.NewTopicId == dto.OldTopicId) return Request.CreateResponse(HttpStatusCode.OK);
+            if (dto.NewTopicId == dto.OldTopicId)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
 
             var portalSettings = PortalSettings;
             var userInfo = portalSettings.UserInfo;

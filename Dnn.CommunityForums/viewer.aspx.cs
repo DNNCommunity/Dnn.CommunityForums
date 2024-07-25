@@ -103,10 +103,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 Response.ContentType = attachment.ContentType;
                 
                 if (attachmentId > 0)
+                {
                     Response.AddHeader("Content-Disposition", "attachment; filename=" + Server.HtmlEncode(filename));
+                }
                 else // Handle legacy inline attachments a bit differently
+                {
                     Response.AddHeader("Content-Disposition", "filename=" + Server.HtmlEncode(filename));
-                
+                }
+
                 Response.BinaryWrite(attachment.FileData);
                 Response.End();
                 return;
@@ -148,15 +152,21 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var length = attachment.FileSize;
             if (length <= 0)
+            {
                 length = new System.IO.FileInfo(filePath).Length;
+            }
 
             Response.Clear();
             Response.ContentType = attachment.ContentType;
 
             if(attachmentId > 0)
+            {
                 Response.AddHeader("Content-Disposition", "attachment; filename=" + Server.HtmlEncode(filename));
+            }
             else // Handle legacy inline attachments a bit differently
+            {
                 Response.AddHeader("Content-Disposition", "filename=" + Server.HtmlEncode(filename));
+            }
 
             Response.AddHeader("Content-Length", length.ToString());
             Response.WriteFile(filePath);

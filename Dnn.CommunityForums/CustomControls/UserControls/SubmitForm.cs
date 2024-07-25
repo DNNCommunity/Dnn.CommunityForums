@@ -382,7 +382,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected void OnBubbleClick(EventArgs e)
         {
             if (BubbleClick != null)
+            {
                 BubbleClick(this, e);
+            }
         }
 
         private string ParseForm(string template)

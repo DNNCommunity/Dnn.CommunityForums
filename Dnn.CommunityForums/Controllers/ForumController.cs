@@ -422,7 +422,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         {
                             requestedAccess = n.Name;
                             if (n.Attributes == null || n.Attributes["value"].Value != "true")
+                            {
                                 continue;
+                            }
 
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, PermissionsId: permissionsId, requestedAccess: requestedAccess, objectId: groupAdmin, objectType: 2);
                         }
@@ -436,8 +438,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             requestedAccess = n.Name;
 
                             if (n.Attributes == null || n.Attributes["value"].Value != "true")
+                            {
                                 continue;
-                            
+                            }
+
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: requestedAccess, groupMember, 0);
                         }
                     }
@@ -452,8 +456,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 requestedAccess = n.Name;
 
                                 if (n.Attributes == null || n.Attributes["value"].Value != "true")
+                                {
                                     continue;
-                                
+                                }
+
                                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: requestedAccess, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString(), 0);
                             }
                         }
@@ -466,7 +472,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 requestedAccess = n.Name;
 
                                 if (n.Attributes == null || n.Attributes["value"].Value != "true")
+                                {
                                     continue;
+                                }
 
                                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: requestedAccess, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
                             }

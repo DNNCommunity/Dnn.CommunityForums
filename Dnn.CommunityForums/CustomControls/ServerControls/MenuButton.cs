@@ -122,7 +122,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            if (Menu == null) return;
+            if (Menu == null)
+            {
+                return;
+            }
 
             Controls.Clear();
             Controls.Add(Menu);

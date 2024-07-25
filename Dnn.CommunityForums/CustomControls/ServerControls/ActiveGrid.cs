@@ -635,7 +635,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                     ItemBoundEventArgs e = new ItemBoundEventArgs(ItemArray);
                     if (ItemBound != null)
+                    {
                         ItemBound(this, e);
+                    }
+
                     foreach (string item in e.Item)
                     {
                         try
@@ -671,7 +674,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected virtual void OnCallback(CallBackEventArgs e)
         {
             if (Callback != null)
+            {
                 Callback(cb, e);
+            }
         }
 
         protected override void OnLoad(EventArgs e)

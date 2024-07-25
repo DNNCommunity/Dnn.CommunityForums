@@ -102,7 +102,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     string[] slistreplies = listreplies.Split("|".ToCharArray(), 2);
                     string str = "";
-                    if (slistreplies.Length > 1) str = slistreplies[1];
+                    if (slistreplies.Length > 1)
+                    {
+                        str = slistreplies[1];
+                    }
+
                     DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, str, DateTime.Now, Convert.ToInt32(slistreplies[0]));
                 }
                 else
@@ -238,7 +242,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
 
                 if (SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior != 0)
+                {
                     return;
+                }
 
                 // If it's a hard delete, delete associated attachments
                 var attachmentController = new Data.AttachController();
@@ -254,7 +260,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                     // Only delete the file if it exists in the attachment folder
                     if (file != null && file.FolderId == attachmentFolder.FolderID)
+                    {
                         fileManager.DeleteFile(file);
+                    }
                 }
             }
         }

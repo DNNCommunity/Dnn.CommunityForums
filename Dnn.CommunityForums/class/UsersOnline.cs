@@ -39,7 +39,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 while (dr.Read())
                 {
                     if (sb.Length > 0)
+                    {
                         sb.Append(", ");
+                    }
+
                     var portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
                     sb.Append(UserProfiles.GetDisplayName(portalSettings, moduleId, true, false, isAdmin, dr.GetInt("UserId"), dr.GetString("Username"), dr.GetString("FirstName"), dr.GetString("LastName"), dr.GetString("DisplayName")));
                 }

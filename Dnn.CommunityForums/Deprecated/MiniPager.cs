@@ -12,7 +12,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string GetMiniPager(DataRow currentRow, int TabId, int SocialGroupId, int pageSize)
         {
             if (currentRow == null)
+            {
                 return null;
+            }
 
             var replyCount = Convert.ToInt32(currentRow["ReplyCount"]);
             var pageCount = Convert.ToInt32(Math.Ceiling((double)(replyCount + 1) / pageSize));
@@ -21,7 +23,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // No pager if there is only one page.
             if (pageCount <= 1)
+            {
                 return null;
+            }
 
             List<string> @params;
 
@@ -34,7 +38,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
 
                     if (SocialGroupId > 0)
+                    {
                         @params.Add("GroupId=" + SocialGroupId.ToString());
+                    }
 
                     result += "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params.ToArray()) + "\">" + i + "</a>";
                 }
@@ -48,7 +54,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
                 if (SocialGroupId > 0)
+                {
                     @params.Add("GroupId=" + SocialGroupId.ToString());
+                }
 
                 result += "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params.ToArray()) + "\">" + i + "</a>";
             }
@@ -57,7 +65,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + pageCount };
             if (SocialGroupId > 0)
+            {
                 @params.Add("GroupId=" + SocialGroupId.ToString());
+            }
 
             result += "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params.ToArray()) + "\">" + pageCount + "</a>";
 

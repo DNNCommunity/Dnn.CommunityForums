@@ -89,7 +89,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     // The tag links are generated with "aftg"
                     if (_tags == string.Empty)
+                    {
                         _tags = Request.Params[ParamKeys.Tags] + string.Empty;
+                    }
 
                     _tags = Utilities.XSSFilter(_tags);
                     _tags = Utilities.StripHTMLTag(_tags);
@@ -242,37 +244,59 @@ namespace DotNetNuke.Modules.ActiveForums
                     _parameters = new List<string>();
 
                     if (!string.IsNullOrWhiteSpace(SearchText))
+                    {
                         _parameters.Add($"{SearchParamKeys.Query}=" + System.Web.HttpUtility.UrlEncode(SearchText));
+                    }
 
                     if (!string.IsNullOrWhiteSpace(Tags))
+                    {
                         _parameters.Add($"{SearchParamKeys.Tag}=" + System.Web.HttpUtility.UrlEncode(Tags));
+                    }
 
                     if (SearchId > 0)
+                    {
                         _parameters.Add($"{SearchParamKeys.Search}=" + SearchId);
+                    }
 
                     if (SearchType > 0)
+                    {
                         _parameters.Add($"{SearchParamKeys.SearchType}=" + SearchType);
+                    }
 
                     if (ResultType > 0)
+                    {
                         _parameters.Add($"{SearchParamKeys.ResultType}=" + ResultType);
+                    }
 
                     if (SearchColumns > 0)
+                    {
                         _parameters.Add($"{SearchParamKeys.Columns}=" + SearchColumns);
+                    }
 
                     if (SearchDays > 0)
+                    {
                         _parameters.Add($"{SearchParamKeys.TimeSpan}=" + SearchDays);
+                    }
 
                     if (AuthorUserId > 0)
+                    {
                         _parameters.Add($"{SearchParamKeys.User}=" + AuthorUserId);
+                    }
 
                     if (Sort > 0)
+                    {
                         _parameters.Add($"{SearchParamKeys.Sort}=" + Sort);
+                    }
 
                     if (!string.IsNullOrWhiteSpace(AuthorUsername))
+                    {
                         _parameters.Add($"{SearchParamKeys.Author}=" + System.Web.HttpUtility.UrlEncode(AuthorUsername));
+                    }
 
                     if (!string.IsNullOrWhiteSpace(Forums))
+                    {
                         _parameters.Add($"{SearchParamKeys.Forums}=" + System.Web.HttpUtility.UrlEncode(Forums));
+                    }
                 }
 
                 return _parameters;
@@ -304,11 +328,15 @@ namespace DotNetNuke.Modules.ActiveForums
                  // Note: Filter out any keywords that are not at least 3 characters in length
 
                  if (SearchType == 2 && !string.IsNullOrWhiteSpace(SearchText) && SearchText.Trim().Length >= 3) //Exact Match
-                     keywords = new List<Keyword> { new Keyword { Value = "\"" + SearchText.Trim() + "\"" } };
-                 else
-                     keywords = SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).Select(kw => new Keyword { Value = kw }).ToList();
+                {
+                    keywords = new List<Keyword> { new Keyword { Value = "\"" + SearchText.Trim() + "\"" } };
+                }
+                else
+                {
+                    keywords = SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).Select(kw => new Keyword { Value = kw }).ToList();
+                }
 
-                if(keywords.Count > 0)
+                if (keywords.Count > 0)
                 {
                     phKeywords.Visible = true;
                     rptKeywords.DataSource = keywords;
@@ -345,7 +373,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var dataRowView = repeaterItemEventArgs.Item.DataItem as DataRowView;
 
             if (dataRowView == null)
+            {
                 return;
+            }
 
             _currentRow = dataRowView.Row;
         }
@@ -359,13 +389,17 @@ namespace DotNetNuke.Modules.ActiveForums
             _pageSize = (UserId > 0) ? UserDefaultPageSize : MainSettings.PageSize;
 
             if (_pageSize < 5)
+            {
                 _pageSize = 10;
+            }
 
             _rowIndex = (PageId - 1) * _pageSize;
         
             // If we don't have a search string, tag or user id, there is nothing we can do so exit
-            if (SearchText == string.Empty && Tags == string.Empty && AuthorUsername == String.Empty && AuthorUserId <= 0) 
+            if (SearchText == string.Empty && Tags == string.Empty && AuthorUsername == String.Empty && AuthorUserId <= 0)
+            {
                 return;
+            }
 
             // Build the list of forums to search
             // An intersection of the forums allows vs forums requested.
@@ -380,9 +414,13 @@ namespace DotNetNuke.Modules.ActiveForums
             
             // If forums requested is empty or contains and entry less than or equal to zero, return all available forums
             if(!forumsRequested.Any() || forumsRequested.Any(o => o <= 0))
+            {
                 forumsToSearch = forumsAllowed.Aggregate(forumsToSearch, (current, f) => current + ((current.Length == 0 ? string.Empty : ":") + f));
+            }
             else
+            {
                 forumsToSearch = forumsRequested.Where(forumsAllowed.Contains).Aggregate(forumsToSearch, (current, f) => current + ((current.Length == 0 ? String.Empty : ":") + f));
+            }
 
             const int maxCacheHours = 1;
 
@@ -401,8 +439,9 @@ namespace DotNetNuke.Modules.ActiveForums
             litSearchDuration.Text = string.Format(GetSharedResource("[RESX:SearchDuration]"), totalSeconds); 
 
             if(ageInMinutes > 0.25)
-                litSearchAge.Text = string.Format(GetSharedResource("[RESX:SearchAge]"), ageInMinutes); 
-
+            {
+                litSearchAge.Text = string.Format(GetSharedResource("[RESX:SearchAge]"), ageInMinutes);
+            }
 
             _parameters = null; // We reset this so we make sure to get an updated version
 
@@ -463,7 +502,9 @@ namespace DotNetNuke.Modules.ActiveForums
             @params.AddRange(Parameters);
 
             if (SocialGroupId > 0)
+            {
                 @params.Add("GroupId=" + SocialGroupId.ToString());
+            }
 
             return NavigateUrl(TabId, string.Empty, @params.ToArray());
         }
@@ -471,7 +512,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public string GetForumUrl()
         {
             if (_currentRow == null)
+            {
                 return null;
+            }
 
             var forumId = _currentRow["ForumID"].ToString();
 
@@ -479,7 +522,9 @@ namespace DotNetNuke.Modules.ActiveForums
             
 
             if (SocialGroupId > 0)
+            {
                 @params.Add("GroupId=" + SocialGroupId.ToString());
+            }
 
             return NavigateUrl(TabId, string.Empty, @params.ToArray()); 
         }
@@ -487,7 +532,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public string GetThreadUrl()
         {
             if (_currentRow == null)
+            {
                 return null;
+            }
 
             var forumId = _currentRow["ForumID"].ToString();
             var topicId = _currentRow["TopicId"].ToString();
@@ -496,8 +543,11 @@ namespace DotNetNuke.Modules.ActiveForums
             
 
             if (SocialGroupId > 0)
+            {
                 @params = new List<string> { ParamKeys.TopicId + "=" + topicId };
-                @params.Add("GroupId=" + SocialGroupId.ToString());
+            }
+
+            @params.Add("GroupId=" + SocialGroupId.ToString());
 
             return NavigateUrl(TabId, string.Empty, @params.ToArray());
         }
@@ -506,7 +556,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public string GetPostUrl() 
         {
             if (_currentRow == null)
+            {
                 return null;
+            }
 
             var forumId = _currentRow["ForumID"].ToString();
             var topicId = _currentRow["TopicId"].ToString();
@@ -516,7 +568,9 @@ namespace DotNetNuke.Modules.ActiveForums
            
 
             if (SocialGroupId > 0)
+            {
                 @params.Add("GroupId=" + SocialGroupId.ToString());
+            }
 
             return NavigateUrl(TabId, string.Empty, @params.ToArray());
         }
@@ -529,7 +583,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public string GetAuthor()
         {
             if (_currentRow == null)
+            {
                 return null;
+            }
 
             var userId = Convert.ToInt32(_currentRow["AuthorId"]);
             var userName = _currentRow["AuthorUserName"].ToString();
@@ -543,7 +599,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public string GetLastPostAuthor()
         {
             if (_currentRow == null)
+            {
                 return null;
+            }
 
             var userId = Convert.ToInt32(_currentRow["LastReplyAuthorId"]);
             var userName = _currentRow["LastReplyUserName"].ToString();
@@ -566,7 +624,9 @@ namespace DotNetNuke.Modules.ActiveForums
             post = post.Replace(System.Environment.NewLine, " ");
 
             if (post.Length > 255)
+            {
                 post = post.Substring(0, 255).Trim() + "...";
+            }
 
             return post;
         }

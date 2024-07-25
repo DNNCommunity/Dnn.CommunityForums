@@ -29,7 +29,10 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string TruncateAtWord(this string value, int length)
         {
             if (String.IsNullOrEmpty(value) || value.Length < length)
+            {
                 return value;
+            }
+
             int iNextSpace = value.LastIndexOf(" ", length);
             return string.Format("{0}", value.Substring(0, (iNextSpace > 0) ? iNextSpace : length).Trim());
         }

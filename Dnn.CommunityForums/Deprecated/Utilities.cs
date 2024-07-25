@@ -97,37 +97,59 @@ namespace DotNetNuke.Modules.ActiveForums
             var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
             var delta = ts.TotalSeconds;
             if (delta <= 1)
+            {
                 return GetSharedResource("[RESX:TimeSpan:SecondAgo]");
+            }
 
             if (delta < 60)
+            {
                 return string.Format(GetSharedResource("[RESX:TimeSpan:SecondsAgo]"), ts.Seconds);
+            }
 
             if (delta < 120)
+            {
                 return GetSharedResource("[RESX:TimeSpan:MinuteAgo]");
+            }
 
             if (delta < (45 * 60))
+            {
                 return string.Format(GetSharedResource("[RESX:TimeSpan:MinutesAgo]"), ts.Minutes);
+            }
 
             if (delta < (90 * 60))
+            {
                 return GetSharedResource("[RESX:TimeSpan:HourAgo]");
+            }
 
             if (delta < (24 * 60 * 60))
+            {
                 return string.Format(GetSharedResource("[RESX:TimeSpan:HoursAgo]"), ts.Hours);
+            }
 
             if (delta < (48 * 60 * 60))
+            {
                 return GetSharedResource("[RESX:TimeSpan:DayAgo]");
+            }
 
             if (delta < (72 * 60 * 60))
+            {
                 return string.Format(GetSharedResource("[RESX:TimeSpan:DaysAgo]"), ts.Days);
+            }
 
             if (delta < Convert.ToDouble(new TimeSpan(24 * 32, 0, 0).TotalSeconds))
+            {
                 return GetSharedResource("[RESX:TimeSpan:MonthAgo]");
+            }
 
             if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 11), 0, 0).TotalSeconds))
+            {
                 return string.Format(GetSharedResource("[RESX:TimeSpan:MonthsAgo]"), Math.Ceiling(ts.Days / 30.0));
+            }
 
             if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 18), 0, 0).TotalSeconds))
+            {
                 return GetSharedResource("[RESX:TimeSpan:YearAgo]");
+            }
 
             return string.Format(GetSharedResource("[RESX:TimeSpan:YearsAgo]"), Math.Ceiling(ts.Days / 365.0));
 

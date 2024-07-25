@@ -533,7 +533,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void OnCallback(CallBackEventArgs e)
         {
             if (CallbackEvent != null)
+            {
                 CallbackEvent(this, e);
+            }
         }
 
         protected override void OnLoad(EventArgs e)

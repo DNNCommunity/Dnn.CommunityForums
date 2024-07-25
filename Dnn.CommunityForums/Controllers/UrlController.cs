@@ -28,16 +28,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             var cleanSubject = Utilities.CleanName(subject).ToLowerInvariant();
             if (SimulateIsNumeric.IsNumeric(cleanSubject))
+            {
                 cleanSubject = "Topic-" + cleanSubject;
+            }
 
             var topicUrl = cleanSubject;
             var urlPrefix = "/";
 
             if (!(string.IsNullOrEmpty(forumInfo.ForumGroup.PrefixURL)))
+            {
                 urlPrefix += forumInfo.ForumGroup.PrefixURL + "/";
+            }
 
             if (!(string.IsNullOrEmpty(forumInfo.PrefixURL)))
+            {
                 urlPrefix += forumInfo.PrefixURL + "/";
+            }
 
             var urlToCheck = urlPrefix + cleanSubject;
 
@@ -46,10 +52,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 var tid = topicsDb.TopicIdByUrl(PortalId, ModuleId, urlToCheck);
                 if (tid > 0 && tid == TopicId)
+                {
                     break;
+                }
 
                 if (tid <= 0)
+                {
                     break;
+                }
 
                 topicUrl = (u + 1) + "-" + cleanSubject;
                 urlToCheck = urlPrefix + topicUrl;

@@ -97,10 +97,14 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             };
 
             if (dr.HasColumn("FileData"))
+            {
                 result.FileData = dr["FileData"] as byte[];
+            }
 
             if (dr.HasColumn("CanRead"))
+            {
                 result.CanRead = Utilities.SafeConvertString(dr["CanRead"], "0;1;" + DotNetNuke.Common.Globals.glbRoleUnauthUser + ";" + DotNetNuke.Common.Globals.glbRoleAllUsers + ";|||"); // Default to public read permissions
+            }
 
             return result;
         }

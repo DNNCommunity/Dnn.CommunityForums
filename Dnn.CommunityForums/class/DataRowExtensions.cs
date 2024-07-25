@@ -28,7 +28,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public static bool HasColumn(this DataRow dr, string columnName)
         {
             if (dr == null || string.IsNullOrWhiteSpace(columnName))
+            {
                 return false;
+            }
 
             return dr.Table.Columns.Contains(columnName);
         }
@@ -56,7 +58,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public static DateTime GetDateTime(this DataRow dr, string columnName, DateTime? defaultValue = null)
         {
             if (!dr.HasColumn(columnName))
+            {
                 return defaultValue.HasValue ? defaultValue.Value : Utilities.NullDate();
+            }
 
             return Utilities.SafeConvertDateTime(dr[columnName], defaultValue);
         }

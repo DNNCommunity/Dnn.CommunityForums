@@ -28,12 +28,16 @@ namespace DotNetNuke.Modules.ActiveForums
         public static bool HasColumn(this IDataRecord dr, string columnName)
         {
             if (dr == null || string.IsNullOrWhiteSpace(columnName))
+            {
                 return false;
+            }
 
             for (var i = 0; i < dr.FieldCount; i++)
             {
                 if (dr.GetName(i).Equals(columnName, StringComparison.InvariantCultureIgnoreCase))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -61,7 +65,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public static DateTime GetDateTime(this IDataRecord dr, string columnName, DateTime? defaultValue = null)
         {
             if (!dr.HasColumn(columnName))
+            {
                 return defaultValue.HasValue ? defaultValue.Value : Utilities.NullDate();
+            }
 
             return Utilities.SafeConvertDateTime(dr[columnName], defaultValue);
         }

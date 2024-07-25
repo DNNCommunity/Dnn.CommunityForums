@@ -80,7 +80,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
             if (fi == null)
+            {
                 return;
+            }
 
             var subs = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
             DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, moduleID, forumId).ForEach(moderator =>

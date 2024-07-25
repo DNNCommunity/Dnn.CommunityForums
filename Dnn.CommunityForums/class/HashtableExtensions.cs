@@ -48,7 +48,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public static DateTime GetDateTime(this Hashtable ht, string key, DateTime? defaultValue = null)
         {
             if (string.IsNullOrWhiteSpace(key) || !ht.ContainsKey(key))
+            {
                 return defaultValue.HasValue ? defaultValue.Value : Utilities.NullDate();
+            }
 
             return Utilities.SafeConvertDateTime(ht[key], defaultValue);
         }

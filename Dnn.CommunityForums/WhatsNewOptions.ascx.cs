@@ -92,7 +92,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 int rows;
                 if (int.TryParse(txtNumItems.Text, out rows))
+                {
                     settings.Rows = int.Parse(txtNumItems.Text);
+                }
 
                 settings.Format = txtTemplate.Text;
                 settings.Header = txtHeader.Text;
@@ -109,7 +111,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     int rssCacheTimeout;
                     if (int.TryParse(txtCache.Text, out rssCacheTimeout))
+                    {
                         settings.RSSCacheTimeout = rssCacheTimeout;
+                    }
                 }
 
                 // Save Settings
@@ -145,14 +149,20 @@ namespace DotNetNuke.Modules.ActiveForums
             foreach (TreeNode node in trForums.Nodes)
             {
                 nc += 1;
-                if (node.ChildNodes.Count <= 0) continue;
+                if (node.ChildNodes.Count <= 0)
+                {
+                    continue;
+                }
 
                 nc += node.ChildNodes.Count;
                 foreach (TreeNode cnode in node.ChildNodes)
                 {
                     nc += cnode.ChildNodes.Count;
 
-                    if (cnode.ChildNodes.Count <= 0) continue;
+                    if (cnode.ChildNodes.Count <= 0)
+                    {
+                        continue;
+                    }
 
                     foreach (TreeNode subnode in cnode.ChildNodes)
                     {
@@ -184,7 +194,9 @@ namespace DotNetNuke.Modules.ActiveForums
             BindForumsTree();
 
             if (settings.Forums != string.Empty)
+            {
                 CheckNodes(settings.Forums);
+            }
 
             pnlRSS.Visible = chkRSS.Checked;
             rqvTxtCache.Enabled = chkRSS.Checked;
@@ -220,7 +232,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-                if (node.ChildNodes.Count <= 0) continue;
+                if (node.ChildNodes.Count <= 0)
+                {
+                    continue;
+                }
 
                 foreach (TreeNode cnode in node.ChildNodes)
                 {
@@ -233,11 +248,18 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
 
-                    if (cnode.ChildNodes.Count <= 0) continue;
+                    if (cnode.ChildNodes.Count <= 0)
+                    {
+                        continue;
+                    }
 
                     foreach (TreeNode subnode in cnode.ChildNodes)
                     {
-                        if (subnode.Checked) continue;
+                        if (subnode.Checked)
+                        {
+                            continue;
+                        }
+
                         subnode.Checked = (subnode.Value == value || state);
                         if (subnode.Checked && subnode.Parent != null)
                         {
@@ -316,7 +338,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             foreach (DataRow row in dt.Rows)
             {
-                if (Convert.ToInt32(dr["ForumId"]) != Convert.ToInt32(row["ParentForumId"])) continue;
+                if (Convert.ToInt32(dr["ForumId"]) != Convert.ToInt32(row["ParentForumId"]))
+                {
+                    continue;
+                }
+
                 var tNode = new TreeNode
                 {
                     Text = row["ForumName"].ToString(),

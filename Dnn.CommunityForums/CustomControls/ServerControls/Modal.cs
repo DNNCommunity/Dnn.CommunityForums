@@ -241,7 +241,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected virtual void OnCallback(CallBackEventArgs e)
         {
             if (Callback != null)
+            {
                 Callback(cb, e);
+            }
         }
 
 

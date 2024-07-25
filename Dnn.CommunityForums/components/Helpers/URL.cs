@@ -57,7 +57,9 @@ namespace DotNetNuke.Modules.ActiveForums
             if (! (sURL.StartsWith(sHost)))
             {
                 if (sHost.EndsWith("/"))
+                {
                     sHost = sHost.Substring(0, sHost.Length - 1);
+                }
 
                 sURL = sHost + sURL;
             }
@@ -90,7 +92,9 @@ namespace DotNetNuke.Modules.ActiveForums
             if (! (sURL.StartsWith(sHost)))
             {
                 if (sHost.EndsWith("/"))
+                {
                     sHost = sHost.Substring(0, sHost.Length - 1);
+                }
 
                 sURL = sHost + sURL;
             }
@@ -110,7 +114,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var sURL = Utilities.NavigateURL(tabId, string.Empty, new [] { ParamKeys.TopicId + "=" + ti.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
 
             if (string.IsNullOrEmpty(ti.TopicUrl) || ! Utilities.UseFriendlyURLs(moduleId))
+            {
                 return sURL;
+            }
 
             var db = new Data.Common();
             sURL = db.GetUrl(-1, -1, -1, ti.TopicId, userId, replyId);
@@ -118,17 +124,25 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var sHost = Utilities.GetHost();
                 if (sURL.StartsWith("/"))
+                {
                     sURL = sURL.Substring(1);
+                }
 
                 if (!(sHost.EndsWith("/")))
+                {
                     sHost += "/";
+                }
 
                 sURL = sHost + sURL;
                 if (! (sURL.EndsWith("/")))
+                {
                     sURL += "/";
+                }
 
                 if (replyId > 0)
+                {
                     sURL += "#" + replyId.ToString();
+                }
             }
 
             return sURL;
@@ -140,13 +154,19 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var sNewPage = string.Empty;
             if (! (string.IsNullOrEmpty(groupName)))
+            {
                 sNewPage = Utilities.CleanStringForUrl(groupName) + "/";
+            }
 
             if (! (string.IsNullOrEmpty(forumName)))
+            {
                 sNewPage += Utilities.CleanStringForUrl(forumName);
+            }
 
             if (! (string.IsNullOrEmpty(sNewPage)))
+            {
                 sURL = sURL.Replace("default.aspx", sNewPage + ".aspx");
+            }
 
             return sURL.ToLowerInvariant();
         }
@@ -161,13 +181,19 @@ namespace DotNetNuke.Modules.ActiveForums
             string sURL;
 
             if (pageNumber > 1)
+            {
                 sURL = Utilities.NavigateURL(pageId, "", subject, portalId, new [] {ParamKeys.TopicId + "=" + topicId, ParamKeys.PageId + "=" + pageNumber});
+            }
             else
+            {
                 sURL = Utilities.NavigateURL(pageId, "", subject, portalId, ParamKeys.TopicId + "=" + topicId);
+            }
 
             sURL = sURL.ToLowerInvariant();
             if (!(sURL.EndsWith(".aspx")))
+            {
                 sURL += ".aspx";
+            }
 
             return sURL;
         }

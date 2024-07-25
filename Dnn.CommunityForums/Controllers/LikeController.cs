@@ -56,9 +56,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (like != null)
             {
                 if (like.Checked)
+                {
                     like.Checked = false;
+                }
                 else
+                {
                     like.Checked = true;
+                }
+
                 Update(like);
             }
             else

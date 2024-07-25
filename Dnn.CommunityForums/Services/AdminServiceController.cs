@@ -76,7 +76,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var moduleSettings = new SettingsInfo { MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: dto.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, true).ModuleSettings };
             var rows = DataProvider.Instance().Forum_Maintenance(dto.ForumId, dto.OlderThan, dto.LastActive, dto.ByUserId, dto.WithNoReplies, dto.DryRun, moduleSettings.DeleteBehavior);
             if (dto.DryRun)
+            {
                 return Request.CreateResponse(HttpStatusCode.OK, new { Result = string.Format(Utilities.GetSharedResource("[RESX:Maint:DryRunResults]", true), rows.ToString()) });
+            }
 
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = Utilities.GetSharedResource("[RESX:ProcessComplete]", true) });
         }
@@ -108,7 +110,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var up = upc.Profiles_Get(PortalSettings.PortalId, ActiveModule.ModuleID, userId);
 
             if(up == null)
+            {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
 
             var result = new
                              {
@@ -129,16 +133,22 @@ namespace DotNetNuke.Modules.ActiveForums
             var up = upc.Profiles_Get(PortalSettings.PortalId, ActiveModule.ModuleID, dto.UserId);
 
             if (up == null)
+            {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
 
             if (dto.TrustLevel.HasValue)
+            {
                 up.TrustLevel = dto.TrustLevel.Value;
+            }
 
             up.UserCaption = dto.UserCaption;
             up.Signature = dto.Signature;
 
             if (dto.RewardPoints.HasValue)
+            {
                 up.RewardPoints = dto.RewardPoints.Value;
+            }
 
             upc.Profiles_Save(up);
 
@@ -184,7 +194,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         else
                         {
                             if (dto.SecurityId.Contains(":"))
+                            {
                                 dto.SecurityType = 2;
+                            }
                         }
                         if (!(string.IsNullOrEmpty(dto.SecurityId)))
                         {

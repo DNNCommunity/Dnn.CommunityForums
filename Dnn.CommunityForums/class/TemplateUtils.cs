@@ -44,16 +44,24 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string ShowIcon(bool canView, int forumID, int userId, DateTime dateAdded, DateTime lastRead, int lastPostId)
         {
             if (!canView)
+            {
                 return "folder_forbidden.png";
+            }
 
             if (lastPostId == 0 || userId == -1)
+            {
                 return "folder_closed.png";
+            }
 
             if (lastRead == DateTime.MinValue)
+            {
                 lastRead = Utilities.NullDate();
+            }
 
             if (dateAdded != Utilities.NullDate())
+            {
                 return dateAdded > lastRead ? "folder_new.png" : "folder.png";
+            }
 
             return "folder.png";
         }
@@ -273,10 +281,14 @@ namespace DotNetNuke.Modules.ActiveForums
             if (!(link.StartsWith("http")))
             {
                 if (!link.StartsWith("/"))
+                {
                     link = string.Concat("/", link);
+                }
 
                 if (HttpContext.Current != null && link.IndexOf(requestUrl.Host, StringComparison.Ordinal) == -1)
+                {
                     link = Common.Globals.AddHTTP(requestUrl.Host) + link;
+                }
             }
 
 
@@ -287,7 +299,9 @@ namespace DotNetNuke.Modules.ActiveForums
             // Build Moderation url
             var modLink = navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={forumID}" });
             if (HttpContext.Current != null && modLink.IndexOf(requestUrl.Host, StringComparison.Ordinal) == -1)
+            {
                 modLink = Common.Globals.AddHTTP(requestUrl.Host) + modLink;
+            }
 
             var result = new StringBuilder(sOut);
 
@@ -421,7 +435,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var sPostInfo = ParseProfileInfo(portalId, moduleId, userId, username, up, imagePath, isMod, ipAddress, currentUserType, currentUserId, userPrefHideAvatar, timeZoneOffset);
             if (sPostInfo.ToLower().Contains("<br"))
+            {
                 return sPostInfo;
+            }
 
             var sr = new StringReader(sPostInfo);
             var sTrim = string.Empty;
@@ -454,7 +470,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 myTemplate = TemplateCache.GetCachedTemplate(moduleId, "ProfileInfo", -1);
                 if (cacheKey != string.Empty)
+                {
                     DataCache.SettingsCacheStore(moduleId, cacheKey, myTemplate);
+                }
             }
             myTemplate = ParseProfileTemplate(myTemplate, up, portalId, moduleId, imagePath, currentUserType, true, userPrefHideAvatar, false, ipAddress, currentUserId, timeZoneOffset);
             return myTemplate;
@@ -527,10 +545,14 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 if (legacyTemplate)
+                {
                     profileTemplate = CleanTemplate(profileTemplate);
+                }
 
                 if (up.Profile == null)
+                {
                     up = new UserController().FillProfile(portalId, -1, up);
+                }
 
                 // TODO figure out why/if this recurion is possible.  Seems a bit scary as it could create a loop.
                 if (profileTemplate.Contains("[POSTINFO]"))
@@ -544,12 +566,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Parse DNN profile fields if needed
                 var pt = profileTemplate;
                 if (pt.IndexOf("[DNN:PROFILE:", StringComparison.Ordinal) >= 0)
+                {
                     pt = ParseProfile(portalId, up.UserId, pt, currentUserType, currentUserId);
+                }
 
                 // Parse Roles
                 if (pt.Contains("[ROLES:"))
+                {
                     pt = ParseRoles(pt, (up.UserId == -1) ? string.Empty : up.Profile.Roles);
-
+                }
 
                 var result = new StringBuilder(pt);
 
@@ -588,7 +613,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 // User Status
                 var sUserStatus = string.Empty;
                 if (mainSettings.UsersOnlineEnabled && up.UserId > 0 && up.Profile != null)
+                {
                     sUserStatus = UserProfiles.UserStatus(imagePath, up.Profile.IsUserOnline, up.UserId, moduleId, "[RESX:UserOnline]", "[RESX:UserOffline]");
+                }
 
                 result.Replace("[AF:PROFILE:USERSTATUS]", sUserStatus);
                 result.Replace("[AF:PROFILE:USERSTATUS:CSS]", sUserStatus.Contains("online") ? "af-status-online" : "af-status-offline");
@@ -625,7 +652,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     sSignature = up.Profile.Signature;
 
                     if (sSignature != string.Empty)
+                    {
                         sSignature = Utilities.ManageImagePath(sSignature);
+                    }
 
                     switch (mainSettings.AllowSignatures)
                     {
@@ -644,7 +673,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Avatar
                 var sAvatar = string.Empty;
                 if (!userPrefHideAvatar && !up.Profile.AvatarDisabled)
+                {
                     sAvatar = UserProfiles.GetAvatar(up.UserId, mainSettings.AvatarWidth, mainSettings.AvatarHeight);
+                }
 
                 result.Replace("[AF:PROFILE:AVATAR]", sAvatar);
 
@@ -732,7 +763,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string ParseRoles(string template, string userRoles)
         {
             if (string.IsNullOrWhiteSpace(template))
+            {
                 return template;
+            }
 
             var userRoleArray = string.IsNullOrWhiteSpace(userRoles) ? null : userRoles.Split(';').Where(o => !string.IsNullOrWhiteSpace(o)).Select(o => o.Trim()).ToList();
 
@@ -741,7 +774,9 @@ namespace DotNetNuke.Modules.ActiveForums
             template = Regex.Replace(template, pattern, delegate (Match match)
             {
                 if (userRoleArray == null || userRoleArray.Count == 0)
+                {
                     return string.Empty;
+                }
 
                 var roles = match.Groups[1].Value.Split(';').Where(o => !string.IsNullOrWhiteSpace(o)).Select(o => o.Trim());
 
@@ -872,13 +907,21 @@ namespace DotNetNuke.Modules.ActiveForums
                         sResource = string.Format(sResource, match.Groups[2].Value);
 
                         if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.AdminOnly && (currentUserType != CurrentUserTypes.Anon || currentUserType != CurrentUserTypes.Auth))
+                        {
                             sReplace = profprop.PropertyValue;
+                        }
                         else if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.MembersOnly && currentUserType != CurrentUserTypes.Anon)
+                        {
                             sReplace = profprop.PropertyValue;
+                        }
                         else if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.AllUsers)
+                        {
                             sReplace = profprop.PropertyValue;
+                        }
                         else
+                        {
                             sReplace = "[RESX:Private]";
+                        }
 
                         sResource = DotNetNuke.Services.Localization.Localization.GetString(sResource, "~/admin/users/app_localresources/profile.ascx.resx");
                     }
@@ -964,7 +1007,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (Regex.IsMatch(message, "<CODE([^>]*)>", RegexOptions.IgnoreCase))
                 {
                     foreach (Match m in Regex.Matches(message, "<CODE([^>]*)>(.*?)</CODE>", RegexOptions.IgnoreCase))
+                    {
                         message = message.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
+                    }
                 }
                 var objCode = new CodeParser();
                 template = CodeParser.ParseCode(HttpUtility.HtmlDecode(template));

@@ -61,7 +61,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         if (processEmoticons)
                         {
                             if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
+                            {
                                 sReplace = string.Format("<img src='{0}{1}' align=\"absmiddle\" border=\"0\" class=\"afEmoticon\" />", themePath, sReplace);
+                            }
 
                             strMessage = strMessage.Replace(sFind, sReplace);
                         }

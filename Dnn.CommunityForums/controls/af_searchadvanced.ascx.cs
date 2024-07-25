@@ -207,8 +207,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 btnSearch.Click += btnSearch_Click;
                 btnSearch2.Click += btnSearch_Click;
 
-                if (Page.IsPostBack) 
+                if (Page.IsPostBack)
+                {
                     return;
+                }
 
                 // Bind the intial values for the forum
 
@@ -223,11 +225,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ListItem selectedItem = drpSearchColumns.Items.FindByValue(SearchColumns.ToString());
                 if (selectedItem != null)
+                {
                     selectedItem.Selected = true;
+                }
 
                 selectedItem = drpSearchType.Items.FindByValue(SearchType.ToString());
                 if (selectedItem != null)
+                {
                     selectedItem.Selected = true;
+                }
 
                 lblUserName.Text = GetSharedResource("[RESX:SearchByUser]");
                 txtUserName.Text = AuthorUsername;
@@ -249,12 +255,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 lblResultType.Text = GetSharedResource("[RESX:SearchResultType]");
                 selectedItem = drpResultType.Items.FindByValue(ResultType.ToString());
                 if (selectedItem != null)
+                {
                     selectedItem.Selected = true;
+                }
 
                 lblSortType.Text = GetSharedResource("[RESX:SearchSort]");
                 selectedItem = drpSort.Items.FindByValue(Sort.ToString());
                 if (selectedItem != null)
+                {
                     selectedItem.Selected = true;
+                }
 
                 // Buttons
 
@@ -282,10 +292,12 @@ namespace DotNetNuke.Modules.ActiveForums
             var tags = txtTags.Text;
 
             if (string.IsNullOrWhiteSpace(searchText) && string.IsNullOrWhiteSpace(authorUsername) && string.IsNullOrWhiteSpace(tags))
+            {
                 return;
-            
+            }
+
             // Query
-            if(!string.IsNullOrWhiteSpace(searchText))
+            if (!string.IsNullOrWhiteSpace(searchText))
             {
                 searchText = Utilities.XSSFilter(searchText);
                 searchText = Utilities.StripHTMLTag(searchText);
@@ -329,7 +341,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 foreach (var item in lbForums.Items.Cast<ListItem>().Where(item => item.Selected && int.TryParse(Regex.Replace(item.Value, @"F(\d+)G\d+", "$1"), out forumId)))
                 {
                     if(forums != string.Empty)
+                    {
                         forums += ":";
+                    }
 
                     forums += forumId;
                 }
@@ -421,7 +435,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var selectItem = drpSearchDays.Items.FindByValue(SearchDays.ToString());
             if (selectItem != null)
+            {
                 selectItem.Selected = true;
+            }
         }
 
         private void BindForumList()

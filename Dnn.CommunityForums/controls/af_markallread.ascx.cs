@@ -34,12 +34,16 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
 
             if (btnMarkAllRead == null)
+            {
                 return;
+            }
 
             btnMarkAllRead.Visible = UserId != -1;
 
             if (!string.IsNullOrWhiteSpace(CSSClass))
+            {
                 btnMarkAllRead.CssClass = CSSClass;
+            }
         }
 
         #endregion
@@ -72,8 +76,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BtnMarkAllReadClick(object sender, EventArgs e)
         {
-            if (!Request.IsAuthenticated) 
+            if (!Request.IsAuthenticated)
+            {
                 return;
+            }
 
             DataProvider.Instance().Utility_MarkAllRead(ModuleId, UserId, ForumId > 0 ? ForumId : 0);
             

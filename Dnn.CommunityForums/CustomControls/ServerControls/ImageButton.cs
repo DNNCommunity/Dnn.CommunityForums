@@ -205,7 +205,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected virtual void OnClick(EventArgs e)
         {
             if (Click != null)
+            {
                 Click(this, e);
+            }
         }
 
         public void RaisePostBackEvent(string eventArgument)

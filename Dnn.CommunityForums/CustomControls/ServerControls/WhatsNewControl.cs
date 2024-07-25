@@ -155,20 +155,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var sFooterTemplate = "</div>";
 
             if (HeaderTemplate != null)
+            {
                 sHeaderTemplate = HeaderTemplate.Text;
+            }
 
             if (FooterTemplate != null)
+            {
                 sFooterTemplate = FooterTemplate.Text;
+            }
 
             var sTemplate = "<div style=\"padding-bottom:2px;\" class=\"normal\">[SUBJECTLINK]</div><div style=\"padding-bottom:2px;border-bottom:solid 1px #AAA;\">by [AUTHORDISPLAYNAME]</div>";
             if (Template != null)
+            {
                 sTemplate = Template.Text;
+            }
 
-            if (ForumIds == string.Empty && FilterByUserId <= 0) 
+            if (ForumIds == string.Empty && FilterByUserId <= 0)
+            {
                 return;
+            }
 
             if (ForumIds.Contains(";"))
+            {
                 ForumIds = ForumIds.Replace(";", ":");
+            }
 
             var sb = new StringBuilder(1024);
             sb.Append(sHeaderTemplate);
@@ -244,9 +254,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (bodyTrim != string.Empty)
                     {
                         if (bodyLength > 0 & body.Length > bodyLength)
+                        {
                             sTempTemplate = sTempTemplate.Replace(bodyTrim, body.Substring(0, bodyLength) + "...");
+                        }
                         else
+                        {
                             sTempTemplate = sTempTemplate.Replace(bodyTrim, body);
+                        }
                     }
 
                     sTempTemplate = sTempTemplate.Replace("[TOPICID]", topicId);
@@ -254,7 +268,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTempTemplate = sTempTemplate.Replace("[REPLYCOUNT]", replyCount);
 
                     if (TabId == -1)
+                    {
                         TabId = Convert.ToInt32(topicTabId);
+                    }
 
                     if (Utilities.UseFriendlyURLs( Utilities.SafeConvertInt(topicModuleId)) && !(string.IsNullOrEmpty(sForumUrl)) && !(string.IsNullOrEmpty(sTopicURL)))
                     {
@@ -269,14 +285,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         else
                         {
                             if (!(sTopicURL.EndsWith("/")))
+                            {
                                 sTopicURL += "/";
+                            }
 
                             sTopicURL += "?afc=" + replyId;
                             sTempTemplate = sTempTemplate.Replace("[POSTURL]", sTopicURL);
                             if (Request.IsAuthenticated)
+                            {
                                 sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + sTopicURL + "\">" + subject + "</a>");
+                            }
                             else
+                            {
                                 sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + sTopicURL + "\" rel=\"nofollow\">" + subject + "</a>");
+                            }
                         }
                         sTempTemplate = sTempTemplate.Replace("[TOPICSURL]", sForumUrl);
 
@@ -288,13 +310,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             @params = new List<string>{ ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
                             if (AdditionalParams != string.Empty)
+                            {
                                 @params.Add(AdditionalParams);
+                            }
 
                             sTempTemplate = sTempTemplate.Replace("[POSTURL]", Utilities.NavigateURL(TabId, string.Empty, @params.ToArray()));
                            
                             @params = new List<string> { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
                             if (AdditionalParams != string.Empty)
+                            {
                                 @params.Add(AdditionalParams);
+                            }
 
                             sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", @params.ToArray()) + "\">" + subject + "</a>");
                         }
@@ -302,19 +328,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             @params = new List<string> { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId };
                             if (AdditionalParams != string.Empty)
+                            {
                                 @params.Add(AdditionalParams);
+                            }
 
                             sTempTemplate = sTempTemplate.Replace("[POSTURL]", Utilities.NavigateURL(TabId, "", @params.ToArray()));
 
                             @params = new List<string> { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId };
                             if (AdditionalParams != string.Empty)
+                            {
                                 @params.Add(AdditionalParams);
+                            }
 
                             sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params.ToArray()) + "\">" + subject + "</a>");
                         }
                         @params = new List<string> { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId };
                         if (AdditionalParams != string.Empty)
+                        {
                             @params.Add(AdditionalParams);
+                        }
 
                         sTempTemplate = sTempTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(TabId, string.Empty, @params.ToArray()));
                     }

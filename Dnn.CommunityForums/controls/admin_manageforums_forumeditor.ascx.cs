@@ -58,7 +58,9 @@ namespace DotNetNuke.Modules.ActiveForums
             if (Params != null && !(string.IsNullOrEmpty(Params)))
             {
                 if (Params.Contains("!"))
+                {
                     sepChar = '!';
+                }
 
                 editorType = Params.Split(sepChar)[1]; // Params.Split(CChar(sepChar))(1).Split(CChar("="))(1)
                 recordId = Utilities.SafeConvertInt(Params.Split(sepChar)[0]);
@@ -143,14 +145,20 @@ namespace DotNetNuke.Modules.ActiveForums
             txtUserId.Attributes.Add("onkeypress", "return onlyNumbers(event)");
 
             if (MainSettings.DeleteBehavior == 1)
+            {
                 lblMaintWarn.Text = string.Format(GetSharedResource("[RESX:MaintenanceWarning]"), GetSharedResource("[RESX:MaintenanceWarning:Recycle]"), GetSharedResource("[RESX:MaintenanceWarning:Recycle:Desc]"));
+            }
             else
+            {
                 lblMaintWarn.Text = string.Format(GetSharedResource("[RESX:MaintenanceWarning]"), GetSharedResource("[RESX:MaintenanceWarning:Remove]"), GetSharedResource("[RESX:MaintenanceWarning:Remove:Desc]"));
+            }
 
             //drpEditorTypes.Attributes.Add("onchange", "toggleEditorFields();");
 
             if (cbEditorAction.IsCallback)
+            {
                 return;
+            }
 
             BindGroups();
             BindTemplates();
@@ -252,7 +260,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             var db = new Data.Common();
                             if (!(db.CheckForumURL(PortalId, ModuleId, fi.PrefixURL, fi.ForumID, fi.ForumGroupId)))
+                            {
                                 fi.PrefixURL = string.Empty;
+                            }
                         }
 
                         recordId = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(PortalId, fi, bIsNew, inheritFeatures, inheritSecurity);
@@ -269,9 +279,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         var settingsKey = string.Empty;
                         if (groupId == 0)
+                        {
                             bIsNew = true;
+                        }
                         else
+                        {
                             settingsKey = "G:" + groupId;
+                        }
 
                         gi.ModuleId = ModuleId;
                         gi.ForumGroupId = groupId;
@@ -286,7 +300,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             var db = new Data.Common();
                             if (!(db.CheckGroupURL(PortalId, ModuleId, gi.PrefixURL, gi.ForumGroupId)))
+                            {
                                 gi.PrefixURL = string.Empty;
+                            }
                         }
 
                         gi.GroupSettingsKey = settingsKey;
@@ -394,7 +410,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, ModuleId);
 
             if (fi == null)
+            {
                 return;
+            }
 
             var newForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, ModuleId);
 
@@ -472,9 +490,13 @@ namespace DotNetNuke.Modules.ActiveForums
             rdAttachOff.Checked = !fi.AllowAttach;
 
             if (fi.AllowAttach)
+            {
                 cfgAttach.Attributes.Remove("style");
+            }
             else
+            {
                 cfgAttach.Attributes.Add("style", "display:none;");
+            }
 
             txtMaxAttach.Text = fi.AttachCount.ToString();
             txtMaxAttachSize.Text = fi.AttachMaxSize.ToString();
@@ -501,25 +523,37 @@ namespace DotNetNuke.Modules.ActiveForums
             rdHTMLOff.Checked = !fi.AllowHTML;
 
             if (fi.AllowHTML)
+            {
                 cfgHTML.Attributes.Remove("style");
+            }
             else
+            {
                 cfgHTML.Attributes.Add("style", "display:none;");
+            }
 
             rdModOn.Checked = fi.IsModerated;
             rdModOff.Checked = !fi.IsModerated;
 
             if (fi.IsModerated)
+            {
                 cfgMod.Attributes.Remove("style");
+            }
             else
+            {
                 cfgMod.Attributes.Add("style", "display:none;");
+            }
 
             rdAutoSubOn.Checked = fi.AutoSubscribeEnabled;
             rdAutoSubOff.Checked = !fi.AutoSubscribeEnabled;
 
             if (fi.AutoSubscribeEnabled)
+            {
                 cfgAutoSub.Attributes.Remove("style");
+            }
             else
+            {
                 cfgAutoSub.Attributes.Add("style", "display:none;");
+            }
 
             rdLikesOn.Checked = fi.AllowLikes;
             rdLikesOff.Checked = !fi.AllowLikes;
@@ -539,7 +573,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var gi = gc.GetById(groupId, ModuleId);
 
             if (gi == null)
+            {
                 return;
+            }
 
             var newGroup = gc.GetById(groupId, ModuleId);
 
@@ -606,9 +642,13 @@ namespace DotNetNuke.Modules.ActiveForums
             rdAttachOff.Checked = !gi.AllowAttach;
 
             if (gi.AllowAttach)
+            {
                 cfgAttach.Attributes.Remove("style");
+            }
             else
+            {
                 cfgAttach.Attributes.Add("style", "display:none;");
+            }
 
             txtMaxAttach.Text = gi.AttachCount.ToString();
             txtMaxAttachSize.Text = gi.AttachMaxSize.ToString();
@@ -634,17 +674,25 @@ namespace DotNetNuke.Modules.ActiveForums
             rdHTMLOff.Checked = !gi.AllowHTML;
 
             if (gi.AllowHTML)
+            {
                 cfgHTML.Attributes.Remove("style");
+            }
             else
+            {
                 cfgHTML.Attributes.Add("style", "display:none;");
+            }
 
             rdModOn.Checked = gi.IsModerated;
             rdModOff.Checked = !gi.IsModerated;
 
             if (gi.IsModerated)
+            {
                 cfgMod.Attributes.Remove("style");
+            }
             else
+            {
                 cfgMod.Attributes.Add("style", "display:none;");
+            }
 
             rdAutoSubOn.Checked = gi.AutoSubscribeEnabled;
             rdAutoSubOff.Checked = !gi.AutoSubscribeEnabled;
@@ -653,9 +701,13 @@ namespace DotNetNuke.Modules.ActiveForums
             rdLikesOff.Checked = !gi.AllowLikes;
 
             if (gi.AutoSubscribeEnabled)
+            {
                 cfgAutoSub.Attributes.Remove("style");
+            }
             else
+            {
                 cfgAutoSub.Attributes.Add("style", "display:none;");
+            }
 
             var x = gi.EditorType;
 
@@ -700,10 +752,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 var forumId = dr.GetInt("ForumId");
                 if (forumId == 0)
+                {
                     continue;
+                }
 
                 if (dr.GetInt("ParentForumID") == 0)
+                {
                     drpGroups.Items.Add(new ListItem(" - " + dr.GetString("ForumName"), "FORUM" + forumId));
+                }
             }
 
             dr.Close();

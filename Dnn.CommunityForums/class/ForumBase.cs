@@ -96,7 +96,9 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 if (!Request.IsAuthenticated)
+                {
                     return Utilities.NullDate();
+                }
 
                 var lastAccess = Session[string.Concat(UserId.ToString(), ModuleId, "LastAccess")];
                 return  lastAccess == null ? Utilities.NullDate() : Convert.ToDateTime(lastAccess);
@@ -114,7 +116,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 // If the id has already been set, return it.
                 if(_postId.HasValue)
+                {
                     return _postId.Value;
+                }
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryPostId = Request.QueryString[ParamKeys.PostId];
@@ -127,7 +131,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If there is a hash tag in the query value, remove it and anything after it before parsing.
                 var hashIndex = queryPostId.IndexOf("#", 0, StringComparison.Ordinal);
                 if (hashIndex >= 0)
+                {
                     queryPostId = queryPostId.Substring(0, hashIndex);
+                }
 
                 // Try to parse the id, if it doesn't work, return the default value.
                 int parsedPostId;
@@ -143,7 +149,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 // If the id has already been set, return it.
                 if (_topicId.HasValue)
+                {
                     return _topicId.Value;
+                }
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryTopicId = Request.QueryString[ParamKeys.TopicId];
@@ -156,7 +164,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If there is a hash tag in the query value, remove it and anything after it before parsing.
                 var hashIndex = queryTopicId.IndexOf("#", 0, StringComparison.Ordinal);
                 if (hashIndex >= 0)
+                {
                     queryTopicId = queryTopicId.Substring(0, hashIndex);
+                }
 
                 // Try to parse the id, if it doesn't work, return the default value.
                 int parsedTopicId;
@@ -177,7 +187,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 // If the id has already been set, return it.
                 if (_replyId.HasValue)
+                {
                     return _replyId.Value;
+                }
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryReplyId = Request.QueryString[ParamKeys.ReplyId];
@@ -190,7 +202,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If there is a hash tag in the query value, remove it and anything after it before parsing.
                 var hashIndex = queryReplyId.IndexOf("#", 0, StringComparison.Ordinal);
                 if (hashIndex >= 0)
+                {
                     queryReplyId = queryReplyId.Substring(0, hashIndex);
+                }
 
                 // Try to parse the id, if it doesn't work, return the default value.
                 int parsedReplyId;
@@ -211,7 +225,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 // If the id has already been set, return it.
                 if (_quoteId.HasValue)
+                {
                     return _quoteId.Value;
+                }
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryQuoteId = Request.QueryString[ParamKeys.QuoteId];
@@ -224,7 +240,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If there is a hash tag in the query value, remove it and anything after it before parsing.
                 var hashIndex = queryQuoteId.IndexOf("#", 0, StringComparison.Ordinal);
                 if (hashIndex >= 0)
+                {
                     queryQuoteId = queryQuoteId.Substring(0, hashIndex);
+                }
 
                 // Try to parse the id, if it doesn't work, return the default value.
                 int parsedQuoteId;
@@ -245,7 +263,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 // If the id has already been set, return it.
                 if (_forumId.HasValue)
+                {
                     return _forumId.Value;
+                }
 
                 // Set out default value
                 _forumId = -1;
@@ -292,7 +312,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 // If the id has already been set, return it.
                 if (_authorid.HasValue)
+                {
                     return _authorid.Value;
+                }
 
                 // Set out default value
                 _authorid = -1;
@@ -333,7 +355,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 // If the id has already been set, return it.
                 if (_forumGroupId.HasValue)
+                {
                     return _forumGroupId.Value;
+                }
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryForumGroupId = Request.QueryString[ParamKeys.GroupId];
@@ -346,7 +370,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If there is a hash tag in the query value, remove it and anything after it before parsing.
                 var hashIndex = queryForumGroupId.IndexOf("#", 0, StringComparison.Ordinal);
                 if (hashIndex >= 0)
+                {
                     queryForumGroupId = queryForumGroupId.Substring(0, hashIndex);
+                }
 
                 // Try to parse the id, if it doesn't work, return the default value.
                 int parsedForumGroupId;
@@ -392,22 +418,31 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     // The basic security check trumps everything.
                     if (!SecurityCheck("create"))
+                    {
                         _canCreate = false;
+                    }
 
                     // Admins and trusted users shall pass!
                     else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
+                    {
                         _canCreate = true;
+                    }
 
                     // If CreatePostCount is not set, no need to go further
                     else if (ForumInfo.CreatePostCount <= 0)
+                    {
                         _canCreate = true;
+                    }
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
                     else if (ForumUser.UserId <= 0)
+                    {
                         _canCreate = false;
-
+                    }
                     else
-                        _canCreate = ForumUser.PostCount >= ForumInfo.CreatePostCount; 
+                    {
+                        _canCreate = ForumUser.PostCount >= ForumInfo.CreatePostCount;
+                    }
                 }
 
                 return _canCreate.Value;
@@ -422,22 +457,31 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     // The basic security check trumps everything.
                     if (!SecurityCheck("reply"))
+                    {
                         _canReply = false;
+                    }
 
                     // Admins and trusted users shall pass!
                     else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
+                    {
                         _canReply = true;
+                    }
 
                     // If ReplyPostCount is not set, no need to go further
                     else if (ForumInfo.ReplyPostCount <= 0)
+                    {
                         _canReply = true;
+                    }
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
                     else if (ForumUser.UserId <= 0)
+                    {
                         _canReply = false;
-
+                    }
                     else
-                        _canReply = ForumUser.PostCount >= ForumInfo.ReplyPostCount;   
+                    {
+                        _canReply = ForumUser.PostCount >= ForumInfo.ReplyPostCount;
+                    }
                 }
 
                 return _canReply.Value;
@@ -473,19 +517,29 @@ namespace DotNetNuke.Modules.ActiveForums
         internal bool IsHtmlPermitted(HTMLPermittedUsers permittedMode, bool userIsTrusted, bool userIsModerator)
         {
             if (permittedMode == HTMLPermittedUsers.AllUsers)
+            {
                 return true;
+            }
 
             if (permittedMode == HTMLPermittedUsers.AuthenticatedUsers && Request.IsAuthenticated)
+            {
                 return true;
+            }
 
             if (permittedMode == HTMLPermittedUsers.TrustedUsers && userIsTrusted)
+            {
                 return true;
+            }
 
             if (permittedMode == HTMLPermittedUsers.Moderators && userIsModerator)
+            {
                 return true;
+            }
 
             if (permittedMode == HTMLPermittedUsers.Administrators && ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "EDIT"))
+            {
                 return true;
+            }
 
             return false;
         }
@@ -498,7 +552,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // If printmode, simply exit.
             if (Request.QueryString["dnnprintmode"] != null)
+            {
                 return;
+            }
 
             var p = new List<string>();
 
@@ -511,18 +567,24 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 var firstNewPost = Request.Params[ParamKeys.FirstNewPost];
                 if(!string.IsNullOrWhiteSpace(firstNewPost))
+                {
                     p.Add(string.Concat(ParamKeys.FirstNewPost, "=", firstNewPost));
+                }
 
                 var contentJumpId = Request.Params[ParamKeys.ContentJumpId];
                 if (!string.IsNullOrWhiteSpace(contentJumpId))
+                {
                     p.Add(string.Concat(ParamKeys.ContentJumpId, "=", contentJumpId));
+                }
 
                 var pageId = Request.Params[ParamKeys.PageId];
                 if (!string.IsNullOrWhiteSpace(pageId))
                 {
                     int parsedPageId;
                     if(int.TryParse(pageId, out parsedPageId) && parsedPageId > 1)
+                    {
                         p.Add(string.Concat(ParamKeys.PageId, "=", pageId));
+                    }
                 }
 
                 var pageJumpId = Request.Params[ParamKeys.PageJumpId];
@@ -530,7 +592,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     int parsedPageJumpId;
                     if (int.TryParse(pageJumpId, out parsedPageJumpId) && parsedPageJumpId > 1)
+                    {
                         p.Add(string.Concat(ParamKeys.PageJumpId, "=", pageJumpId));
+                    }
                 }
 
                 var sort = Request.QueryString[ParamKeys.Sort];
@@ -543,7 +607,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     sort = sort.ToUpperInvariant();
                     if((sort != defaultSort) && (sort == "ASC" || sort == "DESC"))
+                    {
                         p.Add(string.Concat(ParamKeys.Sort, "=", sort));
+                    }
                 }
             }
 
@@ -557,7 +623,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     int parsedPageId;
                     if (int.TryParse(pageId, out parsedPageId) && parsedPageId > 1)
+                    {
                         p.Add(string.Concat(ParamKeys.PageId, "=", pageId));
+                    }
                 }
 
                 var pageJumpId = Request.Params[ParamKeys.PageJumpId];
@@ -565,16 +633,22 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     int parsedPageJumpId;
                     if (int.TryParse(pageJumpId, out parsedPageJumpId) && parsedPageJumpId > 1)
+                    {
                         p.Add(string.Concat(ParamKeys.PageJumpId, "=", pageJumpId));
+                    }
                 }
             }
 
-            if (p.Count <= 0) 
+            if (p.Count <= 0)
+            {
                 return;
-            
+            }
+
             var sURL = Utilities.NavigateURL(TabId, string.Empty, p.ToArray());
             if (string.IsNullOrEmpty(sURL))
+            {
                 return;
+            }
 
             Response.Clear();
             Response.Status = "301 Moved Permanently";

@@ -82,7 +82,9 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 if (moduleController == null || moduleId < 0)
+                {
                     return false;
+                }
 
                 moduleController.UpdateModuleSetting(moduleId, ForumsSettingsKey, Forums);
                 moduleController.UpdateModuleSetting(moduleId, RowsSettingsKey, Rows.ToString());

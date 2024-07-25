@@ -123,7 +123,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);
             if (fi == null)
+            {
                 return null;
+            }
 
             var modRoles = new List<DotNetNuke.Security.Roles.RoleInfo>();
             foreach (var r in fi.Security.ModApprove.Split('|')[0].Split(';'))

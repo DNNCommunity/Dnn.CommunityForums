@@ -902,7 +902,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     var @params = new List<string> { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + LastReplyId };
 
                     if (SocialGroupId > 0)
+                    {
                         @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                    }
 
                     string sLastReplyURL = NavigateUrl(TabId, "", @params.ToArray());
 
@@ -919,7 +921,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         @params = new List<string> { $"{ParamKeys.ForumId}={ForumId}", $"{ParamKeys.TopicId}={TopicId}", $"{ParamKeys.ViewType}=topic", $"{ParamKeys.FirstNewPost}={UserLastReplyRead}" };
                         if (SocialGroupId > 0)
+                        {
                             @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                        }
 
                         sLastReadURL = NavigateUrl(TabId, "", @params.ToArray());
 
@@ -927,7 +931,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             @params = new List<string> { ParamKeys.TopicId + "=" + TopicId, ParamKeys.FirstNewPost + "=" + UserLastReplyRead };
                             if (SocialGroupId > 0)
+                            {
                                 @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                            }
 
                             sLastReadURL = NavigateUrl(TabId, "", @params.ToArray());
 
@@ -1437,10 +1443,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             const string tagRegistration = "<%@ Register TagPrefix=\"ac\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
 
             if (string.IsNullOrWhiteSpace(template))
+            {
                 return string.Empty;
+            }
 
             if (!(template.Contains(tagRegistration)))
+            {
                 template = tagRegistration + template;
+            }
 
             return template;
         }

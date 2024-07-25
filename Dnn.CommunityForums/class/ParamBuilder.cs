@@ -57,12 +57,16 @@ namespace DotNetNuke.Modules.ActiveForums
         public ParamBuilder(string queryString, bool urlEncoded = true)
         {
             if (string.IsNullOrWhiteSpace(queryString))
+            {
                 return;
+            }
 
             queryString = queryString.Trim();
 
             if (queryString.StartsWith("?"))
+            {
                 queryString = queryString.Substring(1);
+            }
 
             Params = new Dictionary<string, object>();
 
@@ -86,10 +90,14 @@ namespace DotNetNuke.Modules.ActiveForums
         public void Set(string key, object value)
         {
             if (string.IsNullOrWhiteSpace(key))
+            {
                 return;
+            }
 
-            if(Params == null)
+            if (Params == null)
+            {
                 Params = new Dictionary<string, object>();
+            }
 
             Params[key] = value ?? string.Empty; 
         }
