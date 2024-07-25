@@ -18,18 +18,18 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Reflection;
-using System.Web;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Security.Permissions;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Reflection;
+    using System.Web;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Security.Permissions;
+
     public class SettingsBase : PortalModuleBase
     {
         #region Private Members

@@ -17,26 +17,22 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-
-using System.Text;
-using System.Xml;
-using System.Web;
-
-using DotNetNuke.Entities.Urls;
-
-using System.Linq;
-
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Log.EventLog;
+
     public partial class ForumSettings : ForumSettingsBase
     {
         private int? _fullTextStatus;

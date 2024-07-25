@@ -17,14 +17,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.Modules.ActiveForums.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.Modules.ActiveForums.Data;
+
     public partial class af_modtopics_new : ForumBase
     {
         #region Private Members

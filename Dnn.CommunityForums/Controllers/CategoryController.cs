@@ -18,10 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     internal partial class CategoryController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo> { }
 }

@@ -17,11 +17,11 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 // 
-using System;
-using System.Web.Caching;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Web.Caching;
+
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.LikeInfo")]
     class Likes : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
 

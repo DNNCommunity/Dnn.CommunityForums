@@ -17,17 +17,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Data;
-
-using System.Web.UI.WebControls;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Modules;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+
     public partial class WhatsNewOptions : PortalModuleBase
     {
         #region Event Handlers

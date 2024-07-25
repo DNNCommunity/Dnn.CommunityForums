@@ -18,11 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Web;
+
     internal static class TemplateCache
     {
         internal static string GetCachedTemplate(int ModuleId, string TemplateType)

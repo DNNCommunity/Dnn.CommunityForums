@@ -18,18 +18,18 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Reflection;
-using System.Web.UI;
-using System.Xml;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Web.Models;
-
 namespace DotNetNuke.Modules.ActiveForums.Helpers
 {
+    using System.Reflection;
+    using System.Web.UI;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Web.Models;
+
     internal static class UpgradeModuleSettings
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradeModuleSettings));
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
             DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(tabModuleId, "NeedsConvert");
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, "AFINSTALLED", "True");
-            DataCache.SettingsCacheClear(forumModuleId,string.Format(CacheKeys.MainSettings, forumModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(forumModuleId,string.Format(CacheKeys.MainSettings, forumModuleId));
 
         }
 
@@ -155,8 +155,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "ForumGroupTemplate");
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "MODE");
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "AllowIndex");
-                        DataCache.ClearAllCacheForTabId(module.TabID);
-                        DataCache.ClearAllCache(module.ModuleID);
+                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
+                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
                         var ForumConfig = module.ModuleSettings.GetString("ForumConfig", string.Empty);
                         if (!string.IsNullOrEmpty(ForumConfig))
                         {
@@ -178,8 +178,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 ForumConfig = xDoc.OuterXml;
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", ForumConfig);
-                                DataCache.ClearAllCacheForTabId(module.TabID);
-                                DataCache.ClearAllCache(module.ModuleID);
+                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
+                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
                             }
                         }
                     }

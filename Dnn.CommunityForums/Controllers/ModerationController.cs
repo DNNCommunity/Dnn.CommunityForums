@@ -18,15 +18,14 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Services.Social.Notifications;
-
-using System.Collections.Generic;
-using System;
-
-using DotNetNuke.Security.Roles;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Social.Notifications;
+
     internal class ModerationController
     {
         internal static void RemoveModerationNotifications(int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)

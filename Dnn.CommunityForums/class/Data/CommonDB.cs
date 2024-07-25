@@ -18,12 +18,12 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Data;
-
-using Microsoft.ApplicationBlocks.Data;
-
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
+    using System.Data;
+
+    using Microsoft.ApplicationBlocks.Data;
+
     public class CommonDB : Connection
     {
         public IDataReader ForumContent_List(int PortalId, int ModuleId, int ForumGroupId, int ForumId, int ParentForumId)

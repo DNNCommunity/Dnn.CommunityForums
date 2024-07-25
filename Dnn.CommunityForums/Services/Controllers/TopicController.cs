@@ -17,28 +17,28 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Reflection;
-using System.Text;
-using System.Web;
-using System.Web.Helpers;
-using System.Web.Http;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.UI.WebControls;
-
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
+    using System;
+    using System.Data;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Reflection;
+    using System.Text;
+    using System.Web;
+    using System.Web.Helpers;
+    using System.Web.Http;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.UI.WebControls;
+
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 if (ti != null)
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(topicId, forumId);
-                    DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.CacheModulePrefix, ForumModuleId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.CacheModulePrefix, ForumModuleId));
                     return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest);

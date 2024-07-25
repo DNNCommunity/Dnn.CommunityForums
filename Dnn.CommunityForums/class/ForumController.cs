@@ -18,18 +18,18 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.ActiveForums.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.ActiveForums.Data;
+
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.")]
     public partial class ForumController
     {

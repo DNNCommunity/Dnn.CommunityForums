@@ -18,13 +18,12 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Data;
-
-using System.Text;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Data;
+    using System.Text;
+
     public class Polls
     {
         public string PollResults(int TopicId, string ImagePath)

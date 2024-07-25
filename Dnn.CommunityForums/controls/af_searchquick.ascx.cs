@@ -18,12 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 // 
 
-using System;
-using System.Web;
-using System.Collections.Generic;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
 
     public partial class af_searchquick : ForumBase
     {

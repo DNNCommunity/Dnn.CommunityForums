@@ -17,15 +17,15 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Web.Caching;
-
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using System;
+    using System.Collections;
+    using System.Web.Caching;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Services.Log.EventLog;
+
     [TableName("activeforums_Groups")]
     [PrimaryKey("ForumGroupId", AutoIncrement = true)]
     [Scope("ModuleId")]

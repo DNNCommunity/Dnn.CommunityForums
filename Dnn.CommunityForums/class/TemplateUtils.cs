@@ -18,25 +18,24 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Entities.Portals;
-using Microsoft.ApplicationBlocks.Data;
-using DotNetNuke.Abstractions;
-using DotNetNuke.UI.UserControls;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.UI.UserControls;
+    using Microsoft.ApplicationBlocks.Data;
+
     public class TemplateUtils
     {
         public static List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> lstSubscriptionInfo { get; set; }

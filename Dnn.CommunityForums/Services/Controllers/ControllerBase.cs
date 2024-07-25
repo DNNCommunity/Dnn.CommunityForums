@@ -17,16 +17,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 // 
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-using DotNetNuke.Web.Api;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Web.Api;
+
     /// <summary>
     /// <inheritdoc/>
     /// </summary>

@@ -18,38 +18,34 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.ActiveForums.Constants;
-using DotNetNuke.Modules.ActiveForums.Extensions;
-using DotNetNuke.Modules.ActiveForums.Controllers;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.UI.Skins;
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Xml;
-
-using DotNetNuke.Instrumentation;
-
-using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
-
-using System.Drawing.Printing;
-using System.Runtime.InteropServices;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Authentication;
-
-using System.Diagnostics.Eventing.Reader;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Diagnostics.Eventing.Reader;
+    using System.Drawing.Printing;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Constants;
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.UI.Skins;
+
+    using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicView runat=server></{0}:TopicView>")]
     public class TopicView : ForumBase
     {
@@ -228,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _allowSubscribe = Request.IsAuthenticated && _bSubscribe;
 
                 var tempVar = BasePage;
-                Environment.UpdateMeta(ref tempVar, MetaTitle, MetaDescription, MetaKeywords);
+                DotNetNuke.Modules.ActiveForums.Environment.UpdateMeta(ref tempVar, MetaTitle, MetaDescription, MetaKeywords);
             }
             catch (Exception ex)
             {
@@ -273,11 +269,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Get our Row Index
             _rowIndex = (pageId - 1) * _pageSize;
             string cacheKey = string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, _rowIndex, _pageSize);
-            DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, cacheKey);
+            DataSet ds = (DataSet)DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(ForumModuleId, cacheKey);
             if (ds == null)
             {
-                ds = DataProvider.Instance().UI_TopicView(PortalId, ForumModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort); 
-                DataCache.ContentCacheStore(ModuleId, cacheKey, ds); ;
+                ds = DataProvider.Instance().UI_TopicView(PortalId, ForumModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(ModuleId, cacheKey, ds); ;
             }
             // Test for a proper dataset
             if (ds.Tables.Count < 4 || ds.Tables[0].Rows.Count == 0 || ds.Tables[1].Rows.Count == 0)
@@ -647,7 +643,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sCrumb += "<a href=\"" + forumUrl + "\">" + _forumName + "</a>";
                 sCrumb += "|<a href=\"" + topicUrl + "\">" + _topicSubject + "</a>";
 
-                if (Environment.UpdateBreadCrumb(Page.Controls, sCrumb))
+                if (DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(Page.Controls, sCrumb))
                 {
                     breadCrumb = string.Empty;
                 }

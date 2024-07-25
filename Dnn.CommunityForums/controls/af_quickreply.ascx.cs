@@ -18,24 +18,20 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Web.UI;
-
-using DotNetNuke.Modules.ActiveForums.Controls; 
-using DotNetNuke.Services.Social.Notifications;  
-
-using System.Web.UI.WebControls; 
-using System.Web.UI.HtmlControls;
-
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.UI.UserControls;
-
-using System.Reflection;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls; 
+
+    using DotNetNuke.Modules.ActiveForums.Controls; 
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Services.Social.Notifications;  
+    using DotNetNuke.UI.UserControls;
 
     public partial class af_quickreplyform : ForumBase
     {

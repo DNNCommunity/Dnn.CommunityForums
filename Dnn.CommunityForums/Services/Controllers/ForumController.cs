@@ -17,24 +17,24 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System.Net;
-using System.Net.Http;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Web.Http;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.UI.UserControls;
-using DotNetNuke.Web.Api;
-
-using static DotNetNuke.Modules.ActiveForums.Handlers.HandlerBase;
-
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Reflection;
+    using System.Runtime.InteropServices;
+    using System.Web.Http;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.UI.UserControls;
+    using DotNetNuke.Web.Api;
+
+    using static DotNetNuke.Modules.ActiveForums.Handlers.HandlerBase;
+
     /// <summary>
     /// <inheritdoc/>
     /// </summary>

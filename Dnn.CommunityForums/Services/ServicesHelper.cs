@@ -17,10 +17,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 // 
-using DotNetNuke.Entities.Users;
-
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
+    using DotNetNuke.Entities.Users;
+
     internal static class ServicesHelper
     {
         internal static bool IsAuthorized(int portalId, int moduleId, int forumId, SecureActions permissionRequired, UserInfo userInfo)

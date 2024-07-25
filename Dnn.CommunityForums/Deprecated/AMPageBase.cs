@@ -18,11 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Web;
+
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
     public class AMPageBase : Framework.PageBase
     {

@@ -17,17 +17,17 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Linq;
-using System.Text;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Security.Roles;
-
-using AFSettings = DotNetNuke.Modules.ActiveForums.Settings;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Linq;
+    using System.Text;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Security.Roles;
+
+    using AFSettings = DotNetNuke.Modules.ActiveForums.Settings;
+
     public partial class admin_manageforums_forumeditor : ActiveAdminBase
     {
         public string imgOn;

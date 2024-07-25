@@ -18,14 +18,14 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI.WebControls;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI.WebControls;
+
     public abstract partial class Utilities
     {
         [Obsolete("Deprecated in Community Forums. To be removed in 09.00.00. Use ManageImagePath(string sHTML, Uri hostUri)")]

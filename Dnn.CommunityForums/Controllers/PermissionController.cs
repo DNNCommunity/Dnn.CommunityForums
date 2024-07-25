@@ -16,26 +16,26 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-using System;
-using System.Collections.Specialized;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Web.Razor.Parser.SyntaxTree;
-using System.Web.Security;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Common.Controls;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Modules.ActiveForums.API;
-using DotNetNuke.Modules.ActiveForums.DAL2;
-using Microsoft.ApplicationBlocks.Data;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Data;
+    using System.Drawing;
+    using System.Linq;
+    using System.Reflection;
+    using System.Security.Cryptography;
+    using System.Web.Razor.Parser.SyntaxTree;
+    using System.Web.Security;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common.Controls;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Modules.ActiveForums.API;
+    using DotNetNuke.Modules.ActiveForums.DAL2;
+    using Microsoft.ApplicationBlocks.Data;
+
     internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
         private const string emptyPermissions = "||||";

@@ -17,26 +17,26 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text.RegularExpressions;
-
-using DotNetNuke.Common.Controls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Search.Entities;
-using log4net;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlTypes;
+    using System.Linq;
+    using System.Runtime.Remoting.Messaging;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Common.Controls;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Search.Entities;
+    using log4net;
+
     #region Topics Controller
     public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
     {
@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string forumGroupUrlPrefix = dr["ForumGroupUrlPrefix"].ToString();
                     string forumUrlPrefix = dr["ForumUrlPrefix"].ToString();
                     int jumpid = (replyId > 0) ? replyId : topicid;
-                    body = Common.Utilities.HtmlUtils.Clean(body, false);
+                    body = DotNetNuke.Common.Utilities.HtmlUtils.Clean(body, false);
                     if (!(string.IsNullOrEmpty(body)))
                     {
                         description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;

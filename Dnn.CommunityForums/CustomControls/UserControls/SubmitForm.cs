@@ -17,19 +17,19 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Modules.ActiveForums.Data;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Modules.ActiveForums.Data;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:SubmitForm runat=server></{0}:SubmitForm>")]
     public class SubmitForm : TopicBase
     {
@@ -507,14 +507,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     else if (p.DataType.Contains("list"))
                     {
                         string sList = string.Empty;
-                        var lists = new Common.Lists.ListController();
+                        var lists = new DotNetNuke.Common.Lists.ListController();
                         if (p.DataType.Contains("list|"))
                         {
                             sList = "<select id=\"afprop-" + p.PropertyId.ToString() + "\" class=\"NormalTextBox afprop-select\" name=\"afprop-" + p.PropertyId.ToString() + "\">";
 
                             string lName = p.DataType.Substring(p.DataType.IndexOf("|") + 1);
                             var lc = lists.GetListEntryInfoCollection(lName, string.Empty);
-                            foreach (Common.Lists.ListEntryInfo l in lc)
+                            foreach (DotNetNuke.Common.Lists.ListEntryInfo l in lc)
                             {
                                 if (pValue == l.Value)
                                 {
@@ -539,7 +539,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             {
                                 pValues = pValue.Split(',');
                             }
-                            foreach (Common.Lists.ListEntryInfo l in lc)
+                            foreach (DotNetNuke.Common.Lists.ListEntryInfo l in lc)
                             {
                                 bool isSelected = false;
                                 if (pValues != null)

@@ -17,13 +17,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Services.Scheduling;
-
 namespace DotNetNuke.Modules.ActiveForums.Queue
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Services.Scheduling;
+
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.Message.")]
     public class Message
     {

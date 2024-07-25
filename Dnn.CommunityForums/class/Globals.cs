@@ -18,10 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+
     #region Enumerations
 
     public enum AttachStores

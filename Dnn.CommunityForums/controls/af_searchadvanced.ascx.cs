@@ -17,18 +17,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class af_searchadvanced : ForumBase
     {
         #region Private Members

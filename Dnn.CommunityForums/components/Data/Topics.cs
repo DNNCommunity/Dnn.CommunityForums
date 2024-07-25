@@ -18,18 +18,16 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using Microsoft.ApplicationBlocks.Data;
-
-using System.Xml;
-
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Xml;
+
+    using Microsoft.ApplicationBlocks.Data;
+
     public class Topics : DataConfig
     {
         public int Reply_Save(DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri)

@@ -18,18 +18,18 @@
 // DEALINGS IN THE SOFTWARE.
 //
 // 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using DotNetNuke.Data;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Social.Notifications;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Social.Notifications;
+
     internal static class UserController
     {
         private class ContentForUser
@@ -106,8 +106,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 string userBannedMsg = String.Format(Utilities.GetSharedResource("[RESX:UserBanned]"), bannedUser.Username);
                 log.AddProperty("Message", userBannedMsg);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-               
-                DataProvider.Instance().Topics_Delete_For_User(ModuleId: ModuleId, UserId: bannedUser.UserID, DelBehavior: SettingsBase.GetModuleSettings(ModuleId).DeleteBehavior);
+
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete_For_User(ModuleId: ModuleId, UserId: bannedUser.UserID, DelBehavior: SettingsBase.GetModuleSettings(ModuleId).DeleteBehavior);
                 bannedUser.Membership.Approved = false;
                 DotNetNuke.Entities.Users.UserController.UpdateUser(portalId: PortalId, user: bannedUser, loggedAction: true);
                 DataCache.CacheClearPrefix(ModuleId, string.Format("AF-FV-{0}-{1}", PortalId, ModuleId));

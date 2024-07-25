@@ -18,11 +18,12 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 //ORIGINAL LINE: Imports System.Web.HttpContext
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+
     public class TopicBase : SettingsBase
     {
         #region Private Members

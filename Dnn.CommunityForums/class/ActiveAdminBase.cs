@@ -18,16 +18,16 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Web;
-using System.Web.UI.WebControls;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Modules;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+
     public class ActiveAdminBase : DotNetNuke.Entities.Modules.PortalModuleBase
     {
         private string _currentView = string.Empty;

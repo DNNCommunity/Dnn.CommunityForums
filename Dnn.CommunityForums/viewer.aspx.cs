@@ -17,18 +17,17 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Text.RegularExpressions;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.ActiveForums.Extensions;
-using DotNetNuke.Services.FileSystem;
-
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Services.FileSystem;
+
     public class af_viewer : Framework.PageBase
     {
 

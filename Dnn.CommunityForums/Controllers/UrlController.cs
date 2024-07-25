@@ -18,10 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 //
-using System;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
+
     internal static class UrlController
     {
         internal static string BuildTopicUrl(int PortalId, int ModuleId, int TopicId, string subject, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)

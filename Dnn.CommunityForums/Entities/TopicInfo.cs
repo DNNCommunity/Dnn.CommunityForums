@@ -19,20 +19,15 @@
 //
 using System; 
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
+using System.Text;
+using System.Web.Caching;
 using System.Xml;
 
-using DotNetNuke.ComponentModel.DataAnnotations;
-
-using System.Web.Caching;
-
-using DotNetNuke.UI.UserControls;
-
-using System.Runtime.Remoting.Messaging;
-using System.Linq;
-
 using DotNetNuke.Collections;
-
-using System.Text;
+using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {

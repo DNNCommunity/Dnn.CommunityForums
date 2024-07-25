@@ -17,13 +17,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Services.Scheduling;
-
 namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Services.Scheduling;
+
     public class Scheduler : DotNetNuke.Services.Scheduling.SchedulerClient
     {
         public Scheduler(ScheduleHistoryItem scheduleHistoryItem)

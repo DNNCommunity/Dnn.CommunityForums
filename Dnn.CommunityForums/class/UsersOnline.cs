@@ -18,14 +18,14 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Text;
-
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Text;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Entities.Portals;
+
     public class UsersOnline
     {
         public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Entities.Users.UserInfo user)

@@ -18,36 +18,33 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using System.Web.Http;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Modules.ActiveForums.Extensions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal;
-
-using System.Data;
-using System.Web.Script.Serialization;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-
-using DotNetNuke.Modules.ActiveForums.DAL2;
-
-using System.Reflection;
-
 namespace DotNetNuke.Modules.ActiveForums
 { 
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Formatting;
+    using System.Net.Http.Headers;
+    using System.Reflection;
+    using System.Threading.Tasks;
+    using System.Web.Http;
+    using System.Web.Script.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Modules.ActiveForums.DAL2;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Internal;
+
     [DnnAuthorize]
     [ValidateAntiForgeryToken]
     public class ForumServiceController : DnnApiController

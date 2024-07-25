@@ -17,14 +17,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Abstractions;
-using DotNetNuke.Abstractions.Portals;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Modules;
-
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using Microsoft.Extensions.DependencyInjection;
+
     internal class URLNavigator : PortalModuleBase /*, INavigationManager*/
     {
         private readonly INavigationManager navigationManager;

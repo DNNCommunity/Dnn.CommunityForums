@@ -18,12 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
-using System;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Data;
+
     public abstract class DataProvider
     {
         private static DataProvider objProvider;

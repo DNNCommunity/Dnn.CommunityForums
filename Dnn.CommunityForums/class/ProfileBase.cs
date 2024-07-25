@@ -18,11 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
-using System;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+
     public class ProfileBase : SettingsBase
     {
         private int _UID = -1;

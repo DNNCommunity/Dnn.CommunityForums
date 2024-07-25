@@ -17,14 +17,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System; 
-
-using DotNetNuke.ComponentModel.DataAnnotations;
-
-using System.Web.Caching;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using System; 
+    using System.Web.Caching;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     [TableName("activeforums_Topics_Ratings")]
     [PrimaryKey("RatingId", AutoIncrement = true)]
     [Scope("TopicId")]

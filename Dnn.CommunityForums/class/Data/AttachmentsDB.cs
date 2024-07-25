@@ -18,15 +18,14 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-using Microsoft.ApplicationBlocks.Data;
-
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using Microsoft.ApplicationBlocks.Data;
+
     public class AttachController : Connection
     {
         public int Save(int contentId, int userId, string fileName, string contentType, long fileSize, int? fileId)

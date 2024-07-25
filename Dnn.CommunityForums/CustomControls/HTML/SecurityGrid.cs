@@ -17,16 +17,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Text;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
     public class SecurityGrid
     {

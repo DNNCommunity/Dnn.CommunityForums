@@ -18,10 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.ComponentModel.DataAnnotations;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     /* activeforums_Topics_Tags has a composite primary key, which is not supported by DAL2/PetaPoco */
     [TableName("activeforums_Topics_Tags")]
     public class TopicTagInfo

@@ -1,13 +1,13 @@
-﻿using DotNetNuke.ComponentModel.DataAnnotations;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Caching;
-
-namespace DotNetNuke.Modules.ActiveForums.Entities
+﻿namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Web.Caching;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     [TableName("activeforums_Replies")]
     [PrimaryKey("ReplyId")]
     [Scope("ModuleId")]
