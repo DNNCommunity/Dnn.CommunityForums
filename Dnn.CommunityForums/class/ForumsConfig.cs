@@ -219,17 +219,17 @@ namespace DotNetNuke.Modules.ActiveForums
                     for (int i = 0; i < xNodeList.Count; i++)
                     {
                         var gi = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
-                                     {
-                                         ModuleId = ModuleId,
-                                         ForumGroupId = -1,
-                                         GroupName = xNodeList[i].Attributes["groupname"].Value,
-                                         PrefixURL = xNodeList[i].Attributes["prefixurl"].Value,
-                                         Active = xNodeList[i].Attributes["active"].Value == "1",
-                                         Hidden = xNodeList[i].Attributes["hidden"].Value == "1",
-                                         SortOrder = i,
-                                         GroupSettingsKey = string.Empty,
-                                         PermissionsId = -1
-                                     };
+                        {
+                            ModuleId = ModuleId,
+                            ForumGroupId = -1,
+                            GroupName = xNodeList[i].Attributes["groupname"].Value,
+                            PrefixURL = xNodeList[i].Attributes["prefixurl"].Value,
+                            Active = xNodeList[i].Attributes["active"].Value == "1",
+                            Hidden = xNodeList[i].Attributes["hidden"].Value == "1",
+                            SortOrder = i,
+                            GroupSettingsKey = string.Empty,
+                            PermissionsId = -1
+                        };
                         var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
                         int groupId = gc.Groups_Save(PortalId, gi, true);
                         gi = gc.GetById(groupId, ModuleId);
@@ -427,7 +427,7 @@ namespace DotNetNuke.Modules.ActiveForums
         internal void ArchiveOrphanedAttachments()
         {
             var di = new System.IO.DirectoryInfo(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/portals"));
-            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach",System.IO.SearchOption.AllDirectories);
+            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach", System.IO.SearchOption.AllDirectories);
 
             foreach (System.IO.DirectoryInfo attachmentFolder in attachmentFolders)
             {

@@ -355,11 +355,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static SettingsInfo GetModuleSettings(int ModuleId)
         {
-            SettingsInfo objSettings = (SettingsInfo)DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId));
+            SettingsInfo objSettings = (SettingsInfo)DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.MainSettings, ModuleId));
             if (objSettings == null && ModuleId > 0)
             {
                 objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
-                DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
+                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
             }
 
             return objSettings;
@@ -453,7 +453,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public void RenderMessage(string Title, string Message, string ErrorMsg, Exception ex)
         {
-            var im = new Controls.InfoMessage {Message = string.Concat(Utilities.GetSharedResource(Message), "<br />")};
+            var im = new Controls.InfoMessage { Message = string.Concat(Utilities.GetSharedResource(Message), "<br />") };
             if (ex != null)
             {
                 im.Message = im.Message + ex.Message;

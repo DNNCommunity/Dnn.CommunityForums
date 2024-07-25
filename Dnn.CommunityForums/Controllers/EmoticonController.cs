@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class EmoticonController
     {
-       public static string LoadEmoticons(int ModuleId, string ImagePath, EditorTypes InsertType)
+        public static string LoadEmoticons(int ModuleId, string ImagePath, EditorTypes InsertType)
         {
             var sb = new System.Text.StringBuilder();
             sb.Append("<div id=\"emotions\" class=\"afemoticons\"><div id=\"emotions\" style=\"width:100%; height:100%;align:center;\">");

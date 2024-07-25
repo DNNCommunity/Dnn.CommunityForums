@@ -31,15 +31,15 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
     public class DataConfig
     {
-#region Private Members
+        #region Private Members
         internal string _connectionString;
         internal string _objectQualifier;
         internal string _databaseOwner;
         internal string dbPrefix;
         private DotNetNuke.Framework.Providers.ProviderConfiguration _providerConfiguration = DotNetNuke.Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
 
-#endregion
-#region Constructors
+        #endregion
+        #region Constructors
         public DataConfig()
         {
             this._connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             this.dbPrefix = this._databaseOwner + this._objectQualifier + "activeforums_";
         }
 
-#endregion
+        #endregion
         public static object GetNull(object Field)
         {
             return Null.GetNull(Field, DBNull.Value);

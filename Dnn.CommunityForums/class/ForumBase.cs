@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return false;
                 }
 
-                if(!this._jumpToLastPost.HasValue)
+                if (!this._jumpToLastPost.HasValue)
                 {
                     this._jumpToLastPost = this.UserController.GetUser(this.PortalId, this.UserId).Profile.PrefJumpLastPost;
                 }
@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 var lastAccess = this.Session[string.Concat(this.UserId.ToString(), this.ModuleId, "LastAccess")];
-                return  lastAccess == null ? Utilities.NullDate() : Convert.ToDateTime(lastAccess);
+                return lastAccess == null ? Utilities.NullDate() : Convert.ToDateTime(lastAccess);
             }
 
             set
@@ -115,14 +115,14 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 // If the id has already been set, return it.
-                if(this._postId.HasValue)
+                if (this._postId.HasValue)
                 {
                     return this._postId.Value;
                 }
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryPostId = this.Request.QueryString[ParamKeys.PostId];
-                if(string.IsNullOrWhiteSpace(queryPostId))
+                if (string.IsNullOrWhiteSpace(queryPostId))
                 {
                     this._postId = 0;
                     return this._postId.Value;
@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryTopicId = this.Request.QueryString[ParamKeys.TopicId];
-                if(string.IsNullOrWhiteSpace(queryTopicId))
+                if (string.IsNullOrWhiteSpace(queryTopicId))
                 {
                     this._topicId = this.PostId > 0 ? this.PostId : -1; // If we have no topic id, but we do have a post id, use that instead.  Need to track down where this is used.
                     return this._topicId.Value;
@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If we still don't have a forum id, but we have a topic id, look up the forum id
                 if (this._forumId < 1 & this.TopicId > 0)
                 {
-                   this._forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(this.TopicId);
+                    this._forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(this.TopicId);
                 }
 
                 return this._forumId.Value;
@@ -414,7 +414,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if(!this._canCreate.HasValue)
+                if (!this._canCreate.HasValue)
                 {
                     // The basic security check trumps everything.
                     if (!this.SecurityCheck("create"))
@@ -453,7 +453,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if(!this._canReply.HasValue)
+                if (!this._canReply.HasValue)
                 {
                     // The basic security check trumps everything.
                     if (!this.SecurityCheck("reply"))
@@ -566,7 +566,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 p.Add(string.Concat(ParamKeys.TopicId, "=", this.TopicId));
 
                 var firstNewPost = this.Request.Params[ParamKeys.FirstNewPost];
-                if(!string.IsNullOrWhiteSpace(firstNewPost))
+                if (!string.IsNullOrWhiteSpace(firstNewPost))
                 {
                     p.Add(string.Concat(ParamKeys.FirstNewPost, "=", firstNewPost));
                 }
@@ -581,7 +581,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!string.IsNullOrWhiteSpace(pageId))
                 {
                     int parsedPageId;
-                    if(int.TryParse(pageId, out parsedPageId) && parsedPageId > 1)
+                    if (int.TryParse(pageId, out parsedPageId) && parsedPageId > 1)
                     {
                         p.Add(string.Concat(ParamKeys.PageId, "=", pageId));
                     }
@@ -598,7 +598,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 var sort = this.Request.QueryString[ParamKeys.Sort];
-                if(!string.IsNullOrWhiteSpace(sort))
+                if (!string.IsNullOrWhiteSpace(sort))
                 {
                     var defaultSort = (this.Request.IsAuthenticated &&
                                        !string.IsNullOrWhiteSpace(this.ForumUser.Profile.PrefDefaultSort))
@@ -606,7 +606,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                           : "ASC";
 
                     sort = sort.ToUpperInvariant();
-                    if((sort != defaultSort) && (sort == "ASC" || sort == "DESC"))
+                    if ((sort != defaultSort) && (sort == "ASC" || sort == "DESC"))
                     {
                         p.Add(string.Concat(ParamKeys.Sort, "=", sort));
                     }

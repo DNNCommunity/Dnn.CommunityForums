@@ -203,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 string TopicsTemplate = string.Empty;
-                TopicsTemplate = TemplateCache.GetCachedTemplate( this.ForumModuleId, "TopicsView", defaultTemplateId);
+                TopicsTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicsView", defaultTemplateId);
                 if (TopicsTemplate.Contains("[NOTOOLBAR]"))
                 {
                     if (HttpContext.Current.Items.Contains("ShowToolbar"))
@@ -710,7 +710,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.bModLock)
             {
-                sOutput = sOutput.Replace("[ACTIONS:LOCK]", "<a href=\"javascript:void(0)\" class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_Lock(" + this.ModuleId + "," +this.ForumId + ",[TOPICID]);};\" title=\"[RESX:LockTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-lock fa-fw fa-blue dcf-topic-lock-inner\"></i></a>");
+                sOutput = sOutput.Replace("[ACTIONS:LOCK]", "<a href=\"javascript:void(0)\" class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_Lock(" + this.ModuleId + "," + this.ForumId + ",[TOPICID]);};\" title=\"[RESX:LockTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-lock fa-fw fa-blue dcf-topic-lock-inner\"></i></a>");
             }
             else
             {
@@ -1049,7 +1049,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     sTopicsTemplate = sTopicsTemplate.Replace("[STARTEDBY]", displayName);
-                    sTopicsTemplate = sTopicsTemplate.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(DateCreated,this.PortalId,this.UserId));
+                    sTopicsTemplate = sTopicsTemplate.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(DateCreated, this.PortalId, this.UserId));
                     sTopicsTemplate = sTopicsTemplate.Replace("[REPLIES]", ReplyCount.ToString());
                     sTopicsTemplate = sTopicsTemplate.Replace("[VIEWS]", ViewCount.ToString());
                     sTopicsTemplate = sTopicsTemplate.Replace("[TOPICSUBSCRIBERCOUNT]", TopicSubscriberCount.ToString());
@@ -1090,7 +1090,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (LastReplyId == 0)
                         {
-                            sTopicsTemplate = TemplateUtils.ReplaceSubSection(sTopicsTemplate, Utilities.GetUserFormattedDateTime(LastReplyDate,this.PortalId, this.UserId), "[LASTPOST]", "[/LASTPOST]");
+                            sTopicsTemplate = TemplateUtils.ReplaceSubSection(sTopicsTemplate, Utilities.GetUserFormattedDateTime(LastReplyDate, this.PortalId, this.UserId), "[LASTPOST]", "[/LASTPOST]");
                         }
                         else
                         {

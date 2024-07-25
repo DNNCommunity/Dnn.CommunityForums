@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
     public class Connection
     {
-#region Private Members
+        #region Private Members
         private Framework.Providers.ProviderConfiguration _providerConfiguration = Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
         internal string connectionString;
         internal string objectQualifier;
@@ -32,8 +32,8 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         internal string databaseObjectPrefix = "activeforums_";
         internal string dbPrefix;
 
-#endregion
-#region Constructors
+        #endregion
+        #region Constructors
         public Connection()
         {
             this.connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
@@ -53,6 +53,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
             this.dbPrefix = this.databaseOwner + this.objectQualifier + this.databaseObjectPrefix;
         }
-#endregion
+        #endregion
     }
 }

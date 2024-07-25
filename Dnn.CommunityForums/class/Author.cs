@@ -20,13 +20,13 @@
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-#region AuthorInfo
+    #region AuthorInfo
     public class Author
     {
-#region Private Members
+        #region Private Members
 
         #endregion
-#region Public Properties
+        #region Public Properties
 
         public int AuthorId { get; set; }
 
@@ -42,6 +42,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
     }
-#endregion
+    #endregion
 
 }

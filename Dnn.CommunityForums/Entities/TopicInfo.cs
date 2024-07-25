@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (string.IsNullOrEmpty(this._tags))
                 {
-                    this._tags = string.Join(",",new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTopic(this.TopicId).Select(t => t.Tag.TagName));
+                    this._tags = string.Join(",", new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTopic(this.TopicId).Select(t => t.Tag.TagName));
                     if (string.IsNullOrEmpty(this._tags))
                     {
                         this._tags = string.Empty;
@@ -256,7 +256,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             get
             {
-                    if (this.TopicData == string.Empty)
+                if (this.TopicData == string.Empty)
                 {
                     return null;
                 }

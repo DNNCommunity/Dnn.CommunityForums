@@ -52,10 +52,10 @@ namespace DotNetNuke.Modules.ActiveForums
     [DataContract]
     public class ClientAttachment
     {
-        [DataMember(Name="id",IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(Name = "id", IsRequired = false, EmitDefaultValue = false)]
         public int? AttachmentId { get; set; }
 
-        [DataMember(Name="fileName", IsRequired = true)]
+        [DataMember(Name = "fileName", IsRequired = true)]
         public string FileName { get; set; }
 
         [DataMember(Name = "contentType", IsRequired = true)]

@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:ForumGroupRepeater runat=server></{0}:ForumGroupRepeater>")]
     public class ForumGroupRepeater : ControlsBase
     {
-        public enum RepeatDirections: int
+        public enum RepeatDirections : int
         {
             Vertical,
             Horizontal

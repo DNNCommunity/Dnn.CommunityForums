@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public int Rate(int userId, int topicId, int rating, string IpAddress)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.TopicRatingInfo topicRating = this.GetForTopicAndUser(userId: userId, topicId:topicId).FirstOrDefault();
+            DotNetNuke.Modules.ActiveForums.Entities.TopicRatingInfo topicRating = this.GetForTopicAndUser(userId: userId, topicId: topicId).FirstOrDefault();
             if (topicRating != null)
             {
                 topicRating.Rating = rating;

@@ -1076,7 +1076,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     this.Response.Redirect(fullURL, false);
                     this.Context.ApplicationInstance.CompleteRequest();
-}
+                }
             }
             catch (Exception)
             {

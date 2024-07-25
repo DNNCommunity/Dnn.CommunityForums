@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        public User ForumUser {get; set;}
+        public User ForumUser { get; set; }
 
         private string _ForumIds = string.Empty;
 
@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (currGroup != f.ForumGroupId)
                 {
-                    if (! string.IsNullOrEmpty(gtmp))
+                    if (!string.IsNullOrEmpty(gtmp))
                     {
                         gtmp = gtmp.Replace("[FORUMHOLDER]", string.Empty);
                         list.Append(gtmp);

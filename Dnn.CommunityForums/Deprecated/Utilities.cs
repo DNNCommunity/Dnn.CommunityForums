@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string HumanFriendlyDate(DateTime displayDate, int ModuleId, int timeZoneOffset)
         {
-            var newDate = displayDate.AddMinutes( timeZoneOffset);
+            var newDate = displayDate.AddMinutes(timeZoneOffset);
             var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
             var delta = ts.TotalSeconds;
             if (delta <= 1)

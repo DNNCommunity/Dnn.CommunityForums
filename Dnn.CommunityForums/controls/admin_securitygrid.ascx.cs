@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int i = 0;
             for (i = 0; i <= roles.Length - 2; i++)
             {
-                if (! string.IsNullOrEmpty(roles[i]))
+                if (!string.IsNullOrEmpty(roles[i]))
                 {
                     roleIds[i] = Convert.ToInt32(roles[i]);
                 }
@@ -122,11 +122,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //Users
             string users = this.GetSecureObjectList(security, 1);
             string userNames = string.Empty;
-            if (! string.IsNullOrEmpty(users))
+            if (!string.IsNullOrEmpty(users))
             {
                 foreach (string uid in users.Split(';'))
                 {
-                    if (! string.IsNullOrEmpty(uid))
+                    if (!string.IsNullOrEmpty(uid))
                     {
                         DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, Convert.ToInt32(uid));
                         if (u != null)
@@ -144,18 +144,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             //Groups
             string groups = this.GetSecureObjectList(security, 2);
-            if (! string.IsNullOrEmpty(groups))
+            if (!string.IsNullOrEmpty(groups))
             {
                 foreach (string g in groups.Split(';'))
                 {
-                    if (! string.IsNullOrEmpty(g))
+                    if (!string.IsNullOrEmpty(g))
                     {
 
                         string gType = g.Split(':')[1];
                         int groupId = Convert.ToInt32(g.Split(':')[0]);
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: this.PortalId, roleId: groupId);
                         string groupName = role.RoleName;
-                        if (! string.IsNullOrEmpty(groupName))
+                        if (!string.IsNullOrEmpty(groupName))
                         {
                             DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
                             pi.ObjectId = g;
@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("<tr><td style=\"width:16px;\"></td><td class=\"afsecobject\" style=\"white-space:nowrap;\"><div class=\"afsecobjecttxt\" title=\"" + grid[x, 1] + "\" onmouseover=\"this.firstChild.style.display='';\" onmouseout=\"this.firstChild.style.display='none';\"><span style=\"width:16px;height:16px;float:right;display:none;\">");
                 if ((Convert.ToInt32(grid[x, 2]) == 0 && Convert.ToInt32(grid[x, 0]) > 0) | Convert.ToInt32(grid[x, 2]) > 0)
                 {
-                    if (! this.ReadOnly)
+                    if (!this.ReadOnly)
                     {
                         sb.Append("<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/mini_del.gif") + "\" alt=\"Remove Object\" style=\"cursor:pointer;z-index:10;\" class=\"afminidel\" onclick=\"securityDelObject(this,'" + grid[x, 0] + "'," + grid[x, 2] + "," + permissionsId + ");\" />");
                     }
@@ -281,7 +281,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     sb.Append("<div class=\"afsectoggle\" id=\"" + grid[x, 0] + grid[x, 2] + keyText + "\" ");
-                    if (! this.ReadOnly)
+                    if (!this.ReadOnly)
                     {
                         sb.Append("onclick=\"securityToggle(this," + permissionsId + ",'" + grid[x, 0] + "','" + grid[x, 1] + "'," + grid[x, 2] + ",'" + keyText + "');\"");
                     }
@@ -329,7 +329,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sOut = string.Empty;
             if (action == "delete")
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(this.ModuleId,secId, secType, pId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(this.ModuleId, secId, secType, pId);
 
             }
             else if (action == "addobject")
@@ -355,7 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                 }
 
-                if (! string.IsNullOrEmpty(secId))
+                if (!string.IsNullOrEmpty(secId))
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, "View", secId, secType);
                 }

@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
     public class adminhelper : HandlerBase
     {
-        public enum Actions: int
+        public enum Actions : int
         {
             None,
             PropertySave = 2,
@@ -291,7 +291,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             pi.PortalId = this.PortalId;
             pi = (DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo)Utilities.ConvertFromHashTableToObject(this.Params, pi);
             pi.Name = Utilities.CleanName(pi.Name);
-            if (! string.IsNullOrEmpty(pi.ValidationExpression))
+            if (!string.IsNullOrEmpty(pi.ValidationExpression))
             {
                 pi.ValidationExpression = HttpUtility.UrlDecode(HttpUtility.HtmlDecode(pi.ValidationExpression));
             }
@@ -322,7 +322,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
         private string PropertyList()
         {
-            return ! string.IsNullOrEmpty(this.Params["ObjectOwnerId"].ToString())
+            return !string.IsNullOrEmpty(this.Params["ObjectOwnerId"].ToString())
                 ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().ListPropertiesJSON(this.PortalId, Convert.ToInt32(this.Params["ObjectType"]), Convert.ToInt32(this.Params["ObjectOwnerId"]))
                 : string.Empty;
 
@@ -339,7 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             props = props.Remove(props.LastIndexOf("^"));
             foreach (string s in props.Split('^'))
             {
-                if (! string.IsNullOrEmpty(props))
+                if (!string.IsNullOrEmpty(props))
                 {
                     propertyId = Convert.ToInt32(s.Split('|')[0]);
                     sortOrder = Convert.ToInt32(s.Split('|')[1]);
@@ -360,7 +360,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             if (prop != null)
             {
                 pc.DeleteById(Convert.ToInt32(this.Params["propertyid"]));
-                if (! (pc.Count("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2" ,this.PortalId, prop.ObjectType, prop.ObjectOwnerId) > 0))
+                if (!(pc.Count("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2", this.PortalId, prop.ObjectType, prop.ObjectOwnerId) > 0))
                 {
                     var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
                     DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(prop.ObjectOwnerId, this.ModuleId);

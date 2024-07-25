@@ -132,23 +132,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (Math.Round(this.RatingValue, 0) == 1)
                 {
-                        this.RatingCSS += " onepos";
+                    this.RatingCSS += " onepos";
                 }
                 else if (Math.Round(this.RatingValue, 0) == 2)
                 {
-                        this.RatingCSS += " twopos";
+                    this.RatingCSS += " twopos";
                 }
                 else if (Math.Round(this.RatingValue, 0) == 3)
                 {
-                        this.RatingCSS += " threepos";
+                    this.RatingCSS += " threepos";
                 }
                 else if (Math.Round(this.RatingValue, 0) == 4)
                 {
-                        this.RatingCSS += " fourpos";
+                    this.RatingCSS += " fourpos";
                 }
                 else if (Math.Round(this.RatingValue, 0) == 5)
                 {
-                        this.RatingCSS += " fivepos";
+                    this.RatingCSS += " fivepos";
                 }
             }
 

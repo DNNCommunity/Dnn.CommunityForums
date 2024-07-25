@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (oldForum.ModMoveTemplateId > 0 & ti?.Author?.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(oldForum.ModMoveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId,forumId:  ti.Forum.ForumID, ti.TopicId, -1, string.Empty, ti.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(oldForum.ModMoveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, forumId: ti.Forum.ForumID, ti.TopicId, -1, string.Empty, ti.Author);
             }
 
             new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: TopicId, replyId: -1, authorId: ti.Content.AuthorId, requestUrl: null);
@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
 
-                DataProvider.Instance().Topics_Delete(ti.ForumId, TopicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
+                DataProvider.Instance().Topics_Delete(ti.ForumId, TopicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
                 DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
                 DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));
@@ -293,7 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 return $"{themePath}/images/topic_lock.png";
             }
-           else
+            else
             {
                 // Unread has to be calculated based on a few fields
                 if ((ti.ReplyCount <= 0 && topicId > userLastTopicRead) || (ti.Forum.LastReplyId > userLastReplyRead))

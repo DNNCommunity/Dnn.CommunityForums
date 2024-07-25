@@ -234,7 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> LoadProperties()
         {
-            return this.HasProperties ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Get().Where(p=> p.PortalId == this.PortalId && p.ObjectType == 1 && p.ObjectOwnerId == this.ForumID).ToList() : new List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>();
+            return this.HasProperties ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Get().Where(p => p.PortalId == this.PortalId && p.ObjectType == 1 && p.ObjectOwnerId == this.ForumID).ToList() : new List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>();
         }
 
         #region "Settings & Security"
@@ -408,10 +408,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                    TrustTypes parseValue;
-                    return Enum.TryParse(Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.DefaultTrustLevel], "0"), true, out parseValue)
-                           ? parseValue
-                           : TrustTypes.NotTrusted;
+                TrustTypes parseValue;
+                return Enum.TryParse(Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.DefaultTrustLevel], "0"), true, out parseValue)
+                       ? parseValue
+                       : TrustTypes.NotTrusted;
             }
         }
 

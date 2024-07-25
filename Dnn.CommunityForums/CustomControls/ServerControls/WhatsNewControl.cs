@@ -272,7 +272,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         this.TabId = Convert.ToInt32(topicTabId);
                     }
 
-                    if (Utilities.UseFriendlyURLs( Utilities.SafeConvertInt(topicModuleId)) && !string.IsNullOrEmpty(sForumUrl) && !string.IsNullOrEmpty(sTopicURL))
+                    if (Utilities.UseFriendlyURLs(Utilities.SafeConvertInt(topicModuleId)) && !string.IsNullOrEmpty(sForumUrl) && !string.IsNullOrEmpty(sTopicURL))
                     {
                         var ctlUtils = new ControlUtils();
                         sTopicURL = ctlUtils.BuildUrl(Convert.ToInt32(topicTabId), Convert.ToInt32(topicModuleId), sGroupPrefixURL, sForumUrl, Convert.ToInt32(groupId), Convert.ToInt32(forumId), Convert.ToInt32(topicId), sTopicURL, -1, -1, string.Empty, 1, Convert.ToInt32(replyId), -1);
@@ -309,7 +309,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         List<string> @params;
                         if (Convert.ToInt32(replyId) == 0)
                         {
-                            @params = new List<string>{ ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
+                            @params = new List<string> { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
                             if (this.AdditionalParams != string.Empty)
                             {
                                 @params.Add(this.AdditionalParams);
@@ -367,7 +367,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sFooterTemplate = sFooterTemplate.Replace("[RSSICONLINK]", sRSSIconLink);
 
                 sb.Append(sFooterTemplate);
-                var lit = new Literal {Text = sb.ToString()};
+                var lit = new Literal { Text = sb.ToString() };
                 this.Controls.Add(lit);
 
             }
@@ -379,7 +379,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 sb.Append(ex.StackTrace);
-                var lit = new Literal {Text = ex.Message};
+                var lit = new Literal { Text = ex.Message };
                 this.Controls.Add(lit);
             }
         }

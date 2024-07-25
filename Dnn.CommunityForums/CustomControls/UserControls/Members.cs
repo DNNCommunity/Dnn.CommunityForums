@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             sRow = sAltRow;
                         }
 
-                        sRow = TemplateUtils.ParseProfileTemplate(sRow, up, this.PortalId, this.ModuleId, this.ImagePath, this.CurrentUserType,false,false,false,string.Empty,-1, this.TimeZoneOffset);
+                        sRow = TemplateUtils.ParseProfileTemplate(sRow, up, this.PortalId, this.ModuleId, this.ImagePath, this.CurrentUserType, false, false, false, string.Empty, -1, this.TimeZoneOffset);
                         sb.Append(sRow);
                         i += 1;
                     }

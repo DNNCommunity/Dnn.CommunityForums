@@ -27,7 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class ForumContent
     {
-        public enum GroupingOptions: int
+        public enum GroupingOptions : int
         {
             None,
             Categories,
@@ -214,7 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        public User ForumUser {get; set;}
+        public User ForumUser { get; set; }
 
         private bool _IncludeClasses = true;
 
@@ -302,7 +302,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 }
 
-                if (! string.IsNullOrEmpty(sSubforums))
+                if (!string.IsNullOrEmpty(sSubforums))
                 {
                     if (this.IncludeClasses)
                     {
@@ -359,7 +359,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     catCount += 1;
                     //Dim Params As String() = {ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ViewType & "=topic"}
-                    string[] Params = {ParamKeys.TopicId + "=" + dr["TopicId"].ToString()};
+                    string[] Params = { ParamKeys.TopicId + "=" + dr["TopicId"].ToString() };
                     string sTopicURL = ctlUtils.BuildUrl(this.TabId, this.ModuleId, groupPrefix, forumPrefix, this.ForumGroupId, this.ForumId, int.Parse(dr["TopicId"].ToString()), dr["URL"].ToString(), -1, -1, string.Empty, 1, -1, -1);
                     sb.Append("<a href=\"" + sTopicURL + "\"><span>" + dr["Subject"].ToString() + "</span></a></li>");
                     if (this.TopicId > 0)

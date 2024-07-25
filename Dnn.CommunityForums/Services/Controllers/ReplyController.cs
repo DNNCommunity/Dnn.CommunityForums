@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 {
                     if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
                     {
-                        DataProvider.Instance().Reply_UpdateStatus(this.ActiveModule.PortalID, this.ForumModuleId, r.TopicId, replyId, this.UserInfo.UserID, 1,  DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))));
+                        DataProvider.Instance().Reply_UpdateStatus(this.ActiveModule.PortalID, this.ForumModuleId, r.TopicId, replyId, this.UserInfo.UserID, 1, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))));
                         DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, this.ForumModuleId));
                         return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                     }
@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 var r = rc.GetById(replyId);
                 if (r != null)
                 {
-                    rc.Reply_Delete(this.ActiveModule.PortalID, forumId, r.TopicId,replyId, SettingsBase.GetModuleSettings(this.ForumModuleId).DeleteBehavior);
+                    rc.Reply_Delete(this.ActiveModule.PortalID, forumId, r.TopicId, replyId, SettingsBase.GetModuleSettings(this.ForumModuleId).DeleteBehavior);
                     return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                 }
             }

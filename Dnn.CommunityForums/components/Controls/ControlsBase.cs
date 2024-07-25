@@ -39,9 +39,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(this._template) && ! string.IsNullOrEmpty(this.TemplateFile))
+                if (string.IsNullOrEmpty(this._template) && !string.IsNullOrEmpty(this.TemplateFile))
                 {
-                    if (! string.IsNullOrEmpty(this.ControlConfig.TemplatePath))
+                    if (!string.IsNullOrEmpty(this.ControlConfig.TemplatePath))
                     {
                         this._template = this.ControlConfig.TemplatePath + this.TemplateFile;
                     }
@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     this._template = Utilities.GetTemplate(this.Page.ResolveUrl(this._template));
-                    this._template = Utilities.ParseTokenConfig(this.ForumModuleId,this._template, "default", this.ControlConfig);
+                    this._template = Utilities.ParseTokenConfig(this.ForumModuleId, this._template, "default", this.ControlConfig);
                 }
 
                 return this._template;
@@ -109,17 +109,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             try
             {
 
-            base.OnInit(e);
+                base.OnInit(e);
 
-            if (this.ParseTemplateFile)
-            {
-                if (! string.IsNullOrEmpty(this.DisplayTemplate))
+                if (this.ParseTemplateFile)
                 {
-                    Control ctl = this.Page.ParseControl(this.DisplayTemplate);
-                    this.LinkControls(ctl.Controls);
-                    this.Controls.Add(ctl);
+                    if (!string.IsNullOrEmpty(this.DisplayTemplate))
+                    {
+                        Control ctl = this.Page.ParseControl(this.DisplayTemplate);
+                        this.LinkControls(ctl.Controls);
+                        this.Controls.Add(ctl);
+                    }
                 }
-            }
             }
             catch (Exception ex)
             {

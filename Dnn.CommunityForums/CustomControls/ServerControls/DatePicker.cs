@@ -643,7 +643,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     str.Append("window." + this.ClientID + ".ImgNext='" + this.Page.ResolveUrl(this.ImgNext) + "';");
                 }
 
-                if (string.IsNullOrEmpty(this.ImgPrev) )
+                if (string.IsNullOrEmpty(this.ImgPrev))
                 {
                     str.Append("window." + this.ClientID + ".ImgPrev='" + this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cal_prevMonth.gif") + "';");
                 }

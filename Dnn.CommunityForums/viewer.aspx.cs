@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-                // Otherwise check the attachments directory (current and legacy)
+            // Otherwise check the attachments directory (current and legacy)
             else
             {
                 filePath = Utilities.MapPath(this.PortalSettings.HomeDirectory + "activeforums_Attach/") + attachment.FileName;
@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.Response.Clear();
             this.Response.ContentType = attachment.ContentType;
 
-            if(attachmentId > 0)
+            if (attachmentId > 0)
             {
                 this.Response.AddHeader("Content-Disposition", "attachment; filename=" + this.Server.HtmlEncode(filename));
             }

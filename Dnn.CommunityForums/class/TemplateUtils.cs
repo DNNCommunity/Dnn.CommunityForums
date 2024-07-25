@@ -91,7 +91,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti = new TemplateInfo { Template = string.Concat("Error loading ", templateName, " template.") };
             }
 
-            if (ti == null) {
+            if (ti == null)
+            {
                 ti = new TemplateInfo { Template = string.Concat("Error loading ", templateName, " template.") };
             }
 ;
@@ -176,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber)
-        { return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, userCulture, timeZoneOffset, topicSubscriber,new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url); }
+        { return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, userCulture, timeZoneOffset, topicSubscriber, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url); }
 
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber, INavigationManager navigationManager, Uri requestUrl)
         {
@@ -269,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (string.IsNullOrEmpty(fi.PrefixURL) || !Utilities.UseFriendlyURLs(moduleID))
             {
                 if (replyId == 0)
-                    link = ms.UseShortUrls ? navigationManager.NavigateURL(tabID, portalSettings, string.Empty,  new[] { $"{ParamKeys.TopicId}={topicId}" })
+                    link = ms.UseShortUrls ? navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.TopicId}={topicId}" })
                         : navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.ForumId}={forumID}", $"{ParamKeys.ViewType}={Views.Topic}", $"{ParamKeys.TopicId}={topicId}" });
                 else
                     link = ms.UseShortUrls ? navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.TopicId}={topicId}", string.Concat(ParamKeys.ContentJumpId, "=", replyId) })
@@ -296,7 +297,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Build the forum Url
             var forumURL = ms.UseShortUrls ? navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.ForumId}={forumID}" })
-                : navigationManager.NavigateURL(tabID, portalSettings,string.Empty, new[] { $"{ParamKeys.ForumId}={forumID}", $"{ParamKeys.ViewType}={Views.Topics}" });
+                : navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.ForumId}={forumID}", $"{ParamKeys.ViewType}={Views.Topics}" });
 
             // Build Moderation url
             var modLink = navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={forumID}" });
@@ -307,7 +308,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var result = new StringBuilder(sOut);
 
-            result.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(portalSettings, moduleID,false,false,false, userId, authorName, sFirstName, sLastName, sDisplayName));
+            result.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(portalSettings, moduleID, false, false, false, userId, authorName, sFirstName, sLastName, sDisplayName));
             result.Replace("[USERNAME]", sUsername);
             result.Replace("[USERID]", userId.ToString());
             result.Replace("[FORUMNAME]", fi.ForumName);

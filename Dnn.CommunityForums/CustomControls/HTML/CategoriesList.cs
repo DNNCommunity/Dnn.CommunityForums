@@ -302,7 +302,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 foreach (string s in this.SelectedValues.Split(';'))
                 {
-                    if (! string.IsNullOrEmpty(s))
+                    if (!string.IsNullOrEmpty(s))
                     {
                         if (Utilities.SafeConvertInt(s.Trim()) == CategoryId)
                         {

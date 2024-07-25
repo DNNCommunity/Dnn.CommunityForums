@@ -143,7 +143,7 @@
             //Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Utilities.Text.CheckSqlString(input);
             //Assert
-            Assert.That(actualResult,Is.EqualTo(expectedResult));
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
     }
 }

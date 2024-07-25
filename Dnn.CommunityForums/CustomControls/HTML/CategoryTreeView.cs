@@ -27,7 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class CategoryTreeView
     {
-        public enum GroupingOptions: int
+        public enum GroupingOptions : int
         {
             None,
             Categories,
@@ -214,7 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        public User ForumUser {get; set;}
+        public User ForumUser { get; set; }
 
         private bool _IncludeClasses = true;
 
@@ -296,7 +296,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     catCount += 1;
                     //Dim Params As String() = {ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ViewType & "=topic"}
-                    string[] Params = {ParamKeys.TopicId + "=" + dr["TopicId"].ToString()};
+                    string[] Params = { ParamKeys.TopicId + "=" + dr["TopicId"].ToString() };
                     //Dim sTopicURL As String = ctlUtils.BuildUrl(TabId, ModuleId, groupPrefix, forumPrefix, ForumGroupId, ForumId, Integer.Parse(dr("TopicId").ToString), dr("URL").ToString, -1, -1, String.Empty, 1)
                     string sTopicURL = ctlUtils.TopicURL(dr, this.TabId, this.ModuleId);
                     sb.Append("<a href=\"" + sTopicURL + "\"><span>" + dr["Subject"].ToString() + "</span></a></li>");

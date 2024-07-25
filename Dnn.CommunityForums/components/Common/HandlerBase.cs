@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
     public class HandlerBase : System.Web.IHttpHandler
     {
-        internal enum OutputCodes: int
+        internal enum OutputCodes : int
         {
             Success,
             UnsupportedRequest,
@@ -264,7 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 this._mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
                 //  If context.Request.IsAuthenticated Then
                 this._isValid = true;
-                if (this.AdminRequired & ! context.Request.IsAuthenticated)
+                if (this.AdminRequired & !context.Request.IsAuthenticated)
                 {
                     this._isValid = false;
                     return;
@@ -278,14 +278,14 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, objM.ModulePermissions.ToString("EDIT").Split(';'));
                     this._isValid = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(roleIds, this.ForumUser.UserRoles);
                 }
-                else if (this.AdminRequired & ! context.Request.IsAuthenticated)
+                else if (this.AdminRequired & !context.Request.IsAuthenticated)
                 {
                     this._isValid = false;
                     return;
                 }
 
                 string p = HttpContext.Current.Request.Params["p"];
-                if (! string.IsNullOrEmpty(p))
+                if (!string.IsNullOrEmpty(p))
                 {
                     this._params = Utilities.JSON.ConvertFromJSONAssoicativeArrayToHashTable(p);
                 }
@@ -309,7 +309,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     string skip = "{}[]:," + ((char)34).ToString();
                     using (System.IO.StreamReader sr = new System.IO.StreamReader(context.Request.InputStream, System.Text.Encoding.UTF8))
                     {
-                        while ( ! sr.EndOfStream)
+                        while (!sr.EndOfStream)
                         {
                             char c = (char)sr.Read();
                             if (idx > 0 && c == '[')
@@ -331,7 +331,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                 else if (subPairs == null)
                                 {
                                     string subString = c.ToString();
-                                    while ( c != '}')
+                                    while (c != '}')
                                     {
                                         c = (char)sr.Read();
                                         subString += c;
@@ -350,10 +350,10 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                 }
                             }
 
-                            if (idx > 0 && bObj == true && ! (c == '{'))
+                            if (idx > 0 && bObj == true && !(c == '{'))
                             {
                                 string subItem = string.Empty;
-                                while ( c != ']')
+                                while (c != ']')
                                 {
                                     if (slist == null)
                                     {
@@ -395,7 +395,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
                             if (c == ',' || c == '}')
                             {
-                                if (! string.IsNullOrEmpty(tmp))
+                                if (!string.IsNullOrEmpty(tmp))
                                 {
                                     tmp = HttpUtility.UrlDecode(tmp);
                                 }
@@ -405,13 +405,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                     ht.Add(prop, slist);
                                     slist = null;
                                 }
-                                else if (pairs != null && c == ',' && ! string.IsNullOrEmpty(prop))
+                                else if (pairs != null && c == ',' && !string.IsNullOrEmpty(prop))
                                 {
                                     pairs.Add(prop, tmp);
                                 }
                                 else if (pairs != null && c == '}')
                                 {
-                                    if (! string.IsNullOrEmpty(tmp))
+                                    if (!string.IsNullOrEmpty(tmp))
                                     {
                                         pairs.Add(prop, tmp);
                                     }
@@ -420,7 +420,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                     parentProp = string.Empty;
                                     pairs = null;
                                 }
-                                else if (! string.IsNullOrEmpty(prop))
+                                else if (!string.IsNullOrEmpty(prop))
                                 {
                                     ht.Add(prop, tmp);
                                 }
@@ -433,15 +433,15 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
                         }
 
-                        if (pairs != null & ! string.IsNullOrEmpty(parentProp))
+                        if (pairs != null & !string.IsNullOrEmpty(parentProp))
                         {
                             ht.Add(parentProp, pairs);
                         }
-                        else if (! string.IsNullOrEmpty(prop) && ! string.IsNullOrEmpty(tmp))
+                        else if (!string.IsNullOrEmpty(prop) && !string.IsNullOrEmpty(tmp))
                         {
                             ht.Add(prop, HttpUtility.UrlDecode(tmp));
                         }
-                        else if (! string.IsNullOrEmpty(prop) && slist != null)
+                        else if (!string.IsNullOrEmpty(prop) && slist != null)
                         {
                             ht.Add(prop, slist);
                         }
@@ -458,7 +458,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     Hashtable ht = new Hashtable();
                     foreach (string s in context.Request.Params.AllKeys)
                     {
-                        if (! ht.ContainsKey(s))
+                        if (!ht.ContainsKey(s))
                         {
                             ht.Add(s, context.Request.Params[s]);
                         }
@@ -507,7 +507,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 sb.Append("false,");
             }
 
-            if (! success)
+            if (!success)
             {
                 switch (code)
                 {

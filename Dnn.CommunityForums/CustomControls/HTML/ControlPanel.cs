@@ -27,9 +27,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class ControlPanel
     {
-        public int PortalId {get; set;}
+        public int PortalId { get; set; }
 
-        public int ModuleId {get; set;}
+        public int ModuleId { get; set; }
 
         public ControlPanel(int _portalId, int _moduleId)
         {
@@ -60,13 +60,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 int tmpGroupId = -1;
                 while (dr.Read())
                 {
-                    if (! (tmpGroupId == Convert.ToInt32(dr["ForumGroupId"])))
+                    if (!(tmpGroupId == Convert.ToInt32(dr["ForumGroupId"])))
                     {
                         sb.Append("<option value=\"GROUP" + dr["ForumGroupId"].ToString() + "\">" + dr["GroupName"].ToString() + "</option>");
                         tmpGroupId = Convert.ToInt32(dr["ForumGroupId"]);
                     }
 
-                    if (! (Convert.ToInt32(dr["ForumId"]) == 0))
+                    if (!(Convert.ToInt32(dr["ForumId"]) == 0))
                     {
                         if (Convert.ToInt32(dr["ParentForumID"]) == 0)
                         {

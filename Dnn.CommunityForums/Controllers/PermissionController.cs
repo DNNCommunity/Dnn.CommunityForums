@@ -228,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 roles = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId);
                 // add pseudo-roles for anon/unauth and all users
-                roles.Add(new DotNetNuke.Security.Roles.RoleInfo { RoleID = int.Parse(DotNetNuke.Common.Globals.glbRoleUnauthUser), RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName } );
+                roles.Add(new DotNetNuke.Security.Roles.RoleInfo { RoleID = int.Parse(DotNetNuke.Common.Globals.glbRoleUnauthUser), RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName });
                 roles.Add(new DotNetNuke.Security.Roles.RoleInfo { RoleID = int.Parse(DotNetNuke.Common.Globals.glbRoleAllUsers), RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName });
                 DataCache.SettingsCacheStore(ModuleId: -1, cacheKey: string.Format(CacheKeys.Roles, PortalId), cacheObj: roles);
             }
@@ -509,7 +509,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static string AddPermToSet(string objectId, int objectType, string PermissionSet)
         {
-            string newSet = RemovePermFromSet( objectId, objectType, PermissionSet);
+            string newSet = RemovePermFromSet(objectId, objectType, PermissionSet);
             string[] permSet = newSet.Split('|');
             permSet[objectType] += string.Concat(objectId, ";");
             newSet = string.Concat(permSet[0] + "|" + permSet[1] + "|" + permSet[2], "|");
@@ -778,7 +778,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public static string WhichRolesCanViewForum(int ModuleId, int ForumId, string UserRoles)
         {
             string cacheKey = string.Format(CacheKeys.ViewRolesForForum, ModuleId, ForumId);
-            string sRoles = (string) DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
+            string sRoles = (string)DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
 
             if (string.IsNullOrEmpty(sRoles))
             {
@@ -806,13 +806,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public static string CheckForumIdsForViewForRSS(int ModuleId, string ForumIds, string UserRoles)
         {
             string cacheKey = string.Format(CacheKeys.ViewRolesForForumList, ModuleId, ForumIds);
-            string sForums = (string) DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
+            string sForums = (string)DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
             if (string.IsNullOrEmpty(sForums))
             {
                 sForums = string.Empty;
                 if (!string.IsNullOrEmpty(ForumIds))
                 {
-                    foreach (string forumId in ForumIds.Split(":".ToCharArray(),StringSplitOptions.RemoveEmptyEntries))
+                    foreach (string forumId in ForumIds.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
                     {
                         DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Convert.ToInt32(forumId));
                         if (forum.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security?.View, UserRoles))

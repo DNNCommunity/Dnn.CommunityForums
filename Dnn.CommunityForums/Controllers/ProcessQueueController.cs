@@ -34,21 +34,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-               this.Insert(new DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo
-                    {
-                        PortalId = portalId,
-                        ModuleId = moduleId,
-                        ProcessType = processType,
-                        ForumGroupId=forumGroupId,
-                        ForumId = forumId,
-                        TabId = tabId,
-                        TopicId =topicId,
-                        ReplyId=replyId,
-                        AuthorId=authorId,
-                        DateCreated=DateTime.UtcNow,
-                        RequestUrl=requestUrl,
-                    });
-               return true;
+                this.Insert(new DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo
+                {
+                    PortalId = portalId,
+                    ModuleId = moduleId,
+                    ProcessType = processType,
+                    ForumGroupId = forumGroupId,
+                    ForumId = forumId,
+                    TabId = tabId,
+                    TopicId = topicId,
+                    ReplyId = replyId,
+                    AuthorId = authorId,
+                    DateCreated = DateTime.UtcNow,
+                    RequestUrl = requestUrl,
+                });
+                return true;
             }
             catch (Exception ex)
             {
@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                    return this.Get().OrderBy(m => m.DateCreated).Take(200).ToList();
+                return this.Get().OrderBy(m => m.DateCreated).Take(200).ToList();
             }
             catch (Exception ex)
             {

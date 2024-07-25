@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType, string locale)
         {
-            string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, currentUserType,locale);
+            string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, currentUserType, locale);
             string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey));
             if (string.IsNullOrEmpty(sToolbar))
             {
@@ -422,7 +422,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 text = text.Replace("<br>", System.Environment.NewLine);
                 text = text.Replace("<br />", System.Environment.NewLine);
                 text = text.Replace("<BR>", System.Environment.NewLine);
-                text = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, text,true, !allowHTML, HttpContext.Current.Request.Url);
+                text = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, text, true, !allowHTML, HttpContext.Current.Request.Url);
 
                 return text;
             }
@@ -1664,12 +1664,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 foreach (var file in source.GetFiles())
                 {
-                    file.CopyTo(destFileName: System.IO.Path.Combine(target.FullName, file.Name),overwrite: true);
+                    file.CopyTo(destFileName: System.IO.Path.Combine(target.FullName, file.Name), overwrite: true);
                 }
 
                 foreach (var subDir in source.GetDirectories())
                 {
-                    CopyFolder(subDir, new DirectoryInfo( System.IO.Path.Combine(target.FullName, subDir.Name)));
+                    CopyFolder(subDir, new DirectoryInfo(System.IO.Path.Combine(target.FullName, subDir.Name)));
                 }
             }
             catch (Exception ex)
@@ -1686,7 +1686,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     foreach (var file in dir.GetFiles())
                     {
-                            file.Delete();
+                        file.Delete();
                     }
 
                     foreach (var subDir in dir.GetDirectories())

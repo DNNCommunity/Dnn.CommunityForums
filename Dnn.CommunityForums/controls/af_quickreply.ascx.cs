@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (template.Contains("[AF:CONTROLS:GROUPTOGGLE]"))
                 {
-                    template = template.Replace(oldValue: "[AF:CONTROLS:GROUPTOGGLE]", newValue: DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: TargetCollapsible, title:string.Empty));
+                    template = template.Replace(oldValue: "[AF:CONTROLS:GROUPTOGGLE]", newValue: DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: TargetCollapsible, title: string.Empty));
                 }
 
                 if (!this.Request.IsAuthenticated)

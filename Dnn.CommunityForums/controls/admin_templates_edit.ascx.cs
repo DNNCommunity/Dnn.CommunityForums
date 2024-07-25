@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             Utilities.BindEnum(this.drpTemplateType, typeof(Templates.TemplateTypes), string.Empty, false, true, 0);
             this.drpTemplateType.Attributes.Add("onchange", "toggleTextTab()");
-            if (! (this.Params == string.Empty) && ! (this.Params == "undefined"))
+            if (!(this.Params == string.Empty) && !(this.Params == "undefined"))
             {
                 try
                 {
@@ -89,76 +89,76 @@ namespace DotNetNuke.Modules.ActiveForums
             switch (e.Parameters[0].ToLower())
             {
                 case "save":
-                {
-                    try
                     {
-                        //save template
-                        TemplateInfo ti = null;
-                        TemplateController tc = new TemplateController();
-                        int templateId = 0;
-                        if (e.Parameters[1].ToString() != "")
+                        try
                         {
-                            templateId = Convert.ToInt32(e.Parameters[1]);
-                            ti = tc.Template_Get(templateId);
-                        }
-                        else
-                        {
-                            ti = new TemplateInfo();
-                            ti.IsSystem = false;
-                            ti.TemplateType = (Templates.TemplateTypes)Convert.ToInt32(e.Parameters[5]);
-                            ti.PortalId = this.PortalId;
-                            ti.ModuleId = this.ModuleId;
-                        }
-
-                        ti.Title = e.Parameters[2].ToString();
-                        ti.Subject = e.Parameters[3].ToString();
-                        ti.Template = e.Parameters[4];
-                        ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-                        templateId = tc.Template_Save(ti);
-                        DataCache.SettingsCacheClear(this.ModuleId, string.Format(CacheKeys.Template, this.ModuleId, templateId, ti.TemplateType));
-                        sMsg = "Template saved successfully!";
-                    }
-                    catch (Exception ex)
-                    {
-                        sMsg = "Error saving template.";
-
-                    }
-
-                    break;
-                }
-
-                case "delete":
-                {
-                    try
-                    {
-                        //delete template
-                        TemplateInfo ti = null;
-                        TemplateController tc = new TemplateController();
-                        int templateid = 0;
-                        if (e.Parameters[1].ToString() != "")
-                        {
-                            templateid = Convert.ToInt32(e.Parameters[1]);
-                            ti = tc.Template_Get(templateid);
-                            if (! (ti.IsSystem == true))
+                            //save template
+                            TemplateInfo ti = null;
+                            TemplateController tc = new TemplateController();
+                            int templateId = 0;
+                            if (e.Parameters[1].ToString() != "")
                             {
-                                tc.Template_Delete(templateid, this.PortalId, this.ModuleId);
-                                sMsg = "Template deleted successfully!";
+                                templateId = Convert.ToInt32(e.Parameters[1]);
+                                ti = tc.Template_Get(templateId);
                             }
                             else
                             {
-                                sMsg = "Enable to delete system templates";
-                            }
+                                ti = new TemplateInfo();
+                                ti.IsSystem = false;
+                                ti.TemplateType = (Templates.TemplateTypes)Convert.ToInt32(e.Parameters[5]);
+                                ti.PortalId = this.PortalId;
+                                ti.ModuleId = this.ModuleId;
                             }
 
-                        DataCache.CacheClearPrefix(this.ModuleId, string.Format(CacheKeys.TemplatePrefix, this.ModuleId));
+                            ti.Title = e.Parameters[2].ToString();
+                            ti.Subject = e.Parameters[3].ToString();
+                            ti.Template = e.Parameters[4];
+                            ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
+                            templateId = tc.Template_Save(ti);
+                            DataCache.SettingsCacheClear(this.ModuleId, string.Format(CacheKeys.Template, this.ModuleId, templateId, ti.TemplateType));
+                            sMsg = "Template saved successfully!";
                         }
-                    catch (Exception ex)
-                    {
-                        sMsg = "Error deleting template.";
+                        catch (Exception ex)
+                        {
+                            sMsg = "Error saving template.";
+
+                        }
+
+                        break;
                     }
 
-                    break;
-                }
+                case "delete":
+                    {
+                        try
+                        {
+                            //delete template
+                            TemplateInfo ti = null;
+                            TemplateController tc = new TemplateController();
+                            int templateid = 0;
+                            if (e.Parameters[1].ToString() != "")
+                            {
+                                templateid = Convert.ToInt32(e.Parameters[1]);
+                                ti = tc.Template_Get(templateid);
+                                if (!(ti.IsSystem == true))
+                                {
+                                    tc.Template_Delete(templateid, this.PortalId, this.ModuleId);
+                                    sMsg = "Template deleted successfully!";
+                                }
+                                else
+                                {
+                                    sMsg = "Enable to delete system templates";
+                                }
+                            }
+
+                            DataCache.CacheClearPrefix(this.ModuleId, string.Format(CacheKeys.TemplatePrefix, this.ModuleId));
+                        }
+                        catch (Exception ex)
+                        {
+                            sMsg = "Error deleting template.";
+                        }
+
+                        break;
+                    }
             }
 
             this.cbActionMessage.InnerText = sMsg;

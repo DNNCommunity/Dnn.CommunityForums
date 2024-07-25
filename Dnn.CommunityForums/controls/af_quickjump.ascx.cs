@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.drpForums.Items.Insert(index, new ListItem($"--{fi.ForumName}", $"FORUMJUMP{fi.ForumID}"));
                 index += 1;
             },
-            fi  =>
+            fi =>
             {
                 this.drpForums.Items.Insert(index, new ListItem(
                     fi.ForumName.Length > 30 ? $"{fi.ForumName.Substring(0, 27)}..." : fi.ForumName,

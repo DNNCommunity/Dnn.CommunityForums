@@ -34,7 +34,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradeModuleSettings));
 
-        internal static void MoveSettings_070011() {
+        internal static void MoveSettings_070011()
+        {
 
             /* at some point around v6, general module settings were moved from the activeforums_settings table to the DNN platform Settings table;
              * the code that did that migration would check every time during page load (in ForumBase.OnLoad()) to see if the settings conversion was required.
@@ -58,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
         internal static void MoveSettingsForModuleInstanceToTabModuleInstance(int forumModuleId, int tabModuleId)
         {
-            var currSettings = new SettingsInfo {MainSettings = Settings.GeneralSettings(forumModuleId, "GEN")};
+            var currSettings = new SettingsInfo { MainSettings = Settings.GeneralSettings(forumModuleId, "GEN") };
 
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PageSize, currSettings.PageSize.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.UserNameDisplay, currSettings.UserNameDisplay);
@@ -123,7 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
             DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(tabModuleId, "NeedsConvert");
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, "AFINSTALLED", "True");
-            DataCache.SettingsCacheClear(forumModuleId,string.Format(CacheKeys.MainSettings, forumModuleId));
+            DataCache.SettingsCacheClear(forumModuleId, string.Format(CacheKeys.MainSettings, forumModuleId));
 
         }
 

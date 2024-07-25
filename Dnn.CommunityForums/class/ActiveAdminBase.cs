@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sURL = string.Concat("http://", Common.Globals.GetDomainName(this.Request), "/");
                     }
 
-                    DataCache.SettingsCacheStore(this.ModuleId,string.Format(CacheKeys.HostUrl, this.ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
+                    DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
                     return sURL;
                 }
 
@@ -151,14 +151,14 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public Controls.ClientTemplate GetLoadingTemplate()
         {
-            var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
+            var template = new Controls.ClientTemplate { ID = "LoadingTemplate" };
             template.Controls.Add(new LiteralControl(string.Concat("<div class=\"amloading\"><div class=\"amload\"><img src=\"", this.Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>")));
             return template;
         }
 
         public Controls.ClientTemplate GetLoadingTemplateSmall()
         {
-            var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
+            var template = new Controls.ClientTemplate { ID = "LoadingTemplate" };
             template.Controls.Add(new LiteralControl(string.Concat("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"", this.Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>")));
             return template;
         }

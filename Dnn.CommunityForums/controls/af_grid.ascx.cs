@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BtnMarkReadClick(object sender, EventArgs e)
         {
-            if(this.UserId >= 0)
+            if (this.UserId >= 0)
             {
                 DataProvider.Instance().Utility_MarkAllRead(this.ForumModuleId, this.UserId, 0);
             }
@@ -312,7 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            var intPages = Convert.ToInt32(Math.Ceiling(this.rowCount/(double) this._pageSize));
+            var intPages = Convert.ToInt32(Math.Ceiling(this.rowCount / (double)this._pageSize));
 
             string[] @params;
             if (this.Request.Params[ParamKeys.Sort] != null)

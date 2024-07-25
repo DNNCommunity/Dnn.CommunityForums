@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Event Handlers
 
-        protected override void  OnLoad(EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             var ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "classic.ascx"));

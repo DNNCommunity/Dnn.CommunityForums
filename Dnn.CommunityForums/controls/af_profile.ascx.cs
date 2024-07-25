@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, tUid);
                     if (ui != null)
                     {
-                        sDisplayName = UserProfiles.GetDisplayName(this.PortalSettings, this.ModuleId, false,false,false, ui.UserID, ui.Username, ui.FirstName, ui.LastName, ui.DisplayName);
+                        sDisplayName = UserProfiles.GetDisplayName(this.PortalSettings, this.ModuleId, false, false, false, ui.UserID, ui.Username, ui.FirstName, ui.LastName, ui.DisplayName);
                     }
 
                 }

@@ -86,10 +86,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         }
 
         /// <summary>
-         /// Gets Subscriber count string for a Forum
-         /// </summary>
-         /// <returns></returns>
-         /// <remarks>https://dnndev.me/API/ActiveForums/Forum/SubscriberCountString?ForumId=xxx</remarks>
+        /// Gets Subscriber count string for a Forum
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Forum/SubscriberCountString?ForumId=xxx</remarks>
         [HttpGet]
         [DnnAuthorize]
         public HttpResponseMessage SubscriberCountString(int ForumId)

@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return this.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
         }
 
-        public (int count,bool liked) Get(int userId, int postId)
+        public (int count, bool liked) Get(int userId, int postId)
         {
             return (this.Count(postId), this.GetForUser(userId, postId));
         }

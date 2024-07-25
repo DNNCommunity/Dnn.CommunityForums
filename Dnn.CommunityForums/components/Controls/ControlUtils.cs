@@ -186,7 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (string.IsNullOrEmpty(sURL))
                 {
-                    return Utilities.NavigateURL(tabId, portalSettings,string.Empty, ParamKeys.PageId + "=" + pageId);
+                    return Utilities.NavigateURL(tabId, portalSettings, string.Empty, ParamKeys.PageId + "=" + pageId);
                 }
 
                 sURL += "/" + pageId.ToString();

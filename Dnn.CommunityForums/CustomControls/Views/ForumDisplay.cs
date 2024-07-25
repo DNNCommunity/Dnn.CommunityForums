@@ -45,11 +45,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sTemp;
             //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
 
-            object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate,this.ModuleId,this.ForumGroupId));
+            object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId));
             if (obj == null)
             {
                 sTemp = this.ParseTemplate();
-                DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId),sTemp);
+                DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId), sTemp);
             }
             else
             {

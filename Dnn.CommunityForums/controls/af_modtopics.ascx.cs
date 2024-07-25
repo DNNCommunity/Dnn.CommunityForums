@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            if (this.Request.IsAuthenticated && ( this.ForumUser.Profile.IsMod || this.ForumUser.IsSuperUser || this.ForumUser.IsAdmin))
+            if (this.Request.IsAuthenticated && (this.ForumUser.Profile.IsMod || this.ForumUser.IsSuperUser || this.ForumUser.IsAdmin))
             {
                 if (this.ForumId > 0)
                 {
@@ -341,7 +341,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void SetPermissions(int fId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(fId,this.ForumModuleId );
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(fId, this.ForumModuleId);
             this.bModDelete = false;
             this.bModApprove = false;
             this.bModEdit = false;

@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.GetSubscriptions().Where(s => !s.Subscribed).ForEach(s =>
             {
-               new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(s.PortalId, s.ModuleId, this.UID, s.ForumId);
+                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(s.PortalId, s.ModuleId, this.UID, s.ForumId);
             });
             this.BindForumSubs();
         }

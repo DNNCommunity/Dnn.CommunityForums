@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class SecurityGrid
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public DotNetNuke.Entities.Portals.PortalSettings PortalSettings {get; set;}
+        public DotNetNuke.Entities.Portals.PortalSettings PortalSettings { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public int PortalId
@@ -43,16 +43,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public bool ReadOnly {get; set; }
+        public bool ReadOnly { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public string ImagePath {get; set; }
+        public string ImagePath { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security {get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public int PermissionsId {get; set; }
+        public int PermissionsId { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public SecurityGrid(DotNetNuke.Entities.Portals.PortalSettings ps, bool isReadOnly, string imgPath, DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo sec, int permId)
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int i = 0;
             for (i = 0; i <= roles.Length - 2; i++)
             {
-                if (! string.IsNullOrEmpty(roles[i]))
+                if (!string.IsNullOrEmpty(roles[i]))
                 {
                     roleIds[i] = Convert.ToInt32(roles[i]);
                 }
@@ -104,11 +104,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //Users
             string users = this.GetSecureObjectList(this.Security, 1);
             string userNames = string.Empty;
-            if (! string.IsNullOrEmpty(users))
+            if (!string.IsNullOrEmpty(users))
             {
                 foreach (string uid in users.Split(';'))
                 {
-                    if (! string.IsNullOrEmpty(uid))
+                    if (!string.IsNullOrEmpty(uid))
                     {
                         DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, Convert.ToInt32(uid));
                         if (u != null)
@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("<tr><td style=\"width:16px;\"></td><td class=\"afsecobject\" style=\"white-space:nowrap;\"><div class=\"afsecobjecttxt\" title=\"" + grid[x, 1] + "\" onmouseover=\"this.firstChild.style.display='';\" onmouseout=\"this.firstChild.style.display='none';\"><span style=\"width:16px;height:16px;float:right;display:none;\">");
                 if ((Convert.ToInt32(grid[x, 2]) == 0 && Convert.ToInt32(grid[x, 0]) > 0) | Convert.ToInt32(grid[x, 2]) > 0)
                 {
-                    if (! this.ReadOnly)
+                    if (!this.ReadOnly)
                     {
                         sb.Append("<img src=\"" + this.ImagePath + "mini_del.gif\" alt=\"Remove Object\" style=\"cursor:pointer;z-index:10;\" class=\"afminidel\" onclick=\"securityDelObject(this,'" + grid[x, 0] + "'," + grid[x, 2] + "," + this.PermissionsId + ");\" />");
                     }
@@ -229,7 +229,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     sb.Append("<div class=\"afsectoggle\" id=\"" + grid[x, 0] + grid[x, 2] + keyText + "\" ");
-                    if (! this.ReadOnly)
+                    if (!this.ReadOnly)
                     {
                         sb.Append("onclick=\"securityToggle(this," + this.PermissionsId + ",'" + grid[x, 0] + "','" + grid[x, 1] + "'," + grid[x, 2] + ",'" + keyText + "');\"");
                     }

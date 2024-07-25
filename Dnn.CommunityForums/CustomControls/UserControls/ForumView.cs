@@ -544,7 +544,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     DateTime dtLastPostDate = fi.LastPostDateTime;
-                    Template = Template.Replace("[LASTPOSTDATE]", Utilities.GetUserFormattedDateTime(dtLastPostDate,this.PortalId, this.CurrentUserId));
+                    Template = Template.Replace("[LASTPOSTDATE]", Utilities.GetUserFormattedDateTime(dtLastPostDate, this.PortalId, this.CurrentUserId));
                     string Subject = HttpUtility.HtmlDecode(fi.LastPostSubject);
                     if (Subject != string.Empty)
                     {
@@ -625,7 +625,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string GetSubForums(string Template, int ForumId, int TabId, string ThemePath)
         {
             int i = 0;
-            var subforums = this.Forums.Where(f=>f.ParentForumId== ForumId).ToList();
+            var subforums = this.Forums.Where(f => f.ParentForumId == ForumId).ToList();
             if (Template == string.Empty)
             {
                 var sb = new StringBuilder();
@@ -732,7 +732,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return sOut;
         }
-    #endregion
+        #endregion
     }
 
 }

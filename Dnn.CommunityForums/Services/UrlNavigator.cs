@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
 
         internal INavigationManager NavigationManager()
         {
-           return this.navigationManager;
+            return this.navigationManager;
         }
 
         internal URLNavigator(INavigationManager navigationManager)
@@ -94,12 +94,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services
             return this.navigationManager?.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
-        internal  string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, params string[] additionalParameters)
+        internal string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             return this.navigationManager?.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
-        internal string  NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, string language, params string[] additionalParameters)
+        internal string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
             return this.navigationManager?.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }

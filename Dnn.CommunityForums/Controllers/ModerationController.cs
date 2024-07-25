@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         mods.Add(ui);
                     }
                 }
-    }
+            }
 
             return mods;
         }

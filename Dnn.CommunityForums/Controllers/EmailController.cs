@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<DotNetNuke.Modules.ActiveForums.SubscriptionInfo> subs)
         {
             List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subscribers = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
-            subs.ForEach(s=> subscribers.Add(s));
+            subs.ForEach(s => subscribers.Add(s));
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo)fi;
             SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleID, tabID, comments, userId, forum, subscribers, HttpContext.Current.Request.Url);
         }
@@ -168,28 +168,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body)
         {
-                //USE DNN API for this to ensure proper delivery & adherence to portal settings
-                //Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
+            //USE DNN API for this to ensure proper delivery & adherence to portal settings
+            //Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
 
-                //Since this code is triggered from the DNN scheduler, the default/simple API (now commented out above) uses Host rather than Portal-specific SMTP configuration
-                //updated here to retrieve portal-specific SMTP configuration and use more elaborate DNN API that allows passing of the SMTP information rather than rely on DNN API DotNetNuke.Host.SMTP property accessors to determine portal vs. host SMTP values
-                DotNetNuke.Services.Mail.Mail.SendMail(mailFrom: fromEmail,
-                                        mailSender: SMTPPortalEnabled(portalId) ? PortalController.Instance.GetPortal(portalId).Email : Host.HostEmail,
-                                        mailTo: toEmail,
-                                        cc: string.Empty,
-                                        bcc: string.Empty,
-                                        replyTo: string.Empty,
-                                        priority: DotNetNuke.Services.Mail.MailPriority.Normal,
-                                        subject: subject,
-                                        bodyFormat: DotNetNuke.Services.Mail.MailFormat.Html,
-                                        bodyEncoding: System.Text.Encoding.Default,
-                                        body: body,
-                                        attachments: new List<System.Net.Mail.Attachment>(),
-                                        smtpServer: SMTPServer(portalId),
-                                        smtpAuthentication: SMTPAuthentication(portalId),
-                                        smtpUsername: SMTPUsername(portalId),
-                                        smtpPassword: SMTPPassword(portalId),
-                                        smtpEnableSSL: EnableSMTPSSL(portalId));
+            //Since this code is triggered from the DNN scheduler, the default/simple API (now commented out above) uses Host rather than Portal-specific SMTP configuration
+            //updated here to retrieve portal-specific SMTP configuration and use more elaborate DNN API that allows passing of the SMTP information rather than rely on DNN API DotNetNuke.Host.SMTP property accessors to determine portal vs. host SMTP values
+            DotNetNuke.Services.Mail.Mail.SendMail(mailFrom: fromEmail,
+                                    mailSender: SMTPPortalEnabled(portalId) ? PortalController.Instance.GetPortal(portalId).Email : Host.HostEmail,
+                                    mailTo: toEmail,
+                                    cc: string.Empty,
+                                    bcc: string.Empty,
+                                    replyTo: string.Empty,
+                                    priority: DotNetNuke.Services.Mail.MailPriority.Normal,
+                                    subject: subject,
+                                    bodyFormat: DotNetNuke.Services.Mail.MailFormat.Html,
+                                    bodyEncoding: System.Text.Encoding.Default,
+                                    body: body,
+                                    attachments: new List<System.Net.Mail.Attachment>(),
+                                    smtpServer: SMTPServer(portalId),
+                                    smtpAuthentication: SMTPAuthentication(portalId),
+                                    smtpUsername: SMTPUsername(portalId),
+                                    smtpPassword: SMTPPassword(portalId),
+                                    smtpEnableSSL: EnableSMTPSSL(portalId));
         }
 
         public static void Send(DotNetNuke.Modules.ActiveForums.Entities.EmailInfo message)
@@ -308,6 +308,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             SendNotification(portalId, -1, fromEmail, toEmail, subject, bodyHTML);
         }
 
-#endregion
+        #endregion
     }
 }

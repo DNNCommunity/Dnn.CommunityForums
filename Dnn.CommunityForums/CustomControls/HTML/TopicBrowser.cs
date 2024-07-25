@@ -206,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        public User ForumUser {get; set;}
+        public User ForumUser { get; set; }
 
         private int _CategoryId = -1;
 
@@ -351,7 +351,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string Render()
         {
             string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ModuleId, "CanEdit");
-            if (! string.IsNullOrEmpty(fs))
+            if (!string.IsNullOrEmpty(fs))
             {
                 this._canEdit = true;
             }
@@ -436,7 +436,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     switch (row[i].GetType().ToString())
                     {
                         case "System.DateTime":
-                            value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), this.PortalId,this.UserId);
+                            value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), this.PortalId, this.UserId);
                             break;
                     }
 

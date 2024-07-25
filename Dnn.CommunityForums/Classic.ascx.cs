@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.ForumModuleId = this.ForumModuleId;
                 int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(this.ForumModuleId).FirstOrDefault().TabID;
                 this.ForumTabId = tmpForumTabId;
-                if (this.ForumTabId <=0)
+                if (this.ForumTabId <= 0)
                 {
                     this.ForumTabId = this.TabId;
                 }
@@ -306,7 +306,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string sOut = null;
                 //TODO: this should be resources instead of harcoded text?
                 sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
-                sOut +=  string.Concat("<!-- DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->" , System.Environment.NewLine);
+                sOut += string.Concat("<!-- DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->", System.Environment.NewLine);
 
                 Literal lit = new Literal();
                 lit.Text = sOut;

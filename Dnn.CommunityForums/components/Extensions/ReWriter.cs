@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
-            if (objPortalAliasInfo == null && ! HttpContext.Current.Request.Url.IsDefaultPort )
+            if (objPortalAliasInfo == null && !HttpContext.Current.Request.Url.IsDefaultPort)
             {
                 objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host + ":" + HttpContext.Current.Request.Url.Port.ToString());
             }
@@ -161,9 +161,9 @@ namespace DotNetNuke.Modules.ActiveForums
             string newSearchURL = string.Empty;
             foreach (string up in searchURL.Split('/'))
             {
-                if (! string.IsNullOrEmpty(up))
+                if (!string.IsNullOrEmpty(up))
                 {
-                    if (! SimulateIsNumeric.IsNumeric(up))
+                    if (!SimulateIsNumeric.IsNumeric(up))
                     {
                         newSearchURL += up + "/";
                     }
@@ -227,14 +227,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
 
-            if (! string.IsNullOrEmpty(catName))
+            if (!string.IsNullOrEmpty(catName))
             {
                 this._categoryId = db.Tag_GetIdByName(PortalId, this._moduleId, catName, true);
                 this._otherId = this._categoryId;
                 this._urlType = 2;
             }
 
-            if (! string.IsNullOrEmpty(tagName))
+            if (!string.IsNullOrEmpty(tagName))
             {
                 this._tagId = db.Tag_GetIdByName(PortalId, this._moduleId, tagName, false);
                 this._otherId = this._tagId;
@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (this._archived == 1)
             {
                 sUrl = db.GetUrl(this._moduleId, this._forumgroupId, this._forumId, this._topicId, this._userId, -1);
-                if (! string.IsNullOrEmpty(sUrl))
+                if (!string.IsNullOrEmpty(sUrl))
                 {
                     string sHost = objPortalAliasInfo.HTTPAlias;
                     if (sUrl.StartsWith("/"))
@@ -252,18 +252,18 @@ namespace DotNetNuke.Modules.ActiveForums
                         sUrl = sUrl.Substring(1);
                     }
 
-                    if (! sHost.EndsWith("/"))
+                    if (!sHost.EndsWith("/"))
                     {
                         sHost += "/";
                     }
 
                     sUrl = sHost + sUrl;
-                    if (! sUrl.EndsWith("/"))
+                    if (!sUrl.EndsWith("/"))
                     {
                         sUrl += "/";
                     }
 
-                    if (! sUrl.StartsWith("http"))
+                    if (!sUrl.StartsWith("http"))
                     {
                         if (Request.IsSecureConnection)
                         {
@@ -294,17 +294,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            if (! this._mainSettings.URLRewriteEnabled)
+            if (!this._mainSettings.URLRewriteEnabled)
             {
                 return;
             }
 
-            if (! canContinue && (Request.RawUrl.Contains(ParamKeys.TopicId) || Request.RawUrl.Contains(ParamKeys.ForumId) || Request.RawUrl.Contains(ParamKeys.GroupId)))
+            if (!canContinue && (Request.RawUrl.Contains(ParamKeys.TopicId) || Request.RawUrl.Contains(ParamKeys.ForumId) || Request.RawUrl.Contains(ParamKeys.GroupId)))
             {
                 sUrl = this.HandleOldUrls(Request.RawUrl, objPortalAliasInfo.HTTPAlias);
-                if (! string.IsNullOrEmpty(sUrl))
+                if (!string.IsNullOrEmpty(sUrl))
                 {
-                    if (! sUrl.StartsWith("http"))
+                    if (!sUrl.StartsWith("http"))
                     {
                         if (Request.IsSecureConnection)
                         {
@@ -323,7 +323,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (! canContinue)
+            if (!canContinue)
             {
                 string topicUrl = string.Empty;
                 if (newSearchURL.EndsWith("/"))
@@ -337,7 +337,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 topicUrl = topicUrl.Replace("/", string.Empty);
-                if (! string.IsNullOrEmpty(topicUrl))
+                if (!string.IsNullOrEmpty(topicUrl))
                 {
                     Data.Topics topicsDb = new Data.Topics();
                     this._topicId = topicsDb.TopicIdByUrl(PortalId, this._moduleId, topicUrl.ToLowerInvariant());
@@ -350,14 +350,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         sUrl = string.Empty;
                     }
 
-                    if (! string.IsNullOrEmpty(sUrl))
+                    if (!string.IsNullOrEmpty(sUrl))
                     {
                         string sHost = objPortalAliasInfo.HTTPAlias;
                         if (sHost.EndsWith("/") && sUrl.StartsWith("/"))
                         {
                             sUrl = sHost.Substring(0, sHost.Length - 1) + sUrl;
                         }
-                        else if (! sHost.EndsWith("/") && ! sUrl.StartsWith("/"))
+                        else if (!sHost.EndsWith("/") && !sUrl.StartsWith("/"))
                         {
                             sUrl = sHost + "/" + sUrl;
                         }
@@ -371,7 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sUrl = sUrl.Substring(1);
                         }
 
-                        if (! sUrl.StartsWith("http"))
+                        if (!sUrl.StartsWith("http"))
                         {
                             if (Request.IsSecureConnection)
                             {
@@ -383,7 +383,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
 
-                        if (! string.IsNullOrEmpty(sUrl))
+                        if (!string.IsNullOrEmpty(sUrl))
                         {
                             Response.Clear();
                             Response.Status = "301 Moved Permanently";
@@ -610,7 +610,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string[] parts = currURL.Split(Convert.ToChar(splitter));
             for (int i = 0; i < parts.Length; i++)
             {
-                if (! string.IsNullOrEmpty(parts[i]))
+                if (!string.IsNullOrEmpty(parts[i]))
                 {
                     if (parts[i].ToLowerInvariant().Contains("="))
                     {
@@ -668,7 +668,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             Data.Common db = new Data.Common();
             sUrl = db.GetUrl(this._moduleId, this._forumgroupId, this._forumId, this._topicId, this._userId, this._contentId);
-            if (! string.IsNullOrEmpty(sUrl))
+            if (!string.IsNullOrEmpty(sUrl))
             {
 
                 string sHost = httpAlias;
@@ -677,13 +677,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     sUrl = sUrl.Substring(1);
                 }
 
-                if (! sHost.EndsWith("/"))
+                if (!sHost.EndsWith("/"))
                 {
                     sHost += "/";
                 }
 
                 sUrl = sHost + sUrl;
-                if (! sUrl.EndsWith("/"))
+                if (!sUrl.EndsWith("/"))
                 {
                     sUrl += "/";
                 }

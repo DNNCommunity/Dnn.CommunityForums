@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if(this._searchText == null)
+                if (this._searchText == null)
                 {
                     this._searchText = this.Request.Params[SearchParamKeys.Query] + string.Empty;
                     this._searchText = Utilities.XSSFilter(this._searchText);
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if(!this._searchType.HasValue)
+                if (!this._searchType.HasValue)
                 {
                     int parsedSearchType;
                     this._searchType = int.TryParse(this.Request.Params[SearchParamKeys.SearchType], out parsedSearchType) ? parsedSearchType : 0;
@@ -267,7 +267,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Buttons
 
-                this.btnSearch.Text =  this.GetSharedResource("[RESX:Search]");
+                this.btnSearch.Text = this.GetSharedResource("[RESX:Search]");
                 this.btnSearch2.Text = this.GetSharedResource("[RESX:Search]");
 
                 this.btnReset.InnerText = this.GetSharedResource("[RESX:Reset]");
@@ -333,13 +333,13 @@ namespace DotNetNuke.Modules.ActiveForums
             var forums = string.Empty;
 
             // If the "All" item is selected, we don't need pass the forums parameter
-            if(!this.lbForums.Items[0].Selected)
+            if (!this.lbForums.Items[0].Selected)
             {
                 var forumId = 0;
 
                 foreach (var item in this.lbForums.Items.Cast<ListItem>().Where(item => item.Selected && int.TryParse(Regex.Replace(item.Value, @"F(\d+)G\d+", "$1"), out forumId)))
                 {
-                    if(forums != string.Empty)
+                    if (forums != string.Empty)
                     {
                         forums += ":";
                     }
@@ -370,22 +370,22 @@ namespace DotNetNuke.Modules.ActiveForums
                 @params.Add($"{SearchParamKeys.Columns}={searchColumns}");
             }
 
-            if(searchDays > 0)
+            if (searchDays > 0)
             {
                 @params.Add($"{SearchParamKeys.TimeSpan}={searchDays}");
             }
 
-            if(resultType > 0)
+            if (resultType > 0)
             {
                 @params.Add($"{SearchParamKeys.ResultType}={resultType}");
             }
 
-            if(sort > 0)
+            if (sort > 0)
             {
                 @params.Add($"{SearchParamKeys.Sort}={sort}");
             }
 
-            if(!string.IsNullOrWhiteSpace(authorUsername))
+            if (!string.IsNullOrWhiteSpace(authorUsername))
             {
                 @params.Add($"{SearchParamKeys.Author}={System.Web.HttpUtility.UrlEncode(authorUsername)}");
             }
@@ -448,14 +448,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums, this.ForumUser,
-                fi => {
-                this.lbForums.Items.Add(new ListItem(fi.GroupName, $"G{fi.ForumGroupId}"));
+                fi =>
+                {
+                    this.lbForums.Items.Add(new ListItem(fi.GroupName, $"G{fi.ForumGroupId}"));
                 },
-                fi => {
-                this.lbForums.Items.Add(new ListItem($"{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = forumsToSearch.Contains(fi.ForumID) || this.ForumId == fi.ForumID });
+                fi =>
+                {
+                    this.lbForums.Items.Add(new ListItem($"{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = forumsToSearch.Contains(fi.ForumID) || this.ForumId == fi.ForumID });
                 },
-                fi => {
-                this.lbForums.Items.Add(new ListItem($"--{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = forumsToSearch.Contains(fi.ForumID) || this.ForumId == fi.ForumID } );
+                fi =>
+                {
+                    this.lbForums.Items.Add(new ListItem($"--{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = forumsToSearch.Contains(fi.ForumID) || this.ForumId == fi.ForumID });
                 }
                 );
         }

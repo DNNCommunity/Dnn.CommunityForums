@@ -114,11 +114,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     var settingsCacheKey = string.Format(CacheKeys.WhatsNew, this.ModuleId);
 
-                    var moduleSettings = DataCache.SettingsCacheRetrieve(this.ModuleId,settingsCacheKey) as Hashtable;
+                    var moduleSettings = DataCache.SettingsCacheRetrieve(this.ModuleId, settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
                         moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
-                        DataCache.SettingsCacheStore(this.ModuleId,settingsCacheKey, moduleSettings);
+                        DataCache.SettingsCacheStore(this.ModuleId, settingsCacheKey, moduleSettings);
                     }
 
                     this._settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Attempt to load from cache if it's enabled
-            var rss = (this.Settings.RSSCacheTimeout > 0) ? DataCache.SettingsCacheRetrieve(this.ModuleId,this.CacheKey) as string : null;
+            var rss = (this.Settings.RSSCacheTimeout > 0) ? DataCache.SettingsCacheRetrieve(this.ModuleId, this.CacheKey) as string : null;
 
             // Build the RSS if needed
             rss = rss ?? this.BuildRSS();
@@ -180,7 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Save the rss to cache if it's enabled
             if (this.Settings.RSSCacheTimeout > 0)
             {
-                DataCache.SettingsCacheStore(this.ModuleId,this.CacheKey, rss);
+                DataCache.SettingsCacheStore(this.ModuleId, this.CacheKey, rss);
             }
 
             // Render the output
@@ -248,7 +248,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append(sLogo);
             }
 
-            sb.Append(WriteElement("copyright", ps.FooterText.Replace("[year]",DateTime.UtcNow.Year.ToString()), 2));
+            sb.Append(WriteElement("copyright", ps.FooterText.Replace("[year]", DateTime.UtcNow.Year.ToString()), 2));
             sb.Append(WriteElement("lastBuildDate", "[LASTBUILDDATE]", 2));
 
             var lastBuildDate = DateTime.MinValue;

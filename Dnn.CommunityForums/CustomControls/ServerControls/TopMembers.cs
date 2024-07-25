@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             dr.Close();
             dr.Dispose();
-            if (! string.IsNullOrEmpty(sb.ToString()))
+            if (!string.IsNullOrEmpty(sb.ToString()))
             {
                 writer.Write(sHeaderTemplate);
                 writer.Write(sb.ToString());

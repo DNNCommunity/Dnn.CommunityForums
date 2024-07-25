@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
 
-#region RewardInfo
+    #region RewardInfo
     public class RewardInfo
     {
         public int RankId { get; set; }
@@ -41,9 +41,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string Display { get; set; }
     }
-#endregion
+    #endregion
 
-#region RewardController
+    #region RewardController
     public class RewardController
     {
         public RewardInfo Reward_Save(RewardInfo reward)
@@ -85,11 +85,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (UseCache)
             {
-                rl = (List<RewardInfo>)DataCache.SettingsCacheRetrieve(ModuleId,cacheKey);
+                rl = (List<RewardInfo>)DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
                 if (rl == null)
                 {
                     rl = this.Reward_List(PortalId, ModuleId);
-                    DataCache.SettingsCacheStore(ModuleId,cacheKey, rl);
+                    DataCache.SettingsCacheStore(ModuleId, cacheKey, rl);
                 }
             }
             else
@@ -111,15 +111,15 @@ namespace DotNetNuke.Modules.ActiveForums
             while (dr.Read())
             {
                 var ri = new RewardInfo
-                             {
-                                 Display = Convert.ToString(dr["Display"]),
-                                 MaxPosts = Convert.ToInt32(dr["MaxPosts"]),
-                                 MinPosts = Convert.ToInt32(dr["MinPosts"]),
-                                 ModuleId = ModuleId,
-                                 PortalId = PortalId,
-                                 RankId = Convert.ToInt32(dr["RankId"]),
-                                 RankName = Convert.ToString(dr["RankName"])
-                             };
+                {
+                    Display = Convert.ToString(dr["Display"]),
+                    MaxPosts = Convert.ToInt32(dr["MaxPosts"]),
+                    MinPosts = Convert.ToInt32(dr["MinPosts"]),
+                    ModuleId = ModuleId,
+                    PortalId = PortalId,
+                    RankId = Convert.ToInt32(dr["RankId"]),
+                    RankName = Convert.ToString(dr["RankName"])
+                };
                 rl.Add(ri);
             }
 
@@ -128,5 +128,5 @@ namespace DotNetNuke.Modules.ActiveForums
             return rl;
         }
     }
-#endregion
+    #endregion
 }

@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                     switch (item.ProcessType)
                     {
                         case ProcessType.ApprovedTopicCreated:
-                            completed = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.ProcessApprovedTopicAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumGroupId, item.ForumId, item.TopicId, item.ReplyId, item.AuthorId,item.RequestUrl);
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.ProcessApprovedTopicAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumGroupId, item.ForumId, item.TopicId, item.ReplyId, item.AuthorId, item.RequestUrl);
                             break;
                         case ProcessType.ApprovedReplyCreated:
                             completed = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.ProcessApprovedReplyAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumGroupId, item.ForumId, item.TopicId, item.ReplyId, item.AuthorId, item.RequestUrl);

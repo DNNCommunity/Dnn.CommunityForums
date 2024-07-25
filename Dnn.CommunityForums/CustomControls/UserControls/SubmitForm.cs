@@ -216,7 +216,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {/* for announce, only set/get date without time */
             get
             {
-                if (this.calStartDate.SelectedDate == "" && this._announceStart ==  DateTime.MinValue)
+                if (this.calStartDate.SelectedDate == "" && this._announceStart == DateTime.MinValue)
                 {
                     return Utilities.NullDate();
                 }
@@ -256,7 +256,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             set
             {
                 this._announceEnd = value;
-                this.calEndDate.SelectedDate =  Convert.ToDateTime(value).Date.ToString();
+                this.calEndDate.SelectedDate = Convert.ToDateTime(value).Date.ToString();
             }
         }
 
@@ -440,7 +440,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.EditorMode != EditorModes.NewTopic || this.EditorMode != EditorModes.EditTopic)
             {
-                template = template.Replace("[AF:UI:SECTION:TOPICREVIEW]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:TopicReview]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">"+
+                template = template.Replace("[AF:UI:SECTION:TOPICREVIEW]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:TopicReview]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
                 DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionTopicReview", title: string.Empty) +
                 "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTopicReview\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:TopicReview:Note]</div>");
                 this._topicReviewTemplate = TemplateUtils.GetTemplateSection(template, "[AF:CONTROL:TOPICREVIEW]", "[/AF:CONTROL:TOPICREVIEW]");
@@ -450,7 +450,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Tag, this.ForumUser.UserRoles))
             {
-                template = template.Replace("[AF:UI:SECTION:TAGS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Tags]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">"+
+                template = template.Replace("[AF:UI:SECTION:TAGS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Tags]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
                     DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionTags", title: string.Empty) +
                     "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTags\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
                 template = template.Replace("[AF:UI:FIELDSET:TAGS]", "<fieldset class=\"affieldset\"><legend>[RESX:Tags]</legend><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
@@ -606,13 +606,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[AF:UI:SECTION:SUMMARY]"))
             {
                 template = template.Replace("[AF:UI:SECTION:SUMMARY]", "<table style=\"width:99%\" class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">" +
-                    "<tr>"+
-                    "<td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Summary]</td>"+
+                    "<tr>" +
+                    "<td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Summary]</td>" +
                     "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
                     DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionSummary", title: Utilities.GetSharedResource("[RESX:SummaryForSEO]")) +
-                    "</td>"+
-                    "</tr>"+
-                    "<tr>"+
+                    "</td>" +
+                    "</tr>" +
+                    "<tr>" +
                     "<td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionSummary\" style=\"display:none;\">"
                     );
 
@@ -641,15 +641,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if ((this.EditorMode == EditorModes.EditTopic || this.EditorMode == EditorModes.NewTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Poll, this.ForumUser.UserRoles))
             {
                 template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_polledit.ascx\" tagprefix=\"af\" tagname=\"polledit\" %>" + template;
-                template = template.Replace("[AF:UI:SECTION:POLL]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Polls]</td>"+
-                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\">"+
+                template = template.Replace("[AF:UI:SECTION:POLL]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Polls]</td>" +
+                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\">" +
                     DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionPoll", title: string.Empty) +
                     "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionPoll\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Poll:Note]</div>");
                 template = template.Replace("[/AF:UI:SECTION:POLL]", "</td></tr></table>");
                 template = template.Replace("[AF:UI:FIELDSET:POLL]", "<fieldset class=\"affieldset\"><legend>[RESX:Polls]</legend><div class=\"affieldsetnote\">[RESX:Poll:Note]</div>");
                 template = template.Replace("[AF:CONTROL:POLL]", "<af:polledit id=\"afpolledit\" runat=\"server\" />");
                 template = template.Replace("[/AF:UI:FIELDSET:POLL]", "</fieldset>");
-                template = template.Replace("[AF:CONTROLS:SECTIONTOGGLE]",string.Empty);
+                template = template.Replace("[AF:CONTROLS:SECTIONTOGGLE]", string.Empty);
             }
             else
             {
@@ -685,10 +685,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    template = template.Replace("[AF:UI:SECTION:OPTIONS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">"+
-                        "<tr>"+"<td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:AdditionalOptions]</td>"+
-                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\">"+
-                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionOptions", title: string.Empty)+
+                    template = template.Replace("[AF:UI:SECTION:OPTIONS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">" +
+                        "<tr>" + "<td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:AdditionalOptions]</td>" +
+                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\">" +
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionOptions", title: string.Empty) +
                     "</td></tr>" +
                     "<tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionOptions\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Options:Note]</div>");
                     template = template.Replace("[/AF:UI:SECTION:OPTIONS]", "</td></tr></table>");
@@ -739,7 +739,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (template.Contains("[AF:CONTROL:EMOTICONS]") && this.ForumInfo.AllowEmoticons)
             {
-                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(this.ForumModuleId, this.Page.ResolveUrl(this.MainSettings.ThemeLocation), this.EditorType ) + "</fieldset>");
+                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(this.ForumModuleId, this.Page.ResolveUrl(this.MainSettings.ThemeLocation), this.EditorType) + "</fieldset>");
             }
             else
             {
@@ -752,7 +752,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_attach.ascx\" tagprefix=\"af\" tagname=\"attach\" %>" + template;
                     template = template.Replace("[AF:UI:FIELDSET:ATTACH]", "<fieldset class=\"affieldset\"><legend>[RESX:Attachments]</legend><div class=\"affieldsetnote\">[RESX:Attacments:Note]</div>");
-                    template = template.Replace("[AF:UI:SECTION:ATTACH]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">"+
+                    template = template.Replace("[AF:UI:SECTION:ATTACH]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">" +
                         "<tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Attachments]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
                         DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionAttach", title: string.Empty) +
                         "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionAttach\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Attachments:Note]</div>");
@@ -807,8 +807,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             if (this.canSubscribe && !this.UserPrefTopicSubscribe) /* if user has preference set for auto subscribe, no need to show them the subscribe option */
-                {
-                    if (this.TopicId > 0)
+            {
+                if (this.TopicId > 0)
                 {
                     var subControl = new ToggleSubscribe(this.ForumModuleId, this.ForumInfo.ForumID, this.TopicId, 1);
                     subControl.Checked = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumInfo.ForumID, this.TopicId);
@@ -820,7 +820,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sb.Append("<tr><td colspan=\"2\"><asp:checkbox id=\"chkSubscribe\" Text=\"[RESX:Subscribe]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
                 }
 
-                    bHasOptions = true;
+                bHasOptions = true;
             }
 
             if ((this.EditorMode == EditorModes.NewTopic || this.EditorMode == EditorModes.EditTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Prioritize, this.ForumUser.UserRoles))
@@ -856,7 +856,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void LoadForm()
         {
             this.AppRelativeVirtualPath = "~/submitform.ascx";
-            var ctl = new Control {AppRelativeTemplateSourceDirectory = "~/", ID = "ctlTemp"};
+            var ctl = new Control { AppRelativeTemplateSourceDirectory = "~/", ID = "ctlTemp" };
             ctl = this.ParseControl(this.ParseForm(this.Template));
             this.Controls.Add(ctl);
             while (!(ctl.Controls.Count == 0))
@@ -934,13 +934,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (this.plhTopicReview != null)
             {
                 var ctlTopicView = new TopicView
-                                       {
-                                           ModuleConfiguration = this.ModuleConfiguration,
-                                           TopicTemplate = this._topicReviewTemplate,
-                                           OptPageSize = int.MaxValue,
-                                           OptDefaultSort = "DESC",
-                                           ForumInfo = this.ForumInfo
-                                       };
+                {
+                    ModuleConfiguration = this.ModuleConfiguration,
+                    TopicTemplate = this._topicReviewTemplate,
+                    OptPageSize = int.MaxValue,
+                    OptDefaultSort = "DESC",
+                    ForumInfo = this.ForumInfo
+                };
                 this.plhTopicReview.Controls.Add(ctlTopicView);
             }
 

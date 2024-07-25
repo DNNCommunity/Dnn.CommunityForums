@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if(!this._fullTextStatus.HasValue)
+                if (!this._fullTextStatus.HasValue)
                 {
                     this._fullTextStatus = DataProvider.Instance().Search_GetFullTextStatus();
                 }
@@ -127,53 +127,53 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 //if (Page.IsPostBack == false)
                 //{
-                    this.BindThemes();
-                    this.BindTemplates();
-                    this.BindPrivateMessaging();
-                    this.BindForumGroups();
-                    this.BindForumSecurity();
+                this.BindThemes();
+                this.BindTemplates();
+                this.BindPrivateMessaging();
+                this.BindForumGroups();
+                this.BindForumSecurity();
 
-                    Utilities.SelectListItemByValue(this.drpPageSize, this.PageSize);
+                Utilities.SelectListItemByValue(this.drpPageSize, this.PageSize);
 
-                    this.txtFloodInterval.Text = this.FloodInterval.ToString(); ;
-                    this.txtEditInterval.Text = this.EditInterval.ToString();
+                this.txtFloodInterval.Text = this.FloodInterval.ToString(); ;
+                this.txtEditInterval.Text = this.EditInterval.ToString();
 
-                    Utilities.SelectListItemByValue(this.drpMode, this.Mode);
-                    Utilities.SelectListItemByValue(this.drpThemes, this.Theme);
-                    Utilities.SelectListItemByValue(this.drpTemplates, this.TemplateId);
+                Utilities.SelectListItemByValue(this.drpMode, this.Mode);
+                Utilities.SelectListItemByValue(this.drpThemes, this.Theme);
+                Utilities.SelectListItemByValue(this.drpTemplates, this.TemplateId);
 
-                    Utilities.SelectListItemByValue(this.rdAutoLinks, this.AutoLink);
-                    Utilities.SelectListItemByValue(this.drpDeleteBehavior, this.DeleteBehavior);
-                    Utilities.SelectListItemByValue(this.drpProfileVisibility, this.ProfileVisibility);
-                    Utilities.SelectListItemByValue(this.drpSignatures, this.Signatures);
-                    Utilities.SelectListItemByValue(this.drpUserDisplayMode, this.UserNameDisplay);
-                    Utilities.SelectListItemByValue(this.rdEnableURLRewriter, this.FriendlyURLs);
+                Utilities.SelectListItemByValue(this.rdAutoLinks, this.AutoLink);
+                Utilities.SelectListItemByValue(this.drpDeleteBehavior, this.DeleteBehavior);
+                Utilities.SelectListItemByValue(this.drpProfileVisibility, this.ProfileVisibility);
+                Utilities.SelectListItemByValue(this.drpSignatures, this.Signatures);
+                Utilities.SelectListItemByValue(this.drpUserDisplayMode, this.UserNameDisplay);
+                Utilities.SelectListItemByValue(this.rdEnableURLRewriter, this.FriendlyURLs);
 
-                    Utilities.SelectListItemByValue(this.rdFullTextSearch, this.FullTextSearch && this.FullTextStatus == 1); // 1 = Enabled Status
+                Utilities.SelectListItemByValue(this.rdFullTextSearch, this.FullTextSearch && this.FullTextStatus == 1); // 1 = Enabled Status
 
-                    Utilities.SelectListItemByValue(this.rdCacheTemplates, this.CacheTemplates);
-                    Utilities.SelectListItemByValue(this.rdPoints, this.EnablePoints);
-                    Utilities.SelectListItemByValue(this.rdUsersOnline, this.EnableUsersOnline);
-                    Utilities.SelectListItemByValue(this.rdUseSkinBreadCrumb, this.UseSkinBreadCrumb);
+                Utilities.SelectListItemByValue(this.rdCacheTemplates, this.CacheTemplates);
+                Utilities.SelectListItemByValue(this.rdPoints, this.EnablePoints);
+                Utilities.SelectListItemByValue(this.rdUsersOnline, this.EnableUsersOnline);
+                Utilities.SelectListItemByValue(this.rdUseSkinBreadCrumb, this.UseSkinBreadCrumb);
 
-                    this.txtAnswerPointValue.Text = this.AnswerPointValue.ToString();
-                    this.txtTopicPointValue.Text = this.TopicPointValue.ToString();
-                    this.txtReplyPointValue.Text = this.ReplyPointValue.ToString();
-                    this.txtMarkAnswerPointValue.Text = this.MarkAsAnswerPointValue.ToString();
-                    this.txtModPointValue.Text = this.ModPointValue.ToString();
+                this.txtAnswerPointValue.Text = this.AnswerPointValue.ToString();
+                this.txtTopicPointValue.Text = this.TopicPointValue.ToString();
+                this.txtReplyPointValue.Text = this.ReplyPointValue.ToString();
+                this.txtMarkAnswerPointValue.Text = this.MarkAsAnswerPointValue.ToString();
+                this.txtModPointValue.Text = this.ModPointValue.ToString();
 
-                    this.txtURLPrefixBase.Text = this.PrefixURLBase;
-                    this.txtURLPrefixCategory.Text = this.PrefixURLCategory;
-                    this.txtURLPrefixOther.Text = this.PrefixURLOther;
-                    this.txtURLPrefixTags.Text = this.PrefixURLTag;
+                this.txtURLPrefixBase.Text = this.PrefixURLBase;
+                this.txtURLPrefixCategory.Text = this.PrefixURLCategory;
+                this.txtURLPrefixOther.Text = this.PrefixURLOther;
+                this.txtURLPrefixTags.Text = this.PrefixURLTag;
 
-                    this.txtAvatarHeight.Text = this.AvatarHeight.ToString();
-                    this.txtAvatarWidth.Text = this.AvatarWidth.ToString();
+                this.txtAvatarHeight.Text = this.AvatarHeight.ToString();
+                this.txtAvatarWidth.Text = this.AvatarWidth.ToString();
 
-                    this.txtTimeFormat.Text = this.TimeFormatString;
-                    this.txtDateFormat.Text = this.DateFormatString;
+                this.txtTimeFormat.Text = this.TimeFormatString;
+                this.txtDateFormat.Text = this.DateFormatString;
 
-                    Utilities.SelectListItemByValue(this.drpForumGroupTemplate, this.ForumGroupTemplate);
+                Utilities.SelectListItemByValue(this.drpForumGroupTemplate, this.ForumGroupTemplate);
                 //}
             }
             catch (Exception exc) //Module failed to load
@@ -200,8 +200,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.Mode = this.drpMode.SelectedValue;
                 this.TemplateId = Utilities.SafeConvertInt(this.drpTemplates.SelectedValue);
                 this.PageSize = Utilities.SafeConvertInt(this.drpPageSize.SelectedValue, 10);
-                this.FloodInterval = Math.Max(0,Utilities.SafeConvertInt(this.txtFloodInterval.Text,0));
-                this.EditInterval = Math.Max(0,Utilities.SafeConvertInt(this.txtEditInterval.Text,0));
+                this.FloodInterval = Math.Max(0, Utilities.SafeConvertInt(this.txtFloodInterval.Text, 0));
+                this.EditInterval = Math.Max(0, Utilities.SafeConvertInt(this.txtEditInterval.Text, 0));
                 this.AutoLink = Utilities.SafeConvertBool(this.rdAutoLinks.SelectedValue);
                 this.DeleteBehavior = Utilities.SafeConvertInt(this.drpDeleteBehavior.SelectedValue);
                 this.ProfileVisibility = Utilities.SafeConvertInt(this.drpProfileVisibility.SelectedValue);
@@ -211,7 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 var urlSettings = new FriendlyUrlSettings(this.PortalId);
                 string DoNotRedirectRegex = urlSettings.DoNotRedirectRegex;
-                const string ignoreForumsRegex = "("+ParamKeys.ForumId+"=|"+ParamKeys.GroupId+"=|"+ParamKeys.TopicId+"=|"+ParamKeys.GridType+"=|"+ParamKeys.Tags+"=|"+ParamKeys.ViewType+"=|"+ParamKeys.Category+"=|"+ParamKeys.PageId+"=)|";
+                const string ignoreForumsRegex = "(" + ParamKeys.ForumId + "=|" + ParamKeys.GroupId + "=|" + ParamKeys.TopicId + "=|" + ParamKeys.GridType + "=|" + ParamKeys.Tags + "=|" + ParamKeys.ViewType + "=|" + ParamKeys.Category + "=|" + ParamKeys.PageId + "=)|";
 
                 if (Utilities.SafeConvertBool(this.rdEnableURLRewriter.SelectedValue))
                 {
@@ -238,7 +238,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.EnableUsersOnline = Utilities.SafeConvertBool(this.rdUsersOnline.SelectedValue);
                 this.UseSkinBreadCrumb = Utilities.SafeConvertBool(this.rdUseSkinBreadCrumb.SelectedValue);
 
-                if(this.drpMessagingTab.SelectedItem != null)
+                if (this.drpMessagingTab.SelectedItem != null)
                 {
                     this.MessagingTabId = Utilities.SafeConvertInt(this.drpMessagingTab.SelectedValue);
                 }

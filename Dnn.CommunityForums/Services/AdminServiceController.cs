@@ -108,19 +108,19 @@ namespace DotNetNuke.Modules.ActiveForums
             var upc = new UserProfileController();
             var up = upc.Profiles_Get(this.PortalSettings.PortalId, this.ActiveModule.ModuleID, userId);
 
-            if(up == null)
+            if (up == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
             var result = new
-                             {
-                                 up.UserID,
-                                 up.TrustLevel,
-                                 up.UserCaption,
-                                 up.Signature,
-                                 up.RewardPoints
-                             };
+            {
+                up.UserID,
+                up.TrustLevel,
+                up.UserCaption,
+                up.Signature,
+                up.RewardPoints
+            };
 
             return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
@@ -211,7 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (dto.Action == "remove")
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(dto.ModuleId,dto.PermissionsId, dto.SecurityAccessRequested, dto.SecurityId, dto.SecurityType);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(dto.ModuleId, dto.PermissionsId, dto.SecurityAccessRequested, dto.SecurityId, dto.SecurityType);
                         }
                         else
                         {

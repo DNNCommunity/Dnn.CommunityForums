@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.arrowUp = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/arrow_up.png") + "\" alt=\"" + this.GetSharedResource("[RESX:MoveUp]") + "\" />";
             this.arrowDown = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/arrow_down.png") + "\" alt=\"" + this.GetSharedResource("[RESX:MoveDown]") + "\" />";
             this.edit = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/forum_edit.png") + "\" alt=\"" + this.GetSharedResource("[RESX:Edit]") + "\" />";
-            if (! this.cbGrid.IsCallback)
+            if (!this.cbGrid.IsCallback)
             {
                 this.BindForums();
             }
@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
 
-            if (! dr.IsClosed)
+            if (!dr.IsClosed)
             {
                 dr.Close();
             }

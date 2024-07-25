@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else if (this.Request.QueryString[ParamKeys.ConfirmActionId] != null)
                 {
-                    ConfirmActions action = (ConfirmActions)Enum.Parse(typeof(ConfirmActions), this.Request.QueryString[ParamKeys.ConfirmActionId],true);
+                    ConfirmActions action = (ConfirmActions)Enum.Parse(typeof(ConfirmActions), this.Request.QueryString[ParamKeys.ConfirmActionId], true);
                     switch (action)
                     {
                         case ConfirmActions.AlertSent:

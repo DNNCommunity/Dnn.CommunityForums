@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ForumView ctlForums = new ForumView();
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
-                ctlForums.DisplayTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId,"ForumTracking", 0);
+                ctlForums.DisplayTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ForumTracking", 0);
                 ctlForums.CurrentUserId = this.UID;
                 ctlForums.ForumIds = up.UserForums;
                 this.plhTracker.Controls.Add(ctlForums);
@@ -661,7 +661,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         string tmp = TemplateUtils.GetTemplateSection(sOut, match.Value, match.Value.Replace("[AM", "[/AM"));
                         if (tmp.Contains("<dnn:"))
                         {
-                            tmp =  Globals.DnnControlsRegisterTag + tmp;
+                            tmp = Globals.DnnControlsRegisterTag + tmp;
                         }
 
                         if (tmp.Contains("<social:"))

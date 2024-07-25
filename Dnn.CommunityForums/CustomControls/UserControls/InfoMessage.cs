@@ -32,13 +32,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("message"), ToolboxData("<{0}:InfoMessage runat=server></{0}:InfoMessage>")]
     public class InfoMessage : CompositeControl
     {
-#region Private Members
+        #region Private Members
         private string _message;
         private string _header;
         private string _returnUrl;
 
-#endregion
-#region Public Properties
+        #endregion
+        #region Public Properties
         public string Message
         {
             get
@@ -78,12 +78,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-#endregion
-#region Protected Methods
+        #endregion
+        #region Protected Methods
         protected override void RenderContents(HtmlTextWriter writer)
         {
             writer.Write(this.Message);
         }
-#endregion
+        #endregion
     }
 }

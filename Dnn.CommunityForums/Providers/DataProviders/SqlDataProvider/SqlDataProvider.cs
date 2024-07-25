@@ -214,8 +214,8 @@ namespace DotNetNuke.Modules.ActiveForums
             this.Forum_ConfigCleanUp(ModuleId, ForumSettingsKey);
         }
 
-    #endregion
-    #region Groups
+        #endregion
+        #region Groups
         public override void Groups_Delete(int ModuleID, int ForumGroupID)
         {
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Groups_Delete", ModuleID, ForumGroupID);
@@ -347,7 +347,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override DataSet Search(int portalId, int moduleId, int userId, int searchId, int rowIndex, int maxRows, string searchString, int matchType, int searchField, int timespan, int authorId, string author, string forums, string tags, int resultType, int sort, int maxCacheHours, bool fullText)
         {
-            return SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Search", portalId, moduleId,userId, searchId, rowIndex, maxRows, searchString, matchType, searchField, timespan, authorId, author, forums, tags, resultType, sort, maxCacheHours, fullText);
+            return SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Search", portalId, moduleId, userId, searchId, rowIndex, maxRows, searchString, matchType, searchField, timespan, authorId, author, forums, tags, resultType, sort, maxCacheHours, fullText);
         }
 
         public override int Search_ManageFullText(bool enabled)

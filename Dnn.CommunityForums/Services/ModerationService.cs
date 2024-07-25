@@ -135,14 +135,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ui != null)
                 {
                     var au = new Author
-                                 {
-                                     AuthorId = authorId,
-                                     DisplayName = ui.DisplayName,
-                                     Email = ui.Email,
-                                     FirstName = ui.FirstName,
-                                     LastName = ui.LastName,
-                                     Username = ui.Username
-                                 };
+                    {
+                        AuthorId = authorId,
+                        DisplayName = ui.DisplayName,
+                        Email = ui.Email,
+                        FirstName = ui.FirstName,
+                        LastName = ui.LastName,
+                        Username = ui.Username
+                    };
                     DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalSettings.PortalId, this._moduleId, this._tabId, this._forumId, this._topicId, this._replyId, string.Empty, au);
                 }
 

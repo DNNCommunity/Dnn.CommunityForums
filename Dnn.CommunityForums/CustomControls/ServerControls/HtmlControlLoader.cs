@@ -32,15 +32,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:HtmlControlLoader runat=server></{0}:HtmlControlLoader>")]
     public class HtmlControlLoader : Control
     {
-        public string ControlId {get; set;}
+        public string ControlId { get; set; }
 
-        public string Height {get; set;}
+        public string Height { get; set; }
 
-        public string Width {get; set;}
+        public string Width { get; set; }
 
-        public string Name {get; set;}
+        public string Name { get; set; }
 
-        public string FilePath {get; set;}
+        public string FilePath { get; set; }
 
         protected override void Render(HtmlTextWriter writer)
         {

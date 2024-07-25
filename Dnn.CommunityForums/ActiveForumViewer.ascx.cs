@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     oLink.Attributes["href"] = this.Page.ResolveUrl(Globals.ModulePath + "module.css");
                     System.Web.UI.Control oCSS = this.Page.FindControl("CSS");
                     if (oCSS != null)
-                        {
+                    {
                         int iControlIndex = 0;
                         iControlIndex = oCSS.Controls.Count;
                         oCSS.Controls.AddAt(0, oLink);

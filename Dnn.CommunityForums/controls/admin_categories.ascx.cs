@@ -47,52 +47,52 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                if (! (e.Parameters[4] == ""))
+                if (!(e.Parameters[4] == ""))
                 {
                     string sAction = e.Parameters[4].Split(':')[0];
 
                     switch (sAction.ToUpper())
                     {
                         case "DELETE":
-                        {
-                            int TagId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
-                            if (SimulateIsNumeric.IsNumeric(TagId))
                             {
-                                new DotNetNuke.Modules.ActiveForums.Controllers.TagController().DeleteById(TagId);
-                            }
+                                int TagId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
+                                if (SimulateIsNumeric.IsNumeric(TagId))
+                                {
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.TagController().DeleteById(TagId);
+                                }
 
-                            break;
-                        }
+                                break;
+                            }
 
                         case "SAVE":
-                        {
-                            string[] sParams = e.Parameters[4].Split(':');
-                            string TagName = sParams[1].Trim();
-                            int TagId = 0;
-                            int ForumId = -1;
-                            int ForumGroupId = -1;
-                            if (sParams.Length > 2)
                             {
-                                TagId = Convert.ToInt32(sParams[2]);
-                            }
+                                string[] sParams = e.Parameters[4].Split(':');
+                                string TagName = sParams[1].Trim();
+                                int TagId = 0;
+                                int ForumId = -1;
+                                int ForumGroupId = -1;
+                                if (sParams.Length > 2)
+                                {
+                                    TagId = Convert.ToInt32(sParams[2]);
+                                }
 
-                            if (sParams[3].Contains("FORUM"))
-                            {
-                                ForumId = Convert.ToInt32(sParams[3].Replace("FORUM", string.Empty));
-                            }
+                                if (sParams[3].Contains("FORUM"))
+                                {
+                                    ForumId = Convert.ToInt32(sParams[3].Replace("FORUM", string.Empty));
+                                }
 
-                            if (sParams[3].Contains("GROUP"))
-                            {
-                                ForumGroupId = Convert.ToInt32(sParams[3].Replace("GROUP", string.Empty));
-                            }
+                                if (sParams[3].Contains("GROUP"))
+                                {
+                                    ForumGroupId = Convert.ToInt32(sParams[3].Replace("GROUP", string.Empty));
+                                }
 
-                            if (! (TagName == string.Empty))
-                            {
-                                DataProvider.Instance().Tags_Save(this.PortalId, this.ModuleId, TagId, TagName, 0, 0, 0, -1, true, ForumId, ForumGroupId);
-                            }
+                                if (!(TagName == string.Empty))
+                                {
+                                    DataProvider.Instance().Tags_Save(this.PortalId, this.ModuleId, TagId, TagName, 0, 0, 0, -1, true, ForumId, ForumGroupId);
+                                }
 
-                            break;
-                        }
+                                break;
+                            }
                     }
 
                 }
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int tmpGroupId = -1;
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in filteredForums)
             {
-                if (! (tmpGroupId == f.ForumGroupId))
+                if (!(tmpGroupId == f.ForumGroupId))
                 {
                     this.drpForums.Items.Add(new ListItem(f.GroupName, "GROUP" + f.ForumGroupId.ToString()));
                     tmpGroupId = f.ForumGroupId;

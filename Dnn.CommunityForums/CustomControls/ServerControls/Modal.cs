@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             writer.AddAttribute("class", "amModalCloseImg");
             writer.AddAttribute("onclick", "amaf_closeDialog();");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            writer.AddAttribute("src", this.Page.ResolveUrl( "~/DesktopModules/ActiveForums/images/close.gif"));
+            writer.AddAttribute("src", this.Page.ResolveUrl("~/DesktopModules/ActiveForums/images/close.gif"));
             writer.AddAttribute("alt", "[RESX:Close]");
             writer.RenderBeginTag(HtmlTextWriterTag.Img);
             writer.RenderEndTag(); //Close image

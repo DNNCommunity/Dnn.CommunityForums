@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (this.recordId != 0)
                 {
                     this.span_Parent.Visible = true;
-                    string parent = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Parent]",true);
+                    string parent = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Parent]", true);
                     var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.recordId, this.ModuleId);
                     if (fi.ParentForumId != 0)
                     {

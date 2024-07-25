@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             try
             {
                 this.Insert(new DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueueInfo
-                    {
+                {
                     PortalId = portalId,
                     ModuleId = moduleId,
                     EmailFrom = emailFrom,
@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     EmailBody = emailBody,
                     EmailSubject = emailSubject,
                     DateCreated = DateTime.UtcNow
-                    });
+                });
             }
             catch (Exception ex)
             {

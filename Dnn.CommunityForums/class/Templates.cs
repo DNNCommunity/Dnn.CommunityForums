@@ -27,10 +27,10 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Reflection;
     using System.Web;
 
-#region Templates
+    #region Templates
     public class Templates
     {
-        public enum TemplateTypes: int
+        public enum TemplateTypes : int
         {
             All, //0
             System, //1
@@ -48,14 +48,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
     }
 
-#endregion
-#region TemplateInfo
+    #endregion
+    #region TemplateInfo
     public class TemplateInfo
     {
-#region Private Members
+        #region Private Members
 
         #endregion
-#region Public Properties
+        #region Public Properties
 
         public int TemplateId { get; set; }
 
@@ -89,11 +89,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
     }
 
-#endregion
-#region Template Controller
+    #endregion
+    #region Template Controller
     public class TemplateController
     {
-#region Public Methods
+        #region Public Methods
         //'<summary>
         //'Function to save template.</summary>
         //'<param name="info">TemplateInfo object</param>

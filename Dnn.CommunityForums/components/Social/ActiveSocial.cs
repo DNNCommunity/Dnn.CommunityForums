@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
 
-            JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId,TabId, true));
+            JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, TabId, true));
         }
 
         [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]

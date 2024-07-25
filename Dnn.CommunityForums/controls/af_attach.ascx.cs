@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
         public EditorTypes EditorType { get; set; }
 
-        public string AttachmentsClientId { get; set;  }
+        public string AttachmentsClientId { get; set; }
 
         protected override void OnInit(EventArgs e)
         {

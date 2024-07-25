@@ -28,34 +28,34 @@ namespace DotNetNuke.Modules.ActiveForums
     public class PropertiesInfo
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public int PropertyId {get; set; }
+        public int PropertyId { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public int PortalId {get; set; }
+        public int PortalId { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public int ObjectType {get; set; }
+        public int ObjectType { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public int ObjectOwnerId {get; set; }
+        public int ObjectOwnerId { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public string Name {get; set; }
+        public string Name { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public string DataType {get; set; }
+        public string DataType { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public int DefaultAccessControl {get; set; }
+        public int DefaultAccessControl { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool IsHidden {get; set; }
+        public bool IsHidden { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool IsRequired {get; set; }
+        public bool IsRequired { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool IsReadOnly {get; set; }
+        public bool IsReadOnly { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public string ValidationExpression { get; set; } = string.Empty;
@@ -67,9 +67,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public string ViewTemplate { get; set; } = string.Empty;
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public int SortOrder {get; set; }
+        public int SortOrder { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public string DefaultValue {get; set; }
+        public string DefaultValue { get; set; }
     }
 }

@@ -127,12 +127,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
-    /// <summary>
-    /// Pins a Topic
-    /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Pin</remarks>
+        /// <summary>
+        /// Pins a Topic
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Pin</remarks>
         [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.ModPin)]

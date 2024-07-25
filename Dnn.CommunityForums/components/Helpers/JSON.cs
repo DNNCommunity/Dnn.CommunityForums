@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     value = ((char)34).ToString() + ((char)34).ToString();
                 }
-                else if (! SimulateIsNumeric.IsNumeric(value) & ! (value.ToLower() == "true" || value.ToLower() == "false") && isObject == false)
+                else if (!SimulateIsNumeric.IsNumeric(value) & !(value.ToLower() == "true" || value.ToLower() == "false") && isObject == false)
                 {
                     value = ((char)34).ToString() + JSON.EscapeJsonString(value) + ((char)34).ToString();
                 }
@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 List<string> elements = new List<string>();
                 foreach (KeyValuePair<string, string> Pair in dict)
                 {
-                    if (! string.IsNullOrEmpty(Pair.Value))
+                    if (!string.IsNullOrEmpty(Pair.Value))
                     {
                         elements.Add(string.Format("\"{0}\":{2}{1}{2}", EscapeJsonString(Pair.Key), EscapeJsonString(Pair.Value), (IsJSONArray(Pair.Value) || IsBoolean(Pair.Value)) ? string.Empty : "\""));
                     }
@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             public static bool IsJSONArray(string test)
             {
-                return test.StartsWith("{") && ! test.StartsWith("{*") || test.StartsWith("[");
+                return test.StartsWith("{") && !test.StartsWith("{*") || test.StartsWith("[");
             }
 
             public static bool IsBoolean(string test)
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sValue = dict[sKey];
                         }
 
-                        if (! string.IsNullOrEmpty(sValue))
+                        if (!string.IsNullOrEmpty(sValue))
                         {
                             object obj = null;
                             switch (pItem.PropertyType.ToString())
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             public static List<string> ConvertFromJSONArray(string array)
             {
-                if (! string.IsNullOrEmpty(array))
+                if (!string.IsNullOrEmpty(array))
                 {
                     array = array.Replace("[", "").Replace("]", "").Replace("\"", "");
                     return new List<string>(array.Split(','));
@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums
             public static Dictionary<string, string> ConvertFromJSONAssoicativeArray(string array)
             {
                 Dictionary<string, string> dict = new Dictionary<string, string>();
-                if (! string.IsNullOrEmpty(array))
+                if (!string.IsNullOrEmpty(array))
                 {
                     if (array.StartsWith("{"))
                     {
@@ -193,7 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     List<string> pairs = new List<string>(array.Split(','));
                     foreach (string pair in pairs)
                     {
-                        if (! string.IsNullOrEmpty(pair))
+                        if (!string.IsNullOrEmpty(pair))
                         {
                             string[] pairArray = pair.Split('|');
                             string val = string.Empty;
@@ -218,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
             public static Hashtable ConvertFromJSONAssoicativeArrayToHashTable(string array)
             {
                 Hashtable ht = new Hashtable();
-                if (! string.IsNullOrEmpty(array))
+                if (!string.IsNullOrEmpty(array))
                 {
                     if (array.StartsWith("{"))
                     {
@@ -234,7 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     List<string> pairs = new List<string>(array.Split(','));
                     foreach (string pair in pairs)
                     {
-                        if (! string.IsNullOrEmpty(pair))
+                        if (!string.IsNullOrEmpty(pair))
                         {
                             string[] pairArray = pair.Split('|');
                             string val = string.Empty;

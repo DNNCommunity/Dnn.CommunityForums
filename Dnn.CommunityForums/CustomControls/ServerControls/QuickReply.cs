@@ -75,11 +75,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sTemp = string.Empty;
             if (this.ControlConfig != null)
             {
-                object obj = DataCache.SettingsCacheRetrieve(this.ModuleId,string.Format(CacheKeys.QuickReply, this.ModuleId));
+                object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.QuickReply, this.ModuleId));
                 if (obj == null)
                 {
                     sTemp = this.ParseTemplate();
-                    DataCache.SettingsCacheStore(this.ModuleId,string.Format(CacheKeys.QuickReply, this.ModuleId), sTemp);
+                    DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.QuickReply, this.ModuleId), sTemp);
                 }
                 else
                 {

@@ -377,7 +377,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this._rowCount = Utilities.SafeConvertInt(this._drForum["ReplyCount"]) + 1;
             this._nextTopic = Utilities.SafeConvertInt(this._drForum["NextTopic"]);
             this._prevTopic = Utilities.SafeConvertInt(this._drForum["PrevTopic"]);
-            this._lastPostDate = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(this._drForum["LastPostDate"]),this.PortalId,this.UserId);
+            this._lastPostDate = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(this._drForum["LastPostDate"]), this.PortalId, this.UserId);
             this._lastPostAuthor.AuthorId = Utilities.SafeConvertInt(this._drForum["LastPostAuthorId"]);
             this._lastPostAuthor.DisplayName = this._drForum["LastPostDisplayName"].ToString();
             this._lastPostAuthor.FirstName = this._drForum["LastPostFirstName"].ToString();
@@ -902,7 +902,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[ACTIONS:BAN]", string.Empty);
                 sbOutput.Replace("[ACTIONS:MOVE]", string.Empty);
                 sbOutput.Replace("[RESX:SortPosts]:", string.Empty);
-                sbOutput.Append("<img src=\""+this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath+"spacer.gif")+"\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
+                sbOutput.Append("<img src=\"" + this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "spacer.gif") + "\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
             }
 
             sbOutput.Replace("[NOPAGING]", "<script type=\"text/javascript\">afpagesize=" + int.MaxValue + ";</script>");
@@ -923,7 +923,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Topic and post actions
             var topicActions = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(this.ForumModuleId, "topic", "[AF:CONTROL:TOPICACTIONS]");
-            var postActions = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(this.ForumModuleId,"topic", "[AF:CONTROL:POSTACTIONS]");
+            var postActions = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(this.ForumModuleId, "topic", "[AF:CONTROL:POSTACTIONS]");
             if (sOutput.Contains("[AF:CONTROL:TOPICACTIONS]"))
             {
                 this._useListActions = true;
@@ -1099,7 +1099,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[SORTDROPDOWN]", "<asp:placeholder id=\"plhTopicSort\" runat=\"server\" />");
             if (sOutput.Contains("[POSTRATINGBUTTON]"))
             {
-                var rateControl = new Ratings(this.ModuleId,this.ForumId, this.TopicId, true, this._topicRating);
+                var rateControl = new Ratings(this.ModuleId, this.ForumId, this.TopicId, true, this._topicRating);
                 sbOutput.Replace("[POSTRATINGBUTTON]", rateControl.Render());
             }
 
@@ -1642,7 +1642,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this._allowLikes)
             {
-                (int count, bool liked) likes = new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(this.UserId,contentId);
+                (int count, bool liked) likes = new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(this.UserId, contentId);
                 string image = likes.liked ? "fa-thumbs-o-up" : "fa-thumbs-up";
 
                 if (this.CanReply)

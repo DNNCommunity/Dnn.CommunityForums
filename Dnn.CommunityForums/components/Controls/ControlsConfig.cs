@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class ControlsConfig
     {
-#region Private Members
+        #region Private Members
         private int _PortalId;
         private int _pageId = -1;
         private int _ModuleId;
@@ -42,8 +42,8 @@ namespace DotNetNuke.Modules.ActiveForums
         private string _membersLink;
         private string _adminRoles;
 
-#endregion
-#region Public Properties
+        #endregion
+        #region Public Properties
         public string AdminRoles
         {
             get
@@ -226,7 +226,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-#endregion
+        #endregion
 
     }
 }

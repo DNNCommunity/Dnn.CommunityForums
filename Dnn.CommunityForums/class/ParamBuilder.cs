@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this.Params == null ? new string[]{} : this.Params.Keys.Select(key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(this.Params[key].ToString()))).ToArray();
+                return this.Params == null ? new string[] { } : this.Params.Keys.Select(key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(this.Params[key].ToString()))).ToArray();
             }
         }
 
@@ -71,13 +71,13 @@ namespace DotNetNuke.Modules.ActiveForums
             this.Params = new Dictionary<string, object>();
 
             var parameters = queryString.Split('&');
-            foreach(var p in parameters)
+            foreach (var p in parameters)
             {
                 var elements = p.Split('=');
                 var key = elements[0];
                 var value = elements.Length > 0 ? elements[1] : string.Empty;
 
-                if(urlEncoded)
+                if (urlEncoded)
                 {
                     key = HttpUtility.UrlDecode(key);
                     value = HttpUtility.UrlDecode(value);

@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if(this._searchText == null)
+                if (this._searchText == null)
                 {
                     this._searchText = this.Request.Params[SearchParamKeys.Query] + string.Empty;
                     this._searchText = Utilities.XSSFilter(this._searchText);
@@ -107,7 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if(!this._searchType.HasValue)
+                if (!this._searchType.HasValue)
                 {
                     int parsedSearchType;
                     this._searchType = int.TryParse(this.Request.Params[SearchParamKeys.SearchType], out parsedSearchType) ? parsedSearchType : 0;
@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if(this._parameters == null)
+                if (this._parameters == null)
                 {
                     this._parameters = new List<string>();
 
@@ -325,7 +325,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.litSearchTitle.Text = this.GetSharedResource("[RESX:SearchTitle]");
                 List<Keyword> keywords;
 
-                 // Note: Filter out any keywords that are not at least 3 characters in length
+                // Note: Filter out any keywords that are not at least 3 characters in length
 
                 if (this.SearchType == 2 && !string.IsNullOrWhiteSpace(this.SearchText) && this.SearchText.Trim().Length >= 3) //Exact Match
                 {
@@ -349,7 +349,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.litUserName.Text = this.Server.HtmlEncode(this.AuthorUsername);
                 }
 
-                if(!string.IsNullOrWhiteSpace(this.Tags))
+                if (!string.IsNullOrWhiteSpace(this.Tags))
                 {
                     this.phTag.Visible = true;
                     this.litTag.Text = this.Server.HtmlEncode(this.Tags);
@@ -407,13 +407,13 @@ namespace DotNetNuke.Modules.ActiveForums
             var parseId = 0;
 
             var sForumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ModuleId, "CanRead", true); // Make sure and pass strict = true here
-            var forumsAllowed = sForumsAllowed.Split(new [] {':',';'}).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
+            var forumsAllowed = sForumsAllowed.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
             var forumsRequested = this.Forums.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
 
             var forumsToSearch = string.Empty;
 
             // If forums requested is empty or contains and entry less than or equal to zero, return all available forums
-            if(!forumsRequested.Any() || forumsRequested.Any(o => o <= 0))
+            if (!forumsRequested.Any() || forumsRequested.Any(o => o <= 0))
             {
                 forumsToSearch = forumsAllowed.Aggregate(forumsToSearch, (current, f) => current + (current.Length == 0 ? string.Empty : ":") + f);
             }
@@ -438,7 +438,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.litSearchDuration.Text = string.Format(this.GetSharedResource("[RESX:SearchDuration]"), totalSeconds);
 
-            if(ageInMinutes > 0.25)
+            if (ageInMinutes > 0.25)
             {
                 this.litSearchAge.Text = string.Format(this.GetSharedResource("[RESX:SearchAge]"), ageInMinutes);
             }

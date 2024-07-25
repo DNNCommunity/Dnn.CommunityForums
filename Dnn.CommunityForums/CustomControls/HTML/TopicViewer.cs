@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        public User ForumUser {get; set;}
+        public User ForumUser { get; set; }
 
         private int _PageIndex = 1;
 

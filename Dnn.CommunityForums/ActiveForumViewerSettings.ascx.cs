@@ -48,34 +48,34 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                if (! this.Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
                     // Load settings from TabModuleSettings: specific to this instance
                     this.LoadForums();
                     // Load settings from ModuleSettings: general for all instances
-                    if (! (Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]) == null))
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]) == null))
                     {
                         this.drpForumInstance.SelectedIndex = this.drpForumInstance.Items.IndexOf(this.drpForumInstance.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumModuleId])));
                         this.LoadForumGroups(Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]));
                     }
 
-                    if (! (Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicsTemplate]) == null))
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicsTemplate]) == null))
                     {
                         this.BindTemplates(Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]));
                         this.drpTopicsTemplate.SelectedIndex = this.drpTopicsTemplate.Items.IndexOf(this.drpTopicsTemplate.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicsTemplate])));
                     }
 
-                    if (! (Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumViewTemplate]) == null))
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumViewTemplate]) == null))
                     {
                         this.drpForumViewTemplate.SelectedIndex = this.drpForumViewTemplate.Items.IndexOf(this.drpForumViewTemplate.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumViewTemplate])));
                     }
 
-                    if (! (Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicTemplate]) == null))
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicTemplate]) == null))
                     {
                         this.drpTopicTemplate.SelectedIndex = this.drpTopicTemplate.Items.IndexOf(this.drpTopicTemplate.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicTemplate])));
                     }
 
-                    if (! (Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumGroup]) == null))
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumGroup]) == null))
                     {
                         this.drpForum.SelectedIndex = this.drpForum.Items.IndexOf(this.drpForum.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumGroup])));
                     }

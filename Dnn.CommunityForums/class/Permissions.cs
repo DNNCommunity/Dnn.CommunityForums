@@ -137,7 +137,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
         public static bool HasAccess(string AuthorizedRoles, string UserRoles)
-        { return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(AuthorizedRoles, UserRoles);
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(AuthorizedRoles, UserRoles);
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo.")]
