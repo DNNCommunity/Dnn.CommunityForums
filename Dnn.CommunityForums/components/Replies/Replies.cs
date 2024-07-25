@@ -50,4 +50,3 @@ namespace DotNetNuke.Modules.ActiveForums
         public void UpdateModuleLastContentModifiedOnDate(int ModuleId) => Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
     }
 }
-

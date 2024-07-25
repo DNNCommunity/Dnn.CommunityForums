@@ -188,5 +188,3 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
         }
     }
 }
-
- 

@@ -128,4 +128,3 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
     }
 }
-

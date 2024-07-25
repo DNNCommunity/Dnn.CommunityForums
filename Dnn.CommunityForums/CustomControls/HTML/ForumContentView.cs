@@ -395,4 +395,3 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         //End Sub
     }
 }
-

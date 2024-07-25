@@ -22,4 +22,3 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     public partial class ForumCollection : System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> { }
 }
-

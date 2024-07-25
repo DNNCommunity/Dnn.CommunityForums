@@ -659,4 +659,3 @@ namespace DotNetNuke.Modules.ActiveForums
         }
     }
 }
-

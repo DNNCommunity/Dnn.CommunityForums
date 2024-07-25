@@ -28,4 +28,3 @@ namespace DotNetNuke.Modules.ActiveForums
         }
     }
 }
-

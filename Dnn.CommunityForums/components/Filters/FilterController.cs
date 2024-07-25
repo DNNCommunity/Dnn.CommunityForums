@@ -59,4 +59,3 @@ namespace DotNetNuke.Modules.ActiveForums
         }
     }
 }
-

@@ -492,4 +492,3 @@ namespace DotNetNuke.Modules.ActiveForums
         }
     }
 }
-

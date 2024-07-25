@@ -43,4 +43,3 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int ModuleId { get; set; }
     }
 }
-

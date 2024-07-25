@@ -152,4 +152,3 @@ namespace DotNetNuke.Modules.ActiveForums
         }
     }
 }
-
