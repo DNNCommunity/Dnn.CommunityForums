@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this._allowSubscribe = this.Request.IsAuthenticated && this._bSubscribe;
 
                 var tempVar = this.BasePage;
-                Environment.UpdateMeta(ref tempVar, this.MetaTitle, this.MetaDescription, this.MetaKeywords);
+                DotNetNuke.Modules.ActiveForums.Environment.UpdateMeta(ref tempVar, this.MetaTitle, this.MetaDescription, this.MetaKeywords);
             }
             catch (Exception ex)
             {
@@ -270,11 +270,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Get our Row Index
             this._rowIndex = (pageId - 1) * this._pageSize;
             string cacheKey = string.Format(CacheKeys.TopicViewForUser, this.ModuleId, this.TopicId, this.UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, this._rowIndex, this._pageSize);
-            DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(this.ForumModuleId, cacheKey);
+            DataSet ds = (DataSet)DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.ForumModuleId, cacheKey);
             if (ds == null)
             {
-                ds = DataProvider.Instance().UI_TopicView(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, this.UserId, this._rowIndex, this._pageSize, this.UserInfo.IsSuperUser, this._defaultSort);
-                DataCache.ContentCacheStore(this.ModuleId, cacheKey, ds); ;
+                ds = DotNetNuke.Modules.ActiveForums.DataProvider.Instance().UI_TopicView(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, this.UserId, this._rowIndex, this._pageSize, this.UserInfo.IsSuperUser, this._defaultSort);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, cacheKey, ds); ;
             }
 
             // Test for a proper dataset
@@ -646,7 +646,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sCrumb += "<a href=\"" + forumUrl + "\">" + this._forumName + "</a>";
                 sCrumb += "|<a href=\"" + topicUrl + "\">" + this._topicSubject + "</a>";
 
-                if (Environment.UpdateBreadCrumb(this.Page.Controls, sCrumb))
+                if (DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(this.Page.Controls, sCrumb))
                 {
                     breadCrumb = string.Empty;
                 }

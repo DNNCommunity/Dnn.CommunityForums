@@ -109,11 +109,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         str = slistreplies[1];
                     }
 
-                    DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, str, DateTime.Now, Convert.ToInt32(slistreplies[0]));
+                    DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, str, DateTime.Now, Convert.ToInt32(slistreplies[0]));
                 }
                 else
                 {
-                    DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, listreplies, DateTime.Now, 0);
+                    DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, listreplies, DateTime.Now, 0);
                 }
             }
         }
@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var oldForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(oldForumId);
             var newForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(NewForumId);
 
-            DataProvider.Instance().Topics_Move(ti.PortalId, ti.ModuleId, NewForumId, TopicId);
+            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Move(ti.PortalId, ti.ModuleId, NewForumId, TopicId);
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
             if (oldForum.ModMoveTemplateId > 0 & ti?.Author?.AuthorId > 0)
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static void SaveToForum(int ModuleId, int ForumId, int TopicId, int LastReplyId = -1)
         {
-            DataProvider.Instance().Topics_SaveToForum(ForumId, TopicId, LastReplyId);
+            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_SaveToForum(ForumId, TopicId, LastReplyId);
             Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(ForumId);
             DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.ForumInfo, ModuleId, ForumId));
@@ -216,7 +216,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
             //TODO: convert to use DAL2?
-            int topicId = Convert.ToInt32(DataProvider.Instance().Topics_Save(ti.Forum.PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart, ti.AnnounceEnd, ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
+            int topicId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Save(ti.Forum.PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart, ti.AnnounceEnd, ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
             if (ti.IsApproved && ti.Author.AuthorId > 0)
             {   //TODO: put this in a better place and make it consistent with reply counter
                 var uc = new Data.Profiles();
@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
 
-                DataProvider.Instance().Topics_Delete(ti.ForumId, TopicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, TopicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
                 DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
                 DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));

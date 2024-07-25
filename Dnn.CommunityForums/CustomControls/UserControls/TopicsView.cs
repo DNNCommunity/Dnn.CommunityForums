@@ -258,11 +258,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (TopicsTemplate.Contains("[TOPICS]"))
                 {
                     string cacheKey = string.Format(CacheKeys.TopicsViewForUser, this.ModuleId, this.ForumId, this.UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, this.RowIndex, this.PageSize);
-                    DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(this.ForumModuleId, cacheKey);
+                    DataSet ds = (DataSet)DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.ForumModuleId, cacheKey);
                     if (ds == null)
                     {
-                        ds = DataProvider.Instance().UI_TopicsView(this.PortalId, this.ForumModuleId, this.ForumId, this.UserId, this.RowIndex, this.PageSize, this.UserInfo.IsSuperUser, sort);
-                        DataCache.ContentCacheStore(this.ModuleId, cacheKey, ds);
+                        ds = DotNetNuke.Modules.ActiveForums.DataProvider.Instance().UI_TopicsView(this.PortalId, this.ForumModuleId, this.ForumId, this.UserId, this.RowIndex, this.PageSize, this.UserInfo.IsSuperUser, sort);
+                        DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, cacheKey, ds);
                     }
 
                     if (ds.Tables.Count > 0)
@@ -326,7 +326,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                             if (this.MainSettings.UseSkinBreadCrumb)
                             {
-                                Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + this.sGroupURL + "\">" + this.GroupName + "</a>");
+                                DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + this.sGroupURL + "\">" + this.GroupName + "</a>");
                                 TopicsTemplate = TopicsTemplate.Replace("<div class=\"afcrumb\">[FORUMMAINLINK] > [FORUMGROUPLINK]</div>", string.Empty);
                             }
 
@@ -400,7 +400,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         try
                         {
                             DotNetNuke.Framework.CDefault tempVar = this.BasePage;
-                            Environment.UpdateMeta(ref tempVar, this.MetaTitle, this.MetaDescription, this.MetaKeywords);
+                            DotNetNuke.Modules.ActiveForums.Environment.UpdateMeta(ref tempVar, this.MetaTitle, this.MetaDescription, this.MetaKeywords);
                         }
                         catch (Exception ex)
                         {

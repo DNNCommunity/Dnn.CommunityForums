@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
             DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(tabModuleId, "NeedsConvert");
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, "AFINSTALLED", "True");
-            DataCache.SettingsCacheClear(forumModuleId, string.Format(CacheKeys.MainSettings, forumModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(forumModuleId, string.Format(CacheKeys.MainSettings, forumModuleId));
 
         }
 
@@ -160,8 +160,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "ForumGroupTemplate");
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "MODE");
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "AllowIndex");
-                        DataCache.ClearAllCacheForTabId(module.TabID);
-                        DataCache.ClearAllCache(module.ModuleID);
+                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
+                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
                         var ForumConfig = module.ModuleSettings.GetString("ForumConfig", string.Empty);
                         if (!string.IsNullOrEmpty(ForumConfig))
                         {
@@ -184,8 +184,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 ForumConfig = xDoc.OuterXml;
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", ForumConfig);
-                                DataCache.ClearAllCacheForTabId(module.TabID);
-                                DataCache.ClearAllCache(module.ModuleID);
+                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
+                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
                             }
                         }
                     }
