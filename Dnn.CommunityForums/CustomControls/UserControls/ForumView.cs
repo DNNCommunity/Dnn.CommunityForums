@@ -229,7 +229,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                     if (MainSettings.UseSkinBreadCrumb && Forums?.Count > 0 && SubsOnly == false && ForumGroupId != -1)
                     {
-                        Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumGroupId) + "\">" + sGroupName + "</a>");
+                        DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumGroupId) + "\">" + sGroupName + "</a>");
                         sTemplate = sTemplate.Replace("<div class=\"afcrumb\">[FORUMMAINLINK] > [FORUMGROUPLINK]</div>", string.Empty);
                         sTemplate = sTemplate.Replace("[BREADCRUMB]", string.Empty);
                     }
