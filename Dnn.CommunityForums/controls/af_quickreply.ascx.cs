@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 
@@ -26,11 +26,11 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
-    using System.Web.UI.WebControls; 
+    using System.Web.UI.WebControls;
 
-    using DotNetNuke.Modules.ActiveForums.Controls; 
+    using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Services.Social.Notifications;  
+    using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.UI.UserControls;
 
     public partial class af_quickreplyform : ForumBase
@@ -40,15 +40,15 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.WebControls.CheckBox ContactByFaxOnlyCheckBox = new CheckBox();
         protected System.Web.UI.HtmlControls.HtmlGenericControl QR = new HtmlGenericControl();
         protected System.Web.UI.WebControls.PlaceHolder plhMessage = new PlaceHolder();
-        protected System.Web.UI.WebControls.Label reqBody = new Label(); 
+        protected System.Web.UI.WebControls.Label reqBody = new Label();
         protected System.Web.UI.HtmlControls.HtmlGenericControl btnToolBar = new HtmlGenericControl();
         protected System.Web.UI.HtmlControls.HtmlGenericControl divSubscribe = new HtmlGenericControl();
         protected System.Web.UI.WebControls.LinkButton btnSubmitLink = new LinkButton();
         protected TextBox txtUsername = new TextBox();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqUsername = new System.Web.UI.WebControls.RequiredFieldValidator();
         protected UI.WebControls.CaptchaControl ctlCaptcha = new UI.WebControls.CaptchaControl();
-        protected System.Web.UI.WebControls.Label reqSecurityCode = new System.Web.UI.WebControls.RequiredFieldValidator(); 
-        protected System.Web.UI.WebControls.RequiredFieldValidator reqCaptcha = new System.Web.UI.WebControls.RequiredFieldValidator(); 
+        protected System.Web.UI.WebControls.Label reqSecurityCode = new System.Web.UI.WebControls.RequiredFieldValidator();
+        protected System.Web.UI.WebControls.RequiredFieldValidator reqCaptcha = new System.Web.UI.WebControls.RequiredFieldValidator();
 
         public string SubmitText = Utilities.GetSharedResource("Submit.Text");
 
@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool AllowScripts { get; set; } = false;
 
-        public bool AllowSubscribe { get; set; } = false; 
+        public bool AllowSubscribe { get; set; } = false;
 
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
@@ -123,7 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
-         
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -195,16 +195,16 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                     case "btnToolBar":
                         btnToolBar = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
-                        break; 
+                        break;
                     case "reqSecurityCode":
                         reqSecurityCode = (Label)ctrl;
                         break;
                     case "ctlCaptcha":
                         ctlCaptcha = (DotNetNuke.UI.WebControls.CaptchaControl)ctrl;
-                        break; 
-                    case "divSubscribe": 
+                        break;
+                    case "divSubscribe":
                         divSubscribe = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
-                        break; 
+                        break;
                     case "btnSubmitLink":
                         btnSubmitLink = (System.Web.UI.WebControls.LinkButton)ctrl;
                         break;
@@ -273,11 +273,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 isApproved = true;
             }
-            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo(); 
-            ri.ReplyToId = TopicId; 
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
+            ri.ReplyToId = TopicId;
             ri.TopicId = TopicId;
             ri.StatusId = -1;
-            ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo(); 
+            ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             string sUsername = string.Empty;
             if (Request.IsAuthenticated)
             {

@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 
@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Security.Roles;
 
     public class EmailController
-    { 
+    {
 
         public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author)
         {
@@ -171,7 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 //Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
 
                 //Since this code is triggered from the DNN scheduler, the default/simple API (now commented out above) uses Host rather than Portal-specific SMTP configuration
-                //updated here to retrieve portal-specific SMTP configuration and use more elaborate DNN API that allows passing of the SMTP information rather than rely on DNN API DotNetNuke.Host.SMTP property accessors to determine portal vs. host SMTP values 
+                //updated here to retrieve portal-specific SMTP configuration and use more elaborate DNN API that allows passing of the SMTP information rather than rely on DNN API DotNetNuke.Host.SMTP property accessors to determine portal vs. host SMTP values
                 DotNetNuke.Services.Mail.Mail.SendMail(mailFrom: fromEmail,
                                         mailSender: SMTPPortalEnabled(portalId) ? PortalController.Instance.GetPortal(portalId).Email : Host.HostEmail,
                                         mailTo: toEmail,
@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var mc = new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController();
                 foreach (var r in message.Recipients.Where(r => !string.IsNullOrEmpty(r)))
                 {
-                    mc.Add(portalId: message.PortalId, moduleId: message.ModuleId, message.From, emailTo: r, emailSubject: message.Subject, emailBody: message.Body);                 
+                    mc.Add(portalId: message.PortalId, moduleId: message.ModuleId, message.From, emailTo: r, emailSubject: message.Subject, emailBody: message.Body);
                 }
             }
             catch (Exception ex)
@@ -292,7 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        #endregion 
+        #endregion
         #region Deprecated
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML).")]
         public static void SendNotification(string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)

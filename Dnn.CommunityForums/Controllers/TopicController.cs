@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
             int topicId = -1;
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo(); 
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
             ti.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
 
             ti.ForumId = ForumId;
@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             ti.StatusId = -1;
             ti.TopicIcon = string.Empty;
             ti.TopicType = TopicTypes.Topic;
-            ti.ViewCount = 0; 
+            ti.ViewCount = 0;
             ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: PortalId, ModuleId: ModuleId, TopicId: topicId, subject: Subject, forumInfo: forumInfo);
 
             topicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
@@ -203,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ti.Content.DateCreated = DateTime.UtcNow;
             }
             UserProfileController.Profiles_ClearCache(ti.ModuleId, ti.Content.AuthorId);
-            
+
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
             DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));
@@ -301,7 +301,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
 
         internal static bool QueueApprovedTopicAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId)
-        { 
+        {
             return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.ApprovedTopicCreated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: HttpContext.Current.Request.Url.ToString());
         }
 
@@ -319,7 +319,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 string sUrl = new ControlUtils().BuildUrl(TabId, ModuleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
 
-                Social amas = new Social(); 
+                Social amas = new Social();
                 amas.AddTopicToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body, topic.Forum.Security.Read, topic.Forum.SocialGroupId);
 
                 var pqc = new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController();

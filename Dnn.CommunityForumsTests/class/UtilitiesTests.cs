@@ -43,7 +43,7 @@
         [TestCase("  this is a : messy string for a +url = 0 -", "this-is-a-messy-string-for-a-url-0")]
         public void CleanStringForUrlTest(string input, string expectedResult)
         {
-            //Arrange 
+            //Arrange
             //Act
             string actualResult = Utilities.CleanStringForUrl(input);
             //Assert
@@ -131,7 +131,7 @@
             //Arrange
             //Act
             return Utilities.HasHTML(value);
-            //Assert 
+            //Assert
         }
 
         [Test()]

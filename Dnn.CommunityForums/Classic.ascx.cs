@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 //using DotNetNuke.Framework.JavaScriptLibraries;
@@ -120,11 +120,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     else if (Settings["amafDefaultView"] != null)
                     {
                         ctl = Settings["amafDefaultView"].ToString();
-                    } 
+                    }
                     if (Request.QueryString[ParamKeys.PageJumpId] != null)
                     {
                         opts = $"{Literals.PageId}={Request.QueryString[ParamKeys.PageJumpId]}";
-                    } 
+                    }
                     currView = ctl;
                     GetControl(ctl, opts);
 
@@ -168,7 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 ForumBase ctl = null;
                 if (view.ToUpperInvariant() == Views.MyPreferences.ToUpperInvariant() && Request.IsAuthenticated)
-                { 
+                {
                     ctl = (ForumBase)LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx"));
                 }
                 else if (view.ToUpperInvariant() == Views.MySubscriptions.ToUpperInvariant() && Request.IsAuthenticated)
@@ -225,7 +225,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 ctl.ID = view;
                 ctl.ForumId = ForumId;
-                ctl.ForumModuleId = ForumModuleId; 
+                ctl.ForumModuleId = ForumModuleId;
                 int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(ForumModuleId).FirstOrDefault().TabID;
                 ForumTabId = tmpForumTabId;
                 if (ForumTabId <=0)
@@ -248,7 +248,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(PortalId, ForumModuleId, SocialGroupId);
 
                     if (string.IsNullOrEmpty(ForumIds))
-                    { 
+                    {
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: SocialGroupId);
                         //Create new foportalId: rum
                         bool isPrivate = false;
@@ -402,10 +402,10 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.AppendLine("setInterval('amaf_updateuseronline(" + ModuleId.ToString() + ")',120000);");
             }
-            
+
             // Wire up the required jquery plugins: Search Popup
             sb.AppendLine("$(document).ready(function () { $('.aftb-search').afSearchPopup(); });");
-                        
+
             Page.ClientScript.RegisterStartupScript(Page.GetType(), "afscripts", sb.ToString(), true);
 
             if (ForumUser.Profile.IsMod)

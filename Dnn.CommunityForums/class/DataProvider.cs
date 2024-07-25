@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 
@@ -46,22 +46,22 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #region Filters
-        public abstract int Filters_Save(int PortalId, int ModuleId, int FilterId, string Find, string Replace, string FilterType); 
-        
+        public abstract int Filters_Save(int PortalId, int ModuleId, int FilterId, string Find, string Replace, string FilterType);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
-        public abstract IDataReader Filters_Get(int PortalId, int ModuleId, int FilterId); 
+        public abstract IDataReader Filters_Get(int PortalId, int ModuleId, int FilterId);
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetEmoticons()")]
         public abstract IDataReader Filters_GetEmoticons(int ModuleId);
-        
-        public abstract IDataReader Filters_List(int PortalId, int ModuleId, int PageIndex, int PageSize, string Sort, string SortColumn); 
-        
+
+        public abstract IDataReader Filters_List(int PortalId, int ModuleId, int PageIndex, int PageSize, string Sort, string SortColumn);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Not Used")]
         public abstract IDataReader Filters_ListByType(int PortalId, int ModuleId, string FilterType);
-        
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
         public abstract void Filters_Delete(int PortalId, int ModuleId, int FilterId);
-        
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
         public abstract void Filters_DeleteByModuleId(int PortalId, int ModuleId);
         #endregion
@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public abstract int Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties);
 
-        public abstract void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey); 
+        public abstract void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey)")]
         public abstract void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey, string ForumSecurityKey);
@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public abstract void Reply_Delete(int ForumId, int TopicId, int ReplyId, int DelBehavior);
         #endregion
-        
+
         #region Search
         public abstract DataSet Search(int portalId, int moduleId, int userId, int searchId, int rowIndex, int maxRows, string searchString, int matchType, int searchField, int timespan, int authorId, string author, string forums, string tags, int resultType, int sort, int maxCacheHours, bool fullText);
 
@@ -186,7 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract void Security_Save(int SecuredId, int ObjectId, string SecureAction, bool SecureActionValue, int SecureType, string ObjectName, int ObjectType, string SecurityKey);
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")] 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract IDataReader Security_SearchObjects(int PortalId, string Search);
         #endregion
 
@@ -247,7 +247,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Topics
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")] 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")]
         public abstract int Topics_AddRating(int TopicId, int UserID, int Rating, string Comments, string IPAddress);
 
         public abstract void Topics_Delete(int ForumId, int TopicId, int DelBehavior);
@@ -257,7 +257,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetById(int TopicId)")]
         public abstract IDataReader Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity);
 
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")] 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")]
         public abstract int Topics_GetRating(int TopicId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract DataSet Dashboard_Get(int PortalId, int ModuleId);
         #endregion
 
-        #region UI    
+        #region UI
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public abstract DataSet UI_ForumView(int PortalId, int ModuleId, int UserId, bool IsSuper, string ForumIds);
 

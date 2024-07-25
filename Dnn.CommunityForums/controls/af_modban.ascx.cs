@@ -27,7 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.LocalResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/af_modban.ascx.resx"; 
+            this.LocalResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/af_modban.ascx.resx";
             btnBan.Click += new System.EventHandler(btnBan_Click);
             btnCancel.Click += new System.EventHandler(btnCancel_Click);
         }
@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
             html = html.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + ForumInfo.ForumName + "</a>");
             html = Utilities.LocalizeControl(html);
             writer.Write(html);
-        } 
+        }
 
         private void btnCancel_Click(object sender, System.EventArgs e)
         {

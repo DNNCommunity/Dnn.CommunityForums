@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 
@@ -152,7 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
         public const string ControlPanelResourceFile = Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx";
         public const string CacheDependencyFile = Globals.ModulePath + "cache/cachedep.resources";
-        
+
         public const string ForumsControlsRegisterAMTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
         public const string ForumsControlsRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
         public const string SocialRegisterTag = "<%@ Register TagPrefix=\"social\" Namespace=\"Active.Modules.Social.Controls\" Assembly=\"Active.Modules.Social\" %>";
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string StatsTemplate = "STATSTEMPLATE";
         public const string StatsCache = "STATSCACHE";
         public const string DateFormatString = "DATEFORMATSTRING";
-        public const string TimeFormatString = "TIMEFORMATSTRING"; 
+        public const string TimeFormatString = "TIMEFORMATSTRING";
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string TimeZoneOffset = "TIMEZONEOFFSET";
         public const string UsersOnlineEnabled = "USERSONLINEENABLED";
@@ -205,7 +205,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string FloodInterval = "FLOODINTERVAL";
         public const string EditInterval = "EDITINTERVAL";
         public const string LoggingLevel = "LOGGINGLEVEL";
-        public const string DeleteBehavior = "DELETEBEHAVIOR"; 
+        public const string DeleteBehavior = "DELETEBEHAVIOR";
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string ProdKey = "AMFORUMS";
 

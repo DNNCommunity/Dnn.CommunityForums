@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
     }
 
     public class SubscriptionController
-    {                        
+    {
         //TODO: move to new DAL2 subscription controller
         public int Subscription_Update(int PortalId, int ModuleId, int ForumId, int TopicId, int Mode, int UserId, string UserRoles = "")
         {
@@ -159,8 +159,8 @@ namespace DotNetNuke.Modules.ActiveForums
             string tmpFG = string.Empty;
             string sBody = string.Empty;
             var sb = new System.Text.StringBuilder();
-            string Template = string.Empty; 
-            string TemplateSubject = string.Empty; 
+            string Template = string.Empty;
+            string TemplateSubject = string.Empty;
             string TemplateHeader = string.Empty;
             string TemplateBody = string.Empty;
             string TemplateFooter = string.Empty;
@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string ItemsFooter = string.Empty;
             string Items = string.Empty;
             string sMessageBody;
-            string FromEmail = string.Empty; 
+            string FromEmail = string.Empty;
             string SubscriberDisplayName = string.Empty;
             string SubscriberUserName = string.Empty;
             string SubscriberFirstName = string.Empty;

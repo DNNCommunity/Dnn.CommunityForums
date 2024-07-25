@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 namespace DotNetNuke.Modules.ActiveForums
@@ -495,7 +495,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 template = template.Replace("[RESX:CreateNewTopic]", "[RESX:EditingExistingTopic]");
             }
-            
+
             if (MainSettings.UseSkinBreadCrumb)
             {
                 var sCrumb = "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumInfo.ForumGroupId.ToString()) + "\">" + ForumInfo.GroupName + "</a>|";
@@ -512,7 +512,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ctlForm.ShowModOptions = true;
             }
-           
+
             ctlForm.Template = template;
             ctlForm.IsApproved = _isApproved;
 
@@ -715,7 +715,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo(); 
+                ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
                 ti.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
                 ti.ForumId = ForumInfo.ForumID;
             }
@@ -864,7 +864,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
             }
-            
+
             try
             {
                 DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, ForumModuleId));
@@ -993,7 +993,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ri.IsDeleted = false;
             ri.StatusId = ctlForm.StatusId;
-            ri.TopicId = TopicId; 
+            ri.TopicId = TopicId;
             if (UserPrefTopicSubscribe)
             {
                 sc.Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
@@ -1028,8 +1028,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     Response.Redirect(Utilities.NavigateURL(TabId, "", @params), false);
                     Context.ApplicationInstance.CompleteRequest();
                 }
-                else 
-                { 
+                else
+                {
                     if (!_isEdit)
                     {
                         DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, _fi.ForumGroupId, ForumId, TopicId, tmpReplyId, ri.Content.AuthorId);

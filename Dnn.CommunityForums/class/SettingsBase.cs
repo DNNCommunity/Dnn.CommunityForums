@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 
@@ -344,7 +344,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
             }
             return objSettings;
-            
+
         }
 
         public SettingsInfo MainSettings
@@ -385,13 +385,13 @@ namespace DotNetNuke.Modules.ActiveForums
             /* AF now stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback */
             get
             {
-                return Utilities.GetTimeZoneOffsetForUser(UserInfo);      
+                return Utilities.GetTimeZoneOffsetForUser(UserInfo);
             }
         }
 
         #endregion
 
-        #region Protected Methods        
+        #region Protected Methods
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         protected DateTime GetUserDate(DateTime displayDate)
         {
@@ -452,7 +452,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 string sUrl;
                 string sParams = string.Empty;
-                
+
                 if (Request.Params[Literals.ForumId] != null)
                 {
                     if (SimulateIsNumeric.IsNumeric(Request.Params[Literals.ForumId]))
@@ -460,7 +460,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sParams = $"{ParamKeys.ForumId}={Request.Params[Literals.ForumId]}";
                     }
                 }
- 
+
                 if (Request.Params[Literals.PostId] != null)
                 {
                     if (SimulateIsNumeric.IsNumeric(Request.Params[Literals.PostId]))
@@ -468,7 +468,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sParams += $"|{ParamKeys.TopicId}={Request.Params[Literals.PostId]}";
                     }
                 }
-                
+
                 sParams += $"|{ParamKeys.ViewType}={Request.Params[Literals.view]}";
                 sUrl = NavigateUrl(TabId, "", sParams.Split('|'));
 

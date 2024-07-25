@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 namespace DotNetNuke.Modules.ActiveForums
@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int? _searchId;
         private int? _sort;
 
-        private List<string> _parameters; 
+        private List<string> _parameters;
 
         private int _rowCount;
 
@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int? _searchDuration;
 
         private DataRow _currentRow;
-        
+
         #endregion
 
         #region Properties
@@ -340,7 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     phKeywords.Visible = true;
                     rptKeywords.DataSource = keywords;
-                    rptKeywords.DataBind();  
+                    rptKeywords.DataBind();
                 }
 
                 if (!string.IsNullOrWhiteSpace(AuthorUsername))
@@ -394,7 +394,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             _rowIndex = (PageId - 1) * _pageSize;
-        
+
             // If we don't have a search string, tag or user id, there is nothing we can do so exit
             if (SearchText == string.Empty && Tags == string.Empty && AuthorUsername == String.Empty && AuthorUserId <= 0)
             {
@@ -411,7 +411,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var forumsRequested = Forums.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
 
             var forumsToSearch = string.Empty;
-            
+
             // If forums requested is empty or contains and entry less than or equal to zero, return all available forums
             if(!forumsRequested.Any() || forumsRequested.Any(o => o <= 0))
             {
@@ -436,7 +436,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var totalSeconds = new TimeSpan(0, 0, 0, 0, _searchDuration.Value).TotalSeconds;
             var ageInMinutes = new TimeSpan(0, 0, 0, 0, _searchAge.Value).TotalMinutes;
 
-            litSearchDuration.Text = string.Format(GetSharedResource("[RESX:SearchDuration]"), totalSeconds); 
+            litSearchDuration.Text = string.Format(GetSharedResource("[RESX:SearchDuration]"), totalSeconds);
 
             if(ageInMinutes > 0.25)
             {
@@ -453,7 +453,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var rptResults = ResultType == 0 ? rptTopics : rptPosts;
 
                 pnlMessage.Visible = false;
-                
+
                 try
                 {
                     rptResults.Visible = true;
@@ -525,7 +525,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 @params.Add("GroupId=" + SocialGroupId.ToString());
             }
 
-            return NavigateUrl(TabId, string.Empty, @params.ToArray()); 
+            return NavigateUrl(TabId, string.Empty, @params.ToArray());
         }
 
         public string GetThreadUrl()
@@ -551,7 +551,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         // Jumps to post for post view, or last reply for topics view
-        public string GetPostUrl() 
+        public string GetPostUrl()
         {
             if (_currentRow == null)
             {

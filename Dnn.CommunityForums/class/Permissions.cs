@@ -142,5 +142,5 @@ namespace DotNetNuke.Modules.ActiveForums
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo.")]
         public partial class PermissionInfo : DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo { }
-    } 
+    }
 }

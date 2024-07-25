@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public partial class ForumSettings : ForumSettingsBase
     {
         private int? _fullTextStatus;
-        
+
         private int FullTextStatus
         {
             get
@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     BindForumSecurity();
 
                     Utilities.SelectListItemByValue(drpPageSize, PageSize);
-                    
+
                     txtFloodInterval.Text = FloodInterval.ToString(); ;
                     txtEditInterval.Text = EditInterval.ToString();
 
@@ -220,7 +220,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: DoNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
                     }
                 }
-                else 
+                else
                 {
                     if (DoNotRedirectRegex.Contains(ignoreForumsRegex))
                     {
@@ -298,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             // stored procedures have never been installed
                         }
-                        catch 
+                        catch
                         {
                             throw; // anything else
                         }
@@ -327,7 +327,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
         #endregion
-        
+
         #region Private Methods
 
         private void BindTemplates()
@@ -340,7 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             drpTemplates.DataBind();
             drpTemplates.Items.Insert(0, new ListItem(LocalizeString("Default"), "0"));
         }
-        
+
         private void BindThemes()
         {
             var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ModulePath + "themes"));
@@ -393,7 +393,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
         }
-        
+
         private void BindForumGroups()
         {
             using (IDataReader dr = DataProvider.Instance().Forums_List(PortalId, ModuleId, -1, -1, false))
@@ -427,7 +427,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 xDoc.LoadXml(ForumConfig);
             }
-            
+
             if (xDoc != null)
             {
                 XmlNode xRoot = xDoc.DocumentElement;
@@ -630,7 +630,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 litForumSecurity.Text = sb.ToString();
             }
         }
-        
+
         private void SaveForumSecurity(string sectype, string[] security)
         {
             var xDoc = new XmlDocument();

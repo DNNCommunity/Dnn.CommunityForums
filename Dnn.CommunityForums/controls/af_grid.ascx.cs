@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 namespace DotNetNuke.Modules.ActiveForums
@@ -30,14 +30,14 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_grid : ForumBase
     {
         #region Private Members
-        
+
         private int rowCount;
         private DataTable _dtResults;
         private int _pageSize = 20;
         private int _rowIndex;
         private DataRow _currentRow;
         private string _currentTheme = "_default";
-        
+
         #endregion
 
         #region Event Handlers
@@ -92,13 +92,13 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
-        
+
         #region Private Methods
-        
+
         private void BindPosts(string sort = "ASC")
         {
             _pageSize = MainSettings.PageSize;
-            
+
             if (UserId > 0)
             {
                 _pageSize = UserDefaultPageSize;
@@ -113,13 +113,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var db = new Data.Common();
             var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId, "CanRead");
-            
+
             var sCrumb = "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}=xxx" }) + "\">yyyy</a>";
             sCrumb = sCrumb.Replace("xxx", "{0}").Replace("yyyy", "{1}");
-            
+
             if (Request.Params[ParamKeys.GridType] != null)
             {
-                var gview = Utilities.XSSFilter(Request.Params[ParamKeys.GridType]).ToLowerInvariant(); 
+                var gview = Utilities.XSSFilter(Request.Params[ParamKeys.GridType]).ToLowerInvariant();
                 var timeFrame = Utilities.SafeConvertInt(Request.Params[ParamKeys.TimeSpan], 1440);
                 switch (gview)
                 {
@@ -266,7 +266,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 sCrumb = string.Format(sCrumb, gview, lblHeader.Text);
-               
+
                 if (MainSettings.UseSkinBreadCrumb)
                 {
                     Environment.UpdateBreadCrumb(Page.Controls, sCrumb);
@@ -328,7 +328,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 };
             else
                 @params = new[] {
-                    $"{ParamKeys.GridType}={Request.Params[ParamKeys.GridType]}" 
+                    $"{ParamKeys.GridType}={Request.Params[ParamKeys.GridType]}"
                 };
 
             pager.PageCount = intPages;
@@ -360,7 +360,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
-        
+
         #region Public Methods
 
         public string GetForumUrl()
@@ -404,7 +404,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int userLastRead = Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"].ToString());
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId);
             return new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, _currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, userLastRead, SocialGroupId);
-             
+
         }
 
         public string GetArrowPath()
@@ -450,14 +450,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string GetLastPostTime()
         {
-            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["LastReplyDate"]), ForumModuleId, UserInfo); 
+            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["LastReplyDate"]), ForumModuleId, UserInfo);
         }
 
         public string GetIcon()
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicIcon(
                 Utilities.SafeConvertInt(_currentRow["TopicId"].ToString()),
-                ThemePath, 
+                ThemePath,
                 Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"]),
                 Utilities.SafeConvertInt(_currentRow["UserLastReplyRead"]));
         }

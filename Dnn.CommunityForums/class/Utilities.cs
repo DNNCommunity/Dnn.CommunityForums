@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 
@@ -986,7 +986,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return $"{displayDate.ToString(mainSettings.DateFormatString)} @ {displayDate.ToString(mainSettings.TimeFormatString)}";
             }
         }
-        
+
         public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
@@ -1065,7 +1065,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     cultureInfo = (CultureInfo)obj;
                 }
                 return cultureInfo;
-               
+
             }
             catch
             {
@@ -1409,7 +1409,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, moduleId, forumId);
         }
-        
+
         public static bool SafeConvertBool(object value, bool defaultValue = false)
         {
             if (value == null)
@@ -1639,8 +1639,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     file.CopyTo(destFileName: System.IO.Path.Combine(target.FullName, file.Name),overwrite: true);
                 }
-                foreach (var subDir in source.GetDirectories()) 
-                { 
+                foreach (var subDir in source.GetDirectories())
+                {
                     CopyFolder(subDir, new DirectoryInfo( System.IO.Path.Combine(target.FullName, subDir.Name)));
                 }
             }
@@ -1655,7 +1655,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 if (dir.Exists)
-                {  
+                {
                     foreach (var file in dir.GetFiles())
                     {
                             file.Delete();
@@ -1666,7 +1666,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     dir.Delete();
                 }
-              
+
             }
             catch (Exception ex)
             {

@@ -666,80 +666,80 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 switch (requestedAccess.ToUpperInvariant())
                 {
                     case "ANNOUNCE":
-                        permission.Announce = PermSet; 
+                        permission.Announce = PermSet;
                         break;
                     case "ATTACH":
-                        permission.Attach = PermSet; 
+                        permission.Attach = PermSet;
                         break;
                     case "CATEGORIZE":
-                        permission.Categorize = PermSet; 
+                        permission.Categorize = PermSet;
                         break;
                     case "CREATE":
-                        permission.Create = PermSet; 
+                        permission.Create = PermSet;
                         break;
                     case "DELETE":
-                        permission.Delete = PermSet; 
+                        permission.Delete = PermSet;
                         break;
                     case "EDIT":
-                        permission.Edit = PermSet; 
+                        permission.Edit = PermSet;
                         break;
                     case "LOCK":
-                        permission.Lock = PermSet; 
+                        permission.Lock = PermSet;
                         break;
                     case "PIN":
-                        permission.Pin = PermSet; 
+                        permission.Pin = PermSet;
                         break;
                     case "POLL":
-                        permission.Poll = PermSet; 
+                        permission.Poll = PermSet;
                         break;
                     case "PRIORITIZE":
-                        permission.Prioritize = PermSet; 
+                        permission.Prioritize = PermSet;
                         break;
                     case "READ":
-                        permission.Read = PermSet; 
+                        permission.Read = PermSet;
                         break;
                     case "REPLY":
-                        permission.Reply = PermSet; 
+                        permission.Reply = PermSet;
                         break;
                     case "SUBSCRIBE":
-                        permission.Subscribe = PermSet; 
+                        permission.Subscribe = PermSet;
                         break;
                     case "TAG":
                         permission.Tag = PermSet;
                         break;
                     case "TRUST":
-                        permission.Trust = PermSet; 
+                        permission.Trust = PermSet;
                         break;
                     case "VIEW":
                         permission.View = PermSet;
                         break;
                     case "MODAPPROVE":
-                        permission.ModApprove = PermSet; 
+                        permission.ModApprove = PermSet;
                         break;
                     case "MODDELETE":
-                        permission.ModDelete = PermSet; 
+                        permission.ModDelete = PermSet;
                         break;
                     case "MODEDIT":
-                        permission.ModEdit = PermSet; 
+                        permission.ModEdit = PermSet;
                         break;
                     case "MODLOCK":
-                        permission.ModLock = PermSet; 
+                        permission.ModLock = PermSet;
                         break;
                     case "MODMOVE":
-                        permission.ModMove = PermSet; 
+                        permission.ModMove = PermSet;
                         break;
                     case "MODPIN":
-                        permission.ModPin = PermSet; 
+                        permission.ModPin = PermSet;
                         break;
                     case "MODSPLIT":
-                        permission.ModSplit = PermSet; 
+                        permission.ModSplit = PermSet;
                         break;
                     case "MODUSER":
                         permission.ModUser = PermSet;
                         break;
                     default:
                         break;
-                } 
+                }
                 Update(permission);
             };
         }

@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 else
                 {
                     return _Body;
-                } 
+                }
                 return tempBody;
             }
 
@@ -402,7 +402,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:BODY:TEMPLATE]", "[/AF:BODY:TEMPLATE]");
             }
             if (template.Contains("[TOOLBAR"))
-            { 
+            {
                 template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value));
             }
 
@@ -584,7 +584,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             if (template.Contains("[AF:UI:SECTION:SUMMARY]"))
-            { 
+            {
                 template = template.Replace("[AF:UI:SECTION:SUMMARY]", "<table style=\"width:99%\" class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">" +
                     "<tr>"+
                     "<td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Summary]</td>"+
@@ -598,7 +598,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 template = template.Replace("[/AF:UI:SECTION:SUMMARY]", "</td></tr></table>");
             }
-            
+
             if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
             {
                 template = template.Replace("[AF:UI:SECTION:CATEGORIES]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Categories]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
@@ -664,9 +664,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     template = template.Replace("[AF:UI:SECTION:OPTIONS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">"+
                         "<tr>"+"<td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:AdditionalOptions]</td>"+
-                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\">"+ 
+                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\">"+
                     DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionOptions", title: string.Empty)+
-                    "</td></tr>" + 
+                    "</td></tr>" +
                     "<tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionOptions\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Options:Note]</div>");
                     template = template.Replace("[/AF:UI:SECTION:OPTIONS]", "</td></tr></table>");
                 }
@@ -709,7 +709,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 /* leave these 3 lines for backward compatibility in cases where template doesn't yet have the [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] tokens */
                 template = template.Replace("[AF:UI:FIELDSET:POSTICONS]", string.Empty);
                 template = template.Replace("[AF:CONTROL:POSTICONS]", string.Empty);
-                template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", string.Empty); 
+                template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", string.Empty);
 
             }
             if (template.Contains("[AF:CONTROL:EMOTICONS]") && ForumInfo.AllowEmoticons)
@@ -839,7 +839,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (!(AnnounceEnd == Utilities.NullDate()))
             {
-                calEndDate.SelectedDate = Utilities.GetUserFormattedDateTime(AnnounceEnd, PortalId, UserId);  
+                calEndDate.SelectedDate = Utilities.GetUserFormattedDateTime(AnnounceEnd, PortalId, UserId);
             }
 
             plhEditor = new PlaceHolder();
@@ -1029,7 +1029,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (AnnounceStart > Utilities.NullDate())
             {
-                calStartDate.SelectedDate = Utilities.GetUserFormattedDateTime(_announceStart, PortalId, UserId); 
+                calStartDate.SelectedDate = Utilities.GetUserFormattedDateTime(_announceStart, PortalId, UserId);
             }
             btnPost.ImageLocation = PostButton.ImageLocation;
             btnPost.ImageUrl = PostButton.ImageUrl;

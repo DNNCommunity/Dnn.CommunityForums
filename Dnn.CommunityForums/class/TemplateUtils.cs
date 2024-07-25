@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 
@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             if (ti == null) {
                 ti = new TemplateInfo { Template = string.Concat("Error loading ", templateName, " template.") };
-            }; 
+            };
             return ti;
         }
 
@@ -170,7 +170,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber)
         {
             var user = new DotNetNuke.Entities.Users.UserController().GetUser(portalID, userId);
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, userCulture, timeZoneOffset, topicSubscriber, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url); 
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, userCulture, timeZoneOffset, topicSubscriber, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url);
         }
 
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber)
@@ -337,7 +337,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // Introduced for Active Forum Email Connector plug-in Starts
             if (result.ToString().Contains("[EMAILCONNECTORITEMID]"))
             {
-                // This Try with empty catch is introduced here because this code section is for Email Connector functionality only and this section should not 
+                // This Try with empty catch is introduced here because this code section is for Email Connector functionality only and this section should not
                 // cause any issue to DNN Community Forums functionality in case it does not run successfully.
                 try
                 {

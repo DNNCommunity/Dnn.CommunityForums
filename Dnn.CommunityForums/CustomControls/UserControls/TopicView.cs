@@ -3,18 +3,18 @@
 // Copyright (c) 2013-2024
 // by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
 
@@ -272,7 +272,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, cacheKey);
             if (ds == null)
             {
-                ds = DataProvider.Instance().UI_TopicView(PortalId, ForumModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort); 
+                ds = DataProvider.Instance().UI_TopicView(PortalId, ForumModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort);
                 DataCache.ContentCacheStore(ModuleId, cacheKey, ds); ;
             }
             // Test for a proper dataset
@@ -382,9 +382,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _lastPostAuthor.LastName = _drForum["LastPostLastName"].ToString();
             _lastPostAuthor.Username = _drForum["LastPostUserName"].ToString();
             _topicURL = _drForum["URL"].ToString();
-            _topicDateCreated = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), PortalId, UserId); 
+            _topicDateCreated = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), PortalId, UserId);
             _topicData = _drForum["TopicData"].ToString();
-            _isSubscribedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId); 
+            _isSubscribedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId);
 
             if (Page.IsPostBack)
             {
@@ -392,7 +392,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // If a content jump id was passed it, we need to calulate a page and then jump to it with an ancor
-            // otherwise, we don't need to do anything 
+            // otherwise, we don't need to do anything
 
             var contentJumpId = Utilities.SafeConvertInt(Request.Params[ParamKeys.ContentJumpId], -1);
             if (contentJumpId < 0)
@@ -425,9 +425,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (string.IsNullOrEmpty(sURL))
             {
 
-                var @params = new List<string> { 
-                    $"{ParamKeys.ForumId}={ForumId}", 
-                    $"{ParamKeys.TopicId}={TopicId}", 
+                var @params = new List<string> {
+                    $"{ParamKeys.ForumId}={ForumId}",
+                    $"{ParamKeys.TopicId}={TopicId}",
                     $"{ParamKeys.ViewType}={Views.Topic}"
                 };
                 if (MainSettings.UseShortUrls)
@@ -502,7 +502,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (sOutput.Contains("<am:TopicsNavigator"))
             {
                 var ctl = ParseControl(sOutput);
-                
+
                 if(ctl != null)
                     Controls.Add(ctl);
 
@@ -769,7 +769,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ctlQuickReply.ForumModuleId = ForumModuleId;
                     ctlQuickReply.ForumTabId = ForumTabId;
                     ctlQuickReply.RequireCaptcha = true;
-                    
+
                     if (ForumId > 0)
                     {
                         ctlQuickReply.ForumInfo = ForumInfo;
@@ -944,7 +944,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sbOutput.Replace("[QUICKREPLY]", "<div class=\"dcf-quickreply-wrapper\" style=\"display:none;\"><asp:placeholder id=\"plhQuickReply\" runat=\"server\" /></div>");
                 }
                 else
-                { 
+                {
                     sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-topic-lock-locked-label\" class=\"afnormal\"></span><a href=\"" + Utilities.NavigateURL(TabId, "", @params.ToArray()) + "\" class=\"dnnPrimaryAction dcf-topic-reply-link dcf-topic-reply-unlocked\">[RESX:AddReply]</a>");
                     sbOutput.Replace("[QUICKREPLY]", "<div class=\"dcf-quickreply-wrapper\" style=\"display:block;\"><asp:placeholder id=\"plhQuickReply\" runat=\"server\" /></div>");
                 }
@@ -952,7 +952,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             else
             {
                 if (!Request.IsAuthenticated)
-                { 
+                {
                     DotNetNuke.Abstractions.Portals.IPortalSettings PortalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
                     string LoginUrl = PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + Request.RawUrl) : Utilities.NavigateURL(TabId, "", "ctl=login&returnUrl=" + Request.RawUrl);
 
@@ -1016,7 +1016,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[FORUMMAINLINK]", "<a href=\"" + NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>");
             sbOutput.Replace("[FORUMGROUPLINK]", "<a href=\"" + groupUrl + "\">" + _groupName + "</a>");
             sbOutput.Replace("[FORUMLINK]", "<a href=\"" + forumUrl + "\">" + _forumName + "</a>");
-            
+
             // Names and Ids
             sbOutput.Replace("[FORUMID]", ForumId.ToString());
             sbOutput.Replace("[FORUMNAME]", _forumName);
@@ -1060,7 +1060,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[TOPICSUBSCRIBERCOUNT]", _topicSubscriberCount.ToString());
 
             // Forum Subscriber Count
-            sbOutput.Replace("[FORUMSUBSCRIBERCOUNT]", _forumSubscriberCount.ToString());           
+            sbOutput.Replace("[FORUMSUBSCRIBERCOUNT]", _forumSubscriberCount.ToString());
 
             // View Count
             sbOutput.Replace("[VIEWCOUNT]", _viewCount.ToString());
@@ -1316,10 +1316,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var rewardPoints = dr.GetInt("RewardPoints");
             var dateLastActivity = dr.GetDateTime("DateLastActivity");
             var signatureDisabled = dr.GetBoolean("SignatureDisabled");
-             
+
             DotNetNuke.Entities.Users.UserInfo author = DotNetNuke.Entities.Users.UserController.Instance.GetUser(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, authorId);
 
-            // Populate the user object with the post author info.  
+            // Populate the user object with the post author info.
             var up = new User
             {
                 UserId = authorId,
