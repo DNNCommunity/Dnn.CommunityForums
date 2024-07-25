@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _allowSubscribe = Request.IsAuthenticated && _bSubscribe;
 
                 var tempVar = BasePage;
-                Environment.UpdateMeta(ref tempVar, MetaTitle, MetaDescription, MetaKeywords);
+                DotNetNuke.Modules.ActiveForums.Environment.UpdateMeta(ref tempVar, MetaTitle, MetaDescription, MetaKeywords);
             }
             catch (Exception ex)
             {
@@ -269,11 +269,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Get our Row Index
             _rowIndex = (pageId - 1) * _pageSize;
             string cacheKey = string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, _rowIndex, _pageSize);
-            DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, cacheKey);
+            DataSet ds = (DataSet)DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(ForumModuleId, cacheKey);
             if (ds == null)
             {
-                ds = DataProvider.Instance().UI_TopicView(PortalId, ForumModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort); 
-                DataCache.ContentCacheStore(ModuleId, cacheKey, ds); ;
+                ds = DataProvider.Instance().UI_TopicView(PortalId, ForumModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(ModuleId, cacheKey, ds); ;
             }
             // Test for a proper dataset
             if (ds.Tables.Count < 4 || ds.Tables[0].Rows.Count == 0 || ds.Tables[1].Rows.Count == 0)
@@ -641,7 +641,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sCrumb += "<a href=\"" + forumUrl + "\">" + _forumName + "</a>";
                 sCrumb += "|<a href=\"" + topicUrl + "\">" + _topicSubject + "</a>";
 
-                if (Environment.UpdateBreadCrumb(Page.Controls, sCrumb))
+                if (DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(Page.Controls, sCrumb))
                 {
                     breadCrumb = string.Empty;
                 }
