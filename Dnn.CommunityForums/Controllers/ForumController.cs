@@ -361,11 +361,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             string tmpGroupKey = string.Empty;
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles))))
             {
-                string GroupKey = $"{fi.GroupName}{fi.ForumGroupId}";
-                if (tmpGroupKey != GroupKey)
+                string groupKey = $"{fi.GroupName}{fi.ForumGroupId}";
+                if (tmpGroupKey != groupKey)
                 {
                     groupAction(fi);
-                    tmpGroupKey = GroupKey;
+                    tmpGroupKey = groupKey;
                 }
 
                 if (fi.ParentForumId == 0)

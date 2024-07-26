@@ -209,12 +209,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     // since templates are loaded, get template ids and attach to forum settings
                     var tc = new TemplateController();
-                    int ProfileInfoTemplateId = tc.Template_Get(templateName: "ProfileInfo", portalId: portalId, moduleId: moduleId).TemplateId;
-                    int ReplyEditorTemplateId = tc.Template_Get(templateName: "ReplyEditor", portalId: portalId, moduleId: moduleId).TemplateId;
-                    int QuickReplyTemplateId = tc.Template_Get(templateName: "QuickReply", portalId: portalId, moduleId: moduleId).TemplateId;
-                    int TopicEditorTemplateId = tc.Template_Get(templateName: "TopicEditor", portalId: portalId, moduleId: moduleId).TemplateId;
-                    int TopicsViewTemplateId = tc.Template_Get(templateName: "TopicsView", portalId: portalId, moduleId: moduleId).TemplateId;
-                    int TopicViewTemplateId = tc.Template_Get(templateName: "TopicView", portalId: portalId, moduleId: moduleId).TemplateId;
+                    int profileInfoTemplateId = tc.Template_Get(templateName: "ProfileInfo", portalId: portalId, moduleId: moduleId).TemplateId;
+                    int replyEditorTemplateId = tc.Template_Get(templateName: "ReplyEditor", portalId: portalId, moduleId: moduleId).TemplateId;
+                    int quickReplyTemplateId = tc.Template_Get(templateName: "QuickReply", portalId: portalId, moduleId: moduleId).TemplateId;
+                    int topicEditorTemplateId = tc.Template_Get(templateName: "TopicEditor", portalId: portalId, moduleId: moduleId).TemplateId;
+                    int topicsViewTemplateId = tc.Template_Get(templateName: "TopicsView", portalId: portalId, moduleId: moduleId).TemplateId;
+                    int topicViewTemplateId = tc.Template_Get(templateName: "TopicView", portalId: portalId, moduleId: moduleId).TemplateId;
 
                     for (int i = 0; i < xNodeList.Count; i++)
                     {
@@ -240,8 +240,8 @@ namespace DotNetNuke.Modules.ActiveForums
                             sAllowHTML = xNodeList[i].Attributes["allowhtml"].Value;
                         }
 
-                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicsTemplateId, Convert.ToString(TopicsViewTemplateId));
-                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicTemplateId, Convert.ToString(TopicViewTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicsTemplateId, Convert.ToString(topicsViewTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicTemplateId, Convert.ToString(topicViewTemplateId));
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EmailAddress, string.Empty);
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.UseFilter, "true");
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowPostIcon, "false");
@@ -278,10 +278,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorWidth, "99%");
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorToolbar, "bold,italic,underline,quote");
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorStyle, "2");
-                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicFormId, Convert.ToString(TopicEditorTemplateId));
-                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ReplyFormId, Convert.ToString(ReplyEditorTemplateId));
-                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.QuickReplyFormId, Convert.ToString(QuickReplyTemplateId));
-                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ProfileTemplateId, Convert.ToString(ProfileInfoTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicFormId, Convert.ToString(topicEditorTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ReplyFormId, Convert.ToString(replyEditorTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.QuickReplyFormId, Convert.ToString(quickReplyTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ProfileTemplateId, Convert.ToString(profileInfoTemplateId));
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.IsModerated, "false");
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.DefaultTrustLevel, "0");
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AutoTrustLevel, "0");
@@ -324,9 +324,9 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 var tc = new TemplateController();
-                int ForumViewTemplateId = tc.Template_Get(templateName: "ForumView", portalId: portalId, moduleId: moduleId).TemplateId;
+                int forumViewTemplateId = tc.Template_Get(templateName: "ForumView", portalId: portalId, moduleId: moduleId).TemplateId;
                 var objModules = new DotNetNuke.Entities.Modules.ModuleController();
-                objModules.UpdateModuleSetting(moduleId, SettingKeys.ForumTemplateId, Convert.ToString(ForumViewTemplateId));
+                objModules.UpdateModuleSetting(moduleId, SettingKeys.ForumTemplateId, Convert.ToString(forumViewTemplateId));
             }
             catch (Exception ex)
             {

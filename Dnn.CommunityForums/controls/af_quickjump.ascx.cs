@@ -122,8 +122,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.Response.Redirect(this.NavigateUrl(this.TabId, "", ParamKeys.GroupId + "=" + sJumpID));
                         break;
                     case "FORUMJUMP":
-                        string[] Params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + sJumpID };
-                        this.Response.Redirect(this.NavigateUrl(this.TabId, "", Params));
+                        string[] @params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + sJumpID };
+                        this.Response.Redirect(this.NavigateUrl(this.TabId, "", @params));
                         break;
                 }
             }

@@ -52,13 +52,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!(e.Parameters[4] == ""))
                 {
                     string sAction = e.Parameters[4].Split(':')[0];
-                    int FilterId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
+                    int filterId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
                     switch (sAction.ToUpper())
                     {
                         case "DELETE":
-                            if (SimulateIsNumeric.IsNumeric(FilterId))
+                            if (SimulateIsNumeric.IsNumeric(filterId))
                             {
-                                new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(FilterId);
+                                new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(filterId);
                             }
 
                             break;
@@ -70,11 +70,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 }
 
-                int PageIndex = Convert.ToInt32(e.Parameters[0]);
-                int PageSize = Convert.ToInt32(e.Parameters[1]);
-                string SortColumn = e.Parameters[2].ToString();
-                string Sort = e.Parameters[3].ToString();
-                this.agFilters.Datasource = DataProvider.Instance().Filters_List(this.PortalId, this.ModuleId, PageIndex, PageSize, Sort, SortColumn);
+                int pageIndex = Convert.ToInt32(e.Parameters[0]);
+                int pageSize = Convert.ToInt32(e.Parameters[1]);
+                string sortColumn = e.Parameters[2].ToString();
+                string sort = e.Parameters[3].ToString();
+                this.agFilters.Datasource = DataProvider.Instance().Filters_List(this.PortalId, this.ModuleId, pageIndex, pageSize, sort, sortColumn);
                 this.agFilters.Refresh(e.Output);
             }
             catch (Exception ex)

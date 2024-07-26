@@ -321,10 +321,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (!this.bRead)
             {
-                DotNetNuke.Entities.Portals.PortalSettings PortalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-                if (PortalSettings.LoginTabId > 0)
+                DotNetNuke.Entities.Portals.PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+                if (portalSettings.LoginTabId > 0)
                 {
-                    this.Response.Redirect(Utilities.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + this.Request.RawUrl), true);
+                    this.Response.Redirect(Utilities.NavigateURL(portalSettings.LoginTabId, "", "returnUrl=" + this.Request.RawUrl), true);
                 }
                 else
                 {
@@ -960,15 +960,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (!this.Request.IsAuthenticated)
                 {
                     DotNetNuke.Abstractions.Portals.IPortalSettings PortalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-                    string LoginUrl = PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + this.Request.RawUrl) : Utilities.NavigateURL(this.TabId, "", "ctl=login&returnUrl=" + this.Request.RawUrl);
+                    string loginUrl = PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + this.Request.RawUrl) : Utilities.NavigateURL(this.TabId, "", "ctl=login&returnUrl=" + this.Request.RawUrl);
 
                     string onclick = string.Empty;
                     if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
                     {
-                        onclick = " onclick=\"return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(LoginUrl), this, this.PortalSettings, true, false, 300, 650) + "\"";
+                        onclick = " onclick=\"return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginUrl), this, this.PortalSettings, true, false, 300, 650) + "\"";
                     }
 
-                    sbOutput.Replace("[ADDREPLY]", $"<span class=\"dcf-auth-false-login\">{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedReplyPleaseLogin]"), LoginUrl, onclick)}</span>");
+                    sbOutput.Replace("[ADDREPLY]", $"<span class=\"dcf-auth-false-login\">{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedReplyPleaseLogin]"), loginUrl, onclick)}</span>");
                 }
                 else
                 {

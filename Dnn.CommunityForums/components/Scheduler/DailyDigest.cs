@@ -54,8 +54,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private static int GetElapsedTimeTillNextStart()
         {
-            DateTime NextRun = DateTime.UtcNow.AddDays(1);
-            DateTime nextStart = new DateTime(NextRun.Year, NextRun.Month, NextRun.Day, 18, 0, 0);
+            DateTime nextRun = DateTime.UtcNow.AddDays(1);
+            DateTime nextStart = new DateTime(nextRun.Year, nextRun.Month, nextRun.Day, 18, 0, 0);
             int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerDay);
             return elapseMinutes;
         }

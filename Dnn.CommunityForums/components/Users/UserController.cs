@@ -202,7 +202,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private string GetRoleIds(UserInfo u, int portalId)
         {
-            string RoleIds = string.Empty;
+            string roleIds = string.Empty;
             foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: portalId))
             {
                 string roleName = r.RoleName;
@@ -212,7 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (roleName == role)
                         {
-                            RoleIds += r.RoleID.ToString() + ";";
+                            roleIds += r.RoleID.ToString() + ";";
                             break;
                         }
                     }
@@ -221,10 +221,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
             foreach (DotNetNuke.Security.Roles.RoleInfo r in u.Social.Roles)
             {
-                RoleIds += r.RoleID.ToString() + ";";
+                roleIds += r.RoleID.ToString() + ";";
             }
 
-            return RoleIds;
+            return roleIds;
         }
 
         public Hashtable GetUserProperties(DotNetNuke.Entities.Users.UserInfo dnnUser)

@@ -103,9 +103,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumModuleId, this.drpForumInstance.SelectedItem.Value);
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumGroup, this.drpForum.SelectedItem.Value);
                 // objModules.UpdateModuleSetting(ModuleId, "AFEnableToolbar", CType(chkEnableToolbar.Checked, String))
-                string ForumGroup;
-                ForumGroup = this.drpForum.SelectedItem.Value;
-                if ((ForumGroup.IndexOf("GROUPID:", 0) + 1) > 0)
+                string forumGroup;
+                forumGroup = this.drpForum.SelectedItem.Value;
+                if ((forumGroup.IndexOf("GROUPID:", 0) + 1) > 0)
                 {
                     objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFViewType, ForumViewerViewType.GROUP);
                 }
@@ -114,8 +114,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFViewType, ForumViewerViewType.TOPICS);
                 }
 
-                int @int = ForumGroup.IndexOf(":") + 1;
-                string sID = ForumGroup.Substring(@int);
+                int @int = forumGroup.IndexOf(":") + 1;
+                string sID = forumGroup.Substring(@int);
                 // ForumGroupID = CType(ForumGroup.Substring(ForumGroup.IndexOf(":")), Integer)
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumGroupId, sID);
                 // Redirect back to the portal home page
@@ -159,23 +159,23 @@ namespace DotNetNuke.Modules.ActiveForums
             this.drpForum.Items.Insert(0, new ListItem("-- Select a Group or Forum --", "-1"));
             IDataReader dr = DataProvider.Instance().Forums_List(this.PortalId, forumModuleID, -1, -1, false);
             int i = 1;
-            string GroupName = string.Empty;
-            string ForumName = string.Empty;
-            int ForumID = -1;
+            string groupName = string.Empty;
+            string forumName = string.Empty;
+            int forumID = -1;
             while (dr.Read())
             {
-                if (GroupName != Convert.ToString(dr["GroupName"]))
+                if (groupName != Convert.ToString(dr["GroupName"]))
                 {
                     this.drpForum.Items.Insert(i, new ListItem(Convert.ToString(dr["GroupName"]), "GROUPID:" + Convert.ToString(dr["ForumGroupID"])));
                     i += 1;
-                    GroupName = Convert.ToString(dr["GroupName"]);
+                    groupName = Convert.ToString(dr["GroupName"]);
                 }
 
-                if (ForumID != Convert.ToInt32(dr["ForumID"]))
+                if (forumID != Convert.ToInt32(dr["ForumID"]))
                 {
                     this.drpForum.Items.Insert(i, new ListItem("|---" + Convert.ToString(dr["ForumName"]), "FORUMID:" + Convert.ToString(dr["ForumID"])));
                     i += 1;
-                    ForumID = Convert.ToInt32(dr["ForumID"]);
+                    forumID = Convert.ToInt32(dr["ForumID"]);
                 }
 
             }

@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public string PollResults(int topicId, string imagePath)
         {
-            int BarWidth = 275;
+            int barWidth = 275;
             var sb = new StringBuilder();
 
             sb.Append("<table width=\"80%\" align=\"center\" cellpadding=\"4\" cellspacing=\"0\" class=\"afpollresults\">");
@@ -42,23 +42,23 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("</b></td></tr>");
             dr.NextResult();
             dr.Read();
-            double VoteCount;
-            VoteCount = Convert.ToDouble(dr[0]);
+            double voteCount;
+            voteCount = Convert.ToDouble(dr[0]);
             dr.NextResult();
             while (dr.Read())
             {
                 double dblPercent = 0;
 
-                if (VoteCount != 0)
+                if (voteCount != 0)
                 {
-                    dblPercent = Convert.ToDouble(Convert.ToDouble(dr["ResultCount"]) / VoteCount);
+                    dblPercent = Convert.ToDouble(Convert.ToDouble(dr["ResultCount"]) / voteCount);
                 }
 
                 sb.Append("<tr><td class=\"afnormal\"><b>");
                 sb.AppendFormat("{0}</b> ({1})", Convert.ToString(dr["OptionName"]), Convert.ToString(dr["ResultCount"]));
                 sb.Append("</td></tr><tr><td class=\"afnormal\">");
                 sb.Append("<span class=\"afpollbar\">");
-                sb.Append($"<img src=\"{imagePath}/spacer.gif\" style=\"height: 10px; width: {Convert.ToInt32(BarWidth * dblPercent)}px !important;\" />");
+                sb.Append($"<img src=\"{imagePath}/spacer.gif\" style=\"height: 10px; width: {Convert.ToInt32(barWidth * dblPercent)}px !important;\" />");
                 sb.AppendFormat("</span>&nbsp;{0}%", Convert.ToInt32(dblPercent * 100).ToString());
                 sb.Append("</td></tr>");
             }

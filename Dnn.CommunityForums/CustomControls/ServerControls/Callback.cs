@@ -344,8 +344,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 str.AppendFormat("window.{0}=new objCB('{0}');", sID);
                 str.Append(sID + ".Debug=" + this.Debug.ToString().ToLower() + ";");
-                string URL = this.PostURL;
-                if (URL == "")
+                string uRL = this.PostURL;
+                if (uRL == "")
                 {
                     // URL = GetResponseUrl(Context)
                 }
@@ -353,10 +353,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 // If URL.Contains("/404.aspx?404;") Then
                 //    URL = URL.Replace("/404.aspx?404;", String.Empty)
                 // End If
-                if (!string.IsNullOrEmpty(URL))
+                if (!string.IsNullOrEmpty(uRL))
                 {
-                    URL = this.XSSFilter(URL);
-                    str.Append(sID + ".Location='" + URL.Replace("'", "\\\\'").Replace(";", string.Empty) + "';");
+                    uRL = this.XSSFilter(uRL);
+                    str.Append(sID + ".Location='" + uRL.Replace("'", "\\\\'").Replace(";", string.Empty) + "';");
                 }
 
                 str.Append(sID + ".Parameter='" + this.Parameter + "';");

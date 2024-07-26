@@ -276,11 +276,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
 
-            bool UserIsTrusted = false;
-            UserIsTrusted = Utilities.IsTrusted((int)this.ForumInfo.DefaultTrustValue, ui.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles), this.ForumInfo.AutoTrustLevel, ui.PostCount);
+            bool userIsTrusted = false;
+            userIsTrusted = Utilities.IsTrusted((int)this.ForumInfo.DefaultTrustValue, ui.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles), this.ForumInfo.AutoTrustLevel, ui.PostCount);
             bool isApproved = false;
             isApproved = Convert.ToBoolean((this.ForumInfo.IsModerated == true) ? false : true);
-            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.ModApprove, this.ForumUser.UserRoles))
+            if (userIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.ModApprove, this.ForumUser.UserRoles))
             {
                 isApproved = true;
             }
@@ -342,24 +342,24 @@ namespace DotNetNuke.Modules.ActiveForums
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId, ri.TopicId);
             }
 
-            int ReplyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(this.PortalId, this.ModuleId, ri);
-            ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
-            DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, ri.Forum.ForumGroupId, this.ForumId, this.TopicId, ReplyId, ri.Content.AuthorId);
+            int replyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(this.PortalId, this.ModuleId, ri);
+            ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, ri.Forum.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId);
             DataCache.CacheClearPrefix(this.ModuleId, string.Format(CacheKeys.TopicViewPrefix, this.ModuleId));
             DataCache.CacheClearPrefix(this.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, this.ModuleId));
             DataCache.CacheClearPrefix(this.ModuleId, string.Format(CacheKeys.ForumViewPrefix, this.ModuleId));
 
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
-            string fullURL = new ControlUtils().BuildUrl(this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, this.SocialGroupId);
+            string fullURL = new ControlUtils().BuildUrl(this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, replyId, this.SocialGroupId);
 
             if (fullURL.Contains("~/"))
             {
-                fullURL = Utilities.NavigateURL(this.TabId, "", new string[] { ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                fullURL = Utilities.NavigateURL(this.TabId, "", new string[] { ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
             }
 
             if (fullURL.EndsWith("/"))
             {
-                fullURL += Utilities.UseFriendlyURLs(this.ForumModuleId) ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);
+                fullURL += Utilities.UseFriendlyURLs(this.ForumModuleId) ? String.Concat("#", replyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", replyId);
             }
 
             if (isApproved)
@@ -369,7 +369,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, ri.Forum.ForumGroupId, this.ForumId, this.TopicId, ReplyId, ri.Content.AuthorId);
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, ri.Forum.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId);
 
                 var @params = new List<string> { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
                 if (this.SocialGroupId > 0)

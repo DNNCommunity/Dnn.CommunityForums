@@ -383,11 +383,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.Append("<br />");
                 int attachId = Convert.ToInt32(dr["AttachId"]);
-                string Filename = dr["Filename"].ToString();
+                string filename = dr["Filename"].ToString();
                 string contentType = dr["ContentType"].ToString();
                 if (dr.IsNull("FileData"))
                 {
-                    sb.Append($"<a href=\"/DesktopModules/ActiveForums/viewer.aspx?portalid={this.PortalId}&moduleid={this.ModuleId}&attachmentid={attachId}\" target=\"_blank\"><img src=\"/DesktopModules/ActiveForums/images/attach.gif\" border=\"0\" align=\"absmiddle\">Attachment: " + Filename + "</a><br>");
+                    sb.Append($"<a href=\"/DesktopModules/ActiveForums/viewer.aspx?portalid={this.PortalId}&moduleid={this.ModuleId}&attachmentid={attachId}\" target=\"_blank\"><img src=\"/DesktopModules/ActiveForums/images/attach.gif\" border=\"0\" align=\"absmiddle\">Attachment: " + filename + "</a><br>");
                 }
                 else
                 {
@@ -400,7 +400,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sb.Append("<br /><span class=\"afimage\"><img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + portalID + "&moduleid=" + moduleID + "&attachmentid=" + attachId + "\" border=0 align=center></span><br><br>");
                             break;
                         default:
-                            sb.Append("<span class=\"afattachlink\"><a href=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + portalID + "&moduleid=" + moduleID + "&attachmentid=" + attachId + "\" target=\"_blank\"><img src=\"" + strHost + "DesktopModules/ActiveForums/images/attach.gif\" border=\"0\" align=\"absmiddle\">Attachment: " + Filename + "</a></span><br />");
+                            sb.Append("<span class=\"afattachlink\"><a href=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + portalID + "&moduleid=" + moduleID + "&attachmentid=" + attachId + "\" target=\"_blank\"><img src=\"" + strHost + "DesktopModules/ActiveForums/images/attach.gif\" border=\"0\" align=\"absmiddle\">Attachment: " + filename + "</a></span><br />");
                             break;
                     }
                 }

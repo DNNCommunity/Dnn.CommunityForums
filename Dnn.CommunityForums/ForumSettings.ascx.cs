@@ -210,23 +210,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.FriendlyURLs = Utilities.SafeConvertBool(this.rdEnableURLRewriter.SelectedValue);
 
                 var urlSettings = new FriendlyUrlSettings(this.PortalId);
-                string DoNotRedirectRegex = urlSettings.DoNotRedirectRegex;
+                string doNotRedirectRegex = urlSettings.DoNotRedirectRegex;
                 const string ignoreForumsRegex = "(" + ParamKeys.ForumId + "=|" + ParamKeys.GroupId + "=|" + ParamKeys.TopicId + "=|" + ParamKeys.GridType + "=|" + ParamKeys.Tags + "=|" + ParamKeys.ViewType + "=|" + ParamKeys.Category + "=|" + ParamKeys.PageId + "=)|";
 
                 if (Utilities.SafeConvertBool(this.rdEnableURLRewriter.SelectedValue))
                 {
-                    if (!DoNotRedirectRegex.Contains(ignoreForumsRegex))
+                    if (!doNotRedirectRegex.Contains(ignoreForumsRegex))
                     {
-                        DoNotRedirectRegex = string.Concat(ignoreForumsRegex, DoNotRedirectRegex);
-                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: this.PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: DoNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
+                        doNotRedirectRegex = string.Concat(ignoreForumsRegex, doNotRedirectRegex);
+                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: this.PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: doNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
                     }
                 }
                 else
                 {
-                    if (DoNotRedirectRegex.Contains(ignoreForumsRegex))
+                    if (doNotRedirectRegex.Contains(ignoreForumsRegex))
                     {
-                        DoNotRedirectRegex.Replace(ignoreForumsRegex, string.Empty);
-                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: this.PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: DoNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
+                        doNotRedirectRegex.Replace(ignoreForumsRegex, string.Empty);
+                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: this.PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: doNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
                     }
                 }
 

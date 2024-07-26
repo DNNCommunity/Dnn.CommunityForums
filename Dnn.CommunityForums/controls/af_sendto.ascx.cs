@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.reqSubject.Text = warnImg;
             this.regEmail.Text = warnImg;
             this.regEmail.ValidationExpression = "\\b[a-zA-Z0-9._%\\-+']+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}\\b";
-            string TopicSubject = string.Empty;
+            string topicSubject = string.Empty;
             if (this.TopicId > 0)
             {
                 TopicsController tc = new TopicsController();
@@ -57,21 +57,21 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (!this.Page.IsPostBack)
                         {
-                            string SubjectDefault = this.GetSharedResource("[RESX:EmailSubjectDefault]");
-                            TopicSubject = ti.Content.Subject;
-                            SubjectDefault = SubjectDefault.Replace("[SUBJECT]", ti.Content.Subject);
+                            string subjectDefault = this.GetSharedResource("[RESX:EmailSubjectDefault]");
+                            topicSubject = ti.Content.Subject;
+                            subjectDefault = subjectDefault.Replace("[SUBJECT]", ti.Content.Subject);
 
-                            this.txtRecipSubject.Text = SubjectDefault;
-                            string MessageDefault = this.GetSharedResource("[RESX:EmailMessageDefault]");
+                            this.txtRecipSubject.Text = subjectDefault;
+                            string messageDefault = this.GetSharedResource("[RESX:EmailMessageDefault]");
                             string sURL = this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId });
                             if (this.MainSettings.UseShortUrls)
                             {
                                 sURL = this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.TopicId + "=" + this.TopicId });
                             }
 
-                            MessageDefault = MessageDefault.Replace("[TOPICLINK]", sURL);
-                            MessageDefault = MessageDefault.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(this.PortalSettings, this.ModuleId, false, false, false, this.UserId, this.UserInfo.Username, this.UserInfo.FirstName, this.UserInfo.LastName, this.UserInfo.DisplayName));
-                            this.txtMessage.Text = MessageDefault;
+                            messageDefault = messageDefault.Replace("[TOPICLINK]", sURL);
+                            messageDefault = messageDefault.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(this.PortalSettings, this.ModuleId, false, false, false, this.UserId, this.UserInfo.Username, this.UserInfo.FirstName, this.UserInfo.LastName, this.UserInfo.DisplayName));
+                            this.txtMessage.Text = messageDefault;
                         }
 
                     }
@@ -82,12 +82,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (this.MainSettings.UseShortUrls)
                         {
                             sCrumb += "<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.ForumId + "=" + this.ForumId) + "\">" + this.ForumInfo.ForumName + "</a>";
-                            sCrumb += "|<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.TopicId + "=" + this.TopicId) + "\">" + TopicSubject + "</a>";
+                            sCrumb += "|<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.TopicId + "=" + this.TopicId) + "\">" + topicSubject + "</a>";
                         }
                         else
                         {
                             sCrumb += "<a href=\"" + this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + this.ForumInfo.ForumName + "</a>";
-                            sCrumb += "|<a href=\"" + this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId }) + "\">" + TopicSubject + "</a>";
+                            sCrumb += "|<a href=\"" + this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId }) + "\">" + topicSubject + "</a>";
                         }
 
                         if (Environment.UpdateBreadCrumb(this.Page.Controls, sCrumb))

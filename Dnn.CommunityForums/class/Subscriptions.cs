@@ -160,50 +160,50 @@ namespace DotNetNuke.Modules.ActiveForums
             string tmpFG = string.Empty;
             string sBody = string.Empty;
             var sb = new System.Text.StringBuilder();
-            string Template = string.Empty;
-            string TemplateSubject = string.Empty;
-            string TemplateHeader = string.Empty;
-            string TemplateBody = string.Empty;
-            string TemplateFooter = string.Empty;
-            string TemplateItems = string.Empty;
-            string TemplateGroupSection = string.Empty;
-            string ItemsFooter = string.Empty;
-            string Items = string.Empty;
+            string template = string.Empty;
+            string templateSubject = string.Empty;
+            string templateHeader = string.Empty;
+            string templateBody = string.Empty;
+            string templateFooter = string.Empty;
+            string templateItems = string.Empty;
+            string templateGroupSection = string.Empty;
+            string itemsFooter = string.Empty;
+            string items = string.Empty;
             string sMessageBody;
-            string FromEmail = string.Empty;
-            string SubscriberDisplayName = string.Empty;
-            string SubscriberUserName = string.Empty;
-            string SubscriberFirstName = string.Empty;
-            string SubscriberLastName = string.Empty;
-            string SubscriberEmail = string.Empty;
+            string fromEmail = string.Empty;
+            string subscriberDisplayName = string.Empty;
+            string subscriberUserName = string.Empty;
+            string subscriberFirstName = string.Empty;
+            string subscriberLastName = string.Empty;
+            string subscriberEmail = string.Empty;
             int portalId = -1;
             int i = 0;
-            int GroupCount = 0;
+            int groupCount = 0;
 
             while (dr.Read())
             {
                 portalId = Convert.ToInt32(dr["PortalId"].ToString());
 
-                SubscriberDisplayName = dr["SubscriberDisplayName"].ToString();
-                SubscriberUserName = dr["SubscriberUserName"].ToString();
-                SubscriberFirstName = dr["SubscriberFirstName"].ToString();
-                SubscriberLastName = dr["SubscriberLastName"].ToString();
-                SubscriberEmail = dr["Email"].ToString();
+                subscriberDisplayName = dr["SubscriberDisplayName"].ToString();
+                subscriberUserName = dr["SubscriberUserName"].ToString();
+                subscriberFirstName = dr["SubscriberFirstName"].ToString();
+                subscriberLastName = dr["SubscriberLastName"].ToString();
+                subscriberEmail = dr["Email"].ToString();
 
                 string newEmail = dr["Email"].ToString();
                 if (i > 0)
                 {
                     if (newEmail != tmpEmail)
                     {
-                        sMessageBody = TemplateHeader;
-                        sMessageBody += Items + ItemsFooter;
-                        sMessageBody += TemplateFooter;
-                        Items = string.Empty;
-                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERDISPLAYNAME]", SubscriberDisplayName);
-                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERUSERNAME]", SubscriberUserName);
-                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", SubscriberFirstName);
-                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", SubscriberLastName);
-                        sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", SubscriberEmail);
+                        sMessageBody = templateHeader;
+                        sMessageBody += items + itemsFooter;
+                        sMessageBody += templateFooter;
+                        items = string.Empty;
+                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERDISPLAYNAME]", subscriberDisplayName);
+                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERUSERNAME]", subscriberUserName);
+                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", subscriberFirstName);
+                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", subscriberLastName);
+                        sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", subscriberEmail);
                         sMessageBody = sMessageBody.Replace("[DATE]", DateTime.UtcNow.ToString());
 
                         if ((sMessageBody.IndexOf("[DATE:", 0) + 1) > 0)
@@ -216,9 +216,9 @@ namespace DotNetNuke.Modules.ActiveForums
                             sMessageBody = sMessageBody.Replace(string.Concat("[DATE:", sFormat, "]"), DateTime.UtcNow.ToString(sFormat));
                         }
 
-                        GroupCount = 0;
+                        groupCount = 0;
                         tmpEmail = newEmail;
-                        new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId, -1, FromEmail, tmpEmail, TemplateSubject, sMessageBody);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId, -1, fromEmail, tmpEmail, templateSubject, sMessageBody);
                         i = 0;
                     }
                 }
@@ -230,12 +230,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (tmpFG != string.Concat(dr["GroupName"], dr["ForumName"].ToString()))
                 {
-                    if (GroupCount > 0)
+                    if (groupCount > 0)
                     {
-                        Items += ItemsFooter;
+                        items += itemsFooter;
                     }
 
-                    string sTmpBody = TemplateGroupSection;
+                    string sTmpBody = templateGroupSection;
 
                     sTmpBody = sTmpBody.Replace("[TABID]", dr["TabId"].ToString());
                     sTmpBody = sTmpBody.Replace("[PORTALID]", dr["PortalId"].ToString());
@@ -243,12 +243,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     sTmpBody = sTmpBody.Replace("[FORUMNAME]", dr["ForumName"].ToString());
                     sTmpBody = sTmpBody.Replace("[FORUMID]", dr["ForumId"].ToString());
                     sTmpBody = sTmpBody.Replace("[GROUPID]", dr["ForumGroupId"].ToString());
-                    Items += sTmpBody;
+                    items += sTmpBody;
 
-                    GroupCount += 1;
+                    groupCount += 1;
                 }
 
-                string sTemp = TemplateItems;
+                string sTemp = templateItems;
                 sTemp = sTemp.Replace("[SUBJECT]", dr["Subject"].ToString());
                 int intLength = 0;
 
@@ -288,7 +288,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sTemp = sTemp.Replace("[TABID]", dr["TabId"].ToString());
                 sTemp = sTemp.Replace("[PORTALID]", dr["PortalId"].ToString());
 
-                Items += sTemp;
+                items += sTemp;
 
                 i += 1;
             }
@@ -296,16 +296,16 @@ namespace DotNetNuke.Modules.ActiveForums
             dr.Close();
             dr = null;
 
-            if (Items != string.Empty)
+            if (items != string.Empty)
             {
-                sMessageBody = TemplateHeader;
-                sMessageBody += Items + ItemsFooter;
-                sMessageBody += TemplateFooter;
-                sMessageBody = sMessageBody.Replace("[SUBSCRIBERDISPLAYNAME]", SubscriberDisplayName);
-                sMessageBody = sMessageBody.Replace("[SUBSCRIBERUSERNAME]", SubscriberUserName);
-                sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", SubscriberFirstName);
-                sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", SubscriberLastName);
-                sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", SubscriberEmail);
+                sMessageBody = templateHeader;
+                sMessageBody += items + itemsFooter;
+                sMessageBody += templateFooter;
+                sMessageBody = sMessageBody.Replace("[SUBSCRIBERDISPLAYNAME]", subscriberDisplayName);
+                sMessageBody = sMessageBody.Replace("[SUBSCRIBERUSERNAME]", subscriberUserName);
+                sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", subscriberFirstName);
+                sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", subscriberLastName);
+                sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", subscriberEmail);
                 sMessageBody = sMessageBody.Replace("[DATE]", DateTime.UtcNow.ToString());
 
                 if ((sMessageBody.IndexOf("[DATE:", 0) + 1) > 0)
@@ -318,7 +318,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sMessageBody = sMessageBody.Replace(string.Concat("[DATE:", sFormat, "]"), DateTime.UtcNow.ToString(sFormat));
                 }
 
-                new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId, -1, FromEmail, tmpEmail, TemplateSubject, sMessageBody);
+                new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId, -1, fromEmail, tmpEmail, templateSubject, sMessageBody);
             }
         }
     }
@@ -374,8 +374,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private static int GetElapsedTimeTillNextStart()
         {
-            DateTime NextRun = DateTime.UtcNow.AddDays(7);
-            var nextStart = new DateTime(NextRun.Year, NextRun.Month, NextRun.Day, 22, 0, 0);
+            DateTime nextRun = DateTime.UtcNow.AddDays(7);
+            var nextStart = new DateTime(nextRun.Year, nextRun.Month, nextRun.Day, 22, 0, 0);
             int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerDay);
             return elapseMinutes;
         }

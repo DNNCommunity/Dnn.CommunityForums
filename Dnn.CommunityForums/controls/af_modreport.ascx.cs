@@ -122,8 +122,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (this.Request.IsAuthenticated)
             {
-                string Comments = this.drpReasons.SelectedItem.Value + "<br>";
-                Comments += Utilities.CleanString(this.PortalId, this.txtComments.Text, false, EditorTypes.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
+                string comments = this.drpReasons.SelectedItem.Value + "<br>";
+                comments += Utilities.CleanString(this.PortalId, this.txtComments.Text, false, EditorTypes.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
                 string sUrl = this.SocialGroupId > 0
                     ? Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + Literals.GroupId + "=" + this.SocialGroupId })
                     : Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent });
@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 subject = subject.Replace("[FlaggedBy]", this.UserInfo.DisplayName);
                 string body = Utilities.GetSharedResource("AlertBody");
                 body = body.Replace("[Post]", sBody);
-                body = body.Replace("[Comment]", Comments);
+                body = body.Replace("[Comment]", comments);
                 body = body.Replace("[URL]", fullURL);
                 body = body.Replace("[Reason]", this.drpReasons.SelectedItem.Value);
 

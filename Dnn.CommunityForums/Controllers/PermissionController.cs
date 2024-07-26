@@ -102,10 +102,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static void CreateDefaultSets(int portalId, int permissionsId)
         {
             string[] requestedAccessList = new[] { "View", "Read" };
-            string RegisteredUsersRoleId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString();
+            string registeredUsersRoleId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString();
             foreach (string access in requestedAccessList)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, permissionsId, access, RegisteredUsersRoleId, 0);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, permissionsId, access, registeredUsersRoleId, 0);
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, permissionsId, access, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, permissionsId, access, DotNetNuke.Common.Globals.glbRoleUnauthUser, 0);
             }
@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             requestedAccessList = new[] { "Create", "Reply" };
             foreach (string access in requestedAccessList)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, permissionsId, access, RegisteredUsersRoleId, 0);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, permissionsId, access, registeredUsersRoleId, 0);
             }
         }
 
@@ -195,11 +195,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     if (!string.IsNullOrEmpty(role))
                     {
-                        foreach (string AuthRole in userRoles)
+                        foreach (string authRole in userRoles)
                         {
-                            if (!string.IsNullOrEmpty(AuthRole))
+                            if (!string.IsNullOrEmpty(authRole))
                             {
-                                if (role == AuthRole)
+                                if (role == authRole)
                                 {
                                     bolAuth = true;
                                     break;
@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                string RoleNames = string.Empty;
+                string roleNames = string.Empty;
                 string roleName;
                 foreach (string role in roles.Split(new[] { ';' }))
                 {
@@ -253,16 +253,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         switch (role)
                         {
                             case DotNetNuke.Common.Globals.glbRoleAllUsers:
-                                RoleNames = string.Concat(RoleNames + DotNetNuke.Common.Globals.glbRoleAllUsersName, ";");
+                                roleNames = string.Concat(roleNames + DotNetNuke.Common.Globals.glbRoleAllUsersName, ";");
                                 break;
                             case DotNetNuke.Common.Globals.glbRoleUnauthUser:
-                                RoleNames = string.Concat(RoleNames + DotNetNuke.Common.Globals.glbRoleUnauthUserName, ";");
+                                roleNames = string.Concat(roleNames + DotNetNuke.Common.Globals.glbRoleUnauthUserName, ";");
                                 break;
                             default:
                                 roleName = GetRoleName(portalId: portalId, role: role);
                                 if (roleName != null)
                                 {
-                                    RoleNames = string.Concat(RoleNames + roleName, ";");
+                                    roleNames = string.Concat(roleNames + roleName, ";");
                                 }
 
                                 break;
@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
 
-                return RoleNames;
+                return roleNames;
             }
             catch (Exception ex)
             {
@@ -289,8 +289,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static string GetRoleIds(int portalId, string[] roles)
         {
-            string RoleIds = (string)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.RoleIDs, portalId));
-            if (string.IsNullOrEmpty(RoleIds))
+            string roleIds = (string)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.RoleIDs, portalId));
+            if (string.IsNullOrEmpty(roleIds))
             {
                 foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: portalId))
                 {
@@ -301,7 +301,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         {
                             if (roleName == role)
                             {
-                                RoleIds += string.Concat(ri.RoleID.ToString(), ";");
+                                roleIds += string.Concat(ri.RoleID.ToString(), ";");
                                 break;
                             }
                         }
@@ -309,11 +309,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
 
                 // add pseudo-roles for anon/unauth and all users
-                RoleIds = string.Concat(RoleIds, DotNetNuke.Common.Globals.glbRoleAllUsers, ";", DotNetNuke.Common.Globals.glbRoleUnauthUser, ";");
-                DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.RoleIDs, portalId), RoleIds);
+                roleIds = string.Concat(roleIds, DotNetNuke.Common.Globals.glbRoleAllUsers, ";", DotNetNuke.Common.Globals.glbRoleUnauthUser, ";");
+                DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.RoleIDs, portalId), roleIds);
             }
 
-            return RoleIds;
+            return roleIds;
         }
 
         internal static NameValueCollection GetRolesNVC(int portalId, string roles)

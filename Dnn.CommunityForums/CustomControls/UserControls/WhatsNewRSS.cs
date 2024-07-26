@@ -299,8 +299,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string url;
                     if (string.IsNullOrEmpty(sTopicUrl) || !Utilities.UseFriendlyURLs(topicModuleId))
                     {
-                        string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
-                        url = Utilities.NavigateURL(topicTabId, "", Params);
+                        string[] @params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
+                        url = Utilities.NavigateURL(topicTabId, "", @params);
                         if (url.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.CurrentCulture) == -1)
                         {
                             url = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;

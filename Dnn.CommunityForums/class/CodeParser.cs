@@ -35,13 +35,13 @@ namespace DotNetNuke.Modules.ActiveForums
             sCode = Regex.Replace(sCode, "(&#91;\\/CODE&#93;)", "[/CODE]", RegexOptions.IgnoreCase);
             objRegEx = new Regex("\\[CODE([^>]*)\\]((.|\\n)*?)\\[/CODE\\]", RegexOptions.IgnoreCase);
 
-            MatchCollection Matches;
+            MatchCollection matches;
 
-            Matches = objRegEx.Matches(sCode);
+            matches = objRegEx.Matches(sCode);
             sOut = sCode;
             string tmp;
             string codeSnip;
-            foreach (Match myMatch in Matches)
+            foreach (Match myMatch in matches)
             {
                 codeSnip = myMatch.Result("$2");
                 tmp = string.Concat("<pre><code>", codeSnip, "</code></pre>");

@@ -50,24 +50,24 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    Polls Polls = new Polls();
-                    bool ShowResults = false;
+                    Polls polls = new Polls();
+                    bool showResults = false;
                     if (this.UserId > 0)
                     {
-                        if (Polls.HasVoted(this.TopicId, this.UserId))
+                        if (polls.HasVoted(this.TopicId, this.UserId))
                         {
-                            ShowResults = true;
+                            showResults = true;
                         }
                     }
                     else
                     {
-                        ShowResults = true;
+                        showResults = true;
                     }
 
-                    if (ShowResults)
+                    if (showResults)
                     {
                         Literal lit = new Literal();
-                        lit.Text = Polls.PollResults(this.TopicId, this.ImagePath);
+                        lit.Text = polls.PollResults(this.TopicId, this.ImagePath);
                         this.Controls.Add(lit);
                     }
                     else

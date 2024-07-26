@@ -107,9 +107,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 rd = DataProvider.Instance().Forums_List(-1, moduleID, -1, -1, false);
                 while (rd.Read())
                 {
-                    int ForumId = Convert.ToInt32(rd["ForumID"]);
-                    SettingsCacheClear(moduleID, string.Format(CacheKeys.ForumSettings, moduleID, ForumId));
-                    SettingsCacheClear(moduleID, string.Format(CacheKeys.ForumInfo, moduleID, ForumId));
+                    int forumId = Convert.ToInt32(rd["ForumID"]);
+                    SettingsCacheClear(moduleID, string.Format(CacheKeys.ForumSettings, moduleID, forumId));
+                    SettingsCacheClear(moduleID, string.Format(CacheKeys.ForumInfo, moduleID, forumId));
                 }
 
                 rd.Close();

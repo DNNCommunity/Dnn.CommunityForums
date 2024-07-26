@@ -378,7 +378,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private static long GetEmailInfo(int portalId, int moduleId, int forumID, int topicID, string ipAddress)
         {
-            long ItemID = -1;
+            long itemID = -1;
 
             DotNetNuke.Framework.Providers.ProviderConfiguration _providerConfiguration = DotNetNuke.Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
             string connectionString;
@@ -420,10 +420,10 @@ namespace DotNetNuke.Modules.ActiveForums
             IDataReader dataReader = (IDataReader)SqlHelper.ExecuteReader(connectionString, databaseOwner + objectQualifier + "ActiveForumsEmailConnector_GetEmailInfo", portalId, moduleId, forumID, topicID, ipAddress, userIds.ToString());
             if (dataReader.Read())
             {
-                ItemID = Convert.ToInt32(dataReader["RecordID"]);
+                itemID = Convert.ToInt32(dataReader["RecordID"]);
             }
 
-            return ItemID;
+            return itemID;
         }
         #endregion
 

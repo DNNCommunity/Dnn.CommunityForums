@@ -45,19 +45,19 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void agTemplates_Callback(object sender, Controls.CallBackEventArgs e)
         {
-            int PageIndex = Convert.ToInt32(e.Parameters[0]);
-            int PageSize = Convert.ToInt32(e.Parameters[1]);
-            int RowIndex = 0;
-            if (PageIndex == 0)
+            int pageIndex = Convert.ToInt32(e.Parameters[0]);
+            int pageSize = Convert.ToInt32(e.Parameters[1]);
+            int rowIndex = 0;
+            if (pageIndex == 0)
             {
-                RowIndex = 0;
+                rowIndex = 0;
             }
             else
             {
-                RowIndex = ((PageIndex + 1) * PageSize) - PageSize;
+                rowIndex = ((pageIndex + 1) * pageSize) - pageSize;
             }
 
-            this.agTemplates.Datasource = DataProvider.Instance().Templates_List(this.PortalId, this.ModuleId, 0, RowIndex, PageSize);
+            this.agTemplates.Datasource = DataProvider.Instance().Templates_List(this.PortalId, this.ModuleId, 0, rowIndex, pageSize);
             this.agTemplates.Refresh(e.Output);
         }
 

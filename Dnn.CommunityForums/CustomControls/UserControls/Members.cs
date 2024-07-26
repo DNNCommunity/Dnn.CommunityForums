@@ -188,8 +188,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.Request.Params["affilter"] != null)
             {
-                string[] Params = { "affilter=" + this.Request.Params["affilter"] };
-                this.pager1.Params = Params;
+                string[] @params = { "affilter=" + this.Request.Params["affilter"] };
+                this.pager1.Params = @params;
             }
         }
 
@@ -205,8 +205,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 litString = new LiteralControl();
                 sb.Append("<td align=\"center\">");
                 char strChar = (char)i;
-                string[] Params = { ParamKeys.ViewType + "=members", "affilter=" + strChar };
-                sb.Append("<a href=\"" + this.NavigateUrl(this.TabId, "", Params) + "\" class=\"CommandButton\">");
+                string[] @params = { ParamKeys.ViewType + "=members", "affilter=" + strChar };
+                sb.Append("<a href=\"" + this.NavigateUrl(this.TabId, "", @params) + "\" class=\"CommandButton\">");
                 sb.Append(strChar);
                 sb.Append("</a></td>");
             }

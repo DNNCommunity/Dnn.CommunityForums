@@ -58,11 +58,11 @@ namespace DotNetNuke.Modules.ActiveForums
             public static string ConvertToJSONAssociativeArray(Dictionary<string, string> dict)
             {
                 List<string> elements = new List<string>();
-                foreach (KeyValuePair<string, string> Pair in dict)
+                foreach (KeyValuePair<string, string> pair in dict)
                 {
-                    if (!string.IsNullOrEmpty(Pair.Value))
+                    if (!string.IsNullOrEmpty(pair.Value))
                     {
-                        elements.Add(string.Format("\"{0}\":{2}{1}{2}", EscapeJsonString(Pair.Key), EscapeJsonString(Pair.Value), (IsJSONArray(Pair.Value) || IsBoolean(Pair.Value)) ? string.Empty : "\""));
+                        elements.Add(string.Format("\"{0}\":{2}{1}{2}", EscapeJsonString(pair.Key), EscapeJsonString(pair.Value), (IsJSONArray(pair.Value) || IsBoolean(pair.Value)) ? string.Empty : "\""));
                     }
                 }
 

@@ -99,10 +99,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void drpSort_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            string Sort = this.drpSort.SelectedItem.Value;
-            int TabId = int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
+            string sort = this.drpSort.SelectedItem.Value;
+            int tabId = int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
 
-            HttpContext.Current.Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.Sort + "=" + Sort }));
+            HttpContext.Current.Response.Redirect(Utilities.NavigateURL(tabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.Sort + "=" + sort }));
         }
 
         protected override void OnLoad(EventArgs e)
@@ -112,13 +112,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (!this.Page.IsPostBack)
             {
 
-                string Sort = this.DefaultSort;
+                string sort = this.DefaultSort;
                 if (HttpContext.Current.Request.Params[ParamKeys.Sort] != null)
                 {
-                    Sort = HttpContext.Current.Request.Params[ParamKeys.Sort];
+                    sort = HttpContext.Current.Request.Params[ParamKeys.Sort];
                 }
 
-                this.drpSort.SelectedIndex = this.drpSort.Items.IndexOf(this.drpSort.Items.FindByValue(Sort));
+                this.drpSort.SelectedIndex = this.drpSort.Items.IndexOf(this.drpSort.Items.FindByValue(sort));
             }
         }
     }

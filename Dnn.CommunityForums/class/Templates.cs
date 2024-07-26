@@ -100,9 +100,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public int Template_Save(TemplateInfo templateInfo)
         {
             // save updated template to database; will return TemplateId which is critical if new template
-            int TemplateId = Convert.ToInt32(DataProvider.Instance().Templates_Save(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId, (int)templateInfo.TemplateType, templateInfo.IsSystem, templateInfo.Title, templateInfo.Subject, templateInfo.Template));
+            int templateId = Convert.ToInt32(DataProvider.Instance().Templates_Save(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId, (int)templateInfo.TemplateType, templateInfo.IsSystem, templateInfo.Title, templateInfo.Subject, templateInfo.Template));
             // retrieve the template from the database, which will return the filename but will also get the template text from the file which has not been updated yet
-            TemplateInfo TemplateInfo = this.Template_Get(TemplateId);
+            TemplateInfo TemplateInfo = this.Template_Get(templateId);
             // override the template text with what is being saved
             TemplateInfo.Template = templateInfo.Template;
             // now save to the template file
@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Exceptions.LogException(exc);
             }
 
-            return TemplateId;
+            return templateId;
         }
 
         public List<TemplateInfo> Template_List(int portalId, int moduleId)

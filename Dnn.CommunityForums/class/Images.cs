@@ -208,9 +208,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 tempMultiplier = newWidth / (double)currentWidth;
             }
 
-            var NewSize = new Size(Convert.ToInt32(currentWidth * tempMultiplier), Convert.ToInt32(currentHeight * tempMultiplier));
+            var newSize = new Size(Convert.ToInt32(currentWidth * tempMultiplier), Convert.ToInt32(currentHeight * tempMultiplier));
 
-            return NewSize;
+            return newSize;
         }
     }
 }

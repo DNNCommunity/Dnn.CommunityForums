@@ -71,47 +71,47 @@ namespace DotNetNuke.Modules.ActiveForums
             this.tagId = -1;
 
             HttpApplication app = (HttpApplication)s;
-            HttpServerUtility Server = app.Server;
-            HttpRequest Request = app.Request;
-            HttpResponse Response = app.Response;
+            HttpServerUtility server = app.Server;
+            HttpRequest request = app.Request;
+            HttpResponse response = app.Response;
             string requestedPath = app.Request.Url.AbsoluteUri;
-            HttpContext Context = ((HttpApplication)s).Context;
+            HttpContext context = ((HttpApplication)s).Context;
 
-            if (Request.Url.LocalPath.ToLowerInvariant().Contains(".axd")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".js")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".aspx")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".gif")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".jpg")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".css")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".png")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".swf")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".htm")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".html")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".ashx")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".cur")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".ico")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".txt")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".pdf")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".xml")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".csv")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".xls")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".xlsx")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".doc")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".docx")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".ppt")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".pptx")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".zip")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".zipx")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains("/api/")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains("/portals/")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains("/desktopmodules/")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".eot")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".ttf")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".otf")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".svg")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".webp")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".woff")
-                || Request.Url.LocalPath.ToLowerInvariant().Contains(".woff2"))
+            if (request.Url.LocalPath.ToLowerInvariant().Contains(".axd")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".js")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".aspx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".gif")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".jpg")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".css")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".png")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".swf")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".htm")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".html")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".ashx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".cur")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".ico")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".txt")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".pdf")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".xml")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".csv")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".xls")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".xlsx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".doc")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".docx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".ppt")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".pptx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".zip")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".zipx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains("/api/")
+                || request.Url.LocalPath.ToLowerInvariant().Contains("/portals/")
+                || request.Url.LocalPath.ToLowerInvariant().Contains("/desktopmodules/")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".eot")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".ttf")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".otf")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".svg")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".webp")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".woff")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".woff2"))
             {
                 return;
             }
@@ -127,11 +127,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            int PortalId = objPortalAliasInfo.PortalID;
+            int portalId = objPortalAliasInfo.PortalID;
 
             string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
             // TODO: this is all probably now handled by moving the exclusion logic earlier and may be redundant?
-            if (Request.RawUrl.ToLowerInvariant().Contains("404.aspx"))
+            if (request.RawUrl.ToLowerInvariant().Contains("404.aspx"))
             {
                 string sEx = ".jpg,.gif,.png,.swf,.js,.css,.html,.htm,desktopmodules,portals,.ashx,.ico,.txt,.doc,.docx,.pdf,.xml,.xls,.xlsx,.ppt,.pptx,.csv,.zip,.asmx,.aspx";
                 foreach (string sn in sEx.Split(','))
@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
             Data.Common db = new Data.Common();
             try
             {
-                using (IDataReader dr = db.URLSearch(PortalId, newSearchURL))
+                using (IDataReader dr = db.URLSearch(portalId, newSearchURL))
                 {
                     while (dr.Read())
                     {
@@ -229,14 +229,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (!string.IsNullOrEmpty(catName))
             {
-                this.categoryId = db.Tag_GetIdByName(PortalId, this.moduleId, catName, true);
+                this.categoryId = db.Tag_GetIdByName(portalId, this.moduleId, catName, true);
                 this.otherId = this.categoryId;
                 this.urlType = 2;
             }
 
             if (!string.IsNullOrEmpty(tagName))
             {
-                this.tagId = db.Tag_GetIdByName(PortalId, this.moduleId, tagName, false);
+                this.tagId = db.Tag_GetIdByName(portalId, this.moduleId, tagName, false);
                 this.otherId = this.tagId;
                 this.urlType = 3;
             }
@@ -265,7 +265,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!sUrl.StartsWith("http"))
                     {
-                        if (Request.IsSecureConnection)
+                        if (request.IsSecureConnection)
                         {
                             sUrl = "https://" + sUrl;
                         }
@@ -275,10 +275,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
 
-                    Response.Clear();
-                    Response.Status = "301 Moved Permanently";
-                    Response.AddHeader("Location", sUrl);
-                    Response.End();
+                    response.Clear();
+                    response.Status = "301 Moved Permanently";
+                    response.AddHeader("Location", sUrl);
+                    response.End();
 
                 }
             }
@@ -299,14 +299,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            if (!canContinue && (Request.RawUrl.Contains(ParamKeys.TopicId) || Request.RawUrl.Contains(ParamKeys.ForumId) || Request.RawUrl.Contains(ParamKeys.GroupId)))
+            if (!canContinue && (request.RawUrl.Contains(ParamKeys.TopicId) || request.RawUrl.Contains(ParamKeys.ForumId) || request.RawUrl.Contains(ParamKeys.GroupId)))
             {
-                sUrl = this.HandleOldUrls(Request.RawUrl, objPortalAliasInfo.HTTPAlias);
+                sUrl = this.HandleOldUrls(request.RawUrl, objPortalAliasInfo.HTTPAlias);
                 if (!string.IsNullOrEmpty(sUrl))
                 {
                     if (!sUrl.StartsWith("http"))
                     {
-                        if (Request.IsSecureConnection)
+                        if (request.IsSecureConnection)
                         {
                             sUrl = "https://" + sUrl;
                         }
@@ -316,10 +316,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
 
-                    Response.Clear();
-                    Response.Status = "301 Moved Permanently";
-                    Response.AddHeader("Location", sUrl);
-                    Response.End();
+                    response.Clear();
+                    response.Status = "301 Moved Permanently";
+                    response.AddHeader("Location", sUrl);
+                    response.End();
                 }
             }
 
@@ -340,7 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!string.IsNullOrEmpty(topicUrl))
                 {
                     Data.Topics topicsDb = new Data.Topics();
-                    this.topicId = topicsDb.TopicIdByUrl(PortalId, this.moduleId, topicUrl.ToLowerInvariant());
+                    this.topicId = topicsDb.TopicIdByUrl(portalId, this.moduleId, topicUrl.ToLowerInvariant());
                     if (this.topicId > 0)
                     {
                         sUrl = db.GetUrl(this.moduleId, this.forumgroupId, this.forumId, this.topicId, this.userId, -1);
@@ -373,7 +373,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         if (!sUrl.StartsWith("http"))
                         {
-                            if (Request.IsSecureConnection)
+                            if (request.IsSecureConnection)
                             {
                                 sUrl = "https://" + sUrl;
                             }
@@ -385,10 +385,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         if (!string.IsNullOrEmpty(sUrl))
                         {
-                            Response.Clear();
-                            Response.Status = "301 Moved Permanently";
-                            Response.AddHeader("Location", sUrl);
-                            Response.End();
+                            response.Clear();
+                            response.Status = "301 Moved Permanently";
+                            response.AddHeader("Location", sUrl);
+                            response.End();
                         }
                     }
                 }

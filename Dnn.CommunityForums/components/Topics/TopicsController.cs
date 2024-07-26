@@ -106,8 +106,8 @@ namespace DotNetNuke.Modules.ActiveForums
             bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
             string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
 
-            Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
-            Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
+            Dictionary<int, string> authorizedRolesForForum = new Dictionary<int, string>();
+            Dictionary<int, string> forumUrlPrefixes = new Dictionary<int, string>();
 
             List<string> roles = new List<string>();
             foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: moduleInfo.PortalID))
@@ -160,11 +160,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     queryString = qsb.Clear().Append(ParamKeys.ForumId).Append("=").Append(forumid).Append("&").Append(ParamKeys.TopicId).Append("=").Append(topicid).Append("&").Append(ParamKeys.ViewType).Append("=").Append(Views.Topic).Append("&").Append(ParamKeys.ContentJumpId).Append("=").Append(jumpid).ToString();
                     string permittedRolesCanView = string.Empty;
-                    if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
+                    if (!authorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
                     {
                         string canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
                         permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(moduleInfo.PortalID, string.Join(";", canView.Split(":".ToCharArray())));
-                        AuthorizedRolesForForum.Add(forumid, permittedRolesCanView);
+                        authorizedRolesForForum.Add(forumid, permittedRolesCanView);
                     }
 
                     var searchDoc = new SearchDocument

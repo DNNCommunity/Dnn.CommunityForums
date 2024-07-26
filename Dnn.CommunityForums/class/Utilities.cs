@@ -1181,8 +1181,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     var intPages = Convert.ToInt32(Math.Ceiling(replyCount / (double)pageSize));
                     if (canRead)
                     {
-                        string[] Params = { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + lastPostID, ParamKeys.PageJumpId + "=" + intPages };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, Params), postId, System.Web.HttpUtility.HtmlEncode(subject));
+                        string[] @params = { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + lastPostID, ParamKeys.PageJumpId + "=" + intPages };
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, @params), postId, System.Web.HttpUtility.HtmlEncode(subject));
                     }
                     else
                     {
@@ -1193,8 +1193,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (canRead)
                     {
-                        string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + lastPostID };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, Params), postId, System.Web.HttpUtility.HtmlEncode(subject));
+                        string[] @params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + lastPostID };
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, @params), postId, System.Web.HttpUtility.HtmlEncode(subject));
                     }
                     else
                     {

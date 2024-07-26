@@ -134,13 +134,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
         private string FilterGet()
         {
-            int FilterId = -1;
+            int filterId = -1;
             if (this.Params.ContainsKey("FilterId"))
             {
-                FilterId = Convert.ToInt32(this.Params["FilterId"]);
+                filterId = Convert.ToInt32(this.Params["FilterId"]);
             }
 
-            DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().GetById(FilterId, this.ModuleId);
+            DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().GetById(filterId, this.ModuleId);
             string sOut = "{";
             sOut += Utilities.JSON.Pair("FilterId", filter.FilterId.ToString());
             sOut += ",";
@@ -191,31 +191,31 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
         private void FilterDelete()
         {
-            int FilterId = -1;
+            int filterId = -1;
             if (this.Params.ContainsKey("FilterId"))
             {
-                FilterId = Convert.ToInt32(this.Params["FilterId"]);
+                filterId = Convert.ToInt32(this.Params["FilterId"]);
             }
 
-            if (FilterId == -1)
+            if (filterId == -1)
             {
                 return;
             }
 
-            new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(FilterId);
+            new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(filterId);
 
         }
 
         private string GetRank()
         {
-            int RankId = -1;
+            int rankId = -1;
             if (this.Params.ContainsKey("RankId"))
             {
-                RankId = Convert.ToInt32(this.Params["RankId"]);
+                rankId = Convert.ToInt32(this.Params["RankId"]);
             }
 
             RewardController rc = new RewardController();
-            RewardInfo rank = rc.Reward_Get(this.PortalId, this.ModuleId, RankId);
+            RewardInfo rank = rc.Reward_Get(this.PortalId, this.ModuleId, rankId);
             string sOut = "{";
             sOut += Utilities.JSON.Pair("RankId", rank.RankId.ToString());
             sOut += ",";
@@ -267,19 +267,19 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
         private void RankDelete()
         {
-            int RankId = -1;
+            int rankId = -1;
             if (this.Params.ContainsKey("RankId"))
             {
-                RankId = Convert.ToInt32(this.Params["RankId"]);
+                rankId = Convert.ToInt32(this.Params["RankId"]);
             }
 
-            if (RankId == -1)
+            if (rankId == -1)
             {
                 return;
             }
 
             RewardController rc = new RewardController();
-            rc.Reward_Delete(this.PortalId, this.ModuleId, RankId);
+            rc.Reward_Delete(this.PortalId, this.ModuleId, rankId);
 
         }
 

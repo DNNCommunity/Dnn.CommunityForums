@@ -56,10 +56,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         case "DELETE":
                             {
-                                int TagId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
-                                if (SimulateIsNumeric.IsNumeric(TagId))
+                                int tagId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
+                                if (SimulateIsNumeric.IsNumeric(tagId))
                                 {
-                                    new DotNetNuke.Modules.ActiveForums.Controllers.TagController().DeleteById(TagId);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.TagController().DeleteById(tagId);
                                 }
 
                                 break;
@@ -68,16 +68,16 @@ namespace DotNetNuke.Modules.ActiveForums
                         case "SAVE":
                             {
                                 string[] sParams = e.Parameters[4].Split(':');
-                                string TagName = sParams[1].Trim();
-                                int TagId = 0;
+                                string tagName = sParams[1].Trim();
+                                int tagId = 0;
                                 if (sParams.Length > 2)
                                 {
-                                    TagId = Convert.ToInt32(sParams[2]);
+                                    tagId = Convert.ToInt32(sParams[2]);
                                 }
 
-                                if (!(TagName == string.Empty))
+                                if (!(tagName == string.Empty))
                                 {
-                                    DataProvider.Instance().Tags_Save(this.PortalId, this.ModuleId, TagId, TagName, 0, 0, 0, -1, false, -1, -1);
+                                    DataProvider.Instance().Tags_Save(this.PortalId, this.ModuleId, tagId, tagName, 0, 0, 0, -1, false, -1, -1);
                                 }
 
                                 break;
@@ -87,11 +87,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 this.agTags.DefaultParams = string.Empty;
-                int PageIndex = Convert.ToInt32(e.Parameters[0]);
-                int PageSize = Convert.ToInt32(e.Parameters[1]);
-                string SortColumn = e.Parameters[2].ToString();
-                string Sort = e.Parameters[3].ToString();
-                this.agTags.Datasource = DataProvider.Instance().Tags_List(this.PortalId, this.ModuleId, false, PageIndex, PageSize, Sort, SortColumn, -1, -1);
+                int pageIndex = Convert.ToInt32(e.Parameters[0]);
+                int pageSize = Convert.ToInt32(e.Parameters[1]);
+                string sortColumn = e.Parameters[2].ToString();
+                string sort = e.Parameters[3].ToString();
+                this.agTags.Datasource = DataProvider.Instance().Tags_List(this.PortalId, this.ModuleId, false, pageIndex, pageSize, sort, sortColumn, -1, -1);
                 this.agTags.Refresh(e.Output);
             }
             catch (Exception ex)

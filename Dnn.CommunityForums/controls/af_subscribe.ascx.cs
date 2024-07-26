@@ -46,8 +46,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            string SubscribeText = this.GetSharedResource("[RESX:Subscribe]");
-            this.chkSubscribe.Text = SubscribeText;
+            string subscribeText = this.GetSharedResource("[RESX:Subscribe]");
+            this.chkSubscribe.Text = subscribeText;
             this.chkSubscribe.Checked = this.IsSubscribed;
             if (this.UseAjax)
             {

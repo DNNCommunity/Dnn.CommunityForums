@@ -644,10 +644,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string template = this.ItemTemplate.Text;
             while (template.IndexOf("##DataItem(") > -1)
             {
-                int EndIndex = template.IndexOf("')##");
-                int StartIndex = template.IndexOf("##DataItem('") + 12;
-                order.Add(template.Substring(StartIndex, EndIndex - StartIndex));
-                template = template.Substring(EndIndex + 4);
+                int endIndex = template.IndexOf("')##");
+                int startIndex = template.IndexOf("##DataItem('") + 12;
+                order.Add(template.Substring(startIndex, endIndex - startIndex));
+                template = template.Substring(endIndex + 4);
             }
 
             if (!this.Page.IsPostBack)
@@ -661,13 +661,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 dr.NextResult();
                 while (dr.Read())
                 {
-                    ArrayList ItemArray = new ArrayList();
+                    ArrayList itemArray = new ArrayList();
                     foreach (string item in order)
                     {
-                        ItemArray.Add(dr[item].ToString());
+                        itemArray.Add(dr[item].ToString());
                     }
 
-                    ItemBoundEventArgs e = new ItemBoundEventArgs(ItemArray);
+                    ItemBoundEventArgs e = new ItemBoundEventArgs(itemArray);
                     if (this.ItemBound != null)
                     {
                         this.ItemBound(this, e);

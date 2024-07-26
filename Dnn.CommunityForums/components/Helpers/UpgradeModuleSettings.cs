@@ -162,11 +162,11 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "AllowIndex");
                         DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
                         DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
-                        var ForumConfig = module.ModuleSettings.GetString("ForumConfig", string.Empty);
-                        if (!string.IsNullOrEmpty(ForumConfig))
+                        var forumConfig = module.ModuleSettings.GetString("ForumConfig", string.Empty);
+                        if (!string.IsNullOrEmpty(forumConfig))
                         {
                             var xDoc = new XmlDocument();
-                            xDoc.LoadXml(ForumConfig);
+                            xDoc.LoadXml(forumConfig);
                             if (xDoc != null)
                             {
                                 string[] secTypes = { "groupadmin", "groupmember", "registereduser", "anon" };
@@ -181,9 +181,9 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                     }
                                 }
 
-                                ForumConfig = xDoc.OuterXml;
+                                forumConfig = xDoc.OuterXml;
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
-                                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", ForumConfig);
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", forumConfig);
                                 DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
                                 DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
                             }

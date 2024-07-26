@@ -49,8 +49,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.btnReturn.ClientSideScript = "window.location.href = '" + Utilities.NavigateURL(this.TabId) + "';";
             this.cbModal.LoadingTemplate = this.GetLoadingTemplateSmall();
-            Hashtable Settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
-            if (Convert.ToBoolean(Settings["AFINSTALLED"]) == false)
+            Hashtable settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
+            if (Convert.ToBoolean(settings["AFINSTALLED"]) == false)
             {
                 try
                 {

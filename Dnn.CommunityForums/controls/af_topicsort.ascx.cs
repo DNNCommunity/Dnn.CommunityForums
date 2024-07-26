@@ -59,13 +59,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Put user code to initialize the page here
                 if (!this.Page.IsPostBack)
                 {
-                    string Sort = this.DefaultSort;
+                    string sort = this.DefaultSort;
                     if (this.Request.Params[ParamKeys.Sort] != null)
                     {
-                        Sort = this.Request.Params[ParamKeys.Sort];
+                        sort = this.Request.Params[ParamKeys.Sort];
                     }
 
-                    this.drpSort.SelectedIndex = this.drpSort.Items.IndexOf(this.drpSort.Items.FindByValue(Sort));
+                    this.drpSort.SelectedIndex = this.drpSort.Items.IndexOf(this.drpSort.Items.FindByValue(sort));
                     this.drpSort.Items[0].Text = this.GetSharedResource(this.drpSort.Items[0].Text);
                     this.drpSort.Items[1].Text = this.GetSharedResource(this.drpSort.Items[1].Text);
                 }

@@ -63,15 +63,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindRankImages()
         {
-            string[] FileCollection = null;
+            string[] fileCollection = null;
             System.IO.FileInfo myFileInfo = null;
             int i = 0;
 
-            FileCollection = System.IO.Directory.GetFiles(Utilities.MapPath(Globals.ModulePath + "images/ranks"));
-            for (i = 0; i < FileCollection.Length; i++)
+            fileCollection = System.IO.Directory.GetFiles(Utilities.MapPath(Globals.ModulePath + "images/ranks"));
+            for (i = 0; i < fileCollection.Length; i++)
             {
                 string path = null;
-                myFileInfo = new System.IO.FileInfo(FileCollection[i]);
+                myFileInfo = new System.IO.FileInfo(fileCollection[i]);
                 path = "DesktopModules/ActiveForums/images/ranks/" + myFileInfo.Name;
                 this.drpRankImages.Items.Insert(i, new ListItem(myFileInfo.Name, path.ToLowerInvariant()));
 

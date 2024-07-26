@@ -132,29 +132,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     string sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
 
                     /* subject and body, etc. can now be different based on topic subscriber vs forum subscriber so process first for topic subscribers and then for forum subscribers */
-                    var Recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture && s.TopicSubscriber && !string.IsNullOrEmpty(s.Email)).Select(s => s.Email).ToList();
-                    if (Recipients.Count > 0)
+                    var recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture && s.TopicSubscriber && !string.IsNullOrEmpty(s.Email)).Select(s => s.Email).ToList();
+                    if (recipients.Count > 0)
                     {
                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.EmailInfo()
                         {
                             From = sFrom,
                             PortalId = portalId,
                             ModuleId = moduleID,
-                            Recipients = Recipients,
+                            Recipients = recipients,
                             Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: usr, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl),
                             Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl),
                         });
                     }
 
-                    Recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture && !s.TopicSubscriber && !string.IsNullOrEmpty(s.Email)).Select(s => s.Email).ToList();
-                    if (Recipients.Count > 0)
+                    recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture && !s.TopicSubscriber && !string.IsNullOrEmpty(s.Email)).Select(s => s.Email).ToList();
+                    if (recipients.Count > 0)
                     {
                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.EmailInfo()
                         {
                             From = sFrom,
                             ModuleId = moduleID,
                             PortalId = portalId,
-                            Recipients = Recipients,
+                            Recipients = recipients,
                             Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: usr, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl),
                             Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl),
                         });

@@ -87,13 +87,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 sTemp = Utilities.LocalizeControl(sTemp);
-                string SubscribedChecked = string.Empty;
+                string subscribedChecked = string.Empty;
                 if (this.ControlConfig.User.PrefTopicSubscribe || new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.portalId, this.moduleId, this.UserId, this.ForumId, this.TopicId))
                 {
-                    SubscribedChecked = " checked=true";
+                    subscribedChecked = " checked=true";
                 }
 
-                sTemp = sTemp.Replace("[AF:CONTROL:SUBSCRIBECHECK]", "<input type=\"checkbox\" id=\"chkSubscribe\" name=\"chkSubscribe\" value=\"1\" " + SubscribedChecked + "\" />");
+                sTemp = sTemp.Replace("[AF:CONTROL:SUBSCRIBECHECK]", "<input type=\"checkbox\" id=\"chkSubscribe\" name=\"chkSubscribe\" value=\"1\" " + subscribedChecked + "\" />");
                 // Security
                 sTemp = sTemp.Replace("[CREATEROLES]", "1;");
                 sTemp = sTemp.Replace("[USERROLES]", this.ForumUser.UserRoles);
@@ -191,9 +191,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return;
             }
 
-            bool UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, this.ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, this.ForumUser.UserRoles), forumInfo.AutoTrustLevel, this.ControlConfig.User.PostCount);
+            bool userIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, this.ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, this.ForumUser.UserRoles), forumInfo.AutoTrustLevel, this.ControlConfig.User.PostCount);
             bool isApproved = Convert.ToBoolean((forumInfo.IsModerated == true) ? false : true);
-            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, this.ForumUser.UserRoles))
+            if (userIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, this.ForumUser.UserRoles))
             {
                 isApproved = true;
             }
@@ -201,7 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             Data.Topics db = new Data.Topics();
             // im rc As New ReplyController
-            int ReplyId = -1;
+            int replyId = -1;
             string sUsername = string.Empty;
             if (HttpContext.Current.Request.IsAuthenticated)
             {
@@ -230,20 +230,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             ri.IsApproved = isApproved;
             ri.IsDeleted = false;
             ri.Content.IPAddress = HttpContext.Current.Request.UserHostAddress;
-            ReplyId = db.Reply_Save(ri);
+            replyId = db.Reply_Save(ri);
 
             if (isApproved)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.portalId, this.TabId, this.moduleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, ReplyId, ri.Content.AuthorId);
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.portalId, this.TabId, this.moduleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId);
                 // Redirect to show post
-                string fullURL = Utilities.NavigateURL(this.PageId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                string fullURL = Utilities.NavigateURL(this.PageId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, this.portalId, this.ForumId, ri.TopicId, ReplyId, this.moduleId, this.PageId, string.Empty);
-                string[] Params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
-                HttpContext.Current.Response.Redirect(Utilities.NavigateURL(this.PageId, "", Params), false);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, this.portalId, this.ForumId, ri.TopicId, replyId, this.moduleId, this.PageId, string.Empty);
+                string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
+                HttpContext.Current.Response.Redirect(Utilities.NavigateURL(this.PageId, "", @params), false);
             }
         }
 

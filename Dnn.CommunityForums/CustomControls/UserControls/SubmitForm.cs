@@ -1050,8 +1050,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // not sure why this gets set twice.
             this.txtSubject.CssClass = "aftextbox dcf-topic-edit-subject";
-            string MyTheme = this.MainSettings.Theme;
-            string MyThemePath = this.Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MyTheme);
+            string myTheme = this.MainSettings.Theme;
+            string myThemePath = this.Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + myTheme);
             this.txtSubject.MaxLength = 255;
             this.txtSummary.MaxLength = 2000;
             this.txtSubject.Text = this.subject;
@@ -1113,12 +1113,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.afpolledit.ModuleConfiguration = this.ModuleConfiguration;
             this.afpolledit.ForumInfo = this.ForumInfo;
 
-            this.reqSubject.ErrorMessage = string.Format("<img src=\"{0}/images/warning.png\" align=\"absmiddle\" />", MyThemePath);
+            this.reqSubject.ErrorMessage = string.Format("<img src=\"{0}/images/warning.png\" align=\"absmiddle\" />", myThemePath);
             this.reqSubject.EnableClientScript = false;
-            this.reqUsername.ErrorMessage = string.Format("<img src=\"{0}/images/warning.png\" align=\"absmiddle\" />", MyThemePath);
+            this.reqUsername.ErrorMessage = string.Format("<img src=\"{0}/images/warning.png\" align=\"absmiddle\" />", myThemePath);
             this.reqUsername.EnableClientScript = false;
-            this.reqCustomBody.Text = string.Format("<img src=\"{0}/images/warning.png\" align=\"absmiddle\" />", MyThemePath);
-            this.btnPreview.ImageUrl = MyThemePath + "/images/preview32.png";
+            this.reqCustomBody.Text = string.Format("<img src=\"{0}/images/warning.png\" align=\"absmiddle\" />", myThemePath);
+            this.btnPreview.ImageUrl = myThemePath + "/images/preview32.png";
             this.btnPreview.ClientSideScript = "togglePreview(this);";
             this.btnPreview.ObjectId = "ancPreview";
             this.btnPreview.ImageLocation = this.PostButton.ImageLocation;
