@@ -27,258 +27,37 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class User
     {
-        private bool isAdmin = false;
-        private bool isSuperUser = false;
-        private UserProfileInfo profile = null;
-        private Hashtable properties = null;
-        private int userId = -1;
-        private string userName = string.Empty;
-        private string userRoles;
-        private string lastName = string.Empty;
-        private string firstName = string.Empty;
-        private string displayName = string.Empty;
-        private string email = string.Empty;
-        private DateTime dateUpdated;
-        private DateTime dateCreated;
-        private string userForums = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string DisplayName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        public bool IsAdmin { get; set; } = false;
+        public bool IsSuperUser { get; set; } = false;
 
-        public string FirstName
-        {
-            get
-            {
-                return this.firstName;
-            }
+        public UserProfileInfo Profile { get; set; } = null;
 
-            set
-            {
-                this.firstName = value;
-            }
-        }
+        public System.Collections.Hashtable Properties { get; set; } = null;
 
-        public string LastName
-        {
-            get
-            {
-                return this.lastName;
-            }
+        public int UserId { get; set; } = -1;
+        public string UserName { get; set; } = string.Empty;
 
-            set
-            {
-                this.lastName = value;
-            }
-        }
-
-        public string DisplayName
-        {
-            get
-            {
-                return this.displayName;
-            }
-
-            set
-            {
-                this.displayName = value;
-            }
-        }
-
-        public string Email
-        {
-            get
-            {
-                return this.email;
-            }
-
-            set
-            {
-                this.email = value;
-            }
-        }
-
-        public DateTime DateCreated
-        {
-            get
-            {
-                return this.dateCreated;
-            }
-
-            set
-            {
-                this.dateCreated = value;
-            }
-        }
-
-        public DateTime DateUpdated
-        {
-            get
-            {
-                return this.dateUpdated;
-            }
-
-            set
-            {
-                this.dateUpdated = value;
-            }
-        }
-
-        public bool IsAdmin
-        {
-            get
-            {
-                return this.isAdmin;
-            }
-
-            set
-            {
-                this.isAdmin = value;
-            }
-        }
-
-        public bool IsSuperUser
-        {
-            get
-            {
-                return this.isSuperUser;
-            }
-
-            set
-            {
-                this.isSuperUser = value;
-            }
-        }
-
-        public UserProfileInfo Profile
-        {
-            get
-            {
-                return this.profile;
-            }
-
-            set
-            {
-                this.profile = value;
-            }
-        }
-
-        public System.Collections.Hashtable Properties
-        {
-            get
-            {
-                return this.properties;
-            }
-
-            set
-            {
-                this.properties = value;
-            }
-        }
-
-        public int UserId
-        {
-            get
-            {
-                return this.userId;
-            }
-
-            set
-            {
-                this.userId = value;
-            }
-        }
-
-        public string UserName
-        {
-            get
-            {
-                return this.userName;
-            }
-
-            set
-            {
-                this.userName = value;
-            }
-        }
-
-        public string UserRoles
-        {
-            get
-            {
-                return this.userRoles;
-            }
-
-            set
-            {
-                this.userRoles = value;
-            }
-        }
-
-        public bool PrefBlockSignatures
-        {
-            get
-            {
-                return this.Profile.PrefBlockSignatures;
-            }
-        }
-
-        public bool PrefBlockAvatars
-        {
-            get
-            {
-                return this.Profile.PrefBlockAvatars;
-            }
-        }
-
-        public int PostCount
-        {
-            get
-            {
-                return this.Profile.PostCount;
-            }
-        }
-
-        public int TrustLevel
-        {
-            get
-            {
-                return this.Profile.TrustLevel;
-            }
-        }
-
-        public bool PrefTopicSubscribe
-        {
-            get
-            {
-                return this.Profile.PrefTopicSubscribe;
-            }
-        }
-
-        public CurrentUserTypes CurrentUserType
-        {
-            get
-            {
-                return this.Profile.CurrentUserType;
-            }
-        }
-
-        public string UserForums
-        {
-            get
-            {
-                return this.userForums;
-            }
-
-            set
-            {
-                this.userForums = value;
-            }
-        }
-
+        public string UserRoles { get; set; }
+        public bool PrefBlockSignatures => Profile.PrefBlockSignatures;
+        public bool PrefBlockAvatars => Profile.PrefBlockAvatars;
+        public int PostCount => Profile.PostCount;
+        public int TrustLevel => Profile.TrustLevel;
+        public bool PrefTopicSubscribe => Profile.PrefTopicSubscribe;
+        public CurrentUserTypes CurrentUserType => Profile.CurrentUserType;
+        public string UserForums { get; set; } = string.Empty;
         public User()
         {
-            this.userId = -1;
-            this.isSuperUser = false;
-            this.isAdmin = false;
-            this.profile = new UserProfileInfo();
-            this.userRoles = Globals.DefaultAnonRoles + "|-1;||";
+            this.UserId = -1;
+            this.IsSuperUser = false;
+            this.IsAdmin = false;
+            this.Profile = new UserProfileInfo();
+            this.UserRoles = Globals.DefaultAnonRoles + "|-1;||";
         }
     }
 }

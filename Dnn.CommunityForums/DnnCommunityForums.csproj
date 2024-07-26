@@ -312,7 +312,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\WhatsNew.ascx.es-ES.resx" />
-    <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.de-DE.resx" />
+    <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.de-DE.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\ForumSettings.ascx.de-DE.resx" />
     <EmbeddedResource Include="App_LocalResources\Messages.ascx.de-DE.resx" />
     <EmbeddedResource Include="App_LocalResources\SharedResources.de-DE.resx">

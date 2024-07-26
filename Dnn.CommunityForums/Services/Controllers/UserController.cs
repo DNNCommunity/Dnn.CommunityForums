@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (this.UserInfo.UserID > 0)
                 {
-                    DataProvider.Instance().Profiles_UpdateActivity(this.PortalSettings.PortalId, this.ForumModuleId, this.UserInfo.UserID);
+                    DataProvider.Instance().Profiles_UpdateActivity(this.PortalSettings.PortalId, this.UserInfo.UserID);
                 }
             }
             catch (Exception ex)
@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
                 UsersOnline uo = new UsersOnline();
                 string sOnlineList = uo.GetUsersOnline(this.PortalSettings.PortalId, this.ForumModuleId, this.UserInfo);
-                IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalSettings.PortalId, this.ForumModuleId, 2);
+                IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalSettings.PortalId, 2);
                 int anonCount = 0;
                 int memCount = 0;
                 int memTotal = 0;

@@ -176,15 +176,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.pager1.PageText = Utilities.GetSharedResource("[RESX:Page]");
             this.pager1.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
             this.pager1.View = "members";
-            if (this.UseAjax)
-            {
-                this.pager1.PageMode = PagerNav.Mode.CallBack;
-            }
-            else
-            {
-                this.pager1.PageMode = PagerNav.Mode.Links;
-            }
-
+            this.pager1.PageMode = PagerNav.Mode.CallBack;
+            
             if (this.Request.Params["affilter"] != null)
             {
                 string[] @params = { "affilter=" + this.Request.Params["affilter"] };
@@ -231,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.rowIndex = (this.PageId * this.pageSize) - this.pageSize;
             }
 
-            IDataReader dr = DataProvider.Instance().Profiles_MemberList(this.PortalId, this.ModuleId, this.pageSize, this.rowIndex, this.filter);
+            IDataReader dr = DataProvider.Instance().Profiles_MemberList(this.PortalId, this.pageSize, this.rowIndex, this.filter);
             try
             {
                 dr.Read();
@@ -295,17 +288,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         upi.Profile.AvatarDisabled = Convert.ToBoolean(dr["AvatarDisabled"]);
                     }
-
-                    upi.Profile.Yahoo = Convert.ToString(dr["Yahoo"].ToString());
-                    upi.Profile.MSN = Convert.ToString(dr["MSN"].ToString());
-                    upi.Profile.ICQ = Convert.ToString(dr["ICQ"].ToString());
-                    upi.Profile.AOL = Convert.ToString(dr["AOL"].ToString());
-                    upi.Profile.Occupation = Convert.ToString(dr["Occupation"].ToString());
-                    upi.Profile.Location = Convert.ToString(dr["Location"].ToString());
-                    upi.Profile.Interests = Convert.ToString(dr["Interests"].ToString());
-                    upi.Profile.WebSite = Convert.ToString(dr["WebSite"].ToString());
-                    upi.Profile.Badges = Convert.ToString(dr["Badges"].ToString());
-                    upi.Profile.Bio = Convert.ToString(dr["Bio"].ToString());
                     if (!(dr["PrefBlockAvatars"].ToString() == string.Empty))
                     {
                         upi.Profile.PrefBlockAvatars = Convert.ToBoolean(dr["PrefBlockAvatars"]);

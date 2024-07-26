@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -116,19 +116,19 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Profiles
-        public abstract void Profiles_Create(int portalId, int moduleId, int userId);
+        public abstract void Profiles_Create(int portalId, int userId);
 
-        public abstract void Profiles_UpdateActivity(int portalId, int moduleId, int userId);
+        public abstract void Profiles_UpdateActivity(int portalId, int userId);
 
-        public abstract IDataReader Profiles_GetUsersOnline(int portalId, int moduleId, int interval);
+        public abstract IDataReader Profiles_GetUsersOnline(int portalId, int interval);
 
-        public abstract DataSet Profiles_Get(int portalId, int moduleId, int userId);
+        public abstract DataSet Profiles_Get(int portalId, int userId);
 
-        public abstract IDataReader Profiles_MemberList(int portalId, int moduleId, int maxRows, int rowIndex, string filter);
+        public abstract IDataReader Profiles_MemberList(int portalId, int maxRows, int rowIndex, string filter);
 
-        public abstract void Profiles_Save(int portalId, int moduleId, int userId, int topicCount, int replyCount, int viewCount, int answerCount, int rewardPoints, string userCaption, string signature, bool signatureDisabled, int trustLevel, bool adminWatch, bool attachDisabled, string avatar, int avatarType, bool avatarDisabled, string prefDefaultSort, bool prefDefaultShowReplies, bool prefJumpLastPost, bool prefTopicSubscribe, int prefSubscriptionType, bool prefUseAjax, bool prefBlockAvatars, bool prefBlockSignatures, int prefPageSize, string yahoo, string mSN, string iCQ, string aOL, string occupation, string location, string interests, string webSite, string badges);
+        public abstract void Profiles_Save(int portalId, int userId, int topicCount, int replyCount, int viewCount, int answerCount, int rewardPoints, string userCaption, string signature, bool signatureDisabled, int trustLevel, bool adminWatch, bool attachDisabled, string avatar, int avatarType, bool avatarDisabled, string prefDefaultSort, bool prefDefaultShowReplies, bool prefJumpLastPost, bool prefTopicSubscribe, int prefSubscriptionType, bool prefBlockAvatars, bool prefBlockSignatures, int prefPageSize);
 
-        public abstract IDataReader Profiles_GetStats(int portalId, int moduleId, int interval);
+        public abstract IDataReader Profiles_GetStats(int portalId, int interval);
         #endregion
 
         #region Moderation

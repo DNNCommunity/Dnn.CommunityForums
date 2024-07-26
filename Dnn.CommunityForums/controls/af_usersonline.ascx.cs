@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             UsersOnline uo = new UsersOnline();
             string sOnlineList = uo.GetUsersOnline(this.PortalId, this.ForumModuleId, this.UserInfo);
-            IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalId, -1, 2);
+            IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalId, 2);
             int anonCount = 0;
             int memCount = 0;
             int memTotal = 0;

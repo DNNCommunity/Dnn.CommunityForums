@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         public void Profiles_UpdateActivity(int portalId, int moduleId, int userId)
         {
-            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "UserProfiles_UpdateActivity", portalId, moduleId, userId);
+            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "UserProfiles_UpdateActivity", portalId, userId);
         }
 
         public IDataReader Profiles_GetUsersOnline(int portalId, int moduleId, int interval)
@@ -59,10 +59,10 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UserProfiles_Stats", portalId, moduleId, interval);
         }
 
-        public IDataReader Profiles_MemberList(int portalId, int moduleId, int maxRows, int rowIndex, string filter)
+        public IDataReader Profiles_MemberList(int portalId, int maxRows, int rowIndex, string filter)
         {
             // Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "activeforums_UserProfiles_Members", PortalId, MaxRows, RowIndex, Filter), IDataReader)
-            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UserProfiles_List", portalId, moduleId, maxRows, rowIndex, filter);
+            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UserProfiles_List", portalId, maxRows, rowIndex, filter);
         }
 
         public void Profile_UpdateTopicCount(int portalId, int userId)

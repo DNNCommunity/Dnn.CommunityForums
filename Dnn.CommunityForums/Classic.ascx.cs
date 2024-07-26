@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (this.MainSettings.UsersOnlineEnabled)
                         {
-                            DataProvider.Instance().Profiles_UpdateActivity(this.PortalId, this.ForumModuleId, this.UserId);
+                            DataProvider.Instance().Profiles_UpdateActivity(this.PortalId, this.UserId);
                         }
                     }
                 }

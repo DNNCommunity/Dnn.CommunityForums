@@ -191,15 +191,12 @@ namespace DotNetNuke.Modules.ActiveForums
             lit = new Literal();
             lit.Text = "</div>";
             this.plhRating.Controls.Add(lit);
-            if (this.UseAjax)
-            {
-                this.rate1.OnClientClick = "af_rateTopic(1);return false;";
-                this.rate2.OnClientClick = "af_rateTopic(2);return false;";
-                this.rate3.OnClientClick = "af_rateTopic(3);return false;";
-                this.rate4.OnClientClick = "af_rateTopic(4);return false;";
-                this.rate5.OnClientClick = "af_rateTopic(5);return false;";
-                this.AddRatingScript();
-            }
+            this.rate1.OnClientClick = "af_rateTopic(1);return false;";
+            this.rate2.OnClientClick = "af_rateTopic(2);return false;";
+            this.rate3.OnClientClick = "af_rateTopic(3);return false;";
+            this.rate4.OnClientClick = "af_rateTopic(4);return false;";
+            this.rate5.OnClientClick = "af_rateTopic(5);return false;";
+            this.AddRatingScript();
         }
 
         private void AddRatingScript()
