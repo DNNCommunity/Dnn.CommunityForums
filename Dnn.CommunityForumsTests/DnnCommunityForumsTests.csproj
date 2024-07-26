@@ -96,10 +96,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include=".editorconfig" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <AdditionalFiles Include="StyleCop.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dnn.CommunityForums\DnnCommunityForums.csproj">
