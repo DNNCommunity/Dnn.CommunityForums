@@ -78,7 +78,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (this.txtSearch.Text.Trim() != string.Empty)
             {
-                var @params = new List<string> {
+                var @params = new List<string>
+                {
                     $"{ParamKeys.ViewType}={Views.Search}",
                     $"{ParamKeys.ForumId}={this.ForumId}",
                     $"{SearchParamKeys.Query}={HttpUtility.UrlEncode(this.txtSearch.Text.Trim())}"

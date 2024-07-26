@@ -428,7 +428,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (string.IsNullOrEmpty(sURL))
             {
 
-                var @params = new List<string> {
+                var @params = new List<string>
+                {
                     $"{ParamKeys.ForumId}={this.ForumId}",
                     $"{ParamKeys.TopicId}={this.TopicId}",
                     $"{ParamKeys.ViewType}={Views.Topic}"
@@ -935,7 +936,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Quick Reply
             if (this.CanReply)
             {
-                var @params = new List<string> {
+                var @params = new List<string>
+                {
                     $"{ParamKeys.ViewType}={Views.Post}",
                     $"{ParamKeys.TopicId}={this.TopicId}",
                     $"{ParamKeys.ForumId}={this.ForumId}",

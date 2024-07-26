@@ -316,18 +316,21 @@ namespace DotNetNuke.Modules.ActiveForums
 
             string[] @params;
             if (this.Request.Params[ParamKeys.Sort] != null)
-                @params = new[] {
+                @params = new[]
+                {
                     $"{ParamKeys.GridType}={this.Request.Params[ParamKeys.GridType]}",
                     $"{ParamKeys.Sort}={this.Request.Params[ParamKeys.Sort]}",
                     "afcol=" + this.Request.Params["afcol"]
                 };
             else if (this.Request.Params[ParamKeys.TimeSpan] != null)
-                @params = new[] {
+                @params = new[]
+                {
                     $"{ParamKeys.GridType}={this.Request.Params[ParamKeys.GridType]}",
                     $"{ParamKeys.TimeSpan}={this.Request.Params[ParamKeys.TimeSpan]}"
                 };
             else
-                @params = new[] {
+                @params = new[]
+                {
                     $"{ParamKeys.GridType}={this.Request.Params[ParamKeys.GridType]}"
                 };
 
