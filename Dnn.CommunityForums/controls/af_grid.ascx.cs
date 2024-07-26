@@ -137,7 +137,10 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
                         else
+                        {
                             this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
+                        }
+
                         break;
 
                     case GridTypes.Announcements:
@@ -200,7 +203,9 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
                         else
+                        {
                             this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
+                        }
 
                         break;
 

@@ -98,7 +98,9 @@ namespace DotNetNuke.Modules.ActiveForums
             this.canAnnounce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Announce, this.ForumUser.UserRoles);
 
             if (this.fi == null)
+            {
                 this.Response.Redirect(this.NavigateUrl(this.TabId));
+            }
             else if (this.Request.Params[ParamKeys.Action] != null)
             {
                 if (!this.canEdit && (this.Request.Params[ParamKeys.Action].ToLowerInvariant() == PostActions.TopicEdit || this.Request.Params[ParamKeys.Action].ToLowerInvariant() == PostActions.ReplyEdit))
@@ -113,7 +115,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             if (this.UserId > 0)
+            {
                 this.ui = this.ForumUser.Profile;
+            }
             else
             {
                 this.ui.TopicCount = 0;
@@ -465,10 +469,13 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this.PostId);
 
             if (ri == null)
+            {
                 this.Response.Redirect(this.NavigateUrl(this.TabId));
+            }
             else if ((ri.Content.AuthorId != this.UserId && this.canModEdit == false) | (ri.Content.AuthorId == this.UserId && this.canEdit == false) | (this.canEdit == false && this.canModEdit))
+            {
                 this.Response.Redirect(this.NavigateUrl(this.TabId));
-
+            }
             else if (!this.canModEdit && ri.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ri.Content.DateCreated, DateTime.UtcNow) > this.MainSettings.EditInterval)
             {
                 var im = new Controls.InfoMessage

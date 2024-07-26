@@ -1009,7 +1009,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                 }
                 else if (this.ForumInfo.ForumGroupId > 0)
+                {
                     sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(this.TabId) + "\">" + this.ForumInfo.GroupName + "</a>");
+                }
             }
 
             // Parent Forum Name
@@ -1049,7 +1051,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + sURL + "\" rel=\"nofollow\"><i class=\"fa fa-envelope-o fa-fw fa-blue\"></i></a>");
             }
             else
+            {
                 sbOutput.Replace("[AF:CONTROL:EMAIL]", string.Empty);
+            }
 
             // RSS Link
             if (this.bAllowRSS)
@@ -1058,7 +1062,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[RSSLINK]", "<a href=\"" + url + "\"><img src=\"~/DesktopModules/ActiveForums/themes/" + this._myTheme + "/images/rss.png\" runat=server border=\"0\" alt=\"[RESX:RSS]\" /></a>");
             }
             else
+            {
                 sbOutput.Replace("[RSSLINK]", string.Empty);
+            }
 
             // Subject
             this.topicSubject = this.topicSubject.Replace("[", "&#91");
@@ -1113,7 +1119,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Next Topic
             if (this.nextTopic == 0)
+            {
                 sbOutput.Replace("[NEXTTOPIC]", string.Empty);
+            }
             else
             {
                 string nextTopic;
@@ -1145,7 +1153,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Previous Topic
             if (this.prevTopic == 0)
+            {
                 sbOutput.Replace("[PREVTOPIC]", string.Empty);
+            }
             else
             {
                 string prevTopic;
@@ -1372,7 +1382,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Replace Tags Control
             if (string.IsNullOrWhiteSpace(tags))
+            {
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, string.Empty, "[AF:CONTROL:TAGS]", "[/AF:CONTROL:TAGS]");
+            }
             else
             {
                 sOutput = sOutput.Replace("[AF:CONTROL:TAGS]", string.Empty);
