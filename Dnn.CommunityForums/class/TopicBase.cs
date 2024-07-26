@@ -19,7 +19,6 @@
 //
 
 // ORIGINAL LINE: Imports System.Web.HttpContext
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;

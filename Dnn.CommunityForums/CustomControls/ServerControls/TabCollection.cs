@@ -49,7 +49,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.count = 0;
 
             // _contents = New ArrayList
-
         }
 
         public void Add(Tab item)

@@ -186,7 +186,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // litNewObjects.Text = sb.ToString
             // sb = New StringBuilder
-
             sb.Append("<table cellpadding=0 cellspacing=0 border=0 width=\"100%\" id=\"tblSecGrid\">");
             sb.Append("<tr>");
             string keyText = string.Empty;

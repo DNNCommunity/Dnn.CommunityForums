@@ -154,7 +154,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             // drpEditorTypes.Attributes.Add("onchange", "toggleEditorFields();");
-
             if (this.cbEditorAction.IsCallback)
             {
                 return;

@@ -261,7 +261,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 // Catch ex As Exception
 
                 // End Try
-
             }
         }
 
@@ -311,7 +310,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 // Me.ID = sID
-
                 output.RenderBeginTag(HtmlTextWriterTag.Div);
                 if (this.Content != null)
                 {
@@ -391,7 +389,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 // Catch ex As Exception
 
                 // End Try
-
             }
 
             // ChildControlsCreated = True
@@ -424,7 +421,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     this.Context.Response.Write("]]></CallbackData>");
 
                     // Context.Response.Flush()
-
                     this.Context.Response.End();
 
                     // HttpContext.Current.ApplicationInstance.CompleteRequest()

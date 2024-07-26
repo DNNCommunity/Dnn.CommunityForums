@@ -326,7 +326,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 List<Keyword> keywords;
 
                 // Note: Filter out any keywords that are not at least 3 characters in length
-
                 if (this.SearchType == 2 && !string.IsNullOrWhiteSpace(this.SearchText) && this.SearchText.Trim().Length >= 3) // Exact Match
                 {
                     keywords = new List<Keyword> { new Keyword { Value = "\"" + this.SearchText.Trim() + "\"" } };
@@ -403,7 +402,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Build the list of forums to search
             // An intersection of the forums allows vs forums requested.
-
             var parseId = 0;
 
             var sForumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ModuleId, "CanRead", true); // Make sure and pass strict = true here

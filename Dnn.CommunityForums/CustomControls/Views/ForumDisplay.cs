@@ -44,7 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sTemp;
 
             // pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
-
             object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId));
             if (obj == null)
             {
@@ -168,7 +167,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // sOut = sOut.Replace("[WHOSONLINE]", "<af:usersonline id=""ctlUsersOnline"" templatefile=""usersonline.htm"" runat=""server"" />")
             // sOut = sOut.Replace("[JUMPTO]", String.Empty)
             // sOut = sOut.Replace("[TEMPLATE:TOOLBAR]", "<af:toolbar id=""ctlToolbar"" templatefile=""toolbar.htm"" runat=""server"" />")
-
             return sOut;
         }
 

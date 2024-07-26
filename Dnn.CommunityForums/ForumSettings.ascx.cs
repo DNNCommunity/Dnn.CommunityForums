@@ -122,7 +122,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public override void LoadSettings()
         {
             // Note, this is called before OnLoad
-
             try
             {
                 // if (Page.IsPostBack == false)

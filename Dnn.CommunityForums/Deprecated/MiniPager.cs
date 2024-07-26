@@ -49,7 +49,6 @@
             }
 
             // 1 2 3 ... N
-
             for (var i = 1; i <= 3; i++)
             {
                 @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };

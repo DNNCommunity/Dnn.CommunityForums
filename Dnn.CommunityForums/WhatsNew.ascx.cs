@@ -221,7 +221,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     sbTemplate = sbTemplate.Replace("[FORUMURL]", Utilities.NavigateURL(topicTabId));
 
                     // Do the body replacements last as they are the most likely to contain conflicts.
-
                     sbTemplate = sbTemplate.Replace("[BODY]", body);
                     sbTemplate = sbTemplate.Replace("[BODYHTML]", bodyHtml);
                     sbTemplate = sbTemplate.Replace("[BODYTEXT]", Utilities.StripHTMLTag(bodyHtml));

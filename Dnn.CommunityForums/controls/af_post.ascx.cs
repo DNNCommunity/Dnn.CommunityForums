@@ -141,7 +141,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // TODO: Make sure this check happens on submit
             // if (_canAttach && _fi.AllowAttach) {}
-
             this.ctlForm.CancelButton.ImageUrl = this.themePath + "/images/cancel32.png";
             this.ctlForm.CancelButton.ImageLocation = "TOP";
             this.ctlForm.CancelButton.PostBack = false;
@@ -421,7 +420,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // if (ti.Author.AuthorId > 0)
                 //    ctlForm.Subscribe = Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, ti.Author.AuthorId);
-
                 this.contentId = ti.ContentId;
                 this.authorId = ti.Author.AuthorId;
 
@@ -1086,7 +1084,6 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         // Note attachments are currently saved into the authors file directory
-
         private void SaveAttachments(int contentId)
         {
             var fileManager = FileManager.Instance;

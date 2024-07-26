@@ -52,7 +52,6 @@ namespace DotNetNuke.Modules.ActiveForums
         //    tsTags.Datasource = DataProvider.Instance.Tags_Search(PortalId, ModuleId, e.Parameter.ToString + "%")
         //    tsTags.Refresh(e.Output)
         // End Sub
-
         private void lnkUpdate_Click(object sender, EventArgs e)
         {
             try
@@ -320,7 +319,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     trGroupNode.ChildNodes.Add(trNode);
 
                     // End If
-
                 }
 
             }

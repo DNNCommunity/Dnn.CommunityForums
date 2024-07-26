@@ -40,7 +40,6 @@ namespace DotNetNuke.Modules.ActiveForums
         // For the Notification API, return an object with "Result" property set to "success" if the operation succeeded.
         // In there is an error, return the error message in the "Message" property.
         // In both cases, it must return an 200 "OK" response.
-
         [DnnAuthorize]
         [HttpPost]
         public HttpResponseMessage ApprovePost(ModerationDTO dto)

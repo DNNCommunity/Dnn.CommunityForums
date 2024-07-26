@@ -341,7 +341,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 // Catch ex As Exception
 
                 // End Try
-
             }
         }
 

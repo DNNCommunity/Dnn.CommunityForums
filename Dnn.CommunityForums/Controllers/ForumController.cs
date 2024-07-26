@@ -124,7 +124,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // Setting strict to true enforces the actual permission
             // If strict is false, forums will show up in the list if they are not hidden for users
             // that don't otherwise have access
-
             var forumIds = string.Empty;
             DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId);
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
@@ -269,7 +268,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     // If Not String.IsNullOrEmpty(f.SEO) Then
                     //    forums.Append(f.SEO)
                     // End If
-
                     forums.Append("</forum>");
                     sb.AppendLine();
                 }

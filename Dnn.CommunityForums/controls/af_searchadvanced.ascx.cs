@@ -214,7 +214,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Bind the intial values for the forum
 
                 // Options
-
                 this.litInputError.Text = this.GetSharedResource("[RESX:SearchInputError]");
 
                 this.litOptions.Text = this.GetSharedResource("[RESX:SearchOptions]");
@@ -241,7 +240,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.txtTags.Text = this.Tags;
 
                 // Additional Options
-
                 this.litAdditionalOptions.Text = this.GetSharedResource("[RESX:SearchOptionsAdditional]");
 
                 this.lblForums.Text = this.GetSharedResource("[RESX:SearchInForums]");
@@ -265,7 +263,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // Buttons
-
                 this.btnSearch.Text = this.GetSharedResource("[RESX:Search]");
                 this.btnSearch2.Text = this.GetSharedResource("[RESX:Search]");
 

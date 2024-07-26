@@ -136,7 +136,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Check to make sure that a forum was specified and that the the user has upload permissions
                 // This is only an initial check, it will be done again when the file is saved to a post.
-
                 int forumId;
                 if (!int.TryParse(provider.FormData["forumId"], out forumId))
                 {

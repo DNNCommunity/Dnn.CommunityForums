@@ -47,7 +47,6 @@
         public void DeserializeTest()
         {
             // Arrange
-
             var mockPropertyList = new Mock<List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo>>();
             var prop1 = new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo();
             prop1.PropertyId = 1;

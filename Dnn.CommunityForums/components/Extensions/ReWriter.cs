@@ -595,7 +595,6 @@ namespace DotNetNuke.Modules.ActiveForums
             // NOTE!  The above RewritePath() overload is only supported in the .NET Framework 1.1
             // If you are using .NET Framework 1.0, use the below form instead:
             // context.RewritePath(sendToUrl);
-
         }
 
         private string HandleOldUrls(string rawUrl, string httpAlias)

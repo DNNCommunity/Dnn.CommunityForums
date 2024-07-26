@@ -55,7 +55,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
 
             // Send now
-
             var recipients = new List<string>();
             recipients.Add(author.Email);
             DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.EmailInfo()

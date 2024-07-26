@@ -331,7 +331,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             // Introduced for Active Forum Email Connector plug-in Ends
-
             if (user != null)
             {
                 result.Replace("[SENDERUSERNAME]", user.UserID.ToString());

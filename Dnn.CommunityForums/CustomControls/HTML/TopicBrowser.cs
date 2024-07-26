@@ -493,7 +493,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 //
-
                 tmp = tmp.Replace("[TOPICSTATE]", cUtils.TopicState(row));
                 var sAvatar = UserProfiles.GetAvatar(auth.AuthorId, this.mainSettings.AvatarWidth, this.mainSettings.AvatarHeight);
 

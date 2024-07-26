@@ -151,7 +151,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     // NOTE: indexer is called from scheduler and has no httpcontext
                     // so any code that relies on HttpContext cannot be used...
-
                     string link = new ControlUtils().BuildUrl(moduleInfo.TabID, moduleInfo.ModuleID, forumGroupUrlPrefix, forumUrlPrefix, forumGroupId, forumid, topicid, topicURL, -1, -1, string.Empty, 1, contentid, forumInfo.SocialGroupId);
                     if (!string.IsNullOrEmpty(link) && !link.StartsWith("http"))
                     {

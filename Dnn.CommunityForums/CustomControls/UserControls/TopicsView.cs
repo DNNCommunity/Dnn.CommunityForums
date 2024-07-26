@@ -169,7 +169,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             base.OnInit(e);
 
             // ctlModal.Callback += ctlModal_Callback;
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -456,7 +455,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string subTemplate = string.Empty;
 
             // Subforum Template
-
             if (sOutput.Contains("[SUBFORUMS]"))
             {
                 if (this.dtSubForums.Rows.Count > 0)
@@ -677,7 +675,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sOutput = sOutput.Replace("[PARENTFORUMNAME]", this.ForumInfo.ParentForumName);
 
             // End If
-
             sOutput = sOutput.Replace("[FORUMMAINLINK]", "<a href=\"" + this.NavigateUrl(this.TabId) + "\">[RESX:ForumMain]</a>");
             sOutput = sOutput.Replace("[FORUMGROUPLINK]", "<a href=\"" + this.sGroupURL + "\">" + this.groupName + "</a>");
 
@@ -775,7 +772,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string body = HttpUtility.HtmlDecode(Convert.ToString(drTopic["Body"]));
 
                     // Strip comments
-
                     int authorId = Convert.ToInt32(drTopic["AuthorId"]);
                     string authorName = Convert.ToString(drTopic["AuthorName"]).ToString().Replace("&amp;#", "&#");
                     string authorFirstName = Convert.ToString(drTopic["AuthorFirstName"]).ToString().Replace("&amp;#", "&#");
@@ -951,7 +947,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (Convert.ToInt32(drTopic["TopicType"]) == 1)
                     {
                         // sPollImage = "<img src=\"" + MyThemePath + "/images/poll.png\" style=\"vertical-align:middle;\" alt=\"[RESX:Poll]\" />";
-
                         sPollImage = "&nbsp;<i class=\"fa fa-signal fa-fw fa-red\"></i>";
                     }
 
@@ -1074,7 +1069,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                         // sRatingImage = "<img src=""" & MyThemePath & "/yellow_star_0" & drTopic("TopicRating").ToString & ".gif"" alt=""" & drTopic("TopicRating").ToString & """ />"
                         // sRatingImage = "<span class=\"af-rater rate" + drTopic["TopicRating"].ToString() + "\">&nbsp;</span>";
-
                         sRatingImage = "<span class=\"fa-rater fa-rate" + drTopic["TopicRating"].ToString() + "\"><i class=\"fa fa-star1\"></i><i class=\"fa fa-star2\"></i><i class=\"fa fa-star3\"></i><i class=\"fa fa-star4\"></i><i class=\"fa fa-star5\"></i></span>";
                         sTopicsTemplate = sTopicsTemplate.Replace("[POSTRATINGDISPLAY]", sRatingImage);
                     }
@@ -1089,7 +1083,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         else
                         {
                             // sImg = "<img alt=\"[RESX:PostStatus" + StatusId.ToString() + "]\" src=\"" + MyThemePath + "/images/status" + StatusId.ToString() + ".png\" />";
-
                             sImg = "<div><i class=\"fa fa-status" + StatusId.ToString() + " fa-red fa-2x\"></i></div>";
                         }
 

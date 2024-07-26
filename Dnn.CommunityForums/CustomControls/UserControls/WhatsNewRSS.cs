@@ -254,7 +254,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var lastBuildDate = DateTime.MinValue;
 
             // build items
-
             var forumids = this.Settings.RSSIgnoreSecurity ? this.Settings.Forums : this.AuthorizedForums;
 
             var dr = DataProvider.Instance().GetPosts(this.PortalId, forumids, true, false, this.Settings.Rows, this.Settings.Tags);

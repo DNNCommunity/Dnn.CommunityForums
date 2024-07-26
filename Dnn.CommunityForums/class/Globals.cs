@@ -460,7 +460,6 @@ namespace DotNetNuke.Modules.ActiveForums
         // public const string ForumView = "AF-{0}-FV-{1}";
         // public const string AllSettings = "AF-afset{0}";
         // public const string GroupInfo = "AF-gi{0}";
-
     }
 
     public class SortColumns

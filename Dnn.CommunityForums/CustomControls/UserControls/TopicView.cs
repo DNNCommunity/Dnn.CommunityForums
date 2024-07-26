@@ -397,7 +397,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // If a content jump id was passed it, we need to calulate a page and then jump to it with an ancor
             // otherwise, we don't need to do anything
-
             var contentJumpId = Utilities.SafeConvertInt(this.Request.Params[ParamKeys.ContentJumpId], -1);
             if (contentJumpId < 0)
             {
@@ -865,7 +864,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Hide Toolbar
-
             if (sOutput.Contains("[NOTOOLBAR]"))
             {
                 if (HttpContext.Current.Items.Contains("ShowToolbar"))
@@ -1019,7 +1017,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // ForumLinks
-
             var ctlUtils = new ControlUtils();
             var groupUrl = ctlUtils.BuildUrl(this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, string.Empty, this.ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
             var forumUrl = ctlUtils.BuildUrl(this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
@@ -1214,7 +1211,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             // Process our separators which are injected between rows.
             // Minimum index is 1.  If zero is specified, it will be treated as the default.
-
             const string pattern = @"\[REPLYSEPARATOR:(\d+?)\]";
             var separators = new Dictionary<int, string>();
             if (sOutput.Contains("[REPLYSEPARATOR"))
@@ -1243,8 +1239,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            // Prorcess topic and reply templates.
-
+            // Process topic and reply templates.
             var sTopicTemplate = TemplateUtils.GetTemplateSection(sOutput, "[TOPIC]", "[/TOPIC]");
             var sReplyTemplate = TemplateUtils.GetTemplateSection(sOutput, "[REPLIES]", "[/REPLIES]");
             var sTemp = string.Empty;
@@ -1395,7 +1390,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Use a string builder from here on out.
-
             var sbOutput = new StringBuilder(sOutput);
 
             if (this.bModSplit)
@@ -1760,7 +1754,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments(contentId, true, this.PortalId, this.ForumModuleId));
 
             // Switch back from the string builder to a normal string before we perform the image/thumbnail replacements.
-
             sOutput = sbOutput.ToString();
 
             // Legacy attachment functionality, uses "attachid"
@@ -1817,7 +1810,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             foreach (DataRow dr in this.dtAttach.DefaultView.ToTable().Rows)
             {
                 // AttachId, ContentId, UserID, FileName, ContentType, FileSize, FileID
-
                 var attachId = dr.GetInt("AttachId");
                 var filename = dr.GetString("Filename").TextOrEmpty();
 

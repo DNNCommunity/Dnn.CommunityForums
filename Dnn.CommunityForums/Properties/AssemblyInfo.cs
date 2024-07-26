@@ -51,7 +51,6 @@ using System.Runtime.CompilerServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
-
 [assembly: AssemblyVersion("08.01.02")]
 
 [assembly: AssemblyFileVersion("08.01.02")]
