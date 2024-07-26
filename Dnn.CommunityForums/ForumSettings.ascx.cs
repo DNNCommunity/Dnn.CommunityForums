@@ -193,7 +193,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         /// -----------------------------------------------------------------------------
         public override void UpdateSettings()
         {
-
             try
             {
                 this.Theme = this.drpThemes.SelectedValue;

@@ -151,7 +151,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public void Template_Delete(int templateId, int portalId, int moduleId)
         {
-
             TemplateInfo templateInfo = this.Template_Get(templateId);
             SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId);
             string templateFile = Utilities.MapPath(moduleSettings.TemplatePath + templateInfo.FileName);

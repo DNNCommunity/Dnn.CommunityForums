@@ -34,7 +34,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:WhatsNewRSS runat=server></{0}:WhatsNewRSS>")]
     public class WhatsNewRSS : Control
     {
-
         #region Constants
 
         private const string ModuleIDRequestKey = "moduleid";

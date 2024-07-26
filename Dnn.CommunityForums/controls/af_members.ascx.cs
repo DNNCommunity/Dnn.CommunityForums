@@ -27,7 +27,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class af_members : ForumBase
     {
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

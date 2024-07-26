@@ -35,7 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums
             var dr = DataProvider.Instance().Profiles_GetUsersOnline(portalId, moduleId, 2);
             try
             {
-
                 while (dr.Read())
                 {
                     if (sb.Length > 0)

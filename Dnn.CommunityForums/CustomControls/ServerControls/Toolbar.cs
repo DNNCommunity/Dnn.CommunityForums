@@ -32,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:Toolbar runat=server></{0}:Toolbar>")]
     public class Toolbar : ControlsBase
     {
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

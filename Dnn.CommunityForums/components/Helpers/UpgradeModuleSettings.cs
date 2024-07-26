@@ -36,7 +36,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
         internal static void MoveSettings_070011()
         {
-
             /* at some point around v6, general module settings were moved from the activeforums_settings table to the DNN platform Settings table;
              * the code that did that migration would check every time during page load (in ForumBase.OnLoad()) to see if the settings conversion was required.
              * So code has been moved here, and is now called once during module upgrade for one version to ensure that this is done.
@@ -130,7 +129,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
         internal static void DeleteObsoleteModuleSettings_080100()
         {
-
             /* remove TIMEZONEOFFSE, AMFORUMS, MAILQUEUE */
 
             foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())

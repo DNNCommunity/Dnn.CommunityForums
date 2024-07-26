@@ -49,7 +49,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 catch (Exception ex)
                 {
-
                 }
             }
             else
@@ -60,7 +59,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadForm(int templateId)
         {
-
             TemplateInfo ti = null;
             TemplateController tc = new TemplateController();
             ti = tc.Template_Get(templateId);

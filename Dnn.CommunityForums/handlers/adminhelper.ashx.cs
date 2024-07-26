@@ -285,7 +285,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
         private void PropertySave()
         {
-
             DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo();
             pi.PropertyId = -1;
             pi.PortalId = this.PortalId;
@@ -330,7 +329,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
         private void UpdateSort()
         {
-
             int propertyId = -1;
             int sortOrder = -1;
             DotNetNuke.Modules.ActiveForums.Controllers.PropertyController pc = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController();

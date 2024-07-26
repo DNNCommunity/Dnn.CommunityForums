@@ -175,7 +175,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception)
             {
-
                 throw;
             }
 
@@ -383,7 +382,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void ambtnSubmit_Click(object sender, System.EventArgs e)
         {
-
             this.Page.Validate();
             bool tmpVal = true;
             if (Utilities.InputIsValid(this.Request.Form["txtBody"].Trim()) == false)

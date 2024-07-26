@@ -427,7 +427,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (string.IsNullOrEmpty(sURL))
             {
-
                 var @params = new List<string>
                 {
                     $"{ParamKeys.ForumId}={this.ForumId}",

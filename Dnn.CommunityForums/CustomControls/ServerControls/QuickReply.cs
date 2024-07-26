@@ -171,14 +171,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
-
             }
 
         }
 
         private void ambtnSubmit_Click(object sender, System.EventArgs e)
         {
-
         }
 
         #endregion

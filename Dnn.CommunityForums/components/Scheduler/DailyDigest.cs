@@ -36,7 +36,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-
                 Subscriptions.SendSubscriptions(SubscriptionTypes.DailyDigest, DateTime.UtcNow);
                 this.ScheduleHistoryItem.Succeeded = true;
                 this.ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();

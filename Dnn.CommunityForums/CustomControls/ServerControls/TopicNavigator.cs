@@ -32,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicViewer runat=server></{0}:TopicViewer>")]
     public class TopicNavigator : ForumBase
     {
-
         private DisplayTemplate itemTemplate;
 
         public DisplayTemplate ItemTemplate

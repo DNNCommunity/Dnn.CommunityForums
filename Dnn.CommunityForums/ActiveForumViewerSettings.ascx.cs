@@ -134,7 +134,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public void LoadForums()
         {
-
             int i = 0;
             var mc = new DotNetNuke.Entities.Modules.ModuleController();
             var tc = new DotNetNuke.Entities.Tabs.TabController();

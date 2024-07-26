@@ -38,7 +38,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [SupportsEventValidation(), DefaultProperty("Text"), Designer("DotNetNuke.Modules.ActiveForums.Controls.ActiveCallbackDesigner"), ParseChildren(true, ""), ToolboxData("<{0}:Callback runat=server></{0}:Callback>")]
     public class Callback : WebControl
     {
-
         #region Declarations
 
         private CallBackContent content;
@@ -66,7 +65,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-
                 return this.debug;
             }
 
@@ -497,7 +495,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (HttpContext.Current.Request.Cookies[cName] != null)
                 {
-
                     string token = HttpContext.Current.Request.Cookies[cName].Value;
                     string tokenname = "hidreq";
                     string tokenvalue = string.Empty;
@@ -597,7 +594,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class CallBackEventArgs : EventArgs
     {
-
         public string Parameter;
         public string[] Parameters;
 
@@ -646,7 +642,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class ActiveCallbackDesigner : ControlDesigner
     {
-
         public override string GetDesignTimeHtml()
         {
             return "<div style=\"font-family:tahoma;font-size:11px;\">DNN Community Forums Callback Control</div>";

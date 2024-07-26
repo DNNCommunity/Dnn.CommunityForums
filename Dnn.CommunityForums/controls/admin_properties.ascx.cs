@@ -26,7 +26,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class admin_properties : ActiveAdminBase
     {
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -32,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:ForumContentTree runat=server></{0}:ForumContentTree>")]
     public class ForumContentTree : WebControl
     {
-
         private DisplayTemplate itemTemplate;
 
         public DisplayTemplate ItemTemplate

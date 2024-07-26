@@ -61,7 +61,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             try
             {
-
                 if (this.CurrentUserId == -1)
                 {
                     this.CurrentUserId = this.UserId;
@@ -372,7 +371,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseForumRow(string template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int currForumIndex, int totalForums)
         {
-
             if (template.Contains("[SUBFORUMS]") && template.Contains("[/SUBFORUMS]"))
             {
                 template = this.GetSubForums(template, fi.ForumID, this.TabId, this.ThemePath);

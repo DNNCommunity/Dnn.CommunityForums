@@ -326,7 +326,6 @@ namespace DotNetNuke.Modules.ActiveForums
         [System.Diagnostics.DebuggerStepThrough()]
         private void InitializeComponent()
         {
-
         }
 
         protected override void OnInit(EventArgs e)

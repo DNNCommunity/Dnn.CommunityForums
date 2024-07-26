@@ -81,7 +81,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
             set
             {
-
             }
         }
 
@@ -101,7 +100,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
             set
             {
-
             }
         }
     }

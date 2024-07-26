@@ -222,7 +222,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
-
             }
 
             writer.Write("</div>");
@@ -251,7 +250,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxItem(false)]
     public class ToggleContent : Control
     {
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

@@ -48,7 +48,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public void Dispose()
         {
-
         }
 
         public void Init(System.Web.HttpApplication context)
@@ -225,7 +224,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch
             {
-
             }
 
             if (!string.IsNullOrEmpty(catName))
@@ -512,7 +510,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string ResolveUrl(string appPath, string url)
         {
-
             // String is Empty, just return Url
             if (url.Length == 0)
             {
@@ -568,7 +565,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static void RewriteUrl(HttpContext context, string sendToUrl, ref string sendToUrlLessQString, ref string filePath)
         {
-
             // first strip the querystring, if any
             string queryString = string.Empty;
             sendToUrlLessQString = sendToUrl;
@@ -670,7 +666,6 @@ namespace DotNetNuke.Modules.ActiveForums
             sUrl = db.GetUrl(this.moduleId, this.forumgroupId, this.forumId, this.topicId, this.userId, this.contentId);
             if (!string.IsNullOrEmpty(sUrl))
             {
-
                 string sHost = httpAlias;
                 if (sUrl.StartsWith("/"))
                 {

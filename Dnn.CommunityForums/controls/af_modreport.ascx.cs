@@ -28,7 +28,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class af_modreport : ForumBase
     {
-
         #region Controls
         #endregion
 
@@ -39,10 +38,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-
                 if (this.Request.IsAuthenticated)
                 {
-
                     string strReasons = this.GetSharedResource("[RESX:ReasonOptions]");
                     int i = 0;
                     foreach (string strReason in strReasons.Split(new char[] { ';' }))

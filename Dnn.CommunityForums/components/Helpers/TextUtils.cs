@@ -73,7 +73,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 catch (Exception ex)
                 {
-
                 }
 
                 string pattern = "<script.*/*>|</script>|<[a-zA-Z][^>]*=['\"]+javascript:\\w+.*['\"]+>|<\\w+[^>]*\\son\\w+=.*[ /]*>";

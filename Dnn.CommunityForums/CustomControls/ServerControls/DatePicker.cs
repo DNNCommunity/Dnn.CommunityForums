@@ -29,7 +29,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ValidationProperty("SelectedDate"), ToolboxData("<{0}:datepicker runat=server></{0}:datepicker>")]
     public class DatePicker : CompositeControl
     {
-
         #region Declarations
         private HiddenField labelHidden = new HiddenField();
         private string dateFormat;
@@ -666,7 +665,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                     catch (Exception ex)
                     {
-
                     }
 
                 }
@@ -693,7 +691,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 str.Append("window." + this.ClientID + ".MonthNames = new Array(");
                 for (int i = 0; i < xMonths; i++)
                 {
-
                     str.Append("'" + mNames[i] + "'");
                     if (i < (xMonths - 1))
                     {
@@ -748,7 +745,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
-
             }
         }
 

@@ -33,7 +33,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), Designer("DotNetNuke.Modules.ActiveForums.Controls.ActiveGridDesigner"), ToolboxData("<{0}:activegrid runat=server><headertemplate></headertemplate><itemtemplate></itemtemplate><footertemplate></footertemplate></{0}:activegrid>")]
     public class ActiveGrid : CompositeControl
     {
-
         #region Declarations
         private Literal lit;
         private System.Web.UI.HtmlControls.HtmlGenericControl div;
@@ -762,7 +761,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class ActiveGridDesigner : ControlDesigner
     {
-
         public override string GetDesignTimeHtml()
         {
             return "<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td>DNN Community Forums Grid Control<br />Please use source view to make changes</td></tr></table>";

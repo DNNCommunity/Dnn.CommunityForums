@@ -150,7 +150,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (!string.IsNullOrEmpty(g))
                     {
-
                         string gType = g.Split(':')[1];
                         int groupId = Convert.ToInt32(g.Split(':')[0]);
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: this.PortalId, roleId: groupId);

@@ -27,7 +27,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class admin_tags : ActiveAdminBase
     {
-
         #region Event Handlers
 
         protected override void OnInit(EventArgs e)
@@ -96,7 +95,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-
             }
 
         }

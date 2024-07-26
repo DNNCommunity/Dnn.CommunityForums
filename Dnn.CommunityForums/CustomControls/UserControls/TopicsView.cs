@@ -625,7 +625,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string url = null;
             if (this.bAllowRSS)
             {
-
                 url = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(this.Request)) + "/DesktopModules/ActiveForums/feeds.aspx?portalid=" + this.PortalId + "&forumid=" + this.ForumId + "&tabid=" + this.TabId + "&moduleid=" + this.ForumModuleId;
                 if (this.SocialGroupId > 0)
                 {

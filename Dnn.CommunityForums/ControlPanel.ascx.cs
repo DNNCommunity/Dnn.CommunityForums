@@ -85,7 +85,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-
                 if (this.Request.QueryString["cptry"] == null)
                 {
                     string sURL = this.EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
@@ -155,7 +154,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-
                 if (this.Request.QueryString["cptry"] == null)
                 {
                     string sURL = this.EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");

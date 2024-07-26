@@ -32,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ParseChildren(true), PersistChildren(true), ToolboxData("<{0}:ActiveTabs runat=server></{0}:ActiveTabs>")]
     public class ActiveTabs : System.Web.UI.WebControls.CompositeControl
     {
-
         // Private _tabs As TabCollection = Nothing
         private List<Tab> tabs;
         private string imagesPath;
@@ -247,7 +246,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.AddAttributesToRender(writer);
                 foreach (Tab tab in this.Tabs)
                 {
-
                     writer.AddAttribute(HtmlTextWriterAttribute.Id, "div" + tab.ControlKey);
                     writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "am_toggleTab(this);");
                     if (i == 0)
@@ -350,7 +348,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.Visible == true)
             {
-
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 sb.Append("var am_selectedTab;");
                 sb.Append("function am_getSelectedTab() {");

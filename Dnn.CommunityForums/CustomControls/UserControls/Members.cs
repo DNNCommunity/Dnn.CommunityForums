@@ -99,7 +99,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Methods
         private void BuildControl()
         {
-
             System.Text.StringBuilder sb = new System.Text.StringBuilder(1024);
             SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(this.ForumModuleId);
             string sTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "_memberlist", 0);

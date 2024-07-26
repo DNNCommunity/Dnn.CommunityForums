@@ -109,7 +109,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-
             }
         }
 

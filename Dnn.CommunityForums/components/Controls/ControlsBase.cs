@@ -107,7 +107,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-
                 base.OnInit(e);
 
                 if (this.ParseTemplateFile)
@@ -131,7 +130,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-
                 foreach (Control ctrl in ctrls)
                 {
                     if (ctrl is Controls.ForumRow)

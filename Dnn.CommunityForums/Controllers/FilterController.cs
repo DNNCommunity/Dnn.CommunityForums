@@ -34,7 +34,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class FilterController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.FilterInfo>
     {
-
         public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML, Uri hostUri)
         {
             if (removeHTML)

@@ -27,7 +27,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:forumdisplay runat=server></{0}:forumdisplay>")]
     public class ForumDisplay : ControlsBase
     {
-
         #region Private Members
 
         #endregion

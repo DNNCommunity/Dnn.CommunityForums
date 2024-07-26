@@ -72,7 +72,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (this.Request.IsAuthenticated && this.UserLastAccess == Utilities.NullDate())
                     {
-
                         if (this.ForumUser != null)
                         {
                             DateTime dtLastAccess = DateTime.UtcNow;
@@ -140,7 +139,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-
                     string ctlPath = Globals.ModulePath + "controls/_default.ascx";
                     ForumBase ctlDefault = (ForumBase)this.LoadControl(ctlPath);
                     ctlDefault.ID = "ctlConfig";

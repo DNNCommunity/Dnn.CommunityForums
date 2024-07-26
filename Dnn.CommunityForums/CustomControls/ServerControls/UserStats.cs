@@ -35,7 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:UserStats runat=server></{0}:UserStats>")]
     public class UserStats : WebControl
     {
-
         private DisplayTemplate template;
         private int userId = -1;
         private int moduleId = -1;

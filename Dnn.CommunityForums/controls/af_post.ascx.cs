@@ -510,7 +510,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void PrepareTopic()
         {
-
             string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicEditor", this.fi.TopicFormId);
             if (this.isEdit)
             {
@@ -1086,7 +1085,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception)
             {
-
             }
         }
 

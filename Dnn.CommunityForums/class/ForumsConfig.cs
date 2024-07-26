@@ -97,7 +97,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 xDoc.Load(this.sPath);
                 if (xDoc != null)
                 {
-
                     System.Xml.XmlNode xRoot = xDoc.DocumentElement;
                     System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//mainsettings/setting");
                     if (xNodeList.Count > 0)
@@ -126,7 +125,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-
             }
         }
 
@@ -210,7 +208,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//defaultforums/groups/group");
                 if (xNodeList.Count > 0)
                 {
-
                     // since templates are loaded, get template ids and attach to forum settings
                     var tc = new TemplateController();
                     int profileInfoTemplateId = tc.Template_Get(templateName: "ProfileInfo", portalId: portalId, moduleId: moduleId).TemplateId;

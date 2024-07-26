@@ -71,7 +71,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             if (dto.TopicId > 0 && dto.ForumId > 0)
             {
-
                 string userRoles = new DotNetNuke.Modules.ActiveForums.UserProfileController()
                     .Profiles_Get(this.ActiveModule.PortalID, this.ForumModuleId, this.UserInfo.UserID).Roles;
                 int subscribed = new SubscriptionController().Subscription_Update(this.ActiveModule.PortalID,

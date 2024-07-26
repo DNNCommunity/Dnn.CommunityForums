@@ -71,7 +71,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("\">");
             if (this.Enabled)
             {
-
                 sb.Append("<li onmouseover=\"amaf_hoverRate(this,1);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + this.ModuleId.ToString() + "," + this.ForumId.ToString() + "," + this.TopicId.ToString() + ",1);\"><i class=\"fa fa-star1\"></i></li>");
                 sb.Append("<li onmouseover=\"amaf_hoverRate(this,2);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + this.ModuleId.ToString() + "," + this.ForumId.ToString() + "," + this.TopicId.ToString() + ",2);\"><i class=\"fa fa-star2\"></i></li>");
                 sb.Append("<li onmouseover=\"amaf_hoverRate(this,3);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + this.ModuleId.ToString() + "," + this.ForumId.ToString() + "," + this.TopicId.ToString() + ",3);\"><i class=\"fa fa-star3\"></i></li>");

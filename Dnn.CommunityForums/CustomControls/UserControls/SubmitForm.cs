@@ -953,7 +953,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public void btnPost_Click(object sender, EventArgs e)
         {
-
             var captcha = (UI.WebControls.CaptchaControl)this.FindControl("ctlCaptcha");
             if (captcha != null)
             {
@@ -1280,7 +1279,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void btnSubmit_Click(object sender, System.EventArgs e)
         {
-
         }
 
         private void insertHTMLScript()

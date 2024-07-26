@@ -92,7 +92,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (socialGroupId > 0)
             {
-
                 ji.SocialGroupId = socialGroupId;
 
             }

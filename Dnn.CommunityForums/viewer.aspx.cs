@@ -30,7 +30,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class af_viewer : Framework.PageBase
     {
-
         #region  Web Form Designer Generated Code
 
         // This call is required by the Web Form Designer.

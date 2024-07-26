@@ -38,7 +38,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// </summary>
     public class TagController : ControllerBase<TagController>
     {
-
 #pragma warning disable CS1570
         /// <summary>
         /// Gets Tags matching a string anywhere in string

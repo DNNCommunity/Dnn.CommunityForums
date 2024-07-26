@@ -184,7 +184,6 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public UserProfileInfo Profiles_Get(int portalId, int moduleId, int userId)
         {
-
             UserProfileInfo upi = (UserProfileInfo)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.UserProfile, moduleId, userId));
             if (upi == null)
             {

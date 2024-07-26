@@ -30,7 +30,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:WhatsNewControl runat=server></{0}:WhatsNewControl>")]
     public class WhatsNewControl : DotNetNuke.Entities.Modules.PortalModuleBase
     {
-
         #region Private Member Variables
 
         private string forumIds = string.Empty;

@@ -55,7 +55,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindPoll()
         {
-
             try
             {
                 DataSet ds = DataProvider.Instance().Poll_Get(this.TopicId);
@@ -133,7 +132,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-
             }
         }
     }

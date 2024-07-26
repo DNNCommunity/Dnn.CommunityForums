@@ -71,7 +71,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int i = 0;
             for (i = 0; i <= this.Count; i++)
             {
-
                 if (((Tab)this.contents[i]).Text.ToLower() == item.Text.ToLower())
                 {
                     inList = true;
@@ -128,10 +127,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int i = 0;
             for (i = 0; i <= this.Count; i++)
             {
-
                 if (((Tab)this.contents[i]).Text.ToLower() == item.Text.ToLower())
                 {
-
                     itemIndex = i;
                     break;
 
@@ -174,11 +171,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (index >= 0 && index < this.Count)
             {
-
                 int i = 0;
                 for (i = index; i < this.Count; i++)
                 {
-
                     this.contents[i] = this.contents[i + 1];
                 }
 
@@ -196,7 +191,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class TabEnum : IEnumerator<Tab>
     {
-
         public List<Tab> tabs;
 
         private int position = -1;

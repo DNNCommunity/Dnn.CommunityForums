@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -31,7 +31,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class SqlDataProvider : DataProvider
     {
-
         #region Private Members
 
         private const string ProviderType = "data";
@@ -48,7 +47,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public SqlDataProvider()
         {
-
             // Read the configuration specific information for this provider
             DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)this.providerConfiguration.Providers[this.providerConfiguration.DefaultProvider];
 

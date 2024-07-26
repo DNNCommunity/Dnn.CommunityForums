@@ -209,7 +209,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch
             {
-
             }
         }
 

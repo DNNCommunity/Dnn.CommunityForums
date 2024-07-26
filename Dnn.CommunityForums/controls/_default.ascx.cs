@@ -43,7 +43,6 @@ namespace DotNetNuke.Modules.ActiveForums
             init = fc.ForumsInit(this.PortalId, this.ModuleId);
             if (init == true)
             {
-
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "AFINSTALLED", init.ToString());
                 DataCache.ClearAllCache(this.ModuleId);
                 DataCache.ClearAllCacheForTabId(this.TabId);
