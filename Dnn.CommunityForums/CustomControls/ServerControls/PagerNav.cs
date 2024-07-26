@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public enum Mode
         {
             Links,
-            CallBack
+            CallBack,
         }
 
         public bool UseShortUrls { get; set; }

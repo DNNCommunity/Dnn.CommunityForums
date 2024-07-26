@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             AuthenticationFailed,
             Exception,
             NoResults,
-            AccessDenied
+            AccessDenied,
         }
 
         private Hashtable @params;

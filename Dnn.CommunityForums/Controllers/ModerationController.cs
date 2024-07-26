@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     Body = body,
                     IncludeDismissAction = false,
                     SenderUserID = authorId,
-                    Context = notificationKey
+                    Context = notificationKey,
                 };
 
                 var modRoles = DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetModeratorRoles(portalId, moduleId, forumId);

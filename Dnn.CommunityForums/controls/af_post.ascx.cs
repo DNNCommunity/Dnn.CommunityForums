@@ -362,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         UserId = -1,
                         UserName = "guest",
                         Profile = { TopicCount = 0, ReplyCount = 0 },
-                        DateCreated = DateTime.UtcNow
+                        DateCreated = DateTime.UtcNow,
                     };
                     message = TemplateUtils.PreviewTopic(topicTemplateID, this.PortalId, this.ForumModuleId, this.TabId, this.ForumInfo, this.UserId, message, this.ImagePath, up, DateTime.UtcNow, this.CurrentUserType, this.UserId, this.TimeZoneOffset);
                     this.hidPreviewText.Value = message;
@@ -392,7 +392,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var im = new InfoMessage
                 {
-                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalReached]"), this.MainSettings.EditInterval) + "</div>"
+                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalReached]"), this.MainSettings.EditInterval) + "</div>",
                 };
                 this.plhMessage.Controls.Add(im);
                 this.plhContent.Controls.Clear();
@@ -473,7 +473,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var im = new Controls.InfoMessage
                 {
-                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalReached]"), this.MainSettings.EditInterval.ToString()) + "</div>"
+                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalReached]"), this.MainSettings.EditInterval.ToString()) + "</div>",
                 };
                 this.plhMessage.Controls.Add(im);
                 this.plhContent.Controls.Clear();
@@ -1204,7 +1204,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ContentType = attachment.ContentType,
                 FileId = attachment.FileId,
                 FileName = Regex.Replace(attachment.FileName.TextOrEmpty(), @"^__\d+__\d+__", string.Empty), // Remove our unique file prefix before sending to the client.
-                FileSize = attachment.FileSize
+                FileSize = attachment.FileSize,
             }).ToList();
 
             var serializer = new DataContractJsonSerializer(typeof(List<ClientAttachment>));

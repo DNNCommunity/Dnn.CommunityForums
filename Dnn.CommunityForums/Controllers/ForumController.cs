@@ -414,7 +414,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     PortalId = portalId,
                     PermissionsId = gi.PermissionsId,
                     SortOrder = 0,
-                    SocialGroupId = socialGroupId
+                    SocialGroupId = socialGroupId,
                 };
 
                 var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();

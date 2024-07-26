@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             ReplyWithBody,
             Quote,
             EditTopic,
-            EditReply
+            EditReply,
         }
 
         #endregion
@@ -944,7 +944,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     TopicTemplate = this.topicReviewTemplate,
                     OptPageSize = int.MaxValue,
                     OptDefaultSort = "DESC",
-                    ForumInfo = this.ForumInfo
+                    ForumInfo = this.ForumInfo,
                 };
                 this.plhTopicReview.Controls.Add(ctlTopicView);
             }

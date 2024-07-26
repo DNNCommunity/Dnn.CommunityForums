@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                                                      ParamKeys.ViewType + "=" + Views.Topic,
                                                                      ParamKeys.ForumId + "=" + this.ForumId,
                                                                      ParamKeys.TopicId + "=" + this.TopicId,
-                                                                     ParamKeys.Sort + "=" + sort
+                                                                     ParamKeys.Sort + "=" + sort,
                                                                  });
             this.Response.Redirect(dest);
         }

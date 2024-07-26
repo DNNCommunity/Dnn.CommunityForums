@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                           this.GetNextActionID(), "Edit", /* Utilities.GetSharedResource("Configure") */
                                           DotNetNuke.Entities.Modules.Actions.ModuleActionType.EditContent, string.Empty, string.Empty,
                                           this.EditUrl(), false, Security.SecurityAccessLevel.Edit, true, false
-                                      }
+                                      },
                                   };
             }
         }

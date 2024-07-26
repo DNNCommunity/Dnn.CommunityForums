@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     Body = body,
                     IPAddress = iPAddress,
                     Summary = string.Empty
-                }
+                },
             };
             replyId = this.Reply_Save(portalId, moduleId, ri);
             Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);

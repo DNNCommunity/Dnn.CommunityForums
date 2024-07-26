@@ -38,7 +38,7 @@ public static class SimulateDateDiff
         Second,
         Weekday,
         WeekOfYear,
-        Year
+        Year,
     }
 
     public static long DateDiff(DateInterval intervalType, System.DateTime dateOne, System.DateTime dateTwo)

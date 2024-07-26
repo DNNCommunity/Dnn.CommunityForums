@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ProfileId = userId,
                 UserId = userId,
                 Title = subject,
-                ItemData = new ItemData { Url = uRL }
+                ItemData = new ItemData { Url = uRL },
             };
             if (string.IsNullOrEmpty(summary))
             {
@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ProfileId = userId,
                     UserId = userId,
                     Title = subject,
-                    ItemData = new ItemData { Url = uRL }
+                    ItemData = new ItemData { Url = uRL },
                 };
                 if (string.IsNullOrEmpty(summary))
                 {

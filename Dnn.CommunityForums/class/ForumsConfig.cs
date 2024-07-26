@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 ModuleId = moduleId,
                                 Title = xNodeList[i].Attributes["templatetitle"].Value,
                                 Subject = xNodeList[i].Attributes["templatesubject"].Value,
-                                Template = Utilities.GetFileContent(xNodeList[i].Attributes["templatefile"].Value)
+                                Template = Utilities.GetFileContent(xNodeList[i].Attributes["templatefile"].Value),
                             };
                             tc.Template_Save(ti);
                         }
@@ -232,7 +232,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             Hidden = xNodeList[i].Attributes["hidden"].Value == "1",
                             SortOrder = i,
                             GroupSettingsKey = string.Empty,
-                            PermissionsId = -1
+                            PermissionsId = -1,
                         };
                         var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
                         int groupId = gc.Groups_Save(portalId, gi, true);

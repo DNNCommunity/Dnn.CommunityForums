@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.GetNextActionID(), Utilities.GetSharedResource("[RESX:ControlPanel]"),
                         ModuleActionType.AddContent, string.Empty, string.Empty, this.EditUrl(), false,
                         Security.SecurityAccessLevel.Edit, true, false
-                    }
+                    },
                 };
 
                 return actions;

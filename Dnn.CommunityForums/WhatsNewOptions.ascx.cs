@@ -291,7 +291,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         ImageUrl = Globals.ModulePath + "images/tree/tree_group.png",
                         ShowCheckBox = true,
                         SelectAction = TreeNodeSelectAction.None,
-                        Value = "G:" + row["ForumGroupId"]
+                        Value = "G:" + row["ForumGroupId"],
                     };
                     trGroupNode.Expanded = i == 0;
                     i += 1;
@@ -308,7 +308,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         ShowCheckBox = true,
                         Expanded = false,
                         SelectAction = TreeNodeSelectAction.None,
-                        Value = "F:" + row["ForumId"]
+                        Value = "F:" + row["ForumId"],
                     };
                     if (this.HasSubForums(Convert.ToInt32(row["ForumId"]), dt))
                     {
@@ -349,7 +349,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ShowCheckBox = true,
                     Value = "F:" + row["ForumId"],
                     Checked = false,
-                    SelectAction = TreeNodeSelectAction.None
+                    SelectAction = TreeNodeSelectAction.None,
                 };
                 parentNode.ChildNodes.Add(tNode);
                 this.AddChildNodes(tNode, dt, row);

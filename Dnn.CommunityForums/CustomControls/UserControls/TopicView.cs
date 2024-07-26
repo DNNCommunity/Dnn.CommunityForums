@@ -432,7 +432,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     $"{ParamKeys.ForumId}={this.ForumId}",
                     $"{ParamKeys.TopicId}={this.TopicId}",
-                    $"{ParamKeys.ViewType}={Views.Topic}"
+                    $"{ParamKeys.ViewType}={Views.Topic}",
                 };
                 if (this.MainSettings.UseShortUrls)
                 {
@@ -733,7 +733,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     dtForums = null,
                     ForumId = this.ForumId,
                     EnableViewState = false,
-                    ForumInfo = this.ForumId > 0 ? this.ForumInfo : null
+                    ForumInfo = this.ForumId > 0 ? this.ForumInfo : null,
                 };
 
                 if (!plh.Controls.Contains(ctlForumJump))
@@ -752,7 +752,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     ModuleConfiguration = this.ModuleConfiguration,
                     TopicId = this.TopicId,
-                    ForumId = this.ForumId
+                    ForumId = this.ForumId,
                 });
             }
 
@@ -1360,7 +1360,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     PrefBlockSignatures = this.UserPrefHideSigs,
                     IsUserOnline = isUserOnline,
                     SignatureDisabled = signatureDisabled
-                }
+                },
             };
             if (author != null)
             {

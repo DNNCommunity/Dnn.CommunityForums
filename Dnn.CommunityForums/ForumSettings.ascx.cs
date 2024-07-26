@@ -382,7 +382,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         Text = ti.TabName + " - Ventrian Messages",
                         Value = ti.TabID.ToString(),
-                        Selected = ti.TabID == this.MessagingTabId
+                        Selected = ti.TabID == this.MessagingTabId,
                     });
                 }
             }

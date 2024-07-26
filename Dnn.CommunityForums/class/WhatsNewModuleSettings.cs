@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     Tags = DefaultTags,
                     Header = DefaultHeader,
                     Footer = DefaultFooter,
-                    Format = DefaultFormat
+                    Format = DefaultFormat,
                 };
             }
 
@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Tags = (moduleSettings[TagsSettingsKey] != null) ? Convert.ToString(moduleSettings[TagsSettingsKey]) : DefaultTags,
                 Header = (moduleSettings[HeaderSettingsKey] != null) ? Convert.ToString(moduleSettings[HeaderSettingsKey]) : DefaultHeader,
                 Footer = (moduleSettings[FooterSettingsKey] != null) ? Convert.ToString(moduleSettings[FooterSettingsKey]) : DefaultFooter,
-                Format = (moduleSettings[FormatSettingsKey] != null) ? Convert.ToString(moduleSettings[FormatSettingsKey]) : DefaultFormat
+                Format = (moduleSettings[FormatSettingsKey] != null) ? Convert.ToString(moduleSettings[FormatSettingsKey]) : DefaultFormat,
             };
         }
     }

@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 UserId = userId,
                 ForumId = forumId,
                 TopicId = 0,
-                Mode = 1
+                Mode = 1,
             });
         }
 
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 UserId = userId,
                 ForumId = forumId,
                 TopicId = topicId,
-                Mode = 1
+                Mode = 1,
             });
         }
 

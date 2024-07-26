@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModuleId = moduleId,
                 PortalId = portalId,
                 Recipients = recipients,
-                Subject = subject
+                Subject = subject,
             });
         }
 
@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     ModuleId = moduleID,
                     ForumId = forumId,
                     UserId = moderator.UserID,
-                    Email = moderator.Email
+                    Email = moderator.Email,
                 };
                 if (!subs.Contains(si))
                 {

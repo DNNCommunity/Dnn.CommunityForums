@@ -27,7 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public enum AttachStores
     {
         FILESYSTEM,
-        DATABASE
+        DATABASE,
     }
 
     public enum CurrentUserTypes
@@ -36,14 +36,14 @@ namespace DotNetNuke.Modules.ActiveForums
         Auth,
         ForumMod,
         Admin,
-        SuperUser
+        SuperUser,
     }
 
     public enum EditorTypes
     {
         TEXTBOX,
         ACTIVEEDITOR,
-        HTMLEDITORPROVIDER
+        HTMLEDITORPROVIDER,
     }
 
     public enum HTMLPermittedUsers
@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
         AuthenticatedUsers,
         TrustedUsers,
         Moderators,
-        Administrators
+        Administrators,
     }
 
     public enum AvatarTypes
@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
         LocalFile,
         ExternalLink,
         MultipleLocalFile,
-        MultipleExternalLink
+        MultipleExternalLink,
     }
 
     public enum SubscriptionTypes
@@ -68,20 +68,20 @@ namespace DotNetNuke.Modules.ActiveForums
         Disabled,
         Instant,
         DailyDigest,
-        WeeklyDigest
+        WeeklyDigest,
     }
 
     public enum TopicTypes
     {
         Topic,
-        Poll
+        Poll,
     }
 
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
     public enum EmailFormats
     {
         HTML,
-        PlainText
+        PlainText,
     }
 
     public enum ProfileVisibilities
@@ -90,20 +90,20 @@ namespace DotNetNuke.Modules.ActiveForums
         Everyone = 1,
         RegisteredUsers = 2,
         Moderators = 3,
-        Admins = 4
+        Admins = 4,
     }
 
     public enum PMTypes
     {
         Disabled = 0,
         Core = 1,
-        Ventrian = 2
+        Ventrian = 2,
     }
 
     public enum TrustTypes
     {
         NotTrusted,
-        Trusted
+        Trusted,
     }
 
     public enum ConfirmActions
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums
         SendToComplete,
         SendToFailed,
         AlertSent,
-        UserBanned
+        UserBanned,
     }
 
     public class FilterTypes

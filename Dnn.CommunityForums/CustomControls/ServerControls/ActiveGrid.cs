@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public enum Sort : int
         {
             Ascending,
-            Descending
+            Descending,
         }
 
         public event ItemBoundEventHandler ItemBound;

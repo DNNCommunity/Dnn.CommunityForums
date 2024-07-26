@@ -140,7 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         Email = ui.Email,
                         FirstName = ui.FirstName,
                         LastName = ui.LastName,
-                        Username = ui.Username
+                        Username = ui.Username,
                     };
                     DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalSettings.PortalId, this.moduleId, this.tabId, this.forumId, this.topicId, this.replyId, string.Empty, au);
                 }
@@ -210,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         Email = ui.Email,
                         FirstName = ui.FirstName,
                         LastName = ui.LastName,
-                        Username = ui.Username
+                        Username = ui.Username,
                     };
                     DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(fi.ModDeleteTemplateId, this.PortalSettings.PortalId, this.forumId, this.topicId, this.replyId, this.moduleId, this.tabId, string.Empty);
                 }

@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModEdit = adminRoleId,
                 ModLock = adminRoleId,
                 ModPin = adminRoleId,
-                ModuleId = moduleId
+                ModuleId = moduleId,
             };
             this.Insert(permissionInfo);
             return permissionInfo;
@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModUser = EmptyPermissions,
                 ModEdit = EmptyPermissions,
                 ModLock = EmptyPermissions,
-                ModPin = EmptyPermissions
+                ModPin = EmptyPermissions,
             };
         }
 

@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 ContentType = Utilities.SafeConvertString(dr["ContentType"]),
                 FileSize = Utilities.SafeConvertLong(dr["FileSize"]),
                 FileId = dr["FileId"] as int?,
-                AllowDownload = Utilities.SafeConvertBool(dr["AllowDownload"], true)
+                AllowDownload = Utilities.SafeConvertBool(dr["AllowDownload"], true),
             };
 
             if (dr.HasColumn("FileData"))

@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             None,
             Categories,
-            Forums
+            Forums,
         }
 
         private int portalId = -1;

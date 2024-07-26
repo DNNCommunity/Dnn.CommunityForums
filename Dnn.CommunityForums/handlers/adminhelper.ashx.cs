@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             RankDelete = 10,
             FilterGet = 11,
             FilterSave = 12,
-            FilterDelete = 13
+            FilterDelete = 13,
 
         }
 

@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 LastName = dnnUser.LastName,
                 DisplayName = dnnUser.DisplayName,
                 Email = dnnUser.Email,
-                UserRoles = this.GetRoleIds(dnnUser, _portalSettings.PortalId)
+                UserRoles = this.GetRoleIds(dnnUser, _portalSettings.PortalId),
             };
 
             if (dnnUser.IsSuperUser)

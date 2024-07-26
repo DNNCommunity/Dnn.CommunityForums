@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         ModifiedTimeUtc = dateupdated,
                         Tags = tags.Count > 0 ? tags : null,
                         Permissions = permittedRolesCanView,
-                        IsActive = isApproved && !isDeleted
+                        IsActive = isApproved && !isDeleted,
                     };
                     searchDocuments.Add(searchDoc);
                 }

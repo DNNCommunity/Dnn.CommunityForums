@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Subject = this.Subject,
                 ModuleId = this.ModuleId,
                 PortalId = this.PortalId,
-                Recipients = this.Recipients
+                Recipients = this.Recipients,
             });
         }
     }

@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 up.TrustLevel,
                 up.UserCaption,
                 up.Signature,
-                up.RewardPoints
+                up.RewardPoints,
             };
 
             return this.Request.CreateResponse(HttpStatusCode.OK, result);

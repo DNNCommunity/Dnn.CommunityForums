@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public enum ProfileModes : int
         {
             View,
-            Edit
+            Edit,
         }
 
         #endregion

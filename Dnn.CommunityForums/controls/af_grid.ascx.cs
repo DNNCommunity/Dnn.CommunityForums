@@ -320,18 +320,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     $"{ParamKeys.GridType}={this.Request.Params[ParamKeys.GridType]}",
                     $"{ParamKeys.Sort}={this.Request.Params[ParamKeys.Sort]}",
-                    "afcol=" + this.Request.Params["afcol"]
+                    "afcol=" + this.Request.Params["afcol"],
                 };
             else if (this.Request.Params[ParamKeys.TimeSpan] != null)
                 @params = new[]
                 {
                     $"{ParamKeys.GridType}={this.Request.Params[ParamKeys.GridType]}",
-                    $"{ParamKeys.TimeSpan}={this.Request.Params[ParamKeys.TimeSpan]}"
+                    $"{ParamKeys.TimeSpan}={this.Request.Params[ParamKeys.TimeSpan]}",
                 };
             else
                 @params = new[]
                 {
-                    $"{ParamKeys.GridType}={this.Request.Params[ParamKeys.GridType]}"
+                    $"{ParamKeys.GridType}={this.Request.Params[ParamKeys.GridType]}",
                 };
 
             pager.PageCount = intPages;

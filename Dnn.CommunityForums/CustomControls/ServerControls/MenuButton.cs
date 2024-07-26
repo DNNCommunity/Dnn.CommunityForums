@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             DownRight,
             DownLeft,
             UpRight,
-            UpLeft
+            UpLeft,
         }
 
         #region Private Member Variables

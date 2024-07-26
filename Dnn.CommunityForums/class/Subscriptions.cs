@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
                     {
-                        UserId = Convert.ToInt32(dr["UserId"])
+                        UserId = Convert.ToInt32(dr["UserId"]),
                     };
 
                     if (!sl.Contains(si))

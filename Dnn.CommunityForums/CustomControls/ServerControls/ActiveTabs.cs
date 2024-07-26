@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public enum LoadTypes : int
         {
             Window,
-            Shell
+            Shell,
         }
 
         #region  Constructor

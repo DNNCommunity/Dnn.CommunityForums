@@ -55,21 +55,21 @@ namespace DotNetNuke.Modules.ActiveForums
         ModUser,
         ModEdit,
         ModLock,
-        ModPin
+        ModPin,
     }
 
     public enum ObjectType : int
     {
         RoleId,
         UserId,
-        GroupId
+        GroupId,
     }
 
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
     public enum SecureType : int
     {
         ForumGroup,
-        Forum
+        Forum,
     }
 
     [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo.")]

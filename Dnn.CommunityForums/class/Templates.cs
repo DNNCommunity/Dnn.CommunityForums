@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
             Email, // 8
             Profile, // 9
             ModEmail, // 10
-            PostInfo // 11
+            PostInfo, // 11
         }
 
     }

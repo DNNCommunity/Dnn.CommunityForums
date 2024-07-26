@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     $"{ParamKeys.ViewType}={Views.Search}",
                     $"{ParamKeys.ForumId}={this.ForumId}",
-                    $"{SearchParamKeys.Query}={HttpUtility.UrlEncode(this.txtSearch.Text.Trim())}"
+                    $"{SearchParamKeys.Query}={HttpUtility.UrlEncode(this.txtSearch.Text.Trim())}",
                 };
 
                 if (this.SocialGroupId > 0)

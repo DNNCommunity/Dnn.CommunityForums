@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     EmailTo = emailTo,
                     EmailBody = emailBody,
                     EmailSubject = emailSubject,
-                    DateCreated = DateTime.UtcNow
+                    DateCreated = DateTime.UtcNow,
                 });
             }
             catch (Exception ex)

@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             LoadTopic, /* no longer used */
             SaveTopic,/* no longer used */
             ForumList,/* no longer used */
-            LikePost /*no longer used*/
+            LikePost, /*no longer used*/
 
         }
 

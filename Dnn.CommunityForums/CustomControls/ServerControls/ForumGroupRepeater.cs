@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public enum RepeatDirections : int
         {
             Vertical,
-            Horizontal
+            Horizontal,
         }
 
         private RepeatDirections repeatDirection;

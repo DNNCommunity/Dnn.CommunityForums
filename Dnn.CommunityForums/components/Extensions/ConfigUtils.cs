@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     IgnoreWhitespace = true,
                     IgnoreComments = true,
-                    CloseInput = true
+                    CloseInput = true,
                 };
                 using (XmlReader reader = XmlReader.Create(configPath, readerSettings))
                 {

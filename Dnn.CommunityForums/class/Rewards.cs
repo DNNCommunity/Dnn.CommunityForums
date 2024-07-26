@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ModuleId = moduleId,
                     PortalId = portalId,
                     RankId = Convert.ToInt32(dr["RankId"]),
-                    RankName = Convert.ToString(dr["RankName"])
+                    RankName = Convert.ToString(dr["RankName"]),
                 };
                 rl.Add(ri);
             }
