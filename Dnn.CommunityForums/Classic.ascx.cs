@@ -105,15 +105,15 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctl = this.Request.Params[ParamKeys.ViewType];
                     }
-                    else if (this.Request.Params[Literals.view] != null)
+                    else if (this.Request.Params[Literals.View] != null)
                     {
-                        ctl = this.Request.Params[Literals.view];
+                        ctl = this.Request.Params[Literals.View];
                     }
                     else if (this.Request.Params[ParamKeys.ViewType] == null & this.ForumId > 0 & this.TopicId <= 0)
                     {
                         ctl = Views.Topics;
                     }
-                    else if (this.Request.Params[ParamKeys.ViewType] == null && this.Request.Params[Literals.view] == null & this.TopicId > 0)
+                    else if (this.Request.Params[ParamKeys.ViewType] == null && this.Request.Params[Literals.View] == null & this.TopicId > 0)
                     {
                         ctl = Views.Topic;
                     }

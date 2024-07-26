@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return string.Empty;
                 }
-
+                // TODO: REPLACE THIS
                 PortalSecurity objPortalSecurity = new PortalSecurity();
                 try
                 {
@@ -104,6 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return string.Empty;
                 }
 
+                // TODO: REPLACE THIS
                 PortalSecurity objPortalSecurity = new PortalSecurity();
                 sText = objPortalSecurity.InputFilter(sText, PortalSecurity.FilterFlag.NoScripting);
                 sText = FilterScripts(sText);

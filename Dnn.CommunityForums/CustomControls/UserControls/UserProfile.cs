@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (!(this.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser))
             {
-                this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}", $"{ParamKeys.mode}={Modes.edit}" }));
+                this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}", $"{ParamKeys.Mode}={Modes.Edit}" }));
             }
         }
 

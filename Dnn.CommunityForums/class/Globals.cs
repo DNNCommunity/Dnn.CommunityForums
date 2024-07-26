@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -339,20 +339,20 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AuthorId = "authorid";
         public const string GridType = "afgt";
         public const string Category = "act";
-        public const string action = "action";
+        public const string Action = "action";
         public const string TimeSpan = "ts";
-        public const string mode = "mode";
+        public const string Mode = "mode";
     }
 
     public class Modes
     {
-        public const string edit = "edit";
+        public const string Edit = "edit";
     }
 
     public class Literals
     {
-        public const string page = "page";
-        public const string view = "view";
+        public const string Page = "page";
+        public const string View = "view";
         public const string ForumId = "ForumId";
         public const string GroupId = "GroupId";
         public const string TopicId = "TopicId";

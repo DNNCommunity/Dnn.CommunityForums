@@ -99,9 +99,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.fi == null)
                 this.Response.Redirect(this.NavigateUrl(this.TabId));
-            else if (this.Request.Params[ParamKeys.action] != null)
+            else if (this.Request.Params[ParamKeys.Action] != null)
             {
-                if (!this.canEdit && (this.Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.TopicEdit || this.Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.ReplyEdit))
+                if (!this.canEdit && (this.Request.Params[ParamKeys.Action].ToLowerInvariant() == PostActions.TopicEdit || this.Request.Params[ParamKeys.Action].ToLowerInvariant() == PostActions.ReplyEdit))
                 {
                     this.Response.Redirect(this.NavigateUrl(this.TabId));
                 }
@@ -205,9 +205,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     break;
             }
 
-            if (this.Request.Params[ParamKeys.action] != null)
+            if (this.Request.Params[ParamKeys.Action] != null)
             {
-                switch (this.Request.Params[ParamKeys.action].ToLowerInvariant())
+                switch (this.Request.Params[ParamKeys.Action].ToLowerInvariant())
                 {
                     case PostActions.TopicEdit:
                         if (this.canModEdit || (this.canEdit && this.Request.IsAuthenticated))
@@ -299,7 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            if (this.TopicId == -1 || (this.TopicId > 0 && this.Request.Params[ParamKeys.action] == PostActions.TopicEdit))
+            if (this.TopicId == -1 || (this.TopicId > 0 && this.Request.Params[ParamKeys.Action] == PostActions.TopicEdit))
             {
                 if (this.ValidateProperties())
                 {

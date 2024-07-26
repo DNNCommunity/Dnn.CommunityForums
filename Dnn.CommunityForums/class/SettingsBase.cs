@@ -135,11 +135,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         tempPageId = Convert.ToInt32(this.Request.QueryString[ParamKeys.PageId]);
                     }
                 }
-                else if (this.Request.QueryString[Literals.page] != null)
+                else if (this.Request.QueryString[Literals.Page] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.page]))
+                    if (SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.Page]))
                     {
-                        tempPageId = Convert.ToInt32(this.Request.QueryString[Literals.page]);
+                        tempPageId = Convert.ToInt32(this.Request.QueryString[Literals.Page]);
                     }
                 }
                 else if (this.Params != string.Empty && this.Params.Contains(Literals.PageId))
@@ -459,7 +459,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            if (this.Request.Params[Literals.view] != null)
+            if (this.Request.Params[Literals.View] != null)
             {
                 string sUrl;
                 string sParams = string.Empty;
@@ -480,7 +480,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-                sParams += $"|{ParamKeys.ViewType}={this.Request.Params[Literals.view]}";
+                sParams += $"|{ParamKeys.ViewType}={this.Request.Params[Literals.View]}";
                 sUrl = this.NavigateUrl(this.TabId, string.Empty, sParams.Split('|'));
 
                 this.Response.Status = "301 Moved Permanently";

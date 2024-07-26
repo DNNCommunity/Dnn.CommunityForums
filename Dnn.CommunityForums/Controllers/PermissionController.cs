@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
-        private const string emptyPermissions = "||||";
+        private const string EmptyPermissions = "||||";
 
         internal new void DeleteById<TProperty>(TProperty permissionsId, int moduleId)
         {
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo CreateAdminPermissions(string adminRole, int moduleId)
         {
-            string adminRoleId = $"{adminRole};{emptyPermissions}";
+            string adminRoleId = $"{adminRole};{EmptyPermissions}";
             DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo
             {
                 View = adminRoleId,
@@ -155,29 +155,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo
             {
-                View = emptyPermissions,
-                Read = emptyPermissions,
-                Create = emptyPermissions,
-                Reply = emptyPermissions,
-                Edit = emptyPermissions,
-                Delete = emptyPermissions,
-                Lock = emptyPermissions,
-                Pin = emptyPermissions,
-                Attach = emptyPermissions,
-                Poll = emptyPermissions,
-                Block = emptyPermissions,
-                Trust = emptyPermissions,
-                Subscribe = emptyPermissions,
-                Announce = emptyPermissions,
-                Prioritize = emptyPermissions,
-                ModApprove = emptyPermissions,
-                ModMove = emptyPermissions,
-                ModSplit = emptyPermissions,
-                ModDelete = emptyPermissions,
-                ModUser = emptyPermissions,
-                ModEdit = emptyPermissions,
-                ModLock = emptyPermissions,
-                ModPin = emptyPermissions
+                View = EmptyPermissions,
+                Read = EmptyPermissions,
+                Create = EmptyPermissions,
+                Reply = EmptyPermissions,
+                Edit = EmptyPermissions,
+                Delete = EmptyPermissions,
+                Lock = EmptyPermissions,
+                Pin = EmptyPermissions,
+                Attach = EmptyPermissions,
+                Poll = EmptyPermissions,
+                Block = EmptyPermissions,
+                Trust = EmptyPermissions,
+                Subscribe = EmptyPermissions,
+                Announce = EmptyPermissions,
+                Prioritize = EmptyPermissions,
+                ModApprove = EmptyPermissions,
+                ModMove = EmptyPermissions,
+                ModSplit = EmptyPermissions,
+                ModDelete = EmptyPermissions,
+                ModUser = EmptyPermissions,
+                ModEdit = EmptyPermissions,
+                ModLock = EmptyPermissions,
+                ModPin = EmptyPermissions
             };
         }
 
@@ -596,7 +596,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             if (permission == null)
             {
-                return emptyPermissions;
+                return EmptyPermissions;
             }
 
             string access = string.Empty;
@@ -675,13 +675,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     access = permission.ModUser;
                     break;
                 default:
-                    access = emptyPermissions;
+                    access = EmptyPermissions;
                     break;
             }
 
             if (string.IsNullOrEmpty(access))
             {
-                access = emptyPermissions;
+                access = EmptyPermissions;
             }
 
             return access;
