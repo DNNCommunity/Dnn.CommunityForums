@@ -302,7 +302,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         //    'tab.Content.RenderControl(writer)
                         // Next
                         tab.Content.RenderControl(writer);
-
                     }
 
                     writer.RenderEndTag();
@@ -311,7 +310,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 writer.RenderEndTag();
             }
-
         }
 
         protected override void OnInit(EventArgs e)
@@ -331,7 +329,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         this.Controls.Add(_Tab.Content);
                     }
-
                 }
 
                 // Try

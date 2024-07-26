@@ -61,7 +61,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             this.contents = null;
             this.count = 0;
-
         }
 
         public bool Contains(Tab item)
@@ -90,7 +89,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 array.SetValue(this.contents[i], j);
                 j = j + 1;
             }
-
         }
 
         public int Count
@@ -131,13 +129,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     itemIndex = i;
                     break;
-
                 }
-
             }
 
             return itemIndex;
-
         }
 
         public void Insert(int index, Tab item)
@@ -151,7 +146,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             this.contents[index] = item;
-
         }
 
         public Tab this[int index]
@@ -178,9 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 this.count = this.count - 1;
-
             }
-
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -239,5 +231,4 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // this.Dispose();
         }
     }
-
 }

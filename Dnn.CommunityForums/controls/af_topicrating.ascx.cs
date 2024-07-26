@@ -79,7 +79,6 @@ namespace DotNetNuke.Modules.ActiveForums
             this.rate4.Click += this.Rate4_Click;
             this.rate5.Click += this.Rate5_Click;
             this.cbRating.CallbackEvent += this.cbRating_Callback;
-
         }
 
         protected override void OnLoad(EventArgs e)

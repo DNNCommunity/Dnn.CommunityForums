@@ -215,7 +215,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.ManageCheck(false, "F:" + f);
                 }
             }
-
         }
 
         private void ManageCheck(bool state, string value = "")
@@ -267,7 +266,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
             }
-
         }
 
         private void BindForumsTree()
@@ -320,7 +318,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     // End If
                 }
-
             }
 
             foreach (TreeNode tr in trNodes)
@@ -330,7 +327,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.trForums.Nodes.Add(tr);
                 }
             }
-
         }
 
         private void AddChildNodes(TreeNode parentNode, DataTable dt, DataRow dr)

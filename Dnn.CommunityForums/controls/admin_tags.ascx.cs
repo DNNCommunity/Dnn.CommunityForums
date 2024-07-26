@@ -35,7 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.agTags.Callback += this.agTags_Callback;
             this.agTags.ItemBound += this.agTags_ItemBound;
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -82,7 +81,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                 break;
                             }
                     }
-
                 }
 
                 this.agTags.DefaultParams = string.Empty;
@@ -96,7 +94,6 @@ namespace DotNetNuke.Modules.ActiveForums
             catch (Exception ex)
             {
             }
-
         }
 
         private void agTags_ItemBound(object sender, Modules.ActiveForums.Controls.ItemBoundEventArgs e)

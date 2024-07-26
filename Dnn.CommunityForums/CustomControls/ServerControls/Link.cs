@@ -203,7 +203,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     writer.Write("</a>");
                 }
             }
-
         }
 
         protected override void OnInit(EventArgs e)
@@ -213,5 +212,4 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.EnableViewState = false;
         }
     }
-
 }

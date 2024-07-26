@@ -81,7 +81,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     this.GetControl(this.CurrentView, this.Params, this.IsCallBack);
                 }
-
             }
             catch (Exception ex)
             {
@@ -130,7 +129,6 @@ namespace DotNetNuke.Modules.ActiveForums
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "afscripts", sb.ToString(), true);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
         }
 
         public void cbShell_Callback(object sender, Controls.CallBackEventArgs e)
@@ -150,7 +148,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     var htmlWriter = new HtmlTextWriter(stringWriter);
                     this.plhControlPanel.RenderControl(e.Output);
                 }
-
             }
             catch (Exception ex)
             {
@@ -164,7 +161,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
             }
-
         }
 
         private void cbModal_Callback(object sender, Controls.CallBackEventArgs e)
@@ -232,7 +228,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
             }
-
         }
 
         private void LoadModal(string ctrl, string @params = "")

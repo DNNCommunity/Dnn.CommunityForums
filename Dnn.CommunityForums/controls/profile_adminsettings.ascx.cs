@@ -55,7 +55,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.drpDefaultTrust.SelectedIndex = this.drpDefaultTrust.Items.IndexOf(this.drpDefaultTrust.Items.FindByValue(ui.TrustLevel.ToString()));
                 this.txtRewardPoints.Attributes.Add("onkeypress", "return onlyNumbers(event);");
             }
-
         }
 
         private void cbAdmin_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)

@@ -281,7 +281,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.MainSettings = new Hashtable();
         }
-
     }
 
     #endregion

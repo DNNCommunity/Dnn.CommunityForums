@@ -52,7 +52,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.ToggleMode = m;
             this.ForumId = f;
             this.TopicId = t;
-
         }
 
         public ToggleSubscribe(int moduleId, int forumId, int topicId, int toggleMode)
@@ -95,6 +94,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return sb.ToString();
         }
-
     }
 }

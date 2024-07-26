@@ -188,13 +188,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
-
         }
 
         public static void ClearAllCacheForTabId(int tabId)
         {
             Common.Utilities.DataCache.ClearModuleCache(tabId);
-
         }
 
         public static void ClearSettingsCache(int moduleId)

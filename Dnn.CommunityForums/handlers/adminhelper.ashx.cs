@@ -44,7 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             FilterGet = 11,
             FilterSave = 12,
             FilterDelete = 13,
-
         }
 
         public override void ProcessRequest(HttpContext context)
@@ -117,7 +116,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     sOut += Utilities.JSON.Pair("message", ex.Message);
                     sOut += "}";
                 }
-
             }
             else
             {
@@ -203,7 +201,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
 
             new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(filterId);
-
         }
 
         private string GetRank()
@@ -280,7 +277,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
             RewardController rc = new RewardController();
             rc.Reward_Delete(this.PortalId, this.ModuleId, rankId);
-
         }
 
         private void PropertySave()
@@ -308,7 +304,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     LocalizationUtils lcUtils = new LocalizationUtils();
                     lcUtils.SaveResource("[RESX:" + pi.Name + "].Text", this.Params["Label"].ToString(), this.PortalId);
                 }
-
             }
 
             new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Save<int>(pi, pi.PropertyId);
@@ -316,7 +311,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(pi.ObjectOwnerId, this.ModuleId);
             fi.HasProperties = true;
             fc.Forums_Save(this.PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
-
         }
 
         private string PropertyList()
@@ -324,7 +318,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             return !string.IsNullOrEmpty(this.Params["ObjectOwnerId"].ToString())
                 ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().ListPropertiesJSON(this.PortalId, Convert.ToInt32(this.Params["ObjectType"]), Convert.ToInt32(this.Params["ObjectOwnerId"]))
                 : string.Empty;
-
         }
 
         private void UpdateSort()
@@ -366,7 +359,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     fc.Forums_Save(this.PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
                 }
             }
-
         }
 
         private string GetLists()
@@ -428,6 +420,5 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             sFile = Utilities.LocalizeControl(sFile, true);
             return sFile;
         }
-
     }
 }

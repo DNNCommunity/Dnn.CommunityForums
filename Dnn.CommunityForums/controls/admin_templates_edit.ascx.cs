@@ -119,7 +119,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         catch (Exception ex)
                         {
                             sMsg = "Error saving template.";
-
                         }
 
                         break;

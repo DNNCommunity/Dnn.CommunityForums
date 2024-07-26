@@ -220,7 +220,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     groupPrefix = forumInfo.ForumGroup.PrefixURL;
                     forumPrefix = forumInfo.PrefixURL;
                 }
-
             }
 
             ControlUtils cUtils = new ControlUtils();
@@ -314,6 +313,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return false;
         }
-
     }
 }

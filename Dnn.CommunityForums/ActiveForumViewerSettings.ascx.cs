@@ -34,7 +34,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             this.LoadSettings();
-
         }
 
         protected override void OnInit(EventArgs e)
@@ -151,7 +150,6 @@ namespace DotNetNuke.Modules.ActiveForums
                             i += 1;
                         }
                     }
-
                 }
             }
 
@@ -181,11 +179,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     i += 1;
                     forumID = Convert.ToInt32(dr["ForumID"]);
                 }
-
             }
 
             dr.Close();
-
         }
 
         private void BindTemplates(int forumModuleID)
@@ -211,6 +207,5 @@ namespace DotNetNuke.Modules.ActiveForums
             drp.DataBind();
             drp.Items.Insert(0, new ListItem(defaultText, defaultValue));
         }
-
     }
 }

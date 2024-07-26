@@ -50,7 +50,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
-
         }
         #endregion
 

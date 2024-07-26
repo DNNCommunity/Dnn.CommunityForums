@@ -96,7 +96,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                 break;
                             }
                     }
-
                 }
 
                 this.agCategories.DefaultParams = string.Empty;

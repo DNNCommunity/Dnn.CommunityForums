@@ -192,7 +192,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return this.postBackScript;
             }
-
         }
 
         // Defines the Click event.
@@ -291,7 +290,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     outerWriter.RenderBeginTag(HtmlTextWriterTag.A);
                 }
-
             }
 
             if ((!string.IsNullOrEmpty(sOnClick) || !string.IsNullOrEmpty(sPostBack)) && string.IsNullOrEmpty(this.NavigateUrl))
@@ -401,7 +399,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 innerWriter.Write("<br />");
                 innerWriter.Write("<span>" + this.Text + "</span>");
-
             }
 
             // innerWriter.RenderEndTag()
@@ -413,8 +410,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     outerWriter.RenderEndTag();
                 }
             }
-
         }
-
     }
 }

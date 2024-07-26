@@ -739,7 +739,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     plh.Controls.Add(ctlForumJump);
                 }
-
             }
 
             // Poll Container
@@ -1302,7 +1301,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     sOutput = sOutput.Replace(sTopicTemplate, string.Empty);
                 }
-
             }
 
             return sOutput;
@@ -1732,7 +1730,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sBody = Regex.Replace(sBody, "(&#91;CODE&#93;)", "[CODE]", RegexOptions.IgnoreCase);
                 sBody = Regex.Replace(sBody, "(&#91;\\/CODE&#93;)", "[/CODE]", RegexOptions.IgnoreCase);
-
             }
 
             // sBody = sBody.Replace("&lt;CODE&gt;", "<CODE>")
@@ -1887,7 +1884,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pager2.BaseURL = URL.ForumLink(this.TabId, this.ForumInfo) + this.topicURL;
                 pager2.Params = @params.ToArray();
             }
-
         }
 
         #endregion

@@ -45,7 +45,6 @@ namespace DotNetNuke.Modules.ActiveForums
             ModEmail, // 10
             PostInfo, // 11
         }
-
     }
 
     #endregion

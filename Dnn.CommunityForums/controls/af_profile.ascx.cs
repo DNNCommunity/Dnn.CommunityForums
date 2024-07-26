@@ -42,9 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sDisplayName = UserProfiles.GetDisplayName(this.PortalSettings, this.ModuleId, false, false, false, ui.UserID, ui.Username, ui.FirstName, ui.LastName, ui.DisplayName);
                     }
-
                 }
-
             }
             else
             {

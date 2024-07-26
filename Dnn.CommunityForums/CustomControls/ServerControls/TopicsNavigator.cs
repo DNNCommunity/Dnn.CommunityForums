@@ -127,7 +127,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (this.Request.QueryString["atg"] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString["atg"]))
             {
                 tb.TagId = int.Parse(this.Request.QueryString["atg"]);
-
             }
 
             if (this.Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[ParamKeys.Category]))
@@ -146,7 +145,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb.UserId = this.UserId;
             writer.Write(tb.Render());
         }
-
     }
-
 }

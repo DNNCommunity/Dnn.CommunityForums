@@ -92,7 +92,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
-
         }
 
         #endregion

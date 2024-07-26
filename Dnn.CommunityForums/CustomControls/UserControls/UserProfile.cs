@@ -125,7 +125,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 this.ProfileMode = ProfileModes.View;
             }
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -264,7 +263,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                 }
             }
-
         }
 
         private void btnProfileEdit_Click(object sender, System.EventArgs e)
@@ -437,7 +435,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                     string propName = txt.ID.Replace("dnnctl", string.Empty);
                                     objuser.Profile.GetProperty(propName).PropertyValue = txt.Text;
                                 }
-
                             }
                         }
                     }
@@ -557,7 +554,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     template = TemplateUtils.ReplaceSubSection(template, string.Empty, match.Value, match.Value.Replace("[AM", "[/AM"));
                     template = template + sModalContent;
                 }
-
             }
 
             return template;
@@ -678,7 +674,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     this.amTabs.Tabs.Add(tb);
                 }
-
             }
 
             template = TemplateUtils.ReplaceSubSection(template, "<asp:placeholder id=\"plhTabs\" runat=\"server\" />", "[AM:CONTROLS:TABS]", "[/AM:CONTROLS:TABS]");

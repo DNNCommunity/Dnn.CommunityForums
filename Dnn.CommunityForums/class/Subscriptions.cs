@@ -225,7 +225,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 else
                 {
                     tmpEmail = dr["Email"].ToString();
-
                 }
 
                 if (tmpFG != string.Concat(dr["GroupName"], dr["ForumName"].ToString()))
@@ -338,7 +337,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ScheduleHistoryItem.Succeeded = true;
                 this.ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
                 this.ScheduleHistoryItem.AddLogNote("Weekly Digest Complete");
-
             }
             catch (Exception ex)
             {

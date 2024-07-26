@@ -475,7 +475,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         tmp = tmp.Replace("[LASTAUTHOR]", "anon");
                     }
-
                 }
                 else
                 {
@@ -503,8 +502,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return ex.Message;
             }
-
         }
-
     }
 }

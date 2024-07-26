@@ -40,7 +40,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ScheduleHistoryItem.Succeeded = true;
                 this.ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
                 this.ScheduleHistoryItem.AddLogNote("Daily Digest Complete");
-
             }
             catch (Exception ex)
             {
@@ -58,6 +57,5 @@ namespace DotNetNuke.Modules.ActiveForums
             int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerDay);
             return elapseMinutes;
         }
-
     }
 }

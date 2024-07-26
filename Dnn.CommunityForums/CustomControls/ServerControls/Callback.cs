@@ -363,7 +363,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 str.Append("</script>");
                 output.Write(str.ToString());
             }
-
         }
 
         public string XSSFilter(string sText)
@@ -529,7 +528,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 args[x] = args[x].Replace("!AM#", "&").Replace("#AM!", "=").Replace("#MA!", "+");
                             }
                         }
-
                     }
                 }
             }
@@ -646,12 +644,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             return "<div style=\"font-family:tahoma;font-size:11px;\">DNN Community Forums Callback Control</div>";
         }
-
     }
 
     public interface ICallback
     {
         void Callback(object sender, Controls.CallBackEventArgs e);
-
     }
 }

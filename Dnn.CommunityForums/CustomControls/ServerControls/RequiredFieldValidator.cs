@@ -112,7 +112,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("</script>");
                 output.Write(sb.ToString());
             }
-
         }
 
         protected override void OnLoad(EventArgs e)

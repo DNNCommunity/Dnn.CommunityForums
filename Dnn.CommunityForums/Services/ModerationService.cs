@@ -144,7 +144,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     };
                     DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalSettings.PortalId, this.moduleId, this.tabId, this.forumId, this.topicId, this.replyId, string.Empty, au);
                 }
-
             }
 
             NotificationsController.Instance.DeleteNotification(dto.NotificationId);
@@ -194,7 +193,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 authorId = ti.Content.AuthorId;
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(this.topicId);
-
             }
 
             if (fi.ModDeleteTemplateId > 0 && authorId > 0)

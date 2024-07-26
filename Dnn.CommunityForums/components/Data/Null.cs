@@ -375,7 +375,5 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
             return tempIsNull;
         }
-
     }
-
 }

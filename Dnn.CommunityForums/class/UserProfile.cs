@@ -210,7 +210,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public static void Profiles_ClearCache(int userID)
         {
             DataCache.CacheClearPrefix(-1, CacheKeys.CachePrefix);
-
         }
 
         public static void Profiles_ClearCache(int moduleId, int userId)

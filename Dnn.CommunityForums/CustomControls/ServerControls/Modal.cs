@@ -232,7 +232,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("        mask.style.display='none';");
             sb.Append("};</script>");
             writer.Write(sb.ToString());
-
         }
 
         public delegate void CallbackEventHandler(object sender, CallBackEventArgs e);

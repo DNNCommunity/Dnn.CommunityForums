@@ -48,7 +48,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 this.BindForums();
             }
-
         }
 
         private void BindForums()
@@ -96,7 +95,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         totalGroupForum = this.GetGroupForumCount(dt, Convert.ToInt32(row["ForumGroupId"]));
                         tmpGroup = row["ForumGroupId"].ToString();
                     }
-
                 }
 
                 i += 1;
@@ -126,11 +124,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             sb.Append(this.AddSubForums(dt, row));
                         }
-
                     }
-
                 }
-
             }
 
             if (!dr.IsClosed)
@@ -140,7 +135,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             sb.Append("<tr><td></td><td></td><td></td><td width=\"100%\"></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td width=\"100%\" colspan=\"2\"></td><td></td><td></td><td></td><td></td></tr></table>");
             this.litForums.Text = sb.ToString();
-
         }
 
         private string RenderSpacer(int height, int width)
@@ -177,7 +171,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return i;
-
         }
 
         private string AddSubForums(DataTable dt, DataRow dr)

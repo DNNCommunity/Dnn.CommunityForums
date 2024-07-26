@@ -279,7 +279,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     ufile = fileManager.AddFile(attachmentFolder, fileName, (Stream)mst);
                     mst.Close();
-
                 }
                 else
                 {
@@ -481,6 +480,5 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             public string Url { get; set; }
         }
-
     }
 }

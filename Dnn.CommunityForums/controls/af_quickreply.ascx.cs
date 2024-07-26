@@ -159,7 +159,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         template = template.Replace("[AF:UI:ANON]", string.Empty);
                         template = template.Replace("[/AF:UI:ANON]", string.Empty);
-
                     }
                 }
                 else
@@ -177,7 +176,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 throw;
             }
-
         }
 
         private void LinkControls(ControlCollection ctrls)
@@ -272,7 +270,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 ui.RewardPoints = 0;
                 ui.IsMod = false;
                 ui.TrustLevel = -1;
-
             }
 
             bool userIsTrusted = false;
@@ -313,7 +310,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         sUsername = this.UserInfo.DisplayName;
                         break;
                 }
-
             }
             else
             {
@@ -405,8 +401,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 this.SaveQuickReply();
             }
-
         }
     }
-
 }

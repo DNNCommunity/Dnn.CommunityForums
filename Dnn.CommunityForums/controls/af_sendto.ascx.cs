@@ -73,7 +73,6 @@ namespace DotNetNuke.Modules.ActiveForums
                             messageDefault = messageDefault.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(this.PortalSettings, this.ModuleId, false, false, false, this.UserId, this.UserInfo.Username, this.UserInfo.FirstName, this.UserInfo.LastName, this.UserInfo.DisplayName));
                             this.txtMessage.Text = messageDefault;
                         }
-
                     }
 
                     if (this.MainSettings.UseSkinBreadCrumb)
@@ -94,7 +93,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             this.bcUpdated = true;
                         }
-
                     }
                 }
                 else
@@ -149,7 +147,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(this.PortalId, moduleId: this.ModuleId, fromEmail: this.UserInfo.Email, toEmail: sEmail, subject: sSubject, body: sMessage);
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -157,7 +154,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 this.Response.Redirect(sUrl);
-
             }
         }
     }

@@ -273,7 +273,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.ctlForm.BubbleClick += this.ctlForm_Click;
             this.cbPreview.CallbackEvent += this.cbPreview_Callback;
-
         }
 
         protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -535,7 +534,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.ctlForm.Template = template;
             this.ctlForm.IsApproved = this.isApproved;
-
         }
 
         /// <summary>
@@ -675,7 +673,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     this.ctlForm.Body = body;
-
                 }
             }
 

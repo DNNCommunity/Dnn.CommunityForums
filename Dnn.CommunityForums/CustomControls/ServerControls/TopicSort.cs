@@ -121,5 +121,4 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
     }
-
 }

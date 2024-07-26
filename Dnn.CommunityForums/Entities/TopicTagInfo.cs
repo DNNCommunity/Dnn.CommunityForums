@@ -63,7 +63,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     {
                         this.topicInfo = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
                         this.topicInfo.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-
                     }
                 }
 

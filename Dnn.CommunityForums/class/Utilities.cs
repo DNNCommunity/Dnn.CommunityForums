@@ -1079,7 +1079,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 return cultureInfo;
-
             }
             catch
             {
@@ -1131,7 +1130,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 return timeZoneInfo;
-
             }
             catch
             {
@@ -1197,7 +1195,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sb.Append(HttpUtility.HtmlEncode(subject));
                     }
-
                 }
             }
 
@@ -1693,7 +1690,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     dir.Delete();
                 }
-
             }
             catch (Exception ex)
             {

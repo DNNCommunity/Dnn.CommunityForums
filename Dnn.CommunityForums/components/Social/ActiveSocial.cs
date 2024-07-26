@@ -87,13 +87,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ji.SecuritySet += "R" + s + ",";
                 }
-
             }
 
             if (socialGroupId > 0)
             {
                 ji.SocialGroupId = socialGroupId;
-
             }
 
             JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId, tabId, true));

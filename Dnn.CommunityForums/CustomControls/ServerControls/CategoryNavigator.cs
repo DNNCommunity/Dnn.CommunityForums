@@ -188,8 +188,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 writer.Write(tb.RenderEdit());
             }
-
         }
-
     }
 }

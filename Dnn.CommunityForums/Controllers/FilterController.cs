@@ -75,7 +75,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         strMessage = Regex.Replace(strMessage, sFind.Trim(), sReplace, RegexOptions.IgnoreCase);
                         break;
                 }
-
             });
             return strMessage;
         }

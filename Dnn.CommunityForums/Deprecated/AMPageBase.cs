@@ -65,6 +65,5 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Convert.ToInt32(HttpContext.Current.Request.QueryString["tabid"]);
             }
         }
-
     }
 }

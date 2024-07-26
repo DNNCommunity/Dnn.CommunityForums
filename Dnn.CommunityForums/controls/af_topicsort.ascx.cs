@@ -69,7 +69,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.drpSort.Items[0].Text = this.GetSharedResource(this.drpSort.Items[0].Text);
                     this.drpSort.Items[1].Text = this.GetSharedResource(this.drpSort.Items[1].Text);
                 }
-
             }
             catch (Exception exc)
             {
@@ -96,7 +95,6 @@ namespace DotNetNuke.Modules.ActiveForums
             this.InitializeComponent();
 
             this.drpSort.SelectedIndexChanged += new System.EventHandler(this.drpSort_SelectedIndexChanged);
-
         }
 
         #endregion
@@ -115,5 +113,4 @@ namespace DotNetNuke.Modules.ActiveForums
             this.Response.Redirect(dest);
         }
     }
-
 }

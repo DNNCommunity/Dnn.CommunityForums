@@ -58,7 +58,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             SaveTopic,/* no longer used */
             ForumList,/* no longer used */
             LikePost, /*no longer used*/
-
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used. ")]

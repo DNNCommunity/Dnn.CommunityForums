@@ -373,7 +373,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sb.Append(WriteElement("guid", url, indent + 1));
                     sb.Append(WriteElement("slash:comments", replyCount, indent + 1));
                     sb.Append(WriteElement("/item", indent));
-
                 }
 
                 dr.Close();
@@ -387,8 +386,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return ex.ToString();
             }
-
         }
     }
-
 }

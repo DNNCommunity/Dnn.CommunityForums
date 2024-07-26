@@ -208,7 +208,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 this.txtTopicPriority.Text = value.ToString();
                 this.topicPriority = value;
-
             }
         }
 
@@ -433,7 +432,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     template = template.Replace("[AF:UI:ANON]", string.Empty);
                     template = template.Replace("[/AF:UI:ANON]", string.Empty);
-
                 }
             }
             else
@@ -540,7 +538,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 {
                                     sList += "<option value=\"" + l.Value + "\">" + l.Text + "</option>";
                                 }
-
                             }
 
                             sList += "</select>";
@@ -566,7 +563,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                         if (pv == l.Value)
                                         {
                                             isSelected = true;
-
                                         }
                                     }
                                 }
@@ -696,7 +692,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     "<tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionOptions\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Options:Note]</div>");
                     template = template.Replace("[/AF:UI:SECTION:OPTIONS]", "</td></tr></table>");
                 }
-
             }
 
             if (template.Contains("[AF:CONTROL:STATUS]"))
@@ -706,7 +701,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_topicstatus.ascx\" tagprefix=\"af\" tagname=\"topicstatus\" %>" + template;
                     template = template.Replace("[AF:CONTROL:STATUS]", "<af:topicstatus id=\"aftopicstatus\" AutoPostBack=\"False\" ForumId=\"" + this.ForumInfo.ForumID + "\" runat=\"server\" />");
                 }
-
             }
 
             template = template.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.ViewType + "=" + Views.Topics + "&" + ParamKeys.ForumId + "=" + this.ForumInfo.ForumID.ToString()) + "\">" + this.ForumInfo.ForumName + "</a>");
@@ -727,7 +721,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 /* tokens [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] can now surround post icons to support removing entire section; if using post icons, just remove the tokens*/
                 template = template.Replace("[AF:UI:SECTION:POSTICONS]", string.Empty);
                 template = template.Replace("[/AF:UI:SECTION:POSTICONS]", string.Empty);
-
             }
             else
             {
@@ -737,7 +730,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[AF:UI:FIELDSET:POSTICONS]", string.Empty);
                 template = template.Replace("[AF:CONTROL:POSTICONS]", string.Empty);
                 template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", string.Empty);
-
             }
 
             if (template.Contains("[AF:CONTROL:EMOTICONS]") && this.ForumInfo.AllowEmoticons)
@@ -771,7 +763,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     template = template.Replace("[AF:UI:SECTION:ATTACH]", string.Empty);
                     template = template.Replace("[/AF:UI:SECTION:ATTACH]", string.Empty);
                 }
-
             }
 
             // If str.Contains("[AF:CONTROL:FORUMTREE]") Then
@@ -948,7 +939,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 };
                 this.plhTopicReview.Controls.Add(ctlTopicView);
             }
-
         }
 
         public void btnPost_Click(object sender, EventArgs e)
@@ -1037,7 +1027,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.canPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Pin, this.ForumUser.UserRoles);
             this.canAnnounce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Announce, this.ForumUser.UserRoles);
             this.canSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Subscribe, this.ForumUser.UserRoles);
-
         }
 
         protected override void OnLoad(EventArgs e)

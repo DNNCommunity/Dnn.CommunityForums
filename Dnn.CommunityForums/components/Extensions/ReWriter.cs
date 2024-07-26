@@ -278,14 +278,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     response.Status = "301 Moved Permanently";
                     response.AddHeader("Location", sUrl);
                     response.End();
-
                 }
             }
 
             if (this.moduleId > 0)
             {
                 this.mainSettings = new SettingsInfo { MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.moduleId, tabId: this.tabId, ignoreCache: false).ModuleSettings };
-
             }
 
             if (this.mainSettings == null)
@@ -391,7 +389,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
                 }
-
             }
 
             if (canContinue)
@@ -494,7 +491,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         case 10:
                             v = GridTypes.Unresolved;
                             break;
-
                     }
 
                     sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}=" + v + sPage + qs);
@@ -552,7 +548,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     return appPath + url.Substring(1);
                 }
             }
-
         }
 
         internal static void RewriteUrl(HttpContext context, string sendToUrl)
@@ -583,7 +578,6 @@ namespace DotNetNuke.Modules.ActiveForums
             if (sendToUrlLessQString.Contains("/404.aspx?404;"))
             {
                 sendToUrlLessQString = sendToUrlLessQString.Substring(sendToUrlLessQString.IndexOf("/404.aspx?404;") + 14);
-
             }
 
             context.RewritePath(sendToUrlLessQString, string.Empty, queryString);
@@ -690,7 +684,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         sUrl += this.page + "/";
                     }
                 }
-
             }
 
             return sUrl;

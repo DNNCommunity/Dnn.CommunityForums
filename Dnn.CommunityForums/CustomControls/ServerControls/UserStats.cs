@@ -69,7 +69,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     this.userId = -1;
                 }
-
             }
         }
 
@@ -131,9 +130,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 writer.Write(ex.Message);
             }
-
         }
-
     }
-
 }

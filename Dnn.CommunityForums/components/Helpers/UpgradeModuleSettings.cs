@@ -124,7 +124,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(tabModuleId, "NeedsConvert");
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, "AFINSTALLED", "True");
             DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(forumModuleId, string.Format(CacheKeys.MainSettings, forumModuleId));
-
         }
 
         internal static void DeleteObsoleteModuleSettings_080100()

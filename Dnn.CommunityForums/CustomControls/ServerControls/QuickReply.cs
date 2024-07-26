@@ -155,7 +155,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         this.reqUserName.Enabled = false;
                         this.txtUserName.Visible = false;
                         this.trCaptcha.Visible = false;
-
                     }
                 }
                 else
@@ -172,7 +171,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             catch (Exception ex)
             {
             }
-
         }
 
         private void ambtnSubmit_Click(object sender, System.EventArgs e)
@@ -316,5 +314,4 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         #endregion
     }
-
 }

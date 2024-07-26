@@ -307,7 +307,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.litMessage.Text = this.GetSharedResource("[RESX:SearchNoResults]");
                 this.pnlMessage.Visible = true;
             }
-
         }
 
         private void BuildPager(PagerNav pager)
@@ -396,7 +395,6 @@ namespace DotNetNuke.Modules.ActiveForums
             int topicId = Utilities.SafeConvertInt(this.currentRow["TopicId"].ToString());
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, this.ForumModuleId);
             return new ControlUtils().BuildUrl(this.TabId, this.ForumModuleId, forumInfo.ForumGroup.PrefixURL, forumInfo.PrefixURL, forumGroupId, forumId, topicId, this.currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, -1, this.SocialGroupId);
-
         }
 
         public string GetLastRead()
@@ -412,7 +410,6 @@ namespace DotNetNuke.Modules.ActiveForums
             int userLastRead = Utilities.SafeConvertInt(this.currentRow["UserLastTopicRead"].ToString());
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, this.ForumModuleId);
             return new ControlUtils().BuildUrl(this.TabId, this.ForumModuleId, forumInfo.ForumGroup.PrefixURL, forumInfo.PrefixURL, forumGroupId, forumId, topicId, this.currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, userLastRead, this.SocialGroupId);
-
         }
 
         public string GetArrowPath()

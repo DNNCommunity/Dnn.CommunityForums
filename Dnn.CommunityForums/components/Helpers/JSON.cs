@@ -153,7 +153,6 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 infoObject.GetType().GetProperty(pItem.Name).SetValue(infoObject, obj, BindingFlags.Public | BindingFlags.NonPublic, null, null, null);
                             }
-
                         }
                     }
                 }
@@ -268,6 +267,5 @@ namespace DotNetNuke.Modules.ActiveForums
                 return IsJSONArray(originalString) ? originalString : originalString.Replace("\\/", "/").Replace("/", "\\/").Replace("\\\"", "\"").Replace("\"", "\\\"").Replace(System.Environment.NewLine, string.Empty);
             }
         }
-
     }
 }

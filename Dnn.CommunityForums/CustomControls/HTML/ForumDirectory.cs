@@ -153,7 +153,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 forums = forums.Replace("[SUBFORUMHOLDER]", string.Empty);
                 gtmp = gtmp.Replace("[FORUMHOLDER]", forums + "[FORUMHOLDER]");
-
             }
 
             gtmp = gtmp.Replace("[FORUMHOLDER]", string.Empty);

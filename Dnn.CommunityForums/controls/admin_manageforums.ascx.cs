@@ -40,7 +40,6 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnInit(e);
 
             this.cbForumEditor.CallbackEvent += this.cbForumEditor_Callback;
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -53,7 +52,6 @@ namespace DotNetNuke.Modules.ActiveForums
             this.litButtons.Text = "<div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|G');\">[RESX:NewForumGroup]</div><div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|F');\">[RESX:NewForum]</div>";
 
             this.GetControl("admin_manageforums_home", string.Empty);
-
         }
 
         private void cbForumEditor_Callback(object sender, Controls.CallBackEventArgs e)
@@ -117,7 +115,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 lit.Text = ex.Message;
                 this.plhForumEditor.Controls.Add(lit);
             }
-
         }
 
         #endregion

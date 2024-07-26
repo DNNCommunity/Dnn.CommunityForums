@@ -140,6 +140,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return modRoles;
         }
-
     }
 }

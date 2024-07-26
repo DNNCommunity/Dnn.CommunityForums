@@ -301,7 +301,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
 
                         sTempTemplate = sTempTemplate.Replace("[TOPICSURL]", sForumUrl);
-
                     }
                     else
                     {
@@ -368,7 +367,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append(sFooterTemplate);
                 var lit = new Literal { Text = sb.ToString() };
                 this.Controls.Add(lit);
-
             }
             catch (Exception ex)
             {

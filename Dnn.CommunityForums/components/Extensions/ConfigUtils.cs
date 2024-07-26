@@ -75,7 +75,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return isInstalled;
-
         }
 
         public static bool InstallRewriter(string configPath)

@@ -74,7 +74,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 this.databaseOwner += ".";
             }
-
         }
         #endregion
 
@@ -752,5 +751,4 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
     }
-
 }

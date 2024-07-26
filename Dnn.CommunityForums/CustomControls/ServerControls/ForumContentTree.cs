@@ -219,7 +219,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             writer.Write(fd.Render());
         }
-
     }
-
 }

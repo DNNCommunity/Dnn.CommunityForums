@@ -32,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.agTemplates.Callback += this.agTemplates_Callback;
             this.agTemplates.ItemBound += this.agTemplates_ItemBound;
-
         }
 
         protected override void OnLoad(EventArgs e)

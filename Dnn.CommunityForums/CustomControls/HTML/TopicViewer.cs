@@ -321,7 +321,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return ex.Message;
             }
-
         }
     }
 }

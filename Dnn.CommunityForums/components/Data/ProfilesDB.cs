@@ -77,8 +77,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             sSql = sSql.Replace("@AuthorId", userId.ToString());
             sSql = sSql.Replace("@PortalId", portalId.ToString());
             SqlHelper.ExecuteNonQuery(this.connectionString, CommandType.Text, sSql);
-
         }
-
     }
 }

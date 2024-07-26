@@ -653,6 +653,5 @@ namespace DotNetNuke.Modules.ActiveForums
                 get { return string.IsNullOrWhiteSpace(this.Value) ? this.Value : HttpUtility.HtmlEncode(this.Value); }
             }
         }
-
     }
 }

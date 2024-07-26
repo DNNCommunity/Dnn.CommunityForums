@@ -96,7 +96,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.tabContent = value;
             }
         }
-
     }
 
     public class TabContent : System.Web.UI.Control

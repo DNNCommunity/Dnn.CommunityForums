@@ -85,9 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             this.rdbtnOptions.Visible = false;
                             this.cblstOptions.Visible = true;
                         }
-
                     }
-
                 }
             }
             catch (Exception ex)
@@ -128,7 +126,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 this.Response.Redirect(this.Request.RawUrl);
-
             }
             catch (Exception ex)
             {

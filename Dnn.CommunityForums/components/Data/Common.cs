@@ -211,7 +211,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             catch (Exception ex)
             {
                 return false;
-
             }
 
             return false;
@@ -245,7 +244,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             catch (Exception ex)
             {
                 return false;
-
             }
 
             return false;

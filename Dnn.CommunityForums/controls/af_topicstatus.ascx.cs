@@ -92,7 +92,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 this.Response.Redirect(this.Request.RawUrl);
             }
-
         }
     }
 }

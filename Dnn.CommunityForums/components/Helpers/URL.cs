@@ -197,6 +197,5 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sURL;
         }
-
     }
 }

@@ -53,6 +53,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sControl = sControl.Replace("{name}", this.Name);
             writer.Write(sControl);
         }
-
     }
 }

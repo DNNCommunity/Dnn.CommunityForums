@@ -119,7 +119,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             pi.Type = ObjectType.UserId;
                             pl.Add(pi);
                         }
-
                     }
                 }
             }
@@ -235,7 +234,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     sb.Append(">" + sState + "</div></td>");
-
                 }
 
                 sb.Append("</tr>");
@@ -243,7 +241,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sb.Append("</table></div></td></tr></table>");
             return sb.ToString();
-
         }
 
         private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo s, int objectType)
@@ -261,7 +258,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(permSet.Split('|')[objectType], objectId + ";");
             }
-
         }
     }
 }

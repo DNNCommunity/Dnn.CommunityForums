@@ -679,7 +679,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         catch
                         {
                         }
-
                     }
 
                     sb.Remove(sb.Length - this.ColDelimiter.Length, this.ColDelimiter.Length);
@@ -765,7 +764,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             return "<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td>DNN Community Forums Grid Control<br />Please use source view to make changes</td></tr></table>";
         }
-
     }
-
 }

@@ -62,7 +62,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             this.BuildNewGrid(this.Perms, this.PermissionsId);
-
         }
 
         private void BindRoles()
@@ -137,7 +136,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             pi.Type = ObjectType.UserId;
                             pl.Add(pi);
                         }
-
                     }
                 }
             }
@@ -286,7 +284,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     sb.Append(">" + sState + "</div></td>");
-
                 }
 
                 sb.Append("</tr>");
@@ -309,7 +306,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(permSet.Split('|')[objectType], objectId + ";");
             }
-
         }
 
         private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo s, int objectType)
@@ -329,7 +325,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (action == "delete")
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(this.ModuleId, secId, secType, pId);
-
             }
             else if (action == "addobject")
             {
@@ -358,7 +353,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, "View", secId, secType);
                 }
-
             }
             else
             {

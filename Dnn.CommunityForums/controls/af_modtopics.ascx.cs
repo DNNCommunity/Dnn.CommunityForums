@@ -44,7 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.lblHeader.Text = Utilities.GetSharedResource("[RESX:PendingPosts]");
             this.cbMod.CallbackEvent += this.cbMod_Callback;
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -62,13 +61,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     this.BuildModList();
                 }
-
             }
             else
             {
                 this.Response.Redirect(this.NavigateUrl(this.TabId));
             }
-
         }
 
         private void cbMod_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
@@ -111,7 +108,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                     {
                                         DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                                     }
-
                                 }
 
                                 if (tmpForumId > 0 & tmpTopicId > 0 && tmpReplyId == 0)
@@ -123,7 +119,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                     }
 
                                     new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(tmpTopicId);
-
                                 }
                                 else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                                 {
@@ -137,7 +132,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                 }
 
                                 DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
-
                             }
 
                             break;
@@ -170,7 +164,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                     au.Username = ui.Username;
                                     DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, au);
                                 }
-
                             }
 
                             break;
@@ -221,7 +214,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
                                     DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.ForumTabId, this.ForumModuleId, fi.ForumGroupId, tmpForumId, tmpTopicId, -tmpReplyId, ri.Content.AuthorId);
                                 }
-
                             }
 
                             break;
@@ -361,9 +353,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     this.bCanMod = true;
                 }
-
             }
-
         }
 
         private string GetAttachments(int contentId, int portalID, int moduleID, DataTable dtAttach)

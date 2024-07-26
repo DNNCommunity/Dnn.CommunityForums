@@ -104,7 +104,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.cb.ID = "cb";
                 this.Controls.Add(this.cb);
             }
-
         }
 
         protected override void Render(HtmlTextWriter writer)
@@ -123,7 +122,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 lit.RenderControl(writer);
             }
-
         }
 
         private string RenderRating()
@@ -180,7 +178,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("</ul>");
             sb.Append("</div>");
             return sb.ToString();
-
         }
 
         private void cb_Callback(object sender, CallBackEventArgs e)

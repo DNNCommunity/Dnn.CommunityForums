@@ -125,7 +125,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                         plh.Controls.Add(ctlWhosOnline);
                                     }
                                 }
-
                             }
                             catch (Exception ex)
                             {
@@ -286,7 +285,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                         tmpGroupCount += 1;
                                         iForum = 1;
                                     }
-
                                 }
 
                                 if (iForum <= Globals.ForumCount)
@@ -319,7 +317,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     sTemplate = sTemplate.Contains("[GROUPSECTION]") ? TemplateUtils.ReplaceSubSection(sTemplate, sGroupSection, "[GROUPSECTION]", "[/GROUPSECTION]") : sGroupSection;
                     sTemplate = TemplateUtils.ReplaceSubSection(sTemplate, string.Empty, "[FORUMS]", "[/FORUMS]");
-
                 }
 
                 return sTemplate;
@@ -338,7 +335,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (ctrl is ForumBase)
                 {
                     ((ForumBase)ctrl).ModuleConfiguration = this.ModuleConfiguration;
-
                 }
 
                 if (ctrl.Controls.Count > 0)
@@ -561,11 +557,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     template = template.Replace("[RESX:BY]", string.Empty);
                     template = template.Replace(replaceTag, string.Empty);
                 }
-
             }
 
             return template;
-
         }
 
         #endregion
@@ -578,7 +572,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (canView && name != string.Empty)
             {
                 sOut = "<a href=\"" + url + "\">" + name + "</a>";
-
             }
             else if (canView && name == string.Empty)
             {
@@ -703,7 +696,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = TemplateUtils.ReplaceSubSection(template, subs, "[SUBFORUMS]", "[/SUBFORUMS]");
                 return template;
             }
-
         }
 
         private string GetForumName(bool canView, bool hidden, int tabID, int forumID, string name, bool useShortUrls)
@@ -732,5 +724,4 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         #endregion
     }
-
 }

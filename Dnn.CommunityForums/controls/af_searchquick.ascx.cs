@@ -92,8 +92,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 this.Response.Redirect(this.NavigateUrl(this.ForumTabId, string.Empty, @params.ToArray()));
             }
-
         }
     }
-
 }

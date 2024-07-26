@@ -115,7 +115,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return DotNetNuke.Modules.ActiveForums.Utilities.MapPath(resourcefilename);
-
         }
 
         public void UpdateResourceFileNode(XmlDocument xmlDoc, string key, string text)
@@ -137,7 +136,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             node.InnerXml = HttpUtility.HtmlEncode(text);
-
         }
     }
 }

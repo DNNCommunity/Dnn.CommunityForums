@@ -50,13 +50,11 @@ namespace DotNetNuke.Modules.ActiveForums
                             i += 1;
                         }
                     }
-
                 }
                 else
                 {
                     this.Response.Redirect(this.NavigateUrl(this.TabId));
                 }
-
             }
             catch (Exception exc)
             {
@@ -101,7 +99,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-
         }
 
         #endregion
@@ -131,14 +128,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     sBody = reply.Content.Body;
                     sSubject = reply.Content.Subject;
                     authorName = reply.Author.DisplayName;
-
                 }
                 else
                 {
                     sBody = topic.Content.Body;
                     sSubject = topic.Content.Subject;
                     authorName = topic.Author.DisplayName;
-
                 }
 
                 ControlUtils ctlUtils = new ControlUtils();
@@ -169,5 +164,4 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
     }
-
 }

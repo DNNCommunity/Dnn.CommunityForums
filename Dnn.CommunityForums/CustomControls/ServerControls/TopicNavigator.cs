@@ -94,6 +94,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb.UserId = this.UserId;
             writer.Write(tb.Render());
         }
-
     }
 }

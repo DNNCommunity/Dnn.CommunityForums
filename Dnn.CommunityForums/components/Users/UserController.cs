@@ -41,7 +41,6 @@ namespace DotNetNuke.Modules.ActiveForums
             catch (Exception ex)
             {
                 return -1;
-
             }
         }
 
@@ -70,7 +69,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         HttpContext.Current.Items.Add("AFUserInfo", u);
                     }
-
                 }
 
                 return u;

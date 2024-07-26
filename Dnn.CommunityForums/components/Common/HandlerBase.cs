@@ -253,7 +253,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     objPortalAliasInfo = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
                     this.pid = objPortalAliasInfo.PortalID;
                     this.ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
-
                 }
 
                 // Dim sc As New Social.SocialSettings
@@ -378,7 +377,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                         c = (char)sr.Read();
                                         bObj = false;
                                         break;
-
                                     }
                                 }
                             }
@@ -431,7 +429,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                             }
 
                             idx += 1;
-
                         }
 
                         if (pairs != null & !string.IsNullOrEmpty(parentProp))
@@ -464,7 +461,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         {
                             ht.Add(s, context.Request.Params[s]);
                         }
-
                     }
 
                     this.@params = ht;
@@ -478,15 +474,12 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 {
                     this.UserId = -1;
                 }
-
             }
             catch (Exception ex)
             {
                 this.isValid = false;
                 Exceptions.LogException(ex);
-
             }
-
         }
 
         internal string BuildOutput(string text, OutputCodes code, bool success)

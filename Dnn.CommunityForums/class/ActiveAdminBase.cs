@@ -204,7 +204,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return string.Empty;
             }
-
         }
     }
 }

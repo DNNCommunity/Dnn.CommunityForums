@@ -299,9 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sSubforums += "<li>" + dr["ForumDesc"].ToString() + "</li>";
                         }
-
                     }
-
                 }
 
                 if (!string.IsNullOrEmpty(sSubforums))

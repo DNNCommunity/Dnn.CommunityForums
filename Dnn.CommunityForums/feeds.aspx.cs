@@ -74,7 +74,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     intTabId = Convert.ToInt32(this.Request.QueryString["tabid"]);
                 }
-
             }
 
             if (this.Request.QueryString["moduleid"] != null)
@@ -101,7 +100,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 this.Response.Write(this.BuildRSS(intPortalId, intTabId, this.moduleID, intPosts, forumID, bolSecurity, bolBody));
             }
-
         }
         #region Private Methods
 
@@ -191,7 +189,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         return sb.ToString();
                     }
                 }
-
             }
 
             return string.Empty;
@@ -285,7 +282,6 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append(this.WriteElement("/item", indent));
 
             return sb.ToString();
-
         }
 
         private string WriteElement(string element, int indent)

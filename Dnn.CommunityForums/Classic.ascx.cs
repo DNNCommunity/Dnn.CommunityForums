@@ -145,9 +145,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ctlDefault.ModuleConfiguration = this.ModuleConfiguration;
                     this.plhLoader.Controls.Clear();
                     this.plhLoader.Controls.Add(ctlDefault);
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -218,7 +216,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctl = (ForumBase)this.LoadControl(ctlPath);
                     }
-
                 }
 
                 if (this.ForumId > 0 & this.ForumInfo != null)
@@ -429,7 +426,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afmod.js");
                 ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ModulePath + "active/am-ui.css");
             }
-
         }
 
         #endregion
@@ -472,7 +468,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.plhToolbar.Controls.Clear();
                     this.plhToolbar.Controls.Add(lit);
                 }
-
             }
 
             if (this.ForumId > 0 && this.UserIsMod)

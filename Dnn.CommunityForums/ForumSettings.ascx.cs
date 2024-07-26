@@ -87,7 +87,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     this.litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configenable',this); return false;\">Install DNN Community Forums URL Handler</a>";
                 }
-
             }
 
             // Full Text
@@ -318,7 +317,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 log.AddProperty("Message", this.LocalizeString("ApplicationRestart"));
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
                 DotNetNuke.Common.Utilities.Config.Touch();
-
             }
             catch (Exception exc) // Module failed to load
             {
@@ -391,7 +389,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.drpMessagingTab.Items.Add(new ListItem("No Messaging Tabs Found", "-1"));
                 this.drpMessagingTab.Enabled = false;
             }
-
         }
 
         private void BindForumGroups()
@@ -410,9 +407,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         this.drpForumGroupTemplate.Items.Add(new ListItem(row["GroupName"].ToString(), row["ForumGroupId"].ToString()));
                         tmpGroup = row["ForumGroupId"].ToString();
                     }
-
                 }
-
             }
         }
 
@@ -485,7 +480,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     else if (i == 9)
                     {
                         sClass += " gridsep";
-
                     }
 
                     sb.Append("<td class=\"" + sClass + "\">");
@@ -679,7 +673,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             this.ForumConfig = xDoc.OuterXml;
-
         }
 
         #endregion

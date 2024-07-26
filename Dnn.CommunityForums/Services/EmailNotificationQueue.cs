@@ -76,5 +76,4 @@ namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
             }
         }
     }
-
 }

@@ -152,7 +152,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return string.Format(GetSharedResource("[RESX:TimeSpan:YearsAgo]"), Math.Ceiling(ts.Days / 365.0));
-
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]

@@ -94,7 +94,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     new UserProfileController().Profiles_Save(upi);
 
                     this.Response.Redirect(this.NavigateUrl(this.TabId));
-
                 }
             }
         }

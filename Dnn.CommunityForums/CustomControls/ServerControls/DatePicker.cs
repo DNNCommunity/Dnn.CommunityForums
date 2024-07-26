@@ -81,7 +81,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         return string.Empty;
                     }
-
                 }
 
                 return string.Empty;
@@ -512,7 +511,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     writer.RenderBeginTag(HtmlTextWriterTag.Input);
                     writer.RenderEndTag();
-
                 }
 
                 this.dtFI = Thread.CurrentThread.CurrentCulture.DateTimeFormat;
@@ -666,7 +664,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     catch (Exception ex)
                     {
                     }
-
                 }
 
                 int xMonths = this.cal.GetMonthsInYear(this.cal.GetYear(tmpDate), this.cal.GetEra(tmpDate));
@@ -751,7 +748,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-
         }
 
         protected override void OnLoad(EventArgs e)

@@ -39,7 +39,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.cbSubscribe.CallbackEvent += this.cbSubscribe_Callback;
             this.chkSubscribe.CheckedChanged += new System.EventHandler(this.chkSubscribe_CheckedChanged);
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -96,7 +95,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.chkSubscribe.Checked = this.IsSubscribed;
             this.chkSubscribe.Text = this.GetSharedResource("[RESX:Subscribe]");
-
         }
         #endregion
     }

@@ -61,7 +61,6 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Framework.CDefault tempVar = this.BasePage;
             Environment.UpdateMeta(ref tempVar, "[VALUE] - " + this.lblHeader.Text, "[VALUE]", "[VALUE]");
             this.plhMembers.Controls.Add(ctl);
-
         }
     }
 }

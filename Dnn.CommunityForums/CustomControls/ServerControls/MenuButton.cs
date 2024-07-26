@@ -144,5 +144,4 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public class MenuContent : Control { }
     }
-
 }

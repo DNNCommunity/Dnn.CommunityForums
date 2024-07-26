@@ -79,7 +79,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 sb.Append(",");
                 sb.Append(Utilities.JSON.Pair("Label", HttpUtility.HtmlEncode("[RESX:" + p.Name + "]")));
                 sb.Append("},");
-
             }
 
             if (sb.Length > 2)

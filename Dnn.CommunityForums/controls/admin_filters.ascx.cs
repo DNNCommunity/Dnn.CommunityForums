@@ -35,7 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.agFilters.Callback += this.agFilters_Callback;
             this.agFilters.ItemBound += this.agFilters_ItemBound;
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -67,7 +66,6 @@ namespace DotNetNuke.Modules.ActiveForums
                             Controllers.FilterController.ImportFilter(this.PortalId, this.ModuleId);
                             break;
                     }
-
                 }
 
                 int pageIndex = Convert.ToInt32(e.Parameters[0]);
@@ -80,7 +78,6 @@ namespace DotNetNuke.Modules.ActiveForums
             catch (Exception ex)
             {
             }
-
         }
 
         private void agFilters_ItemBound(object sender, Modules.ActiveForums.Controls.ItemBoundEventArgs e)

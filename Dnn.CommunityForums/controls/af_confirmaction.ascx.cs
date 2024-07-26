@@ -99,7 +99,6 @@ namespace DotNetNuke.Modules.ActiveForums
                             this.lblMessage.Text = Utilities.GetSharedResource("[RESX:User:Banned]", "Messages.ascx");
                             break;
                     }
-
                 }
 
                 this.hypForums.NavigateUrl = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + this.ForumId });
@@ -145,5 +144,4 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
     }
-
 }

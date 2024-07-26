@@ -63,7 +63,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Control ctl = this.Page.ParseControl(sTemp);
             this.LinkControls(ctl.Controls);
             this.Controls.Add(ctl);
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -300,7 +299,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 else
                 {
                     sURL = Utilities.NavigateURL(this.PageId, string.Empty, new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + parentPostID, ParamKeys.ContentJumpId + "=" + postId });
-
                 }
 
                 sOut = "<af:link id=\"hypLastPostSubject" + fid + "\" NavigateUrl=\"" + sURL + "\" Text=\"" + System.Web.HttpUtility.HtmlEncode(subject) + "\" runat=\"server\" />";

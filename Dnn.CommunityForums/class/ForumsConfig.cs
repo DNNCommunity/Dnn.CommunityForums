@@ -105,7 +105,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         for (i = 0; i < xNodeList.Count; i++)
                         {
                             objModules.UpdateModuleSetting(moduleId, xNodeList[i].Attributes["name"].Value, xNodeList[i].Attributes["value"].Value);
-
                         }
                     }
                 }

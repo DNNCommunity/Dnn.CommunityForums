@@ -175,7 +175,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     this.hypLastPostSubject.Enabled = canView;
                 }
-
             }
 
             if (canView)
@@ -186,7 +185,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 this.Content.RenderControl(writer);
             }
-
         }
 
         protected override void OnInit(EventArgs e)

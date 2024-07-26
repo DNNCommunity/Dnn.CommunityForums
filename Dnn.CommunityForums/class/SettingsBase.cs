@@ -361,7 +361,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return objSettings;
-
         }
 
         public SettingsInfo MainSettings
@@ -452,7 +451,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -488,7 +486,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
         }
         #endregion
     }

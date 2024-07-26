@@ -34,7 +34,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
-
         }
 
         public static void ModuleException(ref Control ctl, Exception ex)

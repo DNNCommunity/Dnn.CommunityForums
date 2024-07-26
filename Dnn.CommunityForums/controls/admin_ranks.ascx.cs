@@ -34,7 +34,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.agRanks.Callback += this.agRanks_Callback;
             this.agRanks.ItemBound += this.agRanks_ItemBound;
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -42,7 +41,6 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
 
             this.BindRankImages();
-
         }
 
         private void agRanks_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
@@ -74,7 +72,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 myFileInfo = new System.IO.FileInfo(fileCollection[i]);
                 path = "DesktopModules/ActiveForums/images/ranks/" + myFileInfo.Name;
                 this.drpRankImages.Items.Insert(i, new ListItem(myFileInfo.Name, path.ToLowerInvariant()));
-
             }
 
             this.drpRankImages.Items.Insert(0, new ListItem("[RESX:DropDownDefault]", "-1"));

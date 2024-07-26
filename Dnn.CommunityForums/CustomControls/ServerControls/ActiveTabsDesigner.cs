@@ -66,6 +66,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string message = "This <b>TabularMultiView</b> control represents the look and feel of the Multiview control, but with a tabular like interface. Each tab corresponds to a View. Use the properties on each tab (TabularView) to modify each Tab. <hr/> <small> Control Library - Tiger</small>";
             return this.CreatePlaceHolderDesignTimeHtml(message);
         }
-
     }
 }

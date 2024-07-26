@@ -201,7 +201,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"javascript:" + string.Format(this.ClientScript, i) + "\">" + i + "</a></td>");
                         }
-
                     }
 
                     if (i == this.PageCount)
@@ -267,7 +266,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     Array.Resize(ref params2, intLength + this.Params.Length);
                     this.Params.CopyTo(params2, intLength);
                 }
-
             }
             else if (view.ToLowerInvariant() == Views.Topic.ToLowerInvariant())
             {
@@ -313,6 +311,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return params2;
         }
-
     }
 }
