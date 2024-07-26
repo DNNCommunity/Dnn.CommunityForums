@@ -78,7 +78,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     upi.PrefJumpLastPost = chkPrefJumpToLastPost.Checked;
                     upi.PrefTopicSubscribe = chkPrefTopicSubscribe.Checked;
                     upi.PrefSubscriptionType = SubscriptionTypes.Instant;
-                    upi.PrefUseAjax = false;
                     upi.PrefBlockAvatars = chkPrefBlockAvatars.Checked;
                     upi.PrefBlockSignatures = chkPrefBlockSignatures.Checked;
                     if (MainSettings.AllowSignatures == 1 || MainSettings.AllowSignatures == 0)

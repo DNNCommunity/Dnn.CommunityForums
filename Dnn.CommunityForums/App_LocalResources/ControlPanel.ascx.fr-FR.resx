@@ -114,12 +114,6 @@
   <data name="[RESX:AllowScripts].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Scripts</value>
   </data>
-  <data name="[RESX:AllowUserBios].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Autoriser les biographies des utilisateurs</value>
-  </data>
-  <data name="[RESX:AllowUserPhotos].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Autoriser les photos des utilisateurs</value>
-  </data>
   <data name="[RESX:AllUsers].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Tous les utilisateurs</value>
   </data>
@@ -378,7 +372,7 @@
   <data name="[RESX:EnableURLRewriter].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Activer les URL conviviales</value>
   </data>
-   <data name="[RESX:EOMALL].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
+  <data name="[RESX:EOMALL].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>TOUS - Obligatoire</value>
   </data>
   <data name="[RESX:EOMOptional].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
@@ -536,12 +530,6 @@
   </data>
   <data name="[RESX:LoggingLevel].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Niveau de journalisation</value>
-  </data>
-  <data name="[RESX:MailQueue:Intro].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Recommandé pour les sites avec un grand nombre d’abonnés.  Nécessite le planificateur DotNetNuke.  Voir la documentation pour plus de détails.</value>
-  </data>
-  <data name="[RESX:MailQueue].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Activer la file d’attente des messages</value>
   </data>
   <data name="[RESX:MainFeatures:Intro].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Les fonctionnalités ci-dessous sont utilisées sur tous les forums.  Vous pouvez activer ou désactiver certaines fonctionnalités ci-dessous.</value>

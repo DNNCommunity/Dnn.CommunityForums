@@ -111,15 +111,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public bool UseAjax
-        {
-            get
-            {
-                bool tempUseAjax = Request.IsAuthenticated && UserPrefUseAjax;
-
-                return tempUseAjax;
-            }
-        }
 
         public int PageId
         {
@@ -282,17 +273,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (UserId != -1)
                 {
                     return ForumUser.Profile.PrefJumpLastPost;
-                }
-                return false;
-            }
-        }
-        public bool UserPrefUseAjax
-        {
-            get
-            {
-                if (UserId != -1)
-                {
-                    return ForumUser.Profile.PrefUseAjax;
                 }
                 return false;
             }

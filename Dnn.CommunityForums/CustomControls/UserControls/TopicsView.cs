@@ -1221,7 +1221,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (Replies + 1 > PageSize)
             {
-                //sOut = "<div class=""afpagermini"">" & GetSharedResource("SubPages.Text") & "&nbsp;"
+                List<string> Params = new List<string>();
                 sOut = "<div class=\"afpagermini\">(<img src=\"" + MyThemePath + "/images/icon_multipage.png\" alt=\"[RESX:MultiPageTopic]\" style=\"vertical-align:middle;\" />";
                 //Jump to pages
                 int intPostPages = 0;
@@ -1230,99 +1230,50 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     for (i = 1; i <= 3; i++)
                     {
-                        if (UseAjax)
+                       
+                        Params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
+                        if (MainSettings.UseShortUrls)
                         {
-                            var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
-                            if (MainSettings.UseShortUrls)
-                            {
-                                @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
-                            }
-                            if (i > 1)
-                            {
-                                @params.Add(ParamKeys.PageJumpId + "=" + i);
-                            }
-                            sOut += "<a href=\"" + NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                            Params = new List<string> { ParamKeys.TopicId + "=" + PostID };
                         }
-                        else
+                        if (i > 1)
                         {
-                            var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
-                            if (MainSettings.UseShortUrls)
-                            {
-                                @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
-                            }
-                            if (i > 1)
-                            {
-                                @params.Add(ParamKeys.PageId + "=" + i);
-                            }
-                            sOut += "<a href=\"" + NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                            Params.Add(ParamKeys.PageId + "=" + i);
                         }
+                        sOut += "<a href=\"" + NavigateUrl(TabID, "", Params.ToArray()) + "\">" + i + "</a>&nbsp;";
 
                     }
                     if (intPostPages > 4)
                     {
                         sOut += "...&nbsp;";
                     }
-                    if (UseAjax)
-                    {
-                        var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
-                        if (MainSettings.UseShortUrls)
-                        {
-                            @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
-                        }
-                        if (i > 1)
-                        {
-                            @params.Add(ParamKeys.PageJumpId + "=" + i);
-                        }
-                        sOut += "<a href=\"" + NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
 
-                    }
-                    else
+                    Params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
+                    if (MainSettings.UseShortUrls)
                     {
-                        var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
-                        if (MainSettings.UseShortUrls)
-                        {
-                            @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
-                        }
-                        if (i > 1)
-                        {
-                            @params.Add(ParamKeys.PageId + "=" + i);
-                        }
-                        sOut += "<a href=\"" + NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                        Params = new List<string> { ParamKeys.TopicId + "=" + PostID };
                     }
+                    if (i > 1)
+                    {
+                        Params.Add(ParamKeys.PageJumpId + "=" + i);
+                    }
+                    sOut += "<a href=\"" + NavigateUrl(TabID, "", Params.ToArray()) + "\">" + i + "</a>&nbsp;";
 
                 }
                 else
                 {
                     for (i = 1; i <= intPostPages; i++)
                     {
-                        if (UseAjax)
+                        Params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
+                        if (MainSettings.UseShortUrls)
                         {
-                            //sOut &= "<span class=""afpagerminiitem"" onclick=""javascript:afPageJump(" & i & ");"">" & i & "</span>&nbsp;"
-                            var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
-                            if (MainSettings.UseShortUrls)
-                            {
-                                @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
-                            }
-                            if (i > 1)
-                            {
-                                @params.Add(ParamKeys.PageJumpId + "=" + i);
-                            }
-                            sOut += "<a href=\"" + NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                            Params = new List<string> { ParamKeys.TopicId + "=" + PostID };
                         }
-                        else
+                        if (i > 1)
                         {
-                            var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
-                            if (MainSettings.UseShortUrls)
-                            {
-                                @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
-                            }
-                            if (i > 1)
-                            {
-                                @params.Add(ParamKeys.PageId + "=" + i);
-                            }
-                            sOut += "<a href=\"" + NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                            Params.Add(ParamKeys.PageJumpId + "=" + i);
                         }
-
+                        sOut += "<a href=\"" + NavigateUrl(TabID, "", Params.ToArray()) + "\">" + i + "</a>&nbsp;";                       
                     }
                 }
 

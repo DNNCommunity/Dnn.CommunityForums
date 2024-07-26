@@ -177,9 +177,6 @@
   <data name="[RESX:Announcements].Text" xml:space="preserve">
     <value>Anuncios</value>
   </data>
-  <data name="[RESX:AOL].Text" xml:space="preserve">
-    <value>AOL</value>
-  </data>
   <data name="[RESX:Approve].Text" xml:space="preserve">
     <value>Aprobar</value>
   </data>
@@ -475,9 +472,6 @@ De
   <data name="[RESX:Height].Text" xml:space="preserve">
     <value>Alto</value>
   </data>
-  <data name="[RESX:ICQ].Text" xml:space="preserve">
-    <value>ICQ</value>
-  </data>
   <data name="[RESX:Image].Text" xml:space="preserve">
     <value>Imagen</value>
   </data>
@@ -492,9 +486,6 @@ De
   </data>
   <data name="[RESX:InsertImage].Text" xml:space="preserve">
     <value>Insertar imagen</value>
-  </data>
-  <data name="[RESX:Interests].Text" xml:space="preserve">
-    <value>Intereses</value>
   </data>
   <data name="[RESX:Italics].Text" xml:space="preserve">
     <value> I </value>
@@ -561,9 +552,6 @@ De
   </data>
   <data name="[RESX:LastVisit].Text" xml:space="preserve">
     <value>Última visita</value>
-  </data>
-  <data name="[RESX:Location].Text" xml:space="preserve">
-    <value>Ubicación</value>
   </data>
   <data name="[RESX:Lock].Text" xml:space="preserve">
     <value>Bloquear</value>
@@ -634,9 +622,6 @@ De
   <data name="[RESX:MoveTopicTitle].Text" xml:space="preserve">
     <value>Mover tema</value>
   </data>
-  <data name="[RESX:MSN].Text" xml:space="preserve">
-    <value>MSN</value>
-  </data>
   <data name="[RESX:MultiPageTopic].Text" xml:space="preserve">
     <value>El tema tiene varias páginas</value>
   </data>
@@ -702,9 +687,6 @@ De
   </data>
   <data name="[RESX:NotTrusted].Text" xml:space="preserve">
     <value>No es de confianza</value>
-  </data>
-  <data name="[RESX:Occupation].Text" xml:space="preserve">
-    <value>Ocupación</value>
   </data>
   <data name="[RESX:OldestFirst].Text" xml:space="preserve">
     <value>Primero el más antiguo</value>
@@ -840,9 +822,6 @@ De
   </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve">
     <value>Es posible que el administrador del foro le haya permitido elegir diferentes formas de suscripción.  Puede seleccionar su preferencia deseada.</value>
-  </data>
-  <data name="[RESX:PrefUseAjax].Text" xml:space="preserve">
-    <value>Usar Ajax</value>
   </data>
   <data name="[RESX:Preview].Text" xml:space="preserve">
     <value>Vista previa</value>
@@ -1213,9 +1192,6 @@ De
   <data name="[RESX:Tips:PrefShowReplies].Text" xml:space="preserve">
     <value>Al seleccionar esta opción, podrá ver todas las respuestas de un tema determinado mientras redacta una respuesta.</value>
   </data>
-  <data name="[RESX:Tips:PrefUseAjax].Text" xml:space="preserve">
-    <value>AJAX es un método de programación para mejorar la forma en que interactúa con los foros.  Puede elegir si desea utilizar o no esta capacidad.</value>
-  </data>
   <data name="[RESX:Tips:ProfileVisibility].Text" xml:space="preserve">
     <value>Seleccione qué tipo de usuarios deben tener acceso para ver otros perfiles.</value>
   </data>
@@ -1338,9 +1314,6 @@ De
   </data>
   <data name="[RESX:Width].Text" xml:space="preserve">
     <value>Ancho</value>
-  </data>
-  <data name="[RESX:Yahoo].Text" xml:space="preserve">
-    <value>Yahoo</value>
   </data>
   <data name="[RESX:Yes].Text" xml:space="preserve">
     <value>Sí</value>

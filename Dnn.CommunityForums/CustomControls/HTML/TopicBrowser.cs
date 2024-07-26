@@ -243,18 +243,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				_AltItemCSS = value;
 			}
 		}
-		private bool _UseAjax = false;
-		public bool UseAjax
-		{
-			get
-			{
-				return _UseAjax;
-			}
-			set
-			{
-				_UseAjax = value;
-			}
-		}
 		private string _ImagePath = string.Empty;
 		public string ImagePath
 		{

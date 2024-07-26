@@ -100,13 +100,13 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Profiles
-        public abstract void Profiles_Create(int PortalId, int ModuleId, int UserId);
-        public abstract void Profiles_UpdateActivity(int PortalId, int ModuleId, int UserId);
-        public abstract IDataReader Profiles_GetUsersOnline(int PortalId, int ModuleId, int Interval);
-        public abstract DataSet Profiles_Get(int PortalId, int ModuleId, int UserId);
-        public abstract IDataReader Profiles_MemberList(int PortalId, int ModuleId, int MaxRows, int RowIndex, string Filter);
-        public abstract void Profiles_Save(int PortalId, int ModuleId, int UserId, int TopicCount, int ReplyCount, int ViewCount, int AnswerCount, int RewardPoints, string UserCaption, string Signature, bool SignatureDisabled, int TrustLevel, bool AdminWatch, bool AttachDisabled, string Avatar, int AvatarType, bool AvatarDisabled, string PrefDefaultSort, bool PrefDefaultShowReplies, bool PrefJumpLastPost, bool PrefTopicSubscribe, int PrefSubscriptionType, bool PrefUseAjax, bool PrefBlockAvatars, bool PrefBlockSignatures, int PrefPageSize, string Yahoo, string MSN, string ICQ, string AOL, string Occupation, string Location, string Interests, string WebSite, string Badges);
-        public abstract IDataReader Profiles_GetStats(int PortalId, int ModuleId, int Interval);
+        public abstract void Profiles_Create(int PortalId, int UserId);
+        public abstract void Profiles_UpdateActivity(int PortalId, int UserId);
+        public abstract IDataReader Profiles_GetUsersOnline(int PortalId, int Interval);
+        public abstract DataSet Profiles_Get(int PortalId, int UserId);
+        public abstract IDataReader Profiles_MemberList(int PortalId, int MaxRows, int RowIndex, string Filter);
+        public abstract void Profiles_Save(int PortalId, int UserId, int TopicCount, int ReplyCount, int ViewCount, int AnswerCount, int RewardPoints, string UserCaption, string Signature, bool SignatureDisabled, int TrustLevel, bool AdminWatch, bool AttachDisabled, string Avatar, int AvatarType, bool AvatarDisabled, string PrefDefaultSort, bool PrefDefaultShowReplies, bool PrefJumpLastPost, bool PrefTopicSubscribe, int PrefSubscriptionType, bool PrefBlockAvatars, bool PrefBlockSignatures, int PrefPageSize);
+        public abstract IDataReader Profiles_GetStats(int PortalId, int Interval);
         #endregion
 
         #region Moderation

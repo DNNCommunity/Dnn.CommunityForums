@@ -49,15 +49,9 @@ namespace DotNetNuke.Modules.ActiveForums
             string SubscribeText = GetSharedResource("[RESX:Subscribe]");
             chkSubscribe.Text = SubscribeText;
             chkSubscribe.Checked = IsSubscribed;
-            if (UseAjax)
-            {
-                chkSubscribe.Attributes.Add("onclick", "af_toggleSub();");
-                AddToggleScript();
-            }
-            else
-            {
-                chkSubscribe.AutoPostBack = true;
-            }
+            chkSubscribe.AutoPostBack = false;
+            chkSubscribe.Attributes.Add("onclick", "af_toggleSub();");
+            AddToggleScript();
         }
         private void cbSubscribe_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {

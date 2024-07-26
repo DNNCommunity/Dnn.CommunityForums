@@ -264,9 +264,6 @@
   <data name="[RESX:UniqueFileNames].Text" xml:space="preserve">
     <value>Unique Filenames</value>
   </data>
-  <data name="[RESX:AllowUserPhotos].Text" xml:space="preserve">
-    <value>Allow User Photos</value>
-  </data>
   <data name="[RESX:AvatarDimensions].Text" xml:space="preserve">
     <value>Avatar Dimensions</value>
   </data>
@@ -335,9 +332,6 @@
   </data>
   <data name="[RESX:UsersOnlineEnabled].Text" xml:space="preserve">
     <value>Show Users Online</value>
-  </data>
-  <data name="[RESX:AllowUserBios].Text" xml:space="preserve">
-    <value>Allow User Bios</value>
   </data>
   <data name="[RESX:About].Text" xml:space="preserve">
     <value>About</value>
@@ -831,19 +825,19 @@
   <data name="[RESX:Exit].Text" xml:space="preserve">
     <value>Exit</value>
   </data>
-	<data name="[RESX:InheritGroupFeatures].Text" xml:space="preserve">
+  <data name="[RESX:InheritGroupFeatures].Text" xml:space="preserve">
     <value>Inherit Group Settings</value>
   </data>
-	<data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve">
+  <data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve">
     <value>Check this box to inherit feature settings from the group.</value>
   </data>
-	<data name="[RESX:InheritGroupSecurity].Text" xml:space="preserve">
+  <data name="[RESX:InheritGroupSecurity].Text" xml:space="preserve">
     <value>Inherit Group Security</value>
   </data>
-	<data name="[RESX:Tips:InheritGroupSecurity].Text" xml:space="preserve">
+  <data name="[RESX:Tips:InheritGroupSecurity].Text" xml:space="preserve">
     <value>Check this box to inherit security from the group.</value>
   </data>
-	<data name="[RESX:ClickToAdd].Text" xml:space="preserve">
+  <data name="[RESX:ClickToAdd].Text" xml:space="preserve">
     <value>Click to Add</value>
   </data>
   <data name="[RESX:Tips:EnableAvatars].Text" xml:space="preserve">
@@ -1309,7 +1303,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:EditControl].Text" xml:space="preserve">
     <value>Content Edit Control</value>
   </data>
-   <data name="[RESX:FloodControl].Text" xml:space="preserve">
+  <data name="[RESX:FloodControl].Text" xml:space="preserve">
     <value>Duplicate Posts and Abuse Prevention</value>
   </data>
   <data name="[RESX:FriendlyURLOptions].Text" xml:space="preserve">
