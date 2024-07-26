@@ -1,5 +1,4 @@
-﻿//
-// Community Forums
+﻿// Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
 //
@@ -491,7 +490,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     tmp = tmp.Replace("[AF:QUICKEDITLINK]", string.Empty);
                 }
 
-                //
                 tmp = tmp.Replace("[TOPICSTATE]", cUtils.TopicState(row));
                 var sAvatar = UserProfiles.GetAvatar(auth.AuthorId, this.mainSettings.AvatarWidth, this.mainSettings.AvatarHeight);
 

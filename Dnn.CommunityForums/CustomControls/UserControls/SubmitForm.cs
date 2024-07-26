@@ -1,5 +1,4 @@
-﻿//
-// Community Forums
+﻿// Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
 //
@@ -383,7 +382,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #endregion
 
         // Defines the Click event.
-        //
         public event EventHandler BubbleClick;
 
         protected void OnBubbleClick(EventArgs e)

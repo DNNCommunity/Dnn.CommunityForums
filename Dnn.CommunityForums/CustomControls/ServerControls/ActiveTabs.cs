@@ -1,4 +1,3 @@
-//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community

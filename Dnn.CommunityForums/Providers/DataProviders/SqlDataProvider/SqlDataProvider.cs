@@ -1,5 +1,4 @@
-﻿//
-// Community Forums
+﻿// Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
 //
@@ -16,7 +15,6 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -743,7 +741,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_TP_GetPosts", PortalId, Forums, TopicsOnly, RandomOrder, Rows, IgnoreSecurity, Tags, FilterByUserId);
         }
 
-        //
         public override IDataReader GetPostsByUser(int PortalId, int Rows, bool IsSuperUser, int currentUserId, int FilteredUserid, bool TopicsOnly, string ForumIds)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_TP_GetByUser", PortalId, Rows, IsSuperUser, currentUserId, FilteredUserid, TopicsOnly, ForumIds);

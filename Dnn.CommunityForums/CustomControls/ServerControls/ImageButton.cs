@@ -1,5 +1,4 @@
-﻿//
-// Community Forums
+﻿// Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
 //
@@ -195,11 +194,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
         // Defines the Click event.
-        //
         public event EventHandler Click;
 
         // Invokes delegates registered with the Click event.
-        //
         protected virtual void OnClick(EventArgs e)
         {
             if (this.Click != null)

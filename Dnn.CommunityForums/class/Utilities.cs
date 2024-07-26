@@ -1,5 +1,4 @@
-﻿//
-// Community Forums
+﻿// Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
 //
@@ -16,7 +15,6 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -453,9 +451,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return url;
             }
 
-            //
             // Ignore it when there is a preceeding a or img.
-            //
             var xStart = 0;
             if ((match.Index - 10) > 0)
             {
