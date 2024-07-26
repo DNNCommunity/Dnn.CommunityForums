@@ -76,28 +76,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        private static TemplateInfo GetTemplateByName(string templateName, int moduleId, int portalId)
-        {
-
-            var tc = new TemplateController();
-            TemplateInfo ti;
-            try
-            {
-                ti = tc.Template_Get(templateName, portalId, moduleId);
-            }
-            catch (Exception ex)
-            {
-                ti = new TemplateInfo { Template = string.Concat("Error loading ", templateName, " template.") };
-            }
-
-            if (ti == null)
-            {
-                ti = new TemplateInfo { Template = string.Concat("Error loading ", templateName, " template.") };
-            }
-            return ti;
-        }
-
         #region Email
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, int timeZoneOffset)

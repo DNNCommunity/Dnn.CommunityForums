@@ -33,7 +33,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class Link : WebControl
     {
         private string text;
-        private bool visible;
         private string navigateUrl;
         private string enabledRoles;
         private string userRoles;

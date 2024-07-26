@@ -31,10 +31,9 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Public Members
         public string DisplayMode;
         public int pid = 0;
+
         #endregion
         #region Private Members
-        private int intGuestCount = 0;
-        private int intMemberCount = 0;
 
         #endregion
         #region Event Handlers

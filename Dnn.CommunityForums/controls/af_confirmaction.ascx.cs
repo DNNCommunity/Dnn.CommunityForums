@@ -133,10 +133,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected System.Web.UI.WebControls.Panel pnlMessage;
 
-        // NOTE: The following placeholder declaration is required by the Web Form Designer.
-        // Do not delete or move it.
-        private object designerPlaceholderDeclaration;
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

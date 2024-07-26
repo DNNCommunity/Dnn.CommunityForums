@@ -31,10 +31,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
 
         #region Declarations
-
-        private Label calLabel;
-        private Image calImage;
-        private System.Web.UI.HtmlControls.HtmlGenericControl div;
         private HiddenField labelHidden = new HiddenField();
         private string dateFormat;
         private string timeFormat;

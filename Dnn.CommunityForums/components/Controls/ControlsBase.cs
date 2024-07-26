@@ -30,7 +30,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class ControlsBase : ForumBase
     {
         private string template;
-        private string templateFile;
         private string currentView = "forumview";
         private bool parseTemplate = false;
 

@@ -44,9 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private CallBackContent content;
         private ClientTemplate loadingtemplate;
         private bool debug = false;
-        private bool loaded = false;
         private bool isCallback = false;
-        private CallBackContent previouscontent;
         private int refreshInterval = 0;
         private string parameter = string.Empty;
         private string resourceFile = string.Empty;

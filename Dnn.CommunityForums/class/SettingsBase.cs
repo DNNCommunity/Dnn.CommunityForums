@@ -35,8 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Private Members
         private int forumModuleId = -1;
         private string loadView = string.Empty;
-        private int loadGroupForumID = 0;
-        private int loadPostID = 0;
         private string imagePath = string.Empty;
         private string @params = string.Empty;
         private int forumTabId = -1;
@@ -430,15 +428,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters)
         {
             return Utilities.NavigateURL(tabId, controlKey, additionalParameters);
-        }
-
-        private string[] AddParams(string param, string[] currParams)
-        {
-            var tmpParams = new[] { param };
-            int intLength = tmpParams.Length;
-            Array.Resize(ref tmpParams, intLength + currParams.Length);
-            currParams.CopyTo(tmpParams, intLength);
-            return tmpParams;
         }
 
         public void RenderMessage(string title, string message)

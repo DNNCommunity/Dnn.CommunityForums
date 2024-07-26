@@ -35,7 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums
     public class af_rss : DotNetNuke.Framework.PageBase
     {
         protected System.Web.UI.WebControls.Label xML;
-        private double dblCacheTimeOut = 15;
         private int moduleID = -1;
 
         private DataRow drForum;
@@ -317,27 +316,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return xmlString;
         }
 
-        private string StripHTMLTag(string sText)
-        {
-            string tempStripHTMLTag = null;
-            tempStripHTMLTag = string.Empty;
-            bool fFound = false;
-            while ((sText.IndexOf("<", 0) + 1) > 0)
-            {
-                fFound = true;
-                tempStripHTMLTag = tempStripHTMLTag + " " + sText.Substring(0, sText.IndexOf("<", 0) + 1 - 1);
-                sText = sText.Substring(sText.IndexOf(">", 0) + 1);
-            }
-
-            tempStripHTMLTag = tempStripHTMLTag + sText;
-            if (!fFound)
-            {
-                tempStripHTMLTag = sText;
-            }
-
-            return tempStripHTMLTag;
-        }
-
         #endregion
         #region  Web Form Designer Generated Code
 
@@ -347,10 +325,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 
         }
-
-        // NOTE: The following placeholder declaration is required by the Web Form Designer.
-        // Do not delete or move it.
-        private object designerPlaceholderDeclaration;
 
         protected override void OnInit(EventArgs e)
         {

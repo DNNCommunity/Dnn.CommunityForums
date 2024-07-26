@@ -36,7 +36,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private string searchText;
         private string tags;
         private int? searchType;
-        private int? authorUserId;
         private string authorUsername;
         private int? searchColumns;
         private string forums;

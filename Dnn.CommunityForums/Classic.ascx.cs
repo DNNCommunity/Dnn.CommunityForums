@@ -42,8 +42,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class Classic : ForumBase
     {
-
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi;
         private string currView = string.Empty;
 
         #region Private Members

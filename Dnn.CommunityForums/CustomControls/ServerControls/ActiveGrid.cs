@@ -42,7 +42,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private ItemTemplateContents headerTemplate;
         private ItemTemplateContents footerTemplate;
         private IDataReader datasource;
-        private DataView dataView;
         private string rowDelimiter = "^";
         private string colDelimiter = "|";
         private int pageSize = 10;
@@ -65,7 +64,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string ascImage = string.Empty;
         private string descImage = string.Empty;
         private bool loadOnRender = true;
-        private string onComplete;
 
         public enum Sort : int
         {

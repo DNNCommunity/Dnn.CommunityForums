@@ -27,9 +27,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:forumdisplay runat=server></{0}:forumdisplay>")]
     public class ForumDisplay : ControlsBase
     {
+
         #region Private Members
-        // Dim pt As Forums.Utils.TimeCalcItem
-        private int forumGroupId = -1;
 
         #endregion
         #region Public Properties
@@ -254,11 +253,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             fc += "<content>" + sForum + "</content>";
             fc += "</af:forumrow>";
             return fc;
-        }
-
-        private string GetForumLink(int forumId, bool canView)
-        {
-            return this.GetForumLink(string.Empty, forumId, canView);
         }
 
         private string GetForumLink(string name, int forumId, bool canView)

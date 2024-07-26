@@ -29,18 +29,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public static int imgHeight;
         public static int imgWidth;
 
-        private static int GetHeight(string sPath)
-        {
-            var g = Image.FromFile(sPath);
-            return g.Height;
-        }
-
-        private static int GetWidth(string sPath)
-        {
-            var g = Image.FromFile(sPath);
-            return g.Width;
-        }
-
         public static int GetHeightFromStream(Stream sFile)
         {
             var g = Image.FromStream(sFile, true);

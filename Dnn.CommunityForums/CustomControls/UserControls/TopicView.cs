@@ -96,7 +96,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string memberListMode = string.Empty;
         private string profileVisibility = string.Empty;
         private bool _enablePoints;
-        private bool trustDefault;
         private bool isTrusted;
         private int topicRating;
         private bool allowHTML;

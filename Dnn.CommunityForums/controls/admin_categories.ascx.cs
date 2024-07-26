@@ -144,24 +144,5 @@ namespace DotNetNuke.Modules.ActiveForums
             // e.Item(2) = Server.HtmlEncode(e.Item(2).ToString)
             e.Item[6] = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + this.GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
         }
-
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetSubForums(DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums, int forumId)
-        {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection subforums = null;
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo s in forums)
-            {
-                if (s.ParentForumId == forumId)
-                {
-                    if (subforums == null)
-                    {
-                        subforums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                    }
-
-                    subforums.Add(s);
-                }
-            }
-
-            return subforums;
-        }
     }
 }

@@ -37,7 +37,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private List<Tab> tabs;
         private string imagesPath;
         private string targetDiv = string.Empty;
-        private int selectedIndex = 0;
         private string contentHeight;
         private string tabDisplayCSS = "amTabDisplay";
         private string tabStripCSS = "amTabStrip";

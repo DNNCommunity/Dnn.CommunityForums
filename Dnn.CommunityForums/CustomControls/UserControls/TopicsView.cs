@@ -64,8 +64,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool bPoll = false;
         private bool bDelete = false;
         private bool bEdit = false;
-        private bool bLock = false;
-        private bool bPin = false;
         private bool bSubscribe = false;
         private bool bModApprove = false;
         private bool bModMove = false;
@@ -1191,46 +1189,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-        }
-
-        private string GetIcon(int lastTopicRead, int lastReplyRead, int topicId, int replyId, string icon, bool pinned = false, bool locked = false)
-        {
-            if (icon != string.Empty)
-            {
-                return "<img src=\"" + this.myThemePath + "/emoticons/" + icon + "\" alt=\"" + icon + "\" />";
-            }
-
-            if (pinned && locked)
-            {
-                return "<img src=\"" + this.myThemePath + "/images/topic_pinlocked.png\" alt=\"[RESX:PinnedLocked]\" />";
-            }
-
-            if (pinned)
-            {
-                return "<img src=\"" + this.myThemePath + "/images/topic_pin.png\" alt=\"[RESX:Pinned]\" />";
-            }
-
-            if (locked)
-            {
-                return "<img src=\"" + this.myThemePath + "/images/topic_lock.png\" alt=\"[RESX:Locked]\" />";
-            }
-
-            if (!this.Request.IsAuthenticated)
-            {
-                return "<img src=\"" + this.myThemePath + "/images/topic.png\" alt=\"[RESX:TopicRead]\" />";
-            }
-
-            if (lastTopicRead == 0)
-            {
-                return "<img src=\"" + this.myThemePath + "/images/topic_new.png\" alt=\"[RESX:TopicNew]\" />";
-            }
-
-            if (lastTopicRead > 0 & lastReplyRead < replyId)
-            {
-                return "<img src=\"" + this.myThemePath + "/images/topic_new.png\" alt=\"[RESX:TopicNew]\" />";
-            }
-
-            return "<img src=\"" + this.myThemePath + "/images/topic.png\" alt=\"[RESX:TopicRead]\" />";
         }
 
         private string GetTitle(string body, int authorId)

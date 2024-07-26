@@ -39,7 +39,5 @@ namespace DotNetNuke.Modules.ActiveForums
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         internal PropertiesInfo GetProperty(int propertyId, int portalId) => throw new NotImplementedException();
-
-        private PropertiesInfo FillObject(IDataRecord dr) => throw new NotImplementedException();
     }
 }

@@ -38,11 +38,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             AccessDenied
         }
 
-        private User userProfile;
         private Hashtable @params;
         private bool isValid = false;
-        private int gid = -1;
-        private int groupid = -1;
         private int upid = -1;
         private DotNetNuke.Entities.Portals.PortalSettings ps;
         private SettingsInfo mainSettings;
