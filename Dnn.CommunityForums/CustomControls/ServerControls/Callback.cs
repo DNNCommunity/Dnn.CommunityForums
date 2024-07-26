@@ -601,14 +601,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public HtmlTextWriter Output;
 
-        internal CallBackEventArgs(HtmlTextWriter _writer)
+        internal CallBackEventArgs(HtmlTextWriter writer)
         {
-            this.Output = _writer;
+            this.Output = writer;
         }
 
-        internal CallBackEventArgs(HtmlTextWriter _writer, string sParam)
+        internal CallBackEventArgs(HtmlTextWriter writer, string sParam)
         {
-            this.Output = _writer;
+            this.Output = writer;
             this.Parameter = sParam;
         }
     }

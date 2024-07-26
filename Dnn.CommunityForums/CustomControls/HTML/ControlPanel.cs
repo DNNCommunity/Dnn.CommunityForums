@@ -31,10 +31,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public int ModuleId { get; set; }
 
-        public ControlPanel(int _portalId, int _moduleId)
+        public ControlPanel(int portalId, int moduleId)
         {
-            this.PortalId = _portalId;
-            this.ModuleId = _moduleId;
+            this.PortalId = portalId;
+            this.ModuleId = moduleId;
         }
 
         public string TemplatesOptions(Templates.TemplateTypes templateType)
