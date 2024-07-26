@@ -69,6 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.rblMessageIcons1.Items.Insert(8, new ListItem("<img src=\"" + strHost + "DesktopModules/ActiveForums/themes/" + myTheme + "/emoticons/whistling.gif\" width=\"20\" height=\"20\" align=\"absmiddle\">&nbsp;&nbsp;&nbsp;&nbsp;", "whistling.gif"));
             this.rblMessageIcons1.Items.Insert(9, new ListItem("<img src=\"" + strHost + "DesktopModules/ActiveForums/themes/" + myTheme + "/emoticons/sad.gif\" width=\"20\" height=\"20\" align=\"absmiddle\">&nbsp;&nbsp;&nbsp;&nbsp;", "sad.gif"));
             this.rblMessageIcons1.Items.Insert(10, new ListItem("<img src=\"" + strHost + "DesktopModules/ActiveForums/themes/" + myTheme + "/emoticons/questionmark.gif\" width=\"20\" height=\"20\" align=\"absmiddle\">&nbsp;&nbsp;&nbsp;&nbsp;", "questionmark.gif"));
+
             // rblMessageIcons1.Items.Insert(0, new ListItem("<img src=\"" + Page.ResolveUrl(ThemeLocation) + "/emoticons/biggrin.gif\") width=\"20\" height=\"20\" align=\"absmiddle\">&nbsp;&nbsp;&nbsp;&nbsp;", "biggrin.gif"));
             // rblMessageIcons1.Items.Insert(1, new ListItem("<img src=\"" + Page.ResolveUrl(MainSettings.ThemeLocation) + "/emoticons/crazy.gif\" width=\"20\" height=\"20\" align=\"absmiddle\">&nbsp;&nbsp;&nbsp;&nbsp;", "crazy.gif"));
             // rblMessageIcons1.Items.Insert(2, new ListItem("<img src=\"" + Page.ResolveUrl(MainSettings.ThemeLocation) + "/emoticons/cry.gif\" width=\"20\" height=\"20\" align=\"absmiddle\">&nbsp;&nbsp;&nbsp;&nbsp;", "cry.gif"));

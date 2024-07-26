@@ -99,6 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 foreach (DataRow dr in dt.Rows)
                 {
                     sb.Append("<tr>");
+
                     // TODO - Fix date time format
                     sb.Append("<td class=\"dashRow\">" + Convert.ToDateTime(dr["CreatedDate"]).ToShortDateString() + "</td>");
                     sb.Append("<td class=\"dashRow\">" + dr["FirstName"].ToString() + " " + dr["LastName"].ToString() + "</td>");
@@ -149,6 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 foreach (DataRow dr in dt.Rows)
                 {
                     sb.Append("<tr>");
+
                     // TODO - Fix display name
                     sb.Append("<td class=\"dashRow\">" + dr["DisplayName"].ToString() + "</td>");
                     sb.Append("</tr>");

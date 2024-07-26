@@ -151,6 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     fd.ForumGroupId = groupId;
                     fd.ControlConfig = this.ControlConfig;
                     fd.ModuleConfiguration = this.ModuleConfiguration;
+
                     // fd.ForumData = ForumData
                     if (i == 0 && this.ToggleBehavior == 1)
                     {

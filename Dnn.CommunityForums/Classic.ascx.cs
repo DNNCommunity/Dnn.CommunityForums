@@ -256,6 +256,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (string.IsNullOrEmpty(this.ForumIds))
                     {
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: this.PortalId, roleId: this.SocialGroupId);
+
                         // Create new foportalId: rum
                         bool isPrivate = false;
                         if (!role.IsPublic)
@@ -302,6 +303,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 string sOut = null;
+
                 // TODO: this should be resources instead of harcoded text?
                 sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
                 sOut += string.Concat("<!-- DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->", System.Environment.NewLine);

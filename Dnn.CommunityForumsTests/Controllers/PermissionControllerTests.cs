@@ -21,8 +21,10 @@
             string roles = $"{DotNetNuke.Common.Globals.glbRoleAllUsers};{DotNetNuke.Common.Globals.glbRoleUnauthUser}";
             int portalId = 1;
             string expectedResult = $"{DotNetNuke.Common.Globals.glbRoleAllUsersName};{DotNetNuke.Common.Globals.glbRoleUnauthUserName};";
+
             // Act
             string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(portalId, roles);
+
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
@@ -34,6 +36,7 @@
             string roles = $"{DotNetNuke.Common.Globals.glbRoleAllUsers}";
             int portalId = 1;
             string expectedResult = $"{DotNetNuke.Common.Globals.glbRoleAllUsersName};";
+
             // Act
             // string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(portalId, roles);
 
@@ -51,6 +54,7 @@
             // Arrange
             // Act
             return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(authRoles, userRoles);
+
             // Assert
         }
     }

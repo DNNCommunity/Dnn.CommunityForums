@@ -206,6 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     {
                         groups.Append("<group groupid=\"" + f.ForumGroupId.ToString() + "\" active=\"" + f.ForumGroup?.Active.ToString().ToLowerInvariant() + "\" hidden=\"" + f.ForumGroup?.Hidden.ToString().ToLowerInvariant() + "\">");
                         groups.Append("<name><![CDATA[" + f.GroupName.ToString() + "]]></name>");
+
                         // If Not String.IsNullOrEmpty(f.ForumGroup.SEO) Then
                         //    groups.Append(f.ForumGroup.SEO)
                         // End If
@@ -223,6 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
                 {
                     forums.Append("<forum groupid=\"" + f.ForumGroupId.ToString() + "\" forumid=\"" + f.ForumID.ToString() + "\"");
+
                     // forums.Append(" name=""" & HttpUtility.UrlEncode(f.ForumName) & """")
                     // forums.Append(" desc=""" & HttpUtility.UrlEncode(Utilities.HTMLEncode(f.ForumDesc.ToString)) & """")
                     forums.Append(" active=\"" + f.Active.ToString().ToLowerInvariant() + "\"");
@@ -231,6 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Append(" totalreplies=\"" + f.TotalReplies.ToString() + "\"");
                     forums.Append(" lasttopicid=\"" + f.LastTopicId.ToString() + "\"");
                     forums.Append(" lastreplyid=\"" + f.LastReplyId.ToString() + "\"");
+
                     // forums.Append(" lastpostsubject=""" & f.LastPostSubject & """")
                     // forums.Append(" lastpostauthorname=""" & f.LastPostDisplayName & """")
                     forums.Append(" lastpostauthorid=\"" + f.LastPostUserID + "\"");
@@ -262,6 +265,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Append("<modpin>" + f.Security?.ModPin + "</modpin>");
                     forums.Append("<modmove>" + f.Security?.ModMove + "</modmove>");
                     forums.Append("</security>");
+
                     // If Not String.IsNullOrEmpty(f.SEO) Then
                     //    forums.Append(f.SEO)
                     // End If

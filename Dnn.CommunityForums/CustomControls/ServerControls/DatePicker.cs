@@ -501,6 +501,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 writer.AddAttribute("name", this.ClientID);
                 writer.AddAttribute("onblur", "return window." + this.ClientID + ".onblur(this);");
                 writer.AddAttribute("onkeypress", "return window." + this.ClientID + ".onlyDateChars(event);");
+
                 // writer.AddAttribute("onkeydown", "return window." & Me.ClientID & ".KeyPress(event);")
                 // writer.AddAttribute("onclick", "return window." & Me.ClientID & ".Click(event);showalert();")
                 if (this.Enabled == false)

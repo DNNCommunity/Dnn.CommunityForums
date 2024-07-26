@@ -138,6 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.forumName = this.drForum["ForumName"].ToString();
                     this.groupName = this.drForum["GroupName"].ToString();
                     this.forumDescription = this.drForum["ForumDesc"].ToString();
+
                     // TopicsTemplateId = CInt(drForum("TopicsTemplateId"))
                     this.bAllowRSS = Convert.ToBoolean(this.drForum["AllowRSS"]);
                     if (this.bAllowRSS)
@@ -185,6 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sb.Append(this.WriteElement("/channel", 1));
                         sb.Replace("[LASTBUILDDATE]", this.lastBuildDate.ToString("r"));
                         sb.Append("</rss>");
+
                         // Cache.Insert("RSS" & ModuleId & ForumID, sb.ToString, Nothing, DateTime.UtcNow.AddMinutes(dblCacheTimeOut), TimeSpan.Zero)
                         return sb.ToString();
                     }
@@ -309,6 +311,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private string CleanXmlString(string xmlString)
         {
             xmlString = this.Server.HtmlEncode(xmlString);
+
             // XmlString = StripHTMLTag(XmlString)
             // XmlString = Replace(XmlString, "&", "&amp;")
             // XmlString = Replace(XmlString, "<", "&lt;")

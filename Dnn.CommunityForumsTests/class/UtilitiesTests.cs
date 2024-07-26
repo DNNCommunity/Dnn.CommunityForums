@@ -24,6 +24,7 @@
 
             // Act
             bool isTrusted = Utilities.IsTrusted(0, userTrustLevel, false, 0, userPostCount);
+
             // Assert
             Assert.That(isTrusted, Is.False);
         }
@@ -33,8 +34,10 @@
         {
             // Arrange
             DateTime expectedResult = DateTime.Parse("1/1/1900", new CultureInfo("en-US", false).DateTimeFormat).ToUniversalTime();
+
             // Act
             var actualResult = Utilities.NullDate();
+
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
@@ -46,6 +49,7 @@
             // Arrange
             // Act
             string actualResult = Utilities.CleanStringForUrl(input);
+
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
@@ -67,8 +71,10 @@
             mockForum.Object.ForumSettings.Add(ForumSettingKeys.DefaultTrustLevel, TrustTypes.NotTrusted);
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
             mockForum.Object.Security = mockPermissions.Object;
+
             // Act
             bool actualResult = Utilities.HasFloodIntervalPassed(floodInterval, mockUser.Object, mockForum.Object);
+
             // Assert
             return actualResult;
         }
@@ -80,6 +86,7 @@
             // Arrange
             // Act
             string actualResult = Utilities.HtmlEncode(string.Empty);
+
             // Assert
             Assert.That(actualResult, Is.Empty);
         }
@@ -91,8 +98,10 @@
             // Arrange
             string tag = "<p>";
             string expectedResult = "&lt;p&gt;";
+
             // Act
             string actualResult = Utilities.HtmlEncode(tag);
+
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
@@ -104,6 +113,7 @@
             // Arrange
             // Act
             string actualResult = Utilities.HtmlDecode(string.Empty);
+
             // Assert
             Assert.That(actualResult, Is.Empty);
         }
@@ -115,8 +125,10 @@
             // Arrange
             string tag = "&lt;p&gt;";
             string expectedResult = "<p>";
+
             // Act
             string actualResult = Utilities.HtmlDecode(tag);
+
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
@@ -131,6 +143,7 @@
             // Arrange
             // Act
             return Utilities.HasHTML(value);
+
             // Assert
         }
 
@@ -140,8 +153,10 @@
             // Arrange
             var input = "SELECT * FROM TABLE1 UNION SELECT * FROM TABLE2";
             var expectedResult = "SELECT * 1  SELECT * 2";
+
             // Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Utilities.Text.CheckSqlString(input);
+
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }

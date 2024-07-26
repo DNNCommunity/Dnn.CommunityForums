@@ -50,6 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string metaKeywords = string.Empty;
         private string forumName;
         private string groupName;
+
         // Private ForumGroupId As Integer = 0
         // Private TopicsTemplateId As Integer
         private DataRow drForum;
@@ -59,6 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private DataTable dtSubForums;
         private bool bView = false;
         private bool bRead = false;
+
         // private bool bReply = false;
         // private bool bCreate = false;
         private bool bPoll = false;
@@ -276,9 +278,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                         this.bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanView"].ToString(), this.ForumUser.UserRoles);
                         this.bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanRead"].ToString(), this.ForumUser.UserRoles);
+
                         // bCreate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanCreate"].ToString(), ForumUser.UserRoles);
                         this.bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanEdit"].ToString(), this.ForumUser.UserRoles);
                         this.bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanDelete"].ToString(), this.ForumUser.UserRoles);
+
                         // bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanReply"].ToString(), ForumUser.UserRoles);
                         this.bPoll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanPoll"].ToString(), this.ForumUser.UserRoles);
 
@@ -300,6 +304,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             this.forumName = this.drForum["ForumName"].ToString();
                             this.groupName = this.drForum["GroupName"].ToString();
                             this.ForumGroupId = Convert.ToInt32(this.drForum["ForumGroupId"]);
+
                             // TopicsTemplateId = CInt(drForum("TopicsTemplateId"))
                             try
                             {
@@ -464,8 +469,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Parse Common Controls
             sOutput = this.ParseControls(sOutput);
+
             // Parse Topics
             sOutput = this.ParseTopics(sOutput, this.dtTopics, "TOPICS");
+
             // Parse Announce
             string sAnnounce = TemplateUtils.GetTemplateSection(sOutput, "[ANNOUNCEMENTS]", "[/ANNOUNCEMENTS]");
             if (this.dtAnnounce != null)
@@ -555,6 +562,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Forum Drop Downlist
             sOutput = sOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
+
             // Tag Cloud
             sOutput = sOutput.Replace("[AF:CONTROLS:TAGCLOUD]", "<ac:tagcloud ModuleId=\"" + this.ModuleId + "\" PortalId=\"" + this.PortalId + "\" tabid=\"" + this.TabId + "\" runat=\"server\" />");
 
@@ -667,6 +675,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // If String.IsNullOrEmpty(ForumInfo.ParentForumName) Then
             sOutput = sOutput.Replace("[PARENTFORUMNAME]", this.ForumInfo.ParentForumName);
+
             // End If
 
             sOutput = sOutput.Replace("[FORUMMAINLINK]", "<a href=\"" + this.NavigateUrl(this.TabId) + "\">[RESX:ForumMain]</a>");
@@ -764,6 +773,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string subject = HttpUtility.HtmlDecode(Convert.ToString(drTopic["Subject"]));
                     string summary = HttpUtility.HtmlDecode(Convert.ToString(drTopic["Summary"]));
                     string body = HttpUtility.HtmlDecode(Convert.ToString(drTopic["Body"]));
+
                     // Strip comments
 
                     int authorId = Convert.ToInt32(drTopic["AuthorId"]);
@@ -782,6 +792,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     int topicSubscriberCount = Utilities.SafeConvertInt(drTopic["TopicSubscriberCount"]);
                     DateTime dateCreated = Convert.ToDateTime(drTopic["DateCreated"]);
                     int StatusId = Convert.ToInt32(drTopic["StatusId"]);
+
                     // LastReply info
                     int lastReplyId = Convert.ToInt32(drTopic["LastReplyId"]);
                     string lastReplySubject = HttpUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySubject"]));
@@ -1060,6 +1071,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     else
                     {
                         string sRatingImage = null;
+
                         // sRatingImage = "<img src=""" & MyThemePath & "/yellow_star_0" & drTopic("TopicRating").ToString & ".gif"" alt=""" & drTopic("TopicRating").ToString & """ />"
                         // sRatingImage = "<span class=\"af-rater rate" + drTopic["TopicRating"].ToString() + "\">&nbsp;</span>";
 
@@ -1105,6 +1117,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
 
                             sLastReplyTemp = sLastReplyTemp.Replace(this.lastReplySubjectReplaceTag, Utilities.GetLastPostSubject(lastReplyId, topicId, this.ForumId, this.TabId, lastReplySubject, iLength, this.pageSize, replyCount, this.bRead));
+
                             // sLastReplyTemp = sLastReplyTemp.Replace("[RESX:BY]", Utilities.GetSharedResource("By.Text"))
                             if (lastReplyAuthorId > 0)
                             {
@@ -1233,9 +1246,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             subject = HttpUtility.HtmlDecode(subject);
             subject = Utilities.StripHTMLTag(subject);
             subject = subject.Replace("\"", string.Empty);
+
             // Subject = Subject.Replace("'", string.Empty);
             subject = subject.Replace("#", string.Empty);
             subject = subject.Replace("%", string.Empty);
+
             // Subject = Subject.Replace("?", String.Empty)
             subject = subject.Replace("+", string.Empty);
 
@@ -1273,6 +1288,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 // sOut = "<div class=""afpagermini"">" & GetSharedResource("SubPages.Text") & "&nbsp;"
                 sOut = "<div class=\"afpagermini\">(<img src=\"" + this.myThemePath + "/images/icon_multipage.png\" alt=\"[RESX:MultiPageTopic]\" style=\"vertical-align:middle;\" />";
+
                 // Jump to pages
                 int intPostPages = 0;
                 intPostPages = Convert.ToInt32(System.Math.Ceiling((double)(replies + 1) / this.pageSize));

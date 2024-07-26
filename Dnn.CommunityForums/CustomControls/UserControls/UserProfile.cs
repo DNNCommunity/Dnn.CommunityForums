@@ -72,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected PlaceHolder plhProfileSaveButton = new PlaceHolder();
         protected PlaceHolder plhProfileCancelButton = new PlaceHolder();
         protected DotNetNuke.Modules.ActiveForums.Controls.ActiveTabs amTabs = new DotNetNuke.Modules.ActiveForums.Controls.ActiveTabs();
+
         // Edit Mode
         protected global::System.Web.UI.WebControls.TextBox txtWebSite;
         protected global::System.Web.UI.WebControls.TextBox txtOccupation;
@@ -473,6 +474,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string RenderModals(string template)
         {
             string sOut = template;
+
             // [AM:CONTROLS:MODAL:MyPreferences:Private]
             string pattern = "(\\[AM:CONTROLS:MODAL:(.+?)\\])";
             Regex regExp = new Regex(pattern);

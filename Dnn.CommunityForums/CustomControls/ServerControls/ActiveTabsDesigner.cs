@@ -43,6 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string message = "test";
             string markup = string.Format(template, "name", base.Component.Site, base.GetDesignTimeHtml(), message);
             return markup;
+
             // Return CreatePlaceHolderDesignTimeHtml()
         }
 

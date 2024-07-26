@@ -244,6 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             ControlUtils ctlUtils = new ControlUtils();
             string forumPrefix = string.Empty;
             string groupPrefix = string.Empty;
+
             // Dim _forumGroupId As Integer = -1
             if (this.ParentForumId == -1)
             {
@@ -267,6 +268,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     forumPrefix = dr["PrefixURL"].ToString();
                     groupPrefix = dr["GroupPrefixURL"].ToString();
+
                     // _forumGroupId = Integer.Parse(dr("ForumGroupId").ToString)
                 }
 
@@ -358,6 +360,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     catCount += 1;
+
                     // Dim Params As String() = {ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ViewType & "=topic"}
                     string[] @params = { ParamKeys.TopicId + "=" + dr["TopicId"].ToString() };
                     string sTopicURL = ctlUtils.BuildUrl(this.TabId, this.ModuleId, groupPrefix, forumPrefix, this.ForumGroupId, this.ForumId, int.Parse(dr["TopicId"].ToString()), dr["URL"].ToString(), -1, -1, string.Empty, 1, -1, -1);

@@ -115,6 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
+
         // general
         private object GetNull(object field)
         {

@@ -58,12 +58,16 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 // Initial Settings
                 this.LoadSettings(portalId, moduleId);
+
                 // Add Default Templates
                 this.LoadTemplates(portalId, moduleId);
+
                 // Add Default Status
                 this.LoadFilters(portalId, moduleId);
+
                 // Add Default Steps
                 this.LoadRanks(portalId, moduleId);
+
                 // Add Default Forums
                 this.LoadDefaultForums(portalId, moduleId);
 
@@ -254,6 +258,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachCount, "3");
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxSize, "1000");
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachTypeAllowed, "txt,tiff,pdf,xls,xlsx,doc,docx,ppt,pptx");
+
                         // Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachStore, "FILESYSTEM");
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxHeight, "450");
                         Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxWidth, "450");

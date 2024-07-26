@@ -59,6 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (file == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound, "File Not Found");
+
                 // return Json(new {Result = "error"});
             }
 

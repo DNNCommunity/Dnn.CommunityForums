@@ -130,6 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int portalId = objPortalAliasInfo.PortalID;
 
             string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
+
             // TODO: this is all probably now handled by moving the exclusion logic earlier and may be redundant?
             if (request.RawUrl.ToLowerInvariant().Contains("404.aspx"))
             {

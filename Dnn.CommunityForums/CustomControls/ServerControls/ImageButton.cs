@@ -349,6 +349,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     imageWriter.AddAttribute("hspace", this.HSpace);
                     imageWriter.AddAttribute("vspace", this.VSpace);
                     imageWriter.AddAttribute("border", "0");
+
                     // If [PostBack] Then
 
                     // imageWriter.AddAttribute("onclick", sPostBack)
@@ -371,6 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     imageWriter.AddAttribute("hspace", this.HSpace);
                     imageWriter.AddAttribute("vspace", this.VSpace);
                     imageWriter.AddAttribute("border", "0");
+
                     // If [PostBack] Then
                     //    imageWriter.AddAttribute("onclick", sPostBack)
                     // End If
@@ -389,6 +391,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     imageWriter.AddAttribute("hspace", this.HSpace);
                     imageWriter.AddAttribute("vspace", this.VSpace);
                     imageWriter.AddAttribute("border", "0");
+
                     // If [PostBack] Then
                     //    imageWriter.AddAttribute("onclick", sPostBack)
                     // End If

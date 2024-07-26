@@ -192,6 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     ti.IsApproved = true;
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
+
                                     // TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
                                     {
@@ -210,6 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     ri.IsApproved = true;
                                     new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(this.PortalId, this.ForumModuleId, ri);
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
+
                                     // TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
                                     {

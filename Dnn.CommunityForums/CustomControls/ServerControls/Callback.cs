@@ -257,6 +257,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 // Try
                 this.Controls.Add(this.Content);
+
                 // Catch ex As Exception
 
                 // End Try
@@ -386,6 +387,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 // Try
                 this.Controls.Clear();
                 this.Controls.Add(this.Content);
+
                 // Catch ex As Exception
 
                 // End Try
@@ -420,6 +422,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     this.Context.Response.Write("]]></CallbackData>");
+
                     // Context.Response.Flush()
 
                     this.Context.Response.End();
@@ -458,6 +461,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     this.Context.Response.ContentType = "text/xml";
                     this.Context.Response.Write("<CallbackError><![CDATA[" + ex.ToString() + "]]></CallbackError>");
                     this.Context.Response.End();
+
                     // HttpContext.Current.ApplicationInstance.CompleteRequest()
                 }
             }
@@ -512,6 +516,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         if (string.IsNullOrEmpty(tokenvalue))
                         {
                             this.validState = -1;
+
                             // Throw New Exception("Error validating request.")
                         }
                         else
@@ -576,6 +581,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
 
                         myCookie.HttpOnly = true;
+
                         // myCookie.Path = "/"
                         // myCookie.Domain = HttpContext.Current.Request.Url.Host
                         myCookie.Expires = DateTime.UtcNow.AddHours(2);

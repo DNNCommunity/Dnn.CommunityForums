@@ -78,6 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             this.drpRankImages.Items.Insert(0, new ListItem("[RESX:DropDownDefault]", "-1"));
+
             // drpRankImages.Items.Insert(1, New ListItem(Utilities.GetSharedResource("RankCustom.Text"), "0"))
         }
     }

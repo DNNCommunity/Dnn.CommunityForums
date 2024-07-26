@@ -47,6 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public TabCollection()
         {
             this.count = 0;
+
             // _contents = New ArrayList
 
         }

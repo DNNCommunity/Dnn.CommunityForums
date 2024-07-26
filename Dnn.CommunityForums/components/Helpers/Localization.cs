@@ -52,6 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 this.UpdateResourceFileNode(portalResources, name, resourceText);
+
                 // UpdateResourceFileNode(portalResources, "GroupProperties_" + prop.PropertyName + ".Help", resourceText)
                 // UpdateResourceFileNode(portalResources, "GroupProperties_" + prop.PropertyCategory + ".Header", prop.PropertyCategory)
 
@@ -95,6 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums
             catch (Exception exc) // Module failed to load
             {
                 return false;
+
                 // UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("Save.ErrorMessage", Me.LocalResourceFile), UI.Skins.Controls.ModuleMessage.ModuleMessageType.YellowWarning)
             }
         }

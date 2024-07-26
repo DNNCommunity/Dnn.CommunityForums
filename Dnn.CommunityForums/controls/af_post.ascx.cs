@@ -931,6 +931,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var body = this.ctlForm.Body;
             subject = Utilities.CleanString(this.PortalId, subject, false, EditorTypes.TEXTBOX, this.fi.UseFilter, false, this.ForumModuleId, this.themePath, false);
             body = Utilities.CleanString(this.PortalId, body, this.allowHTML, this.editorType, this.fi.UseFilter, this.fi.AllowScript, this.ForumModuleId, this.themePath, this.fi.AllowEmoticons);
+
             // This HTML decode is used to make Quote functionality work properly even when it appears in Text Box instead of Editor
             if (this.Request.Params[ParamKeys.QuoteId] != null)
             {

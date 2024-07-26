@@ -193,6 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 this._myTheme = this.MainSettings.Theme;
                 this._myThemePath = this.Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + this._myTheme);
+
                 // _allowAvatars = !UserPrefHideAvatars;
                 this._enablePoints = this.MainSettings.EnablePoints;
                 this._editInterval = this.MainSettings.EditInterval;
@@ -334,10 +335,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // bCreate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanCreate"].ToString(), ForumUser.UserRoles);
             this.bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanEdit"].ToString(), this.ForumUser.UserRoles);
             this.bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanDelete"].ToString(), this.ForumUser.UserRoles);
+
             // bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanReply"].ToString(), ForumUser.UserRoles);
             // bPoll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanPoll"].ToString(), ForumUser.UserRoles);
             this.bAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanAttach"].ToString(), this.ForumUser.UserRoles);
             this._bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanSubscribe"].ToString(), this.ForumUser.UserRoles);
+
             // bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
             this.bModSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanModSplit"].ToString(), this.ForumUser.UserRoles);
             this.bModDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanModDelete"].ToString(), this.ForumUser.UserRoles);
@@ -531,6 +534,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             var pName = HttpUtility.HtmlDecode(p.Name);
                             var pValue = HttpUtility.HtmlDecode(p.Value);
+
                             // This builds the replacement text for the properties template
                             var tmp = sPropTemplate.Replace("[AF:PROPERTY:LABEL]", "[RESX:" + pName + "]");
                             tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
@@ -1032,6 +1036,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Printer Friendly Link
             var sURL = "<a rel=\"nofollow\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, "mid=" + this.ModuleId, "dnnprintmode=true") + "?skinsrc=" + HttpUtility.UrlEncode("[G]" + SkinController.RootSkin + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Skin") + "&amp;containersrc=" + HttpUtility.UrlEncode("[G]" + SkinController.RootContainer + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Container") + "\" target=\"_blank\">";
+
             // sURL += "<img src=\"" + _myThemePath + "/images/print16.png\" border=\"0\" alt=\"[RESX:PrinterFriendly]\" /></a>";
             sURL += "<i class=\"fa fa-print fa-fw fa-blue\"></i></a>";
             sbOutput.Replace("[AF:CONTROL:PRINTER]", sURL);
@@ -1040,6 +1045,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (this.Request.IsAuthenticated)
             {
                 sURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + "=sendto", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
+
                 // sbOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + sURL + "\" rel=\"nofollow\"><img src=\"" + _myThemePath + "/images/email16.png\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
                 sbOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + sURL + "\" rel=\"nofollow\"><i class=\"fa fa-envelope-o fa-fw fa-blue\"></i></a>");
             }
@@ -1074,6 +1080,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[VIEWCOUNT]", this.viewCount.ToString());
 
             DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(this.PortalId);
+
             // Last Post
             sbOutput.Replace("[AF:LABEL:LastPostDate]", this.lastPostDate);
             sbOutput.Replace("[AF:LABEL:LastPostAuthor]", UserProfiles.GetDisplayName(portalSettings, this.ForumModuleId, true, this.bModApprove, this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, this.lastPostAuthor.AuthorId, this.lastPostAuthor.Username, this.lastPostAuthor.FirstName, this.lastPostAuthor.LastName, this.lastPostAuthor.DisplayName));
@@ -1173,12 +1180,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (((this.bRead && this.topicAuthorId == this.UserId) || this.bModEdit) & this.statusId >= 0)
             {
                 sbOutput.Replace("[AF:CONTROL:STATUS]", "<asp:placeholder id=\"plhStatus\" runat=\"server\" />");
+
                 // sbOutput.Replace("[AF:CONTROL:STATUSICON]", "<img alt=\"[RESX:PostStatus" + _statusId.ToString() + "]\" src=\"" + _myThemePath + "/images/status" + _statusId.ToString() + ".png\" />");
                 sbOutput.Replace("[AF:CONTROL:STATUSICON]", "<div><i class=\"fa fa-status" + this.statusId.ToString() + " fa-red fa-2x\"></i></div>");
             }
             else if (this.statusId >= 0)
             {
                 sbOutput.Replace("[AF:CONTROL:STATUS]", string.Empty);
+
                 // sbOutput.Replace("[AF:CONTROL:STATUSICON]", "<img alt=\"[RESX:PostStatus" + _statusId.ToString() + "]\" src=\"" + _myThemePath + "/images/status" + _statusId.ToString() + ".png\" />");
                 sbOutput.Replace("[AF:CONTROL:STATUSICON]", "<div><i class=\"fa fa-status" + this.statusId.ToString() + " fa-red fa-2x\"></i></div>");
             }

@@ -235,6 +235,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             sb.Append("</table></div></td><td valign=\"top\" width=\"94%\"><div class=\"afsecactions\" style=\"overflow-x:auto;overflow-y:hidden;\">");
+
             // litNewObjects.Text = sb.ToString
             // sb = New StringBuilder
 
@@ -295,6 +296,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sb.Append("</table></div></td></tr></table>");
             this.litSecGrid.Text = sb.ToString();
+
             // litNewSecurity.Text = sb.ToString
             // litNewGrid.Text = sb.ToString
 

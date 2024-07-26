@@ -183,6 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             sb.Append("</table></div></td><td valign=\"top\" width=\"94%\"><div class=\"afsecactions\" style=\"overflow-x:auto;overflow-y:hidden;\">");
+
             // litNewObjects.Text = sb.ToString
             // sb = New StringBuilder
 

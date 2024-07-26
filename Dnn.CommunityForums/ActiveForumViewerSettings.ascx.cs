@@ -52,6 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     // Load settings from TabModuleSettings: specific to this instance
                     this.LoadForums();
+
                     // Load settings from ModuleSettings: general for all instances
                     if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]) == null))
                     {
@@ -96,12 +97,14 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 var objModules = new DotNetNuke.Entities.Modules.ModuleController();
+
                 // Update ModuleSettings
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFTopicsTemplate, this.drpTopicsTemplate.SelectedItem.Value);
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFTopicTemplate, this.drpTopicTemplate.SelectedItem.Value);
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumViewTemplate, this.drpForumViewTemplate.SelectedItem.Value);
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumModuleId, this.drpForumInstance.SelectedItem.Value);
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumGroup, this.drpForum.SelectedItem.Value);
+
                 // objModules.UpdateModuleSetting(ModuleId, "AFEnableToolbar", CType(chkEnableToolbar.Checked, String))
                 string forumGroup;
                 forumGroup = this.drpForum.SelectedItem.Value;
@@ -116,8 +119,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 int @int = forumGroup.IndexOf(":") + 1;
                 string sID = forumGroup.Substring(@int);
+
                 // ForumGroupID = CType(ForumGroup.Substring(ForumGroup.IndexOf(":")), Integer)
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumGroupId, sID);
+
                 // Redirect back to the portal home page
                 this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
             }

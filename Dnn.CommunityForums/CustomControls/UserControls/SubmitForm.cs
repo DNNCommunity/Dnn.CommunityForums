@@ -342,6 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected TextBox txtSubject = new TextBox();
         protected TextBox txtSummary = new TextBox();
         protected Label lblSubject = new Label();
+
         // Protected editorActiveEditor As ActiveEditorControls.ActiveEditor
         protected TextBox editorTextBox;
         protected UI.UserControls.TextEditor editorDNN;
@@ -367,9 +368,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected af_attach ctlAttach = new af_attach();
 
         protected PlaceHolder plhUpload;
+
         // Protected WithEvents tsTags As DotNetNuke.Modules.ActiveForums.Controls.TextSuggest
         protected PlaceHolder plhTopicReview = new PlaceHolder();
         protected TextBox txtTopicPriority = new TextBox();
+
         // Support for Anonymous
         protected TextBox txtUsername = new TextBox();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqUsername = new System.Web.UI.WebControls.RequiredFieldValidator();
@@ -459,6 +462,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     // sTagOut = "<am:textsuggest id=""tsTags"" runat=""server"" DataTextField=""TagName"" DataValueField=""TagName"" CssResults=""aftsresults"" CssResultItems=""aftsresultsitems"" CssResultItemsSelected=""aftsresultsel""  CssClass=""aftagstxt"" Width=""99%"" />"
                     sTagOut = "<input type=\"text\" id=\"txtTags\" style=\"width:98%;\" class=\"NormalTextBox\"  />";
+
                     // sTagOut &= "<script type=""text/javascript"">amaf_loadSuggest('txtTags', null, -1);</script>"
                 }
 
@@ -865,6 +869,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             this.calStartDate.NullDate = Utilities.NullDate().ToString();
             this.calEndDate.NullDate = Utilities.NullDate().ToString();
+
             // calStartDate.DateFormat = MainSettings.DateFormatString
             // calEndDate.DateFormat = MainSettings.DateFormatString
             if (!(this.AnnounceStart == Utilities.NullDate()))
@@ -879,6 +884,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             this.plhEditor = new PlaceHolder();
             this.plhEditor = (PlaceHolder)this.FindControl("plhEditor");
+
             // 'plhEditor.Controls.Clear()
             Unit editorWidth;
             Unit editorHeight;
@@ -1041,6 +1047,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             this.LoadForm();
             this.LinkControls(this.Controls);
+
             // If Not tsTags Is Nothing Then
             //    tsTags.Delimiter = ","
             //    tsTags.CharsTillLoad = 2
@@ -1059,6 +1066,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.txtUsername.Text = this.authorName;
             this.lblSubject.Text = this.subject;
             this.lblSubject.CssClass = "aftextbox";
+
             // not sure why this gets set twice.
             this.txtSummary.CssClass = "aftextbox dcf-topic-edit-summary";
             this.chkLocked.Checked = this.locked;
@@ -1233,6 +1241,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         break;
                     case "btnPreview":
                         this.btnPreview = (DotNetNuke.Modules.ActiveForums.Controls.ImageButton)ctrl;
+
                         // Case "tsTags"
                         //    tsTags = CType(ctrl, DotNetNuke.Modules.ActiveForums.Controls.TextSuggest)
                         break;

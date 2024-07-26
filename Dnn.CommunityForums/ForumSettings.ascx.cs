@@ -174,6 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.txtDateFormat.Text = this.DateFormatString;
 
                 Utilities.SelectListItemByValue(this.drpForumGroupTemplate, this.ForumGroupTemplate);
+
                 // }
             }
             catch (Exception exc) // Module failed to load

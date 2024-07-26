@@ -227,6 +227,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (obj == null)
             {
                 roles = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: portalId);
+
                 // add pseudo-roles for anon/unauth and all users
                 roles.Add(new DotNetNuke.Security.Roles.RoleInfo { RoleID = int.Parse(DotNetNuke.Common.Globals.glbRoleUnauthUser), RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName });
                 roles.Add(new DotNetNuke.Security.Roles.RoleInfo { RoleID = int.Parse(DotNetNuke.Common.Globals.glbRoleAllUsers), RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName });
@@ -417,6 +418,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             string[] permSet = authorizedRoles.Split('|');
             string[] userSet = userPermSet.Split('|');
+
             // Authorized
             string[] authRoles = permSet[0].Split(';');
             string[] userRoles = userSet[0].Split(';');

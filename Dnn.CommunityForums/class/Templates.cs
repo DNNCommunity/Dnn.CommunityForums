@@ -101,10 +101,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             // save updated template to database; will return TemplateId which is critical if new template
             int templateId = Convert.ToInt32(DataProvider.Instance().Templates_Save(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId, (int)templateInfo.TemplateType, templateInfo.IsSystem, templateInfo.Title, templateInfo.Subject, templateInfo.Template));
+
             // retrieve the template from the database, which will return the filename but will also get the template text from the file which has not been updated yet
             TemplateInfo TemplateInfo = this.Template_Get(templateId);
+
             // override the template text with what is being saved
             TemplateInfo.Template = templateInfo.Template;
+
             // now save to the template file
             try
             {

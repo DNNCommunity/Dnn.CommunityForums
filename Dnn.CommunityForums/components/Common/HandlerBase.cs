@@ -259,6 +259,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 // Dim sc As New Social.SocialSettings
                 // _mainSettings = sc.LoadSettings[_ps.PortalId]
                 this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
+
                 // If context.Request.IsAuthenticated Then
                 this.isValid = true;
                 if (this.AdminRequired & !context.Request.IsAuthenticated)
@@ -294,8 +295,10 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     string val = string.Empty;
                     string tmp = string.Empty;
                     bool bObj = false;
+
                     // Arrays
                     List<string> slist = null;
+
                     // Dim pairs As NameValueCollection = Nothing
                     Hashtable pairs = null;
                     Hashtable subPairs = null;
@@ -322,6 +325,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                     parentProp = prop;
                                     prop = string.Empty;
                                     tmp = string.Empty;
+
                                     // pairs = New NameValueCollection
                                     pairs = new Hashtable();
                                 }
@@ -448,6 +452,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     }
 
                     this.@params = ht;
+
                     // End If
                 }
                 else

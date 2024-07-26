@@ -318,6 +318,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     // If trNode.ChildNodes.Count > 0 Then
                     trGroupNode.ChildNodes.Add(trNode);
+
                     // End If
 
                 }
