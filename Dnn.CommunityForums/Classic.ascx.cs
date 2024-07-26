@@ -293,8 +293,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 string authorizedViewRoles = this.ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(this.TabId, this.PortalId).ToString("VIEW") : this.ModuleConfiguration.ModulePermissions.ToString("VIEW");
                 cc.DefaultViewRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, authorizedViewRoles.Split(';'));
                 cc.AdminRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'));
-                cc.ProfileLink = ""; // GetProfileLink()
-                cc.MembersLink = ""; // GetMembersLink()
+                cc.ProfileLink = string.Empty; // GetProfileLink()
+                cc.MembersLink = string.Empty; // GetMembersLink()
                 this.ControlConfig = cc;
                 ctl.ControlConfig = cc;
                 this.LinkControls(ctl.Controls);
@@ -411,7 +411,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string handlerURL = VirtualPathUtility.ToAbsolute(Globals.ModulePath + "handlers/forumhelper.ashx") + "?TabId=" + this.TabId.ToString() + "&PortalId=" + this.PortalId.ToString() + "&moduleid=" + this.ModuleId + "&language=" + lang;
             sb.AppendFormat("var afHandlerURL = '{0}';", handlerURL);
             sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute(Globals.ModuleImagesPath) + "';");
-            string sLoadImg = "";
+            string sLoadImg = string.Empty;
             sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner-lg.gif") + "';";
             sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner.gif") + "';";
             sb.AppendLine(sLoadImg);

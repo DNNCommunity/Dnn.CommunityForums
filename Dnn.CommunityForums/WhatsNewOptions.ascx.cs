@@ -211,7 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             foreach (var f in forums)
             {
-                if (f.Trim() != "")
+                if (f.Trim() != string.Empty)
                 {
                     this.ManageCheck(false, "F:" + f);
                 }

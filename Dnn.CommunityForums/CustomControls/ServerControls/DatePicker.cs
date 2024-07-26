@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private HiddenField labelHidden = new HiddenField();
         private string dateFormat;
         private string timeFormat;
-        private string selectedDate = "";
+        private string selectedDate = string.Empty;
         private string weekendstyle = "amothermonthday";
         private string weekdaystyle = "amothermonthday";
         private string monthstyle = "amcaltitle";
@@ -50,10 +50,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string othermonthdaystyle = "amothermonthday";
         private string calwidth = "150";
         private string calheight = "150";
-        private string imageUrl = "";
+        private string imageUrl = string.Empty;
         private string nullDate = "01/01/1900";
         private string defaultTime = "08:00 AM";
-        private string selectedTime = "";
+        private string selectedTime = string.Empty;
         private bool showDateBox = true;
         private string callbackFlag = string.Empty;
         private System.Globalization.Calendar cal;
@@ -71,13 +71,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (this.selectedDate != "")
+                if (this.selectedDate != string.Empty)
                 {
                     try
                     {
                         if (Convert.ToDateTime(this.selectedDate) <= Convert.ToDateTime(this.NullDate))
                         {
-                            return "";
+                            return string.Empty;
                         }
 
                         return this.selectedDate;
@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 }
 
-                return "";
+                return string.Empty;
             }
 
             set
@@ -304,7 +304,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (this.dateFormat == "")
+                if (this.dateFormat == string.Empty)
                 {
                     return "MM/dd/yyyy";
                 }
@@ -326,7 +326,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (this.dateFormat == "")
+                if (this.dateFormat == string.Empty)
                 {
                     return "h:nn tt";
                 }
@@ -397,9 +397,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (this.selectedTime == "")
+                if (this.selectedTime == string.Empty)
                 {
-                    if (this.SelectedDate == "")
+                    if (this.SelectedDate == string.Empty)
                     {
                         return this.defaultTime;
                     }
@@ -471,7 +471,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 DateTime tmpDate;
                 try
                 {
-                    tmpDate = this.SelectedDate == "" ? DateTime.UtcNow : Convert.ToDateTime(this.SelectedDate);
+                    tmpDate = this.SelectedDate == string.Empty ? DateTime.UtcNow : Convert.ToDateTime(this.SelectedDate);
                 }
                 catch (Exception ex)
                 {
@@ -479,8 +479,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 string temp = this.CssClass;
-                this.CssClass = "";
-                if (temp == "")
+                this.CssClass = string.Empty;
+                if (temp == string.Empty)
                 {
                     temp = "ampicker";
                 }
@@ -490,7 +490,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 writer.AddAttribute(HtmlTextWriterAttribute.Width, this.Width.ToString());
                 writer.RenderBeginTag(HtmlTextWriterTag.Table);
                 writer.RenderBeginTag(HtmlTextWriterTag.Tr);
-                if (this.Text != "")
+                if (this.Text != string.Empty)
                 {
                     writer.AddAttribute(HtmlTextWriterAttribute.Style, "white-space:nowrap");
                     writer.RenderBeginTag(HtmlTextWriterTag.Td);
@@ -652,7 +652,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     str.Append("window." + this.ClientID + ".ImgPrev='" + this.Page.ResolveUrl(this.ImgPrev) + "';");
                 }
 
-                if (this.SelectedDate != "")
+                if (this.SelectedDate != string.Empty)
                 {
                     try
                     {

@@ -148,7 +148,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sTemplate = sTemplate.Replace("[AM:CONTROLS:ProfileMyPreferences]", "<asp:placeholder id=\"plhProfilePrefs\" runat=\"server\" />");
             sTemplate = sTemplate.Replace("[AM:CONTROLS:ProfileUserAccount]", "<asp:placeholder id=\"plhProfileUserAccount\" runat=\"server\" />");
             sTemplate = sTemplate.Replace("[AM:CONTROLS:ProfileForumTracker]", "<asp:placeholder id=\"plhTracker\" runat=\"server\" />");
-            sTemplate = sTemplate.Replace("[AF:PROFILE:VIEWUSERPOSTS]", "<a href=\"" + this.NavigateUrl(this.TabId, "", $"{ParamKeys.ViewType}={Views.Search}&{ParamKeys.UserId}={this.UID}") + "\">[RESX:ViewPostsByUser]</a>");
+            sTemplate = sTemplate.Replace("[AF:PROFILE:VIEWUSERPOSTS]", "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, $"{ParamKeys.ViewType}={Views.Search}&{ParamKeys.UserId}={this.UID}") + "\">[RESX:ViewPostsByUser]</a>");
 
             sTemplate = this.GetTabsSection(sTemplate);
             Control ctl = this.ParseControl(sTemplate);
@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (!(this.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser))
             {
-                this.Response.Redirect(this.NavigateUrl(this.TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}", $"{ParamKeys.mode}={Modes.edit}" }));
+                this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}", $"{ParamKeys.mode}={Modes.edit}" }));
             }
         }
 
@@ -291,7 +291,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Methods
         private void GoViewURL()
         {
-            this.Response.Redirect(this.NavigateUrl(this.TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}" }));
+            this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}" }));
         }
 
         private bool CanEditMode()

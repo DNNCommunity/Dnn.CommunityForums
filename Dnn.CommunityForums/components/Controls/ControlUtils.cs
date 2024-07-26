@@ -228,11 +228,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (pageId == 1)
                 {
-                    sURL = Utilities.NavigateURL(tabId, "", ParamKeys.TopicId + "=" + topicId);
+                    sURL = Utilities.NavigateURL(tabId, string.Empty, ParamKeys.TopicId + "=" + topicId);
                 }
                 else
                 {
-                    sURL = Utilities.NavigateURL(tabId, "", new[] { ParamKeys.TopicId + "=" + topicId, ParamKeys.PageId + "=" + pageId });
+                    sURL = Utilities.NavigateURL(tabId, string.Empty, new[] { ParamKeys.TopicId + "=" + topicId, ParamKeys.PageId + "=" + pageId });
                 }
             }
 

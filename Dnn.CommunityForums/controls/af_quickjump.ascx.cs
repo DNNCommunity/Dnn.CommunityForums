@@ -112,18 +112,18 @@ namespace DotNetNuke.Modules.ActiveForums
         private void drpForums_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             string sJumpValue = this.drpForums.SelectedItem.Value;
-            if (!(sJumpValue == string.Empty) && !(sJumpValue == ""))
+            if (!(sJumpValue == string.Empty) && !(sJumpValue == string.Empty))
             {
                 string sJumpType = sJumpValue.Substring(0, sJumpValue.IndexOf(":", 0) + 1 - 1);
                 string sJumpID = sJumpValue.Substring(sJumpValue.IndexOf(":", 0) + 1);
                 switch (sJumpType)
                 {
                     case "GROUPJUMP":
-                        this.Response.Redirect(this.NavigateUrl(this.TabId, "", ParamKeys.GroupId + "=" + sJumpID));
+                        this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, ParamKeys.GroupId + "=" + sJumpID));
                         break;
                     case "FORUMJUMP":
                         string[] @params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + sJumpID };
-                        this.Response.Redirect(this.NavigateUrl(this.TabId, "", @params));
+                        this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, @params));
                         break;
                 }
             }

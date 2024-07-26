@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.CanCreate == false && this.CanReply == false)
             {
-                this.Response.Redirect(this.NavigateUrl(this.TabId, "", "ctl=login") + "?returnurl=" + this.Server.UrlEncode(this.Request.RawUrl));
+                this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, "ctl=login") + "?returnurl=" + this.Server.UrlEncode(this.Request.RawUrl));
             }
 
             if (this.UserId > 0)
@@ -514,8 +514,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.MainSettings.UseSkinBreadCrumb)
             {
-                var sCrumb = "<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.GroupId + "=" + this.ForumInfo.ForumGroupId.ToString()) + "\">" + this.ForumInfo.GroupName + "</a>|";
-                sCrumb += "<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.ForumId + "=" + this.ForumInfo.ForumID.ToString()) + "\">" + this.ForumInfo.ForumName + "</a>";
+                var sCrumb = "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.GroupId + "=" + this.ForumInfo.ForumGroupId.ToString()) + "\">" + this.ForumInfo.GroupName + "</a>|";
+                sCrumb += "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.ForumId + "=" + this.ForumInfo.ForumID.ToString()) + "\">" + this.ForumInfo.ForumName + "</a>";
                 if (Environment.UpdateBreadCrumb(this.Page.Controls, sCrumb))
                 {
                     template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
@@ -898,7 +898,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(this.PortalId, this.TabId, this.ForumModuleId, this.fi.ForumGroupId, this.ForumId, this.TopicId, 0, ti.Content.AuthorId);
                     string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
-                    this.Response.Redirect(this.NavigateUrl(this.ForumTabId, "", @params), false);
+                    this.Response.Redirect(this.NavigateUrl(this.ForumTabId, string.Empty, @params), false);
                     this.Context.ApplicationInstance.CompleteRequest();
                 }
                 else
@@ -912,7 +912,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string sUrl = ctlUtils.BuildUrl(this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
                     if (sUrl.Contains("~/"))
                     {
-                        sUrl = Utilities.NavigateURL(this.ForumTabId, "", ParamKeys.TopicId + "=" + this.TopicId);
+                        sUrl = Utilities.NavigateURL(this.ForumTabId, string.Empty, ParamKeys.TopicId + "=" + this.TopicId);
                     }
 
                     this.Response.Redirect(sUrl, false);
@@ -1053,7 +1053,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(this.PortalId, this.TabId, this.ForumModuleId, this.fi.ForumGroupId, this.ForumId, this.TopicId, tmpReplyId, ri.Content.AuthorId);
 
                     string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
-                    this.Response.Redirect(Utilities.NavigateURL(this.TabId, "", @params), false);
+                    this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, @params), false);
                     this.Context.ApplicationInstance.CompleteRequest();
                 }
                 else
@@ -1066,7 +1066,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var fullURL = new ControlUtils().BuildUrl(this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, this.SocialGroupId);
                     if (fullURL.Contains("~/"))
                     {
-                        fullURL = Utilities.NavigateURL(this.TabId, "", new[] { ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
+                        fullURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
                     }
 
                     if (fullURL.EndsWith("/"))

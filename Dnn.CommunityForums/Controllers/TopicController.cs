@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (isNew)
                 {
                     string[] slistreplies = listreplies.Split("|".ToCharArray(), 2);
-                    string str = "";
+                    string str = string.Empty;
                     if (slistreplies.Length > 1)
                     {
                         str = slistreplies[1];

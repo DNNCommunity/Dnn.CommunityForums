@@ -26,9 +26,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class af_polledit : ForumBase
     {
-        private string pollQuestion = "";
-        private string pollType = "";
-        private string pollOptions = "";
+        private string pollQuestion = string.Empty;
+        private string pollType = string.Empty;
+        private string pollOptions = string.Empty;
 
         public string PollQuestion
         {

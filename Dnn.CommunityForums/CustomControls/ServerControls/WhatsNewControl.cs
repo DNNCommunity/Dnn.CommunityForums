@@ -323,7 +323,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 @params.Add(this.AdditionalParams);
                             }
 
-                            sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(this.TabId, "", @params.ToArray()) + "\">" + subject + "</a>");
+                            sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, @params.ToArray()) + "\">" + subject + "</a>");
                         }
                         else
                         {
@@ -333,7 +333,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 @params.Add(this.AdditionalParams);
                             }
 
-                            sTempTemplate = sTempTemplate.Replace("[POSTURL]", Utilities.NavigateURL(this.TabId, "", @params.ToArray()));
+                            sTempTemplate = sTempTemplate.Replace("[POSTURL]", Utilities.NavigateURL(this.TabId, string.Empty, @params.ToArray()));
 
                             @params = new List<string> { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId };
                             if (this.AdditionalParams != string.Empty)

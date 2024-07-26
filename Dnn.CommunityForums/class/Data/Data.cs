@@ -40,13 +40,13 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             var objProvider = (Framework.Providers.Provider)this.providerConfiguration.Providers[this.providerConfiguration.DefaultProvider];
 
             this.objectQualifier = objProvider.Attributes["objectQualifier"];
-            if (this.objectQualifier != "" && this.objectQualifier.EndsWith("_") == false)
+            if (this.objectQualifier != string.Empty && this.objectQualifier.EndsWith("_") == false)
             {
                 this.objectQualifier += "_";
             }
 
             this.databaseOwner = objProvider.Attributes["databaseOwner"];
-            if (this.databaseOwner != "" && this.databaseOwner.EndsWith(".") == false)
+            if (this.databaseOwner != string.Empty && this.databaseOwner.EndsWith(".") == false)
             {
                 this.databaseOwner += ".";
             }

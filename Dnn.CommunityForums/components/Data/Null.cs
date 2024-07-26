@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 

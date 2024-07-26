@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else if (string.IsNullOrEmpty(this.NavigateURL) && !string.IsNullOrEmpty(this.Params))
             {
-                this.NavigateURL = Utilities.NavigateURL(this.PageId, "", this.Params.Split(','));
+                this.NavigateURL = Utilities.NavigateURL(this.PageId, string.Empty, this.Params.Split(','));
             }
 
             string sTitle = " title=";

@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void cbAction_Callback(object sender, Controls.CallBackEventArgs e)
         {
-            string sMsg = "";
+            string sMsg = string.Empty;
             switch (e.Parameters[0].ToLower())
             {
                 case "save":
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             TemplateInfo ti = null;
                             TemplateController tc = new TemplateController();
                             int templateId = 0;
-                            if (e.Parameters[1].ToString() != "")
+                            if (e.Parameters[1].ToString() != string.Empty)
                             {
                                 templateId = Convert.ToInt32(e.Parameters[1]);
                                 ti = tc.Template_Get(templateId);
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             TemplateInfo ti = null;
                             TemplateController tc = new TemplateController();
                             int templateid = 0;
-                            if (e.Parameters[1].ToString() != "")
+                            if (e.Parameters[1].ToString() != string.Empty)
                             {
                                 templateid = Convert.ToInt32(e.Parameters[1]);
                                 ti = tc.Template_Get(templateid);

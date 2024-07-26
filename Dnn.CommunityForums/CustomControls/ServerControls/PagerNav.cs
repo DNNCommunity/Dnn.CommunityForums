@@ -125,8 +125,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (string.IsNullOrEmpty(this.BaseURL))
                         {
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, "", this.BuildParams(this.View, this.ForumID, 1, this.TopicId)) + "\" title=\"First Page\"> &lt;&lt; </a></td>");
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, "", this.BuildParams(this.View, this.ForumID, this.CurrentPage - 1, this.TopicId)) + "\" title=\"Previous Page\"> &lt; </a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, 1, this.TopicId)) + "\" title=\"First Page\"> &lt;&lt; </a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.CurrentPage - 1, this.TopicId)) + "\" title=\"Previous Page\"> &lt; </a></td>");
                         }
                         else
                         {
@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             if (string.IsNullOrEmpty(this.BaseURL))
                             {
-                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, "", this.BuildParams(this.View, this.ForumID, i, this.TopicId)) + "\">" + i + "</a></td>");
+                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, i, this.TopicId)) + "\">" + i + "</a></td>");
                             }
                             else
                             {
@@ -216,8 +216,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (string.IsNullOrEmpty(this.BaseURL))
                         {
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, "", this.BuildParams(this.View, this.ForumID, this.CurrentPage + 1, this.TopicId)) + "\" title=\"Next Page\"> &gt;</a></td>");
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, "", this.BuildParams(this.View, this.ForumID, this.PageCount, this.TopicId)) + "\" title=\"Last Page\"> &gt;&gt;</a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.CurrentPage + 1, this.TopicId)) + "\" title=\"Next Page\"> &gt;</a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.PageCount, this.TopicId)) + "\" title=\"Last Page\"> &gt;&gt;</a></td>");
                         }
                         else
                         {

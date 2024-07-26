@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private int pageSize = 20;
         private int rowIndex = 0;
-        private string filter = "";
+        private string filter = string.Empty;
         #endregion
         #region Public Properties
         #endregion
@@ -206,13 +206,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("<td align=\"center\">");
                 char strChar = (char)i;
                 string[] @params = { ParamKeys.ViewType + "=members", "affilter=" + strChar };
-                sb.Append("<a href=\"" + this.NavigateUrl(this.TabId, "", @params) + "\" class=\"CommandButton\">");
+                sb.Append("<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, @params) + "\" class=\"CommandButton\">");
                 sb.Append(strChar);
                 sb.Append("</a></td>");
             }
 
             sb.Append("<td align=center>");
-            sb.Append("<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.ViewType + "=members") + "\" class=\"CommandButton\">");
+            sb.Append("<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.ViewType + "=members") + "\" class=\"CommandButton\">");
             sb.Append(Utilities.GetSharedResource("[RESX:All]"));
             sb.Append("</a></td></tr></table></div>");
             return sb.ToString();

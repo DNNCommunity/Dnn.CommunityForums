@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 if (fullURL.Contains("~/"))
                 {
-                    fullURL = Utilities.NavigateURL(tabId, "", new string[] { ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId });
+                    fullURL = Utilities.NavigateURL(tabId, string.Empty, new string[] { ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId });
                 }
 
                 if (fullURL.EndsWith("/"))

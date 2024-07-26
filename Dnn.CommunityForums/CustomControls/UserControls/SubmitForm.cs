@@ -216,7 +216,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {/* for announce, only set/get date without time */
             get
             {
-                if (this.calStartDate.SelectedDate == "" && this.announceStart == DateTime.MinValue)
+                if (this.calStartDate.SelectedDate == string.Empty && this.announceStart == DateTime.MinValue)
                 {
                     return Utilities.NullDate();
                 }
@@ -240,7 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {/* for announce, only want date without time */
             get
             {
-                if (this.calEndDate.SelectedDate == "" && this.announceEnd == DateTime.MinValue)
+                if (this.calEndDate.SelectedDate == string.Empty && this.announceEnd == DateTime.MinValue)
                 {
                     return Utilities.NullDate();
                 }
@@ -705,10 +705,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             }
 
-            template = template.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.ViewType + "=" + Views.Topics + "&" + ParamKeys.ForumId + "=" + this.ForumInfo.ForumID.ToString()) + "\">" + this.ForumInfo.ForumName + "</a>");
-            template = template.Replace("[AF:LINK:FORUMGROUP]", "<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.GroupId + "=" + this.ForumInfo.ForumGroupId.ToString()) + "\">" + this.ForumInfo.GroupName + "</a>");
+            template = template.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.ViewType + "=" + Views.Topics + "&" + ParamKeys.ForumId + "=" + this.ForumInfo.ForumID.ToString()) + "\">" + this.ForumInfo.ForumName + "</a>");
+            template = template.Replace("[AF:LINK:FORUMGROUP]", "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.GroupId + "=" + this.ForumInfo.ForumGroupId.ToString()) + "\">" + this.ForumInfo.GroupName + "</a>");
             template = template.Replace("[AF:LINK:FORUMMAIN]", "<a href=\"" + this.NavigateUrl(this.TabId) + "\">[RESX:FORUMS]</a>");
-            template = !(this.TopicId == -1) ? template.Replace("[AF:LINK:TOPICNAME]", "<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.TopicId + "=" + this.TopicId + "&" + ParamKeys.ViewType + "=" + Views.Topic + "&" + ParamKeys.ForumId + "=" + this.ForumInfo.ForumID.ToString()) + "\">" + this.TopicSubject + "</a>") : template.Replace("[AF:LINK:TOPICNAME]", string.Empty);
+            template = !(this.TopicId == -1) ? template.Replace("[AF:LINK:TOPICNAME]", "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.TopicId + "=" + this.TopicId + "&" + ParamKeys.ViewType + "=" + Views.Topic + "&" + ParamKeys.ForumId + "=" + this.ForumInfo.ForumID.ToString()) + "\">" + this.TopicSubject + "</a>") : template.Replace("[AF:LINK:TOPICNAME]", string.Empty);
             template = template.Replace("[AF:UI:FIELDSET:ACTIONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Actions]</legend>");
             template = template.Replace("[/AF:UI:FIELDSET:ACTIONS]", "</fieldset>");
             template = template.Replace("[AF:BUTTON:SUBMIT]", "<am:imagebutton id=\"btnPost\" Text=\"[RESX:Submit]\" runat=\"server\" />");

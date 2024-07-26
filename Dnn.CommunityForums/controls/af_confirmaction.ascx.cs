@@ -103,8 +103,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 }
 
-                this.hypForums.NavigateUrl = this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + this.ForumId });
-                this.hypPost.NavigateUrl = this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
+                this.hypForums.NavigateUrl = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + this.ForumId });
+                this.hypPost.NavigateUrl = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
                 if (this.TopicId == -1)
                 {
                     this.hypPost.Visible = false;

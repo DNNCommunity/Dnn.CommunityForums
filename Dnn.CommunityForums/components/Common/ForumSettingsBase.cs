@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (oldValue != null && oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
             {
                 // changed but case-insensitive identical: empty the setting first
-                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, key, "");
+                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, key, string.Empty);
             }
 
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, key, newValue);

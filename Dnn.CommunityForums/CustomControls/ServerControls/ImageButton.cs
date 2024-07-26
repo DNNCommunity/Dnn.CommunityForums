@@ -50,10 +50,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int vSpace;
         private string imageAlign = "absmiddle";
         private bool postBack = true;
-        private string confirmMessage = "";
-        private string validationGroup = "";
+        private string confirmMessage = string.Empty;
+        private string validationGroup = string.Empty;
         private string imageLocation = "LEFT";
-        private string objectId = "";
+        private string objectId = string.Empty;
         private string postBackScript;
 
         [Bindable(true), Category("Appearance"), DefaultValue("")]
@@ -217,17 +217,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            string sConfirm = "";
+            string sConfirm = string.Empty;
             string sOnClick;
-            if (this.CssClass == "")
+            if (this.CssClass == string.Empty)
             {
                 this.CssClass = "amtoolbaritem";
             }
 
             var outerWriter = new HtmlTextWriter(writer);
             string sVoid = "javascript:void(0);";
-            string sStatusOver = "";
-            string sStatusOff = "";
+            string sStatusOver = string.Empty;
+            string sStatusOff = string.Empty;
             if (this.Confirm)
             {
                 sConfirm = "if (confirm('" + this.ConfirmMessage + "')){ [FUNCTIONS] };";
@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOnClick += this.Attributes["onclick"];
             }
 
-            if (sConfirm != "")
+            if (sConfirm != string.Empty)
             {
                 sOnClick = sConfirm.Replace("[FUNCTIONS]", sOnClick);
             }
@@ -342,7 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (this.ImageLocation.ToUpper() == "LEFT")
             {
                 var innerWriter = new HtmlTextWriter(writer);
-                if (this.ImageUrl != "")
+                if (this.ImageUrl != string.Empty)
                 {
                     var imageWriter = new HtmlTextWriter(innerWriter);
                     imageWriter.AddAttribute(HtmlTextWriterAttribute.Src, this.Page.ResolveUrl(this.ImageUrl));
@@ -364,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 var innerWriter = new HtmlTextWriter(writer);
                 innerWriter.Write("<span>" + this.Text + "</span>");
-                if (this.ImageUrl != "")
+                if (this.ImageUrl != string.Empty)
                 {
                     var imageWriter = new HtmlTextWriter(innerWriter);
                     imageWriter.AddAttribute(HtmlTextWriterAttribute.Src, this.Page.ResolveUrl(this.ImageUrl));
@@ -382,7 +382,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             else if (this.ImageLocation.ToUpper() == "TOP")
             {
                 var innerWriter = new HtmlTextWriter(writer);
-                if (this.ImageUrl != "")
+                if (this.ImageUrl != string.Empty)
                 {
                     var imageWriter = new HtmlTextWriter(innerWriter);
                     imageWriter.AddAttribute(HtmlTextWriterAttribute.Src, this.Page.ResolveUrl(this.ImageUrl));

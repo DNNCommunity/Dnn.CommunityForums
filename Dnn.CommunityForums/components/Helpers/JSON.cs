@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (!string.IsNullOrEmpty(array))
                 {
-                    array = array.Replace("[", "").Replace("]", "").Replace("\"", "");
+                    array = array.Replace("[", string.Empty).Replace("]", string.Empty).Replace("\"", string.Empty);
                     return new List<string>(array.Split(','));
                 }
                 else
@@ -189,7 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         array = array.Substring(0, array.Length - 1);
                     }
 
-                    array = array.Replace("\":", "|").Replace("\"", "").Replace("\\/", "/").Replace(", ", "#^");
+                    array = array.Replace("\":", "|").Replace("\"", string.Empty).Replace("\\/", "/").Replace(", ", "#^");
                     List<string> pairs = new List<string>(array.Split(','));
                     foreach (string pair in pairs)
                     {
@@ -230,7 +230,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         array = array.Substring(0, array.Length - 1);
                     }
 
-                    array = array.Replace("\":", "|").Replace("\"", "").Replace("\\/", "/").Replace(", ", "#^");
+                    array = array.Replace("\":", "|").Replace("\"", string.Empty).Replace("\\/", "/").Replace(", ", "#^");
                     List<string> pairs = new List<string>(array.Split(','));
                     foreach (string pair in pairs)
                     {

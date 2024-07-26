@@ -182,11 +182,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (pageNumber > 1)
             {
-                sURL = Utilities.NavigateURL(pageId, "", subject, portalId, new[] { ParamKeys.TopicId + "=" + topicId, ParamKeys.PageId + "=" + pageNumber });
+                sURL = Utilities.NavigateURL(pageId, string.Empty, subject, portalId, new[] { ParamKeys.TopicId + "=" + topicId, ParamKeys.PageId + "=" + pageNumber });
             }
             else
             {
-                sURL = Utilities.NavigateURL(pageId, "", subject, portalId, ParamKeys.TopicId + "=" + topicId);
+                sURL = Utilities.NavigateURL(pageId, string.Empty, subject, portalId, ParamKeys.TopicId + "=" + topicId);
             }
 
             sURL = sURL.ToLowerInvariant();

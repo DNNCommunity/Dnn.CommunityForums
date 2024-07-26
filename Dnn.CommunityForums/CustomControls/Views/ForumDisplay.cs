@@ -237,7 +237,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sForum = sForum.Replace("[CSS:FORUMICON]", "affoldernorm");
             sForum = sForum.Replace("[CSS:FORUMICONSM]", "affoldersmnorm");
             // sForum = sForum.Replace("[FORUMICONSM]", sIconImage.Replace("folder", "folder16"));
-            sForum = sForum.Replace("[FORUMICONSM]", "");
+            sForum = sForum.Replace("[FORUMICONSM]", string.Empty);
             var xNodeList = this.ForumData.SelectNodes("//forums/forum[@active='true' and @parentforumid='" + fid + "']");
             string sSubs = string.Empty;
             if (xNodeList.Count > 0)
@@ -267,11 +267,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string[] @params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId };
             if (canView && name != string.Empty)
             {
-                sOut = "<a href=\"" + Utilities.NavigateURL(this.PageId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }) + "\">" + name + "</a>";
+                sOut = "<a href=\"" + Utilities.NavigateURL(this.PageId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }) + "\">" + name + "</a>";
             }
             else if (canView && name == string.Empty)
             {
-                return Utilities.NavigateURL(this.PageId, "", @params);
+                return Utilities.NavigateURL(this.PageId, string.Empty, @params);
             }
             else
             {
@@ -300,11 +300,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string sURL;
                 if (parentPostID == 0 || lastPostID == parentPostID)
                 {
-                    sURL = Utilities.NavigateURL(this.PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + postId });
+                    sURL = Utilities.NavigateURL(this.PageId, string.Empty, new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + postId });
                 }
                 else
                 {
-                    sURL = Utilities.NavigateURL(this.PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + parentPostID, ParamKeys.ContentJumpId + "=" + postId });
+                    sURL = Utilities.NavigateURL(this.PageId, string.Empty, new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + parentPostID, ParamKeys.ContentJumpId + "=" + postId });
 
                 }
 

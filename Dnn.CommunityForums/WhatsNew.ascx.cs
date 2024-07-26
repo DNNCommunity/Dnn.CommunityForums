@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                   {
                                       {
                                           this.GetNextActionID(), "Edit", /* Utilities.GetSharedResource("Configure") */
-                                          DotNetNuke.Entities.Modules.Actions.ModuleActionType.EditContent, "", "",
+                                          DotNetNuke.Entities.Modules.Actions.ModuleActionType.EditContent, string.Empty, string.Empty,
                                           this.EditUrl(), false, Security.SecurityAccessLevel.Edit, true, false
                                       }
                                   };
@@ -206,16 +206,16 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (replyId == 0)
                         {
-                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }));
-                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }) + "\">" + subject + "</a>");
+                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }));
+                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }) + "\">" + subject + "</a>");
                         }
                         else
                         {
-                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }));
-                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }) + "\">" + subject + "</a>");
+                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }));
+                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }) + "\">" + subject + "</a>");
                         }
 
-                        sbTemplate = sbTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }));
+                        sbTemplate = sbTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }));
                     }
 
                     sbTemplate = sbTemplate.Replace("[FORUMURL]", Utilities.NavigateURL(topicTabId));

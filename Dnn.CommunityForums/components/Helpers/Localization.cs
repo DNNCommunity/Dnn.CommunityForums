@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                defaultResources.Load(this.GetResourceFile("", Localization.SystemLocale, portalId));
+                defaultResources.Load(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId));
                 filename = this.GetResourceFile("Portal", Localization.SystemLocale, portalId);
                 if (File.Exists(filename))
                 {
@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    portalResources.Load(this.GetResourceFile("", Localization.SystemLocale, portalId));
+                    portalResources.Load(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId));
                 }
 
                 this.UpdateResourceFileNode(portalResources, name, resourceText);

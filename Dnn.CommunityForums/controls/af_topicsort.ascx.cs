@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void drpSort_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             var sort = this.drpSort.SelectedItem.Value;
-            var dest = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(this.TabId, "",
+            var dest = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(this.TabId, string.Empty,
                                                              new[]
                                                                  {
                                                                      ParamKeys.ViewType + "=" + Views.Topic,

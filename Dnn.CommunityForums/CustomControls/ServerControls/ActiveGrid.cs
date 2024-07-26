@@ -51,19 +51,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string selectedStyle = "amrowselected";
         private bool showPager = true;
         private string pagerText = "Page {0} of {1}";
-        private string imagePath = "";
+        private string imagePath = string.Empty;
         private int pagerPages = 10;
         private string defaultColumn;
-        private string defaultParams = "";
+        private string defaultParams = string.Empty;
         private Sort defaultSort = Sort.Descending;
         private string cssPagerInfo = "ampagerinfo";
         private string cssPagerItem = "amPageritem";
         private string cssPagerItem2 = "ampagertem2";
         private string cssPagerCurrentNumber = "ampagernumber_current";
         private string cssPagerNumber = "ampagernumber";
-        private string spacerImage = "";
-        private string ascImage = "";
-        private string descImage = "";
+        private string spacerImage = string.Empty;
+        private string ascImage = string.Empty;
+        private string descImage = string.Empty;
         private bool loadOnRender = true;
         private string onComplete;
 
@@ -567,17 +567,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 StringBuilder str = new StringBuilder();
                 str.Append("<script>");
                 str.Append("window." + this.ClientID + "=new ActiveGrid('" + this.ClientID + "');");
-                if (this.SpacerImage == "")
+                if (this.SpacerImage == string.Empty)
                 {
                     this.SpacerImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.spacer.gif");
                 }
 
-                if (this.AscImage == "")
+                if (this.AscImage == string.Empty)
                 {
                     this.AscImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.asc.gif");
                 }
 
-                if (this.DescImage == "")
+                if (this.DescImage == string.Empty)
                 {
                     this.DescImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.desc.gif");
                 }
@@ -653,7 +653,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (!this.Page.IsPostBack)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.Append("");
+                sb.Append(string.Empty);
                 IDataReader dr = this.Datasource;
                 dr.Read();
                 int iCount = Convert.ToInt32(dr[0]);
@@ -751,7 +751,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     return ((LiteralControl)this.Controls[0]).Text;
                 }
 
-                return "";
+                return string.Empty;
             }
 
             set

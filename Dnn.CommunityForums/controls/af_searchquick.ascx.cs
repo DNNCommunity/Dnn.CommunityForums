@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void lnkSearch_Click(object sender, EventArgs e)
         {
-            if (this.txtSearch.Text.Trim() != "")
+            if (this.txtSearch.Text.Trim() != string.Empty)
             {
                 var @params = new List<string> {
                     $"{ParamKeys.ViewType}={Views.Search}",
@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     @params.Add($"{Literals.GroupId}={this.SocialGroupId}");
                 }
 
-                this.Response.Redirect(this.NavigateUrl(this.ForumTabId, "", @params.ToArray()));
+                this.Response.Redirect(this.NavigateUrl(this.ForumTabId, string.Empty, @params.ToArray()));
             }
 
         }

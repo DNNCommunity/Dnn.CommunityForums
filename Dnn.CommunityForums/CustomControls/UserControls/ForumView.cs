@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> Forums { get; set; }
 
-        public string DisplayTemplate { get; set; } = "";
+        public string DisplayTemplate { get; set; } = string.Empty;
 
         public int CurrentUserId { get; set; } = -1;
 
@@ -240,7 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (this.MainSettings.UseSkinBreadCrumb && this.Forums?.Count > 0 && this.SubsOnly == false && this.ForumGroupId != -1)
                     {
-                        DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.GroupId + "=" + this.ForumGroupId) + "\">" + sGroupName + "</a>");
+                        DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.GroupId + "=" + this.ForumGroupId) + "\">" + sGroupName + "</a>");
                         sTemplate = sTemplate.Replace("<div class=\"afcrumb\">[FORUMMAINLINK] > [FORUMGROUPLINK]</div>", string.Empty);
                         sTemplate = sTemplate.Replace("[BREADCRUMB]", string.Empty);
                     }
@@ -497,13 +497,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template.Remove(inStart, inEnd - inStart + 1);
             }
 
-            if (fi.ForumDesc != "")
+            if (fi.ForumDesc != string.Empty)
             {
                 template = template.Replace("[FORUMDESCRIPTION]", "<i class=\"fa fa-file-o fa-grey\"></i>&nbsp;" + fi.ForumDesc);
             }
             else
             {
-                template = template.Replace("[FORUMDESCRIPTION]", "");
+                template = template.Replace("[FORUMDESCRIPTION]", string.Empty);
             }
 
             template = template.Replace("[TOTALTOPICS]", fi.TotalTopics.ToString());
@@ -610,7 +610,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sURL = new ControlUtils().TopicURL(this.TabId, this.ForumModuleId, parentPostID, fi.ForumGroup.PrefixURL, fi.PrefixURL, ti.TopicUrl);
             if (sURL.Contains("~/"))
             {
-                sURL = Utilities.NavigateURL(this.TabId, "", new[] { ParamKeys.TopicId + "=" + parentPostID, ParamKeys.ContentJumpId + "=" + lastPostID });
+                sURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.TopicId + "=" + parentPostID, ParamKeys.ContentJumpId + "=" + lastPostID });
             }
 
             if (sURL.EndsWith("/") && lastPostID != parentPostID)
@@ -719,7 +719,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (canView)
             {
-                sOut = "<a href=\"" + Utilities.NavigateURL(tabID, "", @params) + "\">" + name + "</a>";
+                sOut = "<a href=\"" + Utilities.NavigateURL(tabID, string.Empty, @params) + "\">" + name + "</a>";
             }
             else if (hidden)
             {

@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // Get Connection string from web.config
             this.connectionString = Config.GetConnectionString();
 
-            if (this.connectionString == "")
+            if (this.connectionString == string.Empty)
             {
                 // Use connection string specified in provider
                 this.connectionString = objProvider.Attributes["connectionString"];
@@ -66,13 +66,13 @@ namespace DotNetNuke.Modules.ActiveForums
             this.providerPath = objProvider.Attributes["providerPath"];
 
             this.objectQualifier = objProvider.Attributes["objectQualifier"];
-            if (this.objectQualifier != "" && this.objectQualifier.EndsWith("_") == false)
+            if (this.objectQualifier != string.Empty && this.objectQualifier.EndsWith("_") == false)
             {
                 this.objectQualifier += "_";
             }
 
             this.databaseOwner = objProvider.Attributes["databaseOwner"];
-            if (this.databaseOwner != "" && this.databaseOwner.EndsWith(".") == false)
+            if (this.databaseOwner != string.Empty && this.databaseOwner.EndsWith(".") == false)
             {
                 this.databaseOwner += ".";
             }

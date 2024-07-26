@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     return ((LiteralControl)this.Controls[0]).Text;
                 }
 
-                return "";
+                return string.Empty;
             }
 
             set

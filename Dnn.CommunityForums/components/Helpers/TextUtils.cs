@@ -35,24 +35,24 @@ namespace DotNetNuke.Modules.ActiveForums
             public static string CheckSqlString(string input)
             {
                 input = input.ToUpperInvariant();
-                input = input.Replace("\\", "");
-                input = input.Replace("[", "");
-                input = input.Replace("]", "");
-                input = input.Replace("(", "");
-                input = input.Replace(")", "");
-                input = input.Replace("{", "");
-                input = input.Replace("}", "");
+                input = input.Replace("\\", string.Empty);
+                input = input.Replace("[", string.Empty);
+                input = input.Replace("]", string.Empty);
+                input = input.Replace("(", string.Empty);
+                input = input.Replace(")", string.Empty);
+                input = input.Replace("{", string.Empty);
+                input = input.Replace("}", string.Empty);
                 input = input.Replace("'", "''");
-                input = input.Replace("UNION", "");
-                input = input.Replace("TABLE", "");
-                input = input.Replace("WHERE", "");
-                input = input.Replace("DROP", "");
-                input = input.Replace("EXECUTE", "");
-                input = input.Replace("EXEC ", "");
-                input = input.Replace("FROM ", "");
-                input = input.Replace("CMD ", "");
-                input = input.Replace(";", "");
-                input = input.Replace("--", "");
+                input = input.Replace("UNION", string.Empty);
+                input = input.Replace("TABLE", string.Empty);
+                input = input.Replace("WHERE", string.Empty);
+                input = input.Replace("DROP", string.Empty);
+                input = input.Replace("EXECUTE", string.Empty);
+                input = input.Replace("EXEC ", string.Empty);
+                input = input.Replace("FROM ", string.Empty);
+                input = input.Replace("CMD ", string.Empty);
+                input = input.Replace(";", string.Empty);
+                input = input.Replace("--", string.Empty);
                 // input = input.Replace("""", """""")
                 return input;
             }

@@ -559,8 +559,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static void RewriteUrl(HttpContext context, string sendToUrl)
         {
-            string x = "";
-            string y = "";
+            string x = string.Empty;
+            string y = string.Empty;
 
             RewriteUrl(context, sendToUrl, ref x, ref y);
         }

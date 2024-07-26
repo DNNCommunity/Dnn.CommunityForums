@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                if (!(e.Parameters[4] == ""))
+                if (!(e.Parameters[4] == string.Empty))
                 {
                     string sAction = e.Parameters[4].Split(':')[0];
 

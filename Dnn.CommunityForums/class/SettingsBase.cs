@@ -492,7 +492,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 sParams += $"|{ParamKeys.ViewType}={this.Request.Params[Literals.view]}";
-                sUrl = this.NavigateUrl(this.TabId, "", sParams.Split('|'));
+                sUrl = this.NavigateUrl(this.TabId, string.Empty, sParams.Split('|'));
 
                 this.Response.Status = "301 Moved Permanently";
                 this.Response.AddHeader("Location", sUrl);

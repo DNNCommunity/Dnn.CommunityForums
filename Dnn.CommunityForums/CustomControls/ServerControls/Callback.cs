@@ -48,14 +48,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool isCallback = false;
         private CallBackContent previouscontent;
         private int refreshInterval = 0;
-        private string parameter = "";
-        private string resourceFile = "";
+        private string parameter = string.Empty;
+        private string resourceFile = string.Empty;
 
         public event CallbackEventHandler CallbackEvent;
 
         public delegate void CallbackEventHandler(object sender, CallBackEventArgs e);
 
-        private string postURL = "";
+        private string postURL = string.Empty;
         private string token = string.Empty;
         private int validState = 0; // -1 = don't process, 0 = initial load, 1 = process
 
@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 output.RenderEndTag();
-                if (this.Page != null & this.Context != null & this.Context.Request != null & !(this.Context.Request.Form["amCB_" + sID] == null) & !(this.Context.Request.Form["amCB_" + sID] == ""))
+                if (this.Page != null & this.Context != null & this.Context.Request != null & !(this.Context.Request.Form["amCB_" + sID] == null) & !(this.Context.Request.Form["amCB_" + sID] == string.Empty))
                 {
                     this.OnCallback(new CallBackEventArgs(output, this.Context.Request.Form["amCB_" + sID]));
                 }
@@ -339,13 +339,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (this.LoadingTemplate != null)
                 {
-                    str.Append("window.objCB.prototype.LT_" + sID + "='" + this.LoadingTemplate.Text.Replace("\\r", "").Replace("'", "\\\\'").Replace("\\n", "").Replace("\n", "").Replace("\r", "") + "';");
+                    str.Append("window.objCB.prototype.LT_" + sID + "='" + this.LoadingTemplate.Text.Replace("\\r", string.Empty).Replace("'", "\\\\'").Replace("\\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty) + "';");
                 }
 
                 str.AppendFormat("window.{0}=new objCB('{0}');", sID);
                 str.Append(sID + ".Debug=" + this.Debug.ToString().ToLower() + ";");
                 string uRL = this.PostURL;
-                if (uRL == "")
+                if (uRL == string.Empty)
                 {
                     // URL = GetResponseUrl(Context)
                 }
@@ -467,7 +467,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public static string GetResponseUrl(HttpContext oContext)
         {
-            return oContext.Request.Url.Scheme + Uri.SchemeDelimiter + oContext.Request.Url.Host + Convert.ToString(oContext.Request.Url.IsDefaultPort ? "" : (":" + oContext.Request.Url.Port)) + oContext.Response.ApplyAppPathModifier(oContext.Request.RawUrl);
+            return oContext.Request.Url.Scheme + Uri.SchemeDelimiter + oContext.Request.Url.Host + Convert.ToString(oContext.Request.Url.IsDefaultPort ? string.Empty : (":" + oContext.Request.Url.Port)) + oContext.Response.ApplyAppPathModifier(oContext.Request.RawUrl);
         }
 
         // Private Function GetArgs() As String()
@@ -571,9 +571,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         HttpCookie myCookie = new HttpCookie("amcit");
                         if (HttpContext.Current.Request.Cookies["amcit"] != null)
                         {
-                            HttpContext.Current.Response.Cookies["amcit"].Value = "";
+                            HttpContext.Current.Response.Cookies["amcit"].Value = string.Empty;
                             HttpContext.Current.Response.Cookies["amcit"].Expires = DateTime.UtcNow.AddYears(-1);
-                            HttpContext.Current.Response.Cookies["amcit"].Domain = "";
+                            HttpContext.Current.Response.Cookies["amcit"].Domain = string.Empty;
                             HttpContext.Current.Response.Cookies["amcit"].HttpOnly = true;
                         }
 
@@ -633,7 +633,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     return ((LiteralControl)this.Controls[0]).Text;
                 }
 
-                return "";
+                return string.Empty;
             }
 
             set

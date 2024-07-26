@@ -140,7 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         this.trSubscribe.Visible = false;
                         this.ambtnSubmit.PostBack = true;
-                        this.ambtnSubmit.ClientSideScript = "";
+                        this.ambtnSubmit.ClientSideScript = string.Empty;
                         this.reqUserName.Enabled = true;
                         this.reqUserName.Text = "<img src=\"" + this.ThemePath + "warning.png\" />";
                         this.reqBody.Text = "<img src=\"" + this.ThemePath + "warning.png\" />";
@@ -236,14 +236,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.portalId, this.TabId, this.moduleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId);
                 // Redirect to show post
-                string fullURL = Utilities.NavigateURL(this.PageId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
+                string fullURL = Utilities.NavigateURL(this.PageId, string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }
             else
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, this.portalId, this.ForumId, ri.TopicId, replyId, this.moduleId, this.PageId, string.Empty);
                 string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
-                HttpContext.Current.Response.Redirect(Utilities.NavigateURL(this.PageId, "", @params), false);
+                HttpContext.Current.Response.Redirect(Utilities.NavigateURL(this.PageId, string.Empty, @params), false);
             }
         }
 

@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var db = new Data.Common();
             var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ForumModuleId, "CanRead");
 
-            var sCrumb = "<a href=\"" + Utilities.NavigateURL(this.TabId, "", new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}=xxx" }) + "\">yyyy</a>";
+            var sCrumb = "<a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}=xxx" }) + "\">yyyy</a>";
             sCrumb = sCrumb.Replace("xxx", "{0}").Replace("yyyy", "{1}");
 
             if (this.Request.Params[ParamKeys.GridType] != null)

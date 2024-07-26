@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
         // dynamically create provider
         private static void CreateProvider()
         {
-            objProvider = (DataProvider)Framework.Reflection.CreateObject("data", "DotNetNuke.Modules.ActiveForums", "");
+            objProvider = (DataProvider)Framework.Reflection.CreateObject("data", "DotNetNuke.Modules.ActiveForums", string.Empty);
         }
 
         // return the provider

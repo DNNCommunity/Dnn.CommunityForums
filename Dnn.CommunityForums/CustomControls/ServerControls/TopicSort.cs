@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sort = this.drpSort.SelectedItem.Value;
             int tabId = int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
 
-            HttpContext.Current.Response.Redirect(Utilities.NavigateURL(tabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.Sort + "=" + sort }));
+            HttpContext.Current.Response.Redirect(Utilities.NavigateURL(tabId, string.Empty, new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.Sort + "=" + sort }));
         }
 
         protected override void OnLoad(EventArgs e)

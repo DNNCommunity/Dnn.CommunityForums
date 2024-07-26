@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             int pendingCount = 0;
                             dtContent.DefaultView.RowFilter = "ForumId = " + Convert.ToInt32(dr["ForumId"]);
                             pendingCount = dtContent.DefaultView.ToTable().Rows.Count;
-                            dtContent.DefaultView.RowFilter = "";
+                            dtContent.DefaultView.RowFilter = string.Empty;
                             sb.Append("<tr><td class=\"afgrouprow\" style=\"padding-left:10px;\">" + dr["GroupName"].ToString() + " > " + dr["ForumName"].ToString() + " [RESX:Pending]: (" + pendingCount + ")</td><td class=\"afgrouprow\" align=\"right\" style=\"padding-right:5px;\">");
                             sb.Append(DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: "section" + dr["ForumId"].ToString(), title: string.Empty));
                             sb.Append("</td></tr>");
@@ -310,7 +310,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (this.bModBan)
                         {
                             var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ReplyId + "=" + Convert.ToInt32(dr["ReplyId"]), ParamKeys.AuthorId + "=" + Convert.ToInt32(dr["AuthorId"]) };
-                            sb.Append("<a class=\"dnnSecondaryAction\" href=\"" + Utilities.NavigateURL(this.TabId, "", banParams.ToArray()) + "\" tooltip=\"[RESX:Tips:BanUser]\">[RESX:Ban]</a>");
+                            sb.Append("<a class=\"dnnSecondaryAction\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, banParams.ToArray()) + "\" tooltip=\"[RESX:Tips:BanUser]\">[RESX:Ban]</a>");
                         }
 
                         sb.Append("</td></tr>");
@@ -331,11 +331,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (replyId == 0)
             {
-                return this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ViewType + "=post", "action=te", ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId });
+                return this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=post", "action=te", ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId });
             }
             else
             {
-                return this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ViewType + "=post", "action=re", ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, "postid=" + replyId });
+                return this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=post", "action=re", ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, "postid=" + replyId });
             }
         }
 

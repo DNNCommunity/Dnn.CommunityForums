@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.lblHeader.Text = string.Format(Utilities.GetSharedResource("[RESX:ProfileForUser]"), sDisplayName);
             if (this.MainSettings.UseSkinBreadCrumb)
             {
-                Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + Utilities.NavigateURL(this.TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}=" + tUid.ToString() }) + "\">" + this.lblHeader.Text + "</a>");
+                Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}=" + tUid.ToString() }) + "\">" + this.lblHeader.Text + "</a>");
             }
 
             DotNetNuke.Framework.CDefault tempVar = this.BasePage;

@@ -388,13 +388,13 @@ namespace DotNetNuke.Modules.ActiveForums
             var objProvider = (DotNetNuke.Framework.Providers.Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
 
             objectQualifier = objProvider.Attributes["objectQualifier"];
-            if (objectQualifier != "" && objectQualifier.EndsWith("_") == false)
+            if (objectQualifier != string.Empty && objectQualifier.EndsWith("_") == false)
             {
                 objectQualifier += "_";
             }
 
             databaseOwner = objProvider.Attributes["databaseOwner"];
-            if (databaseOwner != "" && databaseOwner.EndsWith(".") == false)
+            if (databaseOwner != string.Empty && databaseOwner.EndsWith(".") == false)
             {
                 databaseOwner += ".";
             }

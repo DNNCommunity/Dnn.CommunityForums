@@ -173,7 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // Get the original file name from the content disposition header
-                var fileName = file.Headers.ContentDisposition.FileName.Replace("\"", "");
+                var fileName = file.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
 
                 if (string.IsNullOrWhiteSpace(fileName))
                 {
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Make sure we have an acceptable extension type.
                 // Check against both the forum configuration and the host configuration
                 var extension = Path.GetExtension(fileName).TextOrEmpty().Replace(".", string.Empty).ToLower();
-                var isForumAllowedExtension = string.IsNullOrWhiteSpace(forum.AttachTypeAllowed) || forum.AttachTypeAllowed.Replace(".", "").Split(',').Any(val => val == extension);
+                var isForumAllowedExtension = string.IsNullOrWhiteSpace(forum.AttachTypeAllowed) || forum.AttachTypeAllowed.Replace(".", string.Empty).Split(',').Any(val => val == extension);
                 if (string.IsNullOrEmpty(extension) || !isForumAllowedExtension || !Host.AllowedExtensionWhitelist.IsAllowedExtension(extension))
                 {
                     File.Delete(file.LocalFileName);

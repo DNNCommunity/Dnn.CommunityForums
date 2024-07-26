@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     int i = 0;
                     foreach (string strReason in strReasons.Split(new char[] { ';' }))
                     {
-                        if (!(strReason == ""))
+                        if (!(strReason == string.Empty))
                         {
                             this.drpReasons.Items.Insert(i, new ListItem(strReason, strReason));
                             i += 1;
@@ -74,8 +74,8 @@ namespace DotNetNuke.Modules.ActiveForums
             base.Render(htmlWriter);
             string html = stringWriter.ToString();
             html = html.Replace("[AF:LINK:FORUMMAIN]", "<a href=\"" + this.NavigateUrl(this.TabId) + "\">[RESX:FORUMS]</a>");
-            html = html.Replace("[AF:LINK:FORUMGROUP]", "<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.GroupId + "=" + this.ForumInfo.ForumGroupId) + "\">" + this.ForumInfo.GroupName + "</a>");
-            html = html.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + this.ForumInfo.ForumName + "</a>");
+            html = html.Replace("[AF:LINK:FORUMGROUP]", "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.GroupId + "=" + this.ForumInfo.ForumGroupId) + "\">" + this.ForumInfo.GroupName + "</a>");
+            html = html.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + this.ForumInfo.ForumName + "</a>");
 
             html = Utilities.LocalizeControl(html);
 
@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void btnCancel_Click(object sender, System.EventArgs e)
         {
-            this.Response.Redirect(Utilities.NavigateURL(this.TabId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId }));
+            this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId }));
         }
 
         private void btnSend_Click(object sender, System.EventArgs e)
@@ -125,8 +125,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 string comments = this.drpReasons.SelectedItem.Value + "<br>";
                 comments += Utilities.CleanString(this.PortalId, this.txtComments.Text, false, EditorTypes.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
                 string sUrl = this.SocialGroupId > 0
-                    ? Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + Literals.GroupId + "=" + this.SocialGroupId })
-                    : Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent });
+                    ? Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + Literals.GroupId + "=" + this.SocialGroupId })
+                    : Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent });
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
                 string sBody = string.Empty;
                 string authorName = string.Empty;

@@ -147,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sb.Append("<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:cf=\"http://www.microsoft.com/schemas/rss/core/2005\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:slash=\"http://purl.org/rss/1.0/modules/slash/\">" + System.Environment.NewLine);
                         string[] @params = { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topics };
                         string uRL = string.Empty;
-                        uRL = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(tabId, "", @params);
+                        uRL = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(tabId, string.Empty, @params);
                         if (uRL.IndexOf(this.Request.Url.Host) == -1)
                         {
                             uRL = DotNetNuke.Common.Globals.AddHTTP(this.Request.Url.Host) + uRL;
@@ -201,7 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums
             SettingsInfo mainSettings = SettingsBase.GetModuleSettings(this.moduleID);
             StringBuilder sb = new StringBuilder(1024);
             string[] @params = { ParamKeys.ForumId + "=" + dr["ForumID"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ViewType + "=" + Views.Topic };
-            string uRL = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(postTabID, "", @params);
+            string uRL = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(postTabID, string.Empty, @params);
             if (mainSettings.URLRewriteEnabled && !string.IsNullOrEmpty(dr["FullUrl"].ToString()))
             {
                 string sTopicURL = string.Empty;
@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private string StripHTMLTag(string sText)
         {
             string tempStripHTMLTag = null;
-            tempStripHTMLTag = "";
+            tempStripHTMLTag = string.Empty;
             bool fFound = false;
             while ((sText.IndexOf("<", 0) + 1) > 0)
             {
