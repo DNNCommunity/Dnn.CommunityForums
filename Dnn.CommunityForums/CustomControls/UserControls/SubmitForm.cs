@@ -553,6 +553,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             {
                                 pValues = pValue.Split(',');
                             }
+
                             foreach (DotNetNuke.Common.Lists.ListEntryInfo l in lc)
                             {
                                 bool isSelected = false;

@@ -217,6 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, dto.SecurityAccessRequested, dto.SecurityId, dto.SecurityType);
                         }
+
                         return this.Request.CreateResponse(HttpStatusCode.OK, dto.Action + "|" + dto.ReturnId);
                     }
             }

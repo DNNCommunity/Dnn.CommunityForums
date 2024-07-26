@@ -147,6 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;
                     }
+
                     DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumid, moduleInfo.ModuleID);
 
                     // NOTE: indexer is called from scheduler and has no httpcontext
@@ -183,6 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     };
                     searchDocuments.Add(searchDoc);
                 }
+
                 dr.Close();
                 return searchDocuments;
             }
