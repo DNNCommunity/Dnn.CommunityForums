@@ -87,20 +87,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return Utilities.GetPortalSettings(portalId).RegisteredRoleName;
         }
-        internal static void CreateDefaultSets(int PortalId, int PermissionsId)
+        internal static void CreateDefaultSets(int PortalId, int ModuleId, int PermissionsId)
         {
             string[] requestedAccessList = new[] { "View", "Read" };
             string RegisteredUsersRoleId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(PortalId).ToString();
             foreach (string access in requestedAccessList)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(PermissionsId, PermissionsId, access, RegisteredUsersRoleId, 0);
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(PermissionsId, PermissionsId, access, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(PermissionsId, PermissionsId, access, DotNetNuke.Common.Globals.glbRoleUnauthUser, 0);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, PermissionsId, access, RegisteredUsersRoleId, 0);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, PermissionsId, access, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, PermissionsId, access, DotNetNuke.Common.Globals.glbRoleUnauthUser, 0);
             }
             requestedAccessList = new[] { "Create", "Reply" };
             foreach (string access in requestedAccessList)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(PermissionsId, PermissionsId, access, RegisteredUsersRoleId, 0);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, PermissionsId, access, RegisteredUsersRoleId, 0);
             }
         }
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo CreateAdminPermissions(string adminRole, int moduleId)
@@ -133,10 +133,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModPin = adminRoleId,
                 ModuleId = moduleId
             };
-            Insert(permissionInfo);
+            this.Insert(permissionInfo);
             return permissionInfo;
         }
-        internal static DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetEmptyPermissions()
+        internal static DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetEmptyPermissions(int moduleId)
         {
             return new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo
             {
@@ -162,7 +162,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModUser = emptyPermissions,
                 ModEdit = emptyPermissions,
                 ModLock = emptyPermissions,
-                ModPin = emptyPermissions
+                ModPin = emptyPermissions,
+                ModuleId = moduleId,
             };
         }
         public static bool HasAccess(string AuthorizedRoles, string UserRoles)
