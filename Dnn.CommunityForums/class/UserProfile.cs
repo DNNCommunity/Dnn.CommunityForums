@@ -1,8 +1,6 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
-//
-// See the LICENSE file in the project root for more information.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,183 +15,41 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
+//
+using System;
+using System.Collections;
+using System.Data;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    using System;
-    using System.Collections;
-    using System.Data;
-
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.UI.UserControls;
-
-    #region UserProfileInfo
-    public class UserProfileInfo
+    #region "Deprecated"
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo.")]
+    public class UserProfileInfo : DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo
     {
-        #region Constructors
-        public UserProfileInfo()
-        {
-            this.IsUserOnline = false;
-            this.IsMod = false;
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo.")]
+        public UserProfileInfo() => throw new NotImplementedException();
 
-            this.PrefDefaultSort = "ASC";
-            this.PrefPageSize = 20;
-            this.PrefBlockSignatures = false;
-            this.PrefBlockAvatars = false;
-            this.PrefJumpLastPost = false;
-            this.PrefDefaultShowReplies = false;
-            this.PrefTopicSubscribe = false;
-        }
-
-        public UserProfileInfo(int userId, int portalId)
-        {
-            this.IsUserOnline = false;
-            this.IsMod = false;
-            this.PrefBlockSignatures = false;
-            this.PrefBlockAvatars = false;
-            this.PrefTopicSubscribe = false;
-            this.PrefJumpLastPost = false;
-            this.PrefDefaultShowReplies = false;
-        }
-        #endregion
-
-        #region Public Properties
-        public int ProfileId { get; set; } = -1;
-
-        public int UserID { get; set; } = -1;
-
-        public int PortalId { get; set; }
-
-        public int ModuleId { get; set; }
-
-        public int TopicCount { get; set; }
-
-        public int ReplyCount { get; set; }
-
-        public int ViewCount { get; set; }
-
-        public int AnswerCount { get; set; }
-
-        public int RewardPoints { get; set; }
-
-        public string UserCaption { get; set; }
-
-        public DateTime DateCreated { get; set; }
-
-        public DateTime DateUpdated { get; set; }
-
-        public DateTime DateLastActivity { get; set; }
-
-        public DateTime DateLastPost { get; set; }
-
-        public DateTime DateLastReply { get; set; }
-
-        public string Signature { get; set; }
-
-        public bool SignatureDisabled { get; set; }
-
-        public int TrustLevel { get; set; }
-
-        public bool AdminWatch { get; set; }
-
-        public bool AttachDisabled { get; set; }
-
-        public string Avatar { get; set; }
-
-        public AvatarTypes AvatarType { get; set; }
-
-        public bool AvatarDisabled { get; set; }
-
-        public string PrefDefaultSort { get; set; } = "ASC";
-
-        public bool PrefDefaultShowReplies { get; set; }
-
-        public bool PrefJumpLastPost { get; set; }
-
-        public bool PrefTopicSubscribe { get; set; }
-
-        public SubscriptionTypes PrefSubscriptionType { get; set; }
-
-        public bool PrefBlockAvatars { get; set; }
-
-        public bool PrefBlockSignatures { get; set; }
-
-        public int PrefPageSize { get; set; } = 20;
-        public string Roles { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string DisplayName { get; set; }
-
-        public string Username { get; set; }
-
-        public string Email { get; set; }
-
-        public bool IsMod { get; set; }
-
-
-        public bool IsUserOnline { get; set; }
-
-        public Hashtable ProfileProperties { get; set; }
-
-        public CurrentUserTypes CurrentUserType { get; set; }
-
-        public string ForumsAllowed { get; set; }
-
-        public string UserForums { get; set; }
-        #endregion
-
-        #endregion
-        #region Public ReadOnly Properties
-        public int PostCount
-        {
-            get
-            {
-                return this.TopicCount + this.ReplyCount;
-            }
-        }
-        #endregion
-        #region UserProfileController
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public UserProfileInfo(int UserId, int PortalId) => throw new NotImplementedException();
     }
 
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
     public class UserProfileController
     {
-        public UserProfileInfo Profiles_Get(int portalId, int moduleId, int userId)
-        {
-            UserProfileInfo upi = (UserProfileInfo)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.UserProfile, moduleId, userId));
-            if (upi == null)
-            {
-                DataSet ds = DataProvider.Instance().Profiles_Get(portalId, userId);
-                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                {
-                    IDataReader dr;
-                    dr = ds.CreateDataReader();
-                    upi = CBO.FillObject<UserProfileInfo>(dr);
-                    DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.UserProfile, moduleId, userId), upi);
-                }
-            }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId) => throw new NotImplementedException();
 
-            return upi;
-        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use ForumUserController.")]
+        public void Profiles_Save(UserProfileInfo upi) => throw new NotImplementedException();
 
-        public void Profiles_Save(UserProfileInfo upi)
-        {
-            DataProvider.Instance().Profiles_Save(upi.PortalId, upi.UserID, upi.TopicCount, upi.ReplyCount, upi.ViewCount, upi.AnswerCount, upi.RewardPoints, upi.UserCaption, upi.Signature, upi.SignatureDisabled, upi.TrustLevel, upi.AdminWatch, upi.AttachDisabled, upi.Avatar, (int)upi.AvatarType, upi.AvatarDisabled, upi.PrefDefaultSort, upi.PrefDefaultShowReplies, upi.PrefJumpLastPost, upi.PrefTopicSubscribe, (int)upi.PrefSubscriptionType, upi.PrefBlockAvatars, upi.PrefBlockSignatures, upi.PrefPageSize);
-            DataCache.SettingsCacheStore(upi.ModuleId, string.Format(CacheKeys.UserProfile, upi.ModuleId, upi.UserID), upi);
-        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ForumUserController.ClearCache(int UserId)")]
+        public static void Profiles_ClearCache(int UserID) => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use UserProfileController.Profiles_ClearCache(int ModuleId, int UserId)")]
-        public static void Profiles_ClearCache(int userID)
-        {
-            DataCache.CacheClearPrefix(-1, CacheKeys.CachePrefix);
-        }
-
-        public static void Profiles_ClearCache(int moduleId, int userId)
-        {
-            DataCache.SettingsCacheClear(moduleId, string.Format(CacheKeys.UserProfile, moduleId, userId));
-        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use ForumUserController.ClearCache(int UserId)")]
+        public static void Profiles_ClearCache(int ModuleId, int UserId) => throw new NotImplementedException();
     }
     #endregion
 }

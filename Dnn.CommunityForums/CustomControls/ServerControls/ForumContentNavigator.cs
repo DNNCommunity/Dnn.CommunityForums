@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private User forumUser = null;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser = null;
 
         protected override void Render(HtmlTextWriter writer)
         {

@@ -129,10 +129,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             Literal lit = new Literal();
-            UserController upc = new UserController();
-            User up = upc.GetUser(this.PortalId, this.ForumModuleId, this.UID);
-            up.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(up.UserRoles, this.PortalId, this.ForumModuleId, "CanRead");
-            sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, this.PortalId, this.ForumModuleId, this.ImagePath, this.CurrentUserType, false, false, false, string.Empty, this.UserInfo.UserID, this.TimeZoneOffset);
+
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID);
+            user.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(user.UserRoles, this.PortalId, this.ForumModuleId, "CanRead");
+            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID));
+            sTemplate = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sTemplate, author, this.ImagePath, this.CurrentUserType, false, false, false, string.Empty, this.UserInfo.UserID, this.TimeZoneOffset);
             sTemplate = this.RenderModals(sTemplate);
 
             sTemplate = sTemplate.Replace("[AM:CONTROLS:AdminProfileSettings]", "<asp:placeholder id=\"plhProfileAdminSettings\" runat=\"server\" />");
@@ -206,7 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ProfileBase tmpCtl = (ProfileBase)this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_adminsettings.ascx");
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
-                tmpCtl.UserProfile = up.Profile;
+                tmpCtl.ForumUserInfo = user;
                 this.plhProfileAdminSettings.Controls.Add(tmpCtl);
             }
 
@@ -214,7 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ProfileBase tmpCtl = (ProfileBase)this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_mypreferences.ascx");
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
-                tmpCtl.UserProfile = up.Profile;
+                tmpCtl.ForumUserInfo = user;
                 this.plhProfilePrefs.Controls.Add(tmpCtl);
             }
 
@@ -222,7 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ProfileBase tmpCtl = (ProfileBase)this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_useraccount.ascx");
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
-                tmpCtl.UserProfile = up.Profile;
+                tmpCtl.ForumUserInfo = user;
                 this.plhProfileUserAccount.Controls.Add(tmpCtl);
             }
 
@@ -232,7 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForums.DisplayTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ForumTracking", 0);
                 ctlForums.CurrentUserId = this.UID;
-                ctlForums.ForumIds = up.UserForums;
+                ctlForums.ForumIds = user.UserForums;
                 this.plhTracker.Controls.Add(ctlForums);
             }
 
@@ -357,51 +358,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (this.CanEditMode())
             {
-                DotNetNuke.Entities.Users.UserInfo objuser = DotNetNuke.Entities.Users.UserController.GetUserById(this.PortalId, this.UID);
-                UserProfileController upc = new UserProfileController();
-                UserController uc = new UserController();
-                UserProfileInfo upi = uc.GetUser(this.PortalId, this.ForumModuleId, this.UID).Profile;
-                if (upi != null)
+                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID);
+                if (user != null)
                 {
                     if (this.MainSettings.AllowSignatures == 1)
                     {
-                        upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, true);
-                        upi.Signature = Utilities.StripHTMLTag(upi.Signature);
-                        upi.Signature = HttpUtility.HtmlEncode(upi.Signature);
+                        user.Signature = Utilities.XSSFilter(this.txtSignature.Text, true);
+                        user.Signature = Utilities.StripHTMLTag(user.Signature);
+                        user.Signature = HttpUtility.HtmlEncode(user.Signature);
                     }
                     else if (this.MainSettings.AllowSignatures == 2)
                     {
-                        upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
+                        user.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
                     }
 
-                    upc.Profiles_Save(upi);
-                    bool blnSaveProfile = false;
 
-                    DotNetNuke.Entities.Profile.ProfilePropertyDefinitionCollection profproperties = new DotNetNuke.Entities.Profile.ProfilePropertyDefinitionCollection();
-                    profproperties = objuser.Profile.ProfileProperties;
-                    foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition profprop in profproperties)
-                    {
-                        Control ctl = this.RecursiveFind(this, "dnnctl" + profprop.PropertyName);
-                        if (ctl != null)
-                        {
-                            if (ctl is TextBox)
-                            {
-                                TextBox txt = (TextBox)ctl;
-                                if (txt.ID.Contains("dnnctl"))
-                                {
-                                    blnSaveProfile = true;
-                                    string propName = txt.ID.Replace("dnnctl", string.Empty);
-                                    objuser.Profile.GetProperty(propName).PropertyValue = txt.Text;
-                                }
-                            }
-                        }
-                    }
-
-                    if (blnSaveProfile)
-                    {
-                        DotNetNuke.Entities.Users.UserController.UpdateUser(this.PortalId, objuser);
-                    }
                 }
+
+                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().Save<int>(user, user.UserId);
             }
 
             return true;

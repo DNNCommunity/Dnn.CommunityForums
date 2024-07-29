@@ -1041,7 +1041,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTopicsTemplate = sTopicsTemplate.Replace("[SUBJECT]", subject + sPollImage);
                     sTopicsTemplate = sTopicsTemplate.Replace("[SUBJECTLINK]", this.GetTopic(this.TabId, this.ForumId, topicId, subject, sBodyTitle, this.UserId, authorId, replyCount, -1, sTopicURL) + sPollImage);
 
-                    var displayName = UserProfiles.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, this.bModApprove, this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, authorId, authorUserName, authorFirstName, authorLastName, authorDisplayName).ToString().Replace("&amp;#", "&#");
+                    var displayName = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, this.bModApprove, this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, authorId, authorUserName, authorFirstName, authorLastName, authorDisplayName).ToString().Replace("&amp;#", "&#");
                     if (Utilities.StripHTMLTag(displayName) == Utilities.GetSharedResource("[RESX:Anonymous]"))
                     {
                         displayName = displayName.Replace(Utilities.GetSharedResource("[RESX:Anonymous]"), authorName);
@@ -1109,7 +1109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             // sLastReplyTemp = sLastReplyTemp.Replace("[RESX:BY]", Utilities.GetSharedResource("By.Text"))
                             if (lastReplyAuthorId > 0)
                             {
-                                sLastReplyTemp = sLastReplyTemp.Replace("[LASTPOSTDISPLAYNAME]", UserProfiles.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, this.bModApprove, this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, lastReplyAuthorId, lastReplyUserName, lastReplyFirstName, lastReplyLastName, lastReplyDisplayName).ToString().Replace("&amp;#", "&#"));
+                                sLastReplyTemp = sLastReplyTemp.Replace("[LASTPOSTDISPLAYNAME]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, this.bModApprove, this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, lastReplyAuthorId, lastReplyUserName, lastReplyFirstName, lastReplyLastName, lastReplyDisplayName).ToString().Replace("&amp;#", "&#"));
                             }
                             else
                             {
@@ -1271,7 +1271,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (replies + 1 > this.pageSize)
             {
                 List<string> Params = new List<string>();
-                sOut = "<div class=\"afpagermini\">(<img src=\"" + myThemePath + "/images/icon_multipage.png\" alt=\"[RESX:MultiPageTopic]\" style=\"vertical-align:middle;\" />";
+                sOut = "<div class=\"afpagermini\">(<img src=\"" + this.myThemePath + "/images/icon_multipage.png\" alt=\"[RESX:MultiPageTopic]\" style=\"vertical-align:middle;\" />";
                 // Jump to pages
                 int intPostPages = 0;
                 intPostPages = Convert.ToInt32(System.Math.Ceiling((double)(replies + 1) / this.pageSize));
@@ -1279,7 +1279,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     for (i = 1; i <= 3; i++)
                     {
-                       
+
                         Params = new List<string> { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
                         if (this.MainSettings.UseShortUrls)
                         {
@@ -1289,7 +1289,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             Params.Add(ParamKeys.PageId + "=" + i);
                         }
-                        sOut += "<a href=\"" + NavigateUrl(tabID, "", Params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                        sOut += "<a href=\"" + this.NavigateUrl(tabID, "", Params.ToArray()) + "\">" + i + "</a>&nbsp;";
 
                     if (intPostPages > 4)
                     {
@@ -1305,7 +1305,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         Params.Add(ParamKeys.PageJumpId + "=" + i);
                     }
-                    sOut += "<a href=\"" + NavigateUrl(tabID, "", Params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                    sOut += "<a href=\"" + this.NavigateUrl(tabID, "", Params.ToArray()) + "\">" + i + "</a>&nbsp;";
 
                         sOut += "<a href=\"" + this.NavigateUrl(tabID, string.Empty, Params.ToArray()) + "\">" + i + "</a>&nbsp;";
                     }
@@ -1323,7 +1323,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             Params.Add(ParamKeys.PageJumpId + "=" + i);
                         }
-                        sOut += "<a href=\"" + NavigateUrl(tabID, "", Params.ToArray()) + "\">" + i + "</a>&nbsp;";                       
+                        sOut += "<a href=\"" + this.NavigateUrl(tabID, "", Params.ToArray()) + "\">" + i + "</a>&nbsp;";
                     }
                 }
 

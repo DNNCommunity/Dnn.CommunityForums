@@ -33,157 +33,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:ForumContentTree runat=server></{0}:ForumContentTree>")]
     public class ForumContentTree : WebControl
     {
-        private DisplayTemplate itemTemplate;
+        public DisplayTemplate ItemTemplate { get; set; }
 
-        public DisplayTemplate ItemTemplate
-        {
-            get
-            {
-                return this.itemTemplate;
-            }
+        public DisplayTemplate HeaderTemplate { get; set; }
 
-            set
-            {
-                this.itemTemplate = value;
-            }
-        }
+        public DisplayTemplate FooterTemplate { get; set; }
 
-        private DisplayTemplate headerTemplate;
+        public int PortalId { get; set; } = -1;
 
-        public DisplayTemplate HeaderTemplate
-        {
-            get
-            {
-                return this.headerTemplate;
-            }
+        public int ModuleId { get; set; } = -1;
 
-            set
-            {
-                this.headerTemplate = value;
-            }
-        }
+        public int TabId { get; set; } = -1;
 
-        private DisplayTemplate footerTemplate;
+        public int ForumId { get; set; } = -1;
 
-        public DisplayTemplate FooterTemplate
-        {
-            get
-            {
-                return this.footerTemplate;
-            }
+        public int ForumGroupId { get; set; } = -1;
 
-            set
-            {
-                this.footerTemplate = value;
-            }
-        }
+        public int ParentForumId { get; set; } = -1;
 
-        private int portalId = -1;
+        public bool IncludeClasses { get; set; } = true;
 
-        public int PortalId
-        {
-            get
-            {
-                return this.portalId;
-            }
-
-            set
-            {
-                this.portalId = value;
-            }
-        }
-
-        private int moduleId = -1;
-
-        public int ModuleId
-        {
-            get
-            {
-                return this.moduleId;
-            }
-
-            set
-            {
-                this.moduleId = value;
-            }
-        }
-
-        private int tabId = -1;
-
-        public int TabId
-        {
-            get
-            {
-                return this.tabId;
-            }
-
-            set
-            {
-                this.tabId = value;
-            }
-        }
-
-        private int forumId = -1;
-
-        public int ForumId
-        {
-            get
-            {
-                return this.forumId;
-            }
-
-            set
-            {
-                this.forumId = value;
-            }
-        }
-
-        private int forumGroupId = -1;
-
-        public int ForumGroupId
-        {
-            get
-            {
-                return this.forumGroupId;
-            }
-
-            set
-            {
-                this.forumGroupId = value;
-            }
-        }
-
-        private int parentForumId = -1;
-
-        public int ParentForumId
-        {
-            get
-            {
-                return this.parentForumId;
-            }
-
-            set
-            {
-                this.parentForumId = value;
-            }
-        }
-
-        private bool includeClasses = true;
-
-        public bool IncludeClasses
-        {
-            get
-            {
-                return this.includeClasses;
-            }
-
-            set
-            {
-                this.includeClasses = value;
-            }
-        }
-
-        private User forumUser = null;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser = null;
 
         protected override void Render(HtmlTextWriter writer)
         {

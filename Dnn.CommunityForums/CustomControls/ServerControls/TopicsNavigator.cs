@@ -143,7 +143,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb.FooterTemplate = this.FooterTemplate.Text;
             tb.ImagePath = this.ImagePath;
             tb.TopicId = this.TopicId;
-            tb.UserId = this.UserId;
             writer.Write(tb.Render());
         }
     }

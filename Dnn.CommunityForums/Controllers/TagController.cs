@@ -28,12 +28,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         public void DeleteForTagId(int tagId)
         {
-            base.Delete("WHERE TagId = @0", tagId);
+            this.Delete("WHERE TagId = @0", tagId);
         }
 
         public void DeleteForTopicId(int topicId)
         {
-            base.Delete("WHERE TopicId = @0", topicId);
+            this.Delete("WHERE TopicId = @0", topicId);
         }
     }
 }

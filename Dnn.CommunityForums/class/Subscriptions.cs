@@ -60,9 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (string.IsNullOrEmpty(userRoles))
             {
-                UserController uc = new UserController();
-                User uu = uc.GetUser(portalId, moduleId, userId);
-                userRoles = uu.UserRoles;
+                userRoles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, userId).UserRoles;
             }
 
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId, moduleId, forumId, false, -1);

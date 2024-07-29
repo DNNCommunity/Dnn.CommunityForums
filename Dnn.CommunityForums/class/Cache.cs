@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections;
     using System.Data;
+    using System.Reflection;
     using System.Web;
 
     public partial class DataCache
@@ -30,11 +31,11 @@ namespace DotNetNuke.Modules.ActiveForums
         private static int settingsCacheMinutes = 10;
         private static int contentCacheMinutes = 2;
 
-        public static bool IsContentCachingEnabledForModule(int moduleId)
+        private static bool IsContentCachingEnabledForModule(int moduleId)
         {
-            return true;
-
             #region "Do not delete this code"
+
+            return true;
 
             /* DNN module caching uses "output caching" which doesn't work correctly with this module; in particular, CSS files are not referenced */
             /* Until this is resolved, content caching for this module is always enabled, for 2 minutes */
@@ -62,11 +63,11 @@ namespace DotNetNuke.Modules.ActiveForums
             #endregion
         }
 
-        public static int ContentCachingTime(int moduleId)
+        private static int ContentCachingTime(int moduleId)
         {
-            return contentCacheMinutes;
-
             #region "Do not delete this code"
+
+            return contentCacheMinutes;
             /* DNN module caching uses "output caching" which doesn't work correctly with this module; in particular, CSS files are not referenced */
             /* Until this is resolved, content caching for this module is always enabled, for 2 minutes */
 
@@ -101,59 +102,118 @@ namespace DotNetNuke.Modules.ActiveForums
             #endregion
         }
 
-        public static void SettingsCacheStore(int moduleId, string cacheKey, object cacheObj)
+        internal static void SettingsCacheStore(int moduleId, string cacheKey, object cacheObj)
         {
             SettingsCacheStore(moduleId, cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(settingsCacheMinutes));
         }
 
-        public static void ContentCacheStore(int moduleId, string cacheKey, object cacheObj)
+        internal static void ContentCacheStore(int moduleId, string cacheKey, object cacheObj)
         {
-            if (IsContentCachingEnabledForModule(moduleId))
+            try
             {
-                Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(ContentCachingTime(moduleId)));
+                if (IsContentCachingEnabledForModule(moduleId))
+                {
+                    Common.Utilities.DataCache.SetCache(cacheKey,
+                        cacheObj,
+                        DateTime.UtcNow.AddMinutes(ContentCachingTime(moduleId)));
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
 
-        public static void SettingsCacheStore(int moduleId, string cacheKey, object cacheObj, DateTime expiration)
+        internal static void SettingsCacheStore(int moduleId, string cacheKey, object cacheObj, DateTime expiration)
         {
             try
             {
                 Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, expiration);
             }
-            catch
+            catch (Exception ex)
             {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
 
-        public static object SettingsCacheRetrieve(int moduleId, string cacheKey)
+        internal static object SettingsCacheRetrieve(int moduleId, string cacheKey)
         {
-            return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
-        }
-
-        public static object ContentCacheRetrieve(int moduleId, string cacheKey)
-        {
-            if (IsContentCachingEnabledForModule(moduleId))
+            try
             {
                 return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
             }
-            else
+            catch (Exception ex)
             {
-                return null;
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+            return null;
+        }
+
+        internal static object ContentCacheRetrieve(int moduleId, string cacheKey)
+        {
+            if (IsContentCachingEnabledForModule(moduleId))
+            {
+                try
+                {
+                    return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                }
+            }
+            return null;
+        }
+
+        internal static void UserCacheStore(string cacheKey, object cacheObj)
+        {
+            try
+            {
+                Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(contentCacheMinutes));
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
 
-        public static void SettingsCacheClear(int moduleId, string cacheKey)
+        internal static object UserCacheRetrieve(string cacheKey)
+        {
+            try
+            {
+                return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+            return null;
+        }
+        internal static void UserCacheClear(string cacheKey)
         {
             try
             {
                 Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
             }
-            catch
+            catch (Exception ex)
             {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
 
-        public static void ContentCacheClear(int moduleId, string cacheKey)
+        internal static void SettingsCacheClear(int moduleId, string cacheKey)
+        {
+            try
+            {
+                Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        internal static void ContentCacheClear(int moduleId, string cacheKey)
         {
             if (IsContentCachingEnabledForModule(moduleId))
             {
@@ -161,24 +221,38 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
             }
         }
 
-        public static void CacheClearPrefix(int moduleId, string cacheKeyPrefix)
+        internal static void CacheClearPrefix(int moduleId, string cacheKeyPrefix)
         {
             try
             {
                 Common.Utilities.DataCache.ClearCache(cachePrefix: cacheKeyPrefix);
             }
-            catch
+            catch (Exception ex)
             {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
 
-        public static void ClearAllCache(int moduleId)
+        internal static void ClearAllCache()
+        {
+            try
+            {
+                Common.Utilities.DataCache.ClearCache(cachePrefix: CacheKeys.CachePrefix);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        internal static void ClearAllCache(int moduleId)
         {
             try
             {
@@ -190,12 +264,12 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public static void ClearAllCacheForTabId(int tabId)
+        internal static void ClearAllCacheForTabId(int tabId)
         {
             Common.Utilities.DataCache.ClearModuleCache(tabId);
         }
 
-        public static void ClearSettingsCache(int moduleId)
+        internal static void ClearSettingsCache(int moduleId)
         {
             try
             {
@@ -205,12 +279,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     SettingsCacheClear(moduleId, cacheKey: string.Format(CacheKeys.MainSettings, moduleId));
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
 
-        public static Hashtable GetSettings(int moduleId, string settingsKey, string cacheKey, bool useCache)
+        internal static Hashtable GetSettings(int moduleId, string settingsKey, string cacheKey, bool useCache)
         {
             var ht = new Hashtable();
             if (useCache)

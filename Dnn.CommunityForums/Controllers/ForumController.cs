@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder))
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in this.Get(moduleId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder))
                 {
                     forum.LoadForumGroup();
                     forum.LoadSubForums();
@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).Where(f => f.ParentForumId == forumId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder))
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in this.Find("WHERE ParentForumId = @0",forumId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder))
                 {
                     forum.LoadForumGroup();
                     forum.LoadProperties();
@@ -160,13 +160,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumIds;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use  GetForumsHtmlOption(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser)")]
         public static string GetForumsHtmlOption(int moduleId, User currentUser)
+        {
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, currentUser.UserId);
+            return GetForumsHtmlOption(moduleId, user);
+        }
+
+        internal static string GetForumsHtmlOption(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser)
         {
             var sb = new StringBuilder();
             int index = 1;
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId).Where(f => !f.Hidden && (f.ForumGroup != null) && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles)));
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums.ToList(), currentUser,
-                fi =>
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId).Where(f => !f.Hidden && (f.ForumGroup != null) && !(f.ForumGroup.Hidden) && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles)));
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums.ToList(), currentUser, fi =>
                 {
                     sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", fi.GroupName);
                     index += 1;
@@ -356,13 +362,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forums_Delete(portalId, moduleId, forumId);
         }
 
-        internal static void IterateForumsList(System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums, User currentUser,
+        internal static void IterateForumsList(System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo,
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> groupAction,
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forumAction,
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subForumAction)
         {
             string tmpGroupKey = string.Empty;
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles))))
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (forumUserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, forumUserInfo.UserRoles))))
             {
                 string groupKey = $"{fi.GroupName}{fi.ForumGroupId}";
                 if (tmpGroupKey != groupKey)
@@ -374,7 +380,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (fi.ParentForumId == 0)
                 {
                     forumAction(fi);
-                    foreach (var subforum in forums.Where(f => f.ParentForumId == fi.ForumID && !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles))))
+                    foreach (var subforum in forums.Where(f => f.ParentForumId == fi.ForumID && (!f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (forumUserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, forumUserInfo.UserRoles)))))
                     {
                         subForumAction(subforum);
                     }

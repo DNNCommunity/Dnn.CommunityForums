@@ -30,211 +30,41 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Users;
     using DotNetNuke.UI.UserControls;
 
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+
     public class UserController
     {
-        internal static int GetUserIdByUserName(int portalId, string userName)
-        {
-            try
-            {
-                DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserByName(portalId, userName);
-                return user != null ? user.UserID : -1;
-            }
-            catch (Exception ex)
-            {
-                return -1;
-            }
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public User GetUser(int PortalId, int ModuleId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, ModuleId);
 
-        public User GetUser(int portalId, int moduleId)
-        {
-            User u = null;
-            if (Thread.CurrentPrincipal.Identity.IsAuthenticated)
-            {
-                if (HttpContext.Current == null)
-                {
-                    u = this.DNNGetCurrentUser(portalId, moduleId);
-                }
-                else if (HttpContext.Current.Items["AFUserInfo"] != null)
-                {
-                    u = (User)HttpContext.Current.Items["AFUserInfo"];
-                    u = this.FillProfile(portalId, moduleId, u);
-                }
-                else
-                {
-                    u = this.DNNGetCurrentUser(portalId, moduleId);
-                }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public User DNNGetCurrentUser(int PortalId, int ModuleId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().DNNGetCurrentUser(PortalId, ModuleId);
 
-                if (u != null)
-                {
-                    if (HttpContext.Current.Items["AFUserInfo"] == null)
-                    {
-                        HttpContext.Current.Items.Add("AFUserInfo", u);
-                    }
-                }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        private User GetDNNUser(int portalId, int userId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, userId);
 
-                return u;
-            }
-            else
-            {
-                return new User();
-            }
-        }
+        private User GetDNNUser(int portalId, string userName) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetDNNUser(portalId, userName);
 
-        public User DNNGetCurrentUser(int portalId, int moduleId)
-        {
-            DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-            User u = this.LoadUser(cu);
-
-            u = this.FillProfile(portalId, moduleId, u);
-            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, portalId, moduleId, "CanApprove");
-            if (!string.IsNullOrEmpty(fs))
-            {
-                u.Profile.IsMod = true;
-            }
-            else
-            {
-                u.Profile.IsMod = false;
-            }
-
-            return u;
-        }
-
-        private User GetDNNUser(int portalId, int userId) => this.LoadUser(new DotNetNuke.Entities.Users.UserController().GetUser(portalId, userId));
-
-        private User GetDNNUser(int portalId, string userName) => this.LoadUser(DotNetNuke.Entities.Users.UserController.GetUserByName(portalId, userName));
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetDNNUser(int portalId, string userName).")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public User GetDNNUser(string userName)
         {
             DotNetNuke.Entities.Users.UserInfo dnnUser = DotNetNuke.Entities.Users.UserController.GetUserByName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, userName);
-            return this.LoadUser(dnnUser);
+            return (User) new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, dnnUser.UserID);
         }
 
-        public User GetUser(int portalId, int moduleId, int userId)
-        {
-            User u = this.GetDNNUser(portalId, userId);
-            if (u != null)
-            {
-                u = this.FillProfile(portalId, moduleId, u);
-                string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, portalId, moduleId, "CanApprove");
-                if (!string.IsNullOrEmpty(fs))
-                {
-                    u.Profile.IsMod = true;
-                }
-                else
-                {
-                    u.Profile.IsMod = false;
-                }
-            }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public User GetUser(int PortalId, int ModuleId, int userId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, ModuleId);
 
-            return u;
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public User GetUser(int PortalId, int ModuleId, string userName) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, ModuleId, userName);
 
-        public User GetUser(int portalId, int moduleId, string userName)
-        {
-            User u = this.GetDNNUser(portalId, userName);
-            if (u != null)
-            {
-                u = this.FillProfile(portalId, moduleId, u);
-                string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, portalId, moduleId, "CanApprove");
-                if (!string.IsNullOrEmpty(fs) || u.IsSuperUser || u.IsAdmin)
-                {
-                    u.Profile.IsMod = true;
-                }
-                else
-                {
-                    u.Profile.IsMod = false;
-                }
-            }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public User FillProfile(int PortalId, int ModuleId, User u) => throw new NotImplementedException();
 
-            return u;
-        }
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
+        public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId) => throw new NotImplementedException();
 
-        public User FillProfile(int portalId, int moduleId, User u)
-        {
-            if (u != null && u.UserId > 0)
-            {
-                u.Profile = new UserProfileController().Profiles_Get(portalId, moduleId, u.UserId);
-            }
-
-            return u;
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use UserProfileController.Profiles_Get().")]
-        public UserProfileInfo Profiles_Get(int portalId, int moduleId, int userId)
-        {
-            return new UserProfileController().Profiles_Get(portalId, moduleId, userId);
-        }
-
-        internal User LoadUser(DotNetNuke.Entities.Users.UserInfo dnnUser)
-        {
-            PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(dnnUser.PortalID);
-            User u = new User
-            {
-                UserId = dnnUser.UserID,
-                UserName = dnnUser.Username,
-                IsSuperUser = dnnUser.IsSuperUser,
-                IsAdmin = dnnUser.IsInRole(_portalSettings.AdministratorRoleName),
-                DateCreated = dnnUser.Membership.CreatedDate,
-                DateUpdated = dnnUser.Membership.LastActivityDate,
-                FirstName = dnnUser.FirstName,
-                LastName = dnnUser.LastName,
-                DisplayName = dnnUser.DisplayName,
-                Email = dnnUser.Email,
-                UserRoles = this.GetRoleIds(dnnUser, _portalSettings.PortalId),
-            };
-
-            if (dnnUser.IsSuperUser)
-            {
-                u.UserRoles += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
-            }
-
-            u.UserRoles += "|" + dnnUser.UserID + "|" + string.Empty + "|";
-
-            if (!dnnUser.IsSuperUser)
-            {
-                u.Properties = this.GetUserProperties(dnnUser);
-            }
-
-            return u;
-        }
-
-        private string GetRoleIds(UserInfo u, int portalId)
-        {
-            string roleIds = string.Empty;
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: portalId))
-            {
-                string roleName = r.RoleName;
-                foreach (string role in u.Roles)
-                {
-                    if (!string.IsNullOrEmpty(role))
-                    {
-                        if (roleName == role)
-                        {
-                            roleIds += r.RoleID.ToString() + ";";
-                            break;
-                        }
-                    }
-                }
-            }
-
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in u.Social.Roles)
-            {
-                roleIds += r.RoleID.ToString() + ";";
-            }
-
-            return roleIds;
-        }
-
-        public Hashtable GetUserProperties(DotNetNuke.Entities.Users.UserInfo dnnUser)
-        {
-            Hashtable ht = new Hashtable();
-            foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition up in dnnUser.Profile.ProfileProperties)
-            {
-                ht.Add(up.PropertyName, up.PropertyValue);
-            }
-
-            return ht;
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public Hashtable GetUserProperties(DotNetNuke.Entities.Users.UserInfo dnnUser) => throw new NotImplementedException();
     }
 }

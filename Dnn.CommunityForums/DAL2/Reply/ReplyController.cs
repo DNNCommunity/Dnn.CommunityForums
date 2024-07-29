@@ -13,7 +13,7 @@
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.")]
         public ReplyInfo Get(int replyId)
         {
-            return (ReplyInfo)base.GetById(replyId);
+            return (ReplyInfo)this.GetById(replyId);
         }
     }
 }
