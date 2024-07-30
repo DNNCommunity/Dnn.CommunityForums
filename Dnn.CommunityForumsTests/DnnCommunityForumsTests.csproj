@@ -44,12 +44,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-	<PropertyGroup>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-	</PropertyGroup>
-	<PropertyGroup>
-		<AnalysisLevel>latest</AnalysisLevel>
-	</PropertyGroup>
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.5.1.1\lib\net462\Castle.Core.dll</HintPath>
@@ -96,9 +96,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
+    <None Include=".editorconfig" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <AdditionalFiles Include="StyleCop.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dnn.CommunityForums\DnnCommunityForums.csproj">

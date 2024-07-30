@@ -1,32 +1,33 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Data;
-
-using System.Web.UI.WebControls;
-using System.Web.UI;
-using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+
     public partial class WhatsNewOptions : PortalModuleBase
     {
         #region Event Handlers
@@ -35,36 +36,35 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            lnkUpdate.Click += lnkUpdate_Click;
-            lnkCancel.Click += lnkCancel_Click;
+            this.lnkUpdate.Click += this.lnkUpdate_Click;
+            this.lnkCancel.Click += this.lnkCancel_Click;
 
-            chkRSS.CheckedChanged += chkRSS_Change;
+            this.chkRSS.CheckedChanged += this.chkRSS_Change;
 
-            Page.ClientScript.RegisterClientScriptInclude("afutils", Page.ResolveUrl(Globals.ModulePath + "scripts/afutils.js"));
+            this.Page.ClientScript.RegisterClientScriptInclude("afutils", this.Page.ResolveUrl(Globals.ModulePath + "scripts/afutils.js"));
 
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
-                LoadForm();
+                this.LoadForm();
             }
         }
 
-        //Private Sub tsTags_Callback(ByVal sender As Object, ByVal e As Modules.ActiveForums.Controls.CallBackEventArgs) Handles tsTags.Callback
+        // Private Sub tsTags_Callback(ByVal sender As Object, ByVal e As Modules.ActiveForums.Controls.CallBackEventArgs) Handles tsTags.Callback
         //    tsTags.Datasource = DataProvider.Instance.Tags_Search(PortalId, ModuleId, e.Parameter.ToString + "%")
         //    tsTags.Refresh(e.Output)
-        //End Sub
-
+        // End Sub
         private void lnkUpdate_Click(object sender, EventArgs e)
         {
             try
             {
-                // Construct Forums 
+                // Construct Forums
                 var forums = string.Empty;
-                if (GetNodeCount() != trForums.CheckedNodes.Count)
+                if (this.GetNodeCount() != this.trForums.CheckedNodes.Count)
                 {
-                    if (trForums.CheckedNodes.Count > 1)
+                    if (this.trForums.CheckedNodes.Count > 1)
                     {
                         forums = string.Empty;
-                        foreach (TreeNode tr in trForums.CheckedNodes)
+                        foreach (TreeNode tr in this.trForums.CheckedNodes)
                         {
                             if (tr.Value.Contains("F:"))
                             {
@@ -72,50 +72,55 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
                     }
-                    else if (trForums.CheckedNodes.Count > 0)
+                    else if (this.trForums.CheckedNodes.Count > 0)
                     {
-                        var sv = trForums.CheckedNodes[0].Value;
+                        var sv = this.trForums.CheckedNodes[0].Value;
                         if (sv.Contains("F:"))
                         {
                             forums = sv.Split(':')[1];
                         }
                     }
                 }
+
                 var moduleController = new ModuleController();
 
                 // Load the current settings
-                var settings = WhatsNewModuleSettings.CreateFromModuleSettings(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: true).ModuleSettings);
+                var settings = WhatsNewModuleSettings.CreateFromModuleSettings(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: true).ModuleSettings);
 
                 // Update Settings Values
                 settings.Forums = forums;
 
                 int rows;
-                if (int.TryParse(txtNumItems.Text, out rows))
-                    settings.Rows = int.Parse(txtNumItems.Text);
-
-                settings.Format = txtTemplate.Text;
-                settings.Header = txtHeader.Text;
-                settings.Footer = txtFooter.Text;
-                settings.RSSEnabled = chkRSS.Checked;
-                settings.TopicsOnly = chkTopicsOnly.Checked;
-                settings.RandomOrder = chkRandomOrder.Checked;
-                settings.Tags = txtTags.Text;
-
-                if (chkRSS.Checked)
+                if (int.TryParse(this.txtNumItems.Text, out rows))
                 {
-                    settings.RSSIgnoreSecurity = chkIgnoreSecurity.Checked;
-                    settings.RSSIncludeBody = chkIncludeBody.Checked;
+                    settings.Rows = int.Parse(this.txtNumItems.Text);
+                }
+
+                settings.Format = this.txtTemplate.Text;
+                settings.Header = this.txtHeader.Text;
+                settings.Footer = this.txtFooter.Text;
+                settings.RSSEnabled = this.chkRSS.Checked;
+                settings.TopicsOnly = this.chkTopicsOnly.Checked;
+                settings.RandomOrder = this.chkRandomOrder.Checked;
+                settings.Tags = this.txtTags.Text;
+
+                if (this.chkRSS.Checked)
+                {
+                    settings.RSSIgnoreSecurity = this.chkIgnoreSecurity.Checked;
+                    settings.RSSIncludeBody = this.chkIncludeBody.Checked;
 
                     int rssCacheTimeout;
-                    if (int.TryParse(txtCache.Text, out rssCacheTimeout))
+                    if (int.TryParse(this.txtCache.Text, out rssCacheTimeout))
+                    {
                         settings.RSSCacheTimeout = rssCacheTimeout;
+                    }
                 }
 
                 // Save Settings
-                settings.Save(moduleController, ModuleId);
+                settings.Save(moduleController, this.ModuleId);
 
                 // Redirect back to the portal home page
-                Response.Redirect(Utilities.NavigateURL(TabId), true);
+                this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
             }
             catch (Exception exc)
             {
@@ -125,13 +130,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void lnkCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utilities.NavigateURL(TabId), true);
+            this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
         }
 
         private void chkRSS_Change(object sender, EventArgs e)
         {
-            pnlRSS.Visible = chkRSS.Checked;
-            rqvTxtCache.Enabled = chkRSS.Checked;
+            this.pnlRSS.Visible = this.chkRSS.Checked;
+            this.rqvTxtCache.Enabled = this.chkRSS.Checked;
         }
 
         #endregion
@@ -140,18 +145,24 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private int GetNodeCount()
         {
-            var nc = trForums.Nodes.Count;
-            foreach (TreeNode node in trForums.Nodes)
+            var nc = this.trForums.Nodes.Count;
+            foreach (TreeNode node in this.trForums.Nodes)
             {
                 nc += 1;
-                if (node.ChildNodes.Count <= 0) continue;
+                if (node.ChildNodes.Count <= 0)
+                {
+                    continue;
+                }
 
                 nc += node.ChildNodes.Count;
                 foreach (TreeNode cnode in node.ChildNodes)
                 {
                     nc += cnode.ChildNodes.Count;
 
-                    if (cnode.ChildNodes.Count <= 0) continue;
+                    if (cnode.ChildNodes.Count <= 0)
+                    {
+                        continue;
+                    }
 
                     foreach (TreeNode subnode in cnode.ChildNodes)
                     {
@@ -165,79 +176,90 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadForm()
         {
-            var moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
+            var moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
             var settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
 
-            txtNumItems.Text = settings.Rows.ToString();
-            txtTemplate.Text = settings.Format;
-            txtHeader.Text = settings.Header;
-            txtFooter.Text = settings.Footer;
-            chkRSS.Checked = settings.RSSEnabled;
-            chkTopicsOnly.Checked = settings.TopicsOnly;
-            chkRandomOrder.Checked = settings.RandomOrder;
-            chkIgnoreSecurity.Checked = settings.RSSIgnoreSecurity;
-            chkIncludeBody.Checked = settings.RSSIncludeBody;
-            txtCache.Text = settings.RSSCacheTimeout.ToString();
-            txtTags.Text = settings.Tags;
+            this.txtNumItems.Text = settings.Rows.ToString();
+            this.txtTemplate.Text = settings.Format;
+            this.txtHeader.Text = settings.Header;
+            this.txtFooter.Text = settings.Footer;
+            this.chkRSS.Checked = settings.RSSEnabled;
+            this.chkTopicsOnly.Checked = settings.TopicsOnly;
+            this.chkRandomOrder.Checked = settings.RandomOrder;
+            this.chkIgnoreSecurity.Checked = settings.RSSIgnoreSecurity;
+            this.chkIncludeBody.Checked = settings.RSSIncludeBody;
+            this.txtCache.Text = settings.RSSCacheTimeout.ToString();
+            this.txtTags.Text = settings.Tags;
 
-            BindForumsTree();
+            this.BindForumsTree();
 
             if (settings.Forums != string.Empty)
-                CheckNodes(settings.Forums);
+            {
+                this.CheckNodes(settings.Forums);
+            }
 
-            pnlRSS.Visible = chkRSS.Checked;
-            rqvTxtCache.Enabled = chkRSS.Checked;
+            this.pnlRSS.Visible = this.chkRSS.Checked;
+            this.rqvTxtCache.Enabled = this.chkRSS.Checked;
         }
 
         private void CheckNodes(string forumList)
         {
             var forums = forumList.Split(':');
 
-            //Clear all Nodes
-            ManageCheck(false);
+            // Clear all Nodes
+            this.ManageCheck(false);
 
             foreach (var f in forums)
             {
-                if (f.Trim() != "")
+                if (f.Trim() != string.Empty)
                 {
-                    ManageCheck(false, "F:" + f);
+                    this.ManageCheck(false, "F:" + f);
                 }
             }
-
         }
 
         private void ManageCheck(bool state, string value = "")
         {
-            foreach (TreeNode node in trForums.Nodes)
+            foreach (TreeNode node in this.trForums.Nodes)
             {
                 if (!node.Checked)
                 {
-                    node.Checked = (node.Value == value || state);
+                    node.Checked = node.Value == value || state;
                     if (node.Checked && node.Parent != null)
                     {
                         node.Parent.Expanded = true;
                     }
                 }
 
-                if (node.ChildNodes.Count <= 0) continue;
+                if (node.ChildNodes.Count <= 0)
+                {
+                    continue;
+                }
 
                 foreach (TreeNode cnode in node.ChildNodes)
                 {
                     if (!cnode.Checked)
                     {
-                        cnode.Checked = (cnode.Value == value || state);
+                        cnode.Checked = cnode.Value == value || state;
                         if (cnode.Checked & cnode.Parent != null)
                         {
                             cnode.Parent.Expanded = true;
                         }
                     }
 
-                    if (cnode.ChildNodes.Count <= 0) continue;
+                    if (cnode.ChildNodes.Count <= 0)
+                    {
+                        continue;
+                    }
 
                     foreach (TreeNode subnode in cnode.ChildNodes)
                     {
-                        if (subnode.Checked) continue;
-                        subnode.Checked = (subnode.Value == value || state);
+                        if (subnode.Checked)
+                        {
+                            continue;
+                        }
+
+                        subnode.Checked = subnode.Value == value || state;
                         if (subnode.Checked && subnode.Parent != null)
                         {
                             subnode.Parent.Expanded = true;
@@ -245,7 +267,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
             }
-
         }
 
         private void BindForumsTree()
@@ -255,8 +276,7 @@ namespace DotNetNuke.Modules.ActiveForums
             TreeNode trParentNode = null;
             IDataReader reader = null;
             var dt = new DataTable();
-            dt.Load(DataProvider.Instance().PortalForums(PortalId));
-
+            dt.Load(DataProvider.Instance().PortalForums(this.PortalId));
 
             var tmpGroup = string.Empty;
             var i = 0;
@@ -270,7 +290,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         ImageUrl = Globals.ModulePath + "images/tree/tree_group.png",
                         ShowCheckBox = true,
                         SelectAction = TreeNodeSelectAction.None,
-                        Value = "G:" + row["ForumGroupId"]
+                        Value = "G:" + row["ForumGroupId"],
                     };
                     trGroupNode.Expanded = i == 0;
                     i += 1;
@@ -287,34 +307,38 @@ namespace DotNetNuke.Modules.ActiveForums
                         ShowCheckBox = true,
                         Expanded = false,
                         SelectAction = TreeNodeSelectAction.None,
-                        Value = "F:" + row["ForumId"]
+                        Value = "F:" + row["ForumId"],
                     };
-                    if (HasSubForums(Convert.ToInt32(row["ForumId"]), dt))
+                    if (this.HasSubForums(Convert.ToInt32(row["ForumId"]), dt))
                     {
-                        AddChildNodes(trNode, dt, row);
+                        this.AddChildNodes(trNode, dt, row);
                     }
-                    //If trNode.ChildNodes.Count > 0 Then
+
+                    // If trNode.ChildNodes.Count > 0 Then
                     trGroupNode.ChildNodes.Add(trNode);
-                    //End If
 
+                    // End If
                 }
-
             }
+
             foreach (TreeNode tr in trNodes)
             {
                 if (tr.ChildNodes.Count > 0)
                 {
-                    trForums.Nodes.Add(tr);
+                    this.trForums.Nodes.Add(tr);
                 }
             }
-
-
         }
+
         private void AddChildNodes(TreeNode parentNode, DataTable dt, DataRow dr)
         {
             foreach (DataRow row in dt.Rows)
             {
-                if (Convert.ToInt32(dr["ForumId"]) != Convert.ToInt32(row["ParentForumId"])) continue;
+                if (Convert.ToInt32(dr["ForumId"]) != Convert.ToInt32(row["ParentForumId"]))
+                {
+                    continue;
+                }
+
                 var tNode = new TreeNode
                 {
                     Text = row["ForumName"].ToString(),
@@ -322,23 +346,26 @@ namespace DotNetNuke.Modules.ActiveForums
                     ShowCheckBox = true,
                     Value = "F:" + row["ForumId"],
                     Checked = false,
-                    SelectAction = TreeNodeSelectAction.None
+                    SelectAction = TreeNodeSelectAction.None,
                 };
                 parentNode.ChildNodes.Add(tNode);
-                AddChildNodes(tNode, dt, row);
+                this.AddChildNodes(tNode, dt, row);
             }
         }
-        private bool HasSubForums(int ForumId, DataTable dt)
+
+        private bool HasSubForums(int forumId, DataTable dt)
         {
             foreach (DataRow row in dt.Rows)
             {
-                if (Convert.ToInt32(row["ParentForumId"]) == ForumId)
+                if (Convert.ToInt32(row["ParentForumId"]) == forumId)
                 {
                     return true;
                 }
             }
+
             return false;
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             var stringWriter = new System.IO.StringWriter();

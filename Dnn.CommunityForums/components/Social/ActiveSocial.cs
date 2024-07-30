@@ -1,72 +1,76 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Data;
-
-using System.Web;
-using DotNetNuke.Modules.ActiveForums.Data;
-using Microsoft.ApplicationBlocks.Data;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Web.Models;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Data;
+    using System.Web;
+
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Web.Models;
+    using Microsoft.ApplicationBlocks.Data;
+
     public class Social
     {
         [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]
-        public void AddTopicToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int UserId, string URL, string Subject, string Summary, string Body, int SecurityOption, string ReadRoles, int SocialGroupId)
+        public void AddTopicToJournal(int portalId, int moduleId, int forumId, int topicId, int userId, string uRL, string subject, string summary, string body, int securityOption, string readRoles, int socialGroupId)
         {
-            AddTopicToJournal(PortalId: PortalId, ModuleId: ModuleId, TabId: -1, ForumId: ForumId, TopicId: TopicId, UserId: UserId, URL: URL, Subject: Subject, Summary: Summary, Body: Body, ReadRoles: ReadRoles, SocialGroupId: SocialGroupId);
+            this.AddTopicToJournal(portalId: portalId, moduleId: moduleId, tabId: -1, forumId: forumId, topicId: topicId, userId: userId, uRL: uRL, subject: subject, summary: summary, body: body, readRoles: readRoles, socialGroupId: socialGroupId);
         }
-        internal void AddTopicToJournal(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int UserId, string URL, string Subject, string Summary, string Body, string ReadRoles, int SocialGroupId)
+
+        internal void AddTopicToJournal(int portalId, int moduleId, int tabId, int forumId, int topicId, int userId, string uRL, string subject, string summary, string body, string readRoles, int socialGroupId)
         {
             var ji = new JournalItem
             {
-                PortalId = PortalId,
-                ProfileId = UserId,
-                UserId = UserId,
-                Title = Subject,
-                ItemData = new ItemData { Url = URL }
+                PortalId = portalId,
+                ProfileId = userId,
+                UserId = userId,
+                Title = subject,
+                ItemData = new ItemData { Url = uRL },
             };
-            if (string.IsNullOrEmpty(Summary))
+            if (string.IsNullOrEmpty(summary))
             {
-                Summary = Utilities.StripHTMLTag(Body);
-                if (Summary.Length > 150)
+                summary = Utilities.StripHTMLTag(body);
+                if (summary.Length > 150)
                 {
-                    Summary = Summary.Substring(0, 150) + "...";
+                    summary = summary.Substring(0, 150) + "...";
                 }
             }
-            ji.Summary = Summary;
-            ji.Body = Utilities.StripHTMLTag(Body);
+
+            ji.Summary = summary;
+            ji.Body = Utilities.StripHTMLTag(body);
             ji.JournalTypeId = 5;
-            ji.ObjectKey = string.Format("{0}:{1}", ForumId.ToString(), TopicId.ToString());
-            if (JournalController.Instance.GetJournalItemByKey(PortalId, ji.ObjectKey) != null)
+            ji.ObjectKey = string.Format("{0}:{1}", forumId.ToString(), topicId.ToString());
+            if (JournalController.Instance.GetJournalItemByKey(portalId, ji.ObjectKey) != null)
             {
-                JournalController.Instance.DeleteJournalItemByKey(PortalId, ji.ObjectKey);
+                JournalController.Instance.DeleteJournalItemByKey(portalId, ji.ObjectKey);
             }
+
             string roles = string.Empty;
-            if (!(string.IsNullOrEmpty(ReadRoles)))
+            if (!string.IsNullOrEmpty(readRoles))
             {
-                if (ReadRoles.Contains("|"))
+                if (readRoles.Contains("|"))
                 {
-                    roles = ReadRoles.Substring(0, ReadRoles.IndexOf("|", StringComparison.Ordinal) - 1);
+                    roles = readRoles.Substring(0, readRoles.IndexOf("|", StringComparison.Ordinal) - 1);
                 }
             }
 
@@ -75,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if ((s == DotNetNuke.Common.Globals.glbRoleAllUsers) | (s == DotNetNuke.Common.Globals.glbRoleUnauthUser))
                 {
                     /* cjh - securityset was null and throwing an error, thus journal items weren't added */
-                    if ((ji.SecuritySet != null) && !(ji.SecuritySet.Contains("E,")))
+                    if ((ji.SecuritySet != null) && !ji.SecuritySet.Contains("E,"))
                     {
                         ji.SecuritySet += "E,";
                     }
@@ -84,56 +88,59 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ji.SecuritySet += "R" + s + ",";
                 }
-
             }
-            if (SocialGroupId > 0)
+
+            if (socialGroupId > 0)
             {
-
-                ji.SocialGroupId = SocialGroupId;
-
+                ji.SocialGroupId = socialGroupId;
             }
-            JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId,TabId, true));
+
+            JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId, tabId, true));
         }
+
         [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]
-        public void AddReplyToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyId, int UserId, string URL, string Subject, string Summary, string Body, int SecurityOption, string ReadRoles, int SocialGroupId)
+        public void AddReplyToJournal(int portalId, int moduleId, int forumId, int topicId, int replyId, int userId, string uRL, string subject, string summary, string body, int securityOption, string readRoles, int socialGroupId)
         {
-            AddReplyToJournal(PortalId: PortalId, ModuleId: ModuleId, TabId: -1, ForumId: ForumId, TopicId: TopicId, ReplyId: ReplyId, UserId: UserId, URL: URL, Subject: Subject, Summary: Summary, Body: Body, ReadRoles: ReadRoles, SocialGroupId: SocialGroupId);
+            this.AddReplyToJournal(portalId: portalId, moduleId: moduleId, tabId: -1, forumId: forumId, topicId: topicId, replyId: replyId, userId: userId, uRL: uRL, subject: subject, summary: summary, body: body, readRoles: readRoles, socialGroupId: socialGroupId);
         }
-        internal void AddReplyToJournal(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int UserId, string URL, string Subject, string Summary, string Body, string ReadRoles, int SocialGroupId)
+
+        internal void AddReplyToJournal(int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, int userId, string uRL, string subject, string summary, string body, string readRoles, int socialGroupId)
         {
-            //make sure that this is a User before trying to create a journal item, you can't post a JI without
-            if (UserId > 0)
+            // make sure that this is a User before trying to create a journal item, you can't post a JI without
+            if (userId > 0)
             {
                 var ji = new JournalItem
                 {
-                    PortalId = PortalId,
-                    ProfileId = UserId,
-                    UserId = UserId,
-                    Title = Subject,
-                    ItemData = new ItemData { Url = URL }
+                    PortalId = portalId,
+                    ProfileId = userId,
+                    UserId = userId,
+                    Title = subject,
+                    ItemData = new ItemData { Url = uRL },
                 };
-                if (string.IsNullOrEmpty(Summary))
+                if (string.IsNullOrEmpty(summary))
                 {
-                    Summary = Utilities.StripHTMLTag(Body);
-                    if (Summary.Length > 150)
+                    summary = Utilities.StripHTMLTag(body);
+                    if (summary.Length > 150)
                     {
-                        Summary = Summary.Substring(0, 150) + "...";
+                        summary = summary.Substring(0, 150) + "...";
                     }
                 }
-                ji.Summary = Summary;
-                ji.Body = Utilities.StripHTMLTag(Body);
+
+                ji.Summary = summary;
+                ji.Body = Utilities.StripHTMLTag(body);
                 ji.JournalTypeId = 6;
-                ji.ObjectKey = string.Format("{0}:{1}:{2}", ForumId.ToString(), TopicId.ToString(), ReplyId.ToString());
-                if (JournalController.Instance.GetJournalItemByKey(PortalId, ji.ObjectKey) != null)
+                ji.ObjectKey = string.Format("{0}:{1}:{2}", forumId.ToString(), topicId.ToString(), replyId.ToString());
+                if (JournalController.Instance.GetJournalItemByKey(portalId, ji.ObjectKey) != null)
                 {
-                    JournalController.Instance.DeleteJournalItemByKey(PortalId, ji.ObjectKey);
+                    JournalController.Instance.DeleteJournalItemByKey(portalId, ji.ObjectKey);
                 }
+
                 string roles = string.Empty;
-                if (!(string.IsNullOrEmpty(ReadRoles)))
+                if (!string.IsNullOrEmpty(readRoles))
                 {
-                    if (ReadRoles.Contains("|"))
+                    if (readRoles.Contains("|"))
                     {
-                        roles = ReadRoles.Substring(0, ReadRoles.IndexOf("|", StringComparison.Ordinal) - 1);
+                        roles = readRoles.Substring(0, readRoles.IndexOf("|", StringComparison.Ordinal) - 1);
                     }
                 }
 
@@ -142,7 +149,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if ((s == DotNetNuke.Common.Globals.glbRoleAllUsers) | (s == DotNetNuke.Common.Globals.glbRoleUnauthUser))
                     {
                         /* cjh - securityset was null and throwing an error, thus journal items weren't added */
-                        if ((ji.SecuritySet != null) && (!(ji.SecuritySet.Contains("E,"))))
+                        if ((ji.SecuritySet != null) && (!ji.SecuritySet.Contains("E,")))
                         {
                             ji.SecuritySet += "E,";
                         }
@@ -152,11 +159,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         ji.SecuritySet += "R" + s + ",";
                     }
                 }
-                if (SocialGroupId > 0)
+
+                if (socialGroupId > 0)
                 {
-                    ji.SocialGroupId = SocialGroupId;
+                    ji.SocialGroupId = socialGroupId;
                 }
-                JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false));
+
+                JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: moduleId, tabId: tabId, ignoreCache: false));
             }
         }
     }

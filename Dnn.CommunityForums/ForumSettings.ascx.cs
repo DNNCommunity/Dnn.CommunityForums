@@ -1,281 +1,283 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using System.Text;
-using System.Xml;
-using System.Web;
-using DotNetNuke.Entities.Urls;
-using System.Linq;
-using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	public partial class ForumSettings : ForumSettingsBase
-	{
-        private int? _fullTextStatus;
-        
-	    private int FullTextStatus
-	    {
-	        get
-	        {
-	            if(!_fullTextStatus.HasValue)
-	            {
-                    _fullTextStatus = DataProvider.Instance().Search_GetFullTextStatus();
-	            }
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI.WebControls;
+    using System.Xml;
 
-	            return _fullTextStatus.HasValue ? _fullTextStatus.Value : -5;
-	        }
-	    }
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Log.EventLog;
 
-	    private bool IsFullTextAvailable
-	    {
-	        get
-	        {
-	            return FullTextStatus != -5 && FullTextStatus != -4 && FullTextStatus != 0;
-	        }
-	    }
+    public partial class ForumSettings : ForumSettingsBase
+    {
+        private int? fullTextStatus;
 
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        private int FullTextStatus
+        {
+            get
+            {
+                if (!this.fullTextStatus.HasValue)
+                {
+                    this.fullTextStatus = DataProvider.Instance().Search_GetFullTextStatus();
+                }
+
+                return this.fullTextStatus.HasValue ? this.fullTextStatus.Value : -5;
+            }
+        }
+
+        private bool IsFullTextAvailable
+        {
+            get
+            {
+                return this.FullTextStatus != -5 && this.FullTextStatus != -4 && this.FullTextStatus != 0;
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-			drpPageSize.Style.Add("float", "none");
+            this.drpPageSize.Style.Add("float", "none");
 
-			if (!(Utilities.IsRewriteLoaded()))
-			{
-				rdEnableURLRewriter.SelectedIndex = 1;
-				rdEnableURLRewriter.Enabled = false;
-            }
-			else
+            if (!Utilities.IsRewriteLoaded())
             {
-				rdEnableURLRewriter.Enabled = true;
-			}
-            var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-			if ((u.IsSuperUser) && (HttpRuntime.IISVersion.Major >= 7))
-			{
-				if (Utilities.IsRewriteLoaded())
-				{
-					litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configdisable',this); return false;\">Uninstall DNN Community Forums URL Handler</a>";
-				}
-				else
-				{
-					litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configenable',this); return false;\">Install DNN Community Forums URL Handler</a>";
-				}
+                this.rdEnableURLRewriter.SelectedIndex = 1;
+                this.rdEnableURLRewriter.Enabled = false;
+            }
+            else
+            {
+                this.rdEnableURLRewriter.Enabled = true;
+            }
 
-			}
+            var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
+            if (u.IsSuperUser && (HttpRuntime.IISVersion.Major >= 7))
+            {
+                if (Utilities.IsRewriteLoaded())
+                {
+                    this.litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configdisable',this); return false;\">Uninstall DNN Community Forums URL Handler</a>";
+                }
+                else
+                {
+                    this.litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configenable',this); return false;\">Install DNN Community Forums URL Handler</a>";
+                }
+            }
 
             // Full Text
-		    rdFullTextSearch.Enabled = IsFullTextAvailable;
-            switch (FullTextStatus)
+            this.rdFullTextSearch.Enabled = this.IsFullTextAvailable;
+            switch (this.FullTextStatus)
             {
                 case -4:
-                    ltrFullTextMessage.Text = LocalizeString("FullTextAzure");
-                    ltrFullTextMessage.Visible = true;
+                    this.ltrFullTextMessage.Text = this.LocalizeString("FullTextAzure");
+                    this.ltrFullTextMessage.Visible = true;
                     break;
                 case 0:
-                    ltrFullTextMessage.Text = LocalizeString("FullTextNotInstalled");
-                    ltrFullTextMessage.Visible = true;
+                    this.ltrFullTextMessage.Text = this.LocalizeString("FullTextNotInstalled");
+                    this.ltrFullTextMessage.Visible = true;
                     break;
                 default:
-                    ltrFullTextMessage.Visible = false;
+                    this.ltrFullTextMessage.Visible = false;
                     break;
             }
         }
 
-	    #region Base Method Implementations
+        #region Base Method Implementations
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// LoadSettings loads the settings from the Database and displays them
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		/// <history>
-		/// </history>
-		/// -----------------------------------------------------------------------------
-		public override void LoadSettings()
-		{
-            // Note, this is called before OnLoad
-
-			try
-			{
-				//if (Page.IsPostBack == false)
-				//{
-					BindThemes();
-					BindTemplates();
-					BindPrivateMessaging();
-					BindForumGroups();
-					BindForumSecurity();
-
-                    Utilities.SelectListItemByValue(drpPageSize, PageSize);
-	                
-					txtFloodInterval.Text = FloodInterval.ToString(); ;
-					txtEditInterval.Text = EditInterval.ToString();
-
-                    Utilities.SelectListItemByValue(drpMode, Mode);
-                    Utilities.SelectListItemByValue(drpThemes, Theme);
-                    Utilities.SelectListItemByValue(drpTemplates, TemplateId);
-
-					Utilities.SelectListItemByValue(rdAutoLinks, AutoLink);
-                    Utilities.SelectListItemByValue(drpDeleteBehavior, DeleteBehavior);
-					Utilities.SelectListItemByValue(drpProfileVisibility, ProfileVisibility);
-                    Utilities.SelectListItemByValue(drpSignatures, Signatures);
-                    Utilities.SelectListItemByValue(drpUserDisplayMode, UserNameDisplay);
-                    Utilities.SelectListItemByValue(rdEnableURLRewriter, FriendlyURLs);
-
-                    Utilities.SelectListItemByValue(rdFullTextSearch, FullTextSearch && FullTextStatus == 1); // 1 = Enabled Status
-
-    				Utilities.SelectListItemByValue(rdCacheTemplates, CacheTemplates);
-	                Utilities.SelectListItemByValue(rdPoints, EnablePoints);
-                    Utilities.SelectListItemByValue(rdUsersOnline, EnableUsersOnline);
-                    Utilities.SelectListItemByValue(rdUseSkinBreadCrumb, UseSkinBreadCrumb);
-
-					txtAnswerPointValue.Text = AnswerPointValue.ToString();
-					txtTopicPointValue.Text = TopicPointValue.ToString();
-					txtReplyPointValue.Text = ReplyPointValue.ToString();
-					txtMarkAnswerPointValue.Text = MarkAsAnswerPointValue.ToString();
-					txtModPointValue.Text = ModPointValue.ToString();
-
-					txtURLPrefixBase.Text = PrefixURLBase;
-					txtURLPrefixCategory.Text = PrefixURLCategory;
-					txtURLPrefixOther.Text = PrefixURLOther;
-					txtURLPrefixTags.Text = PrefixURLTag;
-
-					txtAvatarHeight.Text = AvatarHeight.ToString();
-					txtAvatarWidth.Text = AvatarWidth.ToString();
-
-				    txtTimeFormat.Text = TimeFormatString;
-				    txtDateFormat.Text = DateFormatString;
-
-                    Utilities.SelectListItemByValue(drpForumGroupTemplate, ForumGroupTemplate);
-				//}
-			}
-			catch (Exception exc) //Module failed to load
-			{
-				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
-
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// UpdateSettings saves the modified settings to the Database
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		/// <history>
-		/// </history>
-		/// -----------------------------------------------------------------------------
-		public override void UpdateSettings()
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// LoadSettings loads the settings from the Database and displays them
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public override void LoadSettings()
         {
+            // Note, this is called before OnLoad
+            try
+            {
+                // if (Page.IsPostBack == false)
+                // {
+                this.BindThemes();
+                this.BindTemplates();
+                this.BindPrivateMessaging();
+                this.BindForumGroups();
+                this.BindForumSecurity();
 
-                     
-			try
-			{
-				Theme = drpThemes.SelectedValue;
-				Mode = drpMode.SelectedValue;
-				TemplateId = Utilities.SafeConvertInt(drpTemplates.SelectedValue);
-				PageSize = Utilities.SafeConvertInt(drpPageSize.SelectedValue, 10);
-                FloodInterval = Math.Max(0,Utilities.SafeConvertInt(txtFloodInterval.Text,0));
-                EditInterval = Math.Max(0,Utilities.SafeConvertInt(txtEditInterval.Text,0));
-                AutoLink = Utilities.SafeConvertBool(rdAutoLinks.SelectedValue);
-                DeleteBehavior = Utilities.SafeConvertInt(drpDeleteBehavior.SelectedValue);
-				ProfileVisibility = Utilities.SafeConvertInt(drpProfileVisibility.SelectedValue);
-                Signatures = Utilities.SafeConvertInt(drpSignatures.SelectedValue);
-                UserNameDisplay = drpUserDisplayMode.SelectedValue;
-                FriendlyURLs = Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue);
+                Utilities.SelectListItemByValue(this.drpPageSize, this.PageSize);
 
-				var urlSettings = new FriendlyUrlSettings(PortalId);
-                string DoNotRedirectRegex = urlSettings.DoNotRedirectRegex;
-				const string ignoreForumsRegex = "("+ParamKeys.ForumId+"=|"+ParamKeys.GroupId+"=|"+ParamKeys.TopicId+"=|"+ParamKeys.GridType+"=|"+ParamKeys.Tags+"=|"+ParamKeys.ViewType+"=|"+ParamKeys.Category+"=|"+ParamKeys.PageId+"=)|";
+                this.txtFloodInterval.Text = this.FloodInterval.ToString();
+                this.txtEditInterval.Text = this.EditInterval.ToString();
 
-                if (Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue))
-				{
-					if (!DoNotRedirectRegex.Contains(ignoreForumsRegex))
-					{
-						DoNotRedirectRegex = string.Concat(ignoreForumsRegex, DoNotRedirectRegex);
-						DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: DoNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
-					}
-				}
-				else 
-				{
-                    if (DoNotRedirectRegex.Contains(ignoreForumsRegex))
+                Utilities.SelectListItemByValue(this.drpMode, this.Mode);
+                Utilities.SelectListItemByValue(this.drpThemes, this.Theme);
+                Utilities.SelectListItemByValue(this.drpTemplates, this.TemplateId);
+
+                Utilities.SelectListItemByValue(this.rdAutoLinks, this.AutoLink);
+                Utilities.SelectListItemByValue(this.drpDeleteBehavior, this.DeleteBehavior);
+                Utilities.SelectListItemByValue(this.drpProfileVisibility, this.ProfileVisibility);
+                Utilities.SelectListItemByValue(this.drpSignatures, this.Signatures);
+                Utilities.SelectListItemByValue(this.drpUserDisplayMode, this.UserNameDisplay);
+                Utilities.SelectListItemByValue(this.rdEnableURLRewriter, this.FriendlyURLs);
+
+                Utilities.SelectListItemByValue(this.rdFullTextSearch, this.FullTextSearch && this.FullTextStatus == 1); // 1 = Enabled Status
+
+                Utilities.SelectListItemByValue(this.rdCacheTemplates, this.CacheTemplates);
+                Utilities.SelectListItemByValue(this.rdPoints, this.EnablePoints);
+                Utilities.SelectListItemByValue(this.rdUsersOnline, this.EnableUsersOnline);
+                Utilities.SelectListItemByValue(this.rdUseSkinBreadCrumb, this.UseSkinBreadCrumb);
+
+                this.txtAnswerPointValue.Text = this.AnswerPointValue.ToString();
+                this.txtTopicPointValue.Text = this.TopicPointValue.ToString();
+                this.txtReplyPointValue.Text = this.ReplyPointValue.ToString();
+                this.txtMarkAnswerPointValue.Text = this.MarkAsAnswerPointValue.ToString();
+                this.txtModPointValue.Text = this.ModPointValue.ToString();
+
+                this.txtURLPrefixBase.Text = this.PrefixURLBase;
+                this.txtURLPrefixCategory.Text = this.PrefixURLCategory;
+                this.txtURLPrefixOther.Text = this.PrefixURLOther;
+                this.txtURLPrefixTags.Text = this.PrefixURLTag;
+
+                this.txtAvatarHeight.Text = this.AvatarHeight.ToString();
+                this.txtAvatarWidth.Text = this.AvatarWidth.ToString();
+
+                this.txtTimeFormat.Text = this.TimeFormatString;
+                this.txtDateFormat.Text = this.DateFormatString;
+
+                Utilities.SelectListItemByValue(this.drpForumGroupTemplate, this.ForumGroupTemplate);
+
+                // }
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// UpdateSettings saves the modified settings to the Database
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public override void UpdateSettings()
+        {
+            try
+            {
+                this.Theme = this.drpThemes.SelectedValue;
+                this.Mode = this.drpMode.SelectedValue;
+                this.TemplateId = Utilities.SafeConvertInt(this.drpTemplates.SelectedValue);
+                this.PageSize = Utilities.SafeConvertInt(this.drpPageSize.SelectedValue, 10);
+                this.FloodInterval = Math.Max(0, Utilities.SafeConvertInt(this.txtFloodInterval.Text, 0));
+                this.EditInterval = Math.Max(0, Utilities.SafeConvertInt(this.txtEditInterval.Text, 0));
+                this.AutoLink = Utilities.SafeConvertBool(this.rdAutoLinks.SelectedValue);
+                this.DeleteBehavior = Utilities.SafeConvertInt(this.drpDeleteBehavior.SelectedValue);
+                this.ProfileVisibility = Utilities.SafeConvertInt(this.drpProfileVisibility.SelectedValue);
+                this.Signatures = Utilities.SafeConvertInt(this.drpSignatures.SelectedValue);
+                this.UserNameDisplay = this.drpUserDisplayMode.SelectedValue;
+                this.FriendlyURLs = Utilities.SafeConvertBool(this.rdEnableURLRewriter.SelectedValue);
+
+                var urlSettings = new FriendlyUrlSettings(this.PortalId);
+                string doNotRedirectRegex = urlSettings.DoNotRedirectRegex;
+                const string ignoreForumsRegex = "(" + ParamKeys.ForumId + "=|" + ParamKeys.GroupId + "=|" + ParamKeys.TopicId + "=|" + ParamKeys.GridType + "=|" + ParamKeys.Tags + "=|" + ParamKeys.ViewType + "=|" + ParamKeys.Category + "=|" + ParamKeys.PageId + "=)|";
+
+                if (Utilities.SafeConvertBool(this.rdEnableURLRewriter.SelectedValue))
+                {
+                    if (!doNotRedirectRegex.Contains(ignoreForumsRegex))
                     {
-                        DoNotRedirectRegex.Replace(ignoreForumsRegex, string.Empty);
-                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: DoNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
+                        doNotRedirectRegex = string.Concat(ignoreForumsRegex, doNotRedirectRegex);
+                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: this.PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: doNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
+                    }
+                }
+                else
+                {
+                    if (doNotRedirectRegex.Contains(ignoreForumsRegex))
+                    {
+                        doNotRedirectRegex.Replace(ignoreForumsRegex, string.Empty);
+                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: this.PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: doNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
                     }
                 }
 
-                FullTextSearch = Utilities.SafeConvertBool(rdFullTextSearch.SelectedValue);
-                CacheTemplates = Utilities.SafeConvertBool(rdCacheTemplates.SelectedValue);
+                this.FullTextSearch = Utilities.SafeConvertBool(this.rdFullTextSearch.SelectedValue);
+                this.CacheTemplates = Utilities.SafeConvertBool(this.rdCacheTemplates.SelectedValue);
 
-                MessagingType = Utilities.SafeConvertInt(drpMessagingType.SelectedValue);
+                this.MessagingType = Utilities.SafeConvertInt(this.drpMessagingType.SelectedValue);
 
-			    EnableUsersOnline = Utilities.SafeConvertBool(rdUsersOnline.SelectedValue);
-			    UseSkinBreadCrumb = Utilities.SafeConvertBool(rdUseSkinBreadCrumb.SelectedValue);
+                this.EnableUsersOnline = Utilities.SafeConvertBool(this.rdUsersOnline.SelectedValue);
+                this.UseSkinBreadCrumb = Utilities.SafeConvertBool(this.rdUseSkinBreadCrumb.SelectedValue);
 
-                if(drpMessagingTab.SelectedItem != null)
-                    MessagingTabId = Utilities.SafeConvertInt(drpMessagingTab.SelectedValue);              
+                if (this.drpMessagingTab.SelectedItem != null)
+                {
+                    this.MessagingTabId = Utilities.SafeConvertInt(this.drpMessagingTab.SelectedValue);
+                }
 
-				PrefixURLBase = txtURLPrefixBase.Text;
-				PrefixURLCategory = txtURLPrefixCategory.Text;
-				PrefixURLOther = txtURLPrefixOther.Text;
-				PrefixURLTag = txtURLPrefixTags.Text;
+                this.PrefixURLBase = this.txtURLPrefixBase.Text;
+                this.PrefixURLCategory = this.txtURLPrefixCategory.Text;
+                this.PrefixURLOther = this.txtURLPrefixOther.Text;
+                this.PrefixURLTag = this.txtURLPrefixTags.Text;
 
-                EnablePoints = Utilities.SafeConvertBool(rdPoints.SelectedValue);
-                AnswerPointValue = Utilities.SafeConvertInt(txtAnswerPointValue.Text, 1);
-                ReplyPointValue = Utilities.SafeConvertInt(txtReplyPointValue.Text, 1);
-                MarkAsAnswerPointValue = Utilities.SafeConvertInt(txtMarkAnswerPointValue.Text, 1);
-                TopicPointValue = Utilities.SafeConvertInt(txtTopicPointValue.Text, 1);
-                ModPointValue = Utilities.SafeConvertInt(txtModPointValue.Text, 1);
+                this.EnablePoints = Utilities.SafeConvertBool(this.rdPoints.SelectedValue);
+                this.AnswerPointValue = Utilities.SafeConvertInt(this.txtAnswerPointValue.Text, 1);
+                this.ReplyPointValue = Utilities.SafeConvertInt(this.txtReplyPointValue.Text, 1);
+                this.MarkAsAnswerPointValue = Utilities.SafeConvertInt(this.txtMarkAnswerPointValue.Text, 1);
+                this.TopicPointValue = Utilities.SafeConvertInt(this.txtTopicPointValue.Text, 1);
+                this.ModPointValue = Utilities.SafeConvertInt(this.txtModPointValue.Text, 1);
 
-                AvatarHeight = Utilities.SafeConvertInt(txtAvatarHeight.Text, 48);
-                AvatarWidth = Utilities.SafeConvertInt(txtAvatarWidth.Text, 48);
+                this.AvatarHeight = Utilities.SafeConvertInt(this.txtAvatarHeight.Text, 48);
+                this.AvatarWidth = Utilities.SafeConvertInt(this.txtAvatarWidth.Text, 48);
 
-			    TimeFormatString = !string.IsNullOrWhiteSpace(txtTimeFormat.Text) ? txtTimeFormat.Text : "h:mm tt";
-                DateFormatString = !string.IsNullOrWhiteSpace(txtDateFormat.Text) ? txtDateFormat.Text : "M/d/yyyy";
+                this.TimeFormatString = !string.IsNullOrWhiteSpace(this.txtTimeFormat.Text) ? this.txtTimeFormat.Text : "h:mm tt";
+                this.DateFormatString = !string.IsNullOrWhiteSpace(this.txtDateFormat.Text) ? this.txtDateFormat.Text : "M/d/yyyy";
 
-                ForumGroupTemplate = Utilities.SafeConvertInt(drpForumGroupTemplate.SelectedValue);
-				var adminSec = txtGroupModSec.Value.Split(',');
-				SaveForumSecurity("groupadmin", adminSec);
-				var memSec = txtGroupMemSec.Value.Split(',');
-				SaveForumSecurity("groupmember", memSec);
-				var regSec = txtGroupRegSec.Value.Split(',');
-				SaveForumSecurity("registereduser", regSec);
-				var anonSec = txtGroupAnonSec.Value.Split(',');
-				SaveForumSecurity("anon", anonSec);
+                this.ForumGroupTemplate = Utilities.SafeConvertInt(this.drpForumGroupTemplate.SelectedValue);
+                var adminSec = this.txtGroupModSec.Value.Split(',');
+                this.SaveForumSecurity("groupadmin", adminSec);
+                var memSec = this.txtGroupMemSec.Value.Split(',');
+                this.SaveForumSecurity("groupmember", memSec);
+                var regSec = this.txtGroupRegSec.Value.Split(',');
+                this.SaveForumSecurity("registereduser", regSec);
+                var anonSec = this.txtGroupAnonSec.Value.Split(',');
+                this.SaveForumSecurity("anon", anonSec);
 
-				try
-				{
-					if (IsFullTextAvailable && FullTextSearch && FullTextStatus != 1) // Available, selected and not currently installed
-					{
+                try
+                {
+                    if (this.IsFullTextAvailable && this.FullTextSearch && this.FullTextStatus != 1) // Available, selected and not currently installed
+                    {
                         // Note: We have to jump through some hoops here to maintain Azure compatibility and prevent a race condition in the procs.
 
                         // Create the full text manager proc
-					    var fullTextInstallScript = Utilities.GetSqlString("DotNetNuke.Modules.ActiveForums.sql.FullTextInstallPart1.sql");
+                        var fullTextInstallScript = Utilities.GetSqlString("DotNetNuke.Modules.ActiveForums.sql.FullTextInstallPart1.sql");
                         var result = DotNetNuke.Data.DataProvider.Instance().ExecuteScript(fullTextInstallScript);
 
                         // Exectute the full text manager proc to setup the search indexes
@@ -284,375 +286,397 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         // Create the full text search proc (can't be reliably created until the indexes are in place)
                         fullTextInstallScript = Utilities.GetSqlString("DotNetNuke.Modules.ActiveForums.sql.FullTextInstallPart2.sql");
                         DotNetNuke.Data.DataProvider.Instance().ExecuteScript(fullTextInstallScript);
-					}
-					else if (IsFullTextAvailable && !FullTextSearch) // Available, but not selected
-					{
-						try
-						{
+                    }
+                    else if (this.IsFullTextAvailable && !this.FullTextSearch) // Available, but not selected
+                    {
+                        try
+                        {
                             // Remove the search indexes if they exist
                             DataProvider.Instance().Search_ManageFullText(false);
                         }
                         catch (InvalidOperationException)
                         {
-							// stored procedures have never been installed
+                            // stored procedures have never been installed
                         }
-                        catch 
+                        catch
                         {
                             throw; // anything else
                         }
-					}
-				}
-				catch (Exception ex)
-				{
-					FullTextSearch = false;
-					DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
-				}
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.FullTextSearch = false;
+                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                }
 
                 // Clear out the cache
-                DataCache.ClearSettingsCache(ModuleId);
+                DataCache.ClearSettingsCache(this.ModuleId);
 
-				var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.APPLICATION_SHUTTING_DOWN.ToString() };
-				log.LogProperties.Add(new LogDetailInfo("ModuleId", ModuleId.ToString()));
+                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.APPLICATION_SHUTTING_DOWN.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("ModuleId", this.ModuleId.ToString()));
                 log.AddProperty("Message", this.LocalizeString("ApplicationRestart"));
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-				DotNetNuke.Common.Utilities.Config.Touch();
-
+                DotNetNuke.Common.Utilities.Config.Touch();
             }
-			catch (Exception exc) //Module failed to load
-			{
-				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
+            catch (Exception exc) // Module failed to load
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
 
-		#endregion
-		
+        #endregion
+
         #region Private Methods
 
-		private void BindTemplates()
-		{
-			var tc = new TemplateController();
-		    var tl = tc.Template_List(PortalId, ModuleId, Templates.TemplateTypes.ForumView);
-			drpTemplates.DataTextField = "Title";
-			drpTemplates.DataValueField = "TemplateId";
-			drpTemplates.DataSource = tl;
-			drpTemplates.DataBind();
-			drpTemplates.Items.Insert(0, new ListItem(LocalizeString("Default"), "0"));
-		}
-		
+        private void BindTemplates()
+        {
+            var tc = new TemplateController();
+            var tl = tc.Template_List(this.PortalId, this.ModuleId, Templates.TemplateTypes.ForumView);
+            this.drpTemplates.DataTextField = "Title";
+            this.drpTemplates.DataValueField = "TemplateId";
+            this.drpTemplates.DataSource = tl;
+            this.drpTemplates.DataBind();
+            this.drpTemplates.Items.Insert(0, new ListItem(this.LocalizeString("Default"), "0"));
+        }
+
         private void BindThemes()
-		{
-			var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ModulePath + "themes"));
-			drpThemes.DataSource = di.GetDirectories();
-			drpThemes.DataBind();
-		}
+        {
+            var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ModulePath + "themes"));
+            this.drpThemes.DataSource = di.GetDirectories();
+            this.drpThemes.DataBind();
+        }
 
         private void BindPrivateMessaging()
         {
-            var selectedMessagingType = drpMessagingType.Items.FindByValue(MessagingType.ToString());
+            var selectedMessagingType = this.drpMessagingType.Items.FindByValue(this.MessagingType.ToString());
             if (selectedMessagingType != null)
+            {
                 selectedMessagingType.Selected = true;
+            }
 
-            BindPrivateMessagingTab();
+            this.BindPrivateMessagingTab();
         }
 
         private void BindPrivateMessagingTab()
         {
-            drpMessagingTab.Items.Clear();
-            drpMessagingTab.ClearSelection();
+            this.drpMessagingTab.Items.Clear();
+            this.drpMessagingTab.ClearSelection();
 
             var mc = new DotNetNuke.Entities.Modules.ModuleController();
             var tc = new TabController();
 
-            foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
+            foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(this.PortalId))
             {
                 if (!mi.DesktopModule.ModuleName.Contains("DnnForge - PrivateMessages") || mi.IsDeleted)
+                {
                     continue;
+                }
 
-                var ti = tc.GetTab(mi.TabID, PortalId, false);
+                var ti = tc.GetTab(mi.TabID, this.PortalId, false);
                 if (ti != null && !ti.IsDeleted)
                 {
-                    drpMessagingTab.Items.Add(new ListItem
+                    this.drpMessagingTab.Items.Add(new ListItem
                     {
                         Text = ti.TabName + " - Ventrian Messages",
                         Value = ti.TabID.ToString(),
-                        Selected = ti.TabID == MessagingTabId
+                        Selected = ti.TabID == this.MessagingTabId,
                     });
                 }
             }
 
-            if (drpMessagingTab.Items.Count == 0)
+            if (this.drpMessagingTab.Items.Count == 0)
             {
-                drpMessagingTab.Items.Add(new ListItem("No Messaging Tabs Found", "-1"));
-                drpMessagingTab.Enabled = false;
+                this.drpMessagingTab.Items.Add(new ListItem("No Messaging Tabs Found", "-1"));
+                this.drpMessagingTab.Enabled = false;
             }
-
         }
-		
+
         private void BindForumGroups()
-		{
-			using (IDataReader dr = DataProvider.Instance().Forums_List(PortalId, ModuleId, -1, -1, false))
-			{
-				var dt = new DataTable("Forums");
-				dt.Load(dr);
-				dr.Close();
+        {
+            using (IDataReader dr = DataProvider.Instance().Forums_List(this.PortalId, this.ModuleId, -1, -1, false))
+            {
+                var dt = new DataTable("Forums");
+                dt.Load(dr);
+                dr.Close();
 
-				string tmpGroup = string.Empty;
-				foreach (DataRow row in dt.Rows)
-				{
-					if (tmpGroup != row["ForumGroupId"].ToString())
-					{
-						drpForumGroupTemplate.Items.Add(new ListItem(row["GroupName"].ToString(), row["ForumGroupId"].ToString()));
-						tmpGroup = row["ForumGroupId"].ToString();
-					}
-
-				}
-
-			}
-		}
+                string tmpGroup = string.Empty;
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (tmpGroup != row["ForumGroupId"].ToString())
+                    {
+                        this.drpForumGroupTemplate.Items.Add(new ListItem(row["GroupName"].ToString(), row["ForumGroupId"].ToString()));
+                        tmpGroup = row["ForumGroupId"].ToString();
+                    }
+                }
+            }
+        }
 
         private void BindForumSecurity()
-		{
-			var xDoc = new XmlDocument();
-			if (string.IsNullOrEmpty(ForumConfig))
-			{
-				xDoc.Load(Utilities.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
-			}
-			else
-			{
-				xDoc.LoadXml(ForumConfig);
-			}
-            
-			if (xDoc != null)
-			{
-				XmlNode xRoot = xDoc.DocumentElement;
-				var xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='groupadmin']").ChildNodes;
-				var sb = new StringBuilder();
-				sb.Append("<table cellpadding=\"0\" cellspacing=\"0\">");
-				var rows = new string[17, 5];
-				int i = 0;
-				foreach (XmlNode x in xNodeList)
-				{
-					rows[i, 0] = x.Name;
-					rows[i, 1] = x.Attributes["value"].Value;
-					i += 1;
-				}
-				i = 0;
-				xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='groupmember']").ChildNodes;
-				foreach (XmlNode x in xNodeList)
-				{
-					rows[i, 2] = x.Attributes["value"].Value;
-					i += 1;
-				}
-				i = 0;
-				xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='registereduser']").ChildNodes;
-				foreach (XmlNode x in xNodeList)
-				{
-					rows[i, 3] = x.Attributes["value"].Value;
-					i += 1;
-				}
-				i = 0;
-				xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='anon']").ChildNodes;
-				foreach (XmlNode x in xNodeList)
-				{
-					rows[i, 4] = x.Attributes["value"].Value;
-					i += 1;
-				}
-				i = 0;
-				sb.Append("<tr id=\"hd1\"><td></td><td colspan=\"10\" class=\"afgridhd sec1\">" + LocalizeString("UserPermissions") + "</td><td colspan=\"7\" class=\"afgridhd sec2\">" + LocalizeString("ModeratorPermissions") + "</td></tr>");
-				sb.Append("<tr id=\"hd2\"><td></td>");
-				string sClass;
-				for (i = 0; i <= 16; i++)
-				{
-					sClass = "afgridhdsub";
-					if (i == 0)
-					{
-						sClass += " colstart";
-					}
-					else if (i == 16)
-					{
-						sClass += " colend";
-					}
-					else if (i == 9)
-					{
-						sClass += " gridsep";
+        {
+            var xDoc = new XmlDocument();
+            if (string.IsNullOrEmpty(this.ForumConfig))
+            {
+                xDoc.Load(Utilities.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
+            }
+            else
+            {
+                xDoc.LoadXml(this.ForumConfig);
+            }
 
-					}
-					sb.Append("<td class=\"" + sClass + "\">");
-					sb.Append(LocalizeString("SecGrid:" + rows[i, 0]));
-					sb.Append("</td>");
-				}
-				sb.Append("</tr><tr id=\"row1\"><td class=\"rowhd\">" + LocalizeString("GroupAdmin") + "</td>");
-				i = 0;
+            if (xDoc != null)
+            {
+                XmlNode xRoot = xDoc.DocumentElement;
+                var xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='groupadmin']").ChildNodes;
+                var sb = new StringBuilder();
+                sb.Append("<table cellpadding=\"0\" cellspacing=\"0\">");
+                var rows = new string[17, 5];
+                int i = 0;
+                foreach (XmlNode x in xNodeList)
+                {
+                    rows[i, 0] = x.Name;
+                    rows[i, 1] = x.Attributes["value"].Value;
+                    i += 1;
+                }
 
-				for (i = 0; i <= 16; i++)
-				{
-					sClass = "gridcheck";
-					if (i <= 9)
-					{
-						sClass += " sec1";
-					}
-					else
-					{
-						sClass += " sec2";
-					}
-					if (i == 16)
-					{
-						sClass += " colend";
-					}
-					if (i == 9)
-					{
-						//sClass &= " gridsep"
-					}
-					sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
+                i = 0;
+                xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='groupmember']").ChildNodes;
+                foreach (XmlNode x in xNodeList)
+                {
+                    rows[i, 2] = x.Attributes["value"].Value;
+                    i += 1;
+                }
 
-					if (rows[i, 1] == "true")
-					{
-						sb.Append("<input type=\"checkbox\" id=\"ga" + rows[i, 0] + "\" checked=\"checked\" />");
-					}
-					else
-					{
-						sb.Append("<input type=\"checkbox\" id=\"ga" + rows[i, 0] + "\" />");
-					}
-					sb.Append("</td>");
-				}
-				sb.Append("</tr>");
-				i = 0;
-				sb.Append("<tr id=\"row2\"><td class=\"rowhd\">" + LocalizeString("GroupMember") + "</td>");
-				for (i = 0; i <= 16; i++)
-				{
-					sClass = "gridcheck";
-					if (i <= 9)
-					{
-						sClass += " sec1";
-					}
-					else
-					{
-						sClass += " sec2";
-					}
-					if (i == 16)
-					{
-						sClass += " colend";
-					}
-					if (i == 9)
-					{
-						//sClass &= " gridsep"
-					}
-					sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
-					if (rows[i, 2] == "true")
-					{
-						sb.Append("<input type=\"checkbox\" id=\"gm" + rows[i, 0] + "\" checked=\"checked\" />");
-					}
-					else
-					{
-						sb.Append("<input type=\"checkbox\" id=\"gm" + rows[i, 0] + "\" />");
-					}
+                i = 0;
+                xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='registereduser']").ChildNodes;
+                foreach (XmlNode x in xNodeList)
+                {
+                    rows[i, 3] = x.Attributes["value"].Value;
+                    i += 1;
+                }
 
-					sb.Append("</td>");
-				}
-				sb.Append("</tr>");
+                i = 0;
+                xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='anon']").ChildNodes;
+                foreach (XmlNode x in xNodeList)
+                {
+                    rows[i, 4] = x.Attributes["value"].Value;
+                    i += 1;
+                }
 
-				i = 0;
-				sb.Append("<tr id=\"row3\"><td class=\"rowhd\">" + LocalizeString("RegisteredUser") + "</td>");
-				for (i = 0; i <= 16; i++)
-				{
-					sClass = "gridcheck";
-					if (i <= 9)
-					{
-						sClass += " sec1";
-					}
-					else
-					{
-						sClass += " sec2";
-					}
-					if (i == 16)
-					{
-						sClass += " colend";
-					}
-					if (i == 9)
-					{
-						//sClass &= " gridsep"
-					}
-					sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
-					if (rows[i, 3] == "true")
-					{
-						sb.Append("<input type=\"checkbox\" id=\"gr" + rows[i, 0] + "\" checked=\"checked\" />");
-					}
-					else
-					{
-						sb.Append("<input type=\"checkbox\" id=\"gr" + rows[i, 0] + "\" />");
-					}
+                i = 0;
+                sb.Append("<tr id=\"hd1\"><td></td><td colspan=\"10\" class=\"afgridhd sec1\">" + this.LocalizeString("UserPermissions") + "</td><td colspan=\"7\" class=\"afgridhd sec2\">" + this.LocalizeString("ModeratorPermissions") + "</td></tr>");
+                sb.Append("<tr id=\"hd2\"><td></td>");
+                string sClass;
+                for (i = 0; i <= 16; i++)
+                {
+                    sClass = "afgridhdsub";
+                    if (i == 0)
+                    {
+                        sClass += " colstart";
+                    }
+                    else if (i == 16)
+                    {
+                        sClass += " colend";
+                    }
+                    else if (i == 9)
+                    {
+                        sClass += " gridsep";
+                    }
 
-					sb.Append("</td>");
-				}
-				sb.Append("</tr>");
-				i = 0;
-				sb.Append("<tr id=\"row4\"><td class=\"rowhd\">" + LocalizeString("Anon") + "</td>");
-				for (i = 0; i <= 16; i++)
-				{
-					sClass = "gridcheck";
-					if (i <= 9)
-					{
-						sClass += " sec1";
-					}
-					else
-					{
-						sClass += " sec2";
-					}
-					if (i == 16)
-					{
-						sClass += " colend";
-					}
-					if (i == 9)
-					{
-						//sClass &= " gridsep"
-					}
-					sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
-					if (rows[i, 4] == "true")
-					{
-						sb.Append("<input type=\"checkbox\" id=\"gn" + rows[i, 0] + "\" checked=\"checked\" />");
-					}
-					else
-					{
-						sb.Append("<input type=\"checkbox\" id=\"gn" + rows[i, 0] + "\" />");
-					}
+                    sb.Append("<td class=\"" + sClass + "\">");
+                    sb.Append(this.LocalizeString("SecGrid:" + rows[i, 0]));
+                    sb.Append("</td>");
+                }
 
-					sb.Append("</td>");
-				}
-				sb.Append("</tr>");
+                sb.Append("</tr><tr id=\"row1\"><td class=\"rowhd\">" + this.LocalizeString("GroupAdmin") + "</td>");
+                i = 0;
 
-				sb.Append("</table>");
-				litForumSecurity.Text = sb.ToString();
-			}
-		}
-		
+                for (i = 0; i <= 16; i++)
+                {
+                    sClass = "gridcheck";
+                    if (i <= 9)
+                    {
+                        sClass += " sec1";
+                    }
+                    else
+                    {
+                        sClass += " sec2";
+                    }
+
+                    if (i == 16)
+                    {
+                        sClass += " colend";
+                    }
+
+                    if (i == 9)
+                    {
+                        // sClass &= " gridsep"
+                    }
+
+                    sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
+
+                    if (rows[i, 1] == "true")
+                    {
+                        sb.Append("<input type=\"checkbox\" id=\"ga" + rows[i, 0] + "\" checked=\"checked\" />");
+                    }
+                    else
+                    {
+                        sb.Append("<input type=\"checkbox\" id=\"ga" + rows[i, 0] + "\" />");
+                    }
+
+                    sb.Append("</td>");
+                }
+
+                sb.Append("</tr>");
+                i = 0;
+                sb.Append("<tr id=\"row2\"><td class=\"rowhd\">" + this.LocalizeString("GroupMember") + "</td>");
+                for (i = 0; i <= 16; i++)
+                {
+                    sClass = "gridcheck";
+                    if (i <= 9)
+                    {
+                        sClass += " sec1";
+                    }
+                    else
+                    {
+                        sClass += " sec2";
+                    }
+
+                    if (i == 16)
+                    {
+                        sClass += " colend";
+                    }
+
+                    if (i == 9)
+                    {
+                        // sClass &= " gridsep"
+                    }
+
+                    sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
+                    if (rows[i, 2] == "true")
+                    {
+                        sb.Append("<input type=\"checkbox\" id=\"gm" + rows[i, 0] + "\" checked=\"checked\" />");
+                    }
+                    else
+                    {
+                        sb.Append("<input type=\"checkbox\" id=\"gm" + rows[i, 0] + "\" />");
+                    }
+
+                    sb.Append("</td>");
+                }
+
+                sb.Append("</tr>");
+
+                i = 0;
+                sb.Append("<tr id=\"row3\"><td class=\"rowhd\">" + this.LocalizeString("RegisteredUser") + "</td>");
+                for (i = 0; i <= 16; i++)
+                {
+                    sClass = "gridcheck";
+                    if (i <= 9)
+                    {
+                        sClass += " sec1";
+                    }
+                    else
+                    {
+                        sClass += " sec2";
+                    }
+
+                    if (i == 16)
+                    {
+                        sClass += " colend";
+                    }
+
+                    if (i == 9)
+                    {
+                        // sClass &= " gridsep"
+                    }
+
+                    sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
+                    if (rows[i, 3] == "true")
+                    {
+                        sb.Append("<input type=\"checkbox\" id=\"gr" + rows[i, 0] + "\" checked=\"checked\" />");
+                    }
+                    else
+                    {
+                        sb.Append("<input type=\"checkbox\" id=\"gr" + rows[i, 0] + "\" />");
+                    }
+
+                    sb.Append("</td>");
+                }
+
+                sb.Append("</tr>");
+                i = 0;
+                sb.Append("<tr id=\"row4\"><td class=\"rowhd\">" + this.LocalizeString("Anon") + "</td>");
+                for (i = 0; i <= 16; i++)
+                {
+                    sClass = "gridcheck";
+                    if (i <= 9)
+                    {
+                        sClass += " sec1";
+                    }
+                    else
+                    {
+                        sClass += " sec2";
+                    }
+
+                    if (i == 16)
+                    {
+                        sClass += " colend";
+                    }
+
+                    if (i == 9)
+                    {
+                        // sClass &= " gridsep"
+                    }
+
+                    sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
+                    if (rows[i, 4] == "true")
+                    {
+                        sb.Append("<input type=\"checkbox\" id=\"gn" + rows[i, 0] + "\" checked=\"checked\" />");
+                    }
+                    else
+                    {
+                        sb.Append("<input type=\"checkbox\" id=\"gn" + rows[i, 0] + "\" />");
+                    }
+
+                    sb.Append("</td>");
+                }
+
+                sb.Append("</tr>");
+
+                sb.Append("</table>");
+                this.litForumSecurity.Text = sb.ToString();
+            }
+        }
+
         private void SaveForumSecurity(string sectype, string[] security)
-		{
-			var xDoc = new XmlDocument();
-			if (string.IsNullOrEmpty(ForumConfig))
-			{
-				xDoc.Load(Utilities.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
-			}
-			else
-			{
-				xDoc.LoadXml(ForumConfig);
-			}
-			XmlNode xRoot = xDoc.DocumentElement;
-			var xNode = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='" + sectype + "']");
-			foreach (string s in security)
-			{
-				if (!(string.IsNullOrEmpty(s)))
-				{
-					string nodeName = s.Split('=')[0];
-					string nodeValue = s.Split('=')[1];
-					xNode[nodeName].Attributes["value"].Value = nodeValue;
-				}
-			}
-			ForumConfig = xDoc.OuterXml;
+        {
+            var xDoc = new XmlDocument();
+            if (string.IsNullOrEmpty(this.ForumConfig))
+            {
+                xDoc.Load(Utilities.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
+            }
+            else
+            {
+                xDoc.LoadXml(this.ForumConfig);
+            }
 
-		}
-	
+            XmlNode xRoot = xDoc.DocumentElement;
+            var xNode = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='" + sectype + "']");
+            foreach (string s in security)
+            {
+                if (!string.IsNullOrEmpty(s))
+                {
+                    string nodeName = s.Split('=')[0];
+                    string nodeValue = s.Split('=')[1];
+                    xNode[nodeName].Attributes["value"].Value = nodeValue;
+                }
+            }
+
+            this.ForumConfig = xDoc.OuterXml;
+        }
 
         #endregion
 
-	}
+    }
 }

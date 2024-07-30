@@ -1,29 +1,30 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Collections;
-using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+
+    using DotNetNuke.Entities.Modules;
+
     public class WhatsNewModuleSettings
     {
         public const string RowsSettingsKey = "AFTopPostsNumber";
@@ -53,16 +54,27 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string DefaultFormat = "<div style=\"padding-bottom:5px;\" class=\"Normal\">[SUBJECTLINK]</div>";
 
         public int Rows { get; set; }
+
         public string Forums { get; set; }
+
         public bool RSSEnabled { get; set; }
+
         public bool RSSIgnoreSecurity { get; set; }
+
         public bool RSSIncludeBody { get; set; }
+
         public int RSSCacheTimeout { get; set; }
+
         public bool TopicsOnly { get; set; }
+
         public bool RandomOrder { get; set; }
+
         public string Tags { get; set; }
+
         public string Header { get; set; }
+
         public string Footer { get; set; }
+
         public string Format { get; set; }
 
         public bool Save(ModuleController moduleController, int moduleId)
@@ -70,23 +82,25 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 if (moduleController == null || moduleId < 0)
+                {
                     return false;
+                }
 
-                moduleController.UpdateModuleSetting(moduleId, ForumsSettingsKey, Forums);
-                moduleController.UpdateModuleSetting(moduleId, RowsSettingsKey, Rows.ToString());
-                moduleController.UpdateModuleSetting(moduleId, FormatSettingsKey, Format);
-                moduleController.UpdateModuleSetting(moduleId, HeaderSettingsKey, Header);
-                moduleController.UpdateModuleSetting(moduleId, FooterSettingsKey, Footer);
-                moduleController.UpdateModuleSetting(moduleId, RSSEnabledSettingsKey, RSSEnabled.ToString());
-                moduleController.UpdateModuleSetting(moduleId, TopicsOnlySettingsKey, TopicsOnly.ToString());
-                moduleController.UpdateModuleSetting(moduleId, RandomOrderSettingsKey, RandomOrder.ToString());
-                moduleController.UpdateModuleSetting(moduleId, TagsSettingsKey, Tags);
-                moduleController.UpdateModuleSetting(moduleId, RSSIgnoreSecuritySettingsKey, RSSIgnoreSecurity.ToString());
-                moduleController.UpdateModuleSetting(moduleId, RSSIncludeBodySettingsKey, RSSIncludeBody.ToString());
-                moduleController.UpdateModuleSetting(moduleId, RSSCacheTimeoutSettingsKey, RSSCacheTimeout.ToString());
+                moduleController.UpdateModuleSetting(moduleId, ForumsSettingsKey, this.Forums);
+                moduleController.UpdateModuleSetting(moduleId, RowsSettingsKey, this.Rows.ToString());
+                moduleController.UpdateModuleSetting(moduleId, FormatSettingsKey, this.Format);
+                moduleController.UpdateModuleSetting(moduleId, HeaderSettingsKey, this.Header);
+                moduleController.UpdateModuleSetting(moduleId, FooterSettingsKey, this.Footer);
+                moduleController.UpdateModuleSetting(moduleId, RSSEnabledSettingsKey, this.RSSEnabled.ToString());
+                moduleController.UpdateModuleSetting(moduleId, TopicsOnlySettingsKey, this.TopicsOnly.ToString());
+                moduleController.UpdateModuleSetting(moduleId, RandomOrderSettingsKey, this.RandomOrder.ToString());
+                moduleController.UpdateModuleSetting(moduleId, TagsSettingsKey, this.Tags);
+                moduleController.UpdateModuleSetting(moduleId, RSSIgnoreSecuritySettingsKey, this.RSSIgnoreSecurity.ToString());
+                moduleController.UpdateModuleSetting(moduleId, RSSIncludeBodySettingsKey, this.RSSIncludeBody.ToString());
+                moduleController.UpdateModuleSetting(moduleId, RSSCacheTimeoutSettingsKey, this.RSSCacheTimeout.ToString());
 
                 // Clear the cache
-                DataCache.SettingsCacheClear(moduleId,string.Format(CacheKeys.WhatsNew,moduleId));
+                DataCache.SettingsCacheClear(moduleId, string.Format(CacheKeys.WhatsNew, moduleId));
 
                 return true;
             }
@@ -113,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     Tags = DefaultTags,
                     Header = DefaultHeader,
                     Footer = DefaultFooter,
-                    Format = DefaultFormat
+                    Format = DefaultFormat,
                 };
             }
 
@@ -130,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Tags = (moduleSettings[TagsSettingsKey] != null) ? Convert.ToString(moduleSettings[TagsSettingsKey]) : DefaultTags,
                 Header = (moduleSettings[HeaderSettingsKey] != null) ? Convert.ToString(moduleSettings[HeaderSettingsKey]) : DefaultHeader,
                 Footer = (moduleSettings[FooterSettingsKey] != null) ? Convert.ToString(moduleSettings[FooterSettingsKey]) : DefaultFooter,
-                Format = (moduleSettings[FormatSettingsKey] != null) ? Convert.ToString(moduleSettings[FormatSettingsKey]) : DefaultFormat
+                Format = (moduleSettings[FormatSettingsKey] != null) ? Convert.ToString(moduleSettings[FormatSettingsKey]) : DefaultFormat,
             };
         }
     }

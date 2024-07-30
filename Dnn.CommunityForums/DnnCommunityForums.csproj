@@ -68,12 +68,12 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-	<PropertyGroup>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-	</PropertyGroup>
-	<PropertyGroup>
-		<AnalysisLevel>latest</AnalysisLevel>
-	</PropertyGroup>
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke, Version=9.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetNuke.Core.9.9.0\lib\net45\DotNetNuke.dll</HintPath>
@@ -216,6 +216,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="config\templates\AdminWatchEmail.ascx" />
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="DnnCommunityForums_Symbols.dnn">
       <SubType>Designer</SubType>
@@ -2008,7 +2011,6 @@
     </None>
     <None Include="sql\05.00.01.SqlDataProvider" />
     <None Include="sql\05.01.00.SqlDataProvider" />
-    <AdditionalFiles Include="StyleCop.json" />
     <None Include="themes\community-bootstrap\custom\README.md" />
     <None Include="themes\community-bootstrap\package-lock.json" />
     <None Include="themes\community-bootstrap\package.json" />

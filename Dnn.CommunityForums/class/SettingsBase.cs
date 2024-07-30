@@ -1,44 +1,43 @@
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+// DNN Community licenses this file to you under the MIT license.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Reflection;
-using System.Web;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Security.Permissions;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Reflection;
+    using System.Web;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Security.Permissions;
+
     public class SettingsBase : PortalModuleBase
     {
         #region Private Members
-        private int _forumModuleId = -1;
-        private string _LoadView = string.Empty;
-        private int _LoadGroupForumID = 0;
-        private int _LoadPostID = 0;
-        private string _imagePath = string.Empty;
-        private string _Params = string.Empty;
-        private int _forumTabId = -1;
+        private int forumModuleId = -1;
+        private string loadView = string.Empty;
+        private string imagePath = string.Empty;
+        private string @params = string.Empty;
+        private int forumTabId = -1;
         #endregion
 
         #region Public Properties
@@ -47,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 var uc = new UserController();
-                return uc.GetUser(PortalId, ForumModuleId);
+                return uc.GetUser(this.PortalId, this.ForumModuleId);
             }
         }
 
@@ -56,15 +55,16 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 string forums;
-                if (string.IsNullOrEmpty(ForumUser.UserForums))
+                if (string.IsNullOrEmpty(this.ForumUser.UserForums))
                 {
-                    forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId);
-                    ForumUser.UserForums = forums;
+                    forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ForumModuleId);
+                    this.ForumUser.UserForums = forums;
                 }
                 else
                 {
-                    forums = ForumUser.UserForums;
+                    forums = this.ForumUser.UserForums;
                 }
+
                 return forums;
             }
         }
@@ -73,29 +73,30 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (_forumModuleId > 0)
+                if (this.forumModuleId > 0)
                 {
-                    return _forumModuleId;
+                    return this.forumModuleId;
                 }
-                return DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(ModuleId, TabId);
+
+                return DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ModuleId, this.TabId);
             }
+
             set
             {
-                _forumModuleId = value;
+                this.forumModuleId = value;
             }
         }
-
-        
 
         public int ForumTabId
         {
             get
             {
-                return _forumTabId;
+                return this.forumTabId;
             }
+
             set
             {
-                _forumTabId = value;
+                this.forumTabId = value;
             }
         }
 
@@ -103,11 +104,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _Params;
+                return this.@params;
             }
+
             set
             {
-                _Params = value;
+                this.@params = value;
             }
         }
 
@@ -117,28 +119,29 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 int tempPageId = 0;
-                if (Request.QueryString[ParamKeys.PageId] != null)
+                if (this.Request.QueryString[ParamKeys.PageId] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(Request.QueryString[ParamKeys.PageId]))
+                    if (SimulateIsNumeric.IsNumeric(this.Request.QueryString[ParamKeys.PageId]))
                     {
-                        tempPageId = Convert.ToInt32(Request.QueryString[ParamKeys.PageId]);
+                        tempPageId = Convert.ToInt32(this.Request.QueryString[ParamKeys.PageId]);
                     }
                 }
-                else if (Request.QueryString[Literals.page] != null)
+                else if (this.Request.QueryString[Literals.Page] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.page]))
+                    if (SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.Page]))
                     {
-                        tempPageId = Convert.ToInt32(Request.QueryString[Literals.page]);
+                        tempPageId = Convert.ToInt32(this.Request.QueryString[Literals.Page]);
                     }
                 }
-                else if (Params != string.Empty && Params.Contains(Literals.PageId))
+                else if (this.Params != string.Empty && this.Params.Contains(Literals.PageId))
                 {
-                    tempPageId = Convert.ToInt32(Params.Split('=')[1]);
+                    tempPageId = Convert.ToInt32(this.Params.Split('=')[1]);
                 }
                 else
                 {
                     tempPageId = 1;
                 }
+
                 return tempPageId;
             }
         }
@@ -157,6 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     userController = new UserController();
                     HttpContext.Current.Items[userControllerContextKey] = userController;
                 }
+
                 return userController;
             }
         }
@@ -175,22 +179,26 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (Request.IsAuthenticated)
+                if (this.Request.IsAuthenticated)
                 {
-                    if (UserInfo.IsSuperUser)
+                    if (this.UserInfo.IsSuperUser)
                     {
                         return CurrentUserTypes.SuperUser;
                     }
-                    if (ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "EDIT"))
+
+                    if (ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "EDIT"))
                     {
                         return CurrentUserTypes.Admin;
                     }
-                    if (ForumUser.Profile.IsMod)
+
+                    if (this.ForumUser.Profile.IsMod)
                     {
                         return CurrentUserTypes.ForumMod;
                     }
+
                     return CurrentUserTypes.Auth;
                 }
+
                 return CurrentUserTypes.Anon;
             }
         }
@@ -199,14 +207,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId == -1)
+                if (this.UserId == -1)
                 {
                     return false;
                 }
-                if (ForumUser != null)
+
+                if (this.ForumUser != null)
                 {
-                    return ForumUser.Profile.IsMod;
+                    return this.ForumUser.Profile.IsMod;
                 }
+
                 return false;
             }
         }
@@ -215,10 +225,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefDefaultSort;
+                    return this.ForumUser.Profile.PrefDefaultSort;
                 }
+
                 return "ASC";
             }
         }
@@ -227,11 +238,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefPageSize;
+                    return this.ForumUser.Profile.PrefPageSize;
                 }
-                return MainSettings.PageSize;
+
+                return this.MainSettings.PageSize;
             }
         }
 
@@ -239,17 +251,18 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
                     try
                     {
-                        return ForumUser.Profile.PrefBlockSignatures;
+                        return this.ForumUser.Profile.PrefBlockSignatures;
                     }
                     catch (Exception ex)
                     {
                         return false;
                     }
                 }
+
                 return false;
             }
         }
@@ -258,10 +271,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefBlockAvatars;
+                    return this.ForumUser.Profile.PrefBlockAvatars;
                 }
+
                 return false;
             }
         }
@@ -270,10 +284,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefJumpLastPost;
+                    return this.ForumUser.Profile.PrefJumpLastPost;
                 }
+
                 return false;
             }
         }
@@ -282,10 +297,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefDefaultShowReplies;
+                    return this.ForumUser.Profile.PrefDefaultShowReplies;
                 }
+
                 return false;
             }
         }
@@ -294,10 +310,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefTopicSubscribe;
+                    return this.ForumUser.Profile.PrefTopicSubscribe;
                 }
+
                 return false;
             }
         }
@@ -308,26 +325,28 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return (Framework.CDefault)Page;
+                return (Framework.CDefault)this.Page;
             }
         }
-        public static SettingsInfo GetModuleSettings(int ModuleId)
+
+        public static SettingsInfo GetModuleSettings(int moduleId)
         {
-            SettingsInfo objSettings = (SettingsInfo)DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId));
-            if (objSettings == null && ModuleId > 0)
+            SettingsInfo objSettings = (SettingsInfo)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.MainSettings, moduleId));
+            if (objSettings == null && moduleId > 0)
             {
-                objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
-                DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
+                objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleId).ModuleSettings };
+                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.MainSettings, moduleId), objSettings);
             }
+
             return objSettings;
-            
         }
+
         public SettingsInfo MainSettings
         {
             get
             {
-                ForumModuleId = _forumModuleId <= 0 ? ForumModuleId : _forumModuleId;
-                return GetModuleSettings(ForumModuleId);
+                this.ForumModuleId = this.forumModuleId <= 0 ? this.ForumModuleId : this.forumModuleId;
+                return GetModuleSettings(this.ForumModuleId);
             }
         }
 
@@ -335,7 +354,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl(string.Concat(MainSettings.ThemeLocation, "/images"));
+                return this.Page.ResolveUrl(string.Concat(this.MainSettings.ThemeLocation, "/images"));
             }
         }
 
@@ -343,14 +362,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (Request.Params[ParamKeys.ViewType] != null)
+                if (this.Request.Params[ParamKeys.ViewType] != null)
                 {
-                    return Request.Params[ParamKeys.ViewType].ToUpperInvariant();
+                    return this.Request.Params[ParamKeys.ViewType].ToUpperInvariant();
                 }
-                if (Request.Params["view"] != null)
+
+                if (this.Request.Params["view"] != null)
                 {
-                    return Request.Params["view"].ToUpperInvariant();
+                    return this.Request.Params["view"].ToUpperInvariant();
                 }
+
                 return null;
             }
         }
@@ -360,95 +381,89 @@ namespace DotNetNuke.Modules.ActiveForums
             /* AF now stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback */
             get
             {
-                return Utilities.GetTimeZoneOffsetForUser(UserInfo);      
+                return Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
             }
         }
 
         #endregion
 
-        #region Protected Methods        
+        #region Protected Methods
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         protected DateTime GetUserDate(DateTime displayDate)
         {
-            return displayDate.AddMinutes(TimeZoneOffset.TotalMinutes);
+            return displayDate.AddMinutes(this.TimeZoneOffset.TotalMinutes);
         }
 
         #endregion
 
         #region Public Methods
-        public string NavigateUrl(int TabId)
+        public string NavigateUrl(int tabId)
         {
-            return Utilities.NavigateURL(TabId);
-        }
-        public string NavigateUrl(int TabId, string ControlKey, params string[] AdditionalParameters)
-        {
-            return Utilities.NavigateURL(TabId, ControlKey, AdditionalParameters);
-        }
-        private string[] AddParams(string param, string[] currParams)
-        {
-            var tmpParams = new[] { param };
-            int intLength = tmpParams.Length;
-            Array.Resize(ref tmpParams, (intLength + currParams.Length));
-            currParams.CopyTo(tmpParams, intLength);
-            return tmpParams;
+            return Utilities.NavigateURL(tabId);
         }
 
-        public void RenderMessage(string Title, string Message)
+        public string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters)
         {
-            RenderMessage(Utilities.GetSharedResource(Title), Message, string.Empty, null);
+            return Utilities.NavigateURL(tabId, controlKey, additionalParameters);
         }
-        public void RenderMessage(string Message, string ErrorMsg, Exception ex)
+
+        public void RenderMessage(string title, string message)
         {
-            RenderMessage(Utilities.GetSharedResource("[RESX:Error]"), Message, ErrorMsg, ex);
+            this.RenderMessage(Utilities.GetSharedResource(title), message, string.Empty, null);
         }
-        public void RenderMessage(string Title, string Message, string ErrorMsg, Exception ex)
+
+        public void RenderMessage(string message, string errorMsg, Exception ex)
         {
-            var im = new Controls.InfoMessage {Message = string.Concat(Utilities.GetSharedResource(Message), "<br />")};
+            this.RenderMessage(Utilities.GetSharedResource("[RESX:Error]"), message, errorMsg, ex);
+        }
+
+        public void RenderMessage(string title, string message, string errorMsg, Exception ex)
+        {
+            var im = new Controls.InfoMessage { Message = string.Concat(Utilities.GetSharedResource(message), "<br />") };
             if (ex != null)
             {
                 im.Message = im.Message + ex.Message;
             }
+
             if (ex != null)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
-
         }
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
-            if (Request.Params[Literals.view] != null)
+            if (this.Request.Params[Literals.View] != null)
             {
                 string sUrl;
                 string sParams = string.Empty;
-                
-                if (Request.Params[Literals.ForumId] != null)
-                {
-                    if (SimulateIsNumeric.IsNumeric(Request.Params[Literals.ForumId]))
-                    {
-                        sParams = $"{ParamKeys.ForumId}={Request.Params[Literals.ForumId]}";
-                    }
-                }
- 
-                if (Request.Params[Literals.PostId] != null)
-                {
-                    if (SimulateIsNumeric.IsNumeric(Request.Params[Literals.PostId]))
-                    {
-                        sParams += $"|{ParamKeys.TopicId}={Request.Params[Literals.PostId]}";
-                    }
-                }
-                
-                sParams += $"|{ParamKeys.ViewType}={Request.Params[Literals.view]}";
-                sUrl = NavigateUrl(TabId, "", sParams.Split('|'));
 
-                Response.Status = "301 Moved Permanently";
-                Response.AddHeader("Location", sUrl);
+                if (this.Request.Params[Literals.ForumId] != null)
+                {
+                    if (SimulateIsNumeric.IsNumeric(this.Request.Params[Literals.ForumId]))
+                    {
+                        sParams = $"{ParamKeys.ForumId}={this.Request.Params[Literals.ForumId]}";
+                    }
+                }
+
+                if (this.Request.Params[Literals.PostId] != null)
+                {
+                    if (SimulateIsNumeric.IsNumeric(this.Request.Params[Literals.PostId]))
+                    {
+                        sParams += $"|{ParamKeys.TopicId}={this.Request.Params[Literals.PostId]}";
+                    }
+                }
+
+                sParams += $"|{ParamKeys.ViewType}={this.Request.Params[Literals.View]}";
+                sUrl = this.NavigateUrl(this.TabId, string.Empty, sParams.Split('|'));
+
+                this.Response.Status = "301 Moved Permanently";
+                this.Response.AddHeader("Location", sUrl);
             }
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
         }
         #endregion
     }

@@ -1,219 +1,233 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class ControlsConfig
-	{
-#region Private Members
-		private int _PortalId;
-		private int _pageId = -1;
-		private int _ModuleId;
-		private int _forumId;
-		private int _topicId;
-		private int _contentId;
-		private string _appPath;
-		private string _themePath;
-		private User _user;
-		private string _templatePath;
-		private string _defaultViewRoles;
-		private string _profileLink;
-		private string _membersLink;
-		private string _adminRoles;
-#endregion
-#region Public Properties
-		public string AdminRoles
-		{
-			get
-			{
-				return _adminRoles;
-			}
-			set
-			{
-				_adminRoles = value;
-			}
-		}
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
 
-		public string AppPath
-		{
-			get
-			{
-				return _appPath;
-			}
-			set
-			{
-				_appPath = value;
-			}
-		}
+    public class ControlsConfig
+    {
+        #region Private Members
+        private int portalId;
+        private int pageId = -1;
+        private int moduleId;
+        private int forumId;
+        private int topicId;
+        private int contentId;
+        private string appPath;
+        private string themePath;
+        private User user;
+        private string templatePath;
+        private string defaultViewRoles;
+        private string profileLink;
+        private string membersLink;
+        private string adminRoles;
 
-		public int ContentId
-		{
-			get
-			{
-				return _contentId;
-			}
-			set
-			{
-				_contentId = value;
-			}
-		}
+        #endregion
+        #region Public Properties
+        public string AdminRoles
+        {
+            get
+            {
+                return this.adminRoles;
+            }
 
-		public string DefaultViewRoles
-		{
-			get
-			{
-				return _defaultViewRoles;
-			}
-			set
-			{
-				_defaultViewRoles = value;
-			}
-		}
+            set
+            {
+                this.adminRoles = value;
+            }
+        }
 
-		public int ForumId
-		{
-			get
-			{
-				return _forumId;
-			}
-			set
-			{
-				_forumId = value;
-			}
-		}
+        public string AppPath
+        {
+            get
+            {
+                return this.appPath;
+            }
 
-		public int ModuleId
-		{
-			get
-			{
-				return _ModuleId;
-			}
-			set
-			{
-				_ModuleId = value;
-			}
-		}
+            set
+            {
+                this.appPath = value;
+            }
+        }
 
-		public string MembersLink
-		{
-			get
-			{
-				return _membersLink;
-			}
-			set
-			{
-				_membersLink = value;
-			}
-		}
+        public int ContentId
+        {
+            get
+            {
+                return this.contentId;
+            }
 
-		public int PageId
-		{
-			get
-			{
-				return _pageId;
-			}
-			set
-			{
-				_pageId = value;
-			}
-		}
+            set
+            {
+                this.contentId = value;
+            }
+        }
 
-		public string ProfileLink
-		{
-			get
-			{
-				return _profileLink;
-			}
-			set
-			{
-				_profileLink = value;
-			}
-		}
+        public string DefaultViewRoles
+        {
+            get
+            {
+                return this.defaultViewRoles;
+            }
 
-		public int PortalId
-		{
-			get
-			{
-				return _PortalId;
-			}
-			set
-			{
-				_PortalId = value;
-			}
-		}
+            set
+            {
+                this.defaultViewRoles = value;
+            }
+        }
 
-		public string TemplatePath
-		{
-			get
-			{
-				return _templatePath;
-			}
-			set
-			{
-				_templatePath = value;
-			}
-		}
+        public int ForumId
+        {
+            get
+            {
+                return this.forumId;
+            }
 
-		public string ThemePath
-		{
-			get
-			{
-				return _themePath;
-			}
-			set
-			{
-				_themePath = value;
-			}
-		}
+            set
+            {
+                this.forumId = value;
+            }
+        }
 
-		public int TopicId
-		{
-			get
-			{
-				return _topicId;
-			}
-			set
-			{
-				_topicId = value;
-			}
-		}
+        public int ModuleId
+        {
+            get
+            {
+                return this.moduleId;
+            }
 
-		public User User
-		{
-			get
-			{
-				return _user;
-			}
-			set
-			{
-				_user = value;
-			}
-		}
+            set
+            {
+                this.moduleId = value;
+            }
+        }
 
-#endregion
+        public string MembersLink
+        {
+            get
+            {
+                return this.membersLink;
+            }
 
+            set
+            {
+                this.membersLink = value;
+            }
+        }
 
-	}
+        public int PageId
+        {
+            get
+            {
+                return this.pageId;
+            }
+
+            set
+            {
+                this.pageId = value;
+            }
+        }
+
+        public string ProfileLink
+        {
+            get
+            {
+                return this.profileLink;
+            }
+
+            set
+            {
+                this.profileLink = value;
+            }
+        }
+
+        public int PortalId
+        {
+            get
+            {
+                return this.portalId;
+            }
+
+            set
+            {
+                this.portalId = value;
+            }
+        }
+
+        public string TemplatePath
+        {
+            get
+            {
+                return this.templatePath;
+            }
+
+            set
+            {
+                this.templatePath = value;
+            }
+        }
+
+        public string ThemePath
+        {
+            get
+            {
+                return this.themePath;
+            }
+
+            set
+            {
+                this.themePath = value;
+            }
+        }
+
+        public int TopicId
+        {
+            get
+            {
+                return this.topicId;
+            }
+
+            set
+            {
+                this.topicId = value;
+            }
+        }
+
+        public User User
+        {
+            get
+            {
+                return this.user;
+            }
+
+            set
+            {
+                this.user = value;
+            }
+        }
+
+        #endregion
+
+    }
 }
-
