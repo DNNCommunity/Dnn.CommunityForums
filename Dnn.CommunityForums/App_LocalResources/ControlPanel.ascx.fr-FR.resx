@@ -1318,4 +1318,43 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="ControlTitle_edit.Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Panneau de configuration</value>
   </data>
+  <data name="[RESX:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Épingler</value>
+  </data>
+  <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Joindre</value>
+  </data>
+  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
+    <value>Bannir</value>
+  </data>
+  <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
+    <value>Créer</value>
+  </data>
+  <data name="[RESX:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="[RESX:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Éditer</value>
+  </data>
+  <data name="[RESX:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Verrouiller</value>
+  </data>
+  <data name="[RESX:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Modérer</value>
+  </data>
+  <data name="[RESX:SecGrid:Move].Text" xml:space="preserve">
+    <value>Déplacer</value>
+  </data>
+  <data name="[RESX:SecGrid:Read].Text" xml:space="preserve">
+    <value>Lire</value>
+  </data>
+  <data name="[RESX:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Répondre</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe]Text" xml:space="preserve">
+    <value>S’inscrire</value>
+  </data>
+  <data name="[RESX:SecGrid:View].Text" xml:space="preserve">
+    <value>Afficher</value>
+  </data>
 </root>

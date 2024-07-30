@@ -255,14 +255,14 @@
   <data name="SecGrid:lock.Text" xml:space="preserve" lastModified="2024-05-27 11:18:35">
     <value>Bloquear</value>
   </data>
-  <data name="SecGrid:modapprove.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Aprobar</value>
+  <data name="SecGrid:moderate.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
+    <value>Moderar</value>
   </data>
   <data name="SecGrid:move.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
     <value>Mover</value>
   </data>
-  <data name="SecGrid:moduser.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Usuario</value>
+  <data name="SecGrid:ban.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
+    <value>Bloquear</value>
   </data>
   <data name="SecGrid:pin.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
     <value>Anclar</value>
@@ -365,5 +365,8 @@
   </data>
   <data name="Yes.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
     <value>Sí</value>
+  </data>
+  <data name="[RESX:Ban].Text" xml:space="preserve">
+    <value>Bloquear</value>
   </data>
 </root>

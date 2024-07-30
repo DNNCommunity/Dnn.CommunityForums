@@ -360,14 +360,14 @@
   <data name="SecGrid:lock.Text" xml:space="preserve">
     <value>Sperre</value>
   </data>
-  <data name="SecGrid:modapprove.Text" xml:space="preserve">
-    <value>Genehmigen</value>
+  <data name="SecGrid:moderate.Text" xml:space="preserve">
+    <value>Moderieren</value>
   </data>
   <data name="SecGrid:move.Text" xml:space="preserve">
     <value>Verschieben</value>
   </data>
-  <data name="SecGrid:moduser.Text" xml:space="preserve">
-    <value>Benutzer</value>
+  <data name="SecGrid:ban.Text" xml:space="preserve">
+    <value>Sperre</value>
   </data>
   <data name="SecGrid:pin.Text" xml:space="preserve">
     <value>Pinnen</value>
@@ -470,5 +470,8 @@
   </data>
   <data name="Yes.Text" xml:space="preserve">
     <value>Ja</value>
+  </data>
+  <data name="[RESX:Ban].Text" xml:space="preserve">
+    <value>Sperre</value>
   </data>
 </root>

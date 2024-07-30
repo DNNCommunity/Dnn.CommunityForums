@@ -336,14 +336,14 @@
   <data name="SecGrid:lock.Text" xml:space="preserve">
     <value>Lock</value>
   </data>
-  <data name="SecGrid:modapprove.Text" xml:space="preserve">
-    <value>Approve</value>
+  <data name="SecGrid:moderate.Text" xml:space="preserve">
+    <value>Moderate</value>
   </data>
   <data name="SecGrid:move.Text" xml:space="preserve">
     <value>Move</value>
   </data>
-  <data name="SecGrid:moduser.Text" xml:space="preserve">
-    <value>User</value>
+  <data name="SecGrid:ban.Text" xml:space="preserve">
+    <value>Ban</value>
   </data>
   <data name="SecGrid:pin.Text" xml:space="preserve">
     <value>Pin</value>
@@ -470,5 +470,8 @@
   </data>
   <data name="ApplicationRestart.Text" xml:space="preserve">
     <value>Restarting Application after module settings changed</value>
+  </data>
+  <data name="[RESX:Ban].Text" xml:space="preserve">
+    <value>Ban</value>
   </data>
 </root>
