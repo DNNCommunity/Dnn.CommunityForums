@@ -1,55 +1,56 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Text;
+
     public partial class admin_home_new : ActiveAdminBase
     {
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
-            BindDashboard();
+            this.BindDashboard();
         }
+
         #endregion
         #region Private Methods
         private void BindDashboard()
         {
-            DataSet ds = DataProvider.Instance().Dashboard_Get(PortalId, ModuleId);
+            DataSet ds = DataProvider.Instance().Dashboard_Get(this.PortalId, this.ModuleId);
             if (ds != null)
             {
-                BindRecentTopics(ds.Tables[0]);
-                BindRecentMembers(ds.Tables[1]);
-                BindTopForums(ds.Tables[2]);
-                BindTopMembers(ds.Tables[3]);
-                BindQuickStats(ds.Tables[4]);
+                this.BindRecentTopics(ds.Tables[0]);
+                this.BindRecentMembers(ds.Tables[1]);
+                this.BindTopForums(ds.Tables[2]);
+                this.BindTopMembers(ds.Tables[3]);
+                this.BindQuickStats(ds.Tables[4]);
             }
-            LoadQuickLinks();
+
+            this.LoadQuickLinks();
         }
 
         private void LoadQuickLinks()
@@ -61,8 +62,9 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("<tr><td class=\"dashRow\"><a href=\"javascript:void(0);\" onclick=\"LoadView('manageforums_forumeditor','0|G');\">[RESX:NewForumGroup]</a><br /></td>");
             sb.Append("</tr><tr><td class=\"dashRow\"><a href=\"javascript:void(0);\" onclick=\"LoadView('manageforums_forumeditor','0|F');\">[RESX:NewForum]</a><br /></td>");
             sb.Append("</tr></table></td></tr></table>");
-            litQuickLinks.Text = sb.ToString();
+            this.litQuickLinks.Text = sb.ToString();
         }
+
         private void BindRecentTopics(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
@@ -82,9 +84,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.Append("<tr><td colspan=\"2\" class=\"dashRow\">[RESX:NoTopics]</td></tr>");
             }
+
             sb.Append("</table>");
-            litRecentTopics.Text = sb.ToString();
+            this.litRecentTopics.Text = sb.ToString();
         }
+
         private void BindRecentMembers(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
@@ -95,7 +99,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 foreach (DataRow dr in dt.Rows)
                 {
                     sb.Append("<tr>");
-                    //TODO - Fix date time format
+
+                    // TODO - Fix date time format
                     sb.Append("<td class=\"dashRow\">" + Convert.ToDateTime(dr["CreatedDate"]).ToShortDateString() + "</td>");
                     sb.Append("<td class=\"dashRow\">" + dr["FirstName"].ToString() + " " + dr["LastName"].ToString() + "</td>");
                     sb.Append("<td class=\"dashRow\">" + dr["Username"].ToString() + "</td>");
@@ -106,9 +111,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.Append("<tr><td colspan=\"3\" class=\"dashRow\">[RESX:NoMembers]</td></tr>");
             }
+
             sb.Append("</table>");
-            litRecentMembers.Text = sb.ToString();
+            this.litRecentMembers.Text = sb.ToString();
         }
+
         private void BindTopForums(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
@@ -129,9 +136,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.Append("<tr><td colspan=\"3\" class=\"dashRow\">[RESX:NoForums]</td></tr>");
             }
+
             sb.Append("</table>");
-            litTopForums.Text = sb.ToString();
+            this.litTopForums.Text = sb.ToString();
         }
+
         private void BindTopMembers(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
@@ -141,7 +150,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 foreach (DataRow dr in dt.Rows)
                 {
                     sb.Append("<tr>");
-                    //TODO - Fix display name
+
+                    // TODO - Fix display name
                     sb.Append("<td class=\"dashRow\">" + dr["DisplayName"].ToString() + "</td>");
                     sb.Append("</tr>");
                 }
@@ -150,9 +160,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.Append("<tr><td class=\"dashRow\">[RESX:NoMembers]</td></tr>");
             }
+
             sb.Append("</table>");
-            litTopMembers.Text = sb.ToString();
+            this.litTopMembers.Text = sb.ToString();
         }
+
         private void BindQuickStats(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
@@ -172,8 +184,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.Append("<tr><td class=\"dashRow\">[RESX:NoData]</td></tr>");
             }
+
             sb.Append("</table>");
-            litQuickStats.Text = sb.ToString();
+            this.litQuickStats.Text = sb.ToString();
         }
         #endregion
     }

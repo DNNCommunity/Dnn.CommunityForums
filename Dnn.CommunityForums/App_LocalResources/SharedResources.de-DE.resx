@@ -177,9 +177,6 @@
   <data name="[RESX:Announcements].Text" xml:space="preserve">
     <value>Ankündigungen</value>
   </data>
-  <data name="[RESX:AOL].Text" xml:space="preserve">
-    <value>AOL</value>
-  </data>
   <data name="[RESX:Approve].Text" xml:space="preserve">
     <value>Genehmigen</value>
   </data>
@@ -475,9 +472,6 @@ Von
   <data name="[RESX:Height].Text" xml:space="preserve">
     <value>Höhe</value>
   </data>
-  <data name="[RESX:ICQ].Text" xml:space="preserve">
-    <value>ICQ</value>
-  </data>
   <data name="[RESX:Image].Text" xml:space="preserve">
     <value>Bild</value>
   </data>
@@ -492,9 +486,6 @@ Von
   </data>
   <data name="[RESX:InsertImage].Text" xml:space="preserve">
     <value>Bild einfügen</value>
-  </data>
-  <data name="[RESX:Interests].Text" xml:space="preserve">
-    <value>Interessen</value>
   </data>
   <data name="[RESX:Italics].Text" xml:space="preserve">
     <value>I</value>
@@ -561,9 +552,6 @@ Von
   </data>
   <data name="[RESX:LastVisit].Text" xml:space="preserve">
     <value>Letzter Besuch</value>
-  </data>
-  <data name="[RESX:Location].Text" xml:space="preserve">
-    <value>Ort</value>
   </data>
   <data name="[RESX:Lock].Text" xml:space="preserve">
     <value>Sperre</value>
@@ -634,9 +622,6 @@ Von
   <data name="[RESX:MoveTopicTitle].Text" xml:space="preserve">
     <value>Thema verschieben</value>
   </data>
-  <data name="[RESX:MSN].Text" xml:space="preserve">
-    <value>MSN</value>
-  </data>
   <data name="[RESX:MultiPageTopic].Text" xml:space="preserve">
     <value>Das Thema hat mehrere Seiten</value>
   </data>
@@ -702,9 +687,6 @@ Von
   </data>
   <data name="[RESX:NotTrusted].Text" xml:space="preserve">
     <value>Nicht vertrauenswürdig</value>
-  </data>
-  <data name="[RESX:Occupation].Text" xml:space="preserve">
-    <value>Besetzung</value>
   </data>
   <data name="[RESX:OldestFirst].Text" xml:space="preserve">
     <value>Älteste zuerst</value>
@@ -840,9 +822,6 @@ Von
   </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve">
     <value>Der Forenadministrator hat Ihnen möglicherweise erlaubt, verschiedene Abonnementformen auszuwählen.  Sie können Ihre gewünschte Präferenz auswählen.</value>
-  </data>
-  <data name="[RESX:PrefUseAjax].Text" xml:space="preserve">
-    <value>Verwenden Sie Ajax</value>
   </data>
   <data name="[RESX:Preview].Text" xml:space="preserve">
     <value>Vorschau</value>
@@ -1210,9 +1189,6 @@ Von
   <data name="[RESX:Tips:PrefShowReplies].Text" xml:space="preserve">
     <value>Wenn Sie diese Option auswählen, können Sie alle Antworten für ein bestimmtes Thema sehen, während Sie eine Antwort verfassen.</value>
   </data>
-  <data name="[RESX:Tips:PrefUseAjax].Text" xml:space="preserve">
-    <value>AJAX ist eine Programmiermethode, um die Art und Weise zu verbessern, wie Sie mit den Foren interagieren.  Sie können wählen, ob Sie diese Funktion verwenden möchten oder nicht.</value>
-  </data>
   <data name="[RESX:Tips:ProfileVisibility].Text" xml:space="preserve">
     <value>Wählen Sie aus, welche Art von Benutzern Zugriff auf andere Profile haben soll.</value>
   </data>
@@ -1335,9 +1311,6 @@ Von
   </data>
   <data name="[RESX:Width].Text" xml:space="preserve">
     <value>Breite</value>
-  </data>
-  <data name="[RESX:Yahoo].Text" xml:space="preserve">
-    <value>Yahoo</value>
   </data>
   <data name="[RESX:Yes].Text" xml:space="preserve">
     <value>Ja</value>
@@ -1751,5 +1724,11 @@ Von
   </data>
   <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
     <value>Die Berechtigungen {0} für Forum-{1} werden nicht in der Datenbank gefunden. Sie müssen dies in der Datenbank reparieren oder das Forum löschen und neu erstellen. Bitte besuchen Sie das Github-Repository (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki für Schritte zur Fehlerbehebung überprüfen können.</value>
+  </data>
+  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
+    <value>Keine ausstehenden Beiträge</value>
+  </data>
+  <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
+    <value>Bitte &lt;a href="{0}"{1}&gt;melden Sie sich an&lt;/a&gt;, um ein Thema hinzuzufügen.</value>
   </data>
 </root>

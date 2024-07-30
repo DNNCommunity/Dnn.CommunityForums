@@ -114,12 +114,6 @@
   <data name="[RESX:AllowScripts].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Script</value>
   </data>
-  <data name="[RESX:AllowUserBios].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Consenti BIOS utente</value>
-  </data>
-  <data name="[RESX:AllowUserPhotos].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Consenti foto utente</value>
-  </data>
   <data name="[RESX:AllUsers].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Tutti gli utenti</value>
   </data>
@@ -375,7 +369,7 @@
   <data name="[RESX:EnableURLRewriter].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Abilita URL brevi</value>
   </data>
-    <data name="[RESX:EOMALL].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+  <data name="[RESX:EOMALL].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>ALL - Obbligatorio</value>
   </data>
   <data name="[RESX:EOMOptional].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">

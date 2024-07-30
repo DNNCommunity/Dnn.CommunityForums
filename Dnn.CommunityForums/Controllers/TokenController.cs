@@ -1,22 +1,23 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,22 +25,24 @@ using System.Data;
 using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
+
 using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
-    public class TokensController { TokensController() { throw new NotImplementedException(); } }    
+    public class TokensController { TokensController() { throw new NotImplementedException(); } }
 }
-    namespace DotNetNuke.Modules.ActiveForums.Controllers
+
+namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     public class TokenController
     {
-        internal static List<Token> TokensList(int ModuleId, string group)
+        internal static List<Token> TokensList(int moduleId, string group)
         {
             try
             {
-                List<Token> li = (List<Token>)DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.Tokens, ModuleId, group));
+                List<Token> li = (List<Token>)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.Tokens, moduleId, group));
                 if (li == null)
                 {
                     li = new List<Token>();
@@ -55,6 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             sQuery = string.Concat(sQuery, "[@group='", group, "' or @group='*']");
                         }
+
                         System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes(sQuery);
                         if (xNodeList.Count > 0)
                         {
@@ -77,8 +81,10 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
                     }
-                    DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.Tokens, ModuleId, group), li);
+
+                    DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.Tokens, moduleId, group), li);
                 }
+
                 return li;
             }
             catch (Exception ex)
@@ -87,20 +93,21 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
             }
         }
-        internal static string TokenGet(int ModuleId, string group, string TokenName)
+
+        internal static string TokenGet(int moduleId, string group, string tokenName)
         {
             string sOut = string.Empty;
-            List<Token> tl = TokensList(ModuleId, group);
+            List<Token> tl = TokensList(moduleId, group);
             foreach (Token t in tl)
             {
-                if (t.TokenTag == TokenName)
+                if (t.TokenTag == tokenName)
                 {
                     sOut = t.TokenReplace;
                     break;
                 }
             }
+
             return sOut;
         }
     }
 }
-

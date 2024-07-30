@@ -34,18 +34,6 @@
 						<td width="50%" valign="top">
 							<table>
 								<tr>
-									<td class="afbold">[RESX:Website]:</td><td class="afnormal">[AF:PROFILE:WEBSITE]</td>
-								</tr>
-								<tr>
-									<td class="afbold">[RESX:Location]:</td><td class="afnormal">[AF:PROFILE:LOCATION]</td>
-								</tr>
-								<tr>
-									<td class="afbold">[RESX:Occupation]:</td><td class="afnormal">[AF:PROFILE:OCCUPATION]</td>
-								</tr>
-								<tr>
-									<td class="afbold">[RESX:Interests]:</td><td class="afnormal">[AF:PROFILE:INTERESTS]</td>
-								</tr>
-								<tr>
 									<td class="afbold" valign="top">[RESX:Avatar]:</td><td>[AF:PROFILE:AVATAR]<br />[AF:CONTROL:AVATAREDIT]</td>
 								</tr>
 								<tr>
@@ -61,18 +49,6 @@
 							<table>
 								<tr>
 									<td class="afnormal" colspan="2">[AF:PROFILE:VIEWUSERPOSTS]</td>
-								</tr>
-								<tr>
-									<td class="afbold">[RESX:Yahoo]:</td><td class="afnormal">[AF:PROFILE:YAHOO]</td>
-								</tr>
-								<tr>
-									<td class="afbold">[RESX:MSN]:</td><td class="afnormal">[AF:PROFILE:MSN]</td>
-								</tr>
-								<tr>
-									<td class="afbold">[RESX:ICQ]:</td><td class="afnormal">[AF:PROFILE:ICQ]</td>
-								</tr>
-								<tr>
-									<td class="afbold">[RESX:AOL]:</td><td class="afnormal">[AF:PROFILE:AOL]</td>
 								</tr>
 							</table>
 						</td>

@@ -1,66 +1,69 @@
+// Copyright (c) 2013-2024 by DNN Community
 //
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+// DNN Community licenses this file to you under the MIT license.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
 
-using System;
-using System.Web;
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Web;
+
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
     public class AMPageBase : Framework.PageBase
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
-        public static int _AFModId;
+        public static int AFModId;
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static int AFModID
-		{
-			get
-			{
-				return _AFModId;
-			}
-			set
-			{
-				_AFModId = value;
-			}
-		}
-        //Public ReadOnly Property PortalId() As Integer
+        {
+            get
+            {
+                return AFModId;
+            }
+
+            set
+            {
+                AFModId = value;
+            }
+        }
+
+        // Public ReadOnly Property PortalId() As Integer
         //    Get
         //        Return CInt(Request.QueryString["pid"])
         //    End Get
-        //End Property
+        // End Property
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static SettingsInfo MainSettings
-		{
-			get
-			{
+        {
+            get
+            {
                 return DotNetNuke.Modules.ActiveForums.SettingsBase.GetModuleSettings(AFModID);
-			}
-		}
+            }
+        }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static int TabId
-		{
-			get
-			{
-				return Convert.ToInt32(HttpContext.Current.Request.QueryString["tabid"]);
-			}
-		}
-
-
-	}
+        {
+            get
+            {
+                return Convert.ToInt32(HttpContext.Current.Request.QueryString["tabid"]);
+            }
+        }
+    }
 }

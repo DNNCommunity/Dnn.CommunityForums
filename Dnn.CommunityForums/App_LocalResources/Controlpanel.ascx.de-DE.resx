@@ -219,12 +219,6 @@
   <data name="[RESX:AllowScripts].Text" xml:space="preserve">
     <value>Skripte zulassen</value>
   </data>
-  <data name="[RESX:AllowUserBios].Text" xml:space="preserve">
-    <value>Benutzer-Bios zulassen</value>
-  </data>
-  <data name="[RESX:AllowUserPhotos].Text" xml:space="preserve">
-    <value>Benutzerfotos zulassen</value>
-  </data>
   <data name="[RESX:AllUsers].Text" xml:space="preserve">
     <value>Alle Benutzer</value>
   </data>

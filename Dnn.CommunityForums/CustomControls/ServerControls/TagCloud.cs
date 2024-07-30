@@ -1,153 +1,173 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     [ToolboxData("<{0}:TagCloud runat=server></{0}:TagCloud>")]
     public class TagCloud : WebControl
     {
-        private int _PortalId = -1;
-        private int _ModuleId = -1;
-        private string _cssOne = "tagcssone";
-        private string _cssTwo = "tagcsstwo";
-        private string _cssThree = "tagcssthree";
-        private int _TabId = -1;
+        private int portalId = -1;
+        private int moduleId = -1;
+        private string cssOne = "tagcssone";
+        private string cssTwo = "tagcsstwo";
+        private string cssThree = "tagcssthree";
+        private int tabId = -1;
+
         public int TabId
         {
             get
             {
-                return _TabId;
+                return this.tabId;
             }
+
             set
             {
-                _TabId = value;
+                this.tabId = value;
             }
         }
+
         public int PortalId
         {
             get
             {
-                return _PortalId;
+                return this.portalId;
             }
+
             set
             {
-                _PortalId = value;
+                this.portalId = value;
             }
         }
+
         public int ModuleId
         {
             get
             {
-                return _ModuleId;
+                return this.moduleId;
             }
+
             set
             {
-                _ModuleId = value;
+                this.moduleId = value;
             }
         }
+
         public string CSSOne
         {
             get
             {
-                return _cssOne;
+                return this.cssOne;
             }
+
             set
             {
-                _cssOne = value;
+                this.cssOne = value;
             }
         }
+
         public string CSSTwo
         {
             get
             {
-                return _cssTwo;
+                return this.cssTwo;
             }
+
             set
             {
-                _cssTwo = value;
+                this.cssTwo = value;
             }
         }
+
         public string CSSThree
         {
             get
             {
-                return _cssThree;
+                return this.cssThree;
             }
+
             set
             {
-                _cssThree = value;
+                this.cssThree = value;
             }
         }
-        private string _ForumIds = string.Empty;
+
+        private string forumIds = string.Empty;
+
         public string ForumIds
         {
             get
             {
-                return _ForumIds;
+                return this.forumIds;
             }
+
             set
             {
-                _ForumIds = value;
+                this.forumIds = value;
             }
         }
-        private int _TagCount = 15;
+
+        private int tagCount = 15;
+
         public int TagCount
         {
             get
             {
-                return _TagCount;
+                return this.tagCount;
             }
+
             set
             {
-                _TagCount = value;
+                this.tagCount = value;
             }
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             User forumUser = null;
-            if (string.IsNullOrEmpty(ForumIds))
+            if (string.IsNullOrEmpty(this.ForumIds))
             {
                 UserController uc = new UserController();
-                forumUser = uc.GetUser(PortalId, ModuleId);
+                forumUser = uc.GetUser(this.PortalId, this.ModuleId);
                 if (string.IsNullOrEmpty(forumUser.UserForums))
                 {
-                    ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, PortalId, ModuleId);
+                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, this.PortalId, this.ModuleId);
                 }
                 else
                 {
-                    ForumIds = forumUser.UserForums;
+                    this.ForumIds = forumUser.UserForums;
                 }
             }
-            SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
+
+            SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
             Data.Common db = new Data.Common();
-            IDataReader dr = db.TagCloud_Get(PortalId, ModuleId, ForumIds, TagCount);
+            IDataReader dr = db.TagCloud_Get(this.PortalId, this.ModuleId, this.ForumIds, this.TagCount);
             ControlUtils ctlUtils = new ControlUtils();
             string sURL = string.Empty;
             while (dr.Read())
@@ -160,30 +180,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 switch (priority)
                 {
                     case 1:
-                        css = CSSOne;
+                        css = this.CSSOne;
                         break;
                     case 2:
-                        css = CSSTwo;
+                        css = this.CSSTwo;
                         break;
                     case 3:
-                        css = CSSThree;
+                        css = this.CSSThree;
                         break;
                 }
+
                 writer.Write("<span class=\"" + css + "\">");
                 writer.Write("<a href=\"");
-                sURL = ctlUtils.BuildUrl(TabId, ModuleId, string.Empty, string.Empty, -1, -1, int.Parse(dr["TagID"].ToString()), -1, Utilities.CleanName(tagName), 1, -1, -1);
+                sURL = ctlUtils.BuildUrl(this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, int.Parse(dr["TagID"].ToString()), -1, Utilities.CleanName(tagName), 1, -1, -1);
                 writer.Write(sURL);
                 writer.Write("\" title=\"" + HttpUtility.HtmlAttributeEncode(tagName) + "\">" + tagName + "</a></span> ");
             }
+
             dr.Close();
             dr.Dispose();
         }
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
-            EnableViewState = false;
+            this.EnableViewState = false;
         }
     }
 }

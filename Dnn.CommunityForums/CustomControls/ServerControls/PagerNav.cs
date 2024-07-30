@@ -1,38 +1,39 @@
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+// DNN Community licenses this file to you under the MIT license.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.ComponentModel;
-using System.Text;
-using System.Web.UI;
-using System.Web;
-using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:pagernav runat=server></{0}:pagernav>")]
     public class PagerNav : WebControl
     {
         public enum Mode
         {
             Links,
-            CallBack
+            CallBack,
         }
 
         public bool UseShortUrls { get; set; }
@@ -82,32 +83,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            EnableViewState = false;
+            this.EnableViewState = false;
         }
 
         protected override void Render(HtmlTextWriter output)
         {
-            Text = RenderPager();
-            output.Write(Text);
+            this.Text = this.RenderPager();
+            output.Write(this.Text);
         }
 
         public string RenderPager()
         {
             var sb = new StringBuilder();
 
-            PageMode = Mode.Links;
+            this.PageMode = Mode.Links;
 
-            if (!(string.IsNullOrEmpty(BaseURL)))
+            if (!string.IsNullOrEmpty(this.BaseURL))
             {
-                if (!(BaseURL.EndsWith("/")))
+                if (!this.BaseURL.EndsWith("/"))
                 {
-                    BaseURL += "/";
+                    this.BaseURL += "/";
                 }
             }
 
@@ -117,52 +116,52 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 qs = $"?{ParamKeys.TimeSpan}={HttpContext.Current.Request.QueryString[ParamKeys.TimeSpan]}";
             }
 
-            if (PageCount > 1)
+            if (this.PageCount > 1)
             {
                 sb.Append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"afpager\"><tr>");
-                sb.Append("<td class=\"af_pager\">" + PageText + " " + CurrentPage + " " + OfText + " " + PageCount + "</td>");
-                if (CurrentPage != 1)
+                sb.Append("<td class=\"af_pager\">" + this.PageText + " " + this.CurrentPage + " " + this.OfText + " " + this.PageCount + "</td>");
+                if (this.CurrentPage != 1)
                 {
-                    if (PageMode == Mode.Links)
+                    if (this.PageMode == Mode.Links)
                     {
-                        if (string.IsNullOrEmpty(BaseURL))
+                        if (string.IsNullOrEmpty(this.BaseURL))
                         {
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(TabID, "", BuildParams(View, ForumID, 1, TopicId)) + "\" title=\"First Page\"> &lt;&lt; </a></td>");
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(TabID, "", BuildParams(View, ForumID, CurrentPage - 1, TopicId)) + "\" title=\"Previous Page\"> &lt; </a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, 1, this.TopicId)) + "\" title=\"First Page\"> &lt;&lt; </a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.CurrentPage - 1, this.TopicId)) + "\" title=\"Previous Page\"> &lt; </a></td>");
                         }
                         else
                         {
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + BaseURL + qs + "\" title=\"First Page\"> &lt;&lt; </a></td>");
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + BaseURL + (CurrentPage - 1) + "/" + qs + "\" title=\"Previous Page\"> &lt; </a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + qs + "\" title=\"First Page\"> &lt;&lt; </a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + (this.CurrentPage - 1) + "/" + qs + "\" title=\"Previous Page\"> &lt; </a></td>");
                         }
                     }
                     else
                     {
-                        sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"javascript:" + string.Format(ClientScript, "1") + "\" title=\"First Page\"> &lt;&lt; </a></td>");
-                        sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"javascript:" + string.Format(ClientScript, CurrentPage - 1) + "\" title=\"Previous Page\"> &lt; </a></td>");
+                        sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"javascript:" + string.Format(this.ClientScript, "1") + "\" title=\"First Page\"> &lt;&lt; </a></td>");
+                        sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"javascript:" + string.Format(this.ClientScript, this.CurrentPage - 1) + "\" title=\"Previous Page\"> &lt; </a></td>");
                     }
                 }
 
                 int iStart;
                 int iMaxPage;
 
-                if (CurrentPage <= 3)
+                if (this.CurrentPage <= 3)
                 {
                     iStart = 1;
                     iMaxPage = 5;
                 }
                 else
                 {
-                    iStart = CurrentPage - 2;
-                    iMaxPage = CurrentPage + 2;
+                    iStart = this.CurrentPage - 2;
+                    iMaxPage = this.CurrentPage + 2;
                 }
 
-                if (iMaxPage > PageCount)
+                if (iMaxPage > this.PageCount)
                 {
-                    iMaxPage = PageCount;
+                    iMaxPage = this.PageCount;
                 }
 
-                if (iMaxPage == PageCount)
+                if (iMaxPage == this.PageCount)
                 {
                     iStart = iMaxPage - 4;
                 }
@@ -175,57 +174,61 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 int i;
                 for (i = iStart; i <= iMaxPage; i++)
                 {
-                    if (i == CurrentPage)
+                    if (i == this.CurrentPage)
                     {
                         sb.Append("<td class=\"af_currentpage\" style=\"text-align:center;\">" + i + "</td>");
                     }
                     else
                     {
-                        if (PageMode == Mode.Links)
+                        if (this.PageMode == Mode.Links)
                         {
-                            if (string.IsNullOrEmpty(BaseURL))
+                            if (string.IsNullOrEmpty(this.BaseURL))
                             {
-                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(TabID, "", BuildParams(View, ForumID, i, TopicId)) + "\">" + i + "</a></td>");
+                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, i, this.TopicId)) + "\">" + i + "</a></td>");
                             }
                             else
                             {
                                 if (i > 1)
-                                    sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + BaseURL + i + "/" + qs + "\">" + i + "</a></td>");
+                                {
+                                    sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + i + "/" + qs + "\">" + i + "</a></td>");
+                                }
                                 else
-                                    sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + BaseURL + qs + "\">" + i + "</a></td>");
+                                {
+                                    sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + qs + "\">" + i + "</a></td>");
+                                }
                             }
                         }
                         else
                         {
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"javascript:" + string.Format(ClientScript, i) + "\">" + i + "</a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"javascript:" + string.Format(this.ClientScript, i) + "\">" + i + "</a></td>");
                         }
-
                     }
 
-                    if (i == PageCount)
+                    if (i == this.PageCount)
+                    {
                         break;
-
+                    }
                 }
 
-                if (CurrentPage != PageCount)
+                if (this.CurrentPage != this.PageCount)
                 {
-                    if (PageMode == Mode.Links)
+                    if (this.PageMode == Mode.Links)
                     {
-                        if (string.IsNullOrEmpty(BaseURL))
+                        if (string.IsNullOrEmpty(this.BaseURL))
                         {
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(TabID, "", BuildParams(View, ForumID, CurrentPage + 1, TopicId)) + "\" title=\"Next Page\"> &gt;</a></td>");
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(TabID, "", BuildParams(View, ForumID, PageCount, TopicId)) + "\" title=\"Last Page\"> &gt;&gt;</a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.CurrentPage + 1, this.TopicId)) + "\" title=\"Next Page\"> &gt;</a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.PageCount, this.TopicId)) + "\" title=\"Last Page\"> &gt;&gt;</a></td>");
                         }
                         else
                         {
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + BaseURL + (CurrentPage + 1) + "/" + qs + "\" title=\"Next Page\"> &gt;</a></td>");
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + BaseURL + PageCount + "/" + qs + "\" title=\"Last Page\"> &gt;&gt;</a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + (this.CurrentPage + 1) + "/" + qs + "\" title=\"Next Page\"> &gt;</a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + this.PageCount + "/" + qs + "\" title=\"Last Page\"> &gt;&gt;</a></td>");
                         }
                     }
                     else
                     {
-                        sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"javascript:" + string.Format(ClientScript, CurrentPage + 1) + "\" title=\"Next Page\"> &gt;</a></td>");
-                        sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"javascript:" + string.Format(ClientScript, PageCount) + "\"> &gt;&gt;</a></td>");
+                        sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"javascript:" + string.Format(this.ClientScript, this.CurrentPage + 1) + "\" title=\"Next Page\"> &gt;</a></td>");
+                        sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"javascript:" + string.Format(this.ClientScript, this.PageCount) + "\"> &gt;&gt;</a></td>");
                     }
                 }
 
@@ -249,21 +252,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     params2 = new[] { ParamKeys.ViewType + "=" + view, ParamKeys.ForumId + "=" + forumID };
                 }
 
-                if (UseShortUrls && page > 1)
+                if (this.UseShortUrls && page > 1)
                 {
                     params2 = new[] { ParamKeys.ForumId + "=" + forumID, ParamKeys.PageId + "=" + page };
                 }
-                else if (UseShortUrls && page == 1)
+                else if (this.UseShortUrls && page == 1)
                 {
                     params2 = new[] { ParamKeys.ForumId + "=" + forumID };
                 }
-                if (Params != null)
+
+                if (this.Params != null)
                 {
                     var intLength = params2.Length;
-                    Array.Resize(ref params2, (intLength + Params.Length));
-                    Params.CopyTo(params2, intLength);
+                    Array.Resize(ref params2, intLength + this.Params.Length);
+                    this.Params.CopyTo(params2, intLength);
                 }
-
             }
             else if (view.ToLowerInvariant() == Views.Topic.ToLowerInvariant())
             {
@@ -276,38 +279,38 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     params2 = new[] { ParamKeys.ViewType + "=" + view, ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID };
                 }
 
-                if (UseShortUrls && page > 1)
+                if (this.UseShortUrls && page > 1)
                 {
                     params2 = new[] { ParamKeys.TopicId + "=" + postID, ParamKeys.PageId + "=" + page };
                 }
-                else if (UseShortUrls && page == 1)
+                else if (this.UseShortUrls && page == 1)
                 {
                     params2 = new[] { ParamKeys.TopicId + "=" + postID };
                 }
-                if (Params != null)
+
+                if (this.Params != null)
                 {
                     var intLength = params2.Length;
-                    Array.Resize(ref params2, (intLength + Params.Length));
-                    Params.CopyTo(params2, intLength);
+                    Array.Resize(ref params2, intLength + this.Params.Length);
+                    this.Params.CopyTo(params2, intLength);
                 }
             }
             else
             {
-                if (Params != null)
+                if (this.Params != null)
                 {
                     params2 = new[] { ParamKeys.ViewType + "=" + view, ParamKeys.PageId + "=" + page };
                     var intLength = params2.Length;
-                    Array.Resize(ref params2, (intLength + Params.Length));
-                    Params.CopyTo(params2, intLength);
+                    Array.Resize(ref params2, intLength + this.Params.Length);
+                    this.Params.CopyTo(params2, intLength);
                 }
                 else
                 {
                     params2 = new[] { ParamKeys.ViewType + "=" + view, ParamKeys.PageId + "=" + page };
                 }
             }
+
             return params2;
         }
-
-
     }
 }
