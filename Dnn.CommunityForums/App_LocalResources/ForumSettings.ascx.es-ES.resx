@@ -240,48 +240,6 @@
   <data name="ReplyPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
     <value>Respuesta</value>
   </data>
-  <data name="SecGrid:attach.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Adjuntar</value>
-  </data>
-  <data name="SecGrid:create.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Crear</value>
-  </data>
-  <data name="SecGrid:delete.Text" xml:space="preserve" lastModified="2024-05-27 11:18:35">
-    <value>Eliminar</value>
-  </data>
-  <data name="SecGrid:edit.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Editar</value>
-  </data>
-  <data name="SecGrid:lock.Text" xml:space="preserve" lastModified="2024-05-27 11:18:35">
-    <value>Bloquear</value>
-  </data>
-  <data name="SecGrid:moderate.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Moderar</value>
-  </data>
-  <data name="SecGrid:move.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Mover</value>
-  </data>
-  <data name="SecGrid:ban.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Bloquear</value>
-  </data>
-  <data name="SecGrid:pin.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Anclar</value>
-  </data>
-  <data name="SecGrid:read.Text" xml:space="preserve" lastModified="2024-05-27 11:22:44">
-    <value>Lectura</value>
-  </data>
-  <data name="SecGrid:reply.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Respuesta</value>
-  </data>
-  <data name="SecGrid:subscribe.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Subscribir</value>
-  </data>
-  <data name="SecGrid:user.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Vista</value>
-  </data>
-  <data name="SecGrid:view.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
-    <value>Vista</value>
-  </data>
   <data name="SignatureDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
     <value>Deshabilitado</value>
   </data>

@@ -67,13 +67,13 @@
     <value>Verstek</value>
   </data>
   <data name="DefaultDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>--Invalide--</value>
+    <value>--Uitgeschakeld--</value>
   </data>
   <data name="DefaultPageSize.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Voer het standaardaantal items in dat u wilt weergeven op de pagina Onderwerpen en antwoorden.</value>
   </data>
   <data name="DefaultPageSize.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Standaard paginaformaat</value>
+    <value>Standaard paginering</value>
   </data>
   <data name="DefaultProfile.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Standaard profiel</value>
@@ -82,10 +82,10 @@
     <value>Kies wat er met inhoud gebeurt wanneer deze wordt verwijderd. &lt;b&gt;Verwijderen&lt;/b&gt; - Verwijdert inhoud uit de database.  &lt;b&gt;Recyclen&lt;/b&gt; - Inhoud wordt gemarkeerd als verwijderd en blijft in de database staan. Kies deze optie als u wilt profiteren van incrementeel DNN-zoeken.</value>
   </data>
   <data name="DeleteBehavior.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Gedrag verwijderen</value>
+    <value>Bij verwijderen</value>
   </data>
   <data name="Disabled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Invalide</value>
+    <value>Uitgeschakeld</value>
   </data>
   <data name="DisplayName.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Weergavenaam</value>
@@ -97,7 +97,7 @@
     <value>Hiermee kan de gebruiker zijn bericht alleen bewerken binnen een bepaald aantal minuten vanaf het moment dat het is gemaakt.  De gebruiker moet ook bewerkingsrechten hebben.  Stel deze waarde in op 0 om deze functie uit te schakelen.</value>
   </data>
   <data name="EditInterval.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Interval bewerken</value>
+    <value>Bewerk interval</value>
   </data>
   <data name="EnablePoints.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Het puntensysteem stelt gebruikers in staat om punten te ontvangen voor bepaalde acties binnen het forum om hun rang te verhogen.</value>
@@ -121,7 +121,7 @@
     <value>Het aantal seconden dat een gebruiker moet wachten tussen berichten.</value>
   </data>
   <data name="FloodInterval.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Overstromingsinterval</value>
+    <value>Spam beschermings interval</value>
   </data>
   <data name="ForumGroupTemplate.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Selecteer de forumgroep die gebruikt gaat worden voor nieuwe forums.  Dit is alleen van toepassing op forums die automatisch worden aangemaakt voor sociale groepen.</value>
@@ -178,7 +178,7 @@
     <value>Standaard berichten</value>
   </data>
   <data name="MessagingDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Invalide</value>
+    <value>Uitgeschakeld</value>
   </data>
   <data name="MessagingTab.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Selecteer het tabblad met de module voor privéberichten</value>
@@ -240,50 +240,8 @@
   <data name="ReplyPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Antwoord</value>
   </data>
-  <data name="SecGrid:attach.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Vastmaken</value>
-  </data>
-  <data name="SecGrid:create.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Scheppen</value>
-  </data>
-  <data name="SecGrid:delete.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Verwijderen</value>
-  </data>
-  <data name="SecGrid:edit.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Bewerken</value>
-  </data>
-  <data name="SecGrid:lock.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Slot</value>
-  </data>
-  <data name="SecGrid:moderate.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Modereren</value>
-  </data>
-  <data name="SecGrid:move.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Bewegen</value>
-  </data>
-  <data name="SecGrid:ban.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Verbod</value>
-  </data>
-  <data name="SecGrid:pin.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Speld</value>
-  </data>
-  <data name="SecGrid:read.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Lezen</value>
-  </data>
-  <data name="SecGrid:reply.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Antwoord</value>
-  </data>
-  <data name="SecGrid:subscribe.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Abonneren</value>
-  </data>
-  <data name="SecGrid:user.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Bekijken</value>
-  </data>
-  <data name="SecGrid:view.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Bekijken</value>
-  </data>
   <data name="SignatureDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Invalide</value>
+    <value>Uitgeschakeld</value>
   </data>
   <data name="SignatureHTML.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Platte tekst en HTML toestaan</value>

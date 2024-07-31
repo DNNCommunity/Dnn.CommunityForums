@@ -264,9 +264,6 @@
   <data name="[RESX:UniqueFileNames].Text" xml:space="preserve">
     <value>Unique Filenames</value>
   </data>
-  <data name="[RESX:AllowUserPhotos].Text" xml:space="preserve">
-    <value>Allow User Photos</value>
-  </data>
   <data name="[RESX:AvatarDimensions].Text" xml:space="preserve">
     <value>Avatar Dimensions</value>
   </data>
@@ -335,9 +332,6 @@
   </data>
   <data name="[RESX:UsersOnlineEnabled].Text" xml:space="preserve">
     <value>Show Users Online</value>
-  </data>
-  <data name="[RESX:AllowUserBios].Text" xml:space="preserve">
-    <value>Allow User Bios</value>
   </data>
   <data name="[RESX:About].Text" xml:space="preserve">
     <value>About</value>
@@ -831,19 +825,19 @@
   <data name="[RESX:Exit].Text" xml:space="preserve">
     <value>Exit</value>
   </data>
-	<data name="[RESX:InheritGroupFeatures].Text" xml:space="preserve">
+  <data name="[RESX:InheritGroupFeatures].Text" xml:space="preserve">
     <value>Inherit Group Settings</value>
   </data>
-	<data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve">
+  <data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve">
     <value>Check this box to inherit feature settings from the group.</value>
   </data>
-	<data name="[RESX:InheritGroupSecurity].Text" xml:space="preserve">
+  <data name="[RESX:InheritGroupSecurity].Text" xml:space="preserve">
     <value>Inherit Group Security</value>
   </data>
-	<data name="[RESX:Tips:InheritGroupSecurity].Text" xml:space="preserve">
+  <data name="[RESX:Tips:InheritGroupSecurity].Text" xml:space="preserve">
     <value>Check this box to inherit security from the group.</value>
   </data>
-	<data name="[RESX:ClickToAdd].Text" xml:space="preserve">
+  <data name="[RESX:ClickToAdd].Text" xml:space="preserve">
     <value>Click to Add</value>
   </data>
   <data name="[RESX:Tips:EnableAvatars].Text" xml:space="preserve">
@@ -1309,7 +1303,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:EditControl].Text" xml:space="preserve">
     <value>Content Edit Control</value>
   </data>
-   <data name="[RESX:FloodControl].Text" xml:space="preserve">
+  <data name="[RESX:FloodControl].Text" xml:space="preserve">
     <value>Duplicate Posts and Abuse Prevention</value>
   </data>
   <data name="[RESX:FriendlyURLOptions].Text" xml:space="preserve">
@@ -1452,5 +1446,89 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   </data>
   <data name="[RESX:SecGrid:View].Text" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="[RESX:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Announce</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Subscribe</value>
+  </data>
+  <data name="[RESX:SecGrid:Trust].Text" xml:space="preserve">
+    <value>Trust</value>
+  </data>
+  <data name="[RESX:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="[RESX:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Prioritize</value>
+  </data>
+  <data name="[RESX:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Categorize</value>
+  </data>
+  <data name="[RESX:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Poll</value>
+  </data>
+  <data name="[RESX:SecGrid:Split].Text" xml:space="preserve">
+    <value>Split</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Can flag their own topics as Announcements. Announcements are displayed above the normal topics list.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Can upload and attach files to new topics and replies.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
+    <value>Can banish a rogue user, deleting all content for the user, and disabling their DNN user account. Cannot be used on Super Users or Administrators. Should be granted only to trusted moderators or Administrator roles.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Can specify what categories a new topic belongs to.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Create].Text" xml:space="preserve">
+    <value>Can see the New Topic button.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Can delete their own posts. Users with Moderate + Delete can delete any topic or reply in the forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Can edit their own posts. There may or may not be a time limit on this. Users with Moderate + Edit can edit any topic or reply.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Can lock topics that they created. Users with Moderate + Lock can lock any topic in a forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Gives access to the moderation interface. Can approve, reject or delete moderated topics and replies. Can also be combined with Edit, Delete, Lock, Pin, and Split to perform those actions on any topic in a forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Move].Text" xml:space="preserve">
+    <value>Users can move their own topic to a different forum. Users with Moderate + Move can move any topic to a different forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Can pin topics they created. Pinning a topic makes it stay at the top of the topic list. Users with Moderate + Pin can pin any topic.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Can add a poll to new topics they create.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Can set the priority number on a topic. The priority number determines where in the topic list the topic will appear. It is similar to pinning a topic, but allows a more fine-grain specification.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Read].Text" xml:space="preserve">
+    <value>Can see the topic subject, and click on it to see the content.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Can reply to a previously created topic.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Split].Text" xml:space="preserve">
+    <value>User can split their own topic and its replies into different topics. User with Moderate + Split can split any topic and its replies into different topics.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Can sign up to receive email notifications about new topics and replies.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Can add tags to topics and replies.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Trust].Text" xml:space="preserve">
+    <value>User with Trust security automatically bypasses moderation if configured for a forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:View].Text" xml:space="preserve">
+    <value>Can see the topic in the list, but cannot open it.</value>
   </data>
 </root>

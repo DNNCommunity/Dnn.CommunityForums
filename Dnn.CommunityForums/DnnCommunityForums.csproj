@@ -33,10 +33,14 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -63,6 +67,12 @@
     <DebugType>none</DebugType>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke, Version=9.9.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -184,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="06.04.00.txt" />
+    <Content Include="08.02.00.txt" />
     <Content Include="08.01.00.txt" />
     <Content Include="08.00.00.txt" />
     <Content Include="07.00.11.txt" />
@@ -205,6 +216,10 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="config\templates\AdminWatchEmail.ascx" />
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
+    <None Include="app.config" />
     <None Include="DnnCommunityForums_Symbols.dnn">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -221,7 +236,6 @@
     <Content Include="config\templates\ToolbarSearchPopup.ascx" />
     <Content Include="config\templates\TopicSplitButtons.ascx" />
     <Content Include="config\templates\TopicsView.ascx" />
-    <Content Include="config\templates\BlogList.ascx" />
     <Content Include="config\templates\DailyDigest.ascx" />
     <Content Include="config\templates\ForumView.ascx" />
     <Content Include="config\templates\QuickReply.ascx" />
@@ -236,7 +250,6 @@
     <Content Include="config\templates\TopicView.ascx" />
     <Content Include="config\templates\ForumDirectory.ascx" />
     <Content Include="config\templates\_MemberList.ascx" />
-    <Content Include="config\templates\ForumTracking.ascx" />
     <Content Include="config\templates\ToolBar.ascx" />
     <Content Include="config\templates\_UserProfile.ascx" />
     <Content Include="controls\admin_properties.ascx">
@@ -299,7 +312,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\WhatsNew.ascx.es-ES.resx" />
-    <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.de-DE.resx" />
+    <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.de-DE.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\ForumSettings.ascx.de-DE.resx" />
     <EmbeddedResource Include="App_LocalResources\Messages.ascx.de-DE.resx" />
     <EmbeddedResource Include="App_LocalResources\SharedResources.de-DE.resx">
@@ -309,7 +324,9 @@
     <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\ForumSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\Messages.ascx.fr-FR.resx" />
-    <EmbeddedResource Include="App_LocalResources\SharedResources.fr-FR.resx" />
+    <EmbeddedResource Include="App_LocalResources\SharedResources.fr-FR.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\WhatsNew.ascx.fr-FR.resx" />
     <EmbeddedResource Include="CustomControls\Resources\ActiveGrid.js" />
     <EmbeddedResource Include="CustomControls\Resources\asc.gif" />
@@ -1229,6 +1246,7 @@
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\08.02.00.SqlDataProvider" />
     <None Include="sql\07.00.11.SqlDataProvider" />
     <None Include="sql\08.02.00.SqlDataProvider" />
     <None Include="sql\08.01.00.SqlDataProvider" />
@@ -1310,7 +1328,6 @@
     <Content Include="scripts\afutils.js" />
     <Content Include="config\templates\TopicEditor.ascx" />
     <Content Include="config\templates\ProfileInfo.ascx" />
-    <Content Include="config\templates\BlogView.ascx" />
     <Content Include="config\templates\UsersOnline.ascx" />
     <Content Include="themes\_legacy\theme.css" />
     <Content Include="feeds.aspx">
@@ -1992,7 +2009,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="config\templates\BlogsView.ascx" />
     <None Include="sql\05.00.01.SqlDataProvider" />
     <None Include="sql\05.01.00.SqlDataProvider" />
     <None Include="themes\community-bootstrap\custom\README.md" />
@@ -2072,7 +2088,12 @@
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.NetAnalyzers.8.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.NetAnalyzers.8.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.NetAnalyzers.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

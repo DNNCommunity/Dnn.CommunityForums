@@ -345,48 +345,6 @@
   <data name="ReplyPointValue.Text" xml:space="preserve">
     <value>Antwort</value>
   </data>
-  <data name="SecGrid:attach.Text" xml:space="preserve">
-    <value>Anhängen</value>
-  </data>
-  <data name="SecGrid:create.Text" xml:space="preserve">
-    <value>Erzeugen</value>
-  </data>
-  <data name="SecGrid:delete.Text" xml:space="preserve">
-    <value>Löschen</value>
-  </data>
-  <data name="SecGrid:edit.Text" xml:space="preserve">
-    <value>Bearbeiten</value>
-  </data>
-  <data name="SecGrid:lock.Text" xml:space="preserve">
-    <value>Sperre</value>
-  </data>
-  <data name="SecGrid:moderate.Text" xml:space="preserve">
-    <value>Moderieren</value>
-  </data>
-  <data name="SecGrid:move.Text" xml:space="preserve">
-    <value>Verschieben</value>
-  </data>
-  <data name="SecGrid:ban.Text" xml:space="preserve">
-    <value>Sperre</value>
-  </data>
-  <data name="SecGrid:pin.Text" xml:space="preserve">
-    <value>Pinnen</value>
-  </data>
-  <data name="SecGrid:read.Text" xml:space="preserve">
-    <value>Lesen</value>
-  </data>
-  <data name="SecGrid:reply.Text" xml:space="preserve">
-    <value>Antwort</value>
-  </data>
-  <data name="SecGrid:subscribe.Text" xml:space="preserve">
-    <value>Abonnieren</value>
-  </data>
-  <data name="SecGrid:user.Text" xml:space="preserve">
-    <value>Ansehen</value>
-  </data>
-  <data name="SecGrid:view.Text" xml:space="preserve">
-    <value>Ansehen</value>
-  </data>
   <data name="SignatureDisabled.Text" xml:space="preserve">
     <value>Deaktiviert</value>
   </data>
