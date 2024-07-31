@@ -692,7 +692,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     body = body.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
             }
 
-            ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: PortalId, ModuleId: ForumModuleId, TopicId: TopicId, subject: subject, forumInfo: ForumInfo);
+            ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(portalId: PortalId, moduleId: ForumModuleId, topicId: TopicId, subject: subject, forumInfo: ForumInfo);
 
             ti.Content.Body = body;
             ti.Content.Subject = subject;

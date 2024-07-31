@@ -431,8 +431,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				var rows = new string[13, 5];
 				int i = 0;
 				foreach (XmlNode x in xNodeList)
-				{
-					rows[i, 0] = x.Name;
+                {
+                    rows[i, 0] = x.Name;
 					rows[i, 1] = x.Attributes["value"].Value;
 					i += 1;
 				}
@@ -478,7 +478,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 					}
 					sb.Append("<td class=\"" + sClass + "\">");
-					sb.Append(LocalizeString("SecGrid:" + rows[i, 0]));
+					//sb.Append(LocalizeString("SecGrid:" + rows[i, 0]));
+                    sb.Append(Utilities.LocalizeControl($"[RESX:SecGrid:{rows[i, 0]}]", isAdmin: true));
 					sb.Append("</td>");
 				}
 				sb.Append("</tr><tr id=\"row1\"><td class=\"rowhd\">" + LocalizeString("GroupAdmin") + "</td>");

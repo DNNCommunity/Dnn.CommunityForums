@@ -187,7 +187,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				}
 
 
-				sb.Append(keyText);
+                sb.Append(Utilities.LocalizeControl($"[RESX:SecGrid:{keyText}]", isAdmin:true));
 				sb.Append("</td>");
 			}
 			sb.Append("</tr>");

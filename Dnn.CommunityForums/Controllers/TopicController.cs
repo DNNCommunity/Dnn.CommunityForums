@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             ti.TopicIcon = string.Empty;
             ti.TopicType = TopicTypes.Topic;
             ti.ViewCount = 0; 
-            ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: PortalId, ModuleId: ModuleId, TopicId: topicId, subject: Subject, forumInfo: forumInfo);
+            ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(portalId: PortalId, moduleId: ModuleId, topicId: topicId, subject: Subject, forumInfo: forumInfo);
 
             topicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
 

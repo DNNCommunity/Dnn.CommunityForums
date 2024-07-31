@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal static class UrlController
     {
-        internal static string BuildTopicUrl(int PortalId, int ModuleId, int TopicId, string subject, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
+        internal static string BuildTopicUrl(int portalId, int moduleId, int topicId, string subject, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             var cleanSubject = Utilities.CleanName(subject).ToLowerInvariant();
             if (SimulateIsNumeric.IsNumeric(cleanSubject))
@@ -43,8 +43,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var topicsDb = new Data.Topics();
             for (var u = 0; u <= 200; u++)
             {
-                var tid = topicsDb.TopicIdByUrl(PortalId, ModuleId, urlToCheck);
-                if (tid > 0 && tid == TopicId)
+                var tid = topicsDb.TopicIdByUrl(portalId, moduleId, urlToCheck);
+                if (tid > 0 && tid == topicId)
                     break;
 
                 if (tid <= 0)
@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return topicUrl;
         }
-        internal static string BuildForumUrl(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
+        internal static string BuildForumUrl(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             string url = "/";
 
