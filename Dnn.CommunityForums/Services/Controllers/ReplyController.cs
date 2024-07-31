@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                     }
 
-                    return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
@@ -99,11 +99,25 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 var r = rc.GetById(replyId);
                 if (r != null)
                 {
-                    rc.Reply_Delete(this.ActiveModule.PortalID, forumId, r.TopicId, replyId, SettingsBase.GetModuleSettings(this.ForumModuleId).DeleteBehavior);
-                    return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                    if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) ||
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
+                            r.Topic.Forum.Security.Moderate,
+                            string.Join(";",
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                    this.ActiveModule.PortalID,
+                                    this.UserInfo.Roles))))
+                    {
+                        rc.Reply_Delete(this.ActiveModule.PortalID,
+                            forumId,
+                            r.TopicId,
+                            replyId,
+                            SettingsBase.GetModuleSettings(this.ForumModuleId).DeleteBehavior);
+                        return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                    }
+
+                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
             }
-
             return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
     }
