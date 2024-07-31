@@ -240,48 +240,6 @@
   <data name="ReplyPointValue.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Répondre</value>
   </data>
-  <data name="SecGrid:attach.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Joindre</value>
-  </data>
-  <data name="SecGrid:create.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Créer</value>
-  </data>
-  <data name="SecGrid:delete.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Supprimer</value>
-  </data>
-  <data name="SecGrid:edit.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Éditer</value>
-  </data>
-  <data name="SecGrid:lock.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
-    <value>Verrouiller</value>
-  </data>
-  <data name="SecGrid:moderate.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Modérer</value>
-  </data>
-  <data name="SecGrid:move.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
-    <value>Déplacer</value>
-  </data>
-  <data name="SecGrid:ban.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Bannir</value>
-  </data>
-  <data name="SecGrid:pin.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Épingler</value>
-  </data>
-  <data name="SecGrid:read.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Lire</value>
-  </data>
-  <data name="SecGrid:reply.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Répondre</value>
-  </data>
-  <data name="SecGrid:subscribe.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>S’inscrire</value>
-  </data>
-  <data name="SecGrid:user.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
-    <value>Afficher</value>
-  </data>
-  <data name="SecGrid:view.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
-    <value>Afficher</value>
-  </data>
   <data name="SignatureDisabled.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
     <value>Désactivé</value>
   </data>

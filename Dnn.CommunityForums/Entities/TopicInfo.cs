@@ -1,32 +1,28 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System; 
+
+using System;
 using System.Collections.Generic;
-using System.Xml;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using System.Web.Caching;
-using DotNetNuke.UI.UserControls;
-using System.Runtime.Remoting.Messaging;
 using System.Linq;
 using DotNetNuke.Collections;
-using System.Text;
+using DotNetNuke.ComponentModel.DataAnnotations;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -55,14 +51,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 this.selected = selected;
             }
         }
-        private List<Category> _categories;
 
-        private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
-        private DotNetNuke.Modules.ActiveForums.Author _Author;
-        private int _forumId = -1;
-        private string _tags = string.Empty;
-        private string _selectedcategories;
+        private List<Category> categories;
+
+        private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo;
+        private DotNetNuke.Modules.ActiveForums.Author author;
+        private int forumId = -1;
+        private string tags = string.Empty;
+        private string selectedcategories;
 
         public int TopicId { get; set; }
 
@@ -71,141 +68,176 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                //TODO : clean this up to use DAL2
-                if (_forumId < 1 && TopicId > 0)
+                // TODO : clean this up to use DAL2
+                if (this.forumId < 1 && this.TopicId > 0)
                 {
-                    _forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
+                    this.forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(this.TopicId);
                 }
-                return _forumId;
+
+                return this.forumId;
             }
-            set => _forumId = value;
+            set => this.forumId = value;
         }
+
         [IgnoreColumn()]
-        public int PortalId { get => Forum.PortalId; }
+        public int PortalId { get => this.Forum.PortalId; }
+
         [IgnoreColumn()]
-        public int ModuleId { get => Forum.ModuleId; }
+        public int ModuleId { get => this.Forum.ModuleId; }
+
         public int ContentId { get; set; }
+
         public int ViewCount { get; set; }
+
         public int ReplyCount { get; set; }
+
         public bool IsLocked { get; set; }
+
         public bool IsPinned { get; set; }
+
         public string TopicIcon { get; set; }
+
         public int StatusId { get; set; }
+
         public bool IsApproved { get; set; }
+
         public bool IsRejected { get; set; }
+
         public bool IsDeleted { get; set; }
+
         public bool IsAnnounce { get; set; }
+
         public bool IsArchived { get; set; }
+
         public DateTime AnnounceStart { get; set; }
+
         public DateTime AnnounceEnd { get; set; }
+
         public TopicTypes TopicType { get; set; }
+
         public int Priority { get; set; } = 0;
+
         [ColumnName("URL")]
         public string TopicUrl { get; set; } = string.Empty;
+
         [IgnoreColumn()]
-        public string URL => !(string.IsNullOrEmpty(TopicUrl)) && !(string.IsNullOrEmpty(ForumURL)) ? ForumURL + TopicUrl : string.Empty;
+        public string URL => !string.IsNullOrEmpty(this.TopicUrl) && !string.IsNullOrEmpty(this.ForumURL) ? this.ForumURL + this.TopicUrl : string.Empty;
+
         [IgnoreColumn()]
-        public string ForumURL => !(string.IsNullOrEmpty(Forum.PrefixURL)) && !(string.IsNullOrEmpty(TopicUrl)) ? "/" + Forum.PrefixURL + "/" : string.Empty;
+        public string ForumURL => !string.IsNullOrEmpty(this.Forum.PrefixURL) && !string.IsNullOrEmpty(this.TopicUrl) ? "/" + this.Forum.PrefixURL + "/" : string.Empty;
+
         public int NextTopic { get; set; }
+
         public int PrevTopic { get; set; }
+
         public string TopicData { get; set; } = string.Empty;
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
-            get => _contentInfo ?? (_contentInfo = GetContent());
-            set => _contentInfo = value;
+            get => this.contentInfo ?? (this.contentInfo = this.GetContent());
+            set => this.contentInfo = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId);
         }
+
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
-            get => _forumInfo ?? (_forumInfo = GetForum());
-            set => _forumInfo = value;
+            get => this.forumInfo ?? (this.forumInfo = this.GetForum());
+            set => this.forumInfo = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId); /* can't get using moduleId since ModuleId comes from Forum */
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId); /* can't get using moduleId since ModuleId comes from Forum */
         }
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Author Author
         {
-            get => _Author ?? (_Author = GetAuthor());
-            set => _Author = value;
+            get => this.author ?? (this.author = this.GetAuthor());
+            set => this.author = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Author GetAuthor()
         {
-            _Author = new DotNetNuke.Modules.ActiveForums.Author();
-            _Author.AuthorId = Content.AuthorId;
-            var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Content.AuthorId);
+            this.author = new DotNetNuke.Modules.ActiveForums.Author();
+            this.author.AuthorId = this.Content.AuthorId;
+            var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, this.Content.AuthorId);
             if (userInfo != null)
             {
-                _Author.Email = userInfo?.Email;
-                _Author.FirstName = userInfo?.FirstName;    
-                _Author.LastName = userInfo?.LastName;
-                _Author.DisplayName = userInfo?.DisplayName;
-                _Author.Username = userInfo?.Username;
+                this.author.Email = userInfo?.Email;
+                this.author.FirstName = userInfo?.FirstName;
+                this.author.LastName = userInfo?.LastName;
+                this.author.DisplayName = userInfo?.DisplayName;
+                this.author.Username = userInfo?.Username;
             }
             else
             {
-                _Author.DisplayName = Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+                this.author.DisplayName = this.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
             }
-            return _Author;
+
+            return this.author;
         }
+
         [IgnoreColumn()]
         public string Tags
         {
             get
             {
-                if (string.IsNullOrEmpty(_tags))
+                if (string.IsNullOrEmpty(this.tags))
                 {
-                    _tags = string.Join(",",new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTopic(TopicId).Select(t => t.Tag.TagName));
-                    if (string.IsNullOrEmpty(_tags))
+                    this.tags = string.Join(",", new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTopic(this.TopicId).Select(t => t.Tag.TagName));
+                    if (string.IsNullOrEmpty(this.tags))
                     {
-                        _tags = string.Empty;
+                        this.tags = string.Empty;
                     }
                 }
-                return _tags;
+
+                return this.tags;
             }
         }
-       [IgnoreColumn()]
+
+        [IgnoreColumn()]
         public IEnumerable<Category> Categories
         {
-            //TODO: Clean this up
+            // TODO: Clean this up
             get
             {
-                if (_categories == null)
+                if (this.categories == null)
                 {
-                    _categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", ForumId, Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); }).ToList(); ;
-                    var topicCategoryIds = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId).Select(t => t.TagId);
-                    topicCategoryIds.ForEach(tc => _categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
+                    this.categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", this.ForumId, this.Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); }).ToList();
+                    var topicCategoryIds = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(this.TopicId).Select(t => t.TagId);
+                    topicCategoryIds.ForEach(tc => this.categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
                 }
-                return _categories;
+
+                return this.categories;
             }
         }
+
         [IgnoreColumn()]
-        public IEnumerable<Category> SelectedCategories => Categories.Where(c => c.selected).ToList();
+        public IEnumerable<Category> SelectedCategories => this.Categories.Where(c => c.selected).ToList();
+
         [IgnoreColumn()]
         public string SelectedCategoriesAsString
         {
             get
             {
-                if (_selectedcategories == null)
+                if (this.selectedcategories == null)
                 {
-                    _selectedcategories = string.Join(";", SelectedCategories.Select(c => c.id.ToString()));
+                    this.selectedcategories = string.Join(";", this.SelectedCategories.Select(c => c.id.ToString()));
                 }
-                return _selectedcategories;
+
+                return this.selectedcategories;
             }
+
             set
             {
-                _selectedcategories = value;
+                this.selectedcategories = value;
             }
         }
 
@@ -214,20 +246,20 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             set
             {
-                TopicData = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(Forum, value);
+                this.TopicData = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(this.Forum, value);
             }
+
             get
             {
-                    if (TopicData == string.Empty)
+                if (this.TopicData == string.Empty)
                 {
                     return null;
                 }
                 else
                 {
-                    return DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(TopicData);
+                    return DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(this.TopicData);
                 }
             }
         }
     }
-
 }

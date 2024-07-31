@@ -240,48 +240,6 @@
   <data name="ReplyPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Risposta</value>
   </data>
-  <data name="SecGrid:attach.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Allegare</value>
-  </data>
-  <data name="SecGrid:create.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Creare</value>
-  </data>
-  <data name="SecGrid:delete.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Cancellare</value>
-  </data>
-  <data name="SecGrid:edit.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Redigere</value>
-  </data>
-  <data name="SecGrid:lock.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Serratura</value>
-  </data>
-  <data name="SecGrid:moderate.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Moderato</value>
-  </data>
-  <data name="SecGrid:move.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Sposta</value>
-  </data>
-  <data name="SecGrid:ban.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Vietare</value>
-  </data>
-  <data name="SecGrid:pin.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Spilla</value>
-  </data>
-  <data name="SecGrid:read.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Leggere</value>
-  </data>
-  <data name="SecGrid:reply.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Risposta</value>
-  </data>
-  <data name="SecGrid:subscribe.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Abbonarsi</value>
-  </data>
-  <data name="SecGrid:user.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Vista</value>
-  </data>
-  <data name="SecGrid:view.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Vista</value>
-  </data>
   <data name="SignatureDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Disabile</value>
   </data>

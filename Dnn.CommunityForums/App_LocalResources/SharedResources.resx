@@ -351,29 +351,8 @@
   <data name="[RESX:Website].Text" xml:space="preserve">
     <value>Website</value>
   </data>
-  <data name="[RESX:Occupation].Text" xml:space="preserve">
-    <value>Occupation</value>
-  </data>
-  <data name="[RESX:Location].Text" xml:space="preserve">
-    <value>Location</value>
-  </data>
-  <data name="[RESX:Interests].Text" xml:space="preserve">
-    <value>Interests</value>
-  </data>
   <data name="[RESX:SendMessage].Text" xml:space="preserve">
     <value>Contact</value>
-  </data>
-  <data name="[RESX:Yahoo].Text" xml:space="preserve">
-    <value>Yahoo</value>
-  </data>
-  <data name="[RESX:MSN].Text" xml:space="preserve">
-    <value>MSN</value>
-  </data>
-  <data name="[RESX:ICQ].Text" xml:space="preserve">
-    <value>ICQ</value>
-  </data>
-  <data name="[RESX:AOL].Text" xml:space="preserve">
-    <value>AOL</value>
   </data>
   <data name="EditProfile.Text" xml:space="preserve">
     <value>Edit Profile</value>
@@ -936,9 +915,6 @@
   <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
     <value>Subscribe to Topics</value>
   </data>
-  <data name="[RESX:PrefUseAjax].Text" xml:space="preserve">
-    <value>Use Ajax</value>
-  </data>
   <data name="[RESX:Actions:ProfileUpdated].Text" xml:space="preserve">
     <value>Your profile has been updated.</value>
   </data>
@@ -1134,9 +1110,6 @@ From,
   </data>
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>This will be your default setting when you are creating a topic or adding a reply.  This does not affect forum level subscriptions.</value>
-  </data>
-  <data name="[RESX:Tips:PrefUseAjax].Text" xml:space="preserve">
-    <value>AJAX is programming method to improve the way you interact with the forums.  You can choose whether or not you wish to use this capability.</value>
   </data>
   <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
     <value>This forum only allows you to edit your post within {0} minutes from the time you created your post.</value>
@@ -1754,5 +1727,11 @@ From,
   </data>
   <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
     <value>The Permissions {0} for Forum {1} are not found in the database; you will need to repair this in the database, or delete the forum and re-create it. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
+    <value>No Pending Content</value>
+  </data>
+  <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
+    <value>Please &lt;a href="{0}"{1}&gt;login&lt;/a&gt; to add a topic.</value>
   </data>
 </root>

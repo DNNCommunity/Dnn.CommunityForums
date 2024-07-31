@@ -321,48 +321,6 @@
   <data name="ModeratorPermissions.Text" xml:space="preserve">
     <value>Moderator Permissions</value>
   </data>
-  <data name="SecGrid:attach.Text" xml:space="preserve">
-    <value>Attach</value>
-  </data>
-  <data name="SecGrid:create.Text" xml:space="preserve">
-    <value>Create</value>
-  </data>
-  <data name="SecGrid:delete.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="SecGrid:edit.Text" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="SecGrid:lock.Text" xml:space="preserve">
-    <value>Lock</value>
-  </data>
-  <data name="SecGrid:moderate.Text" xml:space="preserve">
-    <value>Moderate</value>
-  </data>
-  <data name="SecGrid:move.Text" xml:space="preserve">
-    <value>Move</value>
-  </data>
-  <data name="SecGrid:ban.Text" xml:space="preserve">
-    <value>Ban</value>
-  </data>
-  <data name="SecGrid:pin.Text" xml:space="preserve">
-    <value>Pin</value>
-  </data>
-  <data name="SecGrid:read.Text" xml:space="preserve">
-    <value>Read</value>
-  </data>
-  <data name="SecGrid:reply.Text" xml:space="preserve">
-    <value>Reply</value>
-  </data>
-  <data name="SecGrid:subscribe.Text" xml:space="preserve">
-    <value>Subscribe</value>
-  </data>
-  <data name="SecGrid:user.Text" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="SecGrid:view.Text" xml:space="preserve">
-    <value>View</value>
-  </data>
   <data name="UserPermissions.Text" xml:space="preserve">
     <value>User Permissions</value>
   </data>
