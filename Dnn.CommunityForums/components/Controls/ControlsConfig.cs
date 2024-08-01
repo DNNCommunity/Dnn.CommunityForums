@@ -25,209 +25,43 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
 
-    public class ControlsConfig
-    {
-        #region Private Members
-        private int portalId;
-        private int pageId = -1;
-        private int moduleId;
-        private int forumId;
-        private int topicId;
-        private int contentId;
-        private string appPath;
-        private string themePath;
-        private User user;
-        private string templatePath;
-        private string defaultViewRoles;
-        private string profileLink;
-        private string membersLink;
-        private string adminRoles;
 
-        #endregion
+	public class ControlsConfig
+	{
         #region Public Properties
-        public string AdminRoles
-        {
-            get
-            {
-                return this.adminRoles;
-            }
+        public string AdminRoles { get; set; }
 
-            set
-            {
-                this.adminRoles = value;
-            }
-        }
+        public string AppPath { get; set; }
 
-        public string AppPath
-        {
-            get
-            {
-                return this.appPath;
-            }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public int ContentId { get; set; }
 
-            set
-            {
-                this.appPath = value;
-            }
-        }
+        public string DefaultViewRoles { get; set; }
 
-        public int ContentId
-        {
-            get
-            {
-                return this.contentId;
-            }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public int ForumId { get; set; }
 
-            set
-            {
-                this.contentId = value;
-            }
-        }
+        public int ModuleId { get; set; }
 
-        public string DefaultViewRoles
-        {
-            get
-            {
-                return this.defaultViewRoles;
-            }
+        public string MembersLink { get; set; }
 
-            set
-            {
-                this.defaultViewRoles = value;
-            }
-        }
+        public int PageId { get; set; } = -1;
 
-        public int ForumId
-        {
-            get
-            {
-                return this.forumId;
-            }
+        public string ProfileLink { get; set; }
 
-            set
-            {
-                this.forumId = value;
-            }
-        }
+        public int PortalId { get; set; }
 
-        public int ModuleId
-        {
-            get
-            {
-                return this.moduleId;
-            }
+        public string TemplatePath { get; set; }
 
-            set
-            {
-                this.moduleId = value;
-            }
-        }
+        public string ThemePath { get; set; }
 
-        public string MembersLink
-        {
-            get
-            {
-                return this.membersLink;
-            }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public int TopicId { get; set; }
 
-            set
-            {
-                this.membersLink = value;
-            }
-        }
-
-        public int PageId
-        {
-            get
-            {
-                return this.pageId;
-            }
-
-            set
-            {
-                this.pageId = value;
-            }
-        }
-
-        public string ProfileLink
-        {
-            get
-            {
-                return this.profileLink;
-            }
-
-            set
-            {
-                this.profileLink = value;
-            }
-        }
-
-        public int PortalId
-        {
-            get
-            {
-                return this.portalId;
-            }
-
-            set
-            {
-                this.portalId = value;
-            }
-        }
-
-        public string TemplatePath
-        {
-            get
-            {
-                return this.templatePath;
-            }
-
-            set
-            {
-                this.templatePath = value;
-            }
-        }
-
-        public string ThemePath
-        {
-            get
-            {
-                return this.themePath;
-            }
-
-            set
-            {
-                this.themePath = value;
-            }
-        }
-
-        public int TopicId
-        {
-            get
-            {
-                return this.topicId;
-            }
-
-            set
-            {
-                this.topicId = value;
-            }
-        }
-
-        public User User
-        {
-            get
-            {
-                return this.user;
-            }
-
-            set
-            {
-                this.user = value;
-            }
-        }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo User { get; set; }
 
         #endregion
+
 
     }
 }

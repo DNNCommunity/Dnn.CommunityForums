@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -20,13 +20,14 @@
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Xml;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Xml;
 
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Localization;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Localization;
 
     public class ForumBase : SettingsBase
     {
@@ -73,41 +74,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string DefaultView { get; set; } = Views.ForumView;
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public bool JumpToLastPost
         {
-            get
-            {
-                if (!this.Request.IsAuthenticated)
-                {
-                    return false;
-                }
-
-                if (!this.jumpToLastPost.HasValue)
-                {
-                    this.jumpToLastPost = this.UserController.GetUser(this.PortalId, this.UserId).Profile.PrefJumpLastPost;
-                }
-
-                return this.jumpToLastPost.Value;
-            }
+            get => throw new NotImplementedException();
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public DateTime UserLastAccess
         {
-            get
-            {
-                if (!this.Request.IsAuthenticated)
-                {
-                    return Utilities.NullDate();
-                }
-
-                var lastAccess = this.Session[string.Concat(this.UserId.ToString(), this.ModuleId, "LastAccess")];
-                return lastAccess == null ? Utilities.NullDate() : Convert.ToDateTime(lastAccess);
-            }
-
-            set
-            {
-                this.Session[string.Concat(this.UserId.ToString(), this.ModuleId, "LastAccess")] = value;
-            }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         public int PostId
@@ -601,8 +578,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!string.IsNullOrWhiteSpace(sort))
                 {
                     var defaultSort = (this.Request.IsAuthenticated &&
-                                       !string.IsNullOrWhiteSpace(this.ForumUser.Profile.PrefDefaultSort))
-                                          ? this.ForumUser.Profile.PrefDefaultSort.ToUpperInvariant().Trim()
+                                       !string.IsNullOrWhiteSpace(this.ForumUser.PrefDefaultSort))
+                                          ? this.ForumUser.PrefDefaultSort.ToUpperInvariant().Trim()
                                           : "ASC";
 
                     sort = sort.ToUpperInvariant();

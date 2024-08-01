@@ -26,45 +26,14 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
 
+    [Obsolete("Deprecated in Community Forums 09.0.00.Not Used.")]
+
     public class UsersOnline
     {
-        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Entities.Users.UserInfo user)
-        {
-            bool isAdmin = user.IsInRole(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName) || user.IsSuperUser;
-            var sb = new StringBuilder();
-            var dr = DataProvider.Instance().Profiles_GetUsersOnline(portalId, 2);
-            try
-            {
-                while (dr.Read())
-                {
-                    if (sb.Length > 0)
-                    {
-                        sb.Append(", ");
-                    }
+        [Obsolete("Deprecated in Community Forums 09.0.00.Not Used.")]
+        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Entities.Users.UserInfo user) => throw new NotImplementedException();
 
-                    var portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
-                    sb.Append(UserProfiles.GetDisplayName(portalSettings, moduleId, true, false, isAdmin, dr.GetInt("UserId"), dr.GetString("Username"), dr.GetString("FirstName"), dr.GetString("LastName"), dr.GetString("DisplayName")));
-                }
-
-                dr.Close();
-                return sb.ToString();
-            }
-            catch
-
-            {
-                if (!dr.IsClosed)
-                {
-                    dr.Close();
-                }
-
-                return string.Empty;
-            }
-        }
-
-        [Obsolete("Deprecated in Community Forums 09.0.00. Use GetUsersOnline(int portalId, int moduleId, DotNetNuke.Entities.Users.UserInfo user)")]
-        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.User user)
-        {
-            return this.GetUsersOnline(portalId, moduleId, DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, user.UserId));
-        }
-    }
+        [Obsolete("Deprecated in Community Forums 09.0.00.Not Used.")]
+        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.User user) => throw new NotImplementedException();
+	}
 }

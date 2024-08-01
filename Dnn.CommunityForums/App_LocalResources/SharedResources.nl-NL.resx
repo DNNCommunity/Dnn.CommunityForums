@@ -1765,10 +1765,10 @@ Van,
   <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
     <value>De machtigingen {0} voor Forum {1} zijn niet te vinden in de database; Je moet dit repareren in de database, of het forum verwijderen en opnieuw aanmaken. Ga naar de DNN Community Forums Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums), waar u een probleem kunt posten of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
   </data>
-  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
-    <value>Geen uitstaande berichten</value>
-  </data>
   <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
     <value>&lt;a href="{0}"{1}&gt;log in&lt;/a&gt; om een ​​onderwerp toe te voegen.</value>
+  </data>
+  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
+    <value>Geen uitstaande berichten</value>
   </data>
 </root>

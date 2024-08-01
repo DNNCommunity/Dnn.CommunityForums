@@ -116,19 +116,34 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Profiles
-        public abstract void Profiles_Create(int portalId, int userId);
+        #region "Deprecated Methods"
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public abstract void Profiles_Create(int PortalId, int ModuleId, int UserId);
 
-        public abstract void Profiles_UpdateActivity(int portalId, int userId);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public abstract DataSet Profiles_Get(int PortalId, int ModuleId, int UserId);
 
-        public abstract IDataReader Profiles_GetUsersOnline(int portalId, int interval);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public abstract void Profiles_Save(int PortalId, int ModuleId, int UserId, int TopicCount, int ReplyCount, int ViewCount, int AnswerCount, int RewardPoints, string UserCaption, string Signature, bool SignatureDisabled, int TrustLevel, bool AdminWatch, bool AttachDisabled, string Avatar, int AvatarType, bool AvatarDisabled, string PrefDefaultSort, bool PrefDefaultShowReplies, bool PrefJumpLastPost, bool PrefTopicSubscribe, int PrefSubscriptionType, bool PrefBlockAvatars, bool PrefBlockSignatures, int PrefPageSize);
 
-        public abstract DataSet Profiles_Get(int portalId, int userId);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public abstract IDataReader Profiles_GetUsersOnline(int PortalId, int ModuleId, int Interval);
 
-        public abstract IDataReader Profiles_MemberList(int portalId, int maxRows, int rowIndex, string filter);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public abstract void Profiles_UpdateActivity(int PortalId, int ModuleId, int UserId);
 
-        public abstract void Profiles_Save(int portalId, int userId, int topicCount, int replyCount, int viewCount, int answerCount, int rewardPoints, string userCaption, string signature, bool signatureDisabled, int trustLevel, bool adminWatch, bool attachDisabled, string avatar, int avatarType, bool avatarDisabled, string prefDefaultSort, bool prefDefaultShowReplies, bool prefJumpLastPost, bool prefTopicSubscribe, int prefSubscriptionType, bool prefBlockAvatars, bool prefBlockSignatures, int prefPageSize);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public abstract IDataReader Profiles_MemberList(int PortalId, int ModuleId, int MaxRows, int RowIndex, string Filter);
 
-        public abstract IDataReader Profiles_GetStats(int portalId, int interval);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public abstract IDataReader Profiles_GetStats(int PortalId, int ModuleId, int Interval);
+
+        #endregion
+        public abstract void Profiles_UpdateActivity(int PortalId, int UserId);
+
+        public abstract IDataReader Profiles_MemberList(int PortalId, int MaxRows, int RowIndex, string Filter);
+
+        public abstract IDataReader Profiles_GetStats(int PortalId, int Interval);
         #endregion
 
         #region Moderation

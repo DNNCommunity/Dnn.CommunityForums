@@ -1728,10 +1728,10 @@ From,
   <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
     <value>The Permissions {0} for Forum {1} are not found in the database; you will need to repair this in the database, or delete the forum and re-create it. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
   </data>
-  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
-    <value>No Pending Content</value>
-  </data>
   <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
     <value>Please &lt;a href="{0}"{1}&gt;login&lt;/a&gt; to add a topic.</value>
+  </data>
+  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
+    <value>No Pending Content</value>
   </data>
 </root>

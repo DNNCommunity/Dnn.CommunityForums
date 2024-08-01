@@ -761,7 +761,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", this.Page.ResolveUrl("~/DesktopModules/activeforums/customcontrols/resources/datepicker.js"));
 
 #else
-                Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.datepicker.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.datepicker.js"));
 #endif
 
             }

@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Return MyBase.GetDesignTimeHtml()
             string template = "...";
             string message = "test";
-            string markup = string.Format(template, "name", base.Component.Site, base.GetDesignTimeHtml(), message);
+            string markup = string.Format(template, "name", this.Component.Site, base.GetDesignTimeHtml(), message);
             return markup;
 
             // Return CreatePlaceHolderDesignTimeHtml()

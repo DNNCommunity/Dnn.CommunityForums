@@ -164,7 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             writer.RenderEndTag(); // Close image
             writer.RenderEndTag(); // Close div
 
-            //   END Close Button
+            // END Close Button
             writer.RenderEndTag(); // Close Header
 
             // END HEADER

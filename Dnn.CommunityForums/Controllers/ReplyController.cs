@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, int delBehavior)
         {
-            var ri = GetById(replyId);
+            var ri = this.GetById(replyId);
             DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Delete(forumId, topicId, replyId, delBehavior);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(forumId);
 
@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     Subject = subject,
                     Body = body,
                     IPAddress = iPAddress,
-                    Summary = string.Empty
+                    Summary = string.Empty,
                 },
             };
             replyId = this.Reply_Save(portalId, moduleId, ri);
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
 
             // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
-            UserProfileController.Profiles_ClearCache(moduleId, ri.Content.AuthorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, ri.Content.AuthorId);
 
             DataCache.ContentCacheClear(ri.ModuleId, string.Format(CacheKeys.ForumInfo, ri.ModuleId, ri.ForumId));
             DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ri.ModuleId));

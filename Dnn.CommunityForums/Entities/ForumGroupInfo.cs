@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             var security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(this.PermissionsId, this.ModuleId);
             if (security == null)
             {
-                security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(ModuleId);
+                security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.ModuleId);
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
                 string message = String.Format(Utilities.GetSharedResource("[RESX:PermissionsMissingForForumGroup]"), this.PermissionsId, this.ForumGroupId);
