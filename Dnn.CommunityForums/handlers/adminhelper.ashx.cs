@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         public override void ProcessRequest(HttpContext context)
         {
             this.AdminRequired = true;
-            base.AdminRequired = true;
+            this.AdminRequired = true;
             base.ProcessRequest(context);
             string sOut = string.Empty;
             Actions action = Actions.None;

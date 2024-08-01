@@ -38,22 +38,21 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            UserProfileInfo ui = this.UserProfile;
-            if (ui == null & this.UID > 0)
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo = this.ForumUserInfo;
+            if (forumUserInfo == null & this.UID > 0)
             {
-                UserController up = new UserController();
-                ui = up.GetUser(this.PortalId, this.ForumModuleId, this.UID).Profile;
+                forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID);
             }
 
-            if (ui != null)
+            if (forumUserInfo != null)
             {
-                this.txtRewardPoints.Text = ui.RewardPoints.ToString();
-                this.txtUserCaption.Text = ui.UserCaption;
-                this.chkDisableSignature.Checked = ui.SignatureDisabled;
-                this.chkDisableAttachments.Checked = ui.AttachDisabled;
-                this.chkDisableAvatar.Checked = ui.AvatarDisabled;
-                this.chkMonitor.Checked = ui.AdminWatch;
-                this.drpDefaultTrust.SelectedIndex = this.drpDefaultTrust.Items.IndexOf(this.drpDefaultTrust.Items.FindByValue(ui.TrustLevel.ToString()));
+                this.txtRewardPoints.Text = forumUserInfo.RewardPoints.ToString();
+                this.txtUserCaption.Text = forumUserInfo.UserCaption;
+                this.chkDisableSignature.Checked = forumUserInfo.SignatureDisabled;
+                this.chkDisableAttachments.Checked = forumUserInfo.AttachDisabled;
+                this.chkDisableAvatar.Checked = forumUserInfo.AvatarDisabled;
+                this.chkMonitor.Checked = forumUserInfo.AdminWatch;
+                this.drpDefaultTrust.SelectedIndex = this.drpDefaultTrust.Items.IndexOf(this.drpDefaultTrust.Items.FindByValue(forumUserInfo.TrustLevel.ToString()));
                 this.txtRewardPoints.Attributes.Add("onkeypress", "return onlyNumbers(event);");
             }
         }
@@ -62,19 +61,17 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (!(this.CurrentUserType == CurrentUserTypes.Anon) && !(this.CurrentUserType == CurrentUserTypes.Auth))
             {
-                UserProfileController upc = new UserProfileController();
-                UserController uc = new UserController();
-                UserProfileInfo upi = uc.GetUser(this.PortalId, this.ForumModuleId, this.UID).Profile;
-                if (upi != null)
+                DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID);
+                if (forumUserInfo != null)
                 {
-                    upi.RewardPoints = Convert.ToInt32(e.Parameters[1]);
-                    upi.UserCaption = e.Parameters[2].ToString();
-                    upi.SignatureDisabled = Convert.ToBoolean(e.Parameters[3]);
-                    upi.AvatarDisabled = Convert.ToBoolean(e.Parameters[4]);
-                    upi.TrustLevel = Convert.ToInt32(e.Parameters[5]);
-                    upi.AdminWatch = Convert.ToBoolean(e.Parameters[6]);
-                    upi.AttachDisabled = Convert.ToBoolean(e.Parameters[7]);
-                    upc.Profiles_Save(upi);
+                    forumUserInfo.RewardPoints = Convert.ToInt32(e.Parameters[1]);
+                    forumUserInfo.UserCaption = e.Parameters[2].ToString();
+                    forumUserInfo.SignatureDisabled = Convert.ToBoolean(e.Parameters[3]);
+                    forumUserInfo.AvatarDisabled = Convert.ToBoolean(e.Parameters[4]);
+                    forumUserInfo.TrustLevel = Convert.ToInt32(e.Parameters[5]);
+                    forumUserInfo.AdminWatch = Convert.ToBoolean(e.Parameters[6]);
+                    forumUserInfo.AttachDisabled = Convert.ToBoolean(e.Parameters[7]);
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Save(forumUserInfo);
                 }
             }
         }

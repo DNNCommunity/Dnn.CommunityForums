@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
 
                             messageDefault = messageDefault.Replace("[TOPICLINK]", sURL);
-                            messageDefault = messageDefault.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(this.PortalSettings, this.ModuleId, false, false, false, this.UserId, this.UserInfo.Username, this.UserInfo.FirstName, this.UserInfo.LastName, this.UserInfo.DisplayName));
+                            messageDefault = messageDefault.Replace("[DISPLAYNAME]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ModuleId, false, false, false, this.UserId, this.UserInfo.Username, this.UserInfo.FirstName, this.UserInfo.LastName, this.UserInfo.DisplayName));
                             this.txtMessage.Text = messageDefault;
                         }
                     }

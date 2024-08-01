@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System.Net;
@@ -106,8 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpGet]
         public HttpResponseMessage GetUserProfile(int userId)
         {
-            var upc = new UserProfileController();
-            var up = upc.Profiles_Get(this.PortalSettings.PortalId, this.ActiveModule.ModuleID, userId);
+            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.ActiveModule.PortalID, userId);
 
             if (up == null)
             {
@@ -116,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var result = new
             {
-                up.UserID,
+                up.UserId,
                 up.TrustLevel,
                 up.UserCaption,
                 up.Signature,
@@ -129,8 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpPost]
         public HttpResponseMessage UpdateUserProfile(UserProfileDTO dto)
         {
-            var upc = new UserProfileController();
-            var up = upc.Profiles_Get(this.PortalSettings.PortalId, this.ActiveModule.ModuleID, dto.UserId);
+            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.ActiveModule.PortalID, dto.UserId);
 
             if (up == null)
             {
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 up.RewardPoints = dto.RewardPoints.Value;
             }
 
-            upc.Profiles_Save(up);
+            new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().Update(up);
 
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
@@ -188,8 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (dto.SecurityType == 1)
                         {
-                            var uc = new UserController();
-                            var ui = uc.GetUser(this.PortalSettings.PortalId, dto.ModuleId, dto.SecurityId);
+                            var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.ActiveModule.PortalID, Convert.ToInt32(dto.SecurityId));
                             dto.SecurityId = ui != null ? ui.UserId.ToString() : string.Empty;
                         }
                         else

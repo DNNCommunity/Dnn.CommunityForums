@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             var cachekey = string.Format(CacheKeys.PermissionsInfo, moduleId, permissionsId);
             DataCache.SettingsCacheClear(moduleId, cachekey);
-            base.DeleteById(permissionsId);
+            this.DeleteById(permissionsId);
         }
 
         internal new void Delete(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
@@ -152,6 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this.Insert(permissionInfo);
             return permissionInfo;
         }
+
         internal static DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetEmptyPermissions(int moduleId)
         {
             return new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo

@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using DotNetNuke.Collections;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
@@ -56,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo;
-        private DotNetNuke.Modules.ActiveForums.Author author;
+        private DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author;
         private int forumId = -1;
         private string tags = string.Empty;
         private string selectedcategories;
@@ -157,27 +158,19 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Author Author
+        public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author
         {
             get => this.author ?? (this.author = this.GetAuthor());
             set => this.author = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Author GetAuthor()
+        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor()
         {
-            this.author = new DotNetNuke.Modules.ActiveForums.Author();
-            this.author.AuthorId = this.Content.AuthorId;
-            var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, this.Content.AuthorId);
-            if (userInfo != null)
+            this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.Content.AuthorId));
+            if (this.author == null)
             {
-                this.author.Email = userInfo?.Email;
-                this.author.FirstName = userInfo?.FirstName;
-                this.author.LastName = userInfo?.LastName;
-                this.author.DisplayName = userInfo?.DisplayName;
-                this.author.Username = userInfo?.Username;
-            }
-            else
-            {
+                this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
+                this.author.AuthorId = this.Content.AuthorId;
                 this.author.DisplayName = this.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
             }
 

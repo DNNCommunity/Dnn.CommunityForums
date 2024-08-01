@@ -43,7 +43,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public int CreateGroupForum(int portalId, int moduleId, int socialGroupId, int forumGroupId, string forumName, string forumDescription, bool isPrivate, string forumConfig) => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(portalId, moduleId, socialGroupId, forumGroupId, forumName, forumDescription, isPrivate, forumConfig);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList().")]
-        public string GetForumsHtmlOption(int portalId, int moduleId, User currentUser) => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(moduleId, currentUser);
+        public string GetForumsHtmlOption(int portalId, int moduleId, User currentUser)
+        {
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, currentUser.UserId);
+            return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(moduleId, user);
+        }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save.")]
         public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroup) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, isNew, useGroup, useGroup);

@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int prevTopic;
         private bool isSubscribedTopic;
         private string lastPostDate;
-        private readonly Author lastPostAuthor = new Author();
+        private readonly DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo lastPostAuthor = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
         private string _defaultSort;
         private int _editInterval;
         private string tags = string.Empty;
@@ -208,7 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (string.IsNullOrWhiteSpace(this._defaultSort) || (this._defaultSort != "ASC" && this._defaultSort != "DESC"))
                     {
                         // If we still don't have a valid sort, try and use the value from the users profile
-                        this._defaultSort = (this.ForumUser.Profile.PrefDefaultSort + string.Empty).Trim().ToUpper();
+                        this._defaultSort = (this.ForumUser.PrefDefaultSort + string.Empty).Trim().ToUpper();
                         if (string.IsNullOrWhiteSpace(this._defaultSort) || (this._defaultSort != "ASC" && this._defaultSort != "DESC"))
                         {
                             // No other option than to just use ASC
@@ -1086,10 +1086,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Last Post
             sbOutput.Replace("[AF:LABEL:LastPostDate]", this.lastPostDate);
-            sbOutput.Replace("[AF:LABEL:LastPostAuthor]", UserProfiles.GetDisplayName(portalSettings, this.ForumModuleId, true, this.bModApprove, this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, this.lastPostAuthor.AuthorId, this.lastPostAuthor.Username, this.lastPostAuthor.FirstName, this.lastPostAuthor.LastName, this.lastPostAuthor.DisplayName));
+            sbOutput.Replace("[AF:LABEL:LastPostAuthor]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this.ForumModuleId, true, this.bModApprove, this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, this.lastPostAuthor.AuthorId, this.lastPostAuthor.Username, this.lastPostAuthor.FirstName, this.lastPostAuthor.LastName, this.lastPostAuthor.DisplayName));
 
             // Topic Info
-            sbOutput.Replace("[AF:LABEL:TopicAuthor]", UserProfiles.GetDisplayName(portalSettings, this.ForumModuleId, false, false, false, this.topicAuthorId, this.topicAuthorDisplayName, string.Empty, string.Empty, this.topicAuthorDisplayName));
+            sbOutput.Replace("[AF:LABEL:TopicAuthor]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this.ForumModuleId, false, false, false, this.topicAuthorId, this.topicAuthorDisplayName, string.Empty, string.Empty, this.topicAuthorDisplayName));
             sbOutput.Replace("[AF:LABEL:TopicDateCreated]", this.topicDateCreated);
 
             // Pagers
@@ -1341,41 +1341,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var dateLastActivity = dr.GetDateTime("DateLastActivity");
             var signatureDisabled = dr.GetBoolean("SignatureDisabled");
 
-            DotNetNuke.Entities.Users.UserInfo author = DotNetNuke.Entities.Users.UserController.Instance.GetUser(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, authorId);
-
-            // Populate the user object with the post author info.
-            var up = new User
-            {
-                UserId = authorId,
-                UserName = username,
-                FirstName = firstName.Replace("&amp;#", "&#"),
-                LastName = lastName.Replace("&amp;#", "&#"),
-                DisplayName = displayName.Replace("&amp;#", "&#"),
-                Profile =
-                {
-                    UserCaption = userCaption,
-                    Signature = signature,
-                    DateCreated = memberSince,
-                    AvatarDisabled = avatarDisabled,
-                    Roles = userRoles,
-                    ReplyCount = userReplyCount,
-                    TopicCount = userTopicCount,
-                    AnswerCount = answerCount,
-                    RewardPoints = rewardPoints,
-                    DateLastActivity = dateLastActivity,
-                    PrefBlockAvatars = this.UserPrefHideAvatars,
-                    PrefBlockSignatures = this.UserPrefHideSigs,
-                    IsUserOnline = isUserOnline,
-                    SignatureDisabled = signatureDisabled
-                },
-            };
-            if (author != null)
-            {
-                up.Email = author.Email;
-            }
-
             // Perform Profile Related replacements
-            sOutput = TemplateUtils.ParseProfileTemplate(sOutput, up, this.PortalId, this.ForumModuleId, this.ImagePath, this.CurrentUserType, true, this.UserPrefHideAvatars, this.UserPrefHideSigs, ipAddress, this.UserId, this.TimeZoneOffset);
+            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, authorId));
+            sOutput = TemplateUtils.ParseProfileTemplate(this.ForumModuleId,  sOutput, author, this.ImagePath, this.CurrentUserType, true, this.UserPrefHideAvatars, this.UserPrefHideSigs, ipAddress, this.UserId, this.TimeZoneOffset);
+
 
             // Replace Tags Control
             if (string.IsNullOrWhiteSpace(tags))
@@ -1450,7 +1419,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Parse Roles -- This should actually be taken care of in ParseProfileTemplate
             // if (sOutput.Contains("[ROLES:"))
-            //    sOutput = TemplateUtils.ParseRoles(sOutput, (up.UserId == -1) ? string.Empty : up.Profile.Roles);
+            //    sOutput = TemplateUtils.ParseRoles(sOutput, (up.UserId == -1) ? string.Empty : up.Roles);
 
             // Delete Action
             if (this.bModDelete || (this.bDelete && authorId == this.UserId && !this.bLocked && ((replyId == 0 && this.replyCount == 0) || replyId > 0)))
@@ -1469,7 +1438,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[ACTIONS:DELETE]", string.Empty);
             }
 
-            if ((this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || this.bModUser) && (authorId != -1) && (authorId != this.UserId) && (author != null) && (!author.IsSuperUser) && (!author.IsAdmin))
+            if ((this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || this.bModUser) && (authorId != -1) && (authorId != this.UserId) && (author != null) && (!author.ForumUser.IsSuperUser) && (!author.ForumUser.IsAdmin))
             {
                 var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + replyId, ParamKeys.AuthorId + "=" + authorId };
                 if (this.useListActions)

@@ -535,7 +535,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         bool isMod = this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.ForumMod || this.CurrentUserType == CurrentUserTypes.SuperUser;
                         bool isAdmin = this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser;
-                        template = template.Replace("[DISPLAYNAME]", "<i class=\"fa fa-user fa-fw fa-blue\"></i>&nbsp;" + UserProfiles.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, isMod, isAdmin, fi.LastPostUserID, fi.LastPostUserName, fi.LastPostFirstName, fi.LastPostLastName, fi.LastPostDisplayName));
+                        template = template.Replace("[DISPLAYNAME]", "<i class=\"fa fa-user fa-fw fa-blue\"></i>&nbsp;" + DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, isMod, isAdmin, fi.LastPostUserID, fi.LastPostUserName, fi.LastPostFirstName, fi.LastPostLastName, fi.LastPostDisplayName));
                     }
 
                     DateTime dtLastPostDate = fi.LastPostDateTime;

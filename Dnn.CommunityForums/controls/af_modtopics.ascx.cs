@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            if (this.Request.IsAuthenticated && (this.ForumUser.Profile.IsMod || this.ForumUser.IsSuperUser || this.ForumUser.IsAdmin))
+            if (this.Request.IsAuthenticated && (this.ForumUser.GetIsMod(this.ForumModuleId) || this.ForumUser.IsSuperUser || this.ForumUser.IsAdmin))
             {
                 if (this.ForumId > 0)
                 {
@@ -92,46 +92,65 @@ namespace DotNetNuke.Modules.ActiveForums
                             if (this.bModDelete)
                             {
                                 int delAction = ms.DeleteBehavior;
-                                int tmpForumId = -1;
-                                int tmpTopicId = -1;
-                                int tmpReplyId = -1;
-                                tmpForumId = Convert.ToInt32(e.Parameters[1]);
-                                tmpTopicId = Convert.ToInt32(e.Parameters[2]);
-                                tmpReplyId = Convert.ToInt32(e.Parameters[3]);
-                                Author auth = null;
-                                if (fi.ModDeleteTemplateId > 0)
-                                {
-                                    try
-                                    {
-                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(fi.ModDeleteTemplateId, this.PortalId, tmpForumId, tmpTopicId, tmpReplyId, this.ForumModuleId, this.ForumTabId, string.Empty);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                                    }
-                                }
-
+                                int tmpForumId = Convert.ToInt32(e.Parameters[1]);
+                                int tmpTopicId = Convert.ToInt32(e.Parameters[2]);
+                                int tmpReplyId = Convert.ToInt32(e.Parameters[3]);
                                 if (tmpForumId > 0 & tmpTopicId > 0 && tmpReplyId == 0)
                                 {
                                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);
                                     if (ti != null)
                                     {
-                                        auth = ti.Author;
+                                        new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(tmpTopicId);
+                                        if (fi?.ModDeleteTemplateId > 0 & ti?.Author?.AuthorId > 0)
+                                        {
+                                            try
+                                            {
+                                                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(
+                                                    fi.ModDeleteTemplateId,
+                                                    this.PortalId,
+                                                    this.ForumModuleId,
+                                                    this.TabId,
+                                                    tmpForumId,
+                                                    tmpTopicId,
+                                                    -1,
+                                                    string.Empty,
+                                                    ti.Author);
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                                            }
+                                        }
                                     }
-
-                                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(tmpTopicId);
                                 }
                                 else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                                 {
                                     DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(tmpReplyId);
                                     if (ri != null)
                                     {
-                                        auth = ri.Author;
+                                        new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Delete(this.PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);
+                                        if (fi?.ModDeleteTemplateId > 0 & ri?.Author?.AuthorId > 0)
+                                        {
+                                            try
+                                            {
+                                                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(
+                                                    fi.ModDeleteTemplateId,
+                                                    this.PortalId,
+                                                    this.ForumModuleId,
+                                                    this.TabId,
+                                                    tmpForumId,
+                                                    tmpTopicId,
+                                                    tmpReplyId,
+                                                    string.Empty,
+                                                    ri.Author);
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                                            }
+                                        }
                                     }
-
-                                    new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Delete(this.PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);
                                 }
-
                                 DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
                             }
 
@@ -140,14 +159,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     case "modreject":
                         {
-                            int tmpForumId = 0;
-                            int tmpTopicId = 0;
-                            int tmpReplyId = 0;
-                            int tmpAuthorId = 0;
-                            tmpForumId = Convert.ToInt32(e.Parameters[1]);
-                            tmpTopicId = Convert.ToInt32(e.Parameters[2]);
-                            tmpReplyId = Convert.ToInt32(e.Parameters[3]);
-                            tmpAuthorId = Convert.ToInt32(e.Parameters[4]);
+                            int tmpForumId = Convert.ToInt32(e.Parameters[1]);
+                            int tmpTopicId = Convert.ToInt32(e.Parameters[2]);
+                            int tmpReplyId = Convert.ToInt32(e.Parameters[3]);
+                            int tmpAuthorId = Convert.ToInt32(e.Parameters[4]);
                             ModController mc = new ModController();
                             mc.Mod_Reject(this.PortalId, this.ForumModuleId, this.UserId, tmpForumId, tmpTopicId, tmpReplyId);
                             DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
@@ -156,7 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, tmpAuthorId);
                                 if (ui != null)
                                 {
-                                    Author au = new Author();
+                                    DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo au = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
                                     au.AuthorId = tmpAuthorId;
                                     au.DisplayName = ui.DisplayName;
                                     au.Email = ui.Email;
@@ -172,12 +187,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     case "modappr":
                         {
-                            int tmpForumId = -1;
-                            int tmpTopicId = -1;
-                            int tmpReplyId = -1;
-                            tmpForumId = Convert.ToInt32(e.Parameters[1]);
-                            tmpTopicId = Convert.ToInt32(e.Parameters[2]);
-                            tmpReplyId = Convert.ToInt32(e.Parameters[3]);
+                            int tmpForumId = Convert.ToInt32(e.Parameters[1]);
+                            int tmpTopicId = Convert.ToInt32(e.Parameters[2]);
+                            int tmpReplyId = Convert.ToInt32(e.Parameters[3]);
                             if (tmpForumId > 0 & tmpTopicId > 0 && tmpReplyId == 0)
                             {
                                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);

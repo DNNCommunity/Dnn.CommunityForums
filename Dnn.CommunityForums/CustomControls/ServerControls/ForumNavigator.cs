@@ -33,67 +33,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:ForumNavigator runat=server></{0}:ForumNavigator>")]
     public class ForumNavigator : WebControl
     {
-        private DisplayTemplate itemTemplate;
+        public DisplayTemplate ItemTemplate { get; set; }
 
-        public DisplayTemplate ItemTemplate
-        {
-            get
-            {
-                return this.itemTemplate;
-            }
+        public int PortalId { get; set; } = -1;
 
-            set
-            {
-                this.itemTemplate = value;
-            }
-        }
+        public int ModuleId { get; set; } = -1;
 
-        private int portalId = -1;
+        public int TabId { get; set; } = -1;
 
-        public int PortalId
-        {
-            get
-            {
-                return this.portalId;
-            }
-
-            set
-            {
-                this.portalId = value;
-            }
-        }
-
-        private int moduleId = -1;
-
-        public int ModuleId
-        {
-            get
-            {
-                return this.moduleId;
-            }
-
-            set
-            {
-                this.moduleId = value;
-            }
-        }
-
-        private int tabId = -1;
-
-        public int TabId
-        {
-            get
-            {
-                return this.tabId;
-            }
-
-            set
-            {
-                this.tabId = value;
-            }
-        }
-
-        private User forumUser = null;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser = null;
 
         protected override void Render(HtmlTextWriter writer)
         {

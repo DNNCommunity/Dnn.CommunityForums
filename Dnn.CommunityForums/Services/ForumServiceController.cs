@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var request = this.Request;
             var portalSettings = this.PortalSettings;
             var userInfo = portalSettings.UserInfo;
-            var forumUser = new UserController().GetUser(this.ActiveModule.PortalID, this.ActiveModule.ModuleID, userInfo.UserID);
+            var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.ActiveModule.PortalID, userInfo.UserID);
 
             if (!request.Content.IsMimeMultipartContent())
             {
@@ -386,8 +386,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var portalSettings = this.PortalSettings;
             var userInfo = portalSettings.UserInfo;
-            var forumUser = new UserController().GetUser(portalSettings.PortalId, this.ActiveModule.ModuleID, userInfo.UserID);
-
+            var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.ActiveModule.PortalID, userInfo.UserID);
             Dictionary<string, string> rows = new Dictionary<string, string>();
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(this.ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (this.UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, forumUser.UserRoles))))
             {
@@ -420,7 +419,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var portalSettings = this.PortalSettings;
             var userInfo = portalSettings.UserInfo;
-            var forumUser = new UserController().GetUser(portalSettings.PortalId, this.ActiveModule.ModuleID, userInfo.UserID);
+            var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.ActiveModule.PortalID, userInfo.UserID);
 
             var forum_out = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalSettings.PortalId, this.ActiveModule.ModuleID, 0, true, dto.OldTopicId);
             var forum_in = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.NewForumId, this.ActiveModule.ModuleID);
