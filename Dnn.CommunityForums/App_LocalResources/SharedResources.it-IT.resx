@@ -1729,4 +1729,10 @@ Da
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>Nessun contenuto in sospeso</value>
   </data>
+  <data name="[RESX:Tips:BanUser].Text" xml:space="preserve">
+    <value>Elimina tutti i post per questo utente e annulla l'autorizzazione dell'utente.</value>
+  </data>
+  <data name="[RESX:ForumMissingForForumTrackingId]" xml:space="preserve">
+    <value>Il {0} del forum per l'ID di tracciamento del forum {1} non è presente nel database; Sarà necessario riparare questo nel database o eliminare il record di monitoraggio del forum. Visita il repository Github (https://github.com/DNNCommunity/Dnn.CommunityForums) dei forum della community DNN, dove puoi pubblicare un problema o rivedere il wiki per i passaggi per la risoluzione dei problemi.</value>
+  </data>
 </root>
