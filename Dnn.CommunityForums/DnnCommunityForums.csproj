@@ -1357,6 +1357,7 @@
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\ForumGroupController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
+    <Compile Include="Controllers\ForumTrackingController.cs" />
     <Compile Include="Controllers\ModerationController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\ProcessQueueController.cs" />
@@ -1388,6 +1389,7 @@
     <Compile Include="Entities\ForumCollection.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
     <Compile Include="Entities\ForumInfo.cs" />
+    <Compile Include="Entities\ForumTrackingInfo.cs" />
     <Compile Include="Entities\ForumUserInfo.cs" />
     <Compile Include="Entities\LikeInfo.cs" />
     <Compile Include="Entities\Like.cs" />

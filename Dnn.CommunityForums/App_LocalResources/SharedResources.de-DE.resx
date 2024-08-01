@@ -1731,4 +1731,10 @@ Von
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>Keine ausstehenden Beiträge</value>
   </data>
+  <data name="[RESX:Tips:BanUser].Text" xml:space="preserve">
+    <value>Löscht alle Beiträge für diesen Benutzer und entzieht dem Benutzer die Berechtigung.</value>
+  </data>
+  <data name="[RESX:ForumMissingForForumTrackingId]" xml:space="preserve">
+    <value>Die Forum-{0} für die {1} der Forum-Tracking-ID wird in der Datenbank nicht gefunden. Sie müssen dies in der Datenbank reparieren oder den Foren-Tracking-Datensatz löschen. Bitte besuchen Sie das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki für Schritte zur Fehlerbehebung überprüfen können.</value>
+  </data>
 </root>

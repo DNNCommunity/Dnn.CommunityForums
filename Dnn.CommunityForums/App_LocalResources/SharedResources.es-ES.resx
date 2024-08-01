@@ -1734,4 +1734,7 @@ De
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>No hay contenido pendientes</value>
   </data>
+  <data name="[RESX:ForumMissingForForumTrackingId]" xml:space="preserve">
+    <value>El {0} del foro para el {1} ID de seguimiento del foro no se encuentra en la base de datos; Deberá reparar esto en la base de datos o eliminar el registro de seguimiento del foro. Visite el repositorio de Github (https://github.com/DNNCommunity/Dnn.CommunityForums) de los foros de la comunidad DNN, donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
+  </data>
 </root>
