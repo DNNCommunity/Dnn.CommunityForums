@@ -33,128 +33,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:TagCloud runat=server></{0}:TagCloud>")]
     public class TagCloud : WebControl
     {
-        private int portalId = -1;
-        private int moduleId = -1;
-        private string cssOne = "tagcssone";
-        private string cssTwo = "tagcsstwo";
-        private string cssThree = "tagcssthree";
-        private int tabId = -1;
+        public int TabId { get; set; } = -1;
 
-        public int TabId
-        {
-            get
-            {
-                return this.tabId;
-            }
+        public int PortalId { get; set; } = -1;
 
-            set
-            {
-                this.tabId = value;
-            }
-        }
+        public int ModuleId { get; set; } = -1;
 
-        public int PortalId
-        {
-            get
-            {
-                return this.portalId;
-            }
+        public string CSSOne { get; set; } = "tagcssone";
 
-            set
-            {
-                this.portalId = value;
-            }
-        }
+        public string CSSTwo { get; set; } = "tagcsstwo";
 
-        public int ModuleId
-        {
-            get
-            {
-                return this.moduleId;
-            }
+        public string CSSThree { get; set; } = "tagcssthree";
 
-            set
-            {
-                this.moduleId = value;
-            }
-        }
+        public string ForumIds { get; set; } = string.Empty;
 
-        public string CSSOne
-        {
-            get
-            {
-                return this.cssOne;
-            }
-
-            set
-            {
-                this.cssOne = value;
-            }
-        }
-
-        public string CSSTwo
-        {
-            get
-            {
-                return this.cssTwo;
-            }
-
-            set
-            {
-                this.cssTwo = value;
-            }
-        }
-
-        public string CSSThree
-        {
-            get
-            {
-                return this.cssThree;
-            }
-
-            set
-            {
-                this.cssThree = value;
-            }
-        }
-
-        private string forumIds = string.Empty;
-
-        public string ForumIds
-        {
-            get
-            {
-                return this.forumIds;
-            }
-
-            set
-            {
-                this.forumIds = value;
-            }
-        }
-
-        private int tagCount = 15;
-
-        public int TagCount
-        {
-            get
-            {
-                return this.tagCount;
-            }
-
-            set
-            {
-                this.tagCount = value;
-            }
-        }
+        public int TagCount { get; set; } = 15;
 
         protected override void Render(HtmlTextWriter writer)
         {
-            User forumUser = null;
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser = null;
             if (string.IsNullOrEmpty(this.ForumIds))
             {
-                UserController uc = new UserController();
-                forumUser = uc.GetUser(this.PortalId, this.ModuleId);
+                forumUser = forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(this.PortalId, this.ModuleId);
                 if (string.IsNullOrEmpty(forumUser.UserForums))
                 {
                     this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, this.PortalId, this.ModuleId);

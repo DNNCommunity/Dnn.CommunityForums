@@ -106,11 +106,9 @@ namespace DotNetNuke.Modules.ActiveForums
         private string BuildRSS(int portalId, int tabId, int moduleId, int intPosts, int forumID, bool ingnoreSecurity, bool includeBody)
         {
             PortalSettings ps = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-            DotNetNuke.Entities.Users.UserInfo ou = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-            UserController uc = new UserController();
-            User u = uc.GetUser(portalId, moduleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(portalId, moduleId);
 
-            DataSet ds = DataProvider.Instance().UI_TopicsView(portalId, moduleId, forumID, ou.UserID, 0, 20, ou.IsSuperUser, SortColumns.ReplyCreated);
+            DataSet ds = DataProvider.Instance().UI_TopicsView(portalId, moduleId, forumID, u.UserId, 0, 20, u.IsSuperUser, SortColumns.ReplyCreated);
             if (ds.Tables.Count > 0)
             {
                 this.offSet = Convert.ToInt32(ps.TimeZone.GetUtcOffset(DateTime.UtcNow).TotalMinutes);
@@ -275,7 +273,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append(this.WriteElement("title", dr["Subject"].ToString(), indent + 1));
             sb.Append(this.WriteElement("description", body, indent + 1));
             sb.Append(this.WriteElement("link", uRL, indent + 1));
-            sb.Append(this.WriteElement("dc:creator", UserProfiles.GetDisplayName(this.PortalSettings, this.moduleID, false, false, false, -1, dr["AuthorUserName"].ToString(), dr["AuthorFirstName"].ToString(), dr["AuthorLastName"].ToString(), dr["AuthorDisplayName"].ToString(), null), indent + 1));
+            sb.Append(this.WriteElement("dc:creator", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.moduleID, false, false, false, -1, dr["AuthorUserName"].ToString(), dr["AuthorFirstName"].ToString(), dr["AuthorLastName"].ToString(), dr["AuthorDisplayName"].ToString(), null), indent + 1));
             sb.Append(this.WriteElement("pubDate", Convert.ToDateTime(dr["DateCreated"]).AddMinutes(this.offSet).ToString("r"), indent + 1));
             sb.Append(this.WriteElement("guid", uRL, indent + 1));
             sb.Append(this.WriteElement("slash:comments", dr["ReplyCount"].ToString(), indent + 1));

@@ -18,30 +18,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
-    #region AuthorInfo
-    public class Author
-    {
-        #region Private Members
-
-        #endregion
-        #region Public Properties
-
-        public int AuthorId { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string DisplayName { get; set; }
-
-        public string Username { get; set; }
-
-        public string Email { get; set; }
-
-        #endregion
-    }
-    #endregion
-
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Replaced by DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo.")]
+    public class Author : DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo { }
 }

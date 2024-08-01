@@ -208,9 +208,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 ti.Content.DateCreated = DateTime.UtcNow;
             }
-
-            UserProfileController.Profiles_ClearCache(ti.ModuleId, ti.Content.AuthorId);
-
+            if (ti.IsApproved && ti.Author.AuthorId > 0)
+            {   // TODO: put this in a better place and make it consistent with reply counter
+                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().UpdateUserTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
+            }
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(ti.Forum.PortalId, ti.Content.AuthorId);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
             DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));

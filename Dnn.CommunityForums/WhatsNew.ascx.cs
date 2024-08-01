@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         #region Private Variables
 
-        private User currentUser;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser;
         private string authorizedForums;
         private WhatsNewModuleSettings settings;
 
@@ -63,9 +63,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private User CurrentUser
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo CurrentUser
         {
-            get { return this.currentUser ?? (this.currentUser = new UserController().GetUser(this.PortalId, -1)); }
+            get { return this.currentUser ?? (this.currentUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(this.PortalId, -1)); }
         }
 
         private string AuthorizedForums

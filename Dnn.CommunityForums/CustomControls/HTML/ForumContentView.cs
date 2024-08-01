@@ -35,202 +35,34 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Forums,
         }
 
-        private int portalId = -1;
 
-        public int PortalId
-        {
-            get
-            {
-                return this.portalId;
-            }
+        public int PortalId { get; set; } = -1;
 
-            set
-            {
-                this.portalId = value;
-            }
-        }
+        public int ModuleId { get; set; } = -1;
 
-        private int moduleId = -1;
+        public int TabId { get; set; } = -1;
 
-        public int ModuleId
-        {
-            get
-            {
-                return this.moduleId;
-            }
+        public int ForumId { get; set; } = -1;
 
-            set
-            {
-                this.moduleId = value;
-            }
-        }
+        public int ForumGroupId { get; set; } = -1;
 
-        private int tabId = -1;
+        public int ParentForumId { get; set; } = -1;
 
-        public int TabId
-        {
-            get
-            {
-                return this.tabId;
-            }
+        public GroupingOptions GroupBy { get; set; } = GroupingOptions.None;
 
-            set
-            {
-                this.tabId = value;
-            }
-        }
+        public int TopicId { get; set; } = -1;
 
-        private int forumId = -1;
+        public string Topic { get; set; } = string.Empty;
 
-        public int ForumId
-        {
-            get
-            {
-                return this.forumId;
-            }
+        public string ItemTemplate { get; set; } = string.Empty;
 
-            set
-            {
-                this.forumId = value;
-            }
-        }
+        public string HeaderTemplate { get; set; } = string.Empty;
 
-        private int forumGroupId = -1;
+        public string FooterTemplate { get; set; } = string.Empty;
 
-        public int ForumGroupId
-        {
-            get
-            {
-                return this.forumGroupId;
-            }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser { get; set; }
 
-            set
-            {
-                this.forumGroupId = value;
-            }
-        }
-
-        private int parentForumId = -1;
-
-        public int ParentForumId
-        {
-            get
-            {
-                return this.parentForumId;
-            }
-
-            set
-            {
-                this.parentForumId = value;
-            }
-        }
-
-        private GroupingOptions groupBy = GroupingOptions.None;
-
-        public GroupingOptions GroupBy
-        {
-            get
-            {
-                return this.groupBy;
-            }
-
-            set
-            {
-                this.groupBy = value;
-            }
-        }
-
-        private int topicId = -1;
-
-        public int TopicId
-        {
-            get
-            {
-                return this.topicId;
-            }
-
-            set
-            {
-                this.topicId = value;
-            }
-        }
-
-        private string topic = string.Empty;
-
-        public string Topic
-        {
-            get
-            {
-                return this.topic;
-            }
-
-            set
-            {
-                this.topic = value;
-            }
-        }
-
-        private string itemTemplate = string.Empty;
-
-        public string ItemTemplate
-        {
-            get
-            {
-                return this.itemTemplate;
-            }
-
-            set
-            {
-                this.itemTemplate = value;
-            }
-        }
-
-        private string headerTemplate = string.Empty;
-
-        public string HeaderTemplate
-        {
-            get
-            {
-                return this.headerTemplate;
-            }
-
-            set
-            {
-                this.headerTemplate = value;
-            }
-        }
-
-        private string footerTemplate = string.Empty;
-
-        public string FooterTemplate
-        {
-            get
-            {
-                return this.footerTemplate;
-            }
-
-            set
-            {
-                this.footerTemplate = value;
-            }
-        }
-
-        public User ForumUser { get; set; }
-
-        private bool includeClasses = true;
-
-        public bool IncludeClasses
-        {
-            get
-            {
-                return this.includeClasses;
-            }
-
-            set
-            {
-                this.includeClasses = value;
-            }
-        }
+        public bool IncludeClasses { get; set; } = true;
 
         public string Render()
         {
@@ -386,24 +218,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return sb.ToString();
         }
-
-        // Private Sub RenderTopic(ByVal dr As IDataRecord)
-        //    Dim topicsTemplate As String = TemplateUtils.GetTemplateSection(TopicTemplate, "[TOPIC]", "[/TOPIC]")
-        //    Dim replyTemplate As String = TemplateUtils.GetTemplateSection(TopicTemplate, "[REPLIES]", "[/REPLIES]")
-        //    TopicTemplate = TemplateUtils.ReplaceSubSection(TopicTemplate, String.Empty, "[REPLIES]", "[/REPLIES]")
-        //    topicsTemplate = topicsTemplate.Replace("[BODY]", dr("Body").ToString)
-        //    topicsTemplate = topicsTemplate.Replace("[ACTIONS:DELETE]", String.Empty)
-        //    topicsTemplate = topicsTemplate.Replace("[ACTIONS:EDIT]", String.Empty)
-        //    topicsTemplate = topicsTemplate.Replace("[ACTIONS:ALERT]", String.Empty)
-        //    topicsTemplate = topicsTemplate.Replace("[ATTACHMENTS]", String.Empty)
-        //    topicsTemplate = topicsTemplate.Replace("[SIGNATURE]", String.Empty)
-        //    TopicTemplate = TemplateUtils.ReplaceSubSection(TopicTemplate, topicsTemplate, "[TOPIC]", "[/TOPIC]")
-
-        // TopicTemplate = TopicTemplate.Replace("[ADDREPLY]", String.Empty)
-        //    TopicTemplate = TopicTemplate.Replace("[POSTRATINGBUTTON]", String.Empty)
-        //    TopicTemplate = TopicTemplate.Replace("[TOPICSUBSCRIBE]", String.Empty)
-        //    Topic = TopicTemplate
-
-        // End Sub
     }
 }

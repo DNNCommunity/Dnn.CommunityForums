@@ -112,11 +112,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sGrid = TemplateUtils.ReplaceSubSection(sGrid, sHeader, "[AF:CONTROL:LIST:HEADER]", "[/AF:CONTROL:LIST:HEADER]");
                 sGrid = TemplateUtils.ReplaceSubSection(sGrid, sFooter, "[AF:CONTROL:LIST:FOOTER]", "[/AF:CONTROL:LIST:FOOTER]");
 
-                List<User> upl = this.GetMemberList();
+                List<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo> upl = this.GetMemberList();
                 if (upl != null)
                 {
                     int i = 0;
-                    foreach (User up in upl)
+                    foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo up in upl)
                     {
                         string sRow = string.Empty;
                         if (i % 2 == 0)
@@ -127,8 +127,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sRow = sAltRow;
                         }
-
-                        sRow = TemplateUtils.ParseProfileTemplate(sRow, up, this.PortalId, this.ModuleId, this.ImagePath, this.CurrentUserType, false, false, false, string.Empty, -1, this.TimeZoneOffset);
+                        var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, up.UserId));
+                        sRow = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sRow, author, this.ImagePath, this.CurrentUserType, false, false, false, string.Empty, -1, this.TimeZoneOffset);
                         sb.Append(sRow);
                         i += 1;
                     }
@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.pager1.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
             this.pager1.View = "members";
             this.pager1.PageMode = PagerNav.Mode.CallBack;
-            
+
             if (this.Request.Params["affilter"] != null)
             {
                 string[] @params = { "affilter=" + this.Request.Params["affilter"] };
@@ -210,10 +210,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return sb.ToString();
         }
 
-        private List<User> GetMemberList()
+        private List<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo> GetMemberList()
         {
-            List<User> upl = new List<User>();
-            User upi = null;
+            List<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo> upl = new List<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>();
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo upi = null;
             this.pageSize = this.MainSettings.PageSize;
             if (this.PageId == 1)
             {
@@ -232,83 +232,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 dr.NextResult();
                 while (dr.Read())
                 {
-                    upi = new User();
-                    upi.UserId = Convert.ToInt32(dr["UserId"].ToString());
-                    upi.Profile.PortalId = Convert.ToInt32(dr["PortalId"].ToString());
-                    upi.Profile.TopicCount = Convert.ToInt32(dr["TopicCount"].ToString());
-                    upi.Profile.ReplyCount = Convert.ToInt32(dr["ReplyCount"].ToString());
-                    upi.Profile.ViewCount = Convert.ToInt32(dr["ViewCount"].ToString());
-                    upi.Profile.AnswerCount = Convert.ToInt32(dr["AnswerCount"].ToString());
-                    upi.Profile.RewardPoints = Convert.ToInt32(dr["RewardPoints"].ToString());
-                    upi.Profile.UserCaption = Convert.ToString(dr["UserCaption"].ToString());
-                    upi.Profile.IsUserOnline = Convert.ToBoolean(dr["IsUserOnline"]);
-                    if (!(dr["DateCreated"].ToString() == string.Empty))
-                    {
-                        upi.Profile.DateCreated = Convert.ToDateTime(dr["DateCreated"].ToString());
-                    }
 
-                    if (!(dr["DateUpdated"].ToString() == string.Empty))
-                    {
-                        upi.Profile.DateUpdated = Convert.ToDateTime(dr["DateUpdated"].ToString());
-                    }
-
-                    if (!(dr["DateLastActivity"].ToString() == string.Empty))
-                    {
-                        upi.Profile.DateLastActivity = Convert.ToDateTime(dr["DateLastActivity"].ToString());
-                    }
-
-                    upi.Profile.Signature = Convert.ToString(dr["Signature"].ToString());
-                    if (!(dr["SignatureDisabled"].ToString() == string.Empty))
-                    {
-                        upi.Profile.SignatureDisabled = Convert.ToBoolean(dr["SignatureDisabled"]);
-                    }
-
-                    if (!(dr["TrustLevel"].ToString() == string.Empty))
-                    {
-                        upi.Profile.TrustLevel = Convert.ToInt32(dr["TrustLevel"].ToString());
-                    }
-
-                    if (!(dr["AdminWatch"].ToString() == string.Empty))
-                    {
-                        upi.Profile.AdminWatch = Convert.ToBoolean(dr["AdminWatch"]);
-                    }
-
-                    if (!(dr["AttachDisabled"].ToString() == string.Empty))
-                    {
-                        upi.Profile.AttachDisabled = Convert.ToBoolean(dr["AttachDisabled"]);
-                    }
-
-                    upi.Profile.Avatar = Convert.ToString(dr["Avatar"].ToString());
-                    if (!(dr["AvatarType"].ToString() == string.Empty))
-                    {
-                        upi.Profile.AvatarType = (AvatarTypes)Convert.ToInt32(dr["AvatarType"].ToString());
-                    }
-
-                    if (!(dr["AvatarDisabled"].ToString() == string.Empty))
-                    {
-                        upi.Profile.AvatarDisabled = Convert.ToBoolean(dr["AvatarDisabled"]);
-                    }
-                    if (!(dr["PrefBlockAvatars"].ToString() == string.Empty))
-                    {
-                        upi.Profile.PrefBlockAvatars = Convert.ToBoolean(dr["PrefBlockAvatars"]);
-                    }
-                    else
-                    {
-                        upi.Profile.PrefBlockAvatars = false;
-                    }
-
-                    if (!(dr["DateLastPost"].ToString() == string.Empty))
-                    {
-                        upi.Profile.DateLastPost = Convert.ToDateTime(dr["DateLastPost"].ToString());
-                    }
-
-                    upi.UserName = Convert.ToString(dr["Username"].ToString());
-                    upi.FirstName = Convert.ToString(dr["FirstName"].ToString());
-                    upi.LastName = Convert.ToString(dr["LastName"].ToString());
-                    upi.Email = Convert.ToString(dr["Email"].ToString());
-                    upi.DisplayName = Convert.ToString(dr["DisplayName"].ToString());
-
-                    upl.Add(upi);
+                    upl.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, Convert.ToInt32(dr["UserId"].ToString())));
                 }
             }
             catch (Exception ex)

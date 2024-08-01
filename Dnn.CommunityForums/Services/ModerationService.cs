@@ -23,11 +23,13 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Runtime.InteropServices;
     using System.Web.Http;
 
     using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
+    using global::DotNetNuke.Entities.Portals;
 
     [ValidateAntiForgeryToken]
     public class ModerationServiceController : DnnApiController
@@ -134,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var ui = uc.GetUser(this.PortalSettings.PortalId, authorId);
                 if (ui != null)
                 {
-                    var au = new Author
+                    DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo au = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo
                     {
                         AuthorId = authorId,
                         DisplayName = ui.DisplayName,
@@ -169,7 +171,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
             }
 
-            int authorId;
             var ms = SettingsBase.GetModuleSettings(this.moduleId);
             if (this.replyId > 0 & this.replyId != this.topicId)
             {
@@ -180,9 +181,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
                 }
 
-                authorId = reply.Content.AuthorId;
                 var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
                 rc.Reply_Delete(this.PortalSettings.PortalId, this.forumId, this.topicId, this.replyId, ms.DeleteBehavior);
+                if (fi.ModDeleteTemplateId > 0 && reply?.Content?.AuthorId > 0)
+                {
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, string.Empty, reply.Author);
+                }
             }
             else
             {
@@ -191,29 +195,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
                 }
-
-                authorId = ti.Content.AuthorId;
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(this.topicId);
-            }
-
-            if (fi.ModDeleteTemplateId > 0 && authorId > 0)
-            {
-                var uc = new DotNetNuke.Entities.Users.UserController();
-                var ui = uc.GetUser(this.PortalSettings.PortalId, authorId);
-                if (ui != null)
+                if (fi.ModDeleteTemplateId > 0 && ti?.Content?.AuthorId > 0)
                 {
-                    var au = new Author
-                    {
-                        AuthorId = authorId,
-                        DisplayName = ui.DisplayName,
-                        Email = ui.Email,
-                        FirstName = ui.FirstName,
-                        LastName = ui.LastName,
-                        Username = ui.Username,
-                    };
-                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(fi.ModDeleteTemplateId, this.PortalSettings.PortalId, this.forumId, this.topicId, this.replyId, this.moduleId, this.tabId, string.Empty);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, string.Empty, ti.Author);
                 }
             }
+
 
             NotificationsController.Instance.DeleteNotification(dto.NotificationId);
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
@@ -261,7 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             string moduleTitle = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.moduleId, this.tabId, true).ModuleTitle;
-            DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(portalId: this.ActiveModule.PortalID, moduleId: this.moduleId, moduleTitle: moduleTitle, tabId: this.tabId, forumId: this.forumId, topicId: this.topicId, replyId: this.replyId, bannedBy: this.UserInfo, authorId: authorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.BanUser(portalId: this.ActiveModule.PortalID, moduleId: this.moduleId, moduleTitle: moduleTitle, tabId: this.tabId, forumId: this.forumId, topicId: this.topicId, replyId: this.replyId, bannedBy: this.UserInfo, authorId: authorId);
 
             NotificationsController.Instance.DeleteNotification(dto.NotificationId);
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });

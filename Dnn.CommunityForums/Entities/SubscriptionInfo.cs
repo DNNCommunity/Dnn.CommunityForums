@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private string forumName;
         private string forumGroupName;
         private string email;
-        private DotNetNuke.Modules.ActiveForums.User user;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
 
@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool ForumSubscriber { get => this.ForumId > 0 && this.TopicId == 0; }
 
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.User User => this.user ?? (this.user = new DotNetNuke.Modules.ActiveForums.UserController().GetUser(this.PortalId, this.ModuleId, this.UserId));
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo User => this.user ?? (this.user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UserId));
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum => this.forumInfo ?? (this.forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId));

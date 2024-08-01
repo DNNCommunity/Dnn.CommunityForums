@@ -44,6 +44,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Queue;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
+    using Microsoft.SqlServer.Server;
+    using static log4net.Appender.RollingFileAppender;
 
     public abstract partial class Utilities
     {
@@ -229,7 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return text;
         }
 
-        internal static bool HasFloodIntervalPassed(int floodInterval, User user, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
+        internal static bool HasFloodIntervalPassed(int floodInterval, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             /* flood interval check passes if
             1) flood interval <= 0 (disabled)
@@ -240,13 +242,14 @@ namespace DotNetNuke.Modules.ActiveForums
             6) time span for since user's last post or reply exceeds flood interval
             */
             return floodInterval <= 0
-                   || user == null
-                   || user.IsAdmin
-                   || user.IsSuperUser
-                   || Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, userTrustLevel: user.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, user.UserRoles), forumInfo.AutoTrustLevel, user.PostCount)
-                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, user.UserRoles)
-                   || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastPost, DateTime.UtcNow) > floodInterval
-                   || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastReply, DateTime.UtcNow) > floodInterval;
+                   || forumUser == null
+                   || forumUser.IsAnonymous
+                   || forumUser.IsAdmin
+                   || forumUser.IsSuperUser
+                   || Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, forumUser.UserRoles), forumInfo.AutoTrustLevel, forumUser.PostCount)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, forumUser.UserRoles)
+                   || (forumUser.DateLastPost != null && SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)forumUser.DateLastPost, DateTime.UtcNow) > floodInterval)
+                   || (forumUser.DateLastReply != null && SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)forumUser.DateLastReply, DateTime.UtcNow) > floodInterval);
         }
 
         public static bool IsTrusted(int forumTrustLevel, int userTrustLevel, bool isTrustedRole, int autoTrustLevel = 0, int userPostCount = 0)
@@ -992,45 +995,87 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
+        internal static string GetUserFormattedDateTime(DateTime? dateTime, int portalId, int userId, string format)
         {
-            CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
-            TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
-            return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset(dateTime), format);
+            if (dateTime != null)
+            {
+                CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
+                TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
+                return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset((DateTime)dateTime), format);
+            }
+
+            return string.Empty;
         }
 
-        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId)
+        internal static string GetUserFormattedDateTime(DateTime? dateTime, int portalId, int userId)
         {
-            CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
-            TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
-            return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset(dateTime));
+            if (dateTime != null)
+            {
+                CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
+                TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
+                return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset((DateTime)dateTime));
+            }
+
+            return string.Empty;
         }
 
-        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        internal static string GetUserFormattedDateTime(DateTime? dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
         {
             return GetUserFormattedDateTime(dateTime, userCultureInfo, timeZoneOffset, "g");
         }
 
+        internal static string GetUserFormattedDateTime(DateTime? dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
+        {
+            if (dateTime != null)
+            {
+                try
+                {
+                    return ((DateTime)dateTime).Add(timeZoneOffset).ToString(format, userCultureInfo);
+                }
+                catch
+                {
+                    return ((DateTime)dateTime).ToString(format, CultureInfo.CurrentCulture);
+                }
+            }
+
+            return string.Empty;
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
+        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
+        {
+            CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
+            TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
+            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset(dateTime), format);
+        }
+
+        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId)
+        {
+            return GetUserFormattedDateTime((DateTime?)dateTime, portalId, userId);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
+        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        {
+            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, timeZoneOffset, "g");
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
         public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
         {
-            return GetUserFormattedDateTime(date, userCultureInfo, timeZoneOffset, "d");
+            return GetUserFormattedDateTime((DateTime?)date, userCultureInfo, timeZoneOffset, "d");
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
         public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
         {
-            return GetUserFormattedDateTime(date, userCultureInfo, timeZoneOffset, format);
+            return GetUserFormattedDateTime((DateTime?)date, userCultureInfo, timeZoneOffset, format);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
         public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
         {
-            try
-            {
-                return dateTime.Add(timeZoneOffset).ToString(format, userCultureInfo);
-            }
-            catch
-            {
-                return dateTime.ToString(format, CultureInfo.CurrentCulture);
-            }
+            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, timeZoneOffset, format);
         }
 
         public static CultureInfo GetCultureInfoForUser(int portalId, int userId)

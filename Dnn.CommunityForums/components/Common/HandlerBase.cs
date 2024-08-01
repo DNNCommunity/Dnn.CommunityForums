@@ -27,216 +27,197 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
     using System.Text;
     using System.Web;
 
-    public class HandlerBase : System.Web.IHttpHandler
-    {
-        internal enum OutputCodes : int
-        {
-            Success,
-            UnsupportedRequest,
-            AuthenticationFailed,
-            Exception,
-            NoResults,
-            AccessDenied,
-        }
+	public class HandlerBase : System.Web.IHttpHandler
+	{
+		internal enum OutputCodes : int
+		{
+			Success,
+			UnsupportedRequest,
+			AuthenticationFailed,
+			Exception,
+			NoResults,
+			AccessDenied,
+		}
 
-        private Hashtable @params;
-        private bool isValid = false;
-        private int upid = -1;
-        private DotNetNuke.Entities.Portals.PortalSettings ps;
-        private SettingsInfo mainSettings;
-        private bool adminRequired = false;
+		private Hashtable _params;
+		private bool _isValid = false;
+		private int _gid = -1;
+		private int _groupid = -1;
+		private int _upid = -1;
+		private DotNetNuke.Entities.Portals.PortalSettings _ps;
+		private SettingsInfo _mainSettings;
+		private bool _AdminRequired = false;
 
-        public bool AdminRequired
-        {
-            get
-            {
-                return this.adminRequired;
-            }
+		public bool AdminRequired
+		{
+			get
+			{
+				return this._AdminRequired;
+			}
 
-            set
-            {
-                this.adminRequired = value;
-            }
-        }
+			set
+			{
+				this._AdminRequired = value;
+			}
+		}
 
-        private int pid = -1;
-        private int mid = -1;
-        private int userId = -1;
+		private int _pid = -1;
+		private int _mid = -1;
+		private int _UserId = -1;
 
-        public int UserId
-        {
-            get
-            {
-                return this.userId;
-            }
+		public int UserId
+		{
+			get
+			{
+				return this._UserId;
+			}
 
-            set
-            {
-                this.userId = value;
-            }
-        }
+			set
+			{
+				this._UserId = value;
+			}
+		}
 
-        public int PortalId
-        {
-            get
-            {
-                if (HttpContext.Current.Request.QueryString["PortalId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["PortalId"]))
-                {
-                    return int.Parse(HttpContext.Current.Request.QueryString["PortalId"]);
-                }
-                else
-                {
-                    return this.pid;
-                }
-            }
-        }
+		public int PortalId
+		{
+			get
+			{
+				if (HttpContext.Current.Request.QueryString["PortalId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["PortalId"]))
+				{
+					return int.Parse(HttpContext.Current.Request.QueryString["PortalId"]);
+				}
+				else
+				{
+					return this._pid;
+				}
+			}
+		}
 
-        public int ModuleId
-        {
-            get
-            {
-                if (HttpContext.Current.Request.QueryString["ModuleId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["ModuleId"]))
-                {
-                    return int.Parse(HttpContext.Current.Request.QueryString["ModuleId"]);
-                }
-                else
-                {
-                    return this.mid;
-                }
-            }
-        }
+		public int ModuleId
+		{
+			get
+			{
+				if (HttpContext.Current.Request.QueryString["ModuleId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["ModuleId"]))
+				{
+					return int.Parse(HttpContext.Current.Request.QueryString["ModuleId"]);
+				}
+				else
+				{
+					return this._mid;
+				}
+			}
+		}
 
-        public int TabId
-        {
-            get
-            {
-                if (HttpContext.Current.Request.QueryString["TabId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["TabId"]))
-                {
-                    return int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
-                }
-                else
-                {
-                    return -1;
-                }
-            }
-        }
+		public int TabId
+		{
+			get
+			{
+				if (HttpContext.Current.Request.QueryString["TabId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["TabId"]))
+				{
+					return int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
+				}
+				else
+				{
+					return -1;
+				}
+			}
+		}
 
-        public bool IsDebug
-        {
-            get
-            {
-                if (HttpContext.Current.Request.QueryString["amdebug"] != null)
-                {
-                    return bool.Parse(HttpContext.Current.Request.QueryString["amdebug"]);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
+		public bool IsDebug
+		{
+			get
+			{
+				if (HttpContext.Current.Request.QueryString["amdebug"] != null)
+				{
+					return bool.Parse(HttpContext.Current.Request.QueryString["amdebug"]);
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
 
-        public SettingsInfo MainSettings
-        {
-            get
-            {
-                return this.mainSettings;
-            }
-        }
+		public SettingsInfo MainSettings
+		{
+			get
+			{
+				return this._mainSettings;
+			}
+		}
 
-        public bool IsValid
-        {
-            get
-            {
-                return this.isValid;
-            }
-        }
+		public bool IsValid
+		{
+			get
+			{
+				return this._isValid;
+			}
+		}
 
-        public DotNetNuke.Entities.Portals.PortalSettings PS
-        {
-            get
-            {
-                return this.ps;
-            }
-        }
+		public DotNetNuke.Entities.Portals.PortalSettings PS
+		{
+			get
+			{
+				return this._ps;
+			}
+		}
 
-        public int RequestOption
-        {
-            get
-            {
-                if (HttpContext.Current.Request.QueryString["opt"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["opt"]))
-                {
-                    return int.Parse(HttpContext.Current.Request.QueryString["opt"]);
-                }
-                else
-                {
-                    return -1;
-                }
-            }
-        }
+		public int RequestOption
+		{
+			get
+			{
+				if (HttpContext.Current.Request.QueryString["opt"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["opt"]))
+				{
+					return int.Parse(HttpContext.Current.Request.QueryString["opt"]);
+				}
+				else
+				{
+					return -1;
+				}
+			}
+		}
 
-        public Hashtable Params
-        {
-            get
-            {
-                return this.@params;
-            }
-        }
+		public Hashtable Params
+		{
+			get
+			{
+				return this._params;
+			}
+		}
 
-        public int UPID
-        {
-            get
-            {
-                return this.upid;
-            }
-        }
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+		public int UPID => throw new NotImplementedException();
 
-        private bool isAuthenticated = false;
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+		public bool IsAuthenticated
+		{
+			get => throw new NotImplementedException();
+			set => throw new NotImplementedException();
+		}
 
-        public bool IsAuthenticated
-        {
-            get
-            {
-                return this.isAuthenticated;
-            }
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+		public string Username
+		{
+			get => throw new NotImplementedException();
+			set => throw new NotImplementedException();
+		}
 
-            set
-            {
-                this.isAuthenticated = value;
-            }
-        }
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
+		{
+			get
+			{
+                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(this.PortalId, this.ModuleId);
+			}
+		}
 
-        private string username = string.Empty;
-
-        public string Username
-        {
-            get
-            {
-                return this.username;
-            }
-
-            set
-            {
-                this.username = value;
-            }
-        }
-
-        internal User ForumUser
-        {
-            get
-            {
-                UserController uc = new UserController();
-                return uc.GetUser(this.PortalId, this.ModuleId);
-            }
-        }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public virtual bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+		{
+			get
+			{
+				return false;
+			}
+		}
 
         public virtual void ProcessRequest(System.Web.HttpContext context)
         {
@@ -244,48 +225,56 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 if (HttpContext.Current.Items["PortalSettings"] != null)
                 {
-                    this.ps = (DotNetNuke.Entities.Portals.PortalSettings)HttpContext.Current.Items["PortalSettings"];
-                    this.pid = this.ps.PortalId;
+                    this._ps = (DotNetNuke.Entities.Portals.PortalSettings)HttpContext.Current.Items["PortalSettings"];
+                    this._pid = this._ps.PortalId;
                 }
                 else
                 {
                     DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = null;
-                    string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
-                    objPortalAliasInfo = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
-                    this.pid = objPortalAliasInfo.PortalID;
-                    this.ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+                    string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty)
+                        .Replace("https://", string.Empty);
+                    objPortalAliasInfo =
+                        DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAlias(HttpContext.Current
+                            .Request.Url.Host);
+                    this._pid = objPortalAliasInfo.PortalID;
+                    this._ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
                 }
 
                 // Dim sc As New Social.SocialSettings
                 // _mainSettings = sc.LoadSettings[_ps.PortalId]
-                this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
+                this._mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
 
                 // If context.Request.IsAuthenticated Then
-                this.isValid = true;
+                this._isValid = true;
                 if (this.AdminRequired & !context.Request.IsAuthenticated)
                 {
-                    this.isValid = false;
+                    this._isValid = false;
                     return;
                 }
 
                 if (this.AdminRequired && context.Request.IsAuthenticated)
                 {
                     // _isValid = DotNetNuke.Security.PortalSecurity.IsInRole(_ps.AdministratorRoleName)
-                    DotNetNuke.Entities.Modules.ModuleController objMC = new DotNetNuke.Entities.Modules.ModuleController();
+                    DotNetNuke.Entities.Modules.ModuleController objMC =
+                        new DotNetNuke.Entities.Modules.ModuleController();
                     DotNetNuke.Entities.Modules.ModuleInfo objM = objMC.GetModule(this.ModuleId, this.TabId);
-                    string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, objM.ModulePermissions.ToString("EDIT").Split(';'));
-                    this.isValid = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(roleIds, this.ForumUser.UserRoles);
+                    string roleIds =
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId,
+                            objM.ModulePermissions.ToString("EDIT").Split(';'));
+                    this._isValid =
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(roleIds,
+                            this.ForumUser.UserRoles);
                 }
                 else if (this.AdminRequired & !context.Request.IsAuthenticated)
                 {
-                    this.isValid = false;
+                    this._isValid = false;
                     return;
                 }
 
                 string p = HttpContext.Current.Request.Params["p"];
                 if (!string.IsNullOrEmpty(p))
                 {
-                    this.@params = Utilities.JSON.ConvertFromJSONAssoicativeArrayToHashTable(p);
+                    this._params = Utilities.JSON.ConvertFromJSONAssoicativeArrayToHashTable(p);
                 }
 
                 if (context.Request.Files.Count == 0)
@@ -307,7 +296,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     int idx = 0;
                     string parentProp = string.Empty;
                     string skip = "{}[]:," + ((char)34).ToString();
-                    using (System.IO.StreamReader sr = new System.IO.StreamReader(context.Request.InputStream, System.Text.Encoding.UTF8))
+                    using (System.IO.StreamReader sr =
+                           new System.IO.StreamReader(context.Request.InputStream, System.Text.Encoding.UTF8))
                     {
                         while (!sr.EndOfStream)
                         {
@@ -449,7 +439,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         sr.Close();
                     }
 
-                    this.@params = ht;
+                    this._params = ht;
 
                     // End If
                 }
@@ -464,22 +454,26 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         }
                     }
 
-                    this.@params = ht;
+                    this._params = ht;
                 }
 
                 if (HttpContext.Current.Request.IsAuthenticated)
                 {
-                    this.UserId = UserController.GetUserIdByUserName(this.PortalId, HttpContext.Current.User.Identity.Name);
+                    this.UserId = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserIdByUserName(
+                        this.PortalId,
+                        HttpContext.Current.User.Identity.Name);
                 }
                 else
                 {
                     this.UserId = -1;
                 }
+
             }
             catch (Exception ex)
             {
-                this.isValid = false;
+                this._isValid = false;
                 Exceptions.LogException(ex);
+
             }
         }
 

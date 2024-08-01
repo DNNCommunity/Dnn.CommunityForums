@@ -648,40 +648,64 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
         #region UserProfiles
-        public override void Profiles_Create(int PortalId, int UserId)
+        #region "Deprecated Methods"
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public override void Profiles_Create(int PortalId, int ModuleId, int UserId)
         {
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_Create", PortalId, UserId);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public override DataSet Profiles_Get(int PortalId, int ModuleId, int UserId)
+        {
+            return SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_Get", PortalId, ModuleId, UserId);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public override void Profiles_Save(int PortalId, int ModuleId, int UserId, int TopicCount, int ReplyCount, int ViewCount, int AnswerCount, int RewardPoints, string UserCaption, string Signature, bool SignatureDisabled, int TrustLevel, bool AdminWatch, bool AttachDisabled, string Avatar, int AvatarType, bool AvatarDisabled, string PrefDefaultSort, bool PrefDefaultShowReplies, bool PrefJumpLastPost, bool PrefTopicSubscribe, int PrefSubscriptionType, bool PrefBlockAvatars, bool PrefBlockSignatures, int PrefPageSize)
+        {
+            SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_Save", PortalId, -1, UserId, TopicCount, ReplyCount, ViewCount, AnswerCount, RewardPoints, UserCaption, Signature, SignatureDisabled, TrustLevel, AdminWatch, AttachDisabled, Avatar, AvatarType, AvatarDisabled, PrefDefaultSort, PrefDefaultShowReplies, PrefJumpLastPost, PrefTopicSubscribe, PrefSubscriptionType, PrefBlockAvatars, PrefBlockSignatures, PrefPageSize);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+
+        public override IDataReader Profiles_GetUsersOnline(int PortalId, int ModuleId, int Interval)
+        {
+            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_GetUsersOnline", PortalId, Interval);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public override void Profiles_UpdateActivity(int PortalId, int ModuleId, int UserId)
+        {
+            SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_UpdateActivity", PortalId, UserId);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public override IDataReader Profiles_GetStats(int PortalId, int ModuleId, int Interval)
+        {
+            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_Stats", PortalId, Interval);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public override IDataReader Profiles_MemberList(int PortalId, int ModuleId, int MaxRows, int RowIndex, string Filter)
+        {
+            return (IDataReader)(SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_List", PortalId, MaxRows, RowIndex, Filter));
+        }
+
+        #endregion
         public override void Profiles_UpdateActivity(int PortalId, int UserId)
         {
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_UpdateActivity", PortalId, UserId);
         }
 
-        public override IDataReader Profiles_GetUsersOnline(int PortalId, int Interval)
-        {
-            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_GetUsersOnline", PortalId, Interval);
-        }
-
-        public override DataSet Profiles_Get(int PortalId, int UserId)
-        {
-            return SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_Get", PortalId, UserId);
-        }
-
-        public override void Profiles_Save(int PortalId, int UserId, int TopicCount, int ReplyCount, int ViewCount, int AnswerCount, int RewardPoints, string UserCaption, string Signature, bool SignatureDisabled, int TrustLevel, bool AdminWatch, bool AttachDisabled, string Avatar, int AvatarType, bool AvatarDisabled, string PrefDefaultSort, bool PrefDefaultShowReplies, bool PrefJumpLastPost, bool PrefTopicSubscribe, int PrefSubscriptionType, bool PrefBlockAvatars, bool PrefBlockSignatures, int PrefPageSize)
-        {
-            SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_Save", PortalId, UserId, TopicCount, ReplyCount, ViewCount, AnswerCount, RewardPoints, UserCaption, Signature, SignatureDisabled, TrustLevel, AdminWatch, AttachDisabled, Avatar, AvatarType, AvatarDisabled, PrefDefaultSort, PrefDefaultShowReplies, PrefJumpLastPost, PrefTopicSubscribe, PrefSubscriptionType, PrefBlockAvatars, PrefBlockSignatures, PrefPageSize);
-        }
-
-        public override IDataReader Profiles_GetStats(int PortalId, int Interval)
+       public override IDataReader Profiles_GetStats(int PortalId, int Interval)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_Stats", PortalId, Interval);
         }
 
         public override IDataReader Profiles_MemberList(int PortalId, int MaxRows, int RowIndex, string Filter)
         {
-            // Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "activeforums_UserProfiles_Members", PortalId, MaxRows, RowIndex, Filter), IDataReader)
-            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_List", PortalId, MaxRows, RowIndex, Filter);
+            return (IDataReader)(SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_List", PortalId, MaxRows, RowIndex, Filter));
         }
 
         #endregion
