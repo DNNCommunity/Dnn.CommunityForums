@@ -1731,4 +1731,10 @@ Von
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>Keine ausstehenden Beiträge</value>
   </data>
+  <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
+    <value>Der {0} für die {1} der Themenverfolgungs-ID wird in der Datenbank nicht gefunden. Sie müssen dies in der Datenbank reparieren oder die ungültigen Daten löschen. Bitte besuchen Sie das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki für Schritte zur Fehlerbehebung überprüfen können.</value>
+  </data>
+  <data name="[RESX:Tips:BanUser].Text" xml:space="preserve">
+    <value>Löscht alle Beiträge für diesen Benutzer und entzieht dem Benutzer die Berechtigung.</value>
+  </data>
 </root>
