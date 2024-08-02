@@ -512,7 +512,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static int Forum_GetByTopicId(int topicId)
         {
-            return new DotNetNuke.Data.SqlDataProvider().ExecuteScalar<int>("activeforums_ForumGetByTopicId", topicId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController().GetForumIdForTopic(topicId);
         }
 
         public static DateTime Forum_GetLastReadTopicByUser(int forumId, int userId)

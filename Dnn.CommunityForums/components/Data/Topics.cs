@@ -56,10 +56,10 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             return new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: userID, topicId: topicId, rating: rating, ipAddress: iPAddress);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public IDataReader TopicForDisplay(int portalId, int moduleId, int forumId, int topicId, int userId, int rowIndex, int maxRows, string sort)
         {
-            IDataReader dr = SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UI_TopicDisplay", portalId, moduleId, forumId, topicId, userId, rowIndex, maxRows, false, sort);
-            return dr;
+            throw new NotImplementedException();
         }
 
         public IDataReader TopicsList(int portalId, int pageIndex, int pageSize, string forumIds, int categoryId, int tagId)

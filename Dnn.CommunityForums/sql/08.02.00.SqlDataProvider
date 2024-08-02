@@ -1,3 +1,6 @@
+SET NOCOUNT ON 
+GO
+
 /* issue 898 begin - remove duplicated foreign keys and rename some foreign keys with embedded _activeforums_ */
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Replies_activeforums_Content]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Replies]'))
@@ -1077,13 +1080,16 @@ ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserProfiles] ADD CONS
 GO
 
 
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_TopicsList]') AND type in (N'P', N'PC'))
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_TopicsList]';
 GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopMembers]') AND type in (N'P', N'PC'))
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_TopMembers]';
 GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsView]') AND type in (N'P', N'PC'))
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsView]';
 GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsDisplay]') AND type in (N'P', N'PC'))
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsDisplay]';
 GO
 
@@ -1191,3 +1197,443 @@ exec sp_rename '{databaseOwner}{objectQualifier}activeforums_Permissions.CanModU
 GO
 
 /* issue 929 - end - Rename ModApprove -> CanModerate, CanModMove -> CanMove, CanModSplit -> CanSplit, CanModUser -> CanBan in activeforums_Permissions */
+
+
+
+/* issue 1026 begin - DAL2 updates for activeforums_ForumTopics */
+
+/* drop procedure activeforums_ForumContent_List - no longer used */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumContent_List]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_ForumContent_List]
+GO
+
+/* drop procedure activeforums_TopicsList - no longer used  */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_TopicsList]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_TopicsList]
+GO
+
+/* drop procedure activeforums_ForumGetByTopicId - no longer used  */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumGetByTopicId]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_ForumGetByTopicId]
+GO
+
+/* Begin - update activeforums_Reply_Save procedure to remove update to LastReplyDate in activeforums_ForumTopics */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Reply_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Reply_Save]
+GO
+ 
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Reply_Save]
+@PortalId int,
+@TopicId int,
+@ReplyId int,
+@ReplyToId int,
+@StatusId int,
+@IsApproved bit,
+@IsDeleted bit,
+@Subject nvarchar(255),
+@Body ntext,
+@DateCreated datetime,
+@DateUpdated datetime,
+@AuthorId int,
+@AuthorName nvarchar(150),
+@IPAddress nvarchar(50)
+AS
+DECLARE @ContentId int
+DECLARE @IsEdit bit
+SET @IsEdit = 0
+DECLARE @ApprovedStatus bit
+SET @ApprovedStatus = @IsApproved
+
+-- This part is a work around for Quick Reply feature not working for Tapatalk STARTS
+
+DECLARE @TopicSubject NVARCHAR(255) =	(
+											SELECT top 1 afc.Subject FROM {databaseOwner}[{objectQualifier}activeforums_Topics] aft
+												JOIN {databaseOwner}[{objectQualifier}activeforums_Content] afc ON aft.ContentId = afc.ContentId
+											WHERE TopicId = @TopicId
+										)	
+										
+SET @Subject = ISNULL(NULLIF(@Subject, ''), 'RE: ' + @TopicSubject)	
+
+IF (@Subject NOT LIKE 'RE:%')
+BEGIN
+	SET @Subject = 'RE: ' + @Subject
+END
+-- This part is a work around for Quick Reply feature not working for Tapatalk ENDS
+
+
+IF EXISTS(SELECT ContentId FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE ReplyId = @ReplyId)
+	BEGIN
+		SELECT @ContentId = ContentId, @ApprovedStatus = IsApproved FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE ReplyId = @ReplyId
+		
+		BEGIN
+			SET @IsEdit = 1
+			UPDATE {databaseOwner}{objectQualifier}activeforums_Content
+				SET Subject = @Subject,
+					Body = @Body,
+					DateCreated = @DateCreated,
+					DateUpdated = @DateUpdated,
+					AuthorId = @AuthorId,
+					AuthorName = @AuthorName,
+					IsDeleted = @IsDeleted,
+					IPAddress = @IPAddress
+				WHERE ContentId = @ContentId
+			UPDATE {databaseOwner}{objectQualifier}activeforums_Replies
+				SET StatusId = @StatusId,
+					TopicId = @TopicId,
+					IsApproved = @IsApproved,
+					IsDeleted = @IsDeleted,
+					ReplyToId = @ReplyToId					
+				WHERE ReplyId = @ReplyId	
+		END
+	END
+ELSE
+--INSERT
+BEGIN
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Content
+			(Subject, Body, DateCreated, DateUpdated, AuthorId, AuthorName, IsDeleted, IPAddress)
+			VALUES
+			(@Subject, @Body, @DateCreated, @DateUpdated, @AuthorId, @AuthorName, @IsDeleted, @IPAddress)
+		SET @ContentId = SCOPE_IDENTITY()
+	END
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Replies
+			(ContentId, TopicId, StatusId, IsApproved, IsDeleted, ReplyToId)
+			VALUES
+			(@ContentId, @TopicId, @StatusId, @IsApproved, @IsDeleted, @ReplyToId)
+		SET @ReplyId = SCOPE_IDENTITY()
+		
+	END
+	
+
+END
+IF @IsApproved = 1
+	BEGIN
+		DECLARE @ForumId int
+		SELECT @ForumId = ForumId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics WHERE TopicId = @TopicId
+		DECLARE @TotalReplies int
+		SET @TotalReplies = (SELECT Count(ReplyId) from {databaseOwner}{objectQualifier}activeforums_replies as r inner join {databaseOwner}{objectQualifier}activeforums_topics as t on t.topicid = r.topicid and r.isapproved = 1 and r.isdeleted = 0 INNER JOIN {databaseOwner}{objectQualifier}activeforums_forumtopics as ft on t.topicid = ft.topicid WHERE ft.forumid = @ForumId)
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Forums 
+		SET LastPostSubject = @Subject, LastPostAuthorName = @AuthorName, LastPostAuthorId = IsNull(@AuthorId,-1), 
+			LastPostDate = @DateCreated, LastTopicId = IsNull(@TopicId,0), LastReplyId = IsNull(@ReplyId,0),
+			TotalReplies = ISNULL(@TotalReplies,0)
+		WHERE ForumId = @ForumId
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Topics
+			SET ReplyCount = (Select Count(ReplyId) from {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId AND IsDeleted = 0 AND IsApproved = 1)
+			WHERE TopicId = @TopicId
+		IF @AuthorId > 0
+			UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+				SET ReplyCount = ISNULL((Select Count(ReplyId) from {databaseOwner}{objectQualifier}activeforums_Replies as r INNER JOIN 
+						{databaseOwner}{objectQualifier}activeforums_Content as c ON r.ContentId = c.ContentId AND c.AuthorId=@AuthorId INNER JOIN
+						{databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = r.TopicId INNER JOIN
+						{databaseOwner}{objectQualifier}activeforums_Forums as f ON ft.ForumId = f.ForumId
+						WHERE r.IsApproved = 1 AND r.IsDeleted=0 AND f.PortalId=@PortalId),0)
+				WHERE UserId = @AuthorId AND PortalId = @PortalId						
+		
+	END
+
+
+/* populate ModuleId in activeforums_Content */
+UPDATE c
+SET c.ModuleId = f.ModuleId
+FROM {databaseOwner}[{objectQualifier}activeforums_Content] c 
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] r
+ON r.ContentId = c.ContentId 
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft 
+ON ft.TopicId = r.TopicId
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] f 
+ON f.ForumId = ft.ForumId
+WHERE c.ModuleId IS NULL AND r.ReplyId = @ReplyId
+
+
+SELECT @ReplyId
+GO
+/* End - update activeforums_Reply_Save procedure to remove update to LastReplyDate & LastTopicDate in activeforums_ForumTopics  */
+
+
+
+/* Begin - update activeforums_Topics_SaveToForum procedure to remove update to LastReplyDate in activeforums_ForumTopics */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_SaveToForum]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_SaveToForum]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_SaveToForum]
+@ForumId int,
+@TopicId int,
+@LastReplyId int
+AS
+BEGIN
+DECLARE @LastPostId int 
+DECLARE @tmpLastPostId int
+SET @LastPostId = 0
+SET @tmpLastPostId = -1
+DECLARE @Subject nvarchar(250)
+DECLARE @AuthorName nvarchar(150)
+DECLARE @AuthorId int
+DECLARE @PostDate datetime
+DECLARE @LastTopicId int
+DECLARE @ReplyId int
+
+IF EXISTS (SELECT TopicId FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] WHERE ForumId = @ForumId AND TopicId = @TopicId)
+	BEGIN
+			
+		IF @LastReplyId > 0
+			BEGIN
+			SET @tmpLastPostId = (SELECT MAX(ReplyId) from {databaseOwner}[{objectQualifier}activeforums_Replies] WHERE TopicId = @TopicId AND IsDeleted = 0 AND IsApproved = 1)
+			UPDATE {databaseOwner}[{objectQualifier}activeforums_ForumTopics]
+			SET LastReplyId = @tmpLastPostId
+			 WHERE ForumId = @ForumId AND TopicId = @TopicId
+
+
+			END
+	END
+ELSE
+	BEGIN
+	
+	IF @LastReplyId = -1
+		SET @LastReplyId = Null
+		INSERT INTO {databaseOwner}[{objectQualifier}activeforums_ForumTopics]
+			(ForumId, TopicId, LastReplyId)
+			VALUES
+			(@ForumId, @TopicId, @LastReplyId)
+
+		/* populate ModuleId in activeforums_Content */
+		UPDATE c
+		SET c.ModuleId =  f.ModuleId
+		FROM {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t
+		ON t.ContentId = c.ContentId 
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft 
+		ON ft.TopicId = t.TopicId
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] f 
+		ON f.ForumId = ft.ForumId
+		WHERE c.ModuleId IS NULL AND t.TopicId = @TopicId
+		
+	END
+END
+
+
+GO
+ 
+/* End - update activeforums_Topics_SaveToForum procedure to remove update to LastReplyDate & LastTopicDate in activeforums_ForumTopics */
+
+
+
+
+
+/* Begin - update activeforums_UI_TopicsDisplay procedure to remove LastPostData and LastPostDate */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsDisplay]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UI_TopicsDisplay]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UI_TopicsDisplay]
+@PortalId int,
+@ModuleId int,
+@ForumId int,
+@UserId int,
+@RowIndex int = 0, 
+@MaxRows int = 20,
+@IsSuperUser bit = 0,
+@SortColumn nvarchar(25) = 'ReplyCreated',
+@ForumIds nvarchar(1000) = ''
+AS
+IF @ForumIds = '' AND @ForumId > 0
+	BEGIN
+SELECT ForumId, TopicId, LastReplyId, ViewCount, ReplyCount, IsLocked, IsPinned, TopicIcon, StatusId, IsAnnounce,
+		AnnounceStart, AnnounceEnd, TopicType, Body, [Subject], Summary, AuthorId, AuthorName, Username, Firstname, LastName,
+		DisplayName, DateCreated, LastPostDate, UserLastReplyRead, UserLastTopicRead, TopicRating, P.*
+		FROM (
+			SELECT     f.ForumId, t.TopicId, IsNull(f.LastReplyId,0) as LastReplyId, t.ViewCount, t.ReplyCount, 
+			t.IsLocked, t.IsPinned, t.TopicIcon, t.StatusId, t.IsAnnounce, 
+			t.AnnounceStart, t.AnnounceEnd, t.TopicType, c.Body, c.Subject, c.Summary, c.AuthorId, c.AuthorName, u.Username, u.FirstName, 
+			u.LastName, u.DisplayName, c.DateCreated,COALESCE(rc.DateCreated,c.DateCreated) as LastPostDate,
+			CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
+			CASE WHEN FT.MaxTopicRead > TT.TopicId OR TT.TopicId IS NULL THEN ISNULL(FT.MaxTopicRead,0) ELSE TT.TopicId END AS UserLastTopicRead,
+				(SELECT     ISNULL(AVG(Rating), 0) AS Expr1
+                            FROM	{databaseOwner}{objectQualifier}activeforums_Topics_Ratings
+                            WHERE      (TopicId = T.TopicId)) AS TopicRating, 
+			 ROW_NUMBER() OVER (ORDER BY T.IsPinned DESC,
+								CASE
+									WHEN @SortColumn = 'ReplyCreated' THEN rc.DateCreated
+									WHEN @SortColumn = 'TopicCreated' THEN c.DateCreated END DESC) as RowRank
+			FROM      {databaseOwner}{objectQualifier}activeforums_ForumTopics AS f INNER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Topics AS t ON f.TopicId = t.TopicId INNER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Content AS c ON t.ContentId = c.ContentId LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}Users AS u ON c.AuthorId = u.UserID LEFT OUTER JOIN				
+					  {databaseOwner}{objectQualifier}activeforums_Topics_Tracking AS TT ON T.TopicId = TT.TopicId AND TT.UserId = @UserId LEFT OUTER JOIN
+					  {databaseOwner}{objectQualifier}activeforums_Forums_Tracking as FT ON f.ForumId = FT.ForumId AND FT.UserId = @UserId LEFT OUTER JOIN 
+                      {databaseOwner}{objectQualifier}activeforums_Replies as r ON r.ReplyId = f.LastReplyId INNER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Content AS rc ON c.ContentId = r.ContentId
+			WHERE     (f.ForumId = @ForumId AND t.IsApproved = 1 AND t.IsDeleted = 0)	
+			) as topics INNER JOIN {databaseOwner}{objectQualifier}activeforums_Permissions as P on P.PermissionsId = topics.ForumId
+		WHERE RowRank > @RowIndex AND RowRank <= (@RowIndex + @MaxRows)
+END
+Else
+
+	BEGIN
+SELECT topics.ForumId, ff.ForumName,g.GroupName, TopicId, topics.LastReplyId, ViewCount, ReplyCount, IsLocked, IsPinned, TopicIcon, StatusId, IsAnnounce,
+		AnnounceStart, AnnounceEnd, TopicType, Body, [Subject], Summary, AuthorId, AuthorName, Username, Firstname, LastName,
+		DisplayName, topics.DateCreated, topics.LastPostDate, UserLastReplyRead, UserLastTopicRead, TopicRating, P.*
+		FROM (
+			SELECT     f.ForumId, t.TopicId, IsNull(f.LastReplyId,0) as LastReplyId, t.ViewCount, t.ReplyCount, 
+			t.IsLocked, t.IsPinned, t.TopicIcon, t.StatusId, t.IsAnnounce, 
+			t.AnnounceStart, t.AnnounceEnd, t.TopicType, c.Body, c.Subject, c.Summary, c.AuthorId, c.AuthorName, u.Username, u.FirstName, 
+			u.LastName, u.DisplayName, c.DateCreated,COALESCE(rc.DateCreated,c.DateCreated) as LastPostDate,
+			CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
+			CASE WHEN FT.MaxTopicRead > TT.TopicId OR TT.TopicId IS NULL THEN ISNULL(FT.MaxTopicRead,0) ELSE TT.TopicId END AS UserLastTopicRead,
+				(SELECT     ISNULL(AVG(Rating), 0) AS Expr1
+                            FROM	{databaseOwner}{objectQualifier}activeforums_Topics_Ratings
+                            WHERE      (TopicId = T.TopicId)) AS TopicRating, 
+			 ROW_NUMBER() OVER (ORDER BY T.IsPinned DESC,
+								CASE
+									WHEN @SortColumn = 'ReplyCreated' THEN rc.DateCreated
+									WHEN @SortColumn = 'TopicCreated' THEN c.DateCreated END DESC) as RowRank
+			FROM      {databaseOwner}{objectQualifier}activeforums_ForumTopics AS f INNER JOIN
+					  {databaseOwner}{objectQualifier}activeforums_Functions_Split(@ForumIds,';') as fs ON fs.id = f.ForumId INNER JOIN
+					  
+                      {databaseOwner}{objectQualifier}activeforums_Topics AS t ON f.TopicId = t.TopicId INNER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Content AS c ON t.ContentId = c.ContentId LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}Users AS u ON c.AuthorId = u.UserID LEFT OUTER JOIN				
+					  {databaseOwner}{objectQualifier}activeforums_Topics_Tracking AS TT ON T.TopicId = TT.TopicId AND TT.UserId = @UserId LEFT OUTER JOIN
+					  {databaseOwner}{objectQualifier}activeforums_Forums_Tracking as FT ON f.ForumId = FT.ForumId AND FT.UserId = @UserId LEFT OUTER JOIN 
+                      {databaseOwner}{objectQualifier}activeforums_Replies as r ON r.ReplyId = f.LastReplyId INNER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Content AS rc ON c.ContentId = r.ContentId
+			WHERE     (t.IsApproved = 1 AND t.IsDeleted = 0)	
+			) as topics INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as ff ON topics.ForumId = ff.ForumId INNER JOIN {databaseOwner}{objectQualifier}activeforums_Permissions as P on P.PermissionsId = topics.ForumId
+			INNER JOIN {databaseOwner}{objectQualifier}activeforums_Groups as g on g.ForumGroupId = ff.ForumGroupId
+		WHERE RowRank > @RowIndex AND RowRank <= (@RowIndex + @MaxRows)
+	END
+BEGIN
+If @UserId > 0
+	BEGIN
+If @ForumId > 0
+	BEGIN
+	exec {databaseOwner}{objectQualifier}activeforums_Forums_Tracking_UpdateUser @ModuleId, @UserId, @ForumId
+	END
+	exec {databaseOwner}{objectQualifier}activeforums_UserProfiles_UpdateActivity @PortalId, @ModuleId, @UserId
+	END
+END
+
+GO
+
+
+/* End - update activeforums_UI_TopicsDisplay procedure to remove LastPostData */
+
+
+/* Begin - restructure table; drop unused columns; drop composite primary key not supported by DAL2; add identity primary key */
+
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostDate' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumTopics]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] DROP COLUMN LastPostDate
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumTopics]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] DROP COLUMN LastPostData
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastTopicDate' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumTopics]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] DROP COLUMN LastTopicDate
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastReplyDate' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumTopics]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] DROP COLUMN LastReplyDate
+GO 
+
+IF (OBJECT_ID(N'{databaseOwner}[PK_{objectQualifier}activeforums_ForumTopics]', 'PK') IS NOT NULL)
+BEGIN
+    ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] DROP CONSTRAINT [PK_{objectQualifier}activeforums_ForumTopics]
+END
+GO
+
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'ForumTopicId' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumTopics]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] 
+		ADD ForumTopicId INT IDENTITY(1,1)
+END
+GO
+IF (OBJECT_ID(N'{databaseOwner}[PK_{objectQualifier}activeforums_ForumTopics]', 'PK') IS NOT NULL)
+BEGIN
+    ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] 
+	    ADD CONSTRAINT [PK_{objectQualifier}activeforums_ForumTopics] PRIMARY KEY CLUSTERED ( [ForumTopicId] ASC  ) 
+		    WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) 
+END
+GO
+
+/* End - restructure table; drop unused columns; drop composite primary key not supported by DAL2; add identity primary key */
+
+/* refresh affected objects */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Content_GetJournalKeysForUser]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Content_GetJournalKeysForUser]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_DashBoard_Stats]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_DashBoard_Stats]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumGetByTopicId]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_ForumGetByTopicId]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_Delete]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forums_Delete]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_LastUpdates]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forums_LastUpdates]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups_Delete]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Groups_Delete]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Reply_Save]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Reply_Save]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_SaveTopicNextPrev]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_SaveTopicNextPrev]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topic_GetPrevNext]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Topic_GetPrevNext]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_TopicIdByURL]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_TopicIdByURL]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_List]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Topics_List]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_SaveToForum]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Topics_SaveToForum]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_TopicWithReplies]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_TopicWithReplies]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_TP_GetByUser]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_TP_GetByUser]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_MyTopicsView]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_MyTopicsView]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TagCloud]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_TagCloud]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsDisplay]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsDisplay]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsView]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsView]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL_Search]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_URL_Search]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Util_MarkAsRead]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Util_MarkAsRead]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles_List]') AND type in (N'F', N'FN'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[fn_{objectQualifier}activeforums_GetURL]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles_List]') AND type in (N'V', N'VW'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[vw_{objectQualifier}activeforums_ForumTopics]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles_List]') AND type in (N'V', N'VW'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[vw_{objectQualifier}activeforums_TopicViewForSearch]';
+GO
+
+/* issue 1026 end - DAL2 updates for activeforums_ForumTopics  */
+
+/* --------------------- */

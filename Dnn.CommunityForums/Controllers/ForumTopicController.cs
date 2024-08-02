@@ -25,17 +25,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Linq;
 
-    internal class TopicTrackingController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo>
+    internal class ForumTopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo>
     {
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo GetByUserIdForumId(int userId, int topicId)
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetByForumIdTopicId(int forumId, int topicId)
         {
             // this accommodates duplicates which may exist since currently no uniqueness applied in database
-            return this.Find("WHERE UserId = @0 AND TopicId = @1", userId, topicId).OrderBy(t => t.DateAdded).FirstOrDefault();
+            return this.Find("WHERE ForumId = @0 AND TopicId = @1", forumId, topicId).FirstOrDefault();
         }
-
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo> GetTopicsTrackingForUser(int userId)
+        
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetForumForTopic(int topicId)
         {
-            return this.Find("WHERE UserId = @0", userId).OrderBy(t => t.ForumId).ThenBy(t => t.DateAdded);
+            return this.Find("WHERE TopicId = @0", topicId).FirstOrDefault();
+        }
+        public int GetForumIdForTopic(int topicId)
+        {
+            return this.GetForumForTopic(topicId).ForumId;
         }
     }
 }
