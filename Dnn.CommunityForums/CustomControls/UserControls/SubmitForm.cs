@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string topicReviewTemplate = string.Empty;
         private int topicPriority;
         private bool canModEdit;
-        private bool canModApprove;
+        private bool canModerate;
         private bool canEdit;
         private bool canReply;
         private bool canCreate;
@@ -780,7 +780,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var sb = new StringBuilder();
             bool bHasOptions = false;
             sb.Append("<table cellpadding=\"2\" cellspacing=\"0\">");
-            if (this.ForumInfo.IsModerated && this.canModApprove && this.ShowModOptions)
+            if (this.ForumInfo.IsModerated && this.canModerate && this.ShowModOptions)
             {
                 sb.Append("<tr><td>[RESX:Approved]:</td>");
                 sb.Append("<td><asp:checkbox id=\"chkApproved\" Text=\"[RESX:Approved:Note]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
@@ -1017,9 +1017,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            this.canModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.ModEdit, this.ForumUser.UserRoles);
-            this.canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.ModApprove, this.ForumUser.UserRoles);
+            this.canModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Moderate, this.ForumUser.UserRoles);
             this.canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Edit, this.ForumUser.UserRoles);
+            this.canModEdit = this.canModerate && this.canEdit;
             this.canReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Reply, this.ForumUser.UserRoles);
             this.canCreate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Create, this.ForumUser.UserRoles);
             this.canAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Attach, this.ForumUser.UserRoles);
@@ -1028,6 +1028,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.canPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Pin, this.ForumUser.UserRoles);
             this.canAnnounce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Announce, this.ForumUser.UserRoles);
             this.canSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Subscribe, this.ForumUser.UserRoles);
+
         }
 
         protected override void OnLoad(EventArgs e)

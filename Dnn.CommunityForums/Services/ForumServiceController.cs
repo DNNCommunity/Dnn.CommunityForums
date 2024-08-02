@@ -425,44 +425,48 @@ namespace DotNetNuke.Modules.ActiveForums
             var forum_in = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.NewForumId, this.ActiveModule.ModuleID);
             if (forum_out != null && forum_in != null)
             {
-                var perm = false;
-
-                if (forum_out == forum_in)
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(dto.OldTopicId);
+                if (ti != null)
                 {
-                    perm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.View, forumUser.UserRoles);
-                }
-                else
-                {
-                    perm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.View, forumUser.UserRoles) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_in.Security.View, forumUser.UserRoles);
-                }
+                    bool hasCreatePerm;
 
-                var modSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.ModSplit, forumUser.UserRoles);
-
-                if (perm && modSplit)
-                {
-                    int topicId;
-
-                    if (dto.NewTopicId < 1)
+                    if (forum_out == forum_in)
                     {
-                        var subject = Utilities.CleanString(portalSettings.PortalId, dto.Subject, false, EditorTypes.TEXTBOX, false, false, this.ActiveModule.ModuleID, string.Empty, false);
-                        var replies = dto.Replies.Split('|');
-                        var firstReply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(Convert.ToInt32(replies[0]));
-                        var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId);
-                        topicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalSettings.PortalId, this.ActiveModule.ModuleID, dto.NewForumId, subject, string.Empty, firstContent.AuthorId, firstContent.AuthorName, true, this.Request.GetIPAddress());
-                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, true);
+                        hasCreatePerm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.Create, forumUser.UserRoles);
                     }
                     else
                     {
-                        topicId = dto.NewTopicId;
-                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, false);
+                        hasCreatePerm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.Create, forumUser.UserRoles) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_in.Security.Create, forumUser.UserRoles);
                     }
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, topicId);
+                    var canSplit = (ti.Content.AuthorId == userInfo.UserID && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.Split, forumUser.UserRoles)) || userInfo.IsAdmin || userInfo.IsSuperUser ||
+                                   (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.Moderate, forumUser.UserRoles) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.Split, forumUser.UserRoles));
+
+                    if (hasCreatePerm && canSplit)
+                    {
+                        int topicId;
+
+                        if (dto.NewTopicId < 1)
+                        {
+                            var subject = Utilities.CleanString(portalSettings.PortalId, dto.Subject, false, EditorTypes.TEXTBOX, false, false, this.ActiveModule.ModuleID, string.Empty, false);
+                            var replies = dto.Replies.Split('|');
+                            var firstReply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(Convert.ToInt32(replies[0]));
+                            var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId);
+                            topicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalSettings.PortalId, this.ActiveModule.ModuleID, dto.NewForumId, subject, string.Empty, firstContent.AuthorId, firstContent.AuthorName, true, this.Request.GetIPAddress());
+                            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, true);
+                        }
+                        else
+                        {
+                            topicId = dto.NewTopicId;
+                            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, false);
+                        }
+
+                        return this.Request.CreateResponse(HttpStatusCode.OK, topicId);
+                    }
+
+                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
-
-                return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
-
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 

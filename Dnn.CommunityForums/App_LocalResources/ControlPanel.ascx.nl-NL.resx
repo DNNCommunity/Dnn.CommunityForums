@@ -1453,4 +1453,127 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="ControlTitle_edit.Text" xml:space="preserve">
     <value>Bedieningspaneel</value>
   </data>
+  <data name="[RESX:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Vastzetten</value>
+  </data>
+  <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Vastmaken</value>
+  </data>
+  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
+    <value>Verbod</value>
+  </data>
+  <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
+    <value>Scheppen</value>
+  </data>
+  <data name="[RESX:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Verwijderen</value>
+  </data>
+  <data name="[RESX:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Bewerken</value>
+  </data>
+  <data name="[RESX:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Slot</value>
+  </data>
+  <data name="[RESX:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Modereren</value>
+  </data>
+  <data name="[RESX:SecGrid:Move].Text" xml:space="preserve">
+    <value>Bewegen</value>
+  </data>
+  <data name="[RESX:SecGrid:Read].Text" xml:space="preserve">
+    <value>Lezen</value>
+  </data>
+  <data name="[RESX:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Antwoord</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe]Text" xml:space="preserve">
+    <value>Abonneren</value>
+  </data>
+  <data name="[RESX:SecGrid:View].Text" xml:space="preserve">
+    <value>Bekijken</value>
+  </data>
+  <data name="[RESX:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Aankondiging</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Abonneren</value>
+  </data>
+  <data name="[RESX:SecGrid:Trust].Text" xml:space="preserve">
+    <value>Vertrouwen</value>
+  </data>
+  <data name="[RESX:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="[RESX:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Prioriteren</value>
+  </data>
+  <data name="[RESX:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Categoriseren</value>
+  </data>
+  <data name="[RESX:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Peiling</value>
+  </data>
+  <data name="[RESX:SecGrid:Split].Text" xml:space="preserve">
+    <value>Splijten</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Kan hun eigen onderwerpen markeren als aankondigingen. Aankondigingen worden weergegeven boven de lijst met normale onderwerpen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Kan bestanden uploaden en bijvoegen aan nieuwe onderwerpen en antwoorden.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
+    <value>Kan een malafide gebruiker verbannen, alle inhoud voor de gebruiker verwijderen en hun DNN-gebruikersaccount uitschakelen. Kan niet worden gebruikt voor supergebruikers of beheerders. Mag alleen worden verleend aan vertrouwde moderators of beheerdersrollen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Kan aangeven tot welke categorieën een nieuw onderwerp behoort.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Create].Text" xml:space="preserve">
+    <value>Kan de knop Nieuw onderwerp zien.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Kan zijn eigen berichten verwijderen. Gebruikers met Moderate + Delete kunnen elk onderwerp of antwoord op het forum verwijderen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Kan zijn eigen berichten bewerken. Hier kan al dan niet een tijdslimiet op staan. Gebruikers met Gemiddeld + Bewerken kunnen elk onderwerp of antwoord bewerken.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Kan onderwerpen vergrendelen die ze hebben gemaakt. Gebruikers met Moderate + Lock kunnen elk onderwerp in een forum vergrendelen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Geeft toegang tot de moderatie-interface. Kan gemodereerde onderwerpen en antwoorden goedkeuren, afwijzen of verwijderen. Kan ook worden gecombineerd met Bewerken, Verwijderen, Vergrendelen, Pinnen en Splitsen om deze acties uit te voeren op elk onderwerp in een forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Move].Text" xml:space="preserve">
+    <value>Gebruikers kunnen hun eigen onderwerp verplaatsen naar een ander forum. Gebruikers met Gemiddeld + Verplaatsen kunnen elk onderwerp naar een ander forum verplaatsen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Kan onderwerpen vastzetten die ze hebben gemaakt. Door een onderwerp vast te zetten, blijft het bovenaan de lijst met onderwerpen staan. Gebruikers met Gemiddeld + Pin kunnen elk onderwerp vastzetten.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Kan een peiling toevoegen aan nieuwe onderwerpen die ze maken.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Kan het prioriteitsnummer voor een onderwerp instellen. Het prioriteitsnummer bepaalt waar in de lijst met onderwerpen het onderwerp wordt weergegeven. Het is vergelijkbaar met het vastzetten van een onderwerp, maar maakt een meer fijnmazige specificatie mogelijk.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Read].Text" xml:space="preserve">
+    <value>Kan het onderwerp van het onderwerp zien en erop klikken om de inhoud te zien.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Split].Text" xml:space="preserve">
+    <value>De gebruiker kan zijn eigen onderwerp en zijn antwoorden opsplitsen in verschillende onderwerpen. Gebruiker met Moderate + Split kan elk onderwerp en de antwoorden opsplitsen in verschillende onderwerpen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Kan zich aanmelden om e-mailmeldingen over nieuwe onderwerpen en antwoorden te ontvangen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Kan tags toevoegen aan onderwerpen en antwoorden.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Trust].Text" xml:space="preserve">
+    <value>Gebruiker met Trust-beveiliging omzeilt automatisch moderatie als deze is geconfigureerd voor een forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:View].Text" xml:space="preserve">
+    <value>Kan het onderwerp in de lijst zien, maar kan het niet openen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Kan reageren op een eerder aangemaakt onderwerp.</value>
+  </data>
 </root>

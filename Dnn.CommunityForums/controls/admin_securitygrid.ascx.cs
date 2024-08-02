@@ -32,10 +32,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using DotNetNuke.Security.Roles;
 
     public partial class admin_securitygrid : ActiveAdminBase
-    {
-        public string imgOn;
-        public string imgOff;
-
+	{
+        private const int permCount = 21;
+		public string imgOn;
+		public string imgOff;
         public bool ReadOnly { get; set; } = false;
 
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Perms { get; set; }
@@ -173,8 +173,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                 }
             }
-
-            string[,] grid = new string[pl.Count + 1, 28];
+            
+            // NOTE: These need to be presented in same order as they are in "SecureActions" enum.
+            // TODO: Use the enum to populate rather than hard-code 
+            string[,] grid = new string[pl.Count + 1, permCount+3];
             i = 0;
             foreach (DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi in pl)
             {
@@ -187,27 +189,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 grid[i, 6] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Reply));
                 grid[i, 7] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Edit));
                 grid[i, 8] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Delete));
-                grid[i, 9] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Lock));
-                grid[i, 10] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Pin));
-                grid[i, 11] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Attach));
-                grid[i, 12] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Poll));
-                grid[i, 13] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Block));
-                grid[i, 14] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Trust));
-                grid[i, 15] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Subscribe));
-                grid[i, 16] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Announce));
-                grid[i, 17] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Tag));
-                grid[i, 18] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Categorize));
-                grid[i, 19] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Prioritize));
+                grid[i, 9] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Move));
+                grid[i, 10] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Lock));
+                grid[i, 11] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Pin));
+                grid[i, 12] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Split));
+                grid[i, 13] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Attach));
+                grid[i, 14] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Poll));
+                grid[i, 15] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Block));
+                grid[i, 16] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Trust));
+                grid[i, 17] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Subscribe));
+                grid[i, 18] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Announce));
+                grid[i, 19] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Tag));
+                grid[i, 20] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Categorize));
+                grid[i, 21] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Prioritize));
 
-                grid[i, 20] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModApprove));
-                grid[i, 21] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModMove));
-                grid[i, 22] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModSplit));
-                grid[i, 23] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModDelete));
-                grid[i, 24] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModUser));
-                grid[i, 25] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModEdit));
-                grid[i, 26] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModLock));
-                grid[i, 27] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModPin));
-
+                grid[i, 22] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Moderate));
+                grid[i, 23] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Ban));
                 i += 1;
             }
 
@@ -239,7 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("<table cellpadding=0 cellspacing=0 border=0 width=\"100%\" id=\"tblSecGrid\">");
             sb.Append("<tr>");
             string keyText = string.Empty;
-            for (int td = 3; td <= 27; td++)
+            for (int td = 3; td <= permCount+2; td++)
             {
                 keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(td - 3).ToString()));
                 if (keyText.ToLowerInvariant() == "block")
@@ -251,7 +248,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sb.Append("<td class=\"afsecactionhd\">");
                 }
 
-                sb.Append(keyText);
+                //sb.Append($"<img src=\"{this.Page.ResolveUrl(Globals.ModulePath + "images/tooltip.png")}\" runat=\"server\" onmouseover=\"amShowTip(this, '[RESX:Tips:SecGrid:{keyText}]');\" onmouseout=\"amHideTip(this);\" />");
+
+                sb.Append($"<a href=\"#\" class=\"dcf-controlpanel-tooltip\" data-tooltip=\"[RESX:Tips:SecGrid:{keyText}]\">");
+                sb.Append(Utilities.LocalizeControl($"[RESX:SecGrid:{keyText}]", isAdmin: true));
+                sb.Append("</a>");
                 sb.Append("</td>");
             }
 
@@ -259,7 +260,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             for (int x = 0; x < pl.Count; x++)
             {
                 sb.Append("<tr onmouseover=\"this.className='afgridrowover'\" onmouseout=\"this.className='afgridrow'\">");
-                for (int r = 3; r <= 27; r++)
+                for (int r = 3; r <= permCount+2; r++)
                 {
                     keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(r - 3).ToString()));
                     bool bState = Convert.ToBoolean(grid[x, r]); // DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)

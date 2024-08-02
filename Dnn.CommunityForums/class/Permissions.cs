@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -31,14 +31,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public enum SecureActions : int
     {
+        // NOTE: These need to be maintained in same order as they are in Control Panel security grid
         View,
         Read,
         Create,
         Reply,
         Edit,
         Delete,
+        Move,
         Lock,
         Pin,
+        Split,
         Attach,
         Poll,
         Block,
@@ -48,14 +51,8 @@ namespace DotNetNuke.Modules.ActiveForums
         Tag,
         Categorize,
         Prioritize,
-        ModApprove,
-        ModMove,
-        ModSplit,
-        ModDelete,
-        ModUser,
-        ModEdit,
-        ModLock,
-        ModPin,
+        Moderate,
+        Ban,
     }
 
     public enum ObjectType : int

@@ -189,5 +189,50 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 }
             }
         }
+        internal static void UpgradeSocialGroupForumConfigModuleSettings_080200()
+        {
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+            {
+                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                {
+                    if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant())
+                    {
+                        var ForumConfig = module.ModuleSettings.GetString("ForumConfig", string.Empty);
+                        if (!string.IsNullOrEmpty(ForumConfig))
+                        {
+                            var xDoc = new XmlDocument();
+                            xDoc.LoadXml(ForumConfig);
+                            if (xDoc != null)
+                            {
+                                string[] secTypes = { "groupadmin", "groupmember", "registereduser", "anon" };
+                                foreach (string secType in secTypes)
+                                {
+                                    string xpath = $"//defaultforums/forum/security[@type='{secType}']";
+
+                                    if (xDoc.DocumentElement.SelectSingleNode(xpath).ChildNodes.Count == 17)
+                                    {
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modlock").RemoveAll();
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modpin").RemoveAll();
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("moddelete").RemoveAll();
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modedit").RemoveAll();
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modapprove").RemoveAll();
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).AddElement("moderate", string.Empty);
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("moderate").AddAttribute("value", "false");
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("moduser").RemoveAll();
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).AddElement("ban", string.Empty);
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("ban").AddAttribute("value", "false");
+                                    }
+                                }
+                                ForumConfig = xDoc.OuterXml;
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", ForumConfig);
+                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
+                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

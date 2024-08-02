@@ -81,29 +81,17 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 case SecureActions.Prioritize:
                     roles = fi.Security.Prioritize;
                     break;
-                case SecureActions.ModApprove:
-                    roles = fi.Security.ModApprove;
+                case SecureActions.Moderate:
+                    roles = fi.Security.Moderate;
                     break;
-                case SecureActions.ModMove:
-                    roles = fi.Security.ModMove;
+                case SecureActions.Move:
+                    roles = fi.Security.Move;
                     break;
-                case SecureActions.ModSplit:
-                    roles = fi.Security.ModSplit;
+                case SecureActions.Split:
+                    roles = fi.Security.Split;
                     break;
-                case SecureActions.ModDelete:
-                    roles = fi.Security.ModDelete;
-                    break;
-                case SecureActions.ModUser:
-                    roles = fi.Security.ModUser;
-                    break;
-                case SecureActions.ModEdit:
-                    roles = fi.Security.ModEdit;
-                    break;
-                case SecureActions.ModLock:
-                    roles = fi.Security.ModLock;
-                    break;
-                case SecureActions.ModPin:
-                    roles = fi.Security.ModPin;
+                case SecureActions.Ban:
+                    roles = fi.Security.Ban;
                     break;
                 default:
                     return false;

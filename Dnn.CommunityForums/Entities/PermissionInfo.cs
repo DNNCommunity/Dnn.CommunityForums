@@ -68,23 +68,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [ColumnName("CanCategorize")] public string Categorize { get; set; }
 
         [ColumnName("CanPrioritize")] public string Prioritize { get; set; }
-
-        [ColumnName("CanModApprove")] public string ModApprove { get; set; }
-
-        [ColumnName("CanModMove")] public string ModMove { get; set; }
-
-        [ColumnName("CanModSplit")] public string ModSplit { get; set; }
-
-        [ColumnName("CanModDelete")] public string ModDelete { get; set; }
-
-        [ColumnName("CanModUser")] public string ModUser { get; set; }
-
-        [ColumnName("CanModEdit")] public string ModEdit { get; set; }
-
-        [ColumnName("CanModLock")] public string ModLock { get; set; }
-
-        [ColumnName("CanModPin")] public string ModPin { get; set; }
-
+        [ColumnName("CanModerate")] public string Moderate { get; set; }
+        [ColumnName("CanMove")] public string Move { get; set; }
+        [ColumnName("CanSplit")] public string Split { get; set; }
+        [ColumnName("CanBan")] public string Ban { get; set; }
         [IgnoreColumn()] public ObjectType Type { get; set; }
 
         [IgnoreColumn()] public string ObjectId { get; set; }
