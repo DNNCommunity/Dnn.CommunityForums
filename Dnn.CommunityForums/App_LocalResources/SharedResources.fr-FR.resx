@@ -177,9 +177,6 @@
   <data name="[RESX:Announcements].Text" xml:space="preserve">
     <value>Announces</value>
   </data>
-  <data name="[RESX:AOL].Text" xml:space="preserve">
-    <value>AOL</value>
-  </data>
   <data name="[RESX:Approve].Text" xml:space="preserve">
     <value>Approuver</value>
   </data>
@@ -475,9 +472,6 @@ De,
   <data name="[RESX:Height].Text" xml:space="preserve">
     <value>Hauteur</value>
   </data>
-  <data name="[RESX:ICQ].Text" xml:space="preserve">
-    <value>ICQ</value>
-  </data>
   <data name="[RESX:Image].Text" xml:space="preserve">
     <value>Image</value>
   </data>
@@ -492,9 +486,6 @@ De,
   </data>
   <data name="[RESX:InsertImage].Text" xml:space="preserve">
     <value>Insérer image</value>
-  </data>
-  <data name="[RESX:Interests].Text" xml:space="preserve">
-    <value>Intérêts</value>
   </data>
   <data name="[RESX:Italics].Text" xml:space="preserve">
     <value> I </value>
@@ -561,9 +552,6 @@ De,
   </data>
   <data name="[RESX:LastVisit].Text" xml:space="preserve">
     <value>Dernière visite</value>
-  </data>
-  <data name="[RESX:Location].Text" xml:space="preserve">
-    <value>Emplacement</value>
   </data>
   <data name="[RESX:Lock].Text" xml:space="preserve">
     <value>Verrouiller</value>
@@ -634,9 +622,6 @@ De,
   <data name="[RESX:MoveTopicTitle].Text" xml:space="preserve">
     <value>Déplacer le sujet</value>
   </data>
-  <data name="[RESX:MSN].Text" xml:space="preserve">
-    <value>MSN</value>
-  </data>
   <data name="[RESX:MultiPageTopic].Text" xml:space="preserve">
     <value>Le sujet a plusieurs pages.</value>
   </data>
@@ -699,9 +684,6 @@ De,
   </data>
   <data name="[RESX:NotTrusted].Text" xml:space="preserve">
     <value>Non fiable</value>
-  </data>
-  <data name="[RESX:Occupation].Text" xml:space="preserve">
-    <value>Occupation</value>
   </data>
   <data name="[RESX:OldestFirst].Text" xml:space="preserve">
     <value>Plus anciens en premier</value>
@@ -837,9 +819,6 @@ De,
   </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve">
     <value>L'administrateur du forum peut vous avoir permis de choisir différents formulaires pour les abonnements. Vous pouvez choisir votre préférence ici.</value>
-  </data>
-  <data name="[RESX:PrefUseAjax].Text" xml:space="preserve">
-    <value>Utiliser Ajax</value>
   </data>
   <data name="[RESX:Preview].Text" xml:space="preserve">
     <value>Aperçu</value>
@@ -1210,9 +1189,6 @@ De,
   <data name="[RESX:Tips:PrefShowReplies].Text" xml:space="preserve">
     <value>La sélection de cette option vous permettra de voir toutes les réponses pour un sujet donné pendant que vous rédigez une réponse.</value>
   </data>
-  <data name="[RESX:Tips:PrefUseAjax].Text" xml:space="preserve">
-    <value>AJAX est une méthode de programmation pour améliorer la façon dont vous interagissez avec les forums.  Vous pouvez choisir si vous souhaitez ou non utiliser cette fonctionnalité.</value>
-  </data>
   <data name="[RESX:Tips:ProfileVisibility].Text" xml:space="preserve">
     <value>Sélectionnez le type d'utilisateurs qui doivent avoir accès pour afficher d'autres profils.</value>
   </data>
@@ -1335,9 +1311,6 @@ De,
   </data>
   <data name="[RESX:Width].Text" xml:space="preserve">
     <value>Largeur</value>
-  </data>
-  <data name="[RESX:Yahoo].Text" xml:space="preserve">
-    <value>Yahoo</value>
   </data>
   <data name="[RESX:Yes].Text" xml:space="preserve">
     <value>Oui</value>
@@ -1764,4 +1737,23 @@ De,
   <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
     <value>Le {0} des autorisations pour les {1} du forum ne se trouve pas dans la base de données ; Vous devrez réparer cela dans la base de données, ou supprimer le forum et le recréer. Veuillez visiter le dépôt Github (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour connaître les étapes de dépannage.</value>
   </data>
+  <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
+    <value>Veuillez vous &lt;a href="{0}"{1}&gt;connectez-vous&lt;/a&gt; pour ajouter un sujet.</value>
+  </data>
+  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
+    <value>Pas de contenu en attente</value>
+  </data>
+  <data name="[RESX:SearchFor].Text" xml:space="preserve">
+    <value>Chercher...</value>
+  </data>
+  <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
+    <value>Entrez un résumé pour améliorer l’optimisation des moteurs de recherche (SEO)</value>
+  </data>
+  <data name="[RESX:ForumMissingForForumTrackingId]" xml:space="preserve">
+    <value>Le {0} de Forum pour Forum Tracking Id {1} ne se trouve pas dans la base de données ; Vous devrez réparer cela dans la base de données ou supprimer l’enregistrement de suivi du forum. Veuillez visiter le dépôt Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour les étapes de dépannage.</value>
+  </data>
+  <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
+    <value>Le {0} de rubrique pour l’ID de suivi de {1} est introuvable dans la base de données ; Vous devrez réparer cela dans la base de données ou supprimer les données invalides. Veuillez visiter le dépôt Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour les étapes de dépannage.</value>
+  </data>
+
 </root>

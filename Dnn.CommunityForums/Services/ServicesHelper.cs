@@ -1,25 +1,27 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-// 
-using DotNetNuke.Entities.Users;
+
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
+    using DotNetNuke.Entities.Users;
+
     internal static class ServicesHelper
     {
         internal static bool IsAuthorized(int portalId, int moduleId, int forumId, SecureActions permissionRequired, UserInfo userInfo)
@@ -79,34 +81,23 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 case SecureActions.Prioritize:
                     roles = fi.Security.Prioritize;
                     break;
-                case SecureActions.ModApprove:
-                    roles = fi.Security.ModApprove;
+                case SecureActions.Moderate:
+                    roles = fi.Security.Moderate;
                     break;
-                case SecureActions.ModMove:
-                    roles = fi.Security.ModMove;
+                case SecureActions.Move:
+                    roles = fi.Security.Move;
                     break;
-                case SecureActions.ModSplit:
-                    roles = fi.Security.ModSplit;
+                case SecureActions.Split:
+                    roles = fi.Security.Split;
                     break;
-                case SecureActions.ModDelete:
-                    roles = fi.Security.ModDelete;
-                    break;
-                case SecureActions.ModUser:
-                    roles = fi.Security.ModUser;
-                    break;
-                case SecureActions.ModEdit:
-                    roles = fi.Security.ModEdit;
-                    break;
-                case SecureActions.ModLock:
-                    roles = fi.Security.ModLock;
-                    break;
-                case SecureActions.ModPin:
-                    roles = fi.Security.ModPin;
+                case SecureActions.Ban:
+                    roles = fi.Security.Ban;
                     break;
                 default:
                     return false;
             }
-            return (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, userInfo.UserID, portalId));
+
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, userInfo.UserID, portalId);
         }
     }
 }

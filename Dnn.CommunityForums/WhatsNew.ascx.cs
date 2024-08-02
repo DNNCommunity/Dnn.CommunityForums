@@ -1,39 +1,41 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web.UI;
-using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+
     public partial class WhatsNew : PortalModuleBase, IActionable
     {
         #region Private Variables
 
-        private User _currentUser;
-        private string _authorizedForums;
-        private WhatsNewModuleSettings _settings;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser;
+        private string authorizedForums;
+        private WhatsNewModuleSettings settings;
 
         #endregion
 
@@ -43,35 +45,36 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (_settings == null)
+                if (this.settings == null)
                 {
-                    var settingsCacheKey = string.Format(CacheKeys.WhatsNew, ModuleId);
+                    var settingsCacheKey = string.Format(CacheKeys.WhatsNew, this.ModuleId);
 
-                    var moduleSettings = DataCache.SettingsCacheRetrieve(ModuleId,settingsCacheKey) as Hashtable;
+                    var moduleSettings = DataCache.SettingsCacheRetrieve(this.ModuleId, settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
-                        moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
-                        DataCache.SettingsCacheStore(ModuleId,settingsCacheKey, moduleSettings);
+                        moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
+                        DataCache.SettingsCacheStore(this.ModuleId, settingsCacheKey, moduleSettings);
                     }
 
-                    _settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
+                    this.settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
                 }
-                return _settings;
+
+                return this.settings;
             }
         }
 
-        private User CurrentUser
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo CurrentUser
         {
-            get { return _currentUser ?? (_currentUser = new UserController().GetUser(PortalId, -1)); }
+            get { return this.currentUser ?? (this.currentUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(this.PortalId, -1)); }
         }
 
         private string AuthorizedForums
         {
             get
             {
-                return _authorizedForums ??
-                       (_authorizedForums =
-                       DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, Settings.Forums, CurrentUser.UserRoles));
+                return this.authorizedForums ??
+                       (this.authorizedForums =
+                       DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, this.Settings.Forums, this.CurrentUser.UserRoles));
             }
         }
 
@@ -86,10 +89,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 return new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
                                   {
                                       {
-                                          GetNextActionID(), "Edit", /* Utilities.GetSharedResource("Configure") */
-                                          DotNetNuke.Entities.Modules.Actions.ModuleActionType.EditContent, "", "",
-                                          EditUrl(), false, Security.SecurityAccessLevel.Edit, true, false
-                                      }
+                                          this.GetNextActionID(), "Edit", /* Utilities.GetSharedResource("Configure") */
+                                          DotNetNuke.Entities.Modules.Actions.ModuleActionType.EditContent, string.Empty, string.Empty,
+                                          this.EditUrl(), false, Security.SecurityAccessLevel.Edit, true, false
+                                      },
                                   };
             }
         }
@@ -100,9 +103,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            var dr = DataProvider.Instance().GetPosts(PortalId, AuthorizedForums, Settings.TopicsOnly, Settings.RandomOrder, Settings.Rows, Settings.Tags);
+            var dr = DataProvider.Instance().GetPosts(this.PortalId, this.AuthorizedForums, this.Settings.TopicsOnly, this.Settings.RandomOrder, this.Settings.Rows, this.Settings.Tags);
 
-            var sb = new StringBuilder(Settings.Header);
+            var sb = new StringBuilder(this.Settings.Header);
 
             var sHost = Utilities.GetHost();
 
@@ -135,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     var ts = SettingsBase.GetModuleSettings(topicModuleId);
 
-                    var sbTemplate = new StringBuilder(Settings.Format ?? string.Empty);
+                    var sbTemplate = new StringBuilder(this.Settings.Format ?? string.Empty);
 
                     sbTemplate = sbTemplate.Replace("[FORUMGROUPNAME]", groupName);
                     sbTemplate = sbTemplate.Replace("[FORUMGROUPID]", groupId.ToString());
@@ -149,7 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sbTemplate = sbTemplate.Replace("[AUTHORLASTNAME]", lastName);
                     sbTemplate = sbTemplate.Replace("[AUTHORID]", authorId.ToString());
                     sbTemplate = sbTemplate.Replace("[AUTHORDISPLAYNAME]", displayName);
-                    sbTemplate = sbTemplate.Replace("[DATE]", Utilities.GetUserFormattedDateTime(postDate, PortalId, UserId));
+                    sbTemplate = sbTemplate.Replace("[DATE]", Utilities.GetUserFormattedDateTime(postDate, this.PortalId, this.UserId));
                     sbTemplate = sbTemplate.Replace("[TOPICID]", topicId.ToString());
                     sbTemplate = sbTemplate.Replace("[REPLYID]", replyId.ToString());
                     sbTemplate = sbTemplate.Replace("[REPLYCOUNT]", replyCount.ToString());
@@ -166,7 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sForumUrl = sForumUrl.Substring(1);
                         }
 
-                        if (!(sForumUrl.StartsWith(sHost)))
+                        if (!sForumUrl.StartsWith(sHost))
                         {
                             sForumUrl = sHost + sForumUrl;
                         }
@@ -176,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sTopicUrl = sTopicUrl.Substring(1);
                         }
 
-                        if (!(sTopicUrl.StartsWith(sHost)))
+                        if (!sTopicUrl.StartsWith(sHost))
                         {
                             sTopicUrl = sHost + sTopicUrl;
                         }
@@ -188,10 +191,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         else
                         {
-                            if (!(sTopicUrl.EndsWith("/")) && !(sTopicUrl.EndsWith("aspx")))
+                            if (!sTopicUrl.EndsWith("/") && !sTopicUrl.EndsWith("aspx"))
                             {
                                 sTopicUrl += "/";
                             }
+
                             sTopicUrl += "?afc=" + replyId;
                             sbTemplate = sbTemplate.Replace("[POSTURL]", sTopicUrl);
                             sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + sTopicUrl + "\">" + subject + "</a>");
@@ -203,22 +207,21 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (replyId == 0)
                         {
-                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }));
-                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }) + "\">" + subject + "</a>");
+                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }));
+                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }) + "\">" + subject + "</a>");
                         }
                         else
                         {
-                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }));
-                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }) + "\">" + subject + "</a>");
+                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }));
+                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }) + "\">" + subject + "</a>");
                         }
-                        sbTemplate = sbTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }));
-                    }
 
+                        sbTemplate = sbTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }));
+                    }
 
                     sbTemplate = sbTemplate.Replace("[FORUMURL]", Utilities.NavigateURL(topicTabId));
 
                     // Do the body replacements last as they are the most likely to contain conflicts.
-
                     sbTemplate = sbTemplate.Replace("[BODY]", body);
                     sbTemplate = sbTemplate.Replace("[BODYHTML]", bodyHtml);
                     sbTemplate = sbTemplate.Replace("[BODYTEXT]", Utilities.StripHTMLTag(bodyHtml));
@@ -230,6 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     sb.Append(template);
                 }
+
                 dr.Close();
             }
             catch (Exception ex)
@@ -238,20 +242,21 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     dr.Close();
                 }
+
                 sb.Append(ex.StackTrace);
             }
 
             var sRSSImage = string.Empty;
             var sRSSUrl = string.Empty;
             var sRSSIconLink = string.Empty;
-            if (Settings.RSSEnabled)
+            if (this.Settings.RSSEnabled)
             {
-                sRSSImage = "<img src=\"" + Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "feedicon.gif") + "\" border=\"0\" />";
-                sRSSUrl = Page.ResolveUrl("~/desktopmodules/activeforumswhatsnew/feeds.aspx") + "?portalId=" + PortalId + "&tabid=" + TabId.ToString() + "&moduleid=" + ModuleId.ToString();
+                sRSSImage = "<img src=\"" + this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "feedicon.gif") + "\" border=\"0\" />";
+                sRSSUrl = this.Page.ResolveUrl("~/desktopmodules/activeforumswhatsnew/feeds.aspx") + "?portalId=" + this.PortalId + "&tabid=" + this.TabId.ToString() + "&moduleid=" + this.ModuleId.ToString();
                 sRSSIconLink = "<a href=\"" + sRSSUrl + "\">" + sRSSImage + "</a>";
             }
 
-            var footer = Settings.Footer;
+            var footer = this.Settings.Footer;
 
             footer = footer.Replace("[RSSICON]", sRSSImage);
             footer = footer.Replace("[RSSURL]", sRSSUrl);
@@ -259,7 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             sb.Append(footer);
 
-            Controls.Add(new LiteralControl(sb.ToString()));
+            this.Controls.Add(new LiteralControl(sb.ToString()));
         }
 
         protected override void Render(HtmlTextWriter writer)

@@ -5,6 +5,6 @@
         public static string TextOrEmpty(this string text)
         {
             return text ?? string.Empty;
-        } 
+        }
     }
 }

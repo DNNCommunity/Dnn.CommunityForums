@@ -1,232 +1,238 @@
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+// DNN Community licenses this file to you under the MIT license.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Reflection;
-using DotNetNuke.Services.Scheduling;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Reflection;
+
+    using DotNetNuke.Services.Scheduling;
+
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
     public class SubscriptionInfo : DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
         public int UserId { get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
         public string Email { get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
         public TimeSpan TimeZoneOffSet { get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
         public CultureInfo UserCulture { get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
         public bool TopicSubscriber { get; set; }
     }
 
     public class SubscriptionController
-    {                        
-        //TODO: move to new DAL2 subscription controller
-        public int Subscription_Update(int PortalId, int ModuleId, int ForumId, int TopicId, int Mode, int UserId, string UserRoles = "")
+    {
+        // TODO: move to new DAL2 subscription controller
+        public int Subscription_Update(int portalId, int moduleId, int forumId, int topicId, int mode, int userId, string userRoles = "")
         {
-            if (UserId == -1)
+            if (userId == -1)
             {
                 return -1;
             }
 
-            if (string.IsNullOrEmpty(UserRoles))
+            if (string.IsNullOrEmpty(userRoles))
             {
-                UserController uc = new UserController();
-                User uu = uc.GetUser(PortalId, ModuleId, UserId);
-                UserRoles = uu.UserRoles;
+                userRoles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, userId).UserRoles;
             }
 
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, ForumId, false, -1);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId, moduleId, forumId, false, -1);
 
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, userRoles))
             {
-                return Convert.ToInt32(DataProvider.Instance().Subscription_Update(PortalId, ModuleId, ForumId, TopicId, Mode, UserId));
+                return Convert.ToInt32(DataProvider.Instance().Subscription_Update(portalId, moduleId, forumId, topicId, mode, userId));
             }
 
             return -1;
         }
 
-        //TODO: move to new DAL2 subscription controller
-        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(int PortalId, int ForumId, int TopicId, SubscriptionTypes Mode, int AuthorId, string CanSubscribe)
+        // TODO: move to new DAL2 subscription controller
+        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(int portalId, int forumId, int topicId, SubscriptionTypes mode, int authorId, string canSubscribe)
         {
             DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo si;
             var sl = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
-            IDataReader dr = DataProvider.Instance().Subscriptions_GetSubscribers(PortalId, ForumId, TopicId, (int)Mode);
+            IDataReader dr = DataProvider.Instance().Subscriptions_GetSubscribers(portalId, forumId, topicId, (int)mode);
             while (dr.Read())
             {
-                if (AuthorId != Convert.ToInt32(dr["UserId"]))
+                if (authorId != Convert.ToInt32(dr["UserId"]))
                 {
                     si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
                     {
-                        UserId = Convert.ToInt32(dr["UserId"])
+                        UserId = Convert.ToInt32(dr["UserId"]),
                     };
 
-                    if (!(sl.Contains(si)))
+                    if (!sl.Contains(si))
                     {
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(CanSubscribe, si.UserId, PortalId))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(canSubscribe, si.UserId, portalId))
                         {
                             sl.Add(si);
                         }
                     }
                 }
             }
+
             dr.Close();
             return sl;
         }
     }
+
     public abstract class Subscriptions
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId, TopicId).")]
-        public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, SubscriptionTypes SubscriptionType, int UserId)
+        public static bool IsSubscribed(int portalId, int moduleId, int forumId, int topicId, SubscriptionTypes subscriptionType, int userId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId, TopicId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId, moduleId, userId, forumId, topicId);
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId).")]
-        public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, SubscriptionTypes SubscriptionType, int UserId)
+        public static bool IsSubscribed(int portalId, int moduleId, int forumId, SubscriptionTypes subscriptionType, int userId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId);
-        }
-        //TODO: move to new DAL2 subscription controller
-        public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int AuthorId)
-        {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
-            SendSubscriptions(PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId, moduleId, userId, forumId);
         }
 
-        //TODO: move to new DAL2 subscription controller
-        public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId)
+        // TODO: move to new DAL2 subscription controller
+        public static void SendSubscriptions(int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, int authorId)
         {
-            SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId, null);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);
+            SendSubscriptions(portalId, moduleId, tabId, fi, topicId, replyId, authorId);
         }
 
-        //TODO: move to new DAL2 subscription controller
-        public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId, Uri requestUrl)
+        // TODO: move to new DAL2 subscription controller
+        public static void SendSubscriptions(int portalId, int moduleId, int tabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int topicId, int replyId, int authorId)
+        {
+            SendSubscriptions(-1, portalId, moduleId, tabId, fi, topicId, replyId, authorId, null);
+        }
+
+        // TODO: move to new DAL2 subscription controller
+        public static void SendSubscriptions(int templateId, int portalId, int moduleId, int tabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int topicId, int replyId, int authorId, Uri requestUrl)
         {
             var sc = new SubscriptionController();
-            List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs = sc.Subscription_GetSubscribers(PortalId, fi.ForumID, TopicId, SubscriptionTypes.Instant, AuthorId, fi.Security.Subscribe);
+            List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs = sc.Subscription_GetSubscribers(portalId, fi.ForumID, topicId, SubscriptionTypes.Instant, authorId, fi.Security.Subscribe);
 
             if (subs.Count > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs, requestUrl);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleId, tabId, string.Empty, authorId, fi, subs, requestUrl);
             }
         }
 
-        //TODO: move to new DAL2 subscription controller
-        public static void SendSubscriptions(SubscriptionTypes SubscriptionType, DateTime StartDate)
+        // TODO: move to new DAL2 subscription controller
+        public static void SendSubscriptions(SubscriptionTypes subscriptionType, DateTime startDate)
         {
             string sysTemplateName = "DailyDigest";
-            if (SubscriptionType == SubscriptionTypes.WeeklyDigest)
+            if (subscriptionType == SubscriptionTypes.WeeklyDigest)
             {
                 sysTemplateName = "WeeklyDigest";
             }
 
             var objRecipients = new ArrayList();
-            IDataReader dr = DataProvider.Instance().Subscriptions_GetDigest(Convert.ToString(SubscriptionType), StartDate);
+            IDataReader dr = DataProvider.Instance().Subscriptions_GetDigest(Convert.ToString(subscriptionType), startDate);
 
             string tmpEmail = string.Empty;
             string tmpFG = string.Empty;
             string sBody = string.Empty;
             var sb = new System.Text.StringBuilder();
-            string Template = string.Empty; 
-            string TemplateSubject = string.Empty; 
-            string TemplateHeader = string.Empty;
-            string TemplateBody = string.Empty;
-            string TemplateFooter = string.Empty;
-            string TemplateItems = string.Empty;
-            string TemplateGroupSection = string.Empty;
-            string ItemsFooter = string.Empty;
-            string Items = string.Empty;
+            string template = string.Empty;
+            string templateSubject = string.Empty;
+            string templateHeader = string.Empty;
+            string templateBody = string.Empty;
+            string templateFooter = string.Empty;
+            string templateItems = string.Empty;
+            string templateGroupSection = string.Empty;
+            string itemsFooter = string.Empty;
+            string items = string.Empty;
             string sMessageBody;
-            string FromEmail = string.Empty; 
-            string SubscriberDisplayName = string.Empty;
-            string SubscriberUserName = string.Empty;
-            string SubscriberFirstName = string.Empty;
-            string SubscriberLastName = string.Empty;
-            string SubscriberEmail = string.Empty;
+            string fromEmail = string.Empty;
+            string subscriberDisplayName = string.Empty;
+            string subscriberUserName = string.Empty;
+            string subscriberFirstName = string.Empty;
+            string subscriberLastName = string.Empty;
+            string subscriberEmail = string.Empty;
             int portalId = -1;
             int i = 0;
-            int GroupCount = 0;
+            int groupCount = 0;
 
             while (dr.Read())
             {
                 portalId = Convert.ToInt32(dr["PortalId"].ToString());
 
-                SubscriberDisplayName = dr["SubscriberDisplayName"].ToString();
-                SubscriberUserName = dr["SubscriberUserName"].ToString();
-                SubscriberFirstName = dr["SubscriberFirstName"].ToString();
-                SubscriberLastName = dr["SubscriberLastName"].ToString();
-                SubscriberEmail = dr["Email"].ToString();
+                subscriberDisplayName = dr["SubscriberDisplayName"].ToString();
+                subscriberUserName = dr["SubscriberUserName"].ToString();
+                subscriberFirstName = dr["SubscriberFirstName"].ToString();
+                subscriberLastName = dr["SubscriberLastName"].ToString();
+                subscriberEmail = dr["Email"].ToString();
 
                 string newEmail = dr["Email"].ToString();
                 if (i > 0)
                 {
                     if (newEmail != tmpEmail)
                     {
-                        sMessageBody = TemplateHeader;
-                        sMessageBody += Items + ItemsFooter;
-                        sMessageBody += TemplateFooter;
-                        Items = string.Empty;
-                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERDISPLAYNAME]", SubscriberDisplayName);
-                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERUSERNAME]", SubscriberUserName);
-                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", SubscriberFirstName);
-                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", SubscriberLastName);
-                        sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", SubscriberEmail);
+                        sMessageBody = templateHeader;
+                        sMessageBody += items + itemsFooter;
+                        sMessageBody += templateFooter;
+                        items = string.Empty;
+                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERDISPLAYNAME]", subscriberDisplayName);
+                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERUSERNAME]", subscriberUserName);
+                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", subscriberFirstName);
+                        sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", subscriberLastName);
+                        sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", subscriberEmail);
                         sMessageBody = sMessageBody.Replace("[DATE]", DateTime.UtcNow.ToString());
 
                         if ((sMessageBody.IndexOf("[DATE:", 0) + 1) > 0)
                         {
                             string sFormat;
-                            int inStart = (sMessageBody.IndexOf("[DATE:", 0) + 1) + 5;
-                            int inEnd = (sMessageBody.IndexOf("]", inStart - 1) + 1) - 1;
+                            int inStart = sMessageBody.IndexOf("[DATE:", 0) + 1 + 5;
+                            int inEnd = sMessageBody.IndexOf("]", inStart - 1) + 1 - 1;
                             string sValue = sMessageBody.Substring(inStart, inEnd - inStart);
                             sFormat = sValue;
                             sMessageBody = sMessageBody.Replace(string.Concat("[DATE:", sFormat, "]"), DateTime.UtcNow.ToString(sFormat));
                         }
 
-                        GroupCount = 0;
+                        groupCount = 0;
                         tmpEmail = newEmail;
-                        new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId,-1,FromEmail, tmpEmail, TemplateSubject, sMessageBody);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId, -1, fromEmail, tmpEmail, templateSubject, sMessageBody);
                         i = 0;
                     }
                 }
                 else
                 {
                     tmpEmail = dr["Email"].ToString();
-
                 }
 
                 if (tmpFG != string.Concat(dr["GroupName"], dr["ForumName"].ToString()))
                 {
-                    if (GroupCount > 0)
+                    if (groupCount > 0)
                     {
-                        Items += ItemsFooter;
+                        items += itemsFooter;
                     }
 
-                    string sTmpBody = TemplateGroupSection;
+                    string sTmpBody = templateGroupSection;
 
                     sTmpBody = sTmpBody.Replace("[TABID]", dr["TabId"].ToString());
                     sTmpBody = sTmpBody.Replace("[PORTALID]", dr["PortalId"].ToString());
@@ -234,18 +240,19 @@ namespace DotNetNuke.Modules.ActiveForums
                     sTmpBody = sTmpBody.Replace("[FORUMNAME]", dr["ForumName"].ToString());
                     sTmpBody = sTmpBody.Replace("[FORUMID]", dr["ForumId"].ToString());
                     sTmpBody = sTmpBody.Replace("[GROUPID]", dr["ForumGroupId"].ToString());
-                    Items += sTmpBody;
+                    items += sTmpBody;
 
-                    GroupCount += 1;
+                    groupCount += 1;
                 }
-                string sTemp = TemplateItems;
+
+                string sTemp = templateItems;
                 sTemp = sTemp.Replace("[SUBJECT]", dr["Subject"].ToString());
                 int intLength = 0;
 
                 if ((sTemp.IndexOf("[BODY:", 0) + 1) > 0)
                 {
-                    int inStart = (sTemp.IndexOf("[BODY:", 0) + 1) + 5;
-                    int inEnd = (sTemp.IndexOf("]", inStart - 1) + 1) - 1;
+                    int inStart = sTemp.IndexOf("[BODY:", 0) + 1 + 5;
+                    int inEnd = sTemp.IndexOf("]", inStart - 1) + 1 - 1;
                     string sLength = sTemp.Substring(inStart, inEnd - inStart);
                     intLength = Convert.ToInt32(sLength);
                 }
@@ -259,6 +266,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         body = body.Substring(0, intLength);
                         body = string.Concat(body, "...");
                     }
+
                     sTemp = sTemp.Replace(string.Concat("[BODY:", intLength, "]"), body);
                 }
                 else
@@ -277,7 +285,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sTemp = sTemp.Replace("[TABID]", dr["TabId"].ToString());
                 sTemp = sTemp.Replace("[PORTALID]", dr["PortalId"].ToString());
 
-                Items += sTemp;
+                items += sTemp;
 
                 i += 1;
             }
@@ -285,28 +293,29 @@ namespace DotNetNuke.Modules.ActiveForums
             dr.Close();
             dr = null;
 
-            if (Items != string.Empty)
+            if (items != string.Empty)
             {
-                sMessageBody = TemplateHeader;
-                sMessageBody += Items + ItemsFooter;
-                sMessageBody += TemplateFooter;
-                sMessageBody = sMessageBody.Replace("[SUBSCRIBERDISPLAYNAME]", SubscriberDisplayName);
-                sMessageBody = sMessageBody.Replace("[SUBSCRIBERUSERNAME]", SubscriberUserName);
-                sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", SubscriberFirstName);
-                sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", SubscriberLastName);
-                sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", SubscriberEmail);
+                sMessageBody = templateHeader;
+                sMessageBody += items + itemsFooter;
+                sMessageBody += templateFooter;
+                sMessageBody = sMessageBody.Replace("[SUBSCRIBERDISPLAYNAME]", subscriberDisplayName);
+                sMessageBody = sMessageBody.Replace("[SUBSCRIBERUSERNAME]", subscriberUserName);
+                sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", subscriberFirstName);
+                sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", subscriberLastName);
+                sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", subscriberEmail);
                 sMessageBody = sMessageBody.Replace("[DATE]", DateTime.UtcNow.ToString());
 
                 if ((sMessageBody.IndexOf("[DATE:", 0) + 1) > 0)
                 {
                     string sFormat;
-                    int inStart = (sMessageBody.IndexOf("[DATE:", 0) + 1) + 5;
-                    int inEnd = (sMessageBody.IndexOf("]", inStart - 1) + 1) - 1;
+                    int inStart = sMessageBody.IndexOf("[DATE:", 0) + 1 + 5;
+                    int inEnd = sMessageBody.IndexOf("]", inStart - 1) + 1 - 1;
                     string sValue = sMessageBody.Substring(inStart, inEnd - inStart);
                     sFormat = sValue;
                     sMessageBody = sMessageBody.Replace(string.Concat("[DATE:", sFormat, "]"), DateTime.UtcNow.ToString(sFormat));
                 }
-              new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId,-1, FromEmail, tmpEmail, TemplateSubject, sMessageBody);
+
+                new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId, -1, fromEmail, tmpEmail, templateSubject, sMessageBody);
             }
         }
     }
@@ -315,7 +324,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public WeeklyDigest(DotNetNuke.Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
         {
-            ScheduleHistoryItem = objScheduleHistoryItem;
+            this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         public override void DoWork()
@@ -323,38 +332,37 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 Subscriptions.SendSubscriptions(SubscriptionTypes.WeeklyDigest, GetStartOfWeek(DateTime.UtcNow.AddDays(-1)));
-                ScheduleHistoryItem.Succeeded = true;
-                ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
-                ScheduleHistoryItem.AddLogNote("Weekly Digest Complete");
-
+                this.ScheduleHistoryItem.Succeeded = true;
+                this.ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
+                this.ScheduleHistoryItem.AddLogNote("Weekly Digest Complete");
             }
             catch (Exception ex)
             {
-                ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote(string.Concat("Weekly Digest Failed:", ex));
-                Errored(ref ex);
+                this.ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.AddLogNote(string.Concat("Weekly Digest Failed:", ex));
+                this.Errored(ref ex);
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
 
-        private static DateTime GetStartOfWeek(DateTime StartDate)
+        private static DateTime GetStartOfWeek(DateTime startDate)
         {
-            switch (StartDate.DayOfWeek)
+            switch (startDate.DayOfWeek)
             {
                 case DayOfWeek.Monday:
-                    return StartDate.AddDays(0);
+                    return startDate.AddDays(0);
                 case DayOfWeek.Tuesday:
-                    return StartDate.AddDays(-1);
+                    return startDate.AddDays(-1);
                 case DayOfWeek.Wednesday:
-                    return StartDate.AddDays(-2);
+                    return startDate.AddDays(-2);
                 case DayOfWeek.Thursday:
-                    return StartDate.AddDays(-3);
+                    return startDate.AddDays(-3);
                 case DayOfWeek.Friday:
-                    return StartDate.AddDays(-4);
+                    return startDate.AddDays(-4);
                 case DayOfWeek.Saturday:
-                    return StartDate.AddDays(-5);
+                    return startDate.AddDays(-5);
                 case DayOfWeek.Sunday:
-                    return StartDate.AddDays(-6);
+                    return startDate.AddDays(-6);
             }
 
             return DateTime.MinValue;
@@ -362,8 +370,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private static int GetElapsedTimeTillNextStart()
         {
-            DateTime NextRun = DateTime.UtcNow.AddDays(7);
-            var nextStart = new DateTime(NextRun.Year, NextRun.Month, NextRun.Day, 22, 0, 0);
+            DateTime nextRun = DateTime.UtcNow.AddDays(7);
+            var nextStart = new DateTime(nextRun.Year, nextRun.Month, nextRun.Day, 22, 0, 0);
             int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerDay);
             return elapseMinutes;
         }

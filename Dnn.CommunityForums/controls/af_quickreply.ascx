@@ -49,17 +49,17 @@ $(document).on("keydown", "#txtBody", function (e) {
 
 		<div style="display:none;visibility:hidden;" >
 		
-            <label ID="ContactByFaxOnly" runat="server"
+            <label ID="contactByFaxOnly" runat="server"
                ControlName="ContactByFaxOnlyCheckBox"
                ResourceKey="ContactByFaxOnly"
                Suffix=":"
                TabIndex="-1" />
-            <asp:CheckBox ID="ContactByFaxOnlyCheckBox" runat="server"
+            <asp:CheckBox ID="contactByFaxOnlyCheckBox" runat="server"
                AutoPostBack="true"
                Checked="false"
                OnCheckedChanged="ContactByFaxOnlyCheckBox_CheckedChanged"
                TabIndex="-1" />
         </div>
-<div id="QR" runat="server" />
+<div id="qR" runat="server" />
 <input type="hidden" name="hidReply1" id="hidReply1" value="" />
 <input type="hidden" name="hidReply2" id="hidReply2" value="" />

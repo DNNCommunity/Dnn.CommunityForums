@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
             string expectedResult = $"blah blah Test Forum Group blah blah";
              
             //Act
-            string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, null, 0, 0, CurrentUserTypes.Auth).ToString();
+            string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, TODO, 0, 0, CurrentUserTypes.Auth).ToString();
             //Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }

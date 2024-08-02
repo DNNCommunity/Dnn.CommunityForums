@@ -419,3 +419,22 @@ ul.amcpformlist li div.amcpradiorow input[type="checkbox"]{font-size:14px;margin
 
 #afRankEdit .dnnForm, #afFilterEdit .dnnForm{min-width:inherit;}
 
+
+/*
+//    version 2
+.dcf-controlpanel-tooltip { text-decoration: none !important; cursor: help !important; }
+.dcf-controlpanel-tooltip::before { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translate(-50%); margin-bottom: 15px; color: #fff; background: rgba(0,0,0, .7); border-radius: 5px; padding: 5px; }
+.dcf-controlpanel-tooltip::after { position: absolute; content: ""; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid rgba(0,0,0, .7); }
+.dcf-controlpanel-tooltip::before,
+.dcf-controlpanel-tooltip::after { opacity: 0; visibility: hidden; transition: opacity .3s ease-in-out; }
+.dcf-controlpanel-tooltip:hover::before,
+.dcf-controlpanel-tooltip:hover::after { opacity: 1; visibility: visible; }
+*/
+
+/*
+// version 1
+.dcf-controlpanel-tooltip[data-tooltip]:hover { position: relative !important; }
+.dcf-controlpanel-tooltip[data-tooltip]::before { visibility: hidden; }
+.dcf-controlpanel-tooltip[data-tooltip]:hover::before { all: initial; visibility: visible; font-family: Arial, Helvetica, sans-serif; display: inline-block; border-radius: 5px; padding: 10px; background-color: #1a1a1a; content: attr(data-tooltip); color: #f9f9f9; position: absolute; bottom: 100%; width: 100px; left: 50%; transform: translate(-50%, 0); margin-bottom: 15px; text-align: center; font-size: 14px; }
+.dcf-controlpanel-tooltip[data-tooltip]:hover::after { all: initial; display: inline-block; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #1a1a1a; position: absolute; bottom: 100%; content: ''; left: 50%; transform: translate(-50%, 0); margin-bottom: 5px; }
+*/
