@@ -1771,10 +1771,14 @@ Van,
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>Geen uitstaande berichten</value>
   </data>
-  <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
-    <value>De Topic {0} voor Topic Tracking Id {1} is niet te vinden in de database. U moet dit in de database herstellen of de ongeldige gegevens verwijderen. Ga naar de Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums) van de DNN Community Forums, waar u een probleem kunt melden of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
-  </data>
   <data name="[RESX:Tips:BanUser].Text" xml:space="preserve">
     <value>Hiermee verwijdert u alle berichten voor deze gebruiker en maakt u de autorisatie van de gebruiker ongedaan.</value>
   </data>
+  <data name="[RESX:ForumMissingForForumTrackingId]" xml:space="preserve">
+    <value>De Forum {0} voor Forum Tracking Id {1} is niet te vinden in de database; U moet dit in de database repareren of het forumtrackingrecord verwijderen. Ga naar de Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums) van de DNN Community Forums, waar u een probleem kunt melden of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
+  </data>
+  <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
+    <value>De Topic {0} voor Topic Tracking Id {1} is niet te vinden in de database. U moet dit in de database herstellen of de ongeldige gegevens verwijderen. Ga naar de Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums) van de DNN Community Forums, waar u een probleem kunt melden of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
+  </data>
+
 </root>

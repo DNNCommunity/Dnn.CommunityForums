@@ -1743,13 +1743,17 @@ De,
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>Pas de contenu en attente</value>
   </data>
-  <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
-    <value>Le {0} de rubrique pour l’ID de suivi de {1} est introuvable dans la base de données ; Vous devrez réparer cela dans la base de données ou supprimer les données invalides. Veuillez visiter le dépôt Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour les étapes de dépannage.</value>
-  </data>
   <data name="[RESX:SearchFor].Text" xml:space="preserve">
     <value>Chercher...</value>
   </data>
   <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
     <value>Entrez un résumé pour améliorer l’optimisation des moteurs de recherche (SEO)</value>
   </data>
+  <data name="[RESX:ForumMissingForForumTrackingId]" xml:space="preserve">
+    <value>Le {0} de Forum pour Forum Tracking Id {1} ne se trouve pas dans la base de données ; Vous devrez réparer cela dans la base de données ou supprimer l’enregistrement de suivi du forum. Veuillez visiter le dépôt Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour les étapes de dépannage.</value>
+  </data>
+  <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
+    <value>Le {0} de rubrique pour l’ID de suivi de {1} est introuvable dans la base de données ; Vous devrez réparer cela dans la base de données ou supprimer les données invalides. Veuillez visiter le dépôt Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour les étapes de dépannage.</value>
+  </data>
+
 </root>

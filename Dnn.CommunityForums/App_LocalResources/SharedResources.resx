@@ -1734,6 +1734,9 @@ From,
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>No Pending Content</value>
   </data>
+  <data name="[RESX:ForumMissingForForumTrackingId]" xml:space="preserve">
+    <value>The Forum {0} for Forum Tracking Id {1} is not found in the database; you will need to repair this in the database, or delete the forum tracking record. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>The Topic {0} for Topic Tracking Id {1} is not found in the database; you will need to repair this in the database, or delete the invalid data.. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
   </data>

@@ -17,32 +17,31 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-
-using DotNetNuke.ComponentModel.DataAnnotations;
-
-using System.Collections;
-using System.Data.SqlTypes;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.UI.UserControls;
-
-using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+using System;
+using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+
     [TableName("activeforums_UserProfiles")]
     [PrimaryKey("ProfileId", AutoIncrement = true)]
     [Scope("PortalId")]
     public class ForumUserInfo
     {
-        private DotNetNuke.Entities.Users.UserInfo _userInfo;
-        private string _userRoles = Globals.DefaultAnonRoles + "|-1;||";
+        private DotNetNuke.Entities.Users.UserInfo userInfo;
+        private string userRoles = Globals.DefaultAnonRoles + "|-1;||";
+
+        public ForumUserInfo()
+        {
+            this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
+        }
 
         public int ProfileId { get; set; }
 
         public int UserId { get; set; } = -1;
-        
+
         public int PortalId { get; set; }
 
         public int TopicCount { get; set; }
@@ -156,8 +155,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public DotNetNuke.Entities.Users.UserInfo UserInfo
         {
-            get => this._userInfo ?? (this._userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, this.UserId));
-            set => this._userInfo = value;
+            get => this.userInfo ?? (this.userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, this.UserId));
+            set => this.userInfo = value;
         }
 
         [IgnoreColumn]
@@ -176,13 +175,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     ids += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
                 }
                 ids += "|" + this.UserId + "|" + string.Empty + "|";
-                this._userRoles = ids;
+                this.userRoles = ids;
                 return ids;
             }
 
             set
             {
-                this._userRoles = value;
+                this.userRoles = value;
             }
         }
 

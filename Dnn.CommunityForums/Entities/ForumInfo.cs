@@ -27,7 +27,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.UI.UserControls;
 
     [TableName("activeforums_Forums")]
     [PrimaryKey("ForumID", AutoIncrement = true)] /* ForumID because needs to match property name NOT database column name */
