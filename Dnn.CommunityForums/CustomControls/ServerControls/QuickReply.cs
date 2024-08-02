@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             bool userIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, this.ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, this.ForumUser.UserRoles), forumInfo.AutoTrustLevel, this.ControlConfig.User.PostCount);
             bool isApproved = Convert.ToBoolean((forumInfo.IsModerated == true) ? false : true);
-            if (userIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, this.ForumUser.UserRoles))
+            if (userIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, this.ForumUser.UserRoles))
             {
                 isApproved = true;
             }
@@ -216,9 +216,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // TODO: Check for allowhtml
             bool allowHtml = false;
 
-            // If forumInfo.AllowHTML Then
-            //    allowHtml = isHTMLPermitted(forumInfo.EditorPermittedUsers, IsTrusted, forumInfo.Security.ModEdit)
-            // End If
             sBody = Utilities.CleanString(this.portalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, this.moduleId, this.ThemePath, forumInfo.AllowEmoticons);
             ri.TopicId = this.TopicId;
             ri.ReplyToId = this.TopicId;

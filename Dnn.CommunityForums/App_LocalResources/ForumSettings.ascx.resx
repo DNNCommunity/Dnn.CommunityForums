@@ -321,60 +321,6 @@
   <data name="ModeratorPermissions.Text" xml:space="preserve">
     <value>Moderator Permissions</value>
   </data>
-  <data name="SecGrid:attach.Text" xml:space="preserve">
-    <value>Attach</value>
-  </data>
-  <data name="SecGrid:create.Text" xml:space="preserve">
-    <value>Create</value>
-  </data>
-  <data name="SecGrid:delete.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="SecGrid:edit.Text" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="SecGrid:lock.Text" xml:space="preserve">
-    <value>Lock</value>
-  </data>
-  <data name="SecGrid:modapprove.Text" xml:space="preserve">
-    <value>Approve</value>
-  </data>
-  <data name="SecGrid:moddelete.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="SecGrid:modedit.Text" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="SecGrid:modlock.Text" xml:space="preserve">
-    <value>Lock</value>
-  </data>
-  <data name="SecGrid:modmove.Text" xml:space="preserve">
-    <value>Move</value>
-  </data>
-  <data name="SecGrid:modpin.Text" xml:space="preserve">
-    <value>Pin</value>
-  </data>
-  <data name="SecGrid:moduser.Text" xml:space="preserve">
-    <value>User</value>
-  </data>
-  <data name="SecGrid:pin.Text" xml:space="preserve">
-    <value>Pin</value>
-  </data>
-  <data name="SecGrid:read.Text" xml:space="preserve">
-    <value>Read</value>
-  </data>
-  <data name="SecGrid:reply.Text" xml:space="preserve">
-    <value>Reply</value>
-  </data>
-  <data name="SecGrid:subscribe.Text" xml:space="preserve">
-    <value>Subscribe</value>
-  </data>
-  <data name="SecGrid:user.Text" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="SecGrid:view.Text" xml:space="preserve">
-    <value>View</value>
-  </data>
   <data name="UserPermissions.Text" xml:space="preserve">
     <value>User Permissions</value>
   </data>
@@ -482,5 +428,8 @@
   </data>
   <data name="ApplicationRestart.Text" xml:space="preserve">
     <value>Restarting Application after module settings changed</value>
+  </data>
+  <data name="[RESX:Ban].Text" xml:space="preserve">
+    <value>Ban</value>
   </data>
 </root>

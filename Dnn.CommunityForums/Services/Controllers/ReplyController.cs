@@ -53,7 +53,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 #pragma warning restore CS1570
         [HttpPost]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.ModEdit)]
         [ForumsAuthorize(SecureActions.Edit)]
         public HttpResponseMessage MarkAsAnswer(ReplyDto dto)
         {
@@ -65,14 +64,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 var r = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
                 if (r != null)
                 {
-                    if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                    if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.Moderate, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
                     {
-                        DataProvider.Instance().Reply_UpdateStatus(this.ActiveModule.PortalID, this.ForumModuleId, r.TopicId, replyId, this.UserInfo.UserID, 1, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))));
+                        DataProvider.Instance().Reply_UpdateStatus(this.ActiveModule.PortalID, this.ForumModuleId, r.TopicId, replyId, this.UserInfo.UserID, 1, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.Moderate, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))));
                         DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, this.ForumModuleId));
                         return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                     }
 
-                    return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
@@ -92,7 +91,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [HttpDelete]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Delete)]
-        [ForumsAuthorize(SecureActions.ModDelete)]
         public HttpResponseMessage Delete(int forumId, int replyId)
         {
             if (forumId > 0 && replyId > 0)
@@ -101,11 +99,25 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 var r = rc.GetById(replyId);
                 if (r != null)
                 {
-                    rc.Reply_Delete(this.ActiveModule.PortalID, forumId, r.TopicId, replyId, SettingsBase.GetModuleSettings(this.ForumModuleId).DeleteBehavior);
-                    return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                    if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) ||
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
+                            r.Topic.Forum.Security.Moderate,
+                            string.Join(";",
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                    this.ActiveModule.PortalID,
+                                    this.UserInfo.Roles))))
+                    {
+                        rc.Reply_Delete(this.ActiveModule.PortalID,
+                            forumId,
+                            r.TopicId,
+                            replyId,
+                            SettingsBase.GetModuleSettings(this.ForumModuleId).DeleteBehavior);
+                        return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                    }
+
+                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
             }
-
             return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
     }

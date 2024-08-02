@@ -1370,6 +1370,7 @@
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\TopicRatingController.cs" />
     <Compile Include="Controllers\TopicTagController.cs" />
+    <Compile Include="Controllers\TopicTrackingController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\ForumUserController.cs" />
     <Compile Include="controls\profile_mysubscriptions.ascx.cs">
@@ -1426,6 +1427,7 @@
     <Compile Include="Entities\PropertyInfo.cs" />
     <Compile Include="Entities\ReplyInfo.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
+    <Compile Include="Entities\TopicTrackingInfo.cs" />
     <Compile Include="Services\ProcessType.cs" />
     <Compile Include="Entities\ProcessQueueInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <remarks>https://dnndev.me/API/ActiveForums/Forum/ListForHtml</remarks>
         [HttpPost]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.ModMove)]
+        [ForumsAuthorize(SecureActions.Move)]
         public HttpResponseMessage ListForHtml(ForumDto dto)
         {
             var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);

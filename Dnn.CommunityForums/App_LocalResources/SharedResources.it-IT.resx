@@ -1735,4 +1735,8 @@ Da
   <data name="[RESX:ForumMissingForForumTrackingId]" xml:space="preserve">
     <value>Il {0} del forum per l'ID di tracciamento del forum {1} non è presente nel database; Sarà necessario riparare questo nel database o eliminare il record di monitoraggio del forum. Visita il repository Github (https://github.com/DNNCommunity/Dnn.CommunityForums) dei forum della community DNN, dove puoi pubblicare un problema o rivedere il wiki per i passaggi per la risoluzione dei problemi.</value>
   </data>
+  <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
+    <value>Il {0} dell'argomento per l'ID di monitoraggio dell'argomento {1} non viene trovato nel database; Sarà necessario riparare questo nel database o eliminare i dati non validi. Visita il repository Github (https://github.com/DNNCommunity/Dnn.CommunityForums) dei forum della community DNN, dove puoi pubblicare un problema o rivedere il wiki per i passaggi per la risoluzione dei problemi.</value>
+  </data>
+
 </root>

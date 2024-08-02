@@ -62,7 +62,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
             }
-
             this.SetupPage();
 
             try
