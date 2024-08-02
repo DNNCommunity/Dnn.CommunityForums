@@ -272,7 +272,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             bool UserIsTrusted = Utilities.IsTrusted((int)this.ForumInfo.DefaultTrustValue, user.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles), this.ForumInfo.AutoTrustLevel, user.PostCount);
             bool isApproved = Convert.ToBoolean((this.ForumInfo.IsModerated == true) ? false : true);
-            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.ModApprove, this.ForumUser.UserRoles))
+            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Moderate, this.ForumUser.UserRoles))
             {
                 isApproved = true;
             }
@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sBody = string.Empty;
             if (this.AllowHTML)
             {
-                this.AllowHTML = this.IsHtmlPermitted(this.ForumInfo.EditorPermittedUsers, this.IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.ModEdit, this.ForumUser.UserRoles));
+                this.AllowHTML = this.IsHtmlPermitted(this.ForumInfo.EditorPermittedUsers, this.IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Moderate, this.ForumUser.UserRoles));
             }
 
             sBody = Utilities.CleanString(this.PortalId, this.Request.Form["txtBody"], this.AllowHTML, EditorTypes.TEXTBOX, this.UseFilter, this.AllowScripts, this.ForumModuleId, this.ThemePath, this.ForumInfo.AllowEmoticons);

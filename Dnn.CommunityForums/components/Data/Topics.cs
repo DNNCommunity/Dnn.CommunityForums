@@ -71,5 +71,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "TopicWithReplies", portalId, topicId, pageIndex, pageSize);
         }
+
     }
 }

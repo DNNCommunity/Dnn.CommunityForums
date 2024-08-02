@@ -87,11 +87,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 oCSS.Controls.Add(oLink);
             }
 
-            this.fi = this.ForumInfo;
-            this.authorId = this.UserId;
-            this.canModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.ModEdit, this.ForumUser.UserRoles);
-            this.canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.ModApprove, this.ForumUser.UserRoles);
+            this.fi = ForumInfo;
+            this.authorId = UserId;
+            this.canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Moderate, this.ForumUser.UserRoles);
             this.canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Edit, this.ForumUser.UserRoles);
+            this.canModEdit = (this.canModApprove && this.canEdit);
+
             this.canAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Attach, this.ForumUser.UserRoles);
             this.canTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Trust, this.ForumUser.UserRoles);
             this.canLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Lock, this.ForumUser.UserRoles);

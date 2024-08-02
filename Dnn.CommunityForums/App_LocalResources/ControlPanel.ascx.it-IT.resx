@@ -1303,4 +1303,127 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="ControlTitle_edit.Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Pannello di controllo</value>
   </data>
+  <data name="[RESX:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Spilla</value>
+  </data>
+  <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Allegare</value>
+  </data>
+  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
+    <value>Vietare</value>
+  </data>
+  <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
+    <value>Creare</value>
+  </data>
+  <data name="[RESX:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Cancellare</value>
+  </data>
+  <data name="[RESX:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Redigere</value>
+  </data>
+  <data name="[RESX:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Serratura</value>
+  </data>
+  <data name="[RESX:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Moderato</value>
+  </data>
+  <data name="[RESX:SecGrid:Move].Text" xml:space="preserve">
+    <value>Sposta</value>
+  </data>
+  <data name="[RESX:SecGrid:Read].Text" xml:space="preserve">
+    <value>Leggere</value>
+  </data>
+  <data name="[RESX:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Risposta</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe]Text" xml:space="preserve">
+    <value>Abbonarsi</value>
+  </data>
+  <data name="[RESX:SecGrid:View].Text" xml:space="preserve">
+    <value>Vista</value>
+  </data>
+  <data name="[RESX:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Annuncio</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Abbonarsi</value>
+  </data>
+  <data name="[RESX:SecGrid:Trust].Text" xml:space="preserve">
+    <value>Attendibilità</value>
+  </data>
+  <data name="[RESX:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="[RESX:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Assegna priorità</value>
+  </data>
+  <data name="[RESX:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Categorizzare</value>
+  </data>
+  <data name="[RESX:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Scrutinio</value>
+  </data>
+  <data name="[RESX:SecGrid:Split].Text" xml:space="preserve">
+    <value>Diviso</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Può contrassegnare i propri argomenti come annunci. Gli annunci vengono visualizzati sopra l'elenco degli argomenti normali.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Può caricare e allegare file a nuovi argomenti e risposte.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
+    <value>Può bandire un utente non autorizzato, eliminando tutti i contenuti per l'utente e disabilitando il suo account utente DNN. Non può essere utilizzato su utenti con privilegi avanzati o amministratori. Deve essere concesso solo ai moderatori attendibili o ai ruoli di amministratore.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Consente di specificare le categorie a cui appartiene un nuovo argomento.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Create].Text" xml:space="preserve">
+    <value>Può vedere il pulsante Nuovo argomento.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Può eliminare i propri post. Gli utenti con Moderazione + Elimina possono eliminare qualsiasi argomento o rispondere nel forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Possono modificare i propri post. Potrebbe esserci o meno un limite di tempo su questo. Gli utenti con Moderate + Edit possono modificare qualsiasi argomento o rispondere.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Può bloccare gli argomenti creati. Gli utenti con Moderate + Lock possono bloccare qualsiasi argomento in un forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Dà accesso all'interfaccia di moderazione. Può approvare, rifiutare o eliminare argomenti e risposte moderati. Può anche essere combinato con Modifica, Elimina, Blocca, Blocca e Dividi per eseguire queste azioni su qualsiasi argomento in un forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Move].Text" xml:space="preserve">
+    <value>Gli utenti possono spostare il proprio argomento in un forum diverso. Gli utenti con Moderate + Move possono spostare qualsiasi argomento in un forum diverso.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Può appuntare gli argomenti che ha creato. Bloccando un argomento, questo rimane in cima all'elenco degli argomenti. Gli utenti con Moderazione + Pin possono appuntare qualsiasi argomento.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Può aggiungere un sondaggio ai nuovi argomenti creati.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Può impostare il numero di priorità su un argomento. Il numero di priorità determina la posizione dell'argomento nell'elenco degli argomenti. È simile all'aggiunta di un argomento, ma consente una specifica più dettagliata.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Read].Text" xml:space="preserve">
+    <value>Può vedere l'argomento dell'argomento e fare clic su di esso per vedere il contenuto.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Split].Text" xml:space="preserve">
+    <value>L'utente può dividere il proprio argomento e le sue risposte in diversi argomenti. L'utente con Moderato + Dividi può dividere qualsiasi argomento e le sue risposte in diversi argomenti.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Può iscriversi per ricevere notifiche via e-mail su nuovi argomenti e risposte.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Può aggiungere tag agli argomenti e alle risposte.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Trust].Text" xml:space="preserve">
+    <value>L'utente con sicurezza Attendibile ignora automaticamente la moderazione se configurato per un forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:View].Text" xml:space="preserve">
+    <value>Riesce a visualizzare l'argomento nell'elenco, ma non ad aprirlo.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Può rispondere a un argomento creato in precedenza.</value>
+  </data>
 </root>

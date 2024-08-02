@@ -240,60 +240,6 @@
   <data name="ReplyPointValue.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Répondre</value>
   </data>
-  <data name="SecGrid:attach.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Joindre</value>
-  </data>
-  <data name="SecGrid:create.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Créer</value>
-  </data>
-  <data name="SecGrid:delete.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Supprimer</value>
-  </data>
-  <data name="SecGrid:edit.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Éditer</value>
-  </data>
-  <data name="SecGrid:lock.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
-    <value>Verrouiller</value>
-  </data>
-  <data name="SecGrid:modapprove.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Approuver</value>
-  </data>
-  <data name="SecGrid:moddelete.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Supprimer</value>
-  </data>
-  <data name="SecGrid:modedit.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Éditer</value>
-  </data>
-  <data name="SecGrid:modlock.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
-    <value>Verrouiller</value>
-  </data>
-  <data name="SecGrid:modmove.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
-    <value>Déplacer</value>
-  </data>
-  <data name="SecGrid:modpin.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Épingler</value>
-  </data>
-  <data name="SecGrid:moduser.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Utilisateur</value>
-  </data>
-  <data name="SecGrid:pin.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Épingler</value>
-  </data>
-  <data name="SecGrid:read.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Lire</value>
-  </data>
-  <data name="SecGrid:reply.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Répondre</value>
-  </data>
-  <data name="SecGrid:subscribe.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>S’inscrire</value>
-  </data>
-  <data name="SecGrid:user.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
-    <value>Afficher</value>
-  </data>
-  <data name="SecGrid:view.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
-    <value>Afficher</value>
-  </data>
   <data name="SignatureDisabled.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
     <value>Désactivé</value>
   </data>
@@ -377,5 +323,8 @@
   </data>
   <data name="Yes.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Oui</value>
+  </data>
+  <data name="[RESX:Ban].Text" xml:space="preserve">
+    <value>Bannir</value>
   </data>
 </root>

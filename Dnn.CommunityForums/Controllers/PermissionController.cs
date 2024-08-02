@@ -40,8 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
-        private const string EmptyPermissions = "||||";
-
+        private const string emptyPermissions = ";|||";
         internal new void DeleteById<TProperty>(TProperty permissionsId, int moduleId)
         {
             var cachekey = string.Format(CacheKeys.PermissionsInfo, moduleId, permissionsId);
@@ -118,10 +117,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, access, registeredUsersRoleId, 0);
             }
         }
-
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo CreateAdminPermissions(string adminRole, int moduleId)
         {
-            string adminRoleId = $"{adminRole};{EmptyPermissions}";
+            string adminRoleId = $"{adminRole};{emptyPermissions}";
             DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo
             {
                 View = adminRoleId,
@@ -139,14 +137,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Subscribe = adminRoleId,
                 Announce = adminRoleId,
                 Prioritize = adminRoleId,
-                ModApprove = adminRoleId,
-                ModMove = adminRoleId,
-                ModSplit = adminRoleId,
-                ModDelete = adminRoleId,
-                ModUser = adminRoleId,
-                ModEdit = adminRoleId,
-                ModLock = adminRoleId,
-                ModPin = adminRoleId,
+                Moderate = adminRoleId,
+                Move = adminRoleId,
+                Split = adminRoleId,
+                Ban = adminRoleId,
                 ModuleId = moduleId,
             };
             this.Insert(permissionInfo);
@@ -157,29 +151,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo
             {
-                View = EmptyPermissions,
-                Read = EmptyPermissions,
-                Create = EmptyPermissions,
-                Reply = EmptyPermissions,
-                Edit = EmptyPermissions,
-                Delete = EmptyPermissions,
-                Lock = EmptyPermissions,
-                Pin = EmptyPermissions,
-                Attach = EmptyPermissions,
-                Poll = EmptyPermissions,
-                Block = EmptyPermissions,
-                Trust = EmptyPermissions,
-                Subscribe = EmptyPermissions,
-                Announce = EmptyPermissions,
-                Prioritize = EmptyPermissions,
-                ModApprove = EmptyPermissions,
-                ModMove = EmptyPermissions,
-                ModSplit = EmptyPermissions,
-                ModDelete = EmptyPermissions,
-                ModUser = EmptyPermissions,
-                ModEdit = EmptyPermissions,
-                ModLock = EmptyPermissions,
-                ModPin = EmptyPermissions,
+                View = emptyPermissions,
+                Read = emptyPermissions,
+                Create = emptyPermissions,
+                Reply = emptyPermissions,
+                Edit = emptyPermissions,
+                Delete = emptyPermissions,
+                Lock = emptyPermissions,
+                Pin = emptyPermissions,
+                Attach = emptyPermissions,
+                Poll = emptyPermissions,
+                Block = emptyPermissions,
+                Trust = emptyPermissions,
+                Subscribe = emptyPermissions,
+                Announce = emptyPermissions,
+                Prioritize = emptyPermissions,
+                Moderate = emptyPermissions,
+                Move = emptyPermissions,
+                Split = emptyPermissions,
+                Ban = emptyPermissions,
                 ModuleId = moduleId,
             };
         }
@@ -548,14 +538,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             roleObjects = GetObjFromSecObj(portalSettings, s.Delete, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Edit, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Lock, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModApprove, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModDelete, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModEdit, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModLock, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModMove, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModPin, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModSplit, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModUser, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Moderate, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Move, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Split, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Ban, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Pin, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Poll, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Prioritize, objectType, roleObjects);
@@ -573,7 +559,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             if (string.IsNullOrEmpty(permSet))
             {
-                permSet = portalSettings.AdministratorRoleId + ";||||";
+                permSet = portalSettings.AdministratorRoleId + ";|||";
             }
 
             string[] perms = permSet.Split('|');
@@ -601,7 +587,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             if (permission == null)
             {
-                return EmptyPermissions;
+                return emptyPermissions;
             }
 
             string access = string.Empty;
@@ -655,38 +641,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 case "VIEW":
                     access = permission.View;
                     break;
-                case "MODAPPROVE":
-                    access = permission.ModApprove;
+                case "MODERATE":
+                    access = permission.Moderate;
                     break;
-                case "MODDELETE":
-                    access = permission.ModDelete;
+                case "MOVE":
+                    access = permission.Move;
                     break;
-                case "MODEDIT":
-                    access = permission.ModEdit;
+                case "SPLIT":
+                    access = permission.Split;
                     break;
-                case "MODLOCK":
-                    access = permission.ModLock;
-                    break;
-                case "MODMOVE":
-                    access = permission.ModMove;
-                    break;
-                case "MODPIN":
-                    access = permission.ModPin;
-                    break;
-                case "MODSPLIT":
-                    access = permission.ModSplit;
-                    break;
-                case "MODUSER":
-                    access = permission.ModUser;
+                case "BAN":
+                    access = permission.Ban;
                     break;
                 default:
-                    access = EmptyPermissions;
+                    access = emptyPermissions;
                     break;
             }
 
             if (string.IsNullOrEmpty(access))
             {
-                access = EmptyPermissions;
+                access = emptyPermissions;
             }
 
             return access;
@@ -746,29 +720,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     case "VIEW":
                         permission.View = permSet;
                         break;
-                    case "MODAPPROVE":
-                        permission.ModApprove = permSet;
+                    case "MODERATE":
+                        permission.Moderate = permSet; 
                         break;
-                    case "MODDELETE":
-                        permission.ModDelete = permSet;
+                    case "MOVE":
+                        permission.Move = permSet; 
                         break;
-                    case "MODEDIT":
-                        permission.ModEdit = permSet;
+                    case "SPLIT":
+                        permission.Split = permSet; 
                         break;
-                    case "MODLOCK":
-                        permission.ModLock = permSet;
-                        break;
-                    case "MODMOVE":
-                        permission.ModMove = permSet;
-                        break;
-                    case "MODPIN":
-                        permission.ModPin = permSet;
-                        break;
-                    case "MODSPLIT":
-                        permission.ModSplit = permSet;
-                        break;
-                    case "MODUSER":
-                        permission.ModUser = permSet;
+                    case "BAN":
+                        permission.Ban = permSet;
                         break;
                     default:
                         break;

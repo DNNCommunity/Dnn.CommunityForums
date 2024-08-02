@@ -1358,6 +1358,7 @@
     <Compile Include="Controllers\ForumGroupController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="Controllers\ForumTopicController.cs" />
+    <Compile Include="Controllers\ForumTrackingController.cs" />
     <Compile Include="Controllers\ModerationController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\ProcessQueueController.cs" />
@@ -1370,6 +1371,7 @@
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\TopicRatingController.cs" />
     <Compile Include="Controllers\TopicTagController.cs" />
+    <Compile Include="Controllers\TopicTrackingController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\ForumUserController.cs" />
     <Compile Include="controls\profile_mysubscriptions.ascx.cs">
@@ -1390,6 +1392,7 @@
     <Compile Include="Entities\ForumGroupInfo.cs" />
     <Compile Include="Entities\ForumInfo.cs" />
     <Compile Include="Entities\ForumTopicInfo.cs" />
+    <Compile Include="Entities\ForumTrackingInfo.cs" />
     <Compile Include="Entities\ForumUserInfo.cs" />
     <Compile Include="Entities\LikeInfo.cs" />
     <Compile Include="Entities\Like.cs" />
@@ -1426,6 +1429,7 @@
     <Compile Include="Entities\PropertyInfo.cs" />
     <Compile Include="Entities\ReplyInfo.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
+    <Compile Include="Entities\TopicTrackingInfo.cs" />
     <Compile Include="Services\ProcessType.cs" />
     <Compile Include="Entities\ProcessQueueInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
