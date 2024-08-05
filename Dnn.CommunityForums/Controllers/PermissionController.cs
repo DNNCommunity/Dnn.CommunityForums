@@ -348,7 +348,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return null;
             }
         }
-
+        
         public static bool HasPerm(string authorizedRoles, int userId, int portalId)
         {
             string userRoles;

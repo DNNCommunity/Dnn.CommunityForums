@@ -40,6 +40,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public AuthorInfo(int PortalId, int UserId)
         {
             this.forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, UserId);
+            if (this.forumUserInfo == null)
+            {
+                this.AuthorId = UserId;
+                this.DisplayName = this.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+            }
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser { get => this.forumUserInfo; set => this.forumUserInfo = value; }

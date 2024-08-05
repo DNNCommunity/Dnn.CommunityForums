@@ -448,7 +448,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // Edit a Reply
             this.ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.EditReply;
 
-            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this.PostId);
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.PostId);
 
             if (ri == null)
             {
@@ -614,7 +614,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         else
                         {
-                            var ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(postId);
+                            var ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(postId);
                             ci = ri.Content;
                             sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated, this.PortalId, this.UserId));
                         }

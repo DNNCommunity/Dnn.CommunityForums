@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Modules.ActiveForums.Enums;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
@@ -49,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 ti.GetForum();
                 ti.GetContent();
-                ti.GetAuthor();
+                ti.Author = ti.GetAuthor(ti.PortalId, ti.Content.AuthorId);
             }
 
             return ti;
@@ -351,6 +353,62 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static bool ProcessUnapprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int authorId, string requestUrl)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(portalId, tabId, moduleId, forumGroupId, forumId, topicId, replyId, authorId, requestUrl);
+        } 
+        internal static string GetTopicStatusCss(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            string css = string.Empty;
+            switch (topic.GetTopicStatusForUser(forumUser))
+            {
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Forbidden:
+                    {
+                        css = "dcf-topicstatus-no-access";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.New:
+                    {
+                        css = "dcf-topicstatus-new";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread:
+                    {
+                        css = "dcf-topicstatus-unread";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Read:
+                    {
+                        css = "dcf-topicstatus-read";
+                        break;
+                    }
+                default:
+                    {
+                        css = "dcf-topicstatus-unread";
+                        break;
+                    }
+            }
+
+            if (topic?.Author?.AuthorId == forumUser?.UserId)
+            {
+                css += " dcf-topicstatus-authored";
+            }
+            return css;
+
+        }
+
+        internal static string GetTopicStatusIconCss(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            switch (topic.GetTopicStatusForUser(forumUser))
+            {
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread:
+                    {
+                        return "fa fa-file-o fa-2x fa-red";
+                    }
+
+                default:
+                    {
+                        return "fa fa-file-o fa-2x fa-grey";
+                    }
+
+            }
         }
     }
 }

@@ -65,7 +65,8 @@
             get => this.topicInfo ?? (this.topicInfo = this.GetTopic());
             set => this.topicInfo = value;
         }
-
+        
+        [IgnoreColumn()]
         internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetTopic()
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
@@ -73,15 +74,18 @@
 
         [IgnoreColumn()]
         public string Subject => Content.Subject;
+
         [IgnoreColumn()]
         public string Summary => Content.Summary;
+
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
             get => this.contentInfo ?? (this.contentInfo = this.GetContent());
             set => this.contentInfo = value;
         }
-
+        
+        [IgnoreColumn()]
         internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent()
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId);
@@ -99,25 +103,48 @@
             return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId); /* can't get using moduleId since ModuleId comes from Forum */
         }
 
-
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author
         {
-            get => this.author ?? (this.GetAuthor());
+            get => this.author ?? (this.author = this.GetAuthor(this.PortalId, this.Content.AuthorId));
             set => this.author = value;
         }
-
-        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor()
+        
+        [IgnoreColumn()]
+        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor(int portalId, int authorId)
         {
-            this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.Content.AuthorId));
-            if (this.author == null)
+            return new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, authorId);
+        }
+        
+        [IgnoreColumn()]
+        internal DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus GetReplyStatusForUser(ForumUserInfo forumUser)
+        {
+            var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserRoles);
+
+            if (!canView)
             {
-                this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
-                this.author.AuthorId = this.Content.AuthorId;
-                this.author.DisplayName = this.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+                return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Forbidden;
             }
 
-            return this.author;
+            try
+            {
+                if (this.ReplyId > forumUser?.GetLastTopicReplyRead(this.Topic))
+                {
+                    return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.New;
+                }
+
+                if (forumUser != null && forumUser.GetIsReplyRead(this))
+                {
+                    return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Read;
+                }
+
+                return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Unread;
+            }
+            catch (Exception e)
+            {
+                /* this is to handle some limited unit testing without retrieving data */
+                return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Unread;
+            }
         }
     }
 }

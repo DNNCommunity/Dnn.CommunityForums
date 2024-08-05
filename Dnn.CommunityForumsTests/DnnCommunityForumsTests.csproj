@@ -98,6 +98,10 @@
     <Compile Include="class\UtilitiesTests.cs" />
     <Compile Include="Controllers\PermissionControllerTests.cs" />
     <Compile Include="Controllers\TopicPropertyControllerTests.cs" />
+    <Compile Include="Entities\ForumInfoTests.cs" />
+    <Compile Include="Entities\ReplyItemTests.cs" />
+    <Compile Include="Entities\TopicItemTests.cs" />
+    <Compile Include="NavigationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
+﻿namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -18,12 +18,12 @@
         public void GetNamesForRolesTest()
         {
             // Arrange
-            string roles = $"{DotNetNuke.Common.Globals.glbRoleAllUsers};{DotNetNuke.Common.Globals.glbRoleUnauthUser}";
-            int portalId = 1;
-            string expectedResult = $"{DotNetNuke.Common.Globals.glbRoleAllUsersName};{DotNetNuke.Common.Globals.glbRoleUnauthUserName};";
+            var roles = $"{Common.Globals.glbRoleAllUsers};{Common.Globals.glbRoleUnauthUser}";
+            var portalId = 1;
+            var expectedResult = $"{Common.Globals.glbRoleAllUsersName};{Common.Globals.glbRoleUnauthUserName};";
 
             // Act
-            string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(portalId, roles);
+            var actualResult = PermissionController.GetNamesForRoles(portalId, roles);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -33,16 +33,16 @@
         public void GetRoleNameTest()
         {
             // Arrange
-            string roles = $"{DotNetNuke.Common.Globals.glbRoleAllUsers}";
-            int portalId = 1;
-            string expectedResult = $"{DotNetNuke.Common.Globals.glbRoleAllUsersName};";
+            var roles = $"{Common.Globals.glbRoleAllUsers}";
+            var portalId = 1;
+            var expectedResult = $"{Common.Globals.glbRoleAllUsersName};";
 
             // Act
             // string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(portalId, roles);
 
             // we can't actually test this method because internally it is using caching, so we can at least test that the method throws an exception
             // Assert
-            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(portalId, roles));
+            Assert.Throws<NullReferenceException>(() => PermissionController.GetRoleName(portalId, roles));
         }
 
         [Test()]
@@ -53,7 +53,7 @@
         {
             // Arrange
             // Act
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(authRoles, userRoles);
+            return PermissionController.HasRequiredPerm(authRoles, userRoles);
 
             // Assert
         }

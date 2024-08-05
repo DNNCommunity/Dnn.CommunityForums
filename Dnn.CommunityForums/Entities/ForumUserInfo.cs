@@ -164,19 +164,25 @@ using DotNetNuke.Entities.Users;
         {
             get
             {
-                PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(this.PortalId);
-                var ids = this.GetRoleIds(this.UserInfo, this.PortalId);
-                if (string.IsNullOrEmpty(ids))
-                {
-                    ids = Globals.DefaultAnonRoles + "|-1;||";
-                }
-                if (this.IsSuperUser)
-                {
-                    ids += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
-                }
-                ids += "|" + this.UserId + "|" + string.Empty + "|";
-                this.userRoles = ids;
-                return ids;
+               // if (string.IsNullOrEmpty(this.userRoles))
+                //{
+                    PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(this.PortalId);
+                    var ids = this.GetRoleIds(this.UserInfo, this.PortalId);
+                    if (string.IsNullOrEmpty(ids))
+                    {
+                        ids = Globals.DefaultAnonRoles + "|-1;||";
+                    }
+
+                    if (this.IsSuperUser)
+                    {
+                        ids += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
+                    }
+
+                    ids += "|" + this.UserId + "|" + string.Empty + "|";
+                    this.userRoles = ids;
+               // }
+
+                return this.userRoles;
             }
 
             set
@@ -212,6 +218,104 @@ using DotNetNuke.Entities.Users;
 
             return RoleIds;
         }
+         [IgnoreColumn]
+         internal int GetLastReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
+         {
+             var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
+             var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.UserId, ti.ForumId);
+             if (forumTrak?.MaxReplyRead > topicTrak?.LastReplyId || topicTrak == null)
+             {
+                 if (forumTrak != null)
+                 {
+                     return forumTrak.MaxReplyRead;
+                 }
+             }
+             else
+             {
+                 return topicTrak.LastReplyId;
+             }
 
+             return 0;
+
+             // from stored procedure
+             // CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
+         }
+
+         [IgnoreColumn]
+         internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
+         {
+             var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
+             var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.UserId, ti.ForumId);
+             if (forumTrak?.MaxTopicRead > topicTrak?.TopicId || topicTrak == null)
+             {
+                 if (forumTrak != null)
+                 {
+                     return forumTrak.MaxTopicRead;
+                 }
+             }
+             else
+             {
+                 return topicTrak.TopicId;
+             }
+
+             return 0;
+
+             // from stored procedure
+             // CASE WHEN FT.MaxTopicRead > TT.TopicId OR TT.TopicId IS NULL THEN ISNULL(FT.MaxTopicRead,0) ELSE TT.TopicId END AS UserLastTopicRead,
+         }
+        
+        [IgnoreColumn]
+        internal bool GetIsTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
+        {
+            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
+            if (topicTrak?.LastReplyId >= ti.LastReplyId)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        [IgnoreColumn]
+        internal bool GetIsReplyRead(DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri)
+        {
+            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ri.TopicId);
+            if (topicTrak?.LastReplyId >= ri.ReplyId)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        [IgnoreColumn]
+        internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
+        {
+            var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.UserId, fi.ForumID);
+            if (forumTrak != null)
+            {
+                return forumTrak.MaxTopicRead;
+            }
+
+            return 0;
+        }
+
+        [IgnoreColumn]
+        internal int GetTopicReadCount(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountForUserForum(this.UserId, fi.ForumID);
+        }
+
+        [IgnoreColumn]
+        internal int GetLastTopicReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
+        {
+            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
+            if (topicTrak != null )
+            {
+                return topicTrak.LastReplyId;
+            }
+
+            return 0;
+        }
     }
 }

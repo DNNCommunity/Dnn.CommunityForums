@@ -18,29 +18,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
-
-namespace DotNetNuke.Modules.ActiveForums.Controllers
+namespace DotNetNuke.Modules.ActiveForums.Enums
 {
-    using System;
-    using System.Linq;
-
-    internal class TopicTrackingController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo>
+    public enum ForumStatus
     {
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo GetByUserIdTopicId(int userId, int topicId)
-        {
-            // this accommodates duplicates which may exist since currently no uniqueness applied in database
-            return this.Find("WHERE UserId = @0 AND TopicId = @1", userId, topicId).OrderBy(t => t.DateAdded).FirstOrDefault();
-        }
-
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo> GetTopicsTrackingForUserForum(int userId, int forumId)
-        {
-            return this.Find("WHERE UserId = @0 AND ForumId = @1", userId, forumId).OrderBy(t => t.ForumId).ThenBy(t => t.DateAdded);
-        }
-
-        public int GetTopicsReadCountForUserForum(int userId, int forumId)
-        {
-            return this.Count("WHERE UserId = @0 AND ForumId = @1");
-        }
+        Forbidden,
+        Empty,
+        NewTopics,
+        UnreadTopics,
+        AllTopicsRead,
     }
 }

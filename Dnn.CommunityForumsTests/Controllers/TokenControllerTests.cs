@@ -1,77 +1,111 @@
-﻿using NUnit.Framework;
-using DotNetNuke.Modules.ActiveForums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
-using DotNetNuke.Modules.ActiveForums.Services;
-using DotNetNuke.Abstractions;
-
-namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
+﻿namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 {
-    [TestFixture()]
+    using DotNetNuke.Modules.ActiveForums;
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using Moq;
+    using NUnit.Framework;
+    using System.Text;
+    
+    [TestFixture]
     public class TokenControllerTests
     {
-        [Test()]
+        [Test]
         public void ReplaceTopicTokensTest()
         {
-            //Arrange
-            var mockTopic = new Mock<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
+            // Arrange
+            var mockTopic = new Mock<Modules.ActiveForums.Entities.TopicInfo>();
             mockTopic.Object.ForumId = 1;
-            mockTopic.Object.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+            mockTopic.Object.Forum = new Modules.ActiveForums.Entities.ForumInfo();
+            mockTopic.Object.Forum.ForumName = "Test Forum";
+            mockTopic.Object.Forum.Security = PermissionController.GetEmptyPermissions(-1);
+            mockTopic.Object.Forum.ForumGroup = new Modules.ActiveForums.Entities.ForumGroupInfo();
+            mockTopic.Object.Forum.ForumGroup.GroupName = "Test Forum Group";
+            mockTopic.Object.Content = new Modules.ActiveForums.Entities.ContentInfo();
             mockTopic.Object.Content.Subject = "Test Topic";
+            mockTopic.Object.Content.Body = "Test Topic";
+
+            var mockForum = new Mock<Modules.ActiveForums.Entities.ForumInfo>();
+            mockForum.Object.ForumID = 1;
+            mockForum.Object.ForumName = "Test Forum";
+            mockForum.Object.ForumGroup = new Modules.ActiveForums.Entities.ForumGroupInfo();
+            mockForum.Object.ForumGroup.GroupName = "Test Forum Group";
+
+            var mockUser = new Mock<Modules.ActiveForums.Entities.ForumUserInfo>();
+            mockUser.Object.UserId = 1;
+            mockUser.Object.UserInfo = new DotNetNuke.Entities.Users.UserInfo();
+            mockUser.Object.UserInfo.DisplayName = "Test User";
+            mockUser.Object.UserInfo.Profile = new DotNetNuke.Entities.Users.UserProfile();
+            mockUser.Object.UserRoles = Globals.DefaultAnonRoles + "|-1;||";
+            mockUser.Object.UserInfo.Profile.PreferredLocale = "en-US";
+
+            var navigationManager = new Modules.ActiveForums.Services.Tests.NavigationManager(null); // new Services.URLNavigator().NavigationManager();
+
             var templateStringBuilder = new StringBuilder("blah blah [SPLITBUTTONS1] blah [SPLITBUTTONS2] [TOPICSUBJECT] blah");
-            string expectedResult = $"blah blah [SPLITBUTTONS1] blah  [TOPICSUBJECT] blah";
-            //Act
-            string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object).ToString();
-            //Assert
+
+            var expectedResult = "blah blah [SPLITBUTTONS1] blah  [TOPICSUBJECT] blah";
+            // Act
+
+            var actualResult = TokenController.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, null, null, navigationManager, mockUser.Object, 0).ToString();
+            // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
-        [Test()]
+        [Test]
         public void ReplaceForumTokensTest()
         {
-            //Arrange
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
+            // Arrange
+            var mockForum = new Mock<Modules.ActiveForums.Entities.ForumInfo>();
             mockForum.Object.ForumID = 1;
             mockForum.Object.ForumName = "Test Forum";
-            mockForum.Object.ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo();
+            mockForum.Object.Security = PermissionController.GetEmptyPermissions(-1);
+            mockForum.Object.ForumGroup = new Modules.ActiveForums.Entities.ForumGroupInfo();
             mockForum.Object.ForumGroup.GroupName = "Test Forum Group";
-             
-            var navigationManager = (INavigationManager)new Services.URLNavigator();
-            
+
+            var mockUser = new Mock<Modules.ActiveForums.Entities.ForumUserInfo>();
+            mockUser.Object.UserId = 1;
+            mockUser.Object.UserInfo = new DotNetNuke.Entities.Users.UserInfo();
+            mockUser.Object.UserInfo.DisplayName = "Test User";
+            mockUser.Object.UserInfo.Profile = new DotNetNuke.Entities.Users.UserProfile();
+            mockUser.Object.UserRoles = Globals.DefaultAnonRoles + "|-1;||";
+            mockUser.Object.UserInfo.Profile.PreferredLocale = "en-US";
+
+            var navigationManager = new Modules.ActiveForums.Services.Tests.NavigationManager(null); // new Services.URLNavigator().NavigationManager();
+
             var templateStringBuilder = new StringBuilder("blah blah [GROUPNAME] blah blah");
-            string expectedResult = $"blah blah Test Forum Group blah blah";
-             
-            //Act
-            string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, TODO, 0, 0, CurrentUserTypes.Auth).ToString();
-            //Assert
+            var expectedResult = "blah blah Test Forum Group blah blah";
+
+            // Act
+            var actualResult = TokenController.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, mockUser.Object, 0, CurrentUserTypes.Auth).ToString();
+            
+            // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
-        [Test()]
+        [Test]
         public void RemovePrefixedToken1()
         {
-            //Arrange
+            // Arrange
             var templateStringBuilder = new StringBuilder("blah blah [TOKENTOREMOVE:5] blah blah");
-            string tokenPrefix = "TOKENTOREMOVE";
-            string expectedResult = $"blah blah  blah blah";
-            //Act
-            string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.RemovePrefixedToken(templateStringBuilder, tokenPrefix).ToString();
-            //Assert
+            var tokenPrefix = "TOKENTOREMOVE";
+            var expectedResult = "blah blah  blah blah";
+            
+            // Act
+            var actualResult = TokenController.RemovePrefixedToken(templateStringBuilder, tokenPrefix).ToString();
+            
+            // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
-        [Test()]
+        [Test]
         public void RemovePrefixedToken2()
         {
-            //Arrange
+            // Arrange
             var templateStringBuilder = new StringBuilder("blah blah [TOKENTOREMOVE] blah blah");
-            string tokenPrefix = "[TOKENTOREMOVE";
-            string expectedResult = $"blah blah  blah blah";
-            //Act
-            string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.RemovePrefixedToken(templateStringBuilder, tokenPrefix).ToString();
-            //Assert
+            var tokenPrefix = "[TOKENTOREMOVE";
+            var expectedResult = "blah blah  blah blah";
+            
+            // Act
+            var actualResult = TokenController.RemovePrefixedToken(templateStringBuilder, tokenPrefix).ToString();
+            
+            // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
     }

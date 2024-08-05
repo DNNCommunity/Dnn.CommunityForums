@@ -18,21 +18,26 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Collections;
-using DotNetNuke.ComponentModel.DataAnnotations;
+#pragma warning disable SA1402 // File may only contain a single type
+#pragma warning disable SA1649 // File name should match first type name
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+
     [Obsolete("Deprecated in Community Forums. Scheduled for removal in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.TopicInfo")]
     public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.TopicInfo { }
 }
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     [TableName("activeforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
     public class TopicInfo
@@ -157,6 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.contentInfo = value;
         }
 
+        [IgnoreColumn()]
         internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent()
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId);
@@ -169,6 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.forumInfo = value;
         }
 
+        [IgnoreColumn()]
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum()
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId); /* can't get using moduleId since ModuleId comes from Forum */
@@ -177,52 +184,28 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author
         {
-            get => this.author ?? (this.GetAuthor());
+            get => this.author ?? (this.author = this.GetAuthor(this.PortalId, this.Content.AuthorId));
             set => this.author = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor()
-        {
-            this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.Content.AuthorId));
-            if (this.author == null)
-            {
-                this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
-                this.author.AuthorId = this.Content.AuthorId;
-                this.author.DisplayName = this.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
-            }
-
-            return this.author;
-        }
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo LastReply
         {
-            get => this.lastReply ?? (this.lastReply = this.GetLastReply());
+            get => this.lastReply ?? (this.lastReply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.LastReplyId));
             set => this.lastReply = value;
-        }
-
-        internal DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetLastReply()
-        {
-            this.lastReply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.LastReplyId);
-            return this.lastReply;
         }
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo LastReplyAuthor
         {
-            get => this.lastReplyAuthor ?? (this.lastReplyAuthor = this.GetLastReplyAuthor());
+            get => this.lastReplyAuthor ?? (this.lastReplyAuthor = this.GetAuthor(this.PortalId, this.lastReply.Content.AuthorId));
             set => this.lastReplyAuthor = value;
         }
-        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetLastReplyAuthor()
-        {
-            this.lastReplyAuthor = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.lastReply.Content.AuthorId));
-            if (this.lastReplyAuthor == null)
-            {
-                this.lastReplyAuthor = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
-                this.lastReplyAuthor.AuthorId = this.lastReply.Content.AuthorId;
-                this.lastReplyAuthor.DisplayName = this.lastReply.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
-            }
 
-            return this.lastReplyAuthor;
+        [IgnoreColumn()]
+        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor(int portalId, int authorId)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, authorId);
         }
 
         [IgnoreColumn()]
@@ -285,11 +268,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> TopicProperties
         {
-            set
-            {
-                this.TopicData = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(this.Forum, value);
-            }
-
             get
             {
                 if (this.TopicData == string.Empty)
@@ -300,6 +278,43 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     return DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(this.TopicData);
                 }
+            }
+
+            set
+            {
+                this.TopicData = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(this.Forum, value);
+            }
+        }
+
+        [IgnoreColumn()]
+        internal DotNetNuke.Modules.ActiveForums.Enums.TopicStatus GetTopicStatusForUser(ForumUserInfo forumUser)
+        {
+            var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserRoles);
+
+            if (!canView)
+            {
+                return DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Forbidden;
+            }
+
+            try
+            {
+                if (this.TopicId > forumUser?.GetLastTopicRead(this))
+                {
+                    return DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.New;
+                }
+
+                if (forumUser != null && forumUser.GetIsTopicRead(this))
+                {
+                    return DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Read;
+                }
+
+                return DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread;
+            }
+
+            catch
+            {
+                /* this is to handle some limited unit testing without retrieving data */
+                return DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread;
             }
         }
     }

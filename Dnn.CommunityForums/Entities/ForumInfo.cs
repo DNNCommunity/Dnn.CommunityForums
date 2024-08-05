@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Linq;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Services.Log.EventLog;
 
     [TableName("activeforums_Forums")]
@@ -33,10 +34,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Scope("ModuleId")]
 
     // TODO [Cacheable("activeforums_Forums", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
-    public partial class ForumInfo
+
+    public class ForumInfo
     {
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
-        private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
+        private ForumGroupInfo forumGroup;
+        private List<ForumInfo> subforums;
 
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
@@ -96,24 +98,24 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool HasProperties { get; set; }
 
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo ForumGroup
+        public ForumGroupInfo ForumGroup
         {
             get => this.forumGroup ?? (this.forumGroup = this.LoadForumGroup());
             set => this.forumGroup = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo LoadForumGroup()
+        internal ForumGroupInfo LoadForumGroup()
         {
             var group = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(this.ForumGroupId, this.ModuleId);
             if (group == null)
             {
-                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                string message = String.Format(Utilities.GetSharedResource("[RESX:ForumGroupMissingForForum]"), this.ForumGroupId, this.ForumID);
+                var message = string.Format(Utilities.GetSharedResource("[RESX:ForumGroupMissingForForum]"), this.ForumGroupId, this.ForumID);
                 log.AddProperty("Message", message);
-                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                LogController.Instance.AddLog(log);
 
-                var ex = new NullReferenceException(String.Format(Utilities.GetSharedResource("[RESX:ForumGroupMissingForForum]"), this.ForumGroupId, this.ForumID));
+                var ex = new NullReferenceException(string.Format(Utilities.GetSharedResource("[RESX:ForumGroupMissingForForum]"), this.ForumGroupId, this.ForumID));
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 throw ex;
             }
@@ -135,7 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                string name = string.Empty;
+                var name = string.Empty;
                 if (this.PortalId >= 0 && this.LastPostUserID > 0)
                 {
                     var user = new DotNetNuke.Entities.Users.UserController().GetUser(this.PortalId, this.LastPostUserID);
@@ -156,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                string name = string.Empty;
+                var name = string.Empty;
                 if (this.PortalId >= 0 && this.LastPostUserID > 0)
                 {
                     var user = new DotNetNuke.Entities.Users.UserController().GetUser(this.PortalId, this.LastPostUserID);
@@ -177,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                string name = string.Empty;
+                var name = string.Empty;
                 if (this.PortalId >= 0 && this.LastPostUserID > 0)
                 {
                     var user = new DotNetNuke.Entities.Users.UserController().GetUser(this.PortalId, this.LastPostUserID);
@@ -200,10 +202,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool InheritSettings => this.ForumSettingsKey == this.ForumGroup.GroupSettingsKey;
 
         [IgnoreColumn()]
-        public int SubscriberCount => new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: this.PortalId, moduleId: this.ModuleId, forumId: this.ForumID);
+        public int SubscriberCount => new Controllers.SubscriptionController().Count(portalId: this.PortalId, moduleId: this.ModuleId, forumId: this.ForumID);
 
         [IgnoreColumn()]
-        public string ParentForumName => this.ParentForumId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ParentForumId, this.ModuleId).ForumName : string.Empty;
+        public string ParentForumName => this.ParentForumId > 0 ? new Controllers.ForumController().GetById(this.ParentForumId, this.ModuleId).ForumName : string.Empty;
 
         [IgnoreColumn()]
         public int TabId => new DotNetNuke.Entities.Modules.ModuleController().GetModule(this.ModuleId).TabID;
@@ -212,54 +214,88 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string ForumURL => URL.ForumLink(this.TabId, this);
 
         [IgnoreColumn()]
-        public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> SubForums
+        public List<ForumInfo> SubForums
         {
             get => this.subforums ?? this.LoadSubForums();
             set => this.subforums = value;
         }
 
-        internal List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> LoadSubForums()
+        internal List<ForumInfo> LoadSubForums()
         {
-            return this.subforums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetSubForums(this.ForumID, this.ModuleId).ToList();
+            return this.subforums = new Controllers.ForumController().GetSubForums(this.ForumID, this.ModuleId).ToList();
         }
 
-        private List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> properties;
+        private List<PropertyInfo> properties;
 
         [IgnoreColumn()]
-        public List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties
+        public List<PropertyInfo> Properties
         {
             get => this.properties ?? (this.properties = this.LoadProperties());
             set => this.properties = value;
         }
 
-        internal List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> LoadProperties()
+        internal List<PropertyInfo> LoadProperties()
         {
-            return this.HasProperties ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Get().Where(p => p.PortalId == this.PortalId && p.ObjectType == 1 && p.ObjectOwnerId == this.ForumID).ToList() : new List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>();
+            return this.HasProperties ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Get().Where(p => p.PortalId == this.PortalId && p.ObjectType == 1 && p.ObjectOwnerId == this.ForumID).ToList() : new List<PropertyInfo>();
+        }
+
+        internal DotNetNuke.Modules.ActiveForums.Enums.ForumStatus GetForumStatusForUser(ForumUserInfo forumUser)
+        {
+            var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Security.View, forumUser?.UserRoles);
+
+            if (!canView)
+            {
+                return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.Forbidden;
+            }
+            if (this.LastPostID == 0)
+            {
+                return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.Empty;
+            }
+
+            try
+            {
+                if (this.LastPostID > forumUser?.GetLastTopicRead(this))
+                {
+                    return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.NewTopics;
+                }
+
+                if (forumUser?.UserId == -1 || this.TotalTopics > forumUser?.GetTopicReadCount(this))
+                {
+                    return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.UnreadTopics;
+                }
+
+                return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.AllTopicsRead;
+            }
+            catch
+            {
+                /* this is to handle some limited unit testing without retrieving data */
+                return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.UnreadTopics;
+            }
         }
 
         #region "Settings & Security"
 
-        private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
+        private PermissionInfo security;
         private Hashtable forumSettings;
 
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
+        public PermissionInfo Security
         {
             get => this.security ?? (this.security = this.LoadSecurity());
             set => this.security = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo LoadSecurity()
+        internal PermissionInfo LoadSecurity()
         {
             var security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(this.PermissionsId, this.ModuleId);
             if (security == null)
             {
                 security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.ModuleId);
-                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                string message = String.Format(Utilities.GetSharedResource("[RESX:PermissionsMissingForForum]"), this.PermissionsId, this.ForumID);
+                var message = string.Format(Utilities.GetSharedResource("[RESX:PermissionsMissingForForum]"), this.PermissionsId, this.ForumID);
                 log.AddProperty("Message", message);
-                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                LogController.Instance.AddLog(log);
             }
 
             return security;
@@ -274,7 +310,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal Hashtable LoadSettings()
         {
-            return (Hashtable)DataCache.GetSettings(this.ModuleId, this.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, this.ModuleId, this.ForumSettingsKey), true);
+            return DataCache.GetSettings(this.ModuleId, this.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, this.ModuleId, this.ForumSettingsKey), true);
         }
 
         [IgnoreColumn()]
@@ -454,6 +490,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public int ReplyPostCount => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ReplyPostCount]);
 
+        #region "Deprecated Methods"
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn()]
         public int LastPostLastPostID { get; set; }
@@ -493,6 +530,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get { return Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorToolbar], "bold,italic,underline"); }
         }
+        #endregion "Deprecated Methods"
         #endregion
     }
 }

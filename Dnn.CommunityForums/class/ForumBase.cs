@@ -48,7 +48,7 @@ using DotNetNuke.Services.Localization;
         private bool? canRead;
         private bool? canView;
         private bool? canCreate;
-        private bool? canReply;
+        private bool? canReply = null;
 
         #endregion
 

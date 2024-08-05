@@ -48,17 +48,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ri.GetTopic();
                 ri.GetForum();
                 ri.GetContent();
-                ri.GetAuthor();
+                ri.Author = ri.GetAuthor(ri.PortalId, ri.Content.AuthorId);
             }
 
             return ri;
         }
-
-        internal static DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetReply(int replyId)
-        {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
-        }
-
+        
         public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, int delBehavior)
         {
             var ri = this.GetById(replyId);

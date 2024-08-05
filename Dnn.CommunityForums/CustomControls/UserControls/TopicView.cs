@@ -80,16 +80,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int topicType;
         private string topicSubject = string.Empty;
         private string topicDescription = string.Empty;
-        private int viewCount;
-        private int replyCount;
         private int topicSubscriberCount;
         private int rowCount;
         private int statusId;
-        private int topicAuthorId;
-        private string topicAuthorDisplayName = string.Empty;
-        private string topicDateCreated = string.Empty;
-        private string memberListMode = string.Empty;
-        private string profileVisibility = string.Empty;
         private bool enablePoints;
         private bool trustDefault;
         private bool isTrusted;
@@ -187,7 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 this.AppRelativeVirtualPath = "~/";
-                
+
                 // Get our default sort
                 // Try the OptDefaultSort Value First
                 this.defaultSort = this.OptDefaultSort;
@@ -349,6 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.Content.Body = HttpUtility.HtmlDecode(this.drForum["Body"].ToString());
             this.topic.Content.AuthorId = Utilities.SafeConvertInt(this.drForum["AuthorId"]);
             this.topic.Content.AuthorName = this.drForum["TopicAuthor"].ToString();
+            this.topic.Content.DateCreated = Utilities.SafeConvertDateTime(this.drForum["DateCreated"]);
 
             this.ForumGroupId = Utilities.SafeConvertInt(this.drForum["ForumGroupId"]);
             this.topicTemplateId = Utilities.SafeConvertInt(this.drForum["TopicTemplateId"]);
@@ -371,9 +365,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.lastPostAuthor.LastName = this.drForum["LastPostLastName"].ToString();
             this.lastPostAuthor.Username = this.drForum["LastPostUserName"].ToString();
             this.topicURL = this.drForum["URL"].ToString();
-            this.topicDateCreated = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(this.drForum["DateCreated"]), this.PortalId, this.UserId); 
             this.topicData = this.drForum["TopicData"].ToString();
-            this.isSubscribedTopic = (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumInfo.ForumID, this.TopicId)); 
+            this.isSubscribedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumInfo.ForumID, this.TopicId); 
 
             if (this.Page.IsPostBack)
             {
@@ -464,7 +457,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 stringBuilder.Append(TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicView", this.topicTemplateId));
             }
-            stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumModuleId, this.CurrentUserType);
+            stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.CurrentUserType);
             stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(stringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId);
             stringBuilder.Replace("[TOPICID]", this.TopicId.ToString());
             string sOutput = stringBuilder.ToString();
@@ -534,7 +527,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Parse Meta Template
             if (!string.IsNullOrEmpty(this.MetaTemplate))
             {
-                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumModuleId, this.CurrentUserType).ToString();
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.CurrentUserType).ToString();
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
 
                 this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", this.tags);
@@ -803,7 +796,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            // Now use the string builder to do all replacements
             var sbOutput = new StringBuilder(sOutput);
 
             if (this.Request.QueryString["dnnprintmode"] != null)
@@ -850,13 +842,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Topic and post actions
-            var topicActions = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(this.ForumModuleId, "topic", "[AF:CONTROL:TOPICACTIONS]");
-            var postActions = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(this.ForumModuleId, "topic", "[AF:CONTROL:POSTACTIONS]");
+            if (sOutput.Contains("[AF:CONTROL:POSTACTIONS]"))
+            {
+                this.useListActions = true;
+                sbOutput.Replace("[AF:CONTROL:POSTACTIONS]", DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(this.ForumModuleId, "topic", "[AF:CONTROL:POSTACTIONS]"));
+            }
             if (sOutput.Contains("[AF:CONTROL:TOPICACTIONS]"))
             {
                 this.useListActions = true;
-                sbOutput.Replace("[AF:CONTROL:TOPICACTIONS]", topicActions);
-                sbOutput.Replace("[AF:CONTROL:POSTACTIONS]", postActions);
+                sbOutput.Replace("[AF:CONTROL:TOPICACTIONS]",  DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(this.ForumModuleId, "topic", "[AF:CONTROL:TOPICACTIONS]"));
             }
 
             // Quick Reply
@@ -907,8 +901,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[QUICKREPLY]", string.Empty);
             }
 
-           
-            if ((sOutput.Contains("[SPLITBUTTONS]") && (this.bSplit && (this.bModerate || (this.topicAuthorId == this.UserId))) && (this.replyCount > 0)))
+            if ((sOutput.Contains("[SPLITBUTTONS]") && (this.bSplit && (this.bModerate || (this.topic.Author.AuthorId == this.UserId))) && (this.topic.ReplyCount > 0)))
             {
                 sbOutput.Replace("[SPLITBUTTONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicSplitButtons"));
                 sbOutput.Replace("[TOPICID]", this.TopicId.ToString());
@@ -958,14 +951,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[SUBJECT]", Utilities.StripHTMLTag(this.topic.Content.Subject));
 
             // Reply Count
-            sbOutput.Replace("[REPLYCOUNT]", this.replyCount.ToString());
-            sbOutput.Replace("[AF:LABEL:ReplyCount]", this.replyCount.ToString());
+            sbOutput.Replace("[REPLYCOUNT]", this.topic.ReplyCount.ToString());
+            sbOutput.Replace("[AF:LABEL:ReplyCount]", this.topic.ReplyCount.ToString());
 
             // Topic Subscriber Count
             sbOutput.Replace("[TOPICSUBSCRIBERCOUNT]", this.topicSubscriberCount.ToString());
 
             // View Count
-            sbOutput.Replace("[VIEWCOUNT]", this.viewCount.ToString());
+            sbOutput.Replace("[VIEWCOUNT]", this.topic.ViewCount.ToString());
 
             DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(this.PortalId);
 
@@ -974,8 +967,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[AF:LABEL:LastPostAuthor]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this.ForumModuleId, true, this.bModerate, this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, this.lastPostAuthor.AuthorId, this.lastPostAuthor.Username, this.lastPostAuthor.FirstName, this.lastPostAuthor.LastName, this.lastPostAuthor.DisplayName));
 
             // Topic Info
-            sbOutput.Replace("[AF:LABEL:TopicAuthor]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this.ForumModuleId, false, false, false, this.topicAuthorId, this.topicAuthorDisplayName, string.Empty, string.Empty, this.topicAuthorDisplayName));
-            sbOutput.Replace("[AF:LABEL:TopicDateCreated]", this.topicDateCreated);
+            sbOutput.Replace("[AF:LABEL:TopicAuthor]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this.ForumModuleId, false, false, false, this.topic.Author.AuthorId, this.topic.Author.DisplayName, string.Empty, string.Empty, this.topic.Author.DisplayName));
+            sbOutput.Replace("[AF:LABEL:TopicDateCreated]", Utilities.GetUserFormattedDateTime(this.topic.Content.DateCreated, this.PortalId, this.UserId));
 
             // Pagers
             if (this.pageSize == int.MaxValue)
@@ -1069,7 +1062,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Topic Status
-            if (((this.bRead && this.topicAuthorId == this.UserId) || (this.bModerate && this.bEdit)) & this.statusId >= 0)
+            if (((this.bRead && this.topic.Content.AuthorId == this.UserId) || (this.bModerate && this.bEdit)) & this.statusId >= 0)
             {
                 sbOutput.Replace("[AF:CONTROL:STATUS]", "<asp:placeholder id=\"plhStatus\" runat=\"server\" />");
 
@@ -1202,32 +1195,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var dateCreated = dr.GetDateTime("DateCreated");
             var dateUpdated = dr.GetDateTime("DateUpdated");
             var authorId = dr.GetInt("AuthorId");
-            var username = dr.GetString("Username");
-            var firstName = dr.GetString("FirstName");
-            var lastName = dr.GetString("LastName");
-            var displayName = dr.GetString("DisplayName");
-            var userTopicCount = dr.GetInt("TopicCount");
-            var userReplyCount = dr.GetInt("ReplyCount");
-            var postCount = userTopicCount + userReplyCount;
-            var userCaption = dr.GetString("UserCaption");
             var body = HttpUtility.HtmlDecode(dr.GetString("Body"));
             var subject = HttpUtility.HtmlDecode(dr.GetString("Subject"));
             var tags = dr.GetString("Tags");
-            var signature = dr.GetString("Signature");
             var ipAddress = dr.GetString("IPAddress");
-            var memberSince = dr.GetDateTime("MemberSince");
-            var avatarDisabled = dr.GetBoolean("AvatarDisabled");
-            var userRoles = dr.GetString("UserRoles");
-            var isUserOnline = dr.GetBoolean("IsUserOnline");
             var replyStatusId = replyId > 0 ? dr.GetInt("StatusId") : 0;
-            var totalPoints = this.MainSettings.EnablePoints ? dr.GetInt("UserTotalPoints") : 0;
-            var answerCount = dr.GetInt("AnswerCount");
-            var rewardPoints = dr.GetInt("RewardPoints");
-            var dateLastActivity = dr.GetDateTime("DateLastActivity");
-            var signatureDisabled = dr.GetBoolean("SignatureDisabled");
 
             // Perform Profile Related replacements
-            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, authorId));
+            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, authorId);
             sOutput = TemplateUtils.ParseProfileTemplate(this.ForumModuleId,  sOutput, author, this.ImagePath, this.CurrentUserType, true, this.UserPrefHideAvatars, this.UserPrefHideSigs, ipAddress, this.UserId, this.TimeZoneOffset);
 
 
@@ -1257,7 +1232,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Use a string builder from here on out.
             var sbOutput = new StringBuilder(sOutput);
 
-            if (this.bSplit && (this.bModerate || this.topicAuthorId == this.UserId))
+            if (this.bSplit && (this.bModerate || this.topic.Content.AuthorId == this.UserId))
             {
                 sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input id=\"dcf-split-checkbox-" + replyId + "\" type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + replyId + "\" /><label for=\"dcf-split-checkbox-" + replyId + "\" class=\"dcf-split-checkbox-label\">[RESX:SplitCreate]</label></div>");
             }
@@ -1307,10 +1282,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //    sOutput = TemplateUtils.ParseRoles(sOutput, (up.UserId == -1) ? string.Empty : up.Roles);
 
             // Delete Action
-            if ((this.bModerate && this.bDelete) || ((this.bDelete && authorId == this.UserId && !this.bLocked) && ((replyId == 0 && this.replyCount == 0) || replyId > 0)))
+            if ((this.bModerate && this.bDelete) || ((this.bDelete && authorId == this.UserId && !this.bLocked) && ((replyId == 0 && this.topic.ReplyCount == 0) || replyId > 0)))
             {
                 if (this.useListActions)
+                {
                     sbOutput.Replace("[ACTIONS:DELETE]", "<li onclick=\"amaf_postDel(" + this.ForumModuleId + "," + this.ForumId + "," + topicId + "," + replyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></li>");
+                }
                 else
                 {
                     sbOutput.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0);\" class=\"af-actions\" onclick=\"amaf_postDel(" + this.ForumModuleId + "," + this.ForumId + "," + topicId + "," + replyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></a>");
@@ -1420,7 +1397,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", string.Empty);
             }
-            if (this.bPin && (this.bModerate || (authorId == this.UserId))) 
+            if (this.bPin && (this.bModerate || (authorId == this.UserId)))
             {
                 if (this.bPinned)
                 {
@@ -1458,7 +1435,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             else
             {
                 // Not Answered
-                if (replyId > 0 && ((this.UserId == this.topicAuthorId && !this.bLocked) || (this.bModerate && this.bEdit)))
+                if (replyId > 0 && ((this.UserId == this.topic.Content.AuthorId && !this.bLocked) || (this.bModerate && this.bEdit)))
                 {
                     // Can mark answer
                     if (this.useListActions)

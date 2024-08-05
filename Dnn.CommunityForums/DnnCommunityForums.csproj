@@ -1392,6 +1392,9 @@
     <Compile Include="Entities\ForumCollection.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
     <Compile Include="Entities\ForumInfo.cs" />
+    <Compile Include="Enums\ReplyStatus.cs" />
+    <Compile Include="Enums\TopicStatus.cs" />
+    <Compile Include="Enums\ForumStatus.cs" />
     <Compile Include="Entities\ForumTopicInfo.cs" />
     <Compile Include="Entities\ForumTrackingInfo.cs" />
     <Compile Include="Entities\ForumUserInfo.cs" />
