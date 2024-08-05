@@ -138,7 +138,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (subs.Count > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleId, tabId, string.Empty, authorId, fi, subs, requestUrl);
+                var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, authorId));
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleId, tabId, string.Empty, author, fi, subs, requestUrl);
             }
         }
 
