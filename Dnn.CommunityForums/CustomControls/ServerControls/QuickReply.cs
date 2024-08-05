@@ -29,6 +29,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+    using DotNetNuke.Modules.ActiveForums.API;
+    using DotNetNuke.Modules.ActiveForums.Data;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:QuickReply runat=server></{0}:QuickReply>")]
     public class QuickReply : ControlsBase
@@ -239,8 +241,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }
             else
-            {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, this.portalId, this.ForumId, ri.TopicId, replyId, this.moduleId, this.PageId, string.Empty);
+            {            
+                DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(this.portalId, this.TabId, this.moduleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId, HttpContext.Current.Request.Url.ToString());
                 string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
                 HttpContext.Current.Response.Redirect(Utilities.NavigateURL(this.PageId, string.Empty, @params), false);
             }
