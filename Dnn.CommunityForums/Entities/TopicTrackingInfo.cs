@@ -38,11 +38,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int TopicId { get; set; }
 
-        public int LastReplyRead { get; set; } = 0;
-
-        public DateTime DateAdded { get; set; } = DateTime.UtcNow;
+        public int LastReplyId { get; set; } = 0;
 
         public int UserId { get; set; }
+        
+        public DateTime DateAdded { get; set; } = DateTime.UtcNow;
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
