@@ -1771,9 +1771,9 @@ GO
 
 /* issue 1026 end - DAL2 updates for activeforums_ForumTopics  */
 
-/* */
+/* --------------------- */
 
-
+/* issue 1032 begin - update forums_tracking */
 
 /*activeforums_Topics_Tracking_UpdateUser*/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tracking_UpdateUser]') AND type in (N'P', N'PC'))
@@ -1810,5 +1810,18 @@ ELSE
 
 GO
 
-/* */
+/* backfill missing data */
+UPDATE ft SET MaxReplyRead = COALESCE(tt.LastReplyId,0), MaxTopicRead = COALESCE(tt.MaxTopicId,0)
+FROM {databaseOwner}{objectQualifier}activeforums_Forums_Tracking ft
+LEFT OUTER JOIN (
+	SELECT UserId, ForumId, MAX(TopicId) AS MaxTopicId, MAX(LastReplyId) AS LastReplyId 
+    FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking 
+    GROUP BY UserId, ForumId
+	) tt
+	ON tt.UserId = ft.UserId 
+    AND tt.ForumId = ft.forumId 
+
+
+/* issue 1032 end - update forums_tracking */
+
 /* --------------------- */

@@ -41,6 +41,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int LastReplyId { get; set; } = 0;
 
         public int UserId { get; set; }
+        
+        public DateTime DateAdded { get; set; } = DateTime.UtcNow;
 
         public DateTime DateAdded { get; set; } = DateTime.UtcNow;
 
