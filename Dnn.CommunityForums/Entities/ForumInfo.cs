@@ -247,14 +247,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.Forbidden;
             }
-            if (this.LastPostID == 0)
+            if (this.LastTopicId == 0)
             {
                 return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.Empty;
             }
 
             try
             {
-                if (this.LastPostID > forumUser?.GetLastTopicRead(this))
+                if (this.LastTopicId > forumUser?.GetLastTopicRead(this))
                 {
                     return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.NewTopics;
                 }

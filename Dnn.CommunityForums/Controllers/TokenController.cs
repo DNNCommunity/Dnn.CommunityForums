@@ -18,7 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Data.SqlTypes;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using DotNetNuke.Common.Utilities;
 
 #pragma warning disable SA1402 // File may only contain a single type
@@ -166,13 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return template;
         }
 
-        internal static StringBuilder ReplaceTopicTokens(StringBuilder template,
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic,
-            DotNetNuke.Entities.Portals.PortalSettings portalSettings,
-            SettingsInfo mainSettings,
-            INavigationManager navigationManager,
-            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser,
-            int TabId)
+        internal static StringBuilder ReplaceTopicTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, int TabId)
         {
             string language = forumUser?.UserInfo?.Profile.PreferredLocale ?? portalSettings?.DefaultLanguage;
 
@@ -183,19 +179,108 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             // no longer using this
             template = RemovePrefixedToken(template, "[SPLITBUTTONS2");
-
+            
+            template.Replace("[POSTID]", topic.TopicId.ToString());
             template.Replace("[TOPICID]", topic.TopicId.ToString());
             template.Replace("[AUTHORID]", topic.Content.AuthorId.ToString());
             template.Replace("[REPLIES]", topic.ReplyCount.ToString());
+            template.Replace("[REPLYCOUNT]", topic.ReplyCount.ToString());
+            template.Replace("[AF:LABEL:ReplyCount]", topic.ReplyCount.ToString());
             template.Replace("[VIEWS]", topic.ViewCount.ToString());
+            template.Replace("[VIEWCOUNT]", topic.ViewCount.ToString());
 
             string sBodyTitle = GetTopicTitle(topic.Content.Body);
 
             template.Replace("[BODYTITLE]", sBodyTitle);
-            template.Replace("[BODY]", HttpUtility.HtmlDecode(topic.Content.Body));
+
+            if (template.ToString().Contains("[BODY]"))
+            {
+                // Process Body
+                string sBody = string.Empty;
+                if (string.IsNullOrEmpty(topic.Content.Body))
+                {
+                    sBody = " <br />";
+                }
+                else
+                {
+                    sBody = Utilities.ManageImagePath(HttpUtility.HtmlDecode(topic.Content.Body), HttpContext.Current.Request.Url);
+
+                    sBody = sBody.Replace("[", "&#91;").Replace("]", "&#93;");
+                    if (sBody.ToUpper().Contains("&#91;CODE&#93;"))
+                    {
+                        sBody = Regex.Replace(sBody, "(&#91;CODE&#93;)", "[CODE]", RegexOptions.IgnoreCase);
+                        sBody = Regex.Replace(sBody, "(&#91;\\/CODE&#93;)", "[/CODE]", RegexOptions.IgnoreCase);
+                    }
+
+                    // sBody = sBody.Replace("&lt;CODE&gt;", "<CODE>")
+                    if (Regex.IsMatch(sBody, "\\[CODE([^>]*)\\]", RegexOptions.IgnoreCase))
+                    {
+                        var objCode = new CodeParser();
+                        sBody = CodeParser.ParseCode(HttpUtility.HtmlDecode(sBody));
+                    }
+
+                    sBody = Utilities.StripExecCode(sBody);
+                    if (mainSettings.AutoLinkEnabled)
+                    {
+                        sBody = Utilities.AutoLinks(sBody, HttpContext.Current.Request.Url.Host);
+                    }
+
+                    if (sBody.Contains("<%@"))
+                    {
+                        sBody = sBody.Replace("<%@ ", "&lt;&#37;@ ");
+                    }
+
+                    if (topic.Content.Body.ToLowerInvariant().Contains("runat"))
+                    {
+                        sBody = Regex.Replace(sBody, "runat", "&#114;&#117;nat", RegexOptions.IgnoreCase);
+                    }
+                }
+
+                template.Replace("[BODY]", sBody);
+
+            }
+
             int BodyLength = -1;
             string BodyTrim = string.Empty;
 
+            if (template.ToString().Contains("[TOPICSUBJECT:"))
+            {
+                const string pattern = "(\\[TOPICSUBJECT:(.+?)\\])";
+                foreach (Match m in Regex.Matches(template.ToString(), pattern))
+                {
+                    var maxLength = Utilities.SafeConvertInt(m.Groups[2].Value, 255);
+                    if (topic.Content.Subject.Length > maxLength)
+                    {
+                        template.Replace(m.Value, topic.Subject.Substring(0, maxLength) + "...");
+                    }
+                    else
+                    {
+                        template.Replace(m.Value, Utilities.StripHTMLTag(topic.Subject));
+                    }
+                }
+            }
+
+            template.Replace("[TOPICSUBJECT]", Utilities.StripHTMLTag(topic.Subject));
+
+            /* from topicsview */
+            if (template.ToString().Contains("[BODY:"))
+            {
+                const string pattern = "(\\[BODY:(.+?)\\])";
+                foreach (Match m in Regex.Matches(template.ToString(), pattern))
+                {
+                    var maxLength = Utilities.SafeConvertInt(m.Groups[2].Value, 512);
+                    if (topic?.Content?.Body?.Length > maxLength)
+                    {
+                        template.Replace(m.Value, topic?.Content?.Body?.Substring(0, maxLength) + "...");
+                    }
+                    else
+                    {
+                        template.Replace(m.Value, topic?.Content?.Body);
+                    }
+                }
+            }
+
+            /* from topic view */ 
             if (template.ToString().Contains("[BODY:"))
             {
                 int inStart = (template.ToString().IndexOf("[BODY:", 0) + 1) + 5;
@@ -233,6 +318,42 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             template.Replace("[SUMMARY]", topic.Content.Summary);
+
+            if (template.ToString().Contains("[EDITDATE]"))
+            {
+                if (topic.Content.DateUpdated == topic.Content.DateCreated || topic.Content.DateUpdated == DateTime.MinValue || topic.Content.DateUpdated == SqlDateTime.MinValue.Value || topic.Content.DateUpdated == Utilities.NullDate())
+                {
+                    template.Replace("[EDITDATE]", string.Empty);
+                }
+                else
+                {
+                    template.Replace("[EDITDATE]", Utilities.GetUserFormattedDateTime(topic.Content.DateUpdated, portalSettings.PortalId, forumUser.UserId));;
+                }
+            }
+
+            
+            if (template.ToString().Contains("[MODEDITDATE]"))
+            {
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(
+                        topic.Forum.Security.Moderate,
+                        forumUser.UserRoles) &&
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(
+                        topic.Forum.Security.Edit,
+                        forumUser.UserRoles) &&
+                    topic.Content.DateUpdated != topic.Content.DateCreated &&
+                    topic.Content.DateUpdated != DateTime.MinValue &&
+                    topic.Content.DateUpdated != SqlDateTime.MinValue.Value &&
+                    topic.Content.DateUpdated != Utilities.NullDate())
+                {
+                    template.Replace("[MODEDITDATE]",
+                        Utilities.GetUserFormattedDateTime(topic.Content.DateUpdated,
+                            portalSettings.PortalId,
+                            forumUser.UserId));
+                }
+
+                template.Replace("[MODEDITDATE]", string.Empty);
+            }
+
             if (template.ToString().Contains("[TOPICSUBSCRIBERCOUNT]"))
             {
                 template.Replace("[TOPICSUBSCRIBERCOUNT]", topic.SubscriberCount.ToString());
@@ -271,7 +392,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 template.ToString().Contains("[AF:URL:LASTREPLY]") ||
                 template.ToString().Contains("[SUBJECT]") ||
                 template.ToString().Contains("[SUBJECTLINK]") ||
-                template.ToString().Contains("[LASTPOST"))
+                template.ToString().Contains("[LASTPOST") ||
+                template.ToString().Contains("[AF:LABEL:Last"))
             {
                 var @params = new List<string>
                 {
@@ -353,7 +475,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     string sPollImage = (topic.TopicType == TopicTypes.Poll ? LocalizeTokenString("[POSTICON]", portalSettings, language) : string.Empty);
                     topic.Content.Subject = Utilities.StripHTMLTag(topic.Content.Subject);
-                    template.Replace("[SUBJECT]", topic.Content.Subject + sPollImage);
+                    template.Replace("[SUBJECT]", topic.Content.Subject.Replace("[", "&#91").Replace("]", "&#93") + sPollImage);
                     if (template.ToString().Contains("[SUBJECTLINK]"))
                     {
                         string slink = null;
@@ -385,6 +507,46 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
 
+                if (template.ToString().Contains("[DATECREATED]"))
+                {
+                    template.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(topic.Content.DateCreated, portalSettings.PortalId, forumUser.UserId));
+                }
+                if (template.ToString().Contains("[POSTDATE]"))
+                {
+                    template.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(topic.Content.DateCreated, portalSettings.PortalId, forumUser.UserId));
+                }
+                if (template.ToString().Contains("[AF:LABEL:TopicDateCreated]"))
+                {
+                    template.Replace("[AF:LABEL:TopicDateCreated]", Utilities.GetUserFormattedDateTime(topic.Content.DateCreated, portalSettings.PortalId, forumUser.UserId));
+                }
+                if (template.ToString().Contains("[AF:LABEL:LastPostDate]"))
+                {
+                    template.Replace("[AF:LABEL:LastPostDate]", Utilities.GetUserFormattedDateTime(topic.LastReply.Content.DateCreated, portalSettings.PortalId, forumUser.UserId));
+                }
+
+                if (template.ToString().Contains("[AF:LABEL:TopicAuthor]"))
+                {
+                    if (topic.LastReply.Author.AuthorId > 0)
+                    {
+                        template.Replace("[AF:LABEL:TopicAuthor]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, topic.Forum.ModuleId, true, forumUser.GetIsMod(topic.ModuleId), forumUser.IsAdmin || forumUser.IsSuperUser, topic.Author.AuthorId, topic.Author.Username, topic.Author.FirstName, topic.Author.LastName, topic.Author.DisplayName).ToString().Replace("&amp;#", "&#"));
+                    }
+                    else
+                    {
+                        template.Replace("[AF:LABEL:TopicAuthor]", topic.Content.AuthorName);
+                    }
+                }
+
+                if (template.ToString().Contains("[AF:LABEL:LastPostAuthor]"))
+                {
+                    if (topic.LastReply.Author.AuthorId > 0)
+                    {
+                        template.Replace("[AF:LABEL:LastPostAuthor]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, topic.Forum.ModuleId, true, forumUser.GetIsMod(topic.ModuleId), forumUser.IsAdmin || forumUser.IsSuperUser, topic.LastReply.Author.AuthorId, topic.LastReply.Author.Username, topic.LastReply.Author.FirstName, topic.LastReply.Author.LastName, topic.LastReply.Author.DisplayName).ToString().Replace("&amp;#", "&#"));
+                    }
+                    else
+                    {
+                        template.Replace("[AF:LABEL:LastPostAuthor]", topic.LastReply.Content.AuthorName);
+                    }
+                }
                 if (template.ToString().Contains("[LASTPOST]"))
                 {
                     if (topic.LastReply?.ReplyId == 0)
@@ -432,7 +594,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 sLastReplyTemp = sLastReplyTemp.Replace("[LASTPOSTDISPLAYNAME]", topic.LastReply.Content.AuthorName);
                             }
                         }
-
+                        
                         if (template.ToString().Contains("[LASTPOSTDATE]"))
                         {
                             sLastReplyTemp = sLastReplyTemp.Replace("[LASTPOSTDATE]", Utilities.GetUserFormattedDateTime(topic.LastReply.Content.DateCreated, portalSettings.PortalId, forumUser.UserId));
@@ -490,7 +652,142 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return template;
         }
+        
+        internal static StringBuilder ReplaceReplyTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, int TabId)
+        {
+            string language = forumUser?.UserInfo?.Profile.PreferredLocale ?? portalSettings?.DefaultLanguage;
 
+            if (navigationManager == null)
+            {
+                navigationManager = (INavigationManager)new Services.URLNavigator();
+            }
+
+            // no longer using this
+            template = RemovePrefixedToken(template, "[SPLITBUTTONS2");
+
+            template.Replace("[REPLYID]", reply.ReplyId.ToString());
+            template.Replace("[POSTID]", reply.ReplyId.ToString());
+            template.Replace("[AUTHORID]", reply.Content.AuthorId.ToString());
+            
+            if (template.ToString().Contains("[DATECREATED]"))
+            {
+                template.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(reply.Content.DateCreated, portalSettings.PortalId, forumUser.UserId));
+            }
+            if (template.ToString().Contains("[POSTDATE]"))
+            {
+                template.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(reply.Content.DateCreated, portalSettings.PortalId, forumUser.UserId));
+            }
+            template.Replace("[SUBJECT]", reply.Content.Subject.Replace("[", "&#91").Replace("]", "&#93"));
+            
+            if (template.ToString().Contains("[BODY]"))
+            {
+                // Process Body
+                string sBody = string.Empty;
+                if (string.IsNullOrEmpty(reply.Content.Body))
+                {
+                    sBody = " <br />";
+                }
+                else
+                {
+                    sBody = Utilities.ManageImagePath(HttpUtility.HtmlDecode(reply.Content.Body), HttpContext.Current.Request.Url);
+
+                    sBody = sBody.Replace("[", "&#91;").Replace("]", "&#93;");
+                    if (sBody.ToUpper().Contains("&#91;CODE&#93;"))
+                    {
+                        sBody = Regex.Replace(sBody, "(&#91;CODE&#93;)", "[CODE]", RegexOptions.IgnoreCase);
+                        sBody = Regex.Replace(sBody, "(&#91;\\/CODE&#93;)", "[/CODE]", RegexOptions.IgnoreCase);
+                    }
+
+                    // sBody = sBody.Replace("&lt;CODE&gt;", "<CODE>")
+                    if (Regex.IsMatch(sBody, "\\[CODE([^>]*)\\]", RegexOptions.IgnoreCase))
+                    {
+                        var objCode = new CodeParser();
+                        sBody = CodeParser.ParseCode(HttpUtility.HtmlDecode(sBody));
+                    }
+
+                    sBody = Utilities.StripExecCode(sBody);
+                    if (mainSettings.AutoLinkEnabled)
+                    {
+                        sBody = Utilities.AutoLinks(sBody, HttpContext.Current.Request.Url.Host);
+                    }
+
+                    if (sBody.Contains("<%@"))
+                    {
+                        sBody = sBody.Replace("<%@ ", "&lt;&#37;@ ");
+                    }
+
+                    if (reply.Content.Body.ToLowerInvariant().Contains("runat"))
+                    {
+                        sBody = Regex.Replace(sBody, "runat", "&#114;&#117;nat", RegexOptions.IgnoreCase);
+                    }
+                }
+
+                template.Replace("[BODY]", sBody);
+
+                if (template.ToString().Contains("[EDITDATE]"))
+                {
+                    if (reply.Content.DateUpdated == reply.Content.DateCreated || reply.Content.DateUpdated == DateTime.MinValue || reply.Content.DateUpdated == SqlDateTime.MinValue.Value || reply.Content.DateUpdated == Utilities.NullDate())
+                    {
+                        template.Replace("[EDITDATE]", string.Empty);
+                    }
+                    else
+                    {
+                        template.Replace("[EDITDATE]", Utilities.GetUserFormattedDateTime(reply.Content.DateUpdated, portalSettings.PortalId, forumUser.UserId));;
+                    }
+                }
+
+                if (template.ToString().Contains("[MODEDITDATE]"))
+                {
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(
+                            reply.Forum.Security.Moderate,
+                            forumUser.UserRoles) &&
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(
+                            reply.Forum.Security.Edit,
+                            forumUser.UserRoles) &&
+                        reply.Content.DateUpdated != reply.Content.DateCreated &&
+                        reply.Content.DateUpdated != DateTime.MinValue &&
+                    reply.Content.DateUpdated != SqlDateTime.MinValue.Value &&
+                        reply.Content.DateUpdated != Utilities.NullDate())
+                    {
+                        template.Replace("[MODEDITDATE]",
+                            Utilities.GetUserFormattedDateTime(reply.Content.DateUpdated,
+                                portalSettings.PortalId,
+                                forumUser.UserId));
+                    }
+
+                    template.Replace("[MODEDITDATE]", string.Empty);
+                }
+            }            
+            return template;
+        }
+
+        internal static StringBuilder RemoveControlTokensForDnnPrintMode(StringBuilder template)
+        {
+            template.Replace("[ADDREPLY]", string.Empty);
+            template.Replace("[QUICKREPLY]", string.Empty);
+            template.Replace("[TOPICSUBSCRIBE]", string.Empty);
+            template.Replace("[AF:CONTROL:PRINTER]", string.Empty);
+            template.Replace("[AF:CONTROL:EMAIL]", string.Empty);
+            template.Replace("[PAGER1]", string.Empty);
+            template.Replace("[PAGER2]", string.Empty);
+            template.Replace("[SORTDROPDOWN]", string.Empty);
+            template.Replace("[POSTRATINGBUTTON]", string.Empty);
+            template.Replace("[JUMPTO]", string.Empty);
+            template.Replace("[NEXTTOPIC]", string.Empty);
+            template.Replace("[PREVTOPIC]", string.Empty);
+            template.Replace("[AF:CONTROL:STATUS]", string.Empty);
+            template.Replace("[ACTIONS:DELETE]", string.Empty);
+            template.Replace("[ACTIONS:EDIT]", string.Empty);
+            template.Replace("[ACTIONS:QUOTE]", string.Empty);
+            template.Replace("[ACTIONS:REPLY]", string.Empty);
+            template.Replace("[ACTIONS:ANSWER]", string.Empty);
+            template.Replace("[ACTIONS:ALERT]", string.Empty);
+            template.Replace("[ACTIONS:BAN]", string.Empty);
+            template.Replace("[ACTIONS:MOVE]", string.Empty);
+            template.Replace("[RESX:SortPosts]:", string.Empty);
+
+            return template;
+        }
         internal static StringBuilder RemovePrefixedToken(StringBuilder template, string tokenPrefix)
         {
             if (tokenPrefix.Substring(0, 1) != "[")

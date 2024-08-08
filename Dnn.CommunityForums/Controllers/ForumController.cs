@@ -18,23 +18,15 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Web;
-using System.Web.WebPages.Html;
-using DotNetNuke.Modules.ActiveForums.Enums;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using DotNetNuke.Data;
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using System;
-    using System.Data;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using System.Xml;
-
-    using DotNetNuke.Data;
-    using DotNetNuke.Modules.ActiveForums.API;
-    using DotNetNuke.Modules.ActiveForums.Data;
-    using Microsoft.ApplicationBlocks.Data;
+    using System.Web;
 
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
     {

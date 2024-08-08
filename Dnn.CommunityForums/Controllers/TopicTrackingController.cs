@@ -18,12 +18,12 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using DotNetNuke.Data;
 
     internal class TopicTrackingController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo>
     {
@@ -40,7 +40,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public int GetTopicsReadCountForUserForum(int userId, int forumId)
         {
-            return this.Count("WHERE UserId = @0 AND ForumId = @1");
+            return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking tt LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics t ON t.TopicId = tt.TopicId WHERE tt.UserId = @0 AND tt.ForumId = @1 AND t.IsDeleted = 0", userId, forumId).FirstOrDefault();
+
+            return this.Count("WHERE UserId = @0 AND ForumId = @1", userId, forumId);
         }
     }
 }

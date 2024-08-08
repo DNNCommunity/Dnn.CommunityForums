@@ -44,8 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         
         public DateTime DateAdded { get; set; } = DateTime.UtcNow;
 
-        public DateTime DateAdded { get; set; } = DateTime.UtcNow;
-
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
         {
