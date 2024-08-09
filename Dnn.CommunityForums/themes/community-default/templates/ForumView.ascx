@@ -71,7 +71,7 @@
 									<td class="dcf-col dcf-col-topics">[TOTALTOPICS]</td>
 									<td class="dcf-col dcf-col-replies">[TOTALREPLIES]</td>
 									<td class="dcf-col dcf-col-subscribers">[FORUMSUBSCRIBERCOUNT]</td>
-									<td class="dcf-col dcf-col-last-post"><div class="af_lastpost" style="white-space:nowrap;">[LASTPOSTSUBJECT:25]<br />[RESX:BY] [DISPLAYNAME]<br />[LASTPOSTDATE]</div></td>
+									<td class="dcf-col dcf-col-last-post"><div class="af_lastpost" style="white-space:nowrap;">[LASTPOSTSUBJECT:25]<br />[RESX:BY]&nbsp;[DISPLAYNAME]<br />[LASTPOSTDATE]</div></td>
 								</tr>
 					[/SUBFORUMS]
 				</tbody>

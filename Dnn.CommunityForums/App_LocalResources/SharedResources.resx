@@ -1740,4 +1740,13 @@ From,
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>The Topic {0} for Topic Tracking Id {1} is not found in the database; you will need to repair this in the database, or delete the invalid data.. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
   </data>
+  <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
+    <value>Template Token: {0} is obsolete. Replace with {1}.</value>
+  </data>
+  <data name="[RESX:RemoveObsoleteToken].Text" xml:space="preserve">
+    <value>Template Token: {0} is obsolete and has no replacement. Remove from template(s).</value>
+  </data>
+  <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
+    <value>Template Token starting with: {0} is obsolete and has no replacement. Remove from template(s).</value>
+  </data>
 </root>

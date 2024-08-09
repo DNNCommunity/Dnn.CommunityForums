@@ -1755,5 +1755,13 @@ De,
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>Le {0} de rubrique pour l’ID de suivi de {1} est introuvable dans la base de données ; Vous devrez réparer cela dans la base de données ou supprimer les données invalides. Veuillez visiter le dépôt Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour les étapes de dépannage.</value>
   </data>
-
+  <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
+    <value>Template Token : {0} est obsolète. Remplacez par {1}.</value>
+  </data>
+  <data name="[RESX:RemoveObsoleteToken].Text" xml:space="preserve">
+    <value>Jeton de modèle : {0} est obsolète et ne peut pas être remplacé. Supprimer du ou des modèles.</value>
+  </data>
+  <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
+    <value>Jeton de modèle commençant par : {0} est obsolète et ne peut pas être remplacé. Supprimer du ou des modèles.</value>
+  </data>
 </root>

@@ -1740,4 +1740,13 @@ De
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>El {0} de tema para el {1} de ID de seguimiento de temas no se encuentra en la base de datos; Deberá reparar esto en la base de datos o eliminar los datos no válidos. Visite el repositorio de Github (https://github.com/DNNCommunity/Dnn.CommunityForums) de los foros de la comunidad DNN, donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
   </data>
+  <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
+    <value>Token de plantilla: {0} está obsoleto. Reemplace con {1}.</value>
+  </data>
+  <data name="[RESX:RemoveObsoleteToken].Text" xml:space="preserve">
+    <value>Token de plantilla: {0} está obsoleto y no tiene reemplazo. Eliminar de la(s) plantilla(s).</value>
+  </data>
+  <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
+    <value>El token de plantilla que comienza con: {0} está obsoleto y no tiene reemplazo. Eliminar de la(s) plantilla(s).</value>
+  </data>
 </root>

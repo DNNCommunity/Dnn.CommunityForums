@@ -1,4 +1,6 @@
-﻿namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
+﻿using System.Web;
+
+namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 {
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Controllers;
@@ -13,6 +15,8 @@
         public void ReplaceTopicTokensTest()
         {
             // Arrange
+            var mockRequest = new Mock<HttpRequest>();
+
             var mockTopic = new Mock<Modules.ActiveForums.Entities.TopicInfo>();
             mockTopic.Object.ForumId = 1;
             mockTopic.Object.Forum = new Modules.ActiveForums.Entities.ForumInfo();
@@ -45,7 +49,7 @@
             var expectedResult = "blah blah [SPLITBUTTONS1] blah  [TOPICSUBJECT] blah";
             // Act
 
-            var actualResult = TokenController.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, null, null, navigationManager, mockUser.Object, 0).ToString();
+            var actualResult = TokenController.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, null, null, navigationManager, mockUser.Object, mockRequest.Object, 0).ToString();
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
@@ -75,7 +79,7 @@
             var expectedResult = "blah blah Test Forum Group blah blah";
 
             // Act
-            var actualResult = TokenController.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, mockUser.Object, 0, CurrentUserTypes.Auth).ToString();
+            var actualResult = TokenController.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, mockUser.Object, HttpContext.Current.Request, 0, CurrentUserTypes.Auth).ToString();
             
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));

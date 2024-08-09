@@ -294,7 +294,9 @@
     <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\ForumSettings.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\Messages.ascx.nl-NL.resx" />
-    <EmbeddedResource Include="App_LocalResources\TokenResources.resx" />
+    <EmbeddedResource Include="App_LocalResources\TokenResources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\SharedResources.nl-NL.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

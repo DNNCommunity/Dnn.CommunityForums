@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -160,21 +160,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public string ThemeLocation
-        {
-            get
-            {
-                return string.Concat(Globals.ThemesPath, "/", this.Theme, "/");
-            }
-        }
+        public string ThemeLocation =>  string.Concat(Globals.ThemesPath, this.Theme, "/");
 
-        public string TemplatePath
-        {
-            get
-            {
-                return this.ThemeLocation + "templates/";
-            }
-        }
+        public string TemplatePath => string.Concat(this.ThemeLocation, "templates/");
 
         public bool FullText
         {

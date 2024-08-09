@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var templateStringbuilder = new StringBuilder(template);
             templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(templateStringbuilder, portalSettings, moduleSettings, author.ForumUser, tabID, moduleID);
-            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(templateStringbuilder, forumInfo, portalSettings, moduleSettings, navigationManager, author.ForumUser, tabID, CurrentUserTypes.Auth);
+            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(templateStringbuilder, forumInfo, portalSettings, moduleSettings, navigationManager, author.ForumUser, HttpContext.Current.Request, tabID, CurrentUserTypes.Auth);
             templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(templateStringbuilder, portalSettings, moduleSettings, author.ForumUser, tabID, moduleID);
 
 

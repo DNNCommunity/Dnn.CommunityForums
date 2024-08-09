@@ -49,22 +49,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private DataTable dtTopics;
         private DataTable dtAnnounce;
         private DataTable dtSubForums;
-        private bool bView = false;
-        private bool bRead = false;
-        private bool bDelete = false;
-        private bool bEdit = false;
-        private bool bSubscribe = false;
-        private bool bModerate = false;
-        private bool bMove = false;
-        private bool bAllowRSS = false;
-        private bool bLock = false;
-        private bool bPin = false;
+        private bool bView;
+        private bool bRead;
+        private bool bDelete;
+        private bool bEdit;
+        private bool bSubscribe;
+        private bool bModerate;
+        private bool bMove;
+        private bool bLock;
+        private bool bPin;
         private int rowIndex = 1;
         private int pageSize = 20;
-        private int topicRowCount = 0;
-        private bool isSubscribedForum = false;
-        private string sGroupURL = string.Empty;
-        private string sForumURL = string.Empty;
+        private int topicRowCount;
+        private bool isSubscribedForum;
 
         #endregion
         #region Public Properties
@@ -132,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 StringBuilder stringBuilder = new StringBuilder(topicsTemplate);
 
-                stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.CurrentUserType);
+                stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(stringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId);
 
 
@@ -199,24 +196,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         this.bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanSubscribe"].ToString(), this.ForumUser.UserRoles);
                         this.bMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanMove"].ToString(), this.ForumUser.UserRoles);
 
-                        ControlUtils ctlUtils = new ControlUtils();
-                        this.sGroupURL = ctlUtils.BuildUrl(this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, string.Empty, this.ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
-                        this.sForumURL = ctlUtils.BuildUrl(this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
                         if (this.bView)
                         {
-                            try
-                            {
-                                this.bAllowRSS = this.ForumInfo.AllowRSS;
-                            }
-                            catch
-                            {
-                                this.bAllowRSS = false;
-                            }
-
-                            if (this.bRead == false)
-                            {
-                                this.bAllowRSS = false;
-                            }
+                            
                             this.topicRowCount = Convert.ToInt32(this.drForum["TopicRowCount"]);
                             if (this.UserId > 0)
                             {
@@ -224,8 +206,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
 
                             if (this.MainSettings.UseSkinBreadCrumb)
-                            {
-                                DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + this.sGroupURL + "\">" + this.ForumInfo.ForumGroup.GroupName + "</a>");
+                            {                        
+                                string groupURL =  new ControlUtils().BuildUrl(this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, string.Empty, this.ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
+                                DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + groupURL + "\">" + this.ForumInfo.ForumGroup.GroupName + "</a>");
                                 topicsTemplate = topicsTemplate.Replace("<div class=\"afcrumb\">[FORUMMAINLINK] > [FORUMGROUPLINK]</div>", string.Empty);
                             }
 
@@ -238,7 +221,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             // Parse Meta Template
                             if (!string.IsNullOrEmpty(this.MetaTemplate))
                             {
-                                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.CurrentUserType).ToString();
+                                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
                                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
 
                                 this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", string.Empty);
@@ -478,32 +461,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
          sOutput = sOutput.Replace("[ADDTOPIC]", "<div class=\"amnormal\">[RESX:NotAuthorizedTopic]</div>");
      }
      sOutput = sOutput.Replace("[ADDPOLL]", string.Empty);
-     string Url = null;
-     if (this.bAllowRSS)
-     {
-
-         Url = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(this.Request)) + "/DesktopModules/ActiveForums/feeds.aspx?portalid=" + this.PortalId + "&forumid=" + this.ForumId + "&tabid=" + this.TabId + "&moduleid=" + this.ForumModuleId;
-         if (this.SocialGroupId > 0)
-         {
-             Url += "&GroupId=" + this.SocialGroupId;
-         }
-         sOutput = sOutput.Replace("[RSSLINK]", "<a href=\"" + Url + "\"><img src=\"" + this.MainSettings.ThemeLocation + "/images/rss.png\" border=\"0\" alt=\"[RESX:RSS]\" /></a>");
-     }
-     else
-     {
-         sOutput = sOutput.Replace("[RSSLINK]", string.Empty);
-     }
+     
      if (this.Request.IsAuthenticated)
      {
-         Url = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=sendto", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
-         sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + Url + "\" rel=\"nofollow\"><img src=\"" + this.MainSettings.ThemeLocation + "/images/email16.png\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
+         string Url = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=sendto", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
+         sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + Url + "\" rel=\"nofollow\"><img src=\"" + Utilities.ResolveUrl(this.MainSettings.ThemeLocation + "/images/email16.png") + "\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
      }
      else
      {
          sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", string.Empty);
      }
-     sOutput = sOutput.Replace("[MINISEARCH]", "<am:MiniSearch  EnableViewState=\"False\" id=\"amMiniSearch\" MID=\"" + this.ModuleId + "\" TID=\"" + this.TabId + "\" FID=\"" + this.ForumId + "\" runat=\"server\" />");
-     sOutput = sOutput.Replace("[PAGER1]", "<am:pagernav id=\"Pager1\"  EnableViewState=\"False\" runat=\"server\" />");
+     sOutput = sOutput.Replace("[MINISEARCH]", "<am:MiniSearch id=\"amMiniSearch\" runat=\"server\" EnableViewState=\"False\" MID=\"" + this.ModuleId + "\" TID=\"" + this.TabId + "\" FID=\"" + this.ForumId + "\" />");
+     sOutput = sOutput.Replace("[PAGER1]", "<am:pagernav id=\"Pager1\" runat=\"server\" EnableViewState=\"False\" />");
      sOutput = sOutput.Replace("[PAGER2]", "<am:pagernav id=\"Pager2\" runat=\"server\" EnableViewState=\"False\" />");
 
 
@@ -587,7 +556,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     topicInfo.LastReply.Content.Summary = topicInfo.Content.Summary;
                 }
-                
+
                 if ((this.bModerate && this.bDelete) || ((this.bDelete && topicInfo.Content.AuthorId == this.UserId && !topicInfo.IsLocked)))
                 {
                     topicTemplate = topicTemplate.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_modDel(" + this.ModuleId + "," + this.ForumId + "," + topicInfo.TopicId.ToString() + ");\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
@@ -691,21 +660,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     topicTemplate = TemplateUtils.ReplaceSubSection(topicTemplate, sProps, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
                 }
                 StringBuilder stringBuilder = new StringBuilder(topicTemplate);
-                if (!this.bRead)
-                {
-                    stringBuilder.Replace("[LASTPOSTDATE]", string.Empty);
-                    stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.RemovePrefixedToken(stringBuilder, "[LASTPOSTSUBJECT");
-                    stringBuilder.Replace("[BODYTITLE]", string.Empty);
-                    stringBuilder.Replace("[BODY]", string.Empty);
-                    stringBuilder.Replace("[AF:ICONLINK:LASTREPLY]", string.Empty);
-                    stringBuilder.Replace("[AF:URL:LASTREPLY]", string.Empty);
-                    if (topicInfo.LastReplyId < 1)
-                    {
-                        stringBuilder.Replace("[AF:ICONLINK:LASTREPLY]", string.Empty);
-                        stringBuilder.Replace("[AF:URL:LASTREPLY]", string.Empty);
-                        stringBuilder.Replace("[AF:UI:MINIPAGER]", string.Empty);
-                    }
-                }
+                
                 if (this.UserId == -1 || topicInfo.LastReplyId == 0)
                 {
                     stringBuilder.Replace("[AF:ICONLINK:LASTREAD]", string.Empty);
@@ -716,7 +671,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     stringBuilder.Replace("[AF:ICONLINK:LASTREAD]", string.Empty);
                     stringBuilder.Replace("[AF:URL:LASTREAD]", string.Empty);
                 }
-                stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceTopicTokens(stringBuilder, topicInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId);
+                stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceTopicTokens(stringBuilder, topicInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId);
                     
                 stringBuilder.Replace("[ROWCSS]", this.GetRowCSS(UserLastTopicRead, UserLastReplyRead, topicInfo.TopicId, topicInfo.LastReplyId, rowcount));
                 stringBuilder.Replace("[AF:UI:MINIPAGER]", this.GetSubPages(this.TabId, topicInfo.ReplyCount, this.ForumId, topicInfo.TopicId));

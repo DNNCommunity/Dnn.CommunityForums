@@ -394,6 +394,46 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         }
 
+        internal static string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            string css = string.Empty;
+            switch (topic.GetTopicStatusForUser(forumUser))
+            {
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Forbidden:
+                    {
+                        css = "dcf-poststatus-no-access";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.New:
+                    {
+                        css = "dcf-poststatus-new";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread:
+                    {
+                        css = "dcf-poststatus-unread";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Read:
+                    {
+                        css = "dcf-poststatus-read";
+                        break;
+                    }
+                default:
+                    {
+                        css = "dcf-poststatus-unread";
+                        break;
+                    }
+            }
+
+            if (topic?.Author?.AuthorId == forumUser?.UserId)
+            {
+                css += " dcf-poststatus-authored";
+            }
+
+            return css;
+        }
+
         internal static string GetTopicStatusIconCss(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             switch (topic.GetTopicStatusForUser(forumUser))

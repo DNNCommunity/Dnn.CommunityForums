@@ -189,4 +189,10 @@
   <data name="[TOPICSTATUS].Text" xml:space="preserve">
     <value>&lt;div&gt;&lt;i class="fa fa-status{0} fa-red fa-2x"&gt;&lt;/i&gt;&lt;/div&gt;</value>
   </data>
+  <data name="[PREVTOPICLINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" rel="nofollow" title="[RESX:PrevTopic]"&gt;&lt;i class="fa fa-chevron-left" aria-hidden="true"&gt;&lt;/i&gt;&lt;span&gt;[RESX:PrevTopic]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[NEXTTOPICLINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" rel="nofollow" title="[RESX:NextTopic]"&gt;&lt;span&gt;[RESX:NextTopic]&lt;/span&gt;&lt;i class="fa fa-chevron-right" aria-hidden="true"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
 </root>
