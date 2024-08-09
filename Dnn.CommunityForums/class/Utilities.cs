@@ -916,6 +916,19 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
+        internal static string ResolveUrl(string url)
+        {
+            try
+            {
+                return VirtualPathUtility.ToAbsolute(url);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return url;
+            }
+        }
+
         internal static string MapPath(string path)
         {
             try
