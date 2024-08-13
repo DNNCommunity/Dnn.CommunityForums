@@ -1637,3 +1637,127 @@ GO
 /* issue 1026 end - DAL2 updates for activeforums_ForumTopics  */
 
 /* --------------------- */
+
+
+
+/* issue 1037 begin - topic / reply splitting issues */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Replies_Split]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Replies_Split]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Replies_Split]
+@OldTopicId int,
+@NewTopicId int,
+@listreplies varchar(8000),
+@DateUpdated datetime,
+@FirstReplyId int
+AS
+BEGIN
+    DECLARE @ReplyIds TABLE (id int)
+	DECLARE @OldForumId int
+    DECLARE @NewForumId int
+    SELECT @OldForumId = ForumId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics WHERE TopicId = @OldTopicId
+    SELECT @NewForumId = ForumId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics WHERE TopicId = @NewTopicId
+	DECLARE @MaxReplyId int
+    DECLARE @TotalReplies int
+
+	IF @listreplies <> ''
+	BEGIN
+		INSERT INTO @ReplyIds (id) SELECT id FROM {databaseOwner}{objectQualifier}activeforums_Functions_Split(@listreplies,'|')
+    
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Content
+		SET DateCreated = @DateUpdated, DateUpdated = @DateUpdated
+		WHERE ContentId in (SELECT ContentId FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @OldTopicId AND ReplyId in (SELECT id FROM @ReplyIds))
+    
+		UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics
+			SET LastReplyId = NULL
+			WHERE TopicId = @OldTopicId     
+		
+		UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics
+			SET LastReplyId = NULL
+			WHERE TopicId = @NewTopicId
+
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Replies
+		SET TopicId = @NewTopicId
+		WHERE TopicId = @OldTopicId AND ReplyId in (SELECT id FROM @ReplyIds)
+		
+		SELECT @MaxReplyId = IsNull(Max(ReplyId),0),@TotalReplies = Count(ReplyId) FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @OldTopicId AND IsDeleted = 0 AND IsApproved = 1
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Topics
+			SET ReplyCount = @TotalReplies
+			WHERE TopicId = @OldTopicId
+		UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics
+			SET LastReplyId = @MaxReplyId
+			WHERE TopicId = @OldTopicId     
+		SELECT @MaxReplyId = IsNull(Max(ReplyId),0),@TotalReplies = Count(ReplyId) FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @NewTopicId AND IsDeleted = 0 AND IsApproved = 1
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Topics
+			SET ReplyCount = @TotalReplies
+			WHERE TopicId = @NewTopicId
+		UPDATE{databaseOwner}{objectQualifier}activeforums_ForumTopics
+			SET LastReplyId = @MaxReplyId
+			WHERE TopicId = @NewTopicId
+	END
+	IF @FirstReplyId > 0
+	BEGIN
+		DECLARE @Body NVARCHAR(MAX)
+		DECLARE @Summary NVARCHAR(1000)
+		DECLARE @NewContentId int
+		DECLARE @OldContentId int
+		SELECT @NewContentId = ContentId FROM {databaseOwner}{objectQualifier}activeforums_Topics WHERE TopicId = @NewTopicId
+		SELECT @OldContentId = ContentId FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @OldTopicId AND ReplyId = @FirstReplyId
+		SELECT @Body = Body, @Summary = Summary FROM {databaseOwner}{objectQualifier}activeforums_Content WHERE ContentId = @OldContentId
+		
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Content
+		SET Body = @Body, Summary = @Summary
+		WHERE ContentId = @NewContentId
+
+		UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics
+			SET LastReplyId = NULL
+			WHERE TopicId = @OldTopicId     
+		
+		UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics
+			SET LastReplyId = NULL
+			WHERE TopicId = @NewTopicId
+
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @OldTopicId AND ReplyId = @FirstReplyId
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Content WHERE ContentId = @OldContentId 
+
+		SELECT @MaxReplyId = Max(ReplyId),@TotalReplies = Count(ReplyId) FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @OldTopicId AND IsDeleted = 0 AND IsApproved = 1
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Topics
+			SET ReplyCount = @TotalReplies
+			WHERE TopicId = @OldTopicId
+		UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics
+			SET LastReplyId = @MaxReplyId
+			WHERE TopicId = @OldTopicId     
+		SELECT @MaxReplyId = Max(ReplyId),@TotalReplies = Count(ReplyId) FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @NewTopicId AND IsDeleted = 0 AND IsApproved = 1
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Topics
+			SET ReplyCount = @TotalReplies
+			WHERE TopicId = @NewTopicId
+		UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics
+			SET LastReplyId = @MaxReplyId
+			WHERE TopicId = @NewTopicId
+
+	END
+	
+    exec {databaseOwner}{objectQualifier}activeforums_Forums_LastUpdates @OldForumId
+    EXEC {databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev @OldForumId
+    IF (@OldForumId <> @NewForumId)
+    BEGIN
+	    exec {databaseOwner}{objectQualifier}activeforums_Forums_LastUpdates @NewForumId
+	    EXEC {databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev @NewForumId
+    END
+END
+GO
+
+
+
+
+
+/* issue 1037 end - topic / reply splitting issues */
+/* --------------------- */
+
+
+
+
+/* --------------------- */
+
