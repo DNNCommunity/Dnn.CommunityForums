@@ -89,14 +89,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 index += 1;
             }, fi =>
             {
-                this.drpForums.Items.Insert(index, new ListItem($"--{fi.ForumName}", $"FORUMJUMP{fi.ForumID}"));
+                this.drpForums.Items.Insert(index, new ListItem($"--{fi.ForumName}", $"FORUMJUMP:{fi.ForumID}"));
                 index += 1;
             },
             fi =>
             {
                 this.drpForums.Items.Insert(index, new ListItem(
                     fi.ForumName.Length > 30 ? $"{fi.ForumName.Substring(0, 27)}..." : fi.ForumName,
-                    $"FORUMJUMP{fi.ForumID}"));
+                    $"FORUMJUMP:{fi.ForumID}"));
                 index += 1;
             });
 
@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (this.GetViewType == "TOPICS" || this.GetViewType == "TOPIC")
                 {
-                    this.drpForums.SelectedIndex = this.drpForums.Items.IndexOf(this.drpForums.Items.FindByValue($"FORUMJUMP{this.ForumId}"));
+                    this.drpForums.SelectedIndex = this.drpForums.Items.IndexOf(this.drpForums.Items.FindByValue($"FORUMJUMP:{this.ForumId}"));
                 }
             }
         }
@@ -112,18 +112,18 @@ namespace DotNetNuke.Modules.ActiveForums
         private void drpForums_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             string sJumpValue = this.drpForums.SelectedItem.Value;
-            if (!(sJumpValue == string.Empty) && !(sJumpValue == string.Empty))
+            if (!string.IsNullOrEmpty(sJumpValue))
             {
                 string sJumpType = sJumpValue.Substring(0, sJumpValue.IndexOf(":", 0) + 1 - 1);
                 string sJumpID = sJumpValue.Substring(sJumpValue.IndexOf(":", 0) + 1);
                 switch (sJumpType)
                 {
                     case "GROUPJUMP":
-                        this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, ParamKeys.GroupId + "=" + sJumpID));
+                        this.Response.Redirect(this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, ParamKeys.GroupId + "=" + sJumpID));
                         break;
                     case "FORUMJUMP":
                         string[] @params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + sJumpID };
-                        this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, @params));
+                        this.Response.Redirect(this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, @params));
                         break;
                 }
             }
