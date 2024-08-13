@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 StringBuilder templateStringBuilder = new StringBuilder(sTemplate);
                 templateStringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(templateStringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId);
-                templateStringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(templateStringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId);
+                templateStringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(templateStringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.ForumUser, this.ForumModuleId);
                 sTemplate = templateStringBuilder.ToString();
                 return sTemplate;
             }

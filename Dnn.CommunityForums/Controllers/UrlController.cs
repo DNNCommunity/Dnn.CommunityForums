@@ -99,14 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         internal static string BuildModeratorUrl(INavigationManager navigationManager, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
-            //    string modLink = navigationManager.NavigateURL(forumInfo.TabId, portalSettings, string.Empty, new[] { ParamKeys.ViewType + "=modtopics", string.Concat(ParamKeys.ForumId, "=", forumInfo.ForumID) });
-            //    if (HttpContext.Current != null && modLink.IndexOf(requestUrl.Host, StringComparison.Ordinal) == -1)
-            //    {
-            //        modLink = Common.Globals.AddHTTP(requestUrl.Host) + modLink;
-            //    }
-            //    return modLink;
-
-            return navigationManager.NavigateURL(forumInfo.TabId, portalSettings, string.Empty, new[] { ParamKeys.ViewType + "=modtopics", string.Concat(ParamKeys.ForumId, "=", forumInfo.ForumID) });
+            return navigationManager.NavigateURL(forumInfo.TabId, portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={forumInfo.ForumID}" });
         }
     }
 }

@@ -1012,7 +1012,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Perform Profile Related replacements
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, reply.ReplyId > 0 ? reply.Content.AuthorId : this.topic.Content.AuthorId);
-            sOutput = TemplateUtils.ParseProfileTemplate(this.ForumModuleId,  sOutput, author, this.ImagePath, this.CurrentUserType, true, this.UserPrefHideAvatars, this.UserPrefHideSigs, ipAddress, this.UserId, this.TimeZoneOffset);
+            sOutput = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sOutput, author, this.ImagePath, this.CurrentUserType, this.UserPrefHideAvatars, this.UserPrefHideSigs, ipAddress, this.UserId, this.TimeZoneOffset);
 
 
             // Replace Tags Control

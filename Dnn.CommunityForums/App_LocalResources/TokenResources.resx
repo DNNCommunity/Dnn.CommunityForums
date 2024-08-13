@@ -195,4 +195,7 @@
   <data name="[NEXTTOPICLINK].Text" xml:space="preserve">
     <value>&lt;a href="{0}" rel="nofollow" title="[RESX:NextTopic]"&gt;&lt;span&gt;[RESX:NextTopic]&lt;/span&gt;&lt;i class="fa fa-chevron-right" aria-hidden="true"&gt;&lt;/i&gt;&lt;/a&gt;</value>
   </data>
+  <data name="[FORUM:LASTPOSTDISPLAYNAME].Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;{0}</value>
+  </data>
 </root>

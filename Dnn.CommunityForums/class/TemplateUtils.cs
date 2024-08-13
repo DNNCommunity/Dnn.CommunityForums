@@ -160,6 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalID);
             var moduleSettings = SettingsBase.GetModuleSettings(moduleID);
+            var accessingUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalID, userId);
             var forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumID, moduleId: moduleID);
             if (author == null)
             {
@@ -238,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string forumURL = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildForumUrl(navigationManager, portalSettings, moduleSettings, forumInfo);
 
             var templateStringbuilder = new StringBuilder(template);
-            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(templateStringbuilder, portalSettings, moduleSettings, author.ForumUser, tabID, moduleID);
+            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(templateStringbuilder, portalSettings, moduleSettings, author.ForumUser, accessingUser, moduleID);
             templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(templateStringbuilder, forumInfo, portalSettings, moduleSettings, navigationManager, author.ForumUser, HttpContext.Current.Request, tabID, CurrentUserTypes.Auth);
             templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(templateStringbuilder, portalSettings, moduleSettings, author.ForumUser, tabID, moduleID);
 
@@ -405,7 +406,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(user.PortalId, user.UserId);
 
-            myTemplate = ParseProfileTemplate(moduleId, myTemplate, author, imagePath, currentUserType, true, userPrefHideAvatar, false, ipAddress, currentUserId, timeZoneOffset);
+            myTemplate = ParseProfileTemplate(moduleId, myTemplate, author, imagePath, currentUserType, userPrefHideAvatar, false, ipAddress, currentUserId, timeZoneOffset);
             return myTemplate;
         }
 
@@ -414,88 +415,89 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string ParseProfileTemplate(string profileTemplate, int userId, int portalId, int moduleId, int currentUserId, int timeZoneOffset)
         {
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, userId);
-            return ParseProfileTemplate(moduleId, profileTemplate, author, string.Empty, CurrentUserTypes.Anon, false, false, false, string.Empty, currentUserId, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseProfileTemplate(moduleId, profileTemplate, author, string.Empty, CurrentUserTypes.Anon, false, false, string.Empty, currentUserId, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, int timeZoneOffset)
         {
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, up.UserId);
-            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, false, false, false, string.Empty, -1, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, false, false, string.Empty, -1, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, TimeSpan timeZoneOffset)
         {
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, up.UserId);
-            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, false, false, false, string.Empty, -1, timeZoneOffset);
+            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, false, false, string.Empty, -1, timeZoneOffset);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, int timeZoneOffset)
         {
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, up.UserId);
-            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, false, false, false, string.Empty, -1, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, false, false, string.Empty, -1, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, TimeSpan timeZoneOffset)
         {
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, up.UserId);
-            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, false, false, false, string.Empty, -1, timeZoneOffset);
+            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, false, false, string.Empty, -1, timeZoneOffset);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int timeZoneOffset)
         {
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, up.UserId);
-            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, legacyTemplate, userPrefHideAvatar, userPrefHideSignature, ipAddress, -1, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, userPrefHideAvatar, userPrefHideSignature, ipAddress, -1, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, TimeSpan timeZoneOffset)
         {
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, up.UserId);
-            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, legacyTemplate, userPrefHideAvatar, userPrefHideSignature, ipAddress, -1, timeZoneOffset);
+            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, userPrefHideAvatar, userPrefHideSignature, ipAddress, -1, timeZoneOffset);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset)
         {
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, up.UserId);
-            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, false, false, false, string.Empty, currentUserId, timeZoneOffset);
+            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, false, false, string.Empty, currentUserId, timeZoneOffset);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, int timeZoneOffset)
         {
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, up.UserId);
-            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, legacyTemplate, userPrefHideAvatar, userPrefHideSignature, ipAddress, currentUserId, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, userPrefHideAvatar, userPrefHideSignature, ipAddress, currentUserId, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)
         {
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, up.UserId);
-            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, legacyTemplate, userPrefHideAvatar, userPrefHideSignature, ipAddress, currentUserId, timeZoneOffset);
+            return ParseProfileTemplate(moduleId, profileTemplate, author, imagePath, currentUserType, userPrefHideAvatar, userPrefHideSignature, ipAddress, currentUserId, timeZoneOffset);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, int userId, int portalId, int moduleId, int currentUserId, TimeSpan timeZoneOffset)
         {
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, userId);
-            return ParseProfileTemplate(moduleId, profileTemplate, author, string.Empty, CurrentUserTypes.Anon, false, false, false, string.Empty, currentUserId, timeZoneOffset);
+            return ParseProfileTemplate(moduleId, profileTemplate, author, string.Empty, CurrentUserTypes.Anon, false, false, string.Empty, currentUserId, timeZoneOffset);
         }
         #endregion "Deprecated Methods"
 
-        internal static string ParseProfileTemplate(int moduleId, string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)
+        internal static string ParseProfileTemplate(int moduleId, string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, string imagePath, CurrentUserTypes currentUserType, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)
         {
             try
             {
-                if (legacyTemplate)
-                {
-                    profileTemplate = CleanTemplate(profileTemplate);
-                }
+                var portalSettings = Utilities.GetPortalSettings(author.ForumUser.PortalId);
+                var mainSettings = SettingsBase.GetModuleSettings(moduleId);
+                var accessingUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(author.ForumUser.PortalId, currentUserId);
+
+                var profileTemplateBuilder = new StringBuilder(profileTemplate);
 
                 // TODO figure out why/if this recurion is possible.  Seems a bit scary as it could create a loop.
                 if (profileTemplate.Contains("[POSTINFO]"))
@@ -518,53 +520,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 var result = new StringBuilder(pt);
-
-                // Used in a few places to determine if info should be shown or removed.
-                var isMod = currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.ForumMod || currentUserType == CurrentUserTypes.SuperUser;
-
-                // Used in a few places to determine if info should be shown or removed.
-                var isAdmin = currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.SuperUser;
-
-                var isAuthethenticated = currentUserType != CurrentUserTypes.Anon;
-
+                
                 // IP Address
-                result.Replace("[MODIPADDRESS]", isMod? ipAddress : string.Empty);
+                result.Replace("[MODIPADDRESS]", accessingUser.IsAdmin || accessingUser.IsSuperUser || accessingUser.GetIsMod(moduleId) ? ipAddress : string.Empty);
 
                 // User Edit
-                result.Replace("[AF:BUTTON:EDITUSER]", isAdmin && author.ForumUser.UserId > 0 ? string.Format("<button class='af-button af-button-edituser' data-id='{0}' data-name='{1}'>[RESX:Edit]</button>", author.ForumUser.UserId, Utilities.JSON.EscapeJsonString(author.DisplayName)) : string.Empty);
+                result.Replace("[AF:BUTTON:EDITUSER]", (accessingUser.IsAdmin || accessingUser.IsSuperUser) && author.ForumUser.UserId > 0 ? string.Format("<button class='af-button af-button-edituser' data-id='{0}' data-name='{1}'>[RESX:Edit]</button>", author.ForumUser.UserId, Utilities.JSON.EscapeJsonString(author.DisplayName)) : string.Empty);
 
-                // Points
-                var totalPoints = author.ForumUser.PostCount;
-                var mainSettings = SettingsBase.GetModuleSettings(moduleId);
-                if (mainSettings.EnablePoints && author.ForumUser.UserId > 0)
-                {
-                    totalPoints = (author.ForumUser.TopicCount * mainSettings.TopicPointValue) + (author.ForumUser.ReplyCount * mainSettings.ReplyPointValue) + (author.ForumUser.AnswerCount * mainSettings.AnswerPointValue) + author.ForumUser.RewardPoints;
-                    result.Replace("[AF:PROFILE:TOTALPOINTS]", totalPoints.ToString());
-                    result.Replace("[AF:POINTS:VIEWCOUNT]", author.ForumUser.ViewCount.ToString());
-                    result.Replace("[AF:POINTS:ANSWERCOUNT]", author.ForumUser.AnswerCount.ToString());
-                    result.Replace("[AF:POINTS:REWARDPOINTS]", author.ForumUser.RewardPoints.ToString());
-                }
-                else
-                {
-                    result.Replace("[AF:PROFILE:TOTALPOINTS]", string.Empty);
-                    result.Replace("[AF:POINTS:VIEWCOUNT]", string.Empty);
-                    result.Replace("[AF:POINTS:ANSWERCOUNT]", string.Empty);
-                    result.Replace("[AF:POINTS:REWARDPOINTS]", string.Empty);
-                }
-
-                // User Status
-                var sUserStatus = string.Empty;
-                if (mainSettings.UsersOnlineEnabled && author.ForumUser.UserId > 0)
-                {
-                    sUserStatus = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UserStatus(imagePath, author.ForumUser.IsUserOnline, author.ForumUser.UserId, moduleId, "[RESX:UserOnline]", "[RESX:UserOffline]");
-                }
-
-                result.Replace("[AF:PROFILE:USERSTATUS]", sUserStatus);
-                result.Replace("[AF:PROFILE:USERSTATUS:CSS]", sUserStatus.Contains("online") ? "af-status-online" : "af-status-offline");
-
-                // Rank
-                result.Replace("[AF:PROFILE:RANKDISPLAY]", (author.ForumUser.UserId > 0) ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(moduleId, author.ForumUser, 0) : string.Empty);
-                result.Replace("[AF:PROFILE:RANKNAME]", (author.ForumUser.UserId > 0) ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(moduleId, author.ForumUser, 1) : string.Empty);
 
                 // PM Image/link
                 var pmUrl = string.Empty;
@@ -587,112 +549,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 result.Replace("[AF:PROFILE:PMLINK]", pmLink);
                 result.Replace("[AF:PROFILE:PMURL]", pmUrl);
 
-                // Signature
-                var sSignature = string.Empty;
-                if (mainSettings.AllowSignatures != 0 && !userPrefHideSignature && !author.ForumUser.SignatureDisabled)
-                {
-                    sSignature = author.ForumUser.Signature;
-
-                    if (sSignature != string.Empty)
-                    {
-                        sSignature = Utilities.ManageImagePath(sSignature);
-                    }
-
-                    switch (mainSettings.AllowSignatures)
-                    {
-                        case 1:
-                            sSignature = HttpUtility.HtmlEncode(sSignature);
-                            sSignature = sSignature.Replace(System.Environment.NewLine, "<br />");
-                            break;
-                        case 2:
-                            sSignature = HttpUtility.HtmlDecode(sSignature);
-                            break;
-                    }
-                }
-
-                result.Replace("[AF:PROFILE:SIGNATURE]", sSignature);
-
-                // Avatar
-                var sAvatar = string.Empty;
-                if (!userPrefHideAvatar && !author.ForumUser.AvatarDisabled)
-                {
-                    sAvatar = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(author.ForumUser.UserId, mainSettings.AvatarWidth, mainSettings.AvatarHeight);
-
-                }
-                result.Replace("[AF:PROFILE:AVATAR]", sAvatar);
-
-                // Display Name
-                DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(author.ForumUser.PortalId);
-                result.Replace("[AF:PROFILE:DISPLAYNAME]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, moduleId, true, isMod, isAdmin, author.ForumUser.UserId, author.Username, author.FirstName, author.LastName, author.DisplayName));
-
-                // These fields are no longer used
-                result.Replace("[AF:PROFILE:LOCATION]", string.Empty);
-                result.Replace("[AF:PROFILE:WEBSITE]", string.Empty);
-                result.Replace("[AF:PROFILE:YAHOO]", string.Empty);
-                result.Replace("[AF:PROFILE:MSN]", string.Empty);
-                result.Replace("[AF:PROFILE:ICQ]", string.Empty);
-                result.Replace("[AF:PROFILE:AOL]", string.Empty);
-                result.Replace("[AF:PROFILE:OCCUPATION]", string.Empty);
-                result.Replace("[AF:PROFILE:INTERESTS]", string.Empty);
-                result.Replace("[AF:CONTROL:AVATAREDIT]", string.Empty);
-                result.Replace("[AF:BUTTON:PROFILEEDIT]", string.Empty);
-                result.Replace("[AF:BUTTON:PROFILESAVE]", string.Empty);
-                result.Replace("[AF:BUTTON:PROFILECANCEL]", string.Empty);
-                result.Replace("[AF:PROFILE:BIO]", string.Empty);
-                result.Replace("[MODUSERSETTINGS]", string.Empty);
-
-                // Date Created
-                var sDateCreated = string.Empty;
-                var sDateCreatedReplacement = "[AF:PROFILE:DATECREATED]";
-
-                if (author.ForumUser.UserId > 0 && author.ForumUser.DateCreated != null)
-                {
-                    if (pt.Contains("[AF:PROFILE:DATECREATED:"))
-                    {
-                        var sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATECREATED:", StringComparison.Ordinal) + (sDateCreatedReplacement.Length), 1);
-                        sDateCreated = Utilities.GetUserFormattedDateTime((DateTime?)author.ForumUser.DateCreated, author.ForumUser.PortalId, currentUserId, sFormat);
-                        sDateCreatedReplacement = string.Concat("[AF:PROFILE:DATECREATED:", sFormat, "]");
-                    }
-                    else
-                    {
-                        sDateCreated = Utilities.GetUserFormattedDateTime(author.ForumUser.DateCreated, author.ForumUser.PortalId, currentUserId);
-                    }
-                }
-
-                result.Replace(sDateCreatedReplacement, sDateCreated);
-
-                // Last Activity
-                var sDateLastActivity = string.Empty;
-                var sDateLastActivityReplacement = "[AF:PROFILE:DATELASTACTIVITY]";
-                if (author.ForumUser.DateLastActivity != null && author.ForumUser.UserId > 0)
-                {
-                    if (pt.Contains("[AF:PROFILE:DATELASTACTIVITY:"))
-                    {
-                        string sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATELASTACTIVITY:", StringComparison.Ordinal) + (sDateLastActivityReplacement.Length), 1);
-                        sDateLastActivity = Utilities.GetUserFormattedDateTime(author.ForumUser.DateLastActivity, author.ForumUser.PortalId, currentUserId, sFormat);
-                        sDateLastActivityReplacement = string.Concat("[AF:PROFILE:DATELASTACTIVITY:", sFormat, "]");
-                    }
-                    else
-                    {
-                        sDateLastActivity = Utilities.GetUserFormattedDateTime(author.ForumUser.DateLastActivity, author.ForumUser.PortalId, currentUserId);
-                    }
-                }
-
-                result.Replace(sDateLastActivityReplacement, sDateLastActivity);
-
-                // Post Count
-                result.Replace("[AF:PROFILE:POSTCOUNT]", (author.ForumUser.PostCount == 0) ? string.Empty : author.ForumUser.PostCount.ToString());
-                result.Replace("[AF:PROFILE:USERCAPTION]", author.ForumUser.UserCaption);
-                result.Replace("[AF:PROFILE:USERID]", author.ForumUser.UserId.ToString());
-                result.Replace("[AF:PROFILE:USERNAME]", HttpUtility.HtmlEncode(author.Username).Replace("&amp;#", "&#"));
-                result.Replace("[AF:PROFILE:FIRSTNAME]", HttpUtility.HtmlEncode(author.FirstName).Replace("&amp;#", "&#"));
-                result.Replace("[AF:PROFILE:LASTNAME]", HttpUtility.HtmlEncode(author.LastName).Replace("&amp;#", "&#"));
-                result.Replace("[AF:PROFILE:DATELASTPOST]", (author.ForumUser.DateLastPost == DateTime.MinValue) ? string.Empty : Utilities.GetUserFormattedDateTime(author.ForumUser.DateLastPost, author.ForumUser.PortalId, currentUserId));
-                result.Replace("[AF:PROFILE:TOPICCOUNT]", author.ForumUser.TopicCount.ToString());
-                result.Replace("[AF:PROFILE:REPLYCOUNT]", author.ForumUser.ReplyCount.ToString());
-                result.Replace("[AF:PROFILE:ANSWERCOUNT]", author.ForumUser.AnswerCount.ToString());
-                result.Replace("[AF:PROFILE:REWARDPOINTS]", author.ForumUser.RewardPoints.ToString());
-                result.Replace("[AF:PROFILE:EMAIL]", author.Email);
+                result = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(result, portalSettings, mainSettings, author.ForumUser, accessingUser, moduleId);
 
                 return result.ToString();
             }
@@ -731,74 +588,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return template;
         }
 
-        private static string CleanTemplate(string template)
-        {
-            const string pattern = "(\\[.+?\\])";
-
-            var sb = new StringBuilder(template);
-
-            foreach (Match match in Regex.Matches(template, pattern))
-            {
-                var sReplace = string.Empty;
-
-                switch (match.Value)
-                {
-                    case "[RANKNAME]":
-                        sb.Replace(match.Value, "[AF:PROFILE:RANKNAME]");
-                        break;
-                    case "[RANKDISPLAY]":
-                        sb.Replace(match.Value, "[AF:PROFILE:RANKDISPLAY]");
-                        break;
-                    case "[AF:PROFILE:LASTACTIVE]":
-                        sb.Replace(match.Value, "[AF:PROFILE:DATELASTACTIVITY]");
-                        break;
-                    case "[MEMBERSINCE]":
-                        sb.Replace(match.Value, "[AF:PROFILE:DATECREATED]");
-                        break;
-                    case "[AF:PROFILE:MEMBERSINCE]":
-                        sb.Replace(match.Value, "[AF:PROFILE:DATECREATED]");
-                        break;
-                    case "[USERSTATUS]":
-                        sb.Replace(match.Value, "[AF:PROFILE:USERSTATUS]");
-                        break;
-                    case "[USERCAPTION]":
-                        sb.Replace(match.Value, "[AF:PROFILE:USERCAPTION]");
-                        break;
-                    case "[USERNAME]":
-                        sb.Replace(match.Value, "[AF:PROFILE:USERNAME]");
-                        break;
-                    case "[USERID]":
-                        sb.Replace(match.Value, "[AF:PROFILE:USERID]");
-                        break;
-                    case "[DISPLAYNAME]":
-                        sb.Replace(match.Value, "[AF:PROFILE:DISPLAYNAME]");
-                        break;
-                    case "[POSTS]":
-                        sb.Replace(match.Value, "[AF:PROFILE:POSTCOUNT]");
-                        break;
-                    case "[AVATAR]":
-                        sb.Replace(match.Value, "[AF:PROFILE:AVATAR]");
-                        break;
-                    case "[LOCATION]":
-                        sb.Replace(match.Value, "[AF:PROFILE:LOCATION]");
-                        break;
-                    case "[WEBSITE]":
-                        sb.Replace(match.Value, "[AF:PROFILE:WEBSITE]");
-                        break;
-                    case "[AF:POINTS:TOPICCOUNT]":
-                        sb.Replace(match.Value, "[AF:PROFILE:TOPICCOUNT]");
-                        break;
-                    case "[AF:POINTS:REPLYCOUNT]":
-                        sb.Replace(match.Value, "[AF:PROFILE:REPLYCOUNT]");
-                        break;
-                    case "[SIGNATURE]":
-                        sb.Replace(match.Value, "[AF:PROFILE:SIGNATURE]");
-                        break;
-                }
-            }
-
-            return sb.ToString();
-        }
 
         public static string GetTemplateSection(string template, string startTag, string endTag, bool returnTemplateIfTagNotFound = true)
         {
@@ -830,6 +619,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return template;
         }
+
         public static StringBuilder ReplaceSubSection(StringBuilder template, string subTemplate, string startTag, string endTag)
         {
             var intStartTag = template.ToString().IndexOf(startTag, StringComparison.Ordinal);

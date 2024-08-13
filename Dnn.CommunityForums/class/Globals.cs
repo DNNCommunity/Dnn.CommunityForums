@@ -164,6 +164,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const int ForumCount = 10000000;
         public const int SiteCount = -1;
 
+        public const string DefaultDateFormat = "g";
+
         public const string ModerationNotificationType = "AF-ForumModeration";
         public const string ContentAlertNotificationType = "AF-ContentAlert";
         public const string BanUserNotificationType = "DCF-UserBanned";

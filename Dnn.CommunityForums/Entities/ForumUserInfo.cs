@@ -99,22 +99,22 @@ using DotNetNuke.Entities.Users;
         public int PrefPageSize { get; set; } = 20;
 
         [IgnoreColumn]
-        public string[] Roles => this.UserInfo.Roles;
+        public string[] Roles => this.UserInfo?.Roles;
 
         [IgnoreColumn]
-        public string FirstName => this.UserInfo.FirstName;
+        public string FirstName => string.IsNullOrEmpty(this.UserInfo?.FirstName) ? string.Empty : this.UserInfo?.FirstName;
 
         [IgnoreColumn]
-        public string LastName => this.UserInfo.LastName;
+        public string LastName => string.IsNullOrEmpty(this.UserInfo?.LastName) ? string.Empty : this.UserInfo?.LastName;
 
         [IgnoreColumn]
-        public string DisplayName => this.UserInfo.DisplayName;
+        public string DisplayName => string.IsNullOrEmpty(this.UserInfo?.DisplayName) == null ? string.Empty : this.UserInfo?.DisplayName;
 
         [IgnoreColumn]
-        public string Username => this.UserInfo.Username;
+        public string Username => this.UserInfo?.Username;
 
         [IgnoreColumn]
-        public string Email => this.UserInfo.Email;
+        public string Email => string.IsNullOrEmpty(this.UserInfo?.Email) ? string.Empty : this.UserInfo?.Email;
 
         [IgnoreColumn]
         public bool GetIsMod(int ModuleId)
@@ -123,10 +123,10 @@ using DotNetNuke.Entities.Users;
         }
 
         [IgnoreColumn]
-        public bool IsSuperUser => this.UserInfo.IsSuperUser;
+        public bool IsSuperUser => this.UserInfo != null && this.UserInfo.IsSuperUser;
 
         [IgnoreColumn]
-        public bool IsAdmin => this.UserInfo.IsAdmin;
+        public bool IsAdmin => this.UserInfo != null && this.UserInfo.IsAdmin;
 
         [IgnoreColumn]
         public bool IsAnonymous => this.UserId == -1;
@@ -147,7 +147,7 @@ using DotNetNuke.Entities.Users;
         public int PostCount => this.TopicCount + this.ReplyCount;
 
         [IgnoreColumn]
-        public DotNetNuke.Entities.Profile.ProfilePropertyDefinitionCollection Properties => this.UserInfo.Profile.ProfileProperties;
+        public DotNetNuke.Entities.Profile.ProfilePropertyDefinitionCollection Properties => this.UserInfo?.Profile?.ProfileProperties;
 
         [IgnoreColumn]
         TimeSpan TimeZoneOffsetForUser => Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
@@ -164,23 +164,20 @@ using DotNetNuke.Entities.Users;
         {
             get
             {
-               // if (string.IsNullOrEmpty(this.userRoles))
-                //{
-                    PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(this.PortalId);
-                    var ids = this.GetRoleIds(this.UserInfo, this.PortalId);
-                    if (string.IsNullOrEmpty(ids))
-                    {
-                        ids = Globals.DefaultAnonRoles + "|-1;||";
-                    }
+                PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(this.PortalId);
+                var ids = this.GetRoleIds(this.UserInfo, this.PortalId);
+                if (string.IsNullOrEmpty(ids))
+                {
+                    ids = Globals.DefaultAnonRoles + "|-1;||";
+                }
 
-                    if (this.IsSuperUser)
-                    {
-                        ids += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
-                    }
+                if (this.IsSuperUser)
+                {
+                    ids += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
+                }
 
-                    ids += "|" + this.UserId + "|" + string.Empty + "|";
-                    this.userRoles = ids;
-               // }
+                ids += "|" + this.UserId + "|" + string.Empty + "|";
+                this.userRoles = ids;
 
                 return this.userRoles;
             }
