@@ -352,9 +352,9 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         #endregion "Deprecated Methods"
 
-        private static string GetPostInfo(int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, bool isMod, string ipAddress, bool isUserOnline, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)
+        internal static string GetPostInfo(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, bool isMod, string ipAddress, bool isUserOnline, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)
         {
-            var sPostInfo = ParseProfileInfo(ModuleId, user, imagePath, isMod, ipAddress, currentUserType, currentUserId, userPrefHideAvatar, timeZoneOffset);
+            var sPostInfo = ParseProfileInfo(moduleId, user, imagePath, isMod, ipAddress, currentUserType, currentUserId, userPrefHideAvatar, timeZoneOffset);
             if (sPostInfo.ToLower().Contains("<br"))
             {
                 return sPostInfo;
@@ -499,12 +499,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 var profileTemplateBuilder = new StringBuilder(profileTemplate);
 
-                // TODO figure out why/if this recurion is possible.  Seems a bit scary as it could create a loop.
-                if (profileTemplate.Contains("[POSTINFO]"))
-                {
-                    var sPostInfo = GetPostInfo(moduleId, author.ForumUser, imagePath, false, ipAddress, author.ForumUser.IsUserOnline, currentUserType, currentUserId, userPrefHideAvatar, timeZoneOffset);
-                    profileTemplate = profileTemplate.Replace("[POSTINFO]", sPostInfo);
-                }
 
                 // Parse DNN profile fields if needed
                 var pt = profileTemplate;

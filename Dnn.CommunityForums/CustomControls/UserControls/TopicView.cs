@@ -1012,8 +1012,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Perform Profile Related replacements
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, reply.ReplyId > 0 ? reply.Content.AuthorId : this.topic.Content.AuthorId);
-            sOutput = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sOutput, author, this.ImagePath, this.CurrentUserType, this.UserPrefHideAvatars, this.UserPrefHideSigs, ipAddress, this.UserId, this.TimeZoneOffset);
-
+            if (sOutput.Contains("[POSTINFO]"))
+            {
+                var sPostInfo = TemplateUtils.GetPostInfo(this.ForumModuleId, author.ForumUser,  this.ImagePath, this.ForumUser.GetIsMod(this.ForumModuleId), ipAddress, author.ForumUser.IsUserOnline, this.CurrentUserType, this.UserId, this.UserPrefHideAvatars, this.TimeZoneOffset);
+                sOutput = sOutput.Replace("[POSTINFO]", sPostInfo);
+            }
 
             // Replace Tags Control
             if (string.IsNullOrWhiteSpace(tags))
@@ -1078,7 +1081,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     this.topicDescription = this.topicDescription.Substring(0, 255);
                 }
-            
+
             }
 
             // Delete Action
