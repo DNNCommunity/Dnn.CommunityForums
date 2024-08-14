@@ -224,44 +224,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(portalId, tabId, moduleId, forumGroupId, forumId, topicId, replyId, authorId, requestUrl);
         }
 
-        internal static string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
-        {
-            string css = string.Empty;
-            switch (reply.GetReplyStatusForUser(forumUser))
-            {
-                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Forbidden:
-                    {
-                        css = "dcf-poststatus-no-access";
-                        break;
-                    }
-                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.New:
-                    {
-                        css = "dcf-poststatus-new";
-                        break;
-                    }
-                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Unread:
-                    {
-                        css = "dcf-poststatus-unread";
-                        break;
-                    }
-                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Read:
-                    {
-                        css = "dcf-poststatus-read";
-                        break;
-                    }
-                default:
-                    {
-                        css = "dcf-poststatus-unread";
-                        break;
-                    }
-            }
-
-            if (reply?.Author?.AuthorId == forumUser?.UserId)
-            {
-                css += " dcf-poststatus-authored";
-            }
-
-            return css;
-        }
     }
 }

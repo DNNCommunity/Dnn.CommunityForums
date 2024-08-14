@@ -126,6 +126,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return sOut;
         }
 
+
+        internal static StringBuilder ReplaceModuleTokens(StringBuilder template, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, ForumUserInfo forumUser, int tabId, int forumModuleId)
+        {
+            template = RemoveObsoleteTokens(template);
+            template = MapLegacyPortalTokenSynonyms(template);
+            template = MapLegacyModuleTokenSynonyms(template);
+
+            string language = forumUser?.UserInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
+            var urlNavigator = new Services.URLNavigator();
+
+            template.Replace("[PORTAL:PORTALID]", portalSettings?.PortalId.ToString());
+            template.Replace("[PORTALNAME]", portalSettings?.PortalName);
+            template.Replace("[MODULEID]", forumModuleId.ToString());
+            template.Replace("[TABID]", tabId.ToString());
+            template.Replace("[PAGENAME]", HttpUtility.HtmlEncode(string.IsNullOrEmpty(portalSettings.ActiveTab.Title) ? portalSettings.ActiveTab.TabName : portalSettings.ActiveTab.Title));
+            if (template.ToString().Contains("[FORUMMAINLINK"))
+            {
+                template.Replace("[FORUMMAINLINK]", string.Format(LocalizeTokenString("[FORUMMAINLINK]", portalSettings, language), urlNavigator.NavigateURL(tabId)));
+            }
+
+            return template;
+        }
+
         internal static StringBuilder ReplaceForumTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, HttpRequest request, int tabId, CurrentUserTypes currentUserType)
         {
             string language = forumUser?.UserInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
@@ -233,9 +256,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 template.Replace("[PARENTFORUMLINK]", string.Empty);
             }
 
-            if (template.ToString().Contains("[FORUM:FORUMDESCRIPTION]"))
+            if (template.ToString().Contains("[FORUMDESCRIPTION]"))
             {
-                template.Replace("[FORUM:FORUMDESCRIPTION]", !string.IsNullOrEmpty(forum.ForumDesc) ? string.Format(LocalizeTokenString("[FORUMDESCRIPTION]", portalSettings, language), forum.ForumDesc) : string.Empty);
+                template.Replace("[FORUMDESCRIPTION]", !string.IsNullOrEmpty(forum.ForumDesc) ? string.Format(LocalizeTokenString("[FORUMDESCRIPTION]", portalSettings, language), forum.ForumDesc) : string.Empty);
             }
 
             if (template.ToString().Contains("[FORUMICON]"))
@@ -243,9 +266,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 template.Replace("[FORUMICON]", string.Format(LocalizeTokenString("[FORUMICON]", portalSettings, language), forum.ForumName, mainSettings.ThemeLocation, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumFolderIcon(forum, forumUser)));
             }
 
-            if (template.ToString().Contains("[DCF:FORUM:STATUS:CSSCLASS]"))
+            if (template.ToString().Contains("[FORUM:STATUSCSSCLASS]"))
             {
-                template.Replace("[DCF:FORUM:STATUS:CSSCLASS]", DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumStatusCss(forum, forumUser));
+                template.Replace("FORUM:STATUSCSSCLASS]", DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumStatusCss(forum, forumUser));
             }
 
             if (template.ToString().Contains("[FORUMICONCSS]") || template.ToString().Contains("[FORUMICONSM]"))
@@ -256,23 +279,34 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             if (template.ToString().Contains("[LASTPOSTSUBJECT"))
-            {
-                int intLength = 0;
-                if ((template.ToString().IndexOf("[LASTPOSTSUBJECT:", 0) + 1) > 0)
+            { 
+                if (forum.LastPostID < 1)
                 {
-                    int inStart = (template.ToString().IndexOf("[LASTPOSTSUBJECT:", 0) + 1) + 17;
-                    int inEnd = (template.ToString().IndexOf("]", inStart - 1) + 1);
-                    string sLength = template.ToString().Substring(inStart - 1, inEnd - inStart);
-                    intLength = Convert.ToInt32(sLength);
+                    template = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.RemovePrefixedToken(template, "[LASTPOSTSUBJECT");
                 }
+                else
+                {
+                    int intLength = 0;
+                    if ((template.ToString().IndexOf("[LASTPOSTSUBJECT:", 0) + 1) > 0)
+                    {
+                        int inStart = (template.ToString().IndexOf("[LASTPOSTSUBJECT:", 0) + 1) + 17;
+                        int inEnd = (template.ToString().IndexOf("]", inStart - 1) + 1);
+                        string sLength = template.ToString().Substring(inStart - 1, inEnd - inStart);
+                        intLength = Convert.ToInt32(sLength);
+                    }
 
-                string lastPostSubjectToken = "[LASTPOSTSUBJECT:" + intLength.ToString() + "]";
-                template.Replace(lastPostSubjectToken, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(forum.LastPostID, forum.LastTopicId, HttpUtility.HtmlDecode(forum.LastPostSubject), intLength, forum));
+                    string lastPostSubjectToken = "[LASTPOSTSUBJECT:" + intLength.ToString() + "]";
+                    template.Replace(lastPostSubjectToken, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(forum.LastPostID, forum.LastTopicId, HttpUtility.HtmlDecode(forum.LastPostSubject), intLength, forum));
+                }
             }
 
             if (template.ToString().Contains("[FORUM:LASTPOSTDISPLAYNAME]"))
             {
-                if (forum.LastPostUserID <= 0)
+                if (forum.LastPostID < 1)
+                {
+                    template.Replace("[FORUM:LASTPOSTDISPLAYNAME]", string.Empty);
+                }
+                else if (forum.LastPostUserID <= 0)
                 {
                     template.Replace("[FORUM:LASTPOSTDISPLAYNAME]", string.Format(LocalizeTokenString("[FORUM:LASTPOSTDISPLAYNAME]", portalSettings, language), forum.LastPostDisplayName));
                 }
@@ -284,39 +318,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
             }
 
-            template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[LASTPOSTDATE", forum.LastPostDateTime, portalSettings, forumUser);
-
-            return template;
-        }
-
-        internal static StringBuilder ReplaceModuleTokens(StringBuilder template, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, ForumUserInfo forumUser, int tabId, int forumModuleId)
-        {
-            template = RemoveObsoleteTokens(template);
-            template = ReplaceTokenSynonyms(template);
-
-            string language = forumUser?.UserInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
-            var urlNavigator = new Services.URLNavigator();
-
-            template.Replace("[PORTALID]", portalSettings?.PortalId.ToString());
-            template.Replace("[PORTALNAME]", portalSettings?.PortalName);
-            template.Replace("[MODULEID]", forumModuleId.ToString());
-            template.Replace("[TABID]", tabId.ToString());
-            if (template.ToString().Contains("[FORUMMAINLINK"))
+            if (forum.LastPostID < 1)
             {
-                template.Replace("[FORUMMAINLINK]", string.Format(LocalizeTokenString("[FORUMMAINLINK]", portalSettings, language), urlNavigator.NavigateURL(tabId)));
+                template = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.RemovePrefixedToken(template,"[LASTPOSTDATE");
+            }
+            else
+            {
+                template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[LASTPOSTDATE", forum.LastPostDateTime, portalSettings, forumUser);
             }
 
-            template.Replace("[PAGENAME]", HttpUtility.HtmlEncode(string.IsNullOrEmpty(portalSettings.ActiveTab.Title) ? portalSettings.ActiveTab.TabName : portalSettings.ActiveTab.Title));
             return template;
         }
-
+        
         internal static StringBuilder ReplaceUserTokens(StringBuilder template, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, ForumUserInfo accessingUser, int forumModuleId)
         {
             string dateFormat = Globals.DefaultDateFormat;
 
-            template = RemoveObsoleteUserTokens(template);
+            template = RemoveObsoleteTokens(template);
             template = MapLegacyUserTokenSynonyms(template);
-            
+
             template.Replace("[FORUMUSER:DISPLAYNAME]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, forumModuleId, true, forumUser.GetIsMod(forumModuleId), forumUser.IsAdmin, forumUser.UserId, forumUser.Username, forumUser.FirstName, forumUser.LastName, forumUser.DisplayName));
 
             template.Replace("[FORUMUSER:USERID]", forumUser?.UserId.ToString());
@@ -413,8 +433,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return template;
         }
 
-
-        internal static StringBuilder ReplaceTopicTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, HttpRequest request, int TabId)
+        internal static StringBuilder ReplaceTopicTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, HttpRequest request, int tabId)
         {
             string language = forumUser?.UserInfo?.Profile.PreferredLocale ?? portalSettings?.DefaultLanguage;
 
@@ -426,7 +445,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var @params = new List<string>();
 
             template = RemoveObsoleteTokens(template);
-            template = ReplaceTokenSynonyms(template);
+            template = MapLegacyTopicTokenSynonyms(template);
 
             /* if user can't read via security, remove topic tokens */
             if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(topic.Forum.Security.Read, forumUser.UserRoles))
@@ -447,8 +466,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 template.Replace("[AF:UI:MINIPAGER]", string.Empty);
             }
 
-            template.Replace("[POSTID]", topic.TopicId.ToString());
-            template.Replace("[AUTHORID]", topic.Content.AuthorId.ToString());
+            // replace tokens common to topics & replies
+            template = ReplacePostTokens(template, topic, portalSettings, mainSettings, navigationManager, forumUser, request, tabId);
+
+            // replace tokens unique to topic itself 
             template.Replace("[REPLYCOUNT]", topic.ReplyCount.ToString());
             template.Replace("[REPLIES]", topic.ReplyCount.ToString());
             template.Replace("[VIEWCOUNT]", topic.ViewCount.ToString());
@@ -588,8 +609,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     @params.Add($"{Literals.GroupId}={topic.Forum.SocialGroupId}");
                 }
 
-                string sLastReplyURL = navigationManager.NavigateURL(TabId, string.Empty, @params.ToArray());
-                string sTopicURL = new ControlUtils().BuildUrl(TabId, topic.Forum.ModuleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, topic.Forum.ForumID, topic.TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
+                string sLastReplyURL = navigationManager.NavigateURL(tabId, string.Empty, @params.ToArray());
+                string sTopicURL = new ControlUtils().BuildUrl(tabId, topic.Forum.ModuleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, topic.Forum.ForumID, topic.TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
                 if (!(string.IsNullOrEmpty(sTopicURL)))
                 {
                     if (sTopicURL.EndsWith("/"))
@@ -619,7 +640,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         @params.Add($"{Literals.GroupId}={topic.Forum.SocialGroupId}");
                     }
 
-                    sLastReadURL = navigationManager.NavigateURL(TabId, string.Empty, @params.ToArray());
+                    sLastReadURL = navigationManager.NavigateURL(tabId, string.Empty, @params.ToArray());
 
                     if (mainSettings.UseShortUrls)
                     {
@@ -633,7 +654,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             @params.Add($"{Literals.GroupId}={topic.Forum.SocialGroupId}");
                         }
 
-                        sLastReadURL = navigationManager.NavigateURL(TabId, string.Empty, @params.ToArray());
+                        sLastReadURL = navigationManager.NavigateURL(tabId, string.Empty, @params.ToArray());
                     }
 
                     if (sTopicURL.EndsWith("/"))
@@ -679,7 +700,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 @params.Add($"${ParamKeys.TopicId}={topic.TopicId}");
                             }
 
-                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + navigationManager.NavigateURL(TabId, string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
+                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + navigationManager.NavigateURL(tabId, string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
                         }
                         else
                         {
@@ -701,6 +722,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         template.Replace("[AF:LABEL:LastPostAuthor]", topic.LastReply.Content.AuthorName);
                     }
                 }
+
                 if (template.ToString().Contains("[LASTPOST]"))
                 {
                     if (topic.LastReply?.ReplyId == 0)
@@ -736,14 +758,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             PageSize = 10;
                         }
 
-                        sLastReplyTemp = sLastReplyTemp.Replace(LastReplySubjectReplaceTag, Utilities.GetLastPostSubject(topic.LastReply.ReplyId, topic.TopicId, topic.ForumId, TabId, topic.LastReply.Content.Subject, iLength, pageSize: PageSize, replyCount: topic.ReplyCount, canRead: true));
+                        sLastReplyTemp = sLastReplyTemp.Replace(LastReplySubjectReplaceTag, Utilities.GetLastPostSubject(topic.LastReply.ReplyId, topic.TopicId, topic.ForumId, tabId, topic.LastReply.Content.Subject, iLength, pageSize: PageSize, replyCount: topic.ReplyCount, canRead: true));
                         if (template.ToString().Contains("[LASTPOSTDISPLAYNAME]"))
                         {
                             if (topic.LastReply.Author.AuthorId > 0)
                             {
                                 sLastReplyTemp = sLastReplyTemp.Replace("[LASTPOSTDISPLAYNAME]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, topic.Forum.ModuleId, true, forumUser.GetIsMod(topic.ModuleId), forumUser.IsAdmin || forumUser.IsSuperUser, topic.LastReply.Author.AuthorId, topic.LastReply.Author.Username, topic.LastReply.Author.FirstName, topic.LastReply.Author.LastName, topic.LastReply.Author.DisplayName).ToString().Replace("&amp;#", "&#"));
                             }
-                            else
+                            else 
                             {
                                 sLastReplyTemp = sLastReplyTemp.Replace("[LASTPOSTDISPLAYNAME]", topic.LastReply.Content.AuthorName);
                             }
@@ -759,57 +781,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
             }
 
-            if (template.ToString().Contains("[DCF:TOPIC:STATUS:CSSCLASS]"))
+            if (template.ToString().Contains("[TOPIC:STATUSCSSCLASS]"))
             {
-                template.Replace("[DCF:TOPIC:STATUS:CSSCLASS]", DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicStatusCss(topic, forumUser));
+                template.Replace("[TOPIC:STATUSCSSCLASS]", topic.GetTopicStatusCss(forumUser));
             }
 
-            if (template.ToString().Contains("[DCF:POST:STATUS:CSSCLASS]"))
-            {
-                template.Replace("[DCF:POST:STATUS:CSSCLASS]", DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetPostStatusCss(topic, forumUser));
-            }
-
-            if (template.ToString().Contains("[POSTICON]") || template.ToString().Contains("[POSTICONCSS]"))
-            {
-                string css = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicStatusCss(topic, forumUser);
-                if (template.ToString().Contains("[POSTICONCSS]"))
-                {
-                    template.Replace("[POSTICONCSS]", css);
-                }
-
-                if (template.ToString().Contains("[POSTICON]"))
-                {
-                    template.Replace("[POSTICON]", string.Format(LocalizeTokenString("[POSTICON]", portalSettings, language), css));
-                }
-            }
-
-            if (template.ToString().Contains("[EDITDATE]"))
-            {
-                if (topic.Content.DateUpdated != topic.Content.DateCreated)
-                {            
-                    template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[EDITDATE", topic.Content.DateUpdated, portalSettings, forumUser);
-                }
-                else
-                {
-                    template.Replace("[EDITDATE]", string.Empty);
-                }
-            }
-
-            if (template.ToString().Contains("[MODEDITDATE]"))
-            {
-                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(topic.Forum.Security.Moderate, forumUser.UserRoles) &&
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(topic.Forum.Security.Edit, forumUser.UserRoles) &&
-                    topic.Content.DateUpdated != topic.Content.DateCreated)
-                {
-                    template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[MODEDITDATE", topic.Content.DateUpdated, portalSettings, forumUser);
-                }
-                else
-                {
-                    template.Replace("[MODEDITDATE]", string.Empty);
-                }
-            }
-
-            template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[POSTDATE", topic.Content.DateCreated, portalSettings, forumUser);
             template = ReplaceDateToken(template, "[AF:LABEL:LastPostDate]", topic.LastReply.Content.DateCreated, portalSettings, forumUser);
 
             if (template.ToString().Contains("[AF:LABEL:TopicAuthor]"))
@@ -837,7 +813,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (template.ToString().Contains("[POSTRATINGDISPLAY]"))
             {
-                    template.Replace("[POSTRATINGDISPLAY]", topic.Rating == 0 ? string.Empty : string.Format(LocalizeTokenString("[TOPICSTATUS]", portalSettings, language), topic.Rating));
+                    template.Replace("[POSTRATINGDISPLAY]", topic.Rating == 0 ? string.Empty : string.Format(LocalizeTokenString("[POSTRATING]", portalSettings, language), topic.Rating));
             }
 
             if (template.ToString().Contains("[STATUS]"))
@@ -864,7 +840,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         @params.Add($"{Literals.GroupId}={topic.Forum.SocialGroupId}");
                     }
 
-                    template.Replace("[NEXTTOPIC]", string.Format(LocalizeTokenString("[NEXTTOPICLINK]", portalSettings, language), Utilities.NavigateURL(TabId, string.Empty, @params.ToArray())));
+                    template.Replace("[NEXTTOPIC]", string.Format(LocalizeTokenString("[NEXTTOPICLINK]", portalSettings, language), Utilities.NavigateURL(tabId, string.Empty, @params.ToArray())));
                 }
             }
 
@@ -887,14 +863,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         @params.Add($"{Literals.GroupId}={topic.Forum.SocialGroupId}");
                     }
 
-                    template.Replace("[PREVTOPIC]", string.Format(LocalizeTokenString("[PREVTOPICLINK]", portalSettings, language), Utilities.NavigateURL(TabId, string.Empty, @params.ToArray())));
+                    template.Replace("[PREVTOPIC]", string.Format(LocalizeTokenString("[PREVTOPICLINK]", portalSettings, language), Utilities.NavigateURL(tabId, string.Empty, @params.ToArray())));
                 }
             }
 
             return template;
         }
 
-        internal static StringBuilder ReplaceReplyTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, HttpRequest request, int TabId)
+        internal static StringBuilder ReplacePostTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, HttpRequest request, int TabId)
         {
             string language = forumUser?.UserInfo?.Profile.PreferredLocale ?? portalSettings?.DefaultLanguage;
 
@@ -904,54 +880,61 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             template = RemoveObsoleteTokens(template);
-            template = ReplaceTokenSynonyms(template);
+            template = MapLegacyPostTokenSynonyms(template);
 
-            template.Replace("[POSTID]", reply.ReplyId.ToString());
-            template.Replace("[AUTHORID]", reply.Content.AuthorId.ToString());
+            template.Replace("[POSTID]", post.PostId.ToString());
+            template.Replace("[AUTHORID]", post.Content.AuthorId.ToString());
 
-            template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[POSTDATE", reply.Content.DateCreated, portalSettings, forumUser);
+            template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[POSTDATE", post.Content.DateCreated, portalSettings, forumUser);
 
-
-            template.Replace("[SUBJECT]", reply.Content.Subject.Replace("[", "&#91").Replace("]", "&#93"));
-
-            template = ReplaceBody(template, reply.Content, mainSettings, request.Url);
+            template = ReplaceBody(template, post.Content, mainSettings, request.Url);
 
             if (template.ToString().Contains("[EDITDATE]"))
             {
-                if (reply.Content.DateUpdated != reply.Content.DateCreated)
+                if (post.Content.DateUpdated != post.Content.DateCreated)
                 {
-                    template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[EDITDATE", reply.Content.DateUpdated, portalSettings, forumUser);
+                    template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[EDITDATE", post.Content.DateUpdated, portalSettings, forumUser);
                 }
-                else
-                {
-                    template.Replace("[EDITDATE]", string.Empty);
-                }
+                template.Replace("[EDITDATE]", string.Empty);
+
             }
 
             if (template.ToString().Contains("[MODEDITDATE]"))
             {
-                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(reply.Forum.Security.Moderate, forumUser.UserRoles) &&
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(reply.Forum.Security.Edit, forumUser.UserRoles) &&
-                    reply.Content.DateUpdated != reply.Content.DateCreated)
-                {            
-                    template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[MODEDITDATE", reply.Content.DateUpdated, portalSettings, forumUser);
-                }
-                else
+                if (forumUser != null &&
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Moderate, forumUser.UserRoles) &&
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Edit, forumUser.UserRoles) &&
+                    post.Content.DateUpdated != post.Content.DateCreated)
                 {
-                    template.Replace("[MODEDITDATE]", string.Empty);
+                    template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[MODEDITDATE", post.Content.DateUpdated, portalSettings, forumUser);
                 }
+                template.Replace("[MODEDITDATE]", string.Empty);
             }
 
-            if (template.ToString().Contains("[DCF:POST:STATUS:CSSCLASS]"))
+            if (template.ToString().Contains("[POST:STATUSCSSCLASS]"))
             {
-                template.Replace("[DCF:POST:STATUS:CSSCLASS]", DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetPostStatusCss(reply, forumUser));
+                template.Replace("[POST:STATUSCSSCLASS]", post.GetPostStatusCss(forumUser));
+            }
+
+            if (template.ToString().Contains("[POSTICON]") || template.ToString().Contains("[POSTICONCSS]"))
+            {
+                string css = post.GetPostStatusCss(forumUser);
+                if (template.ToString().Contains("[POSTICONCSS]"))
+                {
+                    template.Replace("[POSTICONCSS]", css);
+                }
+
+                if (template.ToString().Contains("[POSTICON]"))
+                {
+                    template.Replace("[POSTICON]", string.Format(LocalizeTokenString("[POSTICON]", portalSettings, language), css));
+                }
             }
 
             return template;
         }
-        
+
         private static StringBuilder ExtractAndReplaceDateTokenWithOptionalFormatParameter(StringBuilder template, string tokenPrefix, DateTime? datetime, PortalSettings portalSettings, ForumUserInfo forumUser)
-        {   
+        {
             if (datetime == null ||
                 datetime == DateTime.MinValue ||
                 datetime == SqlDateTime.MinValue.Value ||
@@ -962,7 +945,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             var replacementToken = $"{tokenPrefix}]";
             var dateFormat = Globals.DefaultDateFormat;
-            if (template.ToString().Contains($"{tokenPrefix}:")) 
+            if (template.ToString().Contains($"{tokenPrefix}:"))
             {
                 dateFormat = template.ToString().Substring(template.ToString().IndexOf($"{tokenPrefix}:", StringComparison.Ordinal) + replacementToken.Length, 1);
                 if (string.IsNullOrEmpty(dateFormat))
@@ -973,7 +956,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 replacementToken = $"{tokenPrefix}:{dateFormat}]";
 
             }
-           
+
             return ReplaceDateToken(template, replacementToken, (DateTime)datetime, portalSettings, forumUser, dateFormat);
         }
 
@@ -985,62 +968,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     datetime != SqlDateTime.MinValue.Value &&
                     datetime != Utilities.NullDate())
                 {
-                    return template.Replace(token,
-                        Utilities.GetUserFormattedDateTime(datetime, portalSettings.PortalId, accessingUser.UserId, dateFormat));
+                    return template.Replace(token, Utilities.GetUserFormattedDateTime((DateTime?)datetime, portalSettings.PortalId, accessingUser.UserId, dateFormat));
                 }
 
                 return template.Replace(token, string.Empty);
             }
 
-            return template;
-        }
-
-        private static StringBuilder ReplaceBody(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content, SettingsInfo mainSettings, Uri uri)
-        {
-            if (template.ToString().Contains("[BODY]"))
-            {
-                string sBody = content?.Body;
-                if (string.IsNullOrEmpty(content?.Body))
-                {
-                    sBody = " <br />";
-                }
-                else
-                {
-                    sBody = Utilities.ManageImagePath(HttpUtility.HtmlDecode(content?.Body), uri);
-
-                    sBody = sBody.Replace("[", "&#91;").Replace("]", "&#93;");
-                    if (sBody.ToUpper().Contains("&#91;CODE&#93;"))
-                    {
-                        sBody = Regex.Replace(sBody, "(&#91;CODE&#93;)", "[CODE]", RegexOptions.IgnoreCase);
-                        sBody = Regex.Replace(sBody, "(&#91;\\/CODE&#93;)", "[/CODE]", RegexOptions.IgnoreCase);
-                    }
-
-                    // sBody = sBody.Replace("&lt;CODE&gt;", "<CODE>")
-                    if (Regex.IsMatch(sBody, "\\[CODE([^>]*)\\]", RegexOptions.IgnoreCase))
-                    {
-                        var objCode = new CodeParser();
-                        sBody = CodeParser.ParseCode(HttpUtility.HtmlDecode(sBody));
-                    }
-
-                    sBody = Utilities.StripExecCode(sBody);
-                    if (mainSettings.AutoLinkEnabled)
-                    {
-                        sBody = Utilities.AutoLinks(sBody, uri.Host);
-                    }
-
-                    if (sBody.Contains("<%@"))
-                    {
-                        sBody = sBody.Replace("<%@ ", "&lt;&#37;@ ");
-                    }
-
-                    if (content.Body.ToLowerInvariant().Contains("runat"))
-                    {
-                        sBody = Regex.Replace(sBody, "runat", "&#114;&#117;nat", RegexOptions.IgnoreCase);
-                    }
-                }
-
-                template.Replace("[BODY]", sBody);
-            }
             return template;
         }
 
@@ -1050,6 +983,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             template = RemoveObsoleteTokenByPrefix(template, "[SPLITBUTTONS2");
             // Add This -- obsolete so just remove
             template = RemoveObsoleteTokenByPrefix(template, "[AF:CONTROL:ADDTHIS");
+
+            // no longer using these
+            string[] tokens = {
+                "[DATECREATED]",
+                "[OCCUPATION]",
+                "[WEBSITE]",
+                "[AF:PROFILE:YAHOO]",
+                "[AF:PROFILE:MSN]",
+                "[AF:PROFILE:ICQ]",
+                "[AF:PROFILE:AOL]",
+                "[AF:PROFILE:OCCUPATION]",
+                "[AF:PROFILE:INTERESTS]",
+                "[AF:PROFILE:LOCATION]",
+                "[AF:PROFILE:WEBSITE]",
+                "[AF:CONTROL:AVATAREDIT]",
+                "[AF:BUTTON:PROFILEEDIT]",
+                "[AF:BUTTON:PROFILESAVE]",
+                "[AF:BUTTON:PROFILECANCEL]",
+                "[AF:PROFILE:BIO]",
+                "[MODUSERSETTINGS]",
+            };
+            tokens.ToList().ForEach(t => template = RemoveObsoleteToken(template, t));
+
+            return template;
             return template;
         }
 
@@ -1091,31 +1048,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return template;
         }
 
-        internal static StringBuilder RemoveObsoleteUserTokens(StringBuilder template)
+        internal static StringBuilder MapLegacyModuleTokenSynonyms(StringBuilder template)
         {
-            // no longer using these
-
-            string[] tokens = {
-                "LOCATION]",
-                "[OCCUPATION]",
-                "[WEBSITE]",
-                "[AF:PROFILE:YAHOO]",
-                "[AF:PROFILE:MSN]",
-                "[AF:PROFILE:ICQ]",
-                "[AF:PROFILE:AOL]",
-                "[AF:PROFILE:OCCUPATION]",
-                "[AF:PROFILE:INTERESTS]",
-                "[AF:PROFILE:LOCATION]",
-                "[AF:PROFILE:WEBSITE]",
-                "[AF:CONTROL:AVATAREDIT]",
-                "[AF:BUTTON:PROFILEEDIT]",
-                "[AF:BUTTON:PROFILESAVE]",
-                "[AF:BUTTON:PROFILECANCEL]",
-                "[AF:PROFILE:BIO]",
-                "[MODUSERSETTINGS]",
-            };
-            tokens.ToList().ForEach(t => template = RemoveObsoleteToken(template, t));
-
             return template;
         }
 
@@ -1133,6 +1067,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             template = ReplaceTokenSynonym(template, "[FORUMNAMENOLINK]", "[FORUM:FORUMNAME]");
             template = ReplaceTokenSynonym(template, "[AF:CONTROL:FORUMID]", "[FORUM:FORUMID]");
             template = ReplaceTokenSynonym(template, "[AF:CONTROL:FORUMGROUPID]", "[FORUM:FORUMGROUPID]");
+            template = ReplaceTokenSynonym(template, "[FORUMDESCRIPTION]", "[FORUM:FORUMDESCRIPTION]");
 
             return template;
         }
@@ -1210,12 +1145,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return template;
         }
+        
 
-
-        internal static StringBuilder ReplaceTopicTokenSynonyms(StringBuilder template)
+        internal static StringBuilder MapLegacyTopicTokenSynonyms(StringBuilder template)
         {
             // replace synonyms
-            template = ReplaceTokenSynonym(template, "[DATECREATED]", "[POSTDATE]");
             template = ReplaceTokenSynonym(template, "[AF:LABEL:TopicDateCreated]", "[POSTDATE]");
             template = ReplaceTokenSynonym(template, "[TOPICID]", "[POSTID]");
             template = ReplaceTokenSynonym(template, "[AF:LABEL:ReplyCount]", "[REPLYCOUNT]");
@@ -1223,32 +1157,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return template;
         }
 
-        internal static StringBuilder ReplaceReplyTokenSynonyms(StringBuilder template)
+        internal static StringBuilder MapLegacyPostTokenSynonyms(StringBuilder template)
         {
-            // replace synonyms
-            template = ReplaceTokenSynonym(template, "[DATECREATED]", "[POSTDATE]");
-            template = ReplaceTokenSynonym(template, "[AF:LABEL:TopicDateCreated]", "[POSTDATE]");
             template = ReplaceTokenSynonym(template, "[TOPICID]", "[POSTID]");
             template = ReplaceTokenSynonym(template, "[REPLYID]", "[POSTID]");
-            template = ReplaceTokenSynonym(template, "[VIEWS]", "[VIEWCOUNT]");
-            return template;
-        }
-
-        internal static StringBuilder ReplaceTokenSynonyms(StringBuilder template)
-        {
-            // replace synonyms
-            template = ReplaceTokenSynonym(template, "[DATECREATED]", "[POSTDATE]");
-            template = ReplaceTokenSynonym(template, "[AF:LABEL:TopicDateCreated]", "[POSTDATE]");
-            template = ReplaceTokenSynonym(template, "[TOPICID]", "[POSTID]");
-            template = ReplaceTokenSynonym(template, "[REPLYID]", "[POSTID]");
-            template = ReplaceTokenSynonym(template, "[AF:LABEL:ReplyCount]", "[REPLYCOUNT]");
-            template = ReplaceTokenSynonym(template, "[VIEWS]", "[VIEWCOUNT]");
-            template = ReplaceTokenSynonym(template, "[AF:CONTROL:FORUMID]", "[FORUMID]");
-            template = ReplaceTokenSynonym(template, "[AF:CONTROL:FORUMGROUPID]", "[FORUMGROUPID]");
-            template = ReplaceTokenSynonym(template, "[SENDERUSERNAME]", "[USERNAME]");
-            template = ReplaceTokenSynonym(template, "[SENDERFIRSTNAME", "[FIRSTNAME]");
-            template = ReplaceTokenSynonym(template, "[SENDERLASTNAME]", "[LASTNAME]");
-            template = ReplaceTokenSynonym(template, "[SENDERDISPLAYNAME]", "[DISPLAYNAME]");
             return template;
         }
 
@@ -1320,6 +1232,55 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 language);
         }
 
+        private static StringBuilder ReplaceBody(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content, SettingsInfo mainSettings, Uri uri)
+        {
+            if (template.ToString().Contains("[BODY]"))
+            {
+                string sBody = content?.Body;
+                if (string.IsNullOrEmpty(content?.Body))
+                {
+                    sBody = " <br />";
+                }
+                else
+                {
+                    sBody = Utilities.ManageImagePath(HttpUtility.HtmlDecode(content?.Body), uri);
+
+                    sBody = sBody.Replace("[", "&#91;").Replace("]", "&#93;");
+                    if (sBody.ToUpper().Contains("&#91;CODE&#93;"))
+                    {
+                        sBody = Regex.Replace(sBody, "(&#91;CODE&#93;)", "[CODE]", RegexOptions.IgnoreCase);
+                        sBody = Regex.Replace(sBody, "(&#91;\\/CODE&#93;)", "[/CODE]", RegexOptions.IgnoreCase);
+                    }
+
+                    // sBody = sBody.Replace("&lt;CODE&gt;", "<CODE>")
+                    if (Regex.IsMatch(sBody, "\\[CODE([^>]*)\\]", RegexOptions.IgnoreCase))
+                    {
+                        var objCode = new CodeParser();
+                        sBody = CodeParser.ParseCode(HttpUtility.HtmlDecode(sBody));
+                    }
+
+                    sBody = Utilities.StripExecCode(sBody);
+                    if (mainSettings.AutoLinkEnabled)
+                    {
+                        sBody = Utilities.AutoLinks(sBody, uri.Host);
+                    }
+
+                    if (sBody.Contains("<%@"))
+                    {
+                        sBody = sBody.Replace("<%@ ", "&lt;&#37;@ ");
+                    }
+
+                    if (content.Body.ToLowerInvariant().Contains("runat"))
+                    {
+                        sBody = Regex.Replace(sBody, "runat", "&#114;&#117;nat", RegexOptions.IgnoreCase);
+                    }
+                }
+
+                template.Replace("[BODY]", sBody);
+            }
+            return template;
+        }
+        
         private static string GetTopicTitle(string body)
         {
             if (!string.IsNullOrEmpty(body))

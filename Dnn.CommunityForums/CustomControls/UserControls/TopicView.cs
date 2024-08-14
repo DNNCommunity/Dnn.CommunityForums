@@ -428,11 +428,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(stringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId);
             string sOutput = stringBuilder.ToString();
 
-            // Handle the postinfo token if present
-            if (sOutput.Contains("[POSTINFO]") && this.ForumInfo.ProfileTemplateId > 0)
-            {
-                sOutput = sOutput.Replace("[POSTINFO]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "ProfileInfo", this.ForumInfo.ProfileTemplateId));
-            }
 
             // Add Topic Scripts
             var ctlTopicScripts = (af_topicscripts)this.LoadControl("~/DesktopModules/ActiveForums/controls/af_topicscripts.ascx");
@@ -1045,9 +1040,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (reply.ReplyId > 0)
             {
-                sbOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceReplyTokens(sbOutput, reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId);
+                sbOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplacePostTokens(sbOutput, reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId);
             }
-            sbOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceTopicTokens(sbOutput, this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId);
+            sbOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplacePostTokens(sbOutput, this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId);
+            sbOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(sbOutput, this.PortalSettings, this.MainSettings, author.ForumUser, this.ForumUser, this.ForumModuleId);
 
             if (reply.ReplyId > 0 && this.bSplit && (this.bModerate || this.topic.Content.AuthorId == this.UserId))
             {

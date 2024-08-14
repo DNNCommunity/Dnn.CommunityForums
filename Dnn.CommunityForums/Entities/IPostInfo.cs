@@ -42,5 +42,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic { get; }
 
+        string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
     }
 }

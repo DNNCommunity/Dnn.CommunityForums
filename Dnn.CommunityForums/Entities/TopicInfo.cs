@@ -339,5 +339,103 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread;
             }
         }
+
+        [IgnoreColumn()]
+        internal string GetTopicStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            string css = string.Empty;
+            switch (this.GetTopicStatusForUser(forumUser))
+            {
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Forbidden:
+                    {
+                        css = "dcf-topicstatus-no-access";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.New:
+                    {
+                        css = "dcf-topicstatus-new";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread:
+                    {
+                        css = "dcf-topicstatus-unread";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Read:
+                    {
+                        css = "dcf-topicstatus-read";
+                        break;
+                    }
+                default:
+                    {
+                        css = "dcf-topicstatus-unread";
+                        break;
+                    }
+            }
+
+            if (this.Author?.AuthorId == forumUser?.UserId)
+            {
+                css += " dcf-topicstatus-authored";
+            }
+            return css;
+
+        }
+        
+        internal string GetTopicStatusIconCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            switch (this.GetTopicStatusForUser(forumUser))
+            {
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread:
+                    {
+                        return "fa fa-file-o fa-2x fa-red";
+                    }
+
+                default:
+                    {
+                        return "fa fa-file-o fa-2x fa-grey";
+                    }
+
+            }
+        }
+
+        public string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            string css = string.Empty;
+            switch (this.GetTopicStatusForUser(forumUser))
+            {
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Forbidden:
+                    {
+                        css = "dcf-poststatus-no-access";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.New:
+                    {
+                        css = "dcf-poststatus-new";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread:
+                    {
+                        css = "dcf-poststatus-unread";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Read:
+                    {
+                        css = "dcf-poststatus-read";
+                        break;
+                    }
+                default:
+                    {
+                        css = "dcf-poststatus-unread";
+                        break;
+                    }
+            }
+
+            if (this.Author?.AuthorId == forumUser?.UserId)
+            {
+                css += " dcf-poststatus-authored";
+            }
+
+            return css;
+        }
     }
 }

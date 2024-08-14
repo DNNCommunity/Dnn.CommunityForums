@@ -37,7 +37,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     {
         private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author;
 
         [IgnoreColumn()]
@@ -153,6 +152,46 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 /* this is to handle some limited unit testing without retrieving data */
                 return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Unread;
             }
+        }
+        
+        public string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            string css = string.Empty;
+            switch (this.GetReplyStatusForUser(forumUser))
+            {
+                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Forbidden:
+                    {
+                        css = "dcf-poststatus-no-access";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.New:
+                    {
+                        css = "dcf-poststatus-new";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Unread:
+                    {
+                        css = "dcf-poststatus-unread";
+                        break;
+                    }
+                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Read:
+                    {
+                        css = "dcf-poststatus-read";
+                        break;
+                    }
+                default:
+                    {
+                        css = "dcf-poststatus-unread";
+                        break;
+                    }
+            }
+
+            if (this.Author?.AuthorId == forumUser?.UserId)
+            {
+                css += " dcf-poststatus-authored";
+            }
+
+            return css;
         }
     }
 }
