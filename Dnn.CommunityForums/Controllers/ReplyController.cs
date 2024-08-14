@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (ri != null)
             {
                 ri.GetTopic();
-                ri.GetForum();
+                ri.Topic.GetForum();
                 ri.GetContent();
                 ri.GetAuthor();
             }

@@ -18,24 +18,31 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Collections;
-using DotNetNuke.ComponentModel.DataAnnotations;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+
     [Obsolete("Deprecated in Community Forums. Scheduled for removal in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.TopicInfo")]
     public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.TopicInfo { }
 }
 
+#pragma warning disable SA1403 // File may only contain a single namespace
 namespace DotNetNuke.Modules.ActiveForums.Entities
+#pragma warning restore SA1403 // File may only contain a single namespace
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     [TableName("activeforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
-    public class TopicInfo
+#pragma warning disable SA1402 // File may only contain a single type
+    public class TopicInfo : IPostInfo
+#pragma warning restore SA1402 // File may only contain a single type
+       
     {
         [IgnoreColumn()]
         public class Category
@@ -61,8 +68,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private int forumId = -1;
         private string tags = string.Empty;
         private string selectedcategories;
-
+        
         public int TopicId { get; set; }
+
+        [IgnoreColumn()]
+        public int PostId { get => this.TopicId; }
 
         [IgnoreColumn()]
         public int ForumId
@@ -132,7 +142,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int PrevTopic { get; set; }
 
         public string TopicData { get; set; } = string.Empty;
+        
+        [IgnoreColumn()]
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
+        {
+            get => this;
+        }
 
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetTopic()
+        {
+            return this;
+        }
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
