@@ -607,33 +607,33 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static string GetForumFolderIcon(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        internal static string GetForumFolderIcon(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings)
         {
             switch (forum.GetForumStatusForUser(forumUser))
             {
                 case ForumStatus.Forbidden:
                     {
-                        return "folder_forbidden.png";
+                        return mainSettings.ThemeLocation + "images/folder_forbidden.png";
                     }
                 case ForumStatus.Empty:
                     {
-                        return "folder_closed.png";
+                        return mainSettings.ThemeLocation + "images/folder_closed.png";
                     }
                 case ForumStatus.NewTopics:
                     {
-                        return "folder_new.png";
+                        return mainSettings.ThemeLocation + "images/folder_new.png";
                     }
                 case ForumStatus.UnreadTopics:
                     {
-                        return "folder_new.png";
+                        return mainSettings.ThemeLocation + "images/folder_new.png";
                     }
                 case ForumStatus.AllTopicsRead:
                     {
-                        return "folder.png";
+                        return mainSettings.ThemeLocation + "images/folder.png";
                     }
                 default:
                     {
-                        return "folder.png";
+                        return mainSettings.ThemeLocation + "images/folder.png";
                     }
             }
         }

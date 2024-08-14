@@ -24,11 +24,12 @@ using System;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Tokens;
 
     [TableName("activeforums_UserProfiles")]
     [PrimaryKey("ProfileId", AutoIncrement = true)]
     [Scope("PortalId")]
-    public class ForumUserInfo
+    public class ForumUserInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
         private DotNetNuke.Entities.Users.UserInfo userInfo;
         private string userRoles = Globals.DefaultAnonRoles + "|-1;||";
@@ -313,6 +314,67 @@ using DotNetNuke.Entities.Users;
             }
 
             return 0;
+        }
+
+         
+        [IgnoreColumn]
+        public DotNetNuke.Services.Tokens.CacheLevel Cacheability
+        {
+            get
+            {
+                return DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
+            }
+        }
+
+        [IgnoreColumn]
+        public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+        {
+            propertyName = propertyName.ToLowerInvariant();
+            switch (propertyName)
+            {
+                case "userid":
+                    return PropertyAccess.FormatString(this.UserId.ToString(), format);
+                case "username":
+                    return PropertyAccess.FormatString(this.Username.ToString(), format);
+                case "avatar":
+                    return PropertyAccess.FormatString(this.Avatar.ToString(), format);
+                case "usercaption":
+                    return PropertyAccess.FormatString(this.UserCaption.ToString(), format);
+                case "signature":
+                    return PropertyAccess.FormatString(this.Signature.ToString(), format);
+                case "displayname":
+                    return PropertyAccess.FormatString(this.DisplayName, format);
+                case "email":
+                    return PropertyAccess.FormatString(this.Email, format);
+                case "firstname":
+                    return PropertyAccess.FormatString(this.FirstName.ToString(), format);
+                case "lastname":
+                    return PropertyAccess.FormatString(this.LastName.ToString(), format);
+                case "datecreated":
+                    return Utilities.GetUserFormattedDateTime((DateTime?)this.DateCreated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
+                case "dateupdated":
+                    return Utilities.GetUserFormattedDateTime(this.DateUpdated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
+                case "datelastpost":
+                    return Utilities.GetUserFormattedDateTime(this.DateLastPost, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
+                case "datelastreply":
+                    return Utilities.GetUserFormattedDateTime(this.DateLastReply, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)); 
+                case "datelastactivity":
+                    return Utilities.GetUserFormattedDateTime(this.DateLastActivity, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
+                case "postcount":
+                    return PropertyAccess.FormatString(this.PostCount.ToString(), format);
+                case "replycount":
+                    return PropertyAccess.FormatString(this.ReplyCount.ToString(), format);
+                case "topiccount":
+                    return PropertyAccess.FormatString(this.TopicCount.ToString(), format);
+                case "answercount":
+                    return PropertyAccess.FormatString(this.AnswerCount.ToString(), format);
+                case "rewardpoints":
+                    return PropertyAccess.FormatString(this.RewardPoints.ToString(), format);
+
+            }
+
+            propertyNotFound = true;
+            return string.Empty;
         }
     }
 }

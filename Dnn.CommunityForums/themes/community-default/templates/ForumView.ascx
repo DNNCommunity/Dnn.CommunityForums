@@ -2,9 +2,12 @@
 <div class="dcf-forum-view">
 [BREADCRUMB]
 [GROUPSECTION]
+	
+	PORTAL NAME : [PORTAL:PORTALNAME]
+	USER NAME: [USER:DISPLAYNAME]
 <div class="dcf-forums">
 		<div class="dcf-group-title-wrap">
-			<h3 class="dcf-group-title">[RESX:Group]: [GROUPNAME]</h3>
+			<h3 class="dcf-group-title">[RESX:Group]: [FORUM:GROUPNAME]</h3>
 			<span class="dcf-group-collapse">[GROUPCOLLAPSE]</span>
 		</div>
 		
@@ -37,18 +40,18 @@
 						<td class="dcf-col dcf-col-text">
 							<div class="dcf-col-text-inner">
 								[FORUMICONCSS]
-								<div class="dcf-forum-title-text"><h4 class="dcf-forum-title">[FORUMNAME]</h4>
-								<div class="dcf-forum-description">[FORUMDESCRIPTION]</div>
+								<div class="dcf-forum-title-text"><h4 class="dcf-forum-title">[FORUM:FORUMNAME]</h4>
+								<div class="dcf-forum-description">[FORUM:FORUMDESCRIPTION]</div>
 								</div>
 							</div>
 						</td>
-						<td class="dcf-col dcf-col-topics">[TOTALTOPICS] </td>
-						<td class="dcf-col dcf-col-replies">[TOTALREPLIES]</td>
-						<td class="dcf-col dcf-col-subscribers">[FORUMSUBSCRIBERCOUNT]</td>
+						<td class="dcf-col dcf-col-topics">[FORUM:TOTALTOPICS]</td>
+						<td class="dcf-col dcf-col-replies">[FORUM:TOTALREPLIES]</td>
+						<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
 						<td class="dcf-col dcf-col-last-post">
 							<span class="dcf-lastpost-subject">[LASTPOSTSUBJECT:25]</span>
-							<span class="dcf-lastpost-author">[RESX:BY] [DISPLAYNAME]</span>
-							<span class="dcf-lastpost-date">[LASTPOSTDATE]</span>
+                            <span class="dcf-lastpost-author">[FORUM:LASTPOSTDISPLAYNAME|[RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;{0}]</span>
+							<span class="dcf-lastpost-date">[FORUM:LASTPOSTDATE]</span>
 						</td>
 					</tr>
 
@@ -65,13 +68,13 @@
 
 									<td class="dcf-col dcf-col-icon"></td>
 									<td class="dcf-col dcf-col-text">
-												<span class="aftopictitle">[FORUMNAME]</span>
-												<span class="aftopicsubtitle">[FORUMDESCRIPTION]</span>
+												<span class="aftopictitle">[FORUM:FORUMNAME]</span>
+												<span class="aftopicsubtitle">[FORUM:FORUMDESCRIPTION]</span>
 									</td>
-									<td class="dcf-col dcf-col-topics">[TOTALTOPICS]</td>
-									<td class="dcf-col dcf-col-replies">[TOTALREPLIES]</td>
-									<td class="dcf-col dcf-col-subscribers">[FORUMSUBSCRIBERCOUNT]</td>
-									<td class="dcf-col dcf-col-last-post"><div class="af_lastpost" style="white-space:nowrap;">[LASTPOSTSUBJECT:25]<br />[RESX:BY]&nbsp;[DISPLAYNAME]<br />[LASTPOSTDATE]</div></td>
+									<td class="dcf-col dcf-col-topics">[FORUM:TOTALTOPICS]</td>
+									<td class="dcf-col dcf-col-replies">[FORUM:TOTALREPLIES]</td>
+									<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
+									<td class="dcf-col dcf-col-last-post"><div class="af_lastpost" style="white-space:nowrap;">[LASTPOSTSUBJECT:25][FORUM:LASTPOSTDISPLAYNAME|<br />[RESX:BY]&nbsp;{0}][FORUM:LASTPOSTDATE|<br />{0}]</div></td>
 								</tr>
 					[/SUBFORUMS]
 				</tbody>

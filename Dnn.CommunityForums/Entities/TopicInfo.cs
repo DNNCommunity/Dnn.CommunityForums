@@ -18,12 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Collections;
-using DotNetNuke.ComponentModel.DataAnnotations;
+#pragma warning disable SA1402 // File may only contain a single type
+#pragma warning disable SA1403 // File may only contain a single namespace
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -33,9 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.TopicInfo { }
 }
 
-#pragma warning disable SA1403 // File may only contain a single namespace
 namespace DotNetNuke.Modules.ActiveForums.Entities
-#pragma warning restore SA1403 // File may only contain a single namespace
 {
     using System;
     using System.Collections.Generic;
@@ -43,12 +37,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.Collections;
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Services.Tokens;
 
     [TableName("activeforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
-#pragma warning disable SA1402 // File may only contain a single type
-    public class TopicInfo : IPostInfo
-#pragma warning restore SA1402 // File may only contain a single type
+    public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.IPostInfo
        
     {
         [IgnoreColumn()]
@@ -436,6 +431,159 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
 
             return css;
+        }
+
+                
+        [IgnoreColumn]
+        public DotNetNuke.Services.Tokens.CacheLevel Cacheability
+        {
+            get
+            {
+                return DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
+            }
+        }
+        [IgnoreColumn]
+        public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+        {
+            var navigationManager = new Services.URLNavigator().NavigationManager();
+            var portalSettings = Utilities.GetPortalSettings(this.PortalId);
+            var mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
+
+            propertyName = propertyName.ToLowerInvariant();
+            switch (propertyName)
+            {
+                case "postid":
+                    return PropertyAccess.FormatString(this.PostId.ToString(), format);
+                case "topicid":
+                    return PropertyAccess.FormatString(this.TopicId.ToString(), format);
+                case "contentid":
+                    return PropertyAccess.FormatString(this.ContentId.ToString(), format);
+                case "forumid":
+                    return PropertyAccess.FormatString(this.forumId.ToString(), format);
+                case "subject":
+                    return PropertyAccess.FormatString(this.Subject, format);
+                case "summary":
+                    return PropertyAccess.FormatString(this.Summary, format);
+                case "body":
+                    return PropertyAccess.FormatString(this.Content.Body, format);
+                case "lastreplyid":
+                    return PropertyAccess.FormatString(this.LastReplyId.ToString(), format);
+                case "replycount":
+                    return PropertyAccess.FormatString(this.ReplyCount.ToString(), format);
+                case "viewcount":
+                    return PropertyAccess.FormatString(this.ViewCount.ToString(), format);
+                case "subscribercount":
+                    return PropertyAccess.FormatString(this.SubscriberCount.ToString(), format);
+                case "status":
+                    return this.StatusId == -1 ? string.Empty : PropertyAccess.FormatString(this.StatusId.ToString(), format);
+                case "statusid":
+                    return PropertyAccess.FormatString(this.StatusId.ToString(), format);
+                case "previoustopic":
+                    return PropertyAccess.FormatString(this.PrevTopic.ToString(), format);
+                case "previoustopiclink":
+                    if (this.PrevTopic != 0)
+                    {
+                        var @params = new List<string>()
+                        {
+                            $"{ParamKeys.ViewType}={Views.Topic}",
+                            $"{ParamKeys.ForumId}={this.ForumId}",
+                            $"{ParamKeys.TopicId}={this.PrevTopic}",
+                        };
+                        if (this.Forum.SocialGroupId > 0)
+                        {
+                            @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+                        }
+                        return PropertyAccess.FormatString(Utilities.NavigateURL(this.Forum.TabId, string.Empty, @params.ToArray()), format);
+                    }
+
+                    return string.Empty;
+                case "nexttopic":
+                    return PropertyAccess.FormatString(this.NextTopic.ToString(), format);
+                case "nexttopiclink":
+                    if (this.NextTopic != 0)
+                    {
+                        var @params = new List<string>()
+                        {
+                            $"{ParamKeys.ViewType}={Views.Topic}",
+                            $"{ParamKeys.ForumId}={this.ForumId}",
+                            $"{ParamKeys.TopicId}={this.NextTopic}",
+                        };
+                        if (this.Forum.SocialGroupId > 0)
+                        {
+                            @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+                        }
+                        return PropertyAccess.FormatString(Utilities.NavigateURL(this.Forum.TabId, string.Empty, @params.ToArray()), format);
+                    }
+
+                    return string.Empty;
+                case "rating":
+                    return PropertyAccess.FormatString(this.Rating.ToString(), format);
+                case "topicurl":
+                    return PropertyAccess.FormatString(this.TopicUrl.ToString(), format);
+                case "forumurl":
+                    return PropertyAccess.FormatString(this.ForumURL.ToString(), format);
+                case "link":
+                    return PropertyAccess.FormatString(this.URL.ToString(), format);
+                case "url":
+                    return PropertyAccess.FormatString(this.URL.ToString(), format);
+                case "lastreplydisplayname":
+                    return PropertyAccess.FormatString(this.lastReplyAuthor.DisplayName, format);
+                case "datecreated":
+                    return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateCreated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
+                case "dateupdated":
+                    return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateUpdated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
+                case "modeditdate":
+                    if (this.Forum.GetIsMod(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID)) &&
+                        this.Content.DateUpdated != this.Content.DateCreated)
+                    {
+                        return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateUpdated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
+                    }
+
+                    return string.Empty;
+                case "lastpostdate":
+                    return this.LastReply?.Content != null ? PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.LastReply.Content.DateCreated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format) : string.Empty;
+                case "editdate":
+                    return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateUpdated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
+                case "authorid":
+                    return PropertyAccess.FormatString(this.Author.AuthorId.ToString(), format);
+                case "authorname":
+                    return PropertyAccess.FormatString(this.Content.AuthorName.ToString(), format);
+                case "authordisplayname":
+                    return PropertyAccess.FormatString(this.Author.DisplayName.ToString(), format);
+                case "authorfirstname":
+                    return PropertyAccess.FormatString(this.Author.FirstName.ToString(), format);
+                case "authorlastname":
+                    return PropertyAccess.FormatString(this.Author.LastName.ToString(), format);
+                case "authoremail":
+                    return PropertyAccess.FormatString(this.Author.Email.ToString(), format);
+                case "lastreplyauthorid":
+                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Author.AuthorId.ToString(), format) : string.Empty;
+                case "lastreplyauthorname":
+                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Content.AuthorName.ToString(), format) : string.Empty;
+                case "lastreplyauthordisplayname":
+                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Author.DisplayName.ToString(), format) : string.Empty;
+                case "lastreplyauthorfirstname":
+                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Author.FirstName.ToString(), format) : string.Empty;
+                case "lastreplyauthorlastname":
+                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Author.LastName.ToString(), format) : string.Empty;
+                case "lastreplyauthoremail":
+                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Author.Email.ToString(), format) : string.Empty;
+                case "lastpostauthor":
+                    return this.LastReplyId > 0 ? this.LastReply.Author.AuthorId > 0 ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this.Forum.ModuleId, true, 
+                            new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId), 
+                            new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || 
+                            new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser, this.LastReply.Author.AuthorId, this.LastReply.Author.Username, this.LastReply.Author.FirstName, this.LastReply.Author.LastName, this.LastReply.Author.DisplayName).Replace("&amp;#", "&#")
+                       : this.LastReply.Content.AuthorName : string.Empty;
+                case "statuscssclass":
+                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
+                case "posticon":
+                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
+                case "posticoncss":
+                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
+            }
+
+            propertyNotFound = true;
+            return string.Empty;
         }
     }
 }

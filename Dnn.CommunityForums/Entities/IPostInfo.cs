@@ -18,9 +18,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Services.Tokens;
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    public interface IPostInfo
+    public interface IPostInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
         int ForumId { get; set; }
 
@@ -43,5 +47,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic { get; }
 
         string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
+
+
+
     }
 }

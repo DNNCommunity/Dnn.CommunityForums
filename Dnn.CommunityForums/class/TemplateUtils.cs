@@ -239,9 +239,6 @@ namespace DotNetNuke.Modules.ActiveForums
             string forumURL = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildForumUrl(navigationManager, portalSettings, moduleSettings, forumInfo);
 
             var templateStringbuilder = new StringBuilder(template);
-            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(templateStringbuilder, portalSettings, moduleSettings, author.ForumUser, accessingUser, moduleID);
-            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(templateStringbuilder, forumInfo, portalSettings, moduleSettings, navigationManager, author.ForumUser, HttpContext.Current.Request, tabID, CurrentUserTypes.Auth);
-            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(templateStringbuilder, portalSettings, moduleSettings, author.ForumUser, tabID, moduleID);
 
 
             templateStringbuilder.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(dateCreated, userCulture, timeZoneOffset));
@@ -279,6 +276,10 @@ namespace DotNetNuke.Modules.ActiveForums
             templateStringbuilder.Replace("[SUBJECT]", subject);
             templateStringbuilder.Replace("[BODY]", body);
             templateStringbuilder.Replace("[Body]", body);
+            
+            //templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(templateStringbuilder, portalSettings, moduleSettings, author.ForumUser, accessingUser, moduleID);
+            //templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(templateStringbuilder, forumInfo, portalSettings, moduleSettings, navigationManager, author.ForumUser, HttpContext.Current.Request, tabID, CurrentUserTypes.Auth);
+            //templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(templateStringbuilder, portalSettings, moduleSettings, author.ForumUser, tabID, moduleID);
 
             return templateStringbuilder.ToString();
         }
