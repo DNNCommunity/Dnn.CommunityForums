@@ -546,7 +546,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 result.Replace("[AF:PROFILE:PMLINK]", pmLink);
                 result.Replace("[AF:PROFILE:PMURL]", pmUrl);
 
-                result = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(result, portalSettings, mainSettings, author.ForumUser, accessingUser, moduleId);
+                result = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceUserTokens(result, portalSettings, mainSettings, author.ForumUser, accessingUser, moduleId);
 
                 return result.ToString();
             }

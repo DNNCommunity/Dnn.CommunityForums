@@ -43,6 +43,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadSubForums();
                     forum.LoadProperties();
                     forum.LoadSettings();
+                    forum.LoadPortalSettings();
+                    forum.LoadMainSettings();
                     forum.LoadSecurity();
                 }
 
@@ -576,97 +578,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return sb.ToString();
         }
 
-        internal static string GetForumStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
-        {
-            switch (forum.GetForumStatusForUser(forumUser))
-            {
-                case ForumStatus.Forbidden:
-                    {
-                        return "dcf-forumstatus-no-access";
-                    }
-                case ForumStatus.Empty:
-                    {
-                        return "dcf-forumstatus-no-topics";
-                    }
-                case ForumStatus.NewTopics:
-                    {
-                        return "dcf-forumstatus-new-topics";
-                    }
-                case ForumStatus.UnreadTopics:
-                    {
-                        return "dcf-forumstatus-unread-topics";
-                    }
-                case ForumStatus.AllTopicsRead:
-                    {
-                        return "dcf-forumstatus-all-topics-read";
-                    }
-                default:
-                    {
-                        return "dcf-forumstatus-all-topics-read";
-                    }
-            }
-        }
-
-        internal static string GetForumFolderIcon(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings)
-        {
-            switch (forum.GetForumStatusForUser(forumUser))
-            {
-                case ForumStatus.Forbidden:
-                    {
-                        return mainSettings.ThemeLocation + "images/folder_forbidden.png";
-                    }
-                case ForumStatus.Empty:
-                    {
-                        return mainSettings.ThemeLocation + "images/folder_closed.png";
-                    }
-                case ForumStatus.NewTopics:
-                    {
-                        return mainSettings.ThemeLocation + "images/folder_new.png";
-                    }
-                case ForumStatus.UnreadTopics:
-                    {
-                        return mainSettings.ThemeLocation + "images/folder_new.png";
-                    }
-                case ForumStatus.AllTopicsRead:
-                    {
-                        return mainSettings.ThemeLocation + "images/folder.png";
-                    }
-                default:
-                    {
-                        return mainSettings.ThemeLocation + "images/folder.png";
-                    }
-            }
-        }
-
-        internal static string GetForumFolderIconCss(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
-        {
-            switch (forum.GetForumStatusForUser(forumUser))
-            {
-                case ForumStatus.Forbidden:
-                    {
-                        return "fa-folder fa-grey";
-                    }
-                case ForumStatus.Empty:
-                    {
-                        return "fa-folder-o fa-grey";
-                    }
-                case ForumStatus.NewTopics:
-                    {
-                        return "fa-folder fa-red";
-                    }
-                case ForumStatus.UnreadTopics:
-                    {
-                        return "fa-folder fa-red";
-                    }
-                case ForumStatus.AllTopicsRead:
-                    {
-                        return "fa-folder fa-blue";
-                    }
-                default:
-                    {
-                        return "fa-folder fa-blue";
-                    }
-            }
-        }
     }
 }

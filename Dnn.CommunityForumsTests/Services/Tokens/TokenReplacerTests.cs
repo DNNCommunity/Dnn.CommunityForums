@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
+namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
 {
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Controllers;
@@ -9,7 +9,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
     using System.Text;
     
     [TestFixture]
-    public class TokenControllerTests
+    public class TokenReplacerTests
     {
         [Test]
         public void ReplaceTopicTokensTest()
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var expectedResult = "blah blah [SPLITBUTTONS1] blah  [TOPICSUBJECT] blah";
             // Act
 
-            var actualResult = TokenController.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, null, null, navigationManager, mockUser.Object, mockRequest.Object, 0).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, null, null, navigationManager, mockUser.Object, mockRequest.Object).ToString();
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var expectedResult = "blah blah Test Forum Group blah blah";
 
             // Act
-            var actualResult = TokenController.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, mockUser.Object, HttpContext.Current.Request, 0, CurrentUserTypes.Auth).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, mockUser.Object, HttpContext.Current.Request, 0, CurrentUserTypes.Auth).ToString();
             
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var expectedResult = "blah blah  blah blah";
             
             // Act
-            var actualResult = TokenController.RemovePrefixedToken(templateStringBuilder, tokenPrefix).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemovePrefixedToken(templateStringBuilder, tokenPrefix).ToString();
             
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -107,7 +107,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var expectedResult = "blah blah  blah blah";
             
             // Act
-            var actualResult = TokenController.RemovePrefixedToken(templateStringBuilder, tokenPrefix).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemovePrefixedToken(templateStringBuilder, tokenPrefix).ToString();
             
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));

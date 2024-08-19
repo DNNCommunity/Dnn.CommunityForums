@@ -2,11 +2,11 @@
 <%@ Register TagPrefix="am" TagName="MarkForumRead" Src="~/DesktopModules/ActiveForums/controls/af_markallread.ascx"%>
 <%@ Register TagPrefix="am" TagName="MiniSearch" Src="~/DesktopModules/ActiveForums/controls/af_searchquick.ascx"%>
 <div class="dcf-topics-view">
-	<div class="dcf-breadcrumb"><i class="fa fa-home"></i>  [FORUMMAINLINK] <i class="fa fa-chevron-right"></i> [FORUMGROUPLINK]</div>
+	<div class="dcf-breadcrumb"><i class="fa fa-home"></i>  [FORUMMAINLINK] <i class="fa fa-chevron-right"></i> [FORUM:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUM:GROUPNAME]</a>]</div>
 	<div class="dcf-actions dcf-actions-top dcf-cols">
 		
 		<div class="dcf-forum-title-wrap">
-		<h2 class="dcf-forum-title">[TRESX:Forum]: [FORUMLINK]</h2>
+		<h2 class="dcf-forum-title">[TRESX:Forum]: [FORUM:FORUMLINK|<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]</h2>
 		<div class="dcf-buttons">[ADDTOPIC]</div>
 		</div>
 		
@@ -70,9 +70,9 @@
 										<div rowspan="2" class="dcf-status">[STATUS]</div>
 
 							</td>
-							<td class="dcf-col dcf-col-replies">[REPLIES]</td>
-							<td class="dcf-col dcf-col-views">[VIEWS]</td>
-							<td class="dcf-col dcf-col-views">[TOPICSUBSCRIBERCOUNT]</td>
+							<td class="dcf-col dcf-col-replies">[FORUMTOPIC:REPLYCOUNT]</td>
+							<td class="dcf-col dcf-col-views">[FORUMTOPIC:VIEWCOUNT]</td>
+							<td class="dcf-col dcf-col-views">[FORUMTOPIC:SUBSCRIBERCOUNT]</td>
 							<td class="dcf-col dcf-col-last-post"><div class="dcf-_lastpost" style="white-space:nowrap;">[LASTPOST][RESX:BY] <i class="fa fa-user fa-blue"></i>&nbsp;[LASTPOSTDISPLAYNAME][AF:ICONLINK:LASTREPLY]<br />[LASTPOSTDATE][/LASTPOST]</div></td>
 						</tr>
 					</tbody>
@@ -149,11 +149,11 @@
 							</div>
 						</div>
 					</td>
-					<td class="dcf-col dcf-col-replies">[REPLIES]</td>
+					<td class="dcf-col dcf-col-replies">[FORUMTOPIC:REPLYCOUNT]</td>
 					<td class="dcf-col dcf-col-ratings">[POSTRATINGDISPLAY]</td>
 					<td class="dcf-col dcf-col-status">[STATUS]</td>
-					<td class="dcf-col dcf-col-views">[VIEWS]</td>
-					<td class="dcf-col dcf-col-subscribers">[TOPICSUBSCRIBERCOUNT]</td>
+					<td class="dcf-col dcf-col-views">[FORUMTOPIC:VIEWCOUNT]</td>
+					<td class="dcf-col dcf-col-subscribers">[FORUMTOPIC:SUBSCRIBERCOUNT]</td>
 					<td class="dcf-col dcf-col-last-post"><div class="dcf-last-post">[LASTPOST][RESX:BY] <i class="fa fa-user fa-blue"></i>&nbsp;[LASTPOSTDISPLAYNAME][AF:ICONLINK:LASTREPLY]<br />[LASTPOSTDATE][/LASTPOST]</div></td>
 				</tr>
 			</tbody>
@@ -203,12 +203,12 @@
 							<tr class="dcf-table-body-row">
 								<td class="dcf-col dcf-col-icon">[FORUMICONCSS]</td>
 								<td class="dcf-col dcf-col-subject">
-									<h4 class="dcf-forum-title">[FORUMNAME]</h4>
-									<span class="dcf-forum-description">[FORUMDESCRIPTION]</span>
+									<h4 class="dcf-forum-title">[FORUM:FORUMNAME]</h4>
+									<span class="dcf-forum-description">[FORUM:FORUMDESCRIPTION]</span>
 								</td>
-								<td class="dcf-col dcf-col-topics">[TOTALTOPICS] </td>
-								<td class="dcf-col dcf-col-replies">[TOTALREPLIES]</td>
-								<td class="dcf-col dcf-col-subscribers">[FORUMSUBSCRIBERCOUNT]</td>
+								<td class="dcf-col dcf-col-topics">[FORUM:TOTALTOPICS] </td>
+								<td class="dcf-col dcf-col-replies">[FORUM:TOTALREPLIES]</td>
+								<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
 								<td class="dcf-col dcf-col-last-post">
 									<span class="dcf-lastpost-subject">[LASTPOSTSUBJECT:25]</span>
 									<span class="dcf-lastpost-author">[RESX:BY]&nbsp;[DISPLAYNAME]</span>

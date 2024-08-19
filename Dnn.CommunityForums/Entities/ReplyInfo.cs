@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Tokens;
     using global::DotNetNuke.ComponentModel.DataAnnotations;
 
@@ -198,8 +199,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return css;
         }
 
-        
-                
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
         {
@@ -211,6 +210,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
+            // replace any embedded tokens in format string
+            if (format.Contains("["))
+            {
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.Forum.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID), this)
+                {
+                    AccessingUser = accessingUser,
+                };
+                format = tokenReplacer.ReplaceEmbeddedTokens(format);
+            }
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {

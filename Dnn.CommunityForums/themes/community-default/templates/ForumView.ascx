@@ -2,12 +2,9 @@
 <div class="dcf-forum-view">
 [BREADCRUMB]
 [GROUPSECTION]
-	
-	PORTAL NAME : [PORTAL:PORTALNAME]
-	USER NAME: [USER:DISPLAYNAME]
 <div class="dcf-forums">
 		<div class="dcf-group-title-wrap">
-			<h3 class="dcf-group-title">[RESX:Group]: [FORUM:GROUPNAME]</h3>
+            <h3 class="dcf-group-title">[RESX:Group]: [FORUM:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUM:GROUPNAME]</a>]</h3>
 			<span class="dcf-group-collapse">[GROUPCOLLAPSE]</span>
 		</div>
 		
@@ -40,7 +37,7 @@
 						<td class="dcf-col dcf-col-text">
 							<div class="dcf-col-text-inner">
 								[FORUMICONCSS]
-								<div class="dcf-forum-title-text"><h4 class="dcf-forum-title">[FORUM:FORUMNAME]</h4>
+								<div class="dcf-forum-title-text"><h4 class="dcf-forum-title">[FORUM:FORUMLINK|<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]</h4>
 								<div class="dcf-forum-description">[FORUM:FORUMDESCRIPTION]</div>
 								</div>
 							</div>
@@ -68,7 +65,7 @@
 
 									<td class="dcf-col dcf-col-icon"></td>
 									<td class="dcf-col dcf-col-text">
-												<span class="aftopictitle">[FORUM:FORUMNAME]</span>
+												<span class="aftopictitle">[FORUM:FORUMLINK|<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]</span>
 												<span class="aftopicsubtitle">[FORUM:FORUMDESCRIPTION]</span>
 									</td>
 									<td class="dcf-col dcf-col-topics">[FORUM:TOTALTOPICS]</td>

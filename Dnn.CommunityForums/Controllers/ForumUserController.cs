@@ -116,6 +116,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         PrefPageSize = 20,
                     };
                 }
+
+               // user.PortalSettings = Utilities.GetPortalSettings(portalId); 
                 DataCache.UserCacheStore(cachekey, user);
             }
 

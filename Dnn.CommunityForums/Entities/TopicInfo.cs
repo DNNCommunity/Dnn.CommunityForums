@@ -445,10 +445,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            var navigationManager = new Services.URLNavigator().NavigationManager();
-            var portalSettings = Utilities.GetPortalSettings(this.PortalId);
-            var mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
-
+            // replace any embedded tokens in format string
+            if (format.Contains("["))
+            {
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.Forum.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID), this)
+                {
+                    AccessingUser = accessingUser,
+                };
+                format = tokenReplacer.ReplaceEmbeddedTokens(format);
+            }
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {
@@ -517,7 +522,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                     return string.Empty;
                 case "rating":
-                    return PropertyAccess.FormatString(this.Rating.ToString(), format);
+                    return this.Rating < 1 ? string.Empty : PropertyAccess.FormatString(this.Rating.ToString(), format);
                 case "topicurl":
                     return PropertyAccess.FormatString(this.TopicUrl.ToString(), format);
                 case "forumurl":
@@ -532,6 +537,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateCreated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
                 case "dateupdated":
                     return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateUpdated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
+                case "modipaddress":
+                    return !this.Forum.GetIsMod(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID)) ? string.Empty : PropertyAccess.FormatString(this.Content.IPAddress, format);
                 case "modeditdate":
                     if (this.Forum.GetIsMod(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID)) &&
                         this.Content.DateUpdated != this.Content.DateCreated)
@@ -569,7 +576,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "lastreplyauthoremail":
                     return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Author.Email.ToString(), format) : string.Empty;
                 case "lastpostauthor":
-                    return this.LastReplyId > 0 ? this.LastReply.Author.AuthorId > 0 ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this.Forum.ModuleId, true, 
+                    return this.LastReplyId > 0 ? this.LastReply.Author.AuthorId > 0 ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.Forum.PortalSettings, this.Forum.ModuleId, true, 
                             new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId), 
                             new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || 
                             new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser, this.LastReply.Author.AuthorId, this.LastReply.Author.Username, this.LastReply.Author.FirstName, this.LastReply.Author.LastName, this.LastReply.Author.DisplayName).Replace("&amp;#", "&#")

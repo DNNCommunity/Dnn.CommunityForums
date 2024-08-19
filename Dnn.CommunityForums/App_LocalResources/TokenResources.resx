@@ -199,6 +199,6 @@
     <value>&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;{0}</value>
   </data>
   <data name="[RSSLINK].Text" xml:space="preserve">
-    <value>"&lt;a href="{0}" target="_blank"&gt;&lt;img src="[FORUM:THEMELOCATION]images/rss.png" border="0" alt="[RESX:RSS]" /&gt;&lt;/a&gt;</value>
+    <value>&lt;a href="{0}" target="_blank"&gt;&lt;img src="[FORUM:THEMELOCATION]images/rss.png" border="0" alt="[RESX:RSS]" /&gt;&lt;/a&gt;</value>
   </data>
 </root>

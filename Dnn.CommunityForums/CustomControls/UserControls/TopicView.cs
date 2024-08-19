@@ -64,7 +64,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool bPin;
         private int rowIndex;
         private int pageSize = 20;
-        private string topicDescription = string.Empty;
         private int rowCount;
         private bool isTrusted;
         private bool allowLikes;
@@ -72,6 +71,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string defaultSort;
         private string tags = string.Empty;
         private bool useListActions;
+
+        
+        #region "not used?"
+        //private string topicDescription = string.Empty;
+        #endregion "not used?"
 
 
         #endregion
@@ -317,6 +321,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.Content.AuthorId = Utilities.SafeConvertInt(this.drForum["AuthorId"]);
             this.topic.Content.AuthorName = this.drForum["TopicAuthor"].ToString();
             this.topic.Content.DateCreated = Utilities.SafeConvertDateTime(this.drForum["DateCreated"]);
+            
+            this.topic.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
             this.topic.Forum = this.ForumInfo;
             this.topic.LastReply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             this.topic.LastReply.TopicId = this.topic.TopicId;
@@ -408,7 +414,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void BindTopic()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            string sOutput;
 
             var bFullTopic = true;
 
@@ -417,17 +423,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 // Note:  The template may be set in the topic review section of the Post form.
                 bFullTopic = false;
-                stringBuilder.Append(Utilities.ParseSpacer(this.TopicTemplate));
+                sOutput = this.TopicTemplate;
+                sOutput = Utilities.ParseSpacer(sOutput);
             }
             else
             {
-                stringBuilder.Append(TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicView", this.topicTemplateId));
+                sOutput =  TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicView", this.topicTemplateId);
             }
-
-            stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
-            stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(stringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId);
-            string sOutput = stringBuilder.ToString();
-
 
             // Add Topic Scripts
             var ctlTopicScripts = (af_topicscripts)this.LoadControl("~/DesktopModules/ActiveForums/controls/af_topicscripts.ascx");
@@ -488,9 +490,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Parse Meta Template
             if (!string.IsNullOrEmpty(this.MetaTemplate))
             {
-                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
-                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
-                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceTopicTokens(new StringBuilder(this.MetaTemplate), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId).ToString();
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(this.MetaTemplate), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request).ToString();
 
                 this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", this.tags);
 
@@ -538,21 +540,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             topicControl = this.ParseTopic(topicControl);
 
-            sOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceTopicTokens(new StringBuilder(sOutput), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId).ToString();
-            sOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(new StringBuilder(sOutput), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
-            sOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(new StringBuilder(sOutput), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
-
             if (!topicControl.Contains(Globals.ForumsControlsRegisterAMTag))
             {
                 topicControl = Globals.ForumsControlsRegisterAMTag + topicControl;
             }
 
             topicControl = Utilities.LocalizeControl(topicControl);
-
+            
             // If a template was passed in, we don't need to do this.
             if (bFullTopic)
             {
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, "<asp:placeholder id=\"plhTopic\" runat=\"server\" />", "[AF:CONTROL:CALLBACK]", "[/AF:CONTROL:CALLBACK]");
+                
+                sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(sOutput), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request).ToString();
+                sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(sOutput), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
+                sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(new StringBuilder(sOutput), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
 
                 sOutput = Utilities.LocalizeControl(sOutput);
                 sOutput = Utilities.StripTokens(sOutput);
@@ -727,7 +729,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.Request.QueryString["dnnprintmode"] != null)
             {
-                sbOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.RemoveControlTokensForDnnPrintMode(sbOutput);
+                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveControlTokensForDnnPrintMode(sbOutput);
                 sbOutput.Append("<img src=\"" + this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "spacer.gif") + "\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
             }
 
@@ -987,6 +989,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string ParseContent(DataRow dr, string template, int rowcount)
         {
             var sOutput = template;
+            
+            // most topic values come in first result set and are set in LoadData(); however IP Address from the topic comes in this result set.
+            this.topic.Content.IPAddress = dr.GetString("IPAddress"); 
 
             var reply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             reply.ReplyId = dr.GetInt("ReplyId");
@@ -999,19 +1004,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             reply.Content.AuthorId = dr.GetInt("AuthorId");
             reply.Content.DateCreated = dr.GetDateTime("DateCreated");
             reply.Content.DateUpdated = dr.GetDateTime("DateUpdated");
+            reply.Content.IPAddress = dr.GetString("IPAddress");
 
+            
             var authorId = reply.ReplyId > 0 ? reply.Content.AuthorId : this.topic.Content.AuthorId;
-
-            var tags = dr.GetString("Tags");
-            var ipAddress = dr.GetString("IPAddress");
-
-            // Perform Profile Related replacements
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, reply.ReplyId > 0 ? reply.Content.AuthorId : this.topic.Content.AuthorId);
-            if (sOutput.Contains("[POSTINFO]"))
-            {
-                var sPostInfo = TemplateUtils.GetPostInfo(this.ForumModuleId, author.ForumUser,  this.ImagePath, this.ForumUser.GetIsMod(this.ForumModuleId), ipAddress, author.ForumUser.IsUserOnline, this.CurrentUserType, this.UserId, this.UserPrefHideAvatars, this.TimeZoneOffset);
-                sOutput = sOutput.Replace("[POSTINFO]", sPostInfo);
-            }
+            var tags = dr.GetString("Tags");
 
             // Replace Tags Control
             if (string.IsNullOrWhiteSpace(tags))
@@ -1037,49 +1035,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             var sbOutput = new StringBuilder(sOutput);
-
-            if (reply.ReplyId > 0)
-            {
-                sbOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplacePostTokens(sbOutput, reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId);
-            }
-            sbOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplacePostTokens(sbOutput, this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId);
-            sbOutput = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(sbOutput, this.PortalSettings, this.MainSettings, author.ForumUser, this.ForumUser, this.ForumModuleId);
-
-            if (reply.ReplyId > 0 && this.bSplit && (this.bModerate || this.topic.Content.AuthorId == this.UserId))
-            {
-                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input id=\"dcf-split-checkbox-" + reply.ReplyId + "\" type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + reply.ReplyId + "\" /><label for=\"dcf-split-checkbox-" + reply.ReplyId + "\" class=\"dcf-split-checkbox-label\">[RESX:SplitCreate]</label></div>");
-            }
-            else
-            {
-                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", string.Empty);
-            }
-
-            // Row CSS Classes
-            if (rowcount % 2 == 0)
-            {
-                sbOutput.Replace("[POSTINFOCSS]", "afpostinfo afpostinfo1");
-                sbOutput.Replace("[POSTTOPICCSS]", "afposttopic afpostreply1");
-                sbOutput.Replace("[POSTREPLYCSS]", "afpostreply afpostreply1");
-            }
-            else
-            {
-                sbOutput.Replace("[POSTTOPICCSS]", "afposttopic afpostreply2");
-                sbOutput.Replace("[POSTINFOCSS]", "afpostinfo afpostinfo2");
-                sbOutput.Replace("[POSTREPLYCSS]", "afpostreply afpostreply2");
-            }
-
-            // Description
-            if (reply.ReplyId == 0)
-            {
-                this.topicDescription = Utilities.StripHTMLTag(this.topic.Content.Body).Trim();
-                this.topicDescription = this.topicDescription.Replace(System.Environment.NewLine, string.Empty);
-                if (this.topicDescription.Length > 255)
-                {
-                    this.topicDescription = this.topicDescription.Substring(0, 255);
-                }
-
-            }
-
+            
+            #region "topic actions"
             // Delete Action
             if ((this.bModerate && this.bDelete) || ((this.bDelete && authorId == this.UserId && !this.topic.IsLocked) && ((reply.ReplyId == 0 && this.topic.ReplyCount == 0) || reply.Content.AuthorId > 0)))
             {
@@ -1262,7 +1219,55 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sbOutput.Replace("[ACTIONS:ANSWER]", string.Empty);
                 }
             }
+            #endregion
 
+            #region "split checkbox"
+
+            sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceUserTokens(sbOutput, this.PortalSettings, this.MainSettings, author.ForumUser, this.ForumUser, this.ForumModuleId);
+
+            if (reply.ReplyId > 0 && this.bSplit && (this.bModerate || this.topic.Content.AuthorId == this.UserId))
+            {
+                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input id=\"dcf-split-checkbox-" + reply.ReplyId + "\" type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + reply.ReplyId + "\" /><label for=\"dcf-split-checkbox-" + reply.ReplyId + "\" class=\"dcf-split-checkbox-label\">[RESX:SplitCreate]</label></div>");
+            }
+            else
+            {
+                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", string.Empty);
+            }
+            
+            #endregion "split checkbox"
+
+            // Row CSS Classes
+            if (rowcount % 2 == 0)
+            {
+                sbOutput.Replace("[POSTINFOCSS]", "afpostinfo afpostinfo1");
+                sbOutput.Replace("[POSTTOPICCSS]", "afposttopic afpostreply1");
+                sbOutput.Replace("[POSTREPLYCSS]", "afpostreply afpostreply1");
+            }
+            else
+            {
+                sbOutput.Replace("[POSTTOPICCSS]", "afposttopic afpostreply2");
+                sbOutput.Replace("[POSTINFOCSS]", "afpostinfo afpostinfo2");
+                sbOutput.Replace("[POSTREPLYCSS]", "afpostreply afpostreply2");
+            }
+
+            #region "not used?"
+            ////// Description
+            ////if (reply.ReplyId == 0)
+            ////{
+            ////    this.topicDescription = Utilities.StripHTMLTag(this.topic.Content.Body).Trim();
+            ////    this.topicDescription = this.topicDescription.Replace(System.Environment.NewLine, string.Empty);
+            ////    if (this.topicDescription.Length > 255)
+            ////    {
+            ////        this.topicDescription = this.topicDescription.Substring(0, 255);
+            ////    }
+
+            ////}
+            #endregion "not used"
+
+
+            #region "likes"
+
+            
             if (this.allowLikes)
             {
                 (int count, bool liked) likes = new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(this.UserId, (reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId));
@@ -1287,6 +1292,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput = sbOutput.Replace("[LIKESx2]", string.Empty);
                 sbOutput = sbOutput.Replace("[LIKESx3]", string.Empty);
             }
+
+            #endregion "likes"
 
             // Poll Results
             if (sOutput.Contains("[POLLRESULTS]"))
@@ -1328,6 +1335,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Attachments
             sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments( (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId), true, this.PortalId, this.ForumModuleId));
+            
+            if (reply.ReplyId > 0)
+            {
+                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request);
+            }
+            else
+            {
+                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request);
+            }
 
             // Switch back from the string builder to a normal string before we perform the image/thumbnail replacements.
             sOutput = sbOutput.ToString();
@@ -1354,7 +1370,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     return "<a href=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + this.PortalId + "&moduleid=" + this.ForumModuleId + "&attachid=" + parentId + "\" target=\"_blank\"><img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + this.PortalId + "&moduleid=" + this.ForumModuleId + "&attachid=" + thumbId + "\" border=\"0\" class=\"afimg\" /></a>";
                 });
             }
-
+            
             return sOutput;
         }
 

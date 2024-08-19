@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Users;
     public class ForumUserInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
         private DotNetNuke.Entities.Users.UserInfo userInfo;
+        private PortalSettings portalSettings;
         private string userRoles = Globals.DefaultAnonRoles + "|-1;||";
 
         public ForumUserInfo()
@@ -152,6 +153,13 @@ using DotNetNuke.Entities.Users;
 
         [IgnoreColumn]
         TimeSpan TimeZoneOffsetForUser => Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
+        
+        [IgnoreColumn]
+        public PortalSettings PortalSettings
+        {
+            get => this.portalSettings ?? (this.portalSettings = Utilities.GetPortalSettings(this.PortalId)); 
+            set => this.portalSettings = value;
+        }
 
         [IgnoreColumn]
         public DotNetNuke.Entities.Users.UserInfo UserInfo
@@ -329,6 +337,16 @@ using DotNetNuke.Entities.Users;
         [IgnoreColumn]
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
+
+            // replace any embedded tokens in format string
+            if (format.Contains("["))
+            {
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, this)
+                {
+                    AccessingUser = accessingUser,
+                };
+                format = tokenReplacer.ReplaceEmbeddedTokens(format);
+            }
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {

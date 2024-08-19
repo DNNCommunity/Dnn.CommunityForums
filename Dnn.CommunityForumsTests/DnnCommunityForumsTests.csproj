@@ -94,7 +94,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Controllers\TokenControllerTests.cs" />
+    <Compile Include="Services\Tokens\TokenReplacerTests.cs" />
     <Compile Include="class\UtilitiesTests.cs" />
     <Compile Include="Controllers\PermissionControllerTests.cs" />
     <Compile Include="Controllers\TopicPropertyControllerTests.cs" />
@@ -125,6 +125,7 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
