@@ -1324,27 +1324,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            var alertParams = new List<string> { $"{ParamKeys.ViewType}=modreport", $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.topic.TopicId}", $"{ParamKeys.ReplyId}={(reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId)}" };
-            if (this.SocialGroupId > 0)
-            {
-                alertParams.Add($"{Literals.GroupId}={this.SocialGroupId}");
-            }
-
-            if (this.Request.IsAuthenticated)
-            {
-                if (this.useListActions)
-                {
-                    sbOutput.Replace("[ACTIONS:ALERT]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(this.TabId, string.Empty, alertParams.ToArray()) + "';\" title=\"[RESX:Alert]\"><i class=\"fa fa-bell-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Alert]</span></li>");
-                }
-                else
-                {
-                    sbOutput.Replace("[ACTIONS:ALERT]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, alertParams.ToArray()) + "\" title=\"[RESX:Alert]\"><i class=\"fa fa-bell-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Alert]</span></a>");
-                }
-            }
-            else
-            {
-                sbOutput.Replace("[ACTIONS:ALERT]", string.Empty);
-            }
 
 
 

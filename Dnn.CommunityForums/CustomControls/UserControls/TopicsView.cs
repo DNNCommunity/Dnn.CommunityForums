@@ -552,82 +552,87 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     topicInfo.LastReply.Content.Summary = topicInfo.Content.Summary;
                 }
+                
+                topicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostActionTokens(new StringBuilder(topicTemplate),
+                    topicInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(),
+                    this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType, this.CanReply).ToString();
 
-                if ((this.bModerate && this.bDelete) || ((this.bDelete && topicInfo.Content.AuthorId == this.UserId && !topicInfo.IsLocked)))
-                {
-                    topicTemplate = topicTemplate.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_modDel(" + this.ModuleId + "," + this.ForumId + "," + topicInfo.TopicId.ToString() + ");\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
-                }
-                else
-                {
-                    topicTemplate = topicTemplate.Replace("[ACTIONS:DELETE]", string.Empty);
-                }
+                ////////if ((this.bModerate && this.bDelete) || ((this.bDelete && topicInfo.Content.AuthorId == this.UserId && !topicInfo.IsLocked)))
+                ////////{
+                ////////    topicTemplate = topicTemplate.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_modDel(" + this.ModuleId + "," + this.ForumId + "," + topicInfo.TopicId.ToString() + ");\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
+                ////////}
+                ////////else
+                ////////{
+                ////////    topicTemplate = topicTemplate.Replace("[ACTIONS:DELETE]", string.Empty);
+                ////////}
 
-                if ((this.bModerate && this.bEdit) || (this.bEdit && topicInfo.Content.AuthorId == this.UserId && (this.MainSettings.EditInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, topicInfo.Content.DateCreated, DateTime.UtcNow) < this.MainSettings.EditInterval)))
-                {
-                        string[] editParams = { ParamKeys.ViewType + "=post", "action=te", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + topicInfo.TopicId.ToString() };
-                        topicTemplate = topicTemplate.Replace("[ACTIONS:EDIT]", "<a title=\"[RESX:EditTopic]\" href=\"" + this.NavigateUrl(this.TabId, string.Empty, editParams) + "\"><i class=\"fa fa-pencil-square-o fa-fw fa-blue\"></i></a>");
-                        topicTemplate = topicTemplate.Replace("[AF:QUICKEDITLINK]", "<a href=\"javascript:void(0)\" title=\"[RESX:TopicQuickEdit]\" onclick=\"amaf_quickEdit(" + this.ModuleId + "," + this.ForumId + "," + topicInfo.TopicId.ToString() + ");\"><i class=\"fa fa-cog fa-fw fa-blue\"></i></a>");
-                        ;            }
-                else
-                {
-                    topicTemplate = topicTemplate.Replace("[AF:QUICKEDITLINK]", string.Empty);
-                    topicTemplate = topicTemplate.Replace("[ACTIONS:EDIT]", string.Empty);
-                }
+                ////////if ((this.bModerate && this.bEdit) || (this.bEdit && topicInfo.Content.AuthorId == this.UserId && (this.MainSettings.EditInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, topicInfo.Content.DateCreated, DateTime.UtcNow) < this.MainSettings.EditInterval)))
+                ////////{
+                ////////        string[] editParams = { ParamKeys.ViewType + "=post", "action=te", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + topicInfo.TopicId.ToString() };
+                ////////        topicTemplate = topicTemplate.Replace("[ACTIONS:EDIT]", "<a title=\"[RESX:EditTopic]\" href=\"" + this.NavigateUrl(this.TabId, string.Empty, editParams) + "\"><i class=\"fa fa-pencil-square-o fa-fw fa-blue\"></i></a>");
+                ////////        topicTemplate = topicTemplate.Replace("[AF:QUICKEDITLINK]", "<a href=\"javascript:void(0)\" title=\"[RESX:TopicQuickEdit]\" onclick=\"amaf_quickEdit(" + this.ModuleId + "," + this.ForumId + "," + topicInfo.TopicId.ToString() + ");\"><i class=\"fa fa-cog fa-fw fa-blue\"></i></a>");
+                ////////        ;            }
+                ////////else
+                ////////{
+                ////////    topicTemplate = topicTemplate.Replace("[AF:QUICKEDITLINK]", string.Empty);
+                ////////    topicTemplate = topicTemplate.Replace("[ACTIONS:EDIT]", string.Empty);
+                ////////}
 
-                if (this.bMove && (this.bModerate || (topicInfo.Content.AuthorId == this.UserId)))
-                {
+                ////////if (this.bMove && (this.bModerate || (topicInfo.Content.AuthorId == this.UserId)))
+                ////////{
 
-                    topicTemplate = topicTemplate.Replace("[ACTIONS:MOVE]", "<a href=\"javascript:void(0)\" onclick=\"javascript:amaf_openMove(" + this.ModuleId + "," + this.ForumId + "," + topicInfo.TopicId.ToString() + ");\" title=\"[RESX:MoveTopic]\" style=\"vertical-align:middle;\" /><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i></a>");
-                }
-                else
-                {
-                    topicTemplate = topicTemplate.Replace("[ACTIONS:MOVE]", string.Empty);
-                }
+                ////////    topicTemplate = topicTemplate.Replace("[ACTIONS:MOVE]", "<a href=\"javascript:void(0)\" onclick=\"javascript:amaf_openMove(" + this.ModuleId + "," + this.ForumId + "," + topicInfo.TopicId.ToString() + ");\" title=\"[RESX:MoveTopic]\" style=\"vertical-align:middle;\" /><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i></a>");
+                ////////}
+                ////////else
+                ////////{
+                ////////    topicTemplate = topicTemplate.Replace("[ACTIONS:MOVE]", string.Empty);
+                ////////}
 
-                if (this.bLock && (this.bModerate || (topicInfo.Content.AuthorId == this.UserId)))
-                {
+                ////////if (this.bLock && (this.bModerate || (topicInfo.Content.AuthorId == this.UserId)))
+                ////////{
 
-                    topicTemplate = topicTemplate.Replace("[ACTIONS:LOCK]", "<a href=\"javascript:void(0)\" class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_Lock(" + this.ModuleId + "," + this.ForumId + "," + topicInfo.TopicId.ToString() + ");};\" title=\"[RESX:LockTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-lock fa-fw fa-blue dcf-topic-lock-inner\"></i></a>");
-                }
-                else
-                {
-                    topicTemplate = topicTemplate.Replace("[ACTIONS:LOCK]", string.Empty);
-                }
+                ////////    topicTemplate = topicTemplate.Replace("[ACTIONS:LOCK]", "<a href=\"javascript:void(0)\" class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_Lock(" + this.ModuleId + "," + this.ForumId + "," + topicInfo.TopicId.ToString() + ");};\" title=\"[RESX:LockTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-lock fa-fw fa-blue dcf-topic-lock-inner\"></i></a>");
+                ////////}
+                ////////else
+                ////////{
+                ////////    topicTemplate = topicTemplate.Replace("[ACTIONS:LOCK]", string.Empty);
+                ////////}
 
-                if (this.bPin && (this.bModerate || (topicInfo.Content.AuthorId == this.UserId)))
-                {
-                    topicTemplate = topicTemplate.Replace("[ACTIONS:PIN]", "<a href=\"javascript:void(0)\" class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_Pin(" + this.ModuleId + "," + this.ForumId + "," + topicInfo.TopicId.ToString() + ");};\" title=\"[RESX:PinTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner\"></i></a>");
-                }
-                else
-                {
-                    topicTemplate = topicTemplate.Replace("[ACTIONS:PIN]", string.Empty);
-                }
+                ////////if (this.bPin && (this.bModerate || (topicInfo.Content.AuthorId == this.UserId)))
+                ////////{
+                ////////    topicTemplate = topicTemplate.Replace("[ACTIONS:PIN]", "<a href=\"javascript:void(0)\" class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_Pin(" + this.ModuleId + "," + this.ForumId + "," + topicInfo.TopicId.ToString() + ");};\" title=\"[RESX:PinTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner\"></i></a>");
+                ////////}
+                ////////else
+                ////////{
+                ////////    topicTemplate = topicTemplate.Replace("[ACTIONS:PIN]", string.Empty);
+                ////////}
 
-                if (topicInfo.IsLocked)
-                {
-                    topicTemplate = topicTemplate.Replace("fa-lock", "fa-unlock");
-                    topicTemplate = topicTemplate.Replace("[RESX:Lock]", "[RESX:UnLock]");
-                    topicTemplate = topicTemplate.Replace("[RESX:LockTopic]", "[RESX:UnLockTopic]");
-                    topicTemplate = topicTemplate.Replace("[RESX:Confirm:Lock]", "[RESX:Confirm:UnLock]");
-                    topicTemplate = topicTemplate.Replace("[ICONLOCK]", "&nbsp;&nbsp;<i id=\"af-topicsview-lock-" + topicInfo.TopicId.ToString() + "\" class=\"fa fa-lock fa-fw fa-red\"></i>");
-                }
-                else
-                {
-                    topicTemplate = topicTemplate.Replace("[ICONLOCK]", "&nbsp;&nbsp;<i id=\"af-topicsview-lock-" + topicInfo.TopicId.ToString() + "\" class=\"fa fa-fw fa-red\"></i>");
-                }
+                ////////if (topicInfo.IsLocked)
+                ////////{
+                ////////    topicTemplate = topicTemplate.Replace("fa-lock", "fa-unlock");
+                ////////    topicTemplate = topicTemplate.Replace("[RESX:Lock]", "[RESX:UnLock]");
+                ////////    topicTemplate = topicTemplate.Replace("[RESX:LockTopic]", "[RESX:UnLockTopic]");
+                ////////    topicTemplate = topicTemplate.Replace("[RESX:Confirm:Lock]", "[RESX:Confirm:UnLock]");
+                ////////    topicTemplate = topicTemplate.Replace("[ICONLOCK]", "&nbsp;&nbsp;<i id=\"af-topicsview-lock-" + topicInfo.TopicId.ToString() + "\" class=\"fa fa-lock fa-fw fa-red\"></i>");
+                ////////}
+                ////////else
+                ////////{
+                ////////    topicTemplate = topicTemplate.Replace("[ICONLOCK]", "&nbsp;&nbsp;<i id=\"af-topicsview-lock-" + topicInfo.TopicId.ToString() + "\" class=\"fa fa-fw fa-red\"></i>");
+                ////////}
 
-                if (topicInfo.IsPinned)
-                {
-                    topicTemplate = topicTemplate.Replace("dcf-topic-pin-pin", "dcf-topic-pin-unpin");
-                    topicTemplate = topicTemplate.Replace("[RESX:Pin]", "[RESX:UnPin]");
-                    topicTemplate = topicTemplate.Replace("[RESX:PinTopic]", "[RESX:UnPinTopic]");
-                    topicTemplate = topicTemplate.Replace("[RESX:Confirm:Pin]", "[RESX:Confirm:UnPin]");
-                    topicTemplate = topicTemplate.Replace("[ICONPIN]", "&nbsp;&nbsp;<i id=\"af-topicsview-pin-" + topicInfo.TopicId.ToString() + "\" class=\"fa fa-thumb-tack fa-fw fa-red\"></i>");
-                }
-                else
-                {
-                    topicTemplate = topicTemplate.Replace("[ICONPIN]", "&nbsp;&nbsp;<i id=\"af-topicsview-pin-" + topicInfo.TopicId.ToString() + "\" class=\"fa fa-fw fa-red\"></i>");
-                }
+                ////////if (topicInfo.IsPinned)
+                ////////{
+                ////////    topicTemplate = topicTemplate.Replace("dcf-topic-pin-pin", "dcf-topic-pin-unpin");
+                ////////    topicTemplate = topicTemplate.Replace("[RESX:Pin]", "[RESX:UnPin]");
+                ////////    topicTemplate = topicTemplate.Replace("[RESX:PinTopic]", "[RESX:UnPinTopic]");
+                ////////    topicTemplate = topicTemplate.Replace("[RESX:Confirm:Pin]", "[RESX:Confirm:UnPin]");
+                ////////    topicTemplate = topicTemplate.Replace("[ICONPIN]", "&nbsp;&nbsp;<i id=\"af-topicsview-pin-" + topicInfo.TopicId.ToString() + "\" class=\"fa fa-thumb-tack fa-fw fa-red\"></i>");
+                ////////}
+                ////////else
+                ////////{
+                ////////    topicTemplate = topicTemplate.Replace("[ICONPIN]", "&nbsp;&nbsp;<i id=\"af-topicsview-pin-" + topicInfo.TopicId.ToString() + "\" class=\"fa fa-fw fa-red\"></i>");
+                ////////}
+
                 if (string.IsNullOrEmpty(topicInfo.TopicData))
                 {
                     topicTemplate = TemplateUtils.ReplaceSubSection(topicTemplate, string.Empty, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
@@ -656,7 +661,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     topicTemplate = TemplateUtils.ReplaceSubSection(topicTemplate, sProps, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
                 }
                 StringBuilder stringBuilder = new StringBuilder(topicTemplate);
-                
+
                 if (this.UserId == -1 || topicInfo.LastReplyId == 0)
                 {
                     stringBuilder.Replace("[AF:ICONLINK:LASTREAD]", string.Empty);
@@ -672,12 +677,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 stringBuilder.Replace("[ROWCSS]", this.GetRowCSS(UserLastTopicRead, UserLastReplyRead, topicInfo.TopicId, topicInfo.LastReplyId, rowcount));
                 stringBuilder.Replace("[AF:UI:MINIPAGER]", this.GetSubPages(this.TabId, topicInfo.ReplyCount, this.ForumId, topicInfo.TopicId));
-                    
-                sTopics += stringBuilder.ToString(); ;
+
+                sTopics += stringBuilder.ToString();
                 rowcount += 1;
             }
             return TemplateUtils.ReplaceSubSection(Template, sTopics, "[" + Section + "]", "[/" + Section + "]");
         }
+
         private void BuildPager()
         {
             if (this.topicRowCount > 0)
