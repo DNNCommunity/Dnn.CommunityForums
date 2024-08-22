@@ -394,7 +394,6 @@
     <Content Include="scripts\afattach.js" />
     <Content Include="scripts\afcommon.js" />
     <Content Include="scripts\afdebug.js" />
-    <Content Include="scripts\afmod.js" />
     <Content Include="scripts\amlib.js" />
     <Content Include="scripts\blank.html" />
     <Content Include="scripts\calendar.css" />

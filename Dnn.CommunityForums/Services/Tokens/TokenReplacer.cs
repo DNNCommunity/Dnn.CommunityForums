@@ -162,7 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             
              if (bDelete && (bModerate || (topic.Content.AuthorId == forumUser.UserId && !topic.IsLocked)))
              {
-                 template.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_modDel(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
+                 template.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_topicDel(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
              }
              else
              {

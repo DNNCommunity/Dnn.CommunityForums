@@ -385,6 +385,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afcommon.js");
             ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afutils.js");
             ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "active/amlib.js");
+            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ModulePath + "active/am-ui.css");
 
             StringBuilder sb = new StringBuilder();
             string handlerURL = VirtualPathUtility.ToAbsolute(Globals.ModulePath + "handlers/forumhelper.ashx") + "?TabId=" + this.TabId.ToString() + "&PortalId=" + this.PortalId.ToString() + "&moduleid=" + this.ModuleId + "&language=" + lang;
@@ -405,11 +406,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "afscripts", sb.ToString(), true);
 
-            if (this.ForumUser.GetIsMod(this.ForumModuleId))
-            {
-                ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afmod.js");
-                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ModulePath + "active/am-ui.css");
-            }
         }
 
         #endregion
