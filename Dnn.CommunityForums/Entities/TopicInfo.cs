@@ -72,10 +72,19 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private int forumId = -1;
         private string tags = string.Empty;
         private string selectedcategories;
-        
+
         public int TopicId { get; set; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn] 
+        public bool IsTopic => true;
+
+        [IgnoreColumn] 
+        public bool IsReply => false;
+        
+        [IgnoreColumn]
+        public int ReplyId => 0;
+
+        [IgnoreColumn]
         public int PostId { get => this.TopicId; }
 
         [IgnoreColumn()]

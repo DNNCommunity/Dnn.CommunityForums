@@ -145,6 +145,201 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
+        internal static StringBuilder ReplacePostActionTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, HttpRequest request, int tabId, CurrentUserTypes currentUserType, bool canReply, bool useListActions= true)
+        {
+            bool bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Delete, forumUser.UserRoles);
+            bool bLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Lock, forumUser.UserRoles);
+            bool bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Edit, forumUser.UserRoles);
+            bool bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Subscribe, forumUser.UserRoles);
+            bool bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Moderate, forumUser.UserRoles);
+            bool bSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Split, forumUser.UserRoles);
+            bool bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Trust, forumUser.UserRoles);
+            bool bMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Move, forumUser.UserRoles);
+            bool bPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Pin, forumUser.UserRoles);
+            bool bBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Ban, forumUser.UserRoles);
+            bool isTrusted = Utilities.IsTrusted((int)post.Forum.DefaultTrustValue, forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Trust, forumUser.UserRoles));
+
+            // Delete Action
+            if (bDelete && (bModerate || (post.Author.AuthorId == forumUser.UserId && !post.Topic.IsLocked)))
+            {
+                if (useListActions)
+                {
+                    template.Replace("[ACTIONS:DELETE]", "<li onclick=\"amaf_postDel(" + post.Forum.ModuleId + "," + post.Forum.ForumID + "," + post.Topic.TopicId + "," + post.ReplyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></li>");
+                }
+                else
+                {
+                    template.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0);\" class=\"af-actions\" onclick=\"amaf_postDel(" + post.Forum.ModuleId + "," + post.Forum.ForumID + "," + post.Topic.TopicId + "," + post.ReplyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></a>");
+                }
+            }
+            else
+            {
+                template.Replace("[ACTIONS:DELETE]", string.Empty);
+            }
+
+            // Ban Action (Note: can't ban yourself or a superuser/admin)
+            if ((bBan || forumUser.IsAdmin || forumUser.IsSuperUser) && (post.Author.AuthorId != -1) && (post.Author.AuthorId != forumUser.UserId) && (post.Author != null) && (!post.Author.ForumUser.IsSuperUser) && (!post.Author.ForumUser.IsAdmin))
+            {
+                var banParams = new List<string>
+                {
+                    $"{ParamKeys.ViewType}={Views.ModerateBan}",
+                    $"{ParamKeys.ForumId}={post.Forum.ForumID}",
+                    $"{ParamKeys.TopicId}={post.Topic.TopicId}",
+                    $"{ParamKeys.ReplyId}={post.ReplyId}",
+                    $"{ParamKeys.AuthorId}={post.Author.AuthorId}",
+                };
+                if (useListActions)
+                {
+                    template.Replace("[ACTIONS:BAN]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(tabId, string.Empty, banParams.ToArray()) + "';\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Ban]</span></li>");
+                }
+                else
+                {
+                    template.Replace("[ACTIONS:BAN]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(tabId, string.Empty, banParams.ToArray()) + "\" tooltip=\"Deletes all posts for this user and unauthorizes the user.\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Ban]</span></a>");
+                }
+            }
+            else
+            {
+                template.Replace("[ACTIONS:BAN]", string.Empty);
+            }
+
+            // Edit Action
+            if ((bModerate && bEdit) || (bEdit && post.Author.AuthorId == forumUser.UserId && (mainSettings.EditInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, post.Content.DateCreated, DateTime.UtcNow) < mainSettings.EditInterval)))
+            {
+                var editParams = new List<string>() {
+                    $"{ParamKeys.ViewType}={Views.Post}",
+                    $"{ParamKeys.Action}={(post.IsReply ? PostActions.ReplyEdit : PostActions.TopicEdit)}",
+                    $"{ParamKeys.ForumId}={post.Forum.ForumID}",
+                    $"{ParamKeys.TopicId}={post.Topic.TopicId}",
+                    $"{ParamKeys.PostId}={post.PostId}",
+                };
+                if (post.Forum.SocialGroupId > 0)
+                {
+                    editParams.Add(Literals.GroupId + "=" + post.Forum.SocialGroupId);
+                }
+
+                if (useListActions)
+                {
+                    template.Replace("[ACTIONS:EDIT]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(tabId, string.Empty, editParams.ToArray()) + "';\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Edit]</span></li>");
+                }
+                else
+                {
+                    template.Replace("[ACTIONS:EDIT]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(tabId, string.Empty, editParams.ToArray()) + "\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Edit]</span></a>");
+                }
+            }
+            else
+            {
+                template.Replace("[ACTIONS:EDIT]", string.Empty);
+            }
+
+            // Reply and Quote Actions
+            if (!post.Topic.IsLocked && canReply)
+            {
+                var quoteParams = new List<string> { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.ForumId}={post.Forum.ForumID}", $"{ParamKeys.TopicId}={post.Topic.TopicId}", $"{ParamKeys.QuoteId}={post.PostId}" };
+                var replyParams = new List<string> { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.ForumId}={post.Forum.ForumID}", $"{ParamKeys.TopicId}={post.Topic.TopicId}", $"{ParamKeys.ReplyId}={post.PostId}" };
+                if (post.Forum.SocialGroupId > 0)
+                {
+                    quoteParams.Add($"{Literals.GroupId}={post.Forum.SocialGroupId}");
+                    replyParams.Add($"{Literals.GroupId}={post.Forum.SocialGroupId}");
+                }
+
+                if (useListActions)
+                {
+                    template.Replace("[ACTIONS:QUOTE]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(tabId, string.Empty, quoteParams.ToArray()) + "';\" title=\"[RESX:Quote]\"><i class=\"fa fa-quote-left fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Quote]</span></li>");
+                    template.Replace("[ACTIONS:REPLY]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(tabId, string.Empty, replyParams.ToArray()) + "';\" title=\"[RESX:Reply]\"><i class=\"fa fa-reply fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Reply]</span></li>");
+                }
+                else
+                {
+                    template.Replace("[ACTIONS:QUOTE]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(tabId, string.Empty, quoteParams.ToArray()) + "\" title=\"[RESX:Quote]\"><i class=\"fa fa-quote-left fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Quote]</span></a>");
+                    template.Replace("[ACTIONS:REPLY]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(tabId, string.Empty, replyParams.ToArray()) + "\" title=\"[RESX:Reply]\"><i class=\"fa fa-reply fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Reply]</span></a>");
+                }
+            }
+            else
+            {
+                template.Replace("[ACTIONS:QUOTE]", string.Empty);
+                template.Replace("[ACTIONS:REPLY]", string.Empty);
+            }
+
+            if (bMove && (bModerate || (post.Author.AuthorId == forumUser.UserId)))
+            {
+                template.Replace("[ACTIONS:MOVE]", "<li onclick=\"javascript:amaf_openMove(" + post.Forum.ModuleId + "," + post.Forum.ForumID + ",[TOPICID])\"';\" title=\"[RESX:Move]\"><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Move]</span></li>");
+            }
+            else
+            {
+                template = template.Replace("[ACTIONS:MOVE]", string.Empty);
+            }
+
+            if (bLock && (bModerate || (post.Author.AuthorId == forumUser.UserId)))
+            {
+                if (post.Topic.IsLocked)
+                {
+                    template = template.Replace("[ACTIONS:LOCK]", "<li class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:UnLock]')){amaf_Lock(" + post.Forum.ModuleId + "," + post.Forum.ForumID + "," + post.Topic.TopicId + ");};\" title=\"[RESX:UnLockTopic]\"><i class=\"fa fa-unlock fa-fm fa-blue dcf-topic-lock-inner\"></i><span class=\"dcf-topic-lock-text dcf-link-text \">[RESX:UnLock]</span></li>");
+                }
+                else
+                {
+                    template = template.Replace("[ACTIONS:LOCK]", "<li class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_Lock(" + post.Forum.ModuleId + "," + post.Forum.ForumID + "," + post.Topic.TopicId + ");};\" title=\"[RESX:LockTopic]\"><i class=\"fa fa-lock fa-fm fa-blue dcf-topic-lock-inner\"></i><span class=\"dcf-topic-lock-text dcf-link-text\">[RESX:Lock]</span></li>");
+                }
+            }
+            else
+            {
+                template = template.Replace("[ACTIONS:LOCK]", string.Empty);
+            }
+            if (bPin && (bModerate || (post.Author.AuthorId == forumUser.UserId)))
+            {
+                if (post.Topic.IsPinned)
+                {
+                    template.Replace("[ACTIONS:PIN]", "<li class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:UnPin]')){amaf_Pin(" + post.Forum.ModuleId + "," + post.Forum.ForumID + "," + post.Topic.TopicId + ");};\" title=\"[RESX:UnPinTopic]\"><i class=\"fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-unpin dcf-topic-pin-inner\"></i><span class=\"dcf-topic-pin-text dcf-link-text\">[RESX:UnPin]</span></li>");
+                }
+                else
+                {
+                    template.Replace("[ACTIONS:PIN]", "<li class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_Pin(" + post.Forum.ModuleId + "," + post.Forum.ForumID + "," + post.Topic.TopicId + ");};\" title=\"[RESX:PinTopic]\"><i class=\"fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-pin dcf-topic-pin-inner\"></i><span class=\"dcf-topic-pin-text dcf-link-text\">[RESX:Pin]</span></li>");
+                }
+            }
+            else
+            {
+                template = template.Replace("[ACTIONS:PIN]", string.Empty);
+            }
+
+            // Status
+            if (post.Topic.StatusId <= 0 || (post.Topic.StatusId == 3 && (post.IsReply && post.StatusId == 0)))
+            {
+                template.Replace("[ACTIONS:ANSWER]", string.Empty);
+            }
+            else if (post.IsReply && post.StatusId == 1)
+            {
+                // Answered
+                if (useListActions)
+                {
+                    template.Replace("[ACTIONS:ANSWER]", "<li class=\"af-answered\" title=\"[RESX:Status:Answer]\"><em></em>[RESX:Status:Answer]</li>");
+                }
+                else
+                {
+                    template.Replace("[ACTIONS:ANSWER]", "<span class=\"af-actions af-answered\" title=\"[RESX:Status:Answer]\"><em></em>[RESX:Status:Answer]</span>");
+                }
+            }
+            else
+            {
+                // Not Answered
+                if (post.IsReply && (bEdit && (bModerate || (forumUser.UserId == post.Topic.Author.AuthorId && !post.Topic.IsLocked) )))
+                {
+                    // Can mark answer
+                    if (useListActions)
+                    {
+                        template.Replace("[ACTIONS:ANSWER]", "<li class=\"af-markanswer\" onclick=\"amaf_MarkAsAnswer(" + post.Forum.ModuleId + "," + post.Forum.ForumID + "," + post.Topic.TopicId + "," + post.ReplyId + ");\" title=\"[RESX:Status:SelectAnswer]\"><em></em>[RESX:Status:SelectAnswer]</li>");
+                    }
+                    else
+                    {
+                        template.Replace("[ACTIONS:ANSWER]", "<a class=\"af-actions af-markanswer\" href=\"#\" onclick=\"amaf_MarkAsAnswer(" + post.Forum.ModuleId + "," + post.Forum.ForumID + "," + post.Topic.TopicId + "," + post.ReplyId + "); return false;\" title=\"[RESX:Status:SelectAnswer]\"><em></em>[RESX:Status:SelectAnswer]</a>");
+                    }
+                }
+                else
+                {
+                    // Display Nothing
+                    template.Replace("[ACTIONS:ANSWER]", string.Empty);
+                }
+            }
+
+            return template;
+        }
+
         internal static StringBuilder ReplaceForumTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, HttpRequest request, int tabId, CurrentUserTypes currentUserType)
         {
             string language = forumUser?.UserInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;

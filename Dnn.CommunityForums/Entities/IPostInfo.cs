@@ -18,25 +18,33 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Services.Tokens;
-using System;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Services.Tokens;
+    using System;
+
     public interface IPostInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
         int ForumId { get; set; }
 
         int TopicId { get; set; }
-
+        
         int PostId { get; }
 
+        int ReplyId { get; }
+        
         int PortalId { get; }
+
+        int StatusId { get; }
 
         int ModuleId { get; }
 
         int ContentId { get; set; }
+        
+        bool IsTopic { get; }
+
+        bool IsReply { get; }
 
         DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author { get; set; }
 

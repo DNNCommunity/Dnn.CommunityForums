@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Services.Localization;
+
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
@@ -1035,191 +1037,204 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             var sbOutput = new StringBuilder(sOutput);
-            
-            #region "topic actions"
-            // Delete Action
-            if ((this.bModerate && this.bDelete) || ((this.bDelete && authorId == this.UserId && !this.topic.IsLocked) && ((reply.ReplyId == 0 && this.topic.ReplyCount == 0) || reply.Content.AuthorId > 0)))
+
+            if (reply.ReplyId > 0)
             {
-                if (this.useListActions)
-                {
-                    sbOutput.Replace("[ACTIONS:DELETE]", "<li onclick=\"amaf_postDel(" + this.ForumModuleId + "," + this.ForumId + "," + this.topic.TopicId + "," + reply.Content.AuthorId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></li>");
-                }
-                else
-                {
-                    sbOutput.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0);\" class=\"af-actions\" onclick=\"amaf_postDel(" + this.ForumModuleId + "," + this.ForumId + "," + this.topic.TopicId + "," + reply.Content.AuthorId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></a>");
-                }
+                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostActionTokens(sbOutput,
+                    reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(),
+                    this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType, this.CanReply, this.useListActions);
             }
             else
             {
-                sbOutput.Replace("[ACTIONS:DELETE]", string.Empty);
+                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostActionTokens(sbOutput,
+                    this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(),
+                    this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType, this.CanReply, this.useListActions);
             }
 
-            if ((this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || this.bBan) && (authorId != -1) && (authorId != this.UserId) && (author != null) && (!author.ForumUser.IsSuperUser) && (!author.ForumUser.IsAdmin))
-            {
-                var banParams = new List<string>
-                {
-                    $"{ParamKeys.ViewType}={Views.ModerateBan}",
-                    $"{ParamKeys.ForumId}={this.ForumId}",
-                    $"{ParamKeys.TopicId}={this.topic.TopicId}",
-                    $"{ParamKeys.ReplyId}={reply.ReplyId}",
-                    $"{ParamKeys.AuthorId}={authorId}",
-                };
-                if (this.useListActions)
-                {
-                    sbOutput.Replace("[ACTIONS:BAN]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(this.TabId, string.Empty, banParams.ToArray()) + "';\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Ban]</span></li>");
-                }
-                else
-                {
-                    sbOutput.Replace("[ACTIONS:BAN]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, banParams.ToArray()) + "\" tooltip=\"Deletes all posts for this user and unauthorizes the user.\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Ban]</span></a>");
-                }
-            }
-            else
-            {
-                sbOutput.Replace("[ACTIONS:BAN]", string.Empty);
-            }
+            //////////#region "topic actions"
+            //////////// Delete Action
+            //////////if ((this.bModerate && this.bDelete) || ((this.bDelete && authorId == this.UserId && !this.topic.IsLocked) && ((reply.ReplyId == 0 && this.topic.ReplyCount == 0) || reply.Content.AuthorId > 0)))
+            //////////{
+            //////////    if (this.useListActions)
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:DELETE]", "<li onclick=\"amaf_postDel(" + this.ForumModuleId + "," + this.ForumId + "," + this.topic.TopicId + "," + reply.Content.AuthorId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></li>");
+            //////////    }
+            //////////    else
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0);\" class=\"af-actions\" onclick=\"amaf_postDel(" + this.ForumModuleId + "," + this.ForumId + "," + this.topic.TopicId + "," + reply.Content.AuthorId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></a>");
+            //////////    }
+            //////////}
+            //////////else
+            //////////{
+            //////////    sbOutput.Replace("[ACTIONS:DELETE]", string.Empty);
+            //////////}
 
-            // Edit Action
-            if ((this.bModerate && this.bEdit) || (this.bEdit && authorId == this.UserId && (this.MainSettings.EditInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, (reply.ReplyId > 0 ? reply.Content.DateCreated : this.topic.Content.DateCreated), DateTime.UtcNow) < this.MainSettings.EditInterval)))
-            {
-                var sAction = PostActions.ReplyEdit;
-                if (reply.ReplyId == 0)
-                {
-                    sAction = PostActions.TopicEdit;
-                }
+            //////////if ((this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || this.bBan) && (authorId != -1) && (authorId != this.UserId) && (author != null) && (!author.ForumUser.IsSuperUser) && (!author.ForumUser.IsAdmin))
+            //////////{
+            //////////    var banParams = new List<string>
+            //////////    {
+            //////////        $"{ParamKeys.ViewType}={Views.ModerateBan}",
+            //////////        $"{ParamKeys.ForumId}={this.ForumId}",
+            //////////        $"{ParamKeys.TopicId}={this.topic.TopicId}",
+            //////////        $"{ParamKeys.ReplyId}={reply.ReplyId}",
+            //////////        $"{ParamKeys.AuthorId}={authorId}",
+            //////////    };
+            //////////    if (this.useListActions)
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:BAN]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(this.TabId, string.Empty, banParams.ToArray()) + "';\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Ban]</span></li>");
+            //////////    }
+            //////////    else
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:BAN]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, banParams.ToArray()) + "\" tooltip=\"Deletes all posts for this user and unauthorizes the user.\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Ban]</span></a>");
+            //////////    }
+            //////////}
+            //////////else
+            //////////{
+            //////////    sbOutput.Replace("[ACTIONS:BAN]", string.Empty);
+            //////////}
 
-                var editParams = new List<string>() { 
-                    $"{ParamKeys.ViewType}={Views.Post}", 
-                    $"{ParamKeys.Action}={sAction}", 
-                    $"{ParamKeys.ForumId}={this.ForumId}", 
-                    $"{ParamKeys.TopicId}={this.topic.TopicId}", 
-                    $"{ParamKeys.PostId}={(reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId)}",
-                };
-                if (this.SocialGroupId > 0)
-                {
-                    editParams.Add(Literals.GroupId + "=" + this.SocialGroupId);
-                }
+            //////////// Edit Action
+            //////////if ((this.bModerate && this.bEdit) || (this.bEdit && authorId == this.UserId && (this.MainSettings.EditInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, (reply.ReplyId > 0 ? reply.Content.DateCreated : this.topic.Content.DateCreated), DateTime.UtcNow) < this.MainSettings.EditInterval)))
+            //////////{
+            //////////    var sAction = PostActions.ReplyEdit;
+            //////////    if (reply.ReplyId == 0)
+            //////////    {
+            //////////        sAction = PostActions.TopicEdit;
+            //////////    }
 
-                if (this.useListActions)
-                {
-                    sbOutput.Replace("[ACTIONS:EDIT]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(this.TabId, string.Empty, editParams.ToArray()) + "';\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Edit]</span></li>");
-                }
-                else
-                {
-                    sbOutput.Replace("[ACTIONS:EDIT]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, editParams.ToArray()) + "\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Edit]</span></a>");
-                }
-            }
-            else
-            {
-                sbOutput.Replace("[ACTIONS:EDIT]", string.Empty);
-            }
+            //////////    var editParams = new List<string>() { 
+            //////////        $"{ParamKeys.ViewType}={Views.Post}", 
+            //////////        $"{ParamKeys.Action}={sAction}", 
+            //////////        $"{ParamKeys.ForumId}={this.ForumId}", 
+            //////////        $"{ParamKeys.TopicId}={this.topic.TopicId}", 
+            //////////        $"{ParamKeys.PostId}={(reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId)}",
+            //////////    };
+            //////////    if (this.SocialGroupId > 0)
+            //////////    {
+            //////////        editParams.Add(Literals.GroupId + "=" + this.SocialGroupId);
+            //////////    }
 
-            // Reply and Quote Actions
-            if (!this.topic.IsLocked && this.CanReply)
-            {
-                var quoteParams = new List<string> { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.topic.TopicId}", $"{ParamKeys.QuoteId}={(reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId)}" };
-                var replyParams = new List<string> { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.topic.TopicId}", $"{ParamKeys.ReplyId}={(reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId)}" };
-                if (this.SocialGroupId > 0)
-                {
-                    quoteParams.Add($"{Literals.GroupId}={this.SocialGroupId}");
-                    replyParams.Add($"{Literals.GroupId}={this.SocialGroupId}");
-                }
+            //////////    if (this.useListActions)
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:EDIT]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(this.TabId, string.Empty, editParams.ToArray()) + "';\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Edit]</span></li>");
+            //////////    }
+            //////////    else
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:EDIT]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, editParams.ToArray()) + "\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Edit]</span></a>");
+            //////////    }
+            //////////}
+            //////////else
+            //////////{
+            //////////    sbOutput.Replace("[ACTIONS:EDIT]", string.Empty);
+            //////////}
 
-                if (this.useListActions)
-                {
-                    sbOutput.Replace("[ACTIONS:QUOTE]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(this.TabId, string.Empty, quoteParams.ToArray()) + "';\" title=\"[RESX:Quote]\"><i class=\"fa fa-quote-left fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Quote]</span></li>");
-                    sbOutput.Replace("[ACTIONS:REPLY]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(this.TabId, string.Empty, replyParams.ToArray()) + "';\" title=\"[RESX:Reply]\"><i class=\"fa fa-reply fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Reply]</span></li>");
-                }
-                else
-                {
-                    sbOutput.Replace("[ACTIONS:QUOTE]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, quoteParams.ToArray()) + "\" title=\"[RESX:Quote]\"><i class=\"fa fa-quote-left fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Quote]</span></a>");
-                    sbOutput.Replace("[ACTIONS:REPLY]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, replyParams.ToArray()) + "\" title=\"[RESX:Reply]\"><i class=\"fa fa-reply fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Reply]</span></a>");
-                }
-            }
-            else
-            {
-                sbOutput.Replace("[ACTIONS:QUOTE]", string.Empty);
-                sbOutput.Replace("[ACTIONS:REPLY]", string.Empty);
-            }
+            //////////// Reply and Quote Actions
+            //////////if (!this.topic.IsLocked && this.CanReply)
+            //////////{
+            //////////    var quoteParams = new List<string> { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.topic.TopicId}", $"{ParamKeys.QuoteId}={(reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId)}" };
+            //////////    var replyParams = new List<string> { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.topic.TopicId}", $"{ParamKeys.ReplyId}={(reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId)}" };
+            //////////    if (this.SocialGroupId > 0)
+            //////////    {
+            //////////        quoteParams.Add($"{Literals.GroupId}={this.SocialGroupId}");
+            //////////        replyParams.Add($"{Literals.GroupId}={this.SocialGroupId}");
+            //////////    }
 
-            if (this.bMove && (this.bModerate || (authorId == this.UserId)))
-            {
-                sbOutput.Replace("[ACTIONS:MOVE]", "<li onclick=\"javascript:amaf_openMove(" + this.ModuleId + "," + this.ForumId + ",[TOPICID])\"';\" title=\"[RESX:Move]\"><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Move]</span></li>");
-            }
-            else
-            {
-                sbOutput = sbOutput.Replace("[ACTIONS:MOVE]", string.Empty);
-            }
+            //////////    if (this.useListActions)
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:QUOTE]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(this.TabId, string.Empty, quoteParams.ToArray()) + "';\" title=\"[RESX:Quote]\"><i class=\"fa fa-quote-left fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Quote]</span></li>");
+            //////////        sbOutput.Replace("[ACTIONS:REPLY]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(this.TabId, string.Empty, replyParams.ToArray()) + "';\" title=\"[RESX:Reply]\"><i class=\"fa fa-reply fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Reply]</span></li>");
+            //////////    }
+            //////////    else
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:QUOTE]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, quoteParams.ToArray()) + "\" title=\"[RESX:Quote]\"><i class=\"fa fa-quote-left fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Quote]</span></a>");
+            //////////        sbOutput.Replace("[ACTIONS:REPLY]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, replyParams.ToArray()) + "\" title=\"[RESX:Reply]\"><i class=\"fa fa-reply fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Reply]</span></a>");
+            //////////    }
+            //////////}
+            //////////else
+            //////////{
+            //////////    sbOutput.Replace("[ACTIONS:QUOTE]", string.Empty);
+            //////////    sbOutput.Replace("[ACTIONS:REPLY]", string.Empty);
+            //////////}
 
-            if (this.bLock && (this.bModerate || (authorId == this.UserId)))
-            {
-                if (this.topic.IsLocked)
-                {
-                    sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:UnLock]')){amaf_Lock(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + ");};\" title=\"[RESX:UnLockTopic]\"><i class=\"fa fa-unlock fa-fm fa-blue dcf-topic-lock-inner\"></i><span class=\"dcf-topic-lock-text dcf-link-text \">[RESX:UnLock]</span></li>");
-                }
-                else
-                {
-                    sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_Lock(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + ");};\" title=\"[RESX:LockTopic]\"><i class=\"fa fa-lock fa-fm fa-blue dcf-topic-lock-inner\"></i><span class=\"dcf-topic-lock-text dcf-link-text\">[RESX:Lock]</span></li>");
-                }
-            }
-            else
-            {
-                sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", string.Empty);
-            }
-            if (this.bPin && (this.bModerate || (authorId == this.UserId)))
-            {
-                if (this.topic.IsPinned)
-                {
-                    sbOutput.Replace("[ACTIONS:PIN]", "<li class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:UnPin]')){amaf_Pin(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + ");};\" title=\"[RESX:UnPinTopic]\"><i class=\"fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-unpin dcf-topic-pin-inner\"></i><span class=\"dcf-topic-pin-text dcf-link-text\">[RESX:UnPin]</span></li>");
-                }
-                else
-                {
-                    sbOutput.Replace("[ACTIONS:PIN]", "<li class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_Pin(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + ");};\" title=\"[RESX:PinTopic]\"><i class=\"fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-pin dcf-topic-pin-inner\"></i><span class=\"dcf-topic-pin-text dcf-link-text\">[RESX:Pin]</span></li>");
-                }
-            }
-            else
-            {
-                sbOutput = sbOutput.Replace("[ACTIONS:PIN]", string.Empty);
-            }
+            //////////if (this.bMove && (this.bModerate || (authorId == this.UserId)))
+            //////////{
+            //////////    sbOutput.Replace("[ACTIONS:MOVE]", "<li onclick=\"javascript:amaf_openMove(" + this.ModuleId + "," + this.ForumId + ",[TOPICID])\"';\" title=\"[RESX:Move]\"><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Move]</span></li>");
+            //////////}
+            //////////else
+            //////////{
+            //////////    sbOutput = sbOutput.Replace("[ACTIONS:MOVE]", string.Empty);
+            //////////}
 
-            // Status
-            if (this.topic.StatusId <= 0 || (this.topic.StatusId == 3 && (reply.ReplyId > 0 && reply.StatusId == 0)))
-            {
-                sbOutput.Replace("[ACTIONS:ANSWER]", string.Empty);
-            }
-            else if (reply.ReplyId > 0 && reply.StatusId == 1)
-            {
-                // Answered
-                if (this.useListActions)
-                {
-                    sbOutput.Replace("[ACTIONS:ANSWER]", "<li class=\"af-answered\" title=\"[RESX:Status:Answer]\"><em></em>[RESX:Status:Answer]</li>");
-                }
-                else
-                {
-                    sbOutput.Replace("[ACTIONS:ANSWER]", "<span class=\"af-actions af-answered\" title=\"[RESX:Status:Answer]\"><em></em>[RESX:Status:Answer]</span>");
-                }
-            }
-            else
-            {
-                // Not Answered
-                if (reply.ReplyId > 0 && ((this.UserId == this.topic.Content.AuthorId && !this.topic.IsLocked) || (this.bModerate && this.bEdit)))
-                {
-                    // Can mark answer
-                    if (this.useListActions)
-                    {
-                        sbOutput.Replace("[ACTIONS:ANSWER]", "<li class=\"af-markanswer\" onclick=\"amaf_MarkAsAnswer(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + "," + reply.ReplyId + ");\" title=\"[RESX:Status:SelectAnswer]\"><em></em>[RESX:Status:SelectAnswer]</li>");
-                    }
-                    else
-                    {
-                        sbOutput.Replace("[ACTIONS:ANSWER]", "<a class=\"af-actions af-markanswer\" href=\"#\" onclick=\"amaf_MarkAsAnswer(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + "," + reply.ReplyId + "); return false;\" title=\"[RESX:Status:SelectAnswer]\"><em></em>[RESX:Status:SelectAnswer]</a>");
-                    }
-                }
-                else
-                {
-                    // Display Nothing
-                    sbOutput.Replace("[ACTIONS:ANSWER]", string.Empty);
-                }
-            }
-            #endregion
+            //////////if (this.bLock && (this.bModerate || (authorId == this.UserId)))
+            //////////{
+            //////////    if (this.topic.IsLocked)
+            //////////    {
+            //////////        sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:UnLock]')){amaf_Lock(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + ");};\" title=\"[RESX:UnLockTopic]\"><i class=\"fa fa-unlock fa-fm fa-blue dcf-topic-lock-inner\"></i><span class=\"dcf-topic-lock-text dcf-link-text \">[RESX:UnLock]</span></li>");
+            //////////    }
+            //////////    else
+            //////////    {
+            //////////        sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_Lock(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + ");};\" title=\"[RESX:LockTopic]\"><i class=\"fa fa-lock fa-fm fa-blue dcf-topic-lock-inner\"></i><span class=\"dcf-topic-lock-text dcf-link-text\">[RESX:Lock]</span></li>");
+            //////////    }
+            //////////}
+            //////////else
+            //////////{
+            //////////    sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", string.Empty);
+            //////////}
+            //////////if (this.bPin && (this.bModerate || (authorId == this.UserId)))
+            //////////{
+            //////////    if (this.topic.IsPinned)
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:PIN]", "<li class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:UnPin]')){amaf_Pin(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + ");};\" title=\"[RESX:UnPinTopic]\"><i class=\"fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-unpin dcf-topic-pin-inner\"></i><span class=\"dcf-topic-pin-text dcf-link-text\">[RESX:UnPin]</span></li>");
+            //////////    }
+            //////////    else
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:PIN]", "<li class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_Pin(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + ");};\" title=\"[RESX:PinTopic]\"><i class=\"fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-pin dcf-topic-pin-inner\"></i><span class=\"dcf-topic-pin-text dcf-link-text\">[RESX:Pin]</span></li>");
+            //////////    }
+            //////////}
+            //////////else
+            //////////{
+            //////////    sbOutput = sbOutput.Replace("[ACTIONS:PIN]", string.Empty);
+            //////////}
+
+            //////////// Status
+            //////////if (this.topic.StatusId <= 0 || (this.topic.StatusId == 3 && (reply.ReplyId > 0 && reply.StatusId == 0)))
+            //////////{
+            //////////    sbOutput.Replace("[ACTIONS:ANSWER]", string.Empty);
+            //////////}
+            //////////else if (reply.ReplyId > 0 && reply.StatusId == 1)
+            //////////{
+            //////////    // Answered
+            //////////    if (this.useListActions)
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:ANSWER]", "<li class=\"af-answered\" title=\"[RESX:Status:Answer]\"><em></em>[RESX:Status:Answer]</li>");
+            //////////    }
+            //////////    else
+            //////////    {
+            //////////        sbOutput.Replace("[ACTIONS:ANSWER]", "<span class=\"af-actions af-answered\" title=\"[RESX:Status:Answer]\"><em></em>[RESX:Status:Answer]</span>");
+            //////////    }
+            //////////}
+            //////////else
+            //////////{
+            //////////    // Not Answered
+            //////////    if (reply.ReplyId > 0 && ((this.UserId == this.topic.Content.AuthorId && !this.topic.IsLocked) || (this.bModerate && this.bEdit)))
+            //////////    {
+            //////////        // Can mark answer
+            //////////        if (this.useListActions)
+            //////////        {
+            //////////            sbOutput.Replace("[ACTIONS:ANSWER]", "<li class=\"af-markanswer\" onclick=\"amaf_MarkAsAnswer(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + "," + reply.ReplyId + ");\" title=\"[RESX:Status:SelectAnswer]\"><em></em>[RESX:Status:SelectAnswer]</li>");
+            //////////        }
+            //////////        else
+            //////////        {
+            //////////            sbOutput.Replace("[ACTIONS:ANSWER]", "<a class=\"af-actions af-markanswer\" href=\"#\" onclick=\"amaf_MarkAsAnswer(" + this.ModuleId + "," + this.ForumId + "," + this.topic.TopicId + "," + reply.ReplyId + "); return false;\" title=\"[RESX:Status:SelectAnswer]\"><em></em>[RESX:Status:SelectAnswer]</a>");
+            //////////        }
+            //////////    }
+            //////////    else
+            //////////    {
+            //////////        // Display Nothing
+            //////////        sbOutput.Replace("[ACTIONS:ANSWER]", string.Empty);
+            //////////    }
+            //////////}
+            //////////#endregion
 
             #region "split checkbox"
 

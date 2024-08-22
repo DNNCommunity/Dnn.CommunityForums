@@ -47,10 +47,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get => this.Topic.ForumId;
             set => this.Topic.ForumId = value;
         }
-        
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public int PostId {  get => this.ReplyId; }
+        
+        [IgnoreColumn] 
+        public bool IsTopic => false;
 
+        [IgnoreColumn] 
+        public bool IsReply => true;
+        
         public int ReplyId { get; set; }
 
         public int TopicId { get; set; }
