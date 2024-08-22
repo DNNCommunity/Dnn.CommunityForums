@@ -148,11 +148,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TemplatesPath = Globals.ModulePath + "templates/";
         public const string ThemesPath = Globals.ModulePath + "themes/";
 
-        public const string TokenResourceFile = Globals.ModulePath + "App_LocalResources/TokenResources.resx";
         public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
         public const string ControlPanelResourceFile = Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx";
         public const string CacheDependencyFile = Globals.ModulePath + "cache/cachedep.resources";
+        public const string LegacyTokenResourceFile = Globals.ModulePath + "App_LocalResources/LegacyTokenResources.resx";
 
         public const string ForumsControlsRegisterAMTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
         public const string ForumsControlsRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";

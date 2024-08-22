@@ -1051,7 +1051,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         private static string GetTokenFormatString(string key, DotNetNuke.Entities.Portals.PortalSettings portalSettings, string language = "en-US")
         {
-            string formatString = Utilities.LocalizeString(key, Globals.TokenResourceFile, (DotNetNuke.Entities.Portals.PortalSettings)portalSettings, language);
+            string formatString = Utilities.LocalizeString(key, Globals.LegacyTokenResourceFile, (DotNetNuke.Entities.Portals.PortalSettings)portalSettings, language);
             return formatString;
         }
 
