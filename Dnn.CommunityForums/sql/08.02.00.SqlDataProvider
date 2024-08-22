@@ -1943,4 +1943,138 @@ GO
 
 
 /* issue 1037 end - topic / reply splitting issues */
+
+/* --------------------- */
+
+/* Begin issue 1043 -- update activeforums_SaveTopicNextPrev */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_SaveTopicNextPrev]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_SaveTopicNextPrev]
+	@ForumId INT
+AS
+BEGIN
+	
+	SET NOCOUNT ON
+	;WITH ctePrevNext AS
+	(
+
+		SELECT    
+			T.TopicId,
+			LAG(T.TopicId,1,NULL) OVER (ORDER BY tc.DateCreated, rc.DateCreated) PrevTopic,
+			LEAD(T.TopicId,1,NULL) OVER (ORDER BY tc.DateCreated, rc.DateCreated) NextTopic
+		FROM 
+			dbo.activeforums_ForumTopics as ft 
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] as t ON t.TopicId = ft.TopicId 
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] as tc on tc.ContentId = t.ContentId 
+			LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] as r on r.ReplyId = ft.LastReplyId 
+			LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] as rc on r.ContentId = rc.ContentId 
+		WHERE (ft.ForumId = @ForumId)	
+        AND (t.IsDeleted = 0)
+	)
+	UPDATE 
+		t
+	SET
+		NextTopic = pn.NextTopic,
+		PrevTopic = pn.PrevTopic 
+	FROM 
+		{databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		INNER JOIN ctePrevNext pn ON pn.TopicId = t.TopicId   
+        WHERE t.IsDeleted = 0
+		
+	
+	/* update the first and last - BY DATE to wraparound */
+	DECLARE @MaxTopicId int, @MinTopicId int
+	
+	;WITH ctePrevNext AS
+	(
+		SELECT    
+			T.TopicId
+		FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] as ft 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t ON t.TopicId = ft.TopicId 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] tc on tc.ContentId = t.ContentId 
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] r on  r.ReplyId = ft.LastReplyId 
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] rc on rc.ContentId = r.ContentId 
+		WHERE     
+			(ft.ForumId = @ForumId)	AND (t.NextTopic IS NULL OR t.PrevTopic IS NULL) AND (t.IsDeleted = 0)
+	)	
+	SELECT 
+		@MaxTopicId = MAX(topicid), 
+		@MinTopicId = MIN(topicid) 
+	FROM 
+		ctePrevNext
+        
+	
+	/* update first */
+	UPDATE 
+		{databaseOwner}[{objectQualifier}activeforums_Topics]
+	SET 
+		PrevTopic = @MaxTopicId  
+	FROM
+		{databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft ON ft.TopicId = t.TopicId
+	WHERE 
+		PrevTopic IS NULL 
+		AND ft.ForumId = @ForumId
+        AND t.IsDeleted = 0
+
+	
+	/* update last */
+	UPDATE 
+		{databaseOwner}[{objectQualifier}activeforums_Topics] 
+	SET 
+		NextTopic = @MinTopicId 
+	FROM
+		{databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft ON ft.TopicId = t.TopicId
+	WHERE 
+		NextTopic IS NULL 
+		AND ft.ForumId = @ForumId
+        AND t.IsDeleted = 0
+
+        
+	/* clear previous/next from deleted topics */
+    UPDATE 
+		t
+	SET
+		NextTopic = 0
+	FROM 
+		{databaseOwner}[{objectQualifier}activeforums_Topics] t 
+        WHERE t.IsDeleted = 1
+        AND t.NextTopic <> 0
+		
+	UPDATE 
+		t
+	SET
+		PrevTopic = 0
+	FROM 
+		{databaseOwner}[{objectQualifier}activeforums_Topics] t 
+        WHERE t.IsDeleted = 1
+        AND t.PrevTopic <> 0
+		
+END
+GO
+
+/* execute against existing topics */
+
+DECLARE @ForumId INT
+		 
+BEGIN
+	DECLARE forums_cursor CURSOR FOR SELECT ForumId FROM {databaseOwner}[{objectQualifier}activeforums_Forums] 
+	OPEN forums_cursor
+		FETCH NEXT FROM forums_cursor into @ForumId
+			WHILE (@@fetch_status = 0)
+			BEGIN
+				EXEC {databaseOwner}[{objectQualifier}activeforums_SaveTopicNextPrev] @ForumId
+			FETCH NEXT FROM forums_cursor INTO @ForumId
+			END
+	CLOSE forums_cursor
+	DEALLOCATE forums_cursor
+END
+
+/* issue 1043 - End - update activeforums_SaveTopicNextPrev */
+
+
 /* --------------------- */
