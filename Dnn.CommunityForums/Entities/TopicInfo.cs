@@ -223,23 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get => this.author ?? (this.author = this.GetAuthor(this.PortalId, this.Content.AuthorId));
             set => this.author = value;
         }
-        
-        [IgnoreColumn()]
-        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor(int portalId, int authorId)
-        {
-            return new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, authorId);
-        }
-        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor()
-        {
-            this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.Content.AuthorId));
-            if (this.author == null)
-            {
-                this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
-                this.author.AuthorId = this.Content.AuthorId;
-                this.author.DisplayName = this.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
-            }
-        }
-        
+
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo LastReply
         {
@@ -253,13 +237,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get => this.lastReplyAuthor ?? (this.lastReplyAuthor = this.lastReply == null ? null : this.GetAuthor(this.PortalId, this.lastReply.Content.AuthorId));
             set => this.lastReplyAuthor = value;
         }
-            this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.Content.AuthorId));
-            if (this.author == null)
-            {
-                this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
-                this.author.AuthorId = this.Content.AuthorId;
-                this.author.DisplayName = this.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
-            }
 
         [IgnoreColumn()]
         internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor(int portalId, int authorId)
