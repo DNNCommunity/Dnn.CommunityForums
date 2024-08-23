@@ -1684,6 +1684,8 @@
       <DependentUpon>ForumSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="ViewModels\Forum.cs" />
+    <Compile Include="ViewModels\Topic.cs" />
     <Compile Include="WhatsNew.ascx.designer.cs">
       <DependentUpon>WhatsNew.ascx</DependentUpon>
     </Compile>
