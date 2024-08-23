@@ -51,6 +51,7 @@
         <input type="hidden" id="aftopicedit-moduleid" value="" />
         <input type="hidden" id="aftopicedit-forumid" value="" />
         <input type="hidden" id="aftopicedit-topicid" value="" />
+        <input type="hidden" id="aftopicedit-topic" value="" />
     </div>
 </div>
 <script type="text/javascript">

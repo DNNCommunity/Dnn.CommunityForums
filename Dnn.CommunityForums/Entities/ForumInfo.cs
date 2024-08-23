@@ -120,9 +120,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return group;
         }
-
+        
         [IgnoreColumn()]
         public string GroupName => this.ForumGroup.GroupName;
+
+        [IgnoreColumn()]
+        public string GroupPrefixURL => this.ForumGroup.PrefixURL;
 
         [IgnoreColumn()]
         public string LastTopicUrl { get; set; }
