@@ -465,7 +465,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         }
 
                         DotNetNuke.Modules.ActiveForums.Entities.TopicInfo updatedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
-                        return this.Request.CreateResponse(HttpStatusCode.OK, updatedTopic);
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.ViewModels.Topic(updatedTopic));
                     }
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }

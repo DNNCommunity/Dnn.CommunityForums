@@ -170,7 +170,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int PrevTopic { get; set; }
 
         public string TopicData { get; set; } = string.Empty;
-        
+
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
         {
@@ -181,6 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return this;
         }
+
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
@@ -206,7 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId); /* can't get using moduleId since ModuleId comes from Forum */
         }
-
+        
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author
         {

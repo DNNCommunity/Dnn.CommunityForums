@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 ti.GetForum();
                 ti.GetContent();
-                ti.Author = ti.GetAuthor(ti.PortalId, ti.Content.AuthorId);
+                ti.GetAuthor(ti.PortalId, ti.Content.AuthorId);
             }
 
             return ti;
