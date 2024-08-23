@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             public int ForumId { get; set; }
 
-            public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic { get; set; }
+            public DotNetNuke.Modules.ActiveForums.ViewModels.Topic Topic { get; set; }
         }
 
         /// <summary>
@@ -157,10 +157,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                         return this.Request.CreateResponse(HttpStatusCode.OK, value: ti.IsPinned);
                     }
+
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
+
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
+
             return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
@@ -199,10 +202,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                         return this.Request.CreateResponse(HttpStatusCode.OK, ti.IsLocked);
                     }
+
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
+
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
+
             return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
@@ -239,10 +245,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.CacheModulePrefix, this.ForumModuleId));
                         return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                     }
+
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
+
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
+
             return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
 #pragma warning disable CS1570
@@ -250,7 +259,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// Loads a Topic
         /// <param name="forumId" type="int"></param>
         /// <param name="topicId" type="int"></param>
-        /// <returns name="Topic" type="DotNetNuke.Modules.ActiveForums.Entities.TopicInfo"></returns>
+        /// <returns name="Topic" type="DotNetNuke.Modules.ActiveForums.ViewModels.Topic"></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Load?ForumId=xxx&TopicId=xxx</remarks>
 #pragma warning restore CS1570
         [HttpGet]
@@ -265,7 +274,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                     if (t != null)
                     {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new object[] { t });
+                        var topic = new DotNetNuke.Modules.ActiveForums.ViewModels.Topic(t);
+                        return this.Request.CreateResponse(HttpStatusCode.OK, topic);
                     }
                     else
                     {
@@ -314,8 +324,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         tc.DeleteById(topicId);
                         return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                     }
+
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
+
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
@@ -346,7 +358,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// Updates an existing topic
         /// </summary>
         /// <param name="dto"></param>
-        /// <returns name="Topic" type="DotNetNuke.Modules.ActiveForums.Entities.TopicInfo"></returns>
+        /// <returns name="Topic" type="DotNetNuke.Modules.ActiveForums.ViewModels.Topic"></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Update</remarks>
         [HttpPost]
         [DnnAuthorize]
@@ -372,7 +384,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
                                     this.ActiveModule.PortalID, this.UserInfo.Roles))))
                     {
-                        string subject = Utilities.XSSFilter(dto.Topic.Content.Subject, true);
+                        string subject = Utilities.XSSFilter(dto.Topic.Subject, true);
                         originalTopic.Content.Subject = subject;
                         originalTopic.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrlSegment(portalId: this.ActiveModule.PortalID, moduleId: this.ForumModuleId, topicId: topicId, subject: subject, forumInfo: originalTopic.Forum);
 
@@ -467,10 +479,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         DotNetNuke.Modules.ActiveForums.Entities.TopicInfo updatedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                         return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.ViewModels.Topic(updatedTopic));
                     }
+
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
+
                 return this.Request.CreateResponse(HttpStatusCode.NotFound, dto.Topic);
             }
+
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
     }

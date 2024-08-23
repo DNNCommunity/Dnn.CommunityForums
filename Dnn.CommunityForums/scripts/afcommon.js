@@ -469,10 +469,10 @@ function amaf_loadForMove(mid, fid, tid) {
     });
 };
 function amaf_bindLoadMoveTopic(data) { 
-    var t = data[0];
+    var t = data;
     $('#aftopicmove-topicid').val(t.TopicId);
-    $('#aftopicmove-subject').val(t.Content.Subject);
-    $('#aftopicmove-currentforum').val(t.Forum.ForumName);
+    $('#aftopicmove-subject').val(t.Subject);
+    $('#aftopicmove-currentforum').val(t.ForumName);
 };
 function amaf_modMove(mid, fid, tid) {
     var sf = $.ServicesFramework(mid);
@@ -508,7 +508,6 @@ function amaf_quickEdit(mid, fid, tid) {
     });
 };
 function amaf_resetQuickEdit() {
-    document.getElementById('aftopicedit-topic').value = '';
     document.getElementById('aftopicedit-moduleid').value = '';
     document.getElementById('aftopicedit-forumid').value = '';
     document.getElementById('aftopicedit-topicid').value = '';
@@ -524,18 +523,17 @@ function amaf_resetQuickEdit() {
 };
 function amaf_loadTopicComplete(data) {
     var t = data;
-    document.getElementById('aftopicedit-topic').value = JSON.stringify(t);
     document.getElementById('aftopicedit-topicid').value = t.TopicId;
     document.getElementById('aftopicedit-forumid').value = t.ForumId;
     document.getElementById('aftopicedit-moduleid').value = t.ModuleId;
-    document.getElementById('aftopicedit-subject').value = t.Content.Subject;
+    document.getElementById('aftopicedit-subject').value = t.Subject;
     document.getElementById('aftopicedit-tags').value = t.Tags;
     document.getElementById('aftopicedit-priority').value = t.Priority;
     am.Utils.SetSelected('aftopicedit-status', t.StatusId);
     document.getElementById('aftopicedit-locked').checked = t.IsLocked;
     document.getElementById('aftopicedit-pinned').checked = t.IsPinned;
     amaf_loadCatList(t.Categories);
-    amaf_loadProperties(t.Forum.Properties, t.TopicProperties);
+    amaf_loadProperties(t.ForumProperties, t.TopicProperties);
 };
 function amaf_loadCatList(cats) {
     var iCount = cats.length;
@@ -605,10 +603,10 @@ function amaf_loadProperties(propdefs, props) {
 
 
 function amaf_saveTopic() {
-    var t = JSON.parse(document.getElementById('aftopicedit-topic').value);
+    var t = {};
     var mid = document.getElementById('aftopicedit-moduleid').value;
     var fid = document.getElementById('aftopicedit-forumid').value;
-    t.TopicId = document.getElementById('aftopicedit-topicid').value;
+    t.Topicid = document.getElementById('aftopicedit-topicid').value;
     t.Subject = document.getElementById('aftopicedit-subject').value;
     t.Tags = document.getElementById('aftopicedit-tags').value;
     t.Priority = document.getElementById('aftopicedit-priority').value;
