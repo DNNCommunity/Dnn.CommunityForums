@@ -253,6 +253,21 @@ function amaf_postDel(mid, fid, tid, rid) {
         });
     };
 };
+function amaf_topicDel(mid, fid, tid) {
+    if (confirm(amaf.resx.DeleteConfirm)) {
+        var sf = $.ServicesFramework(mid);
+        $.ajax({
+            type: "DELETE",
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Delete?forumId=' + fid + '&topicId=' + tid,
+            beforeSend: sf.setModuleHeaders
+        }).done(function (data) {
+            afreload();
+        }).fail(function (xhr, status) {
+            alert('error deleting topic');
+        });
+    };
+};
+
 function amaf_likePost(mid, fid, cid) {
     var sf = $.ServicesFramework(mid);
     var params = {
