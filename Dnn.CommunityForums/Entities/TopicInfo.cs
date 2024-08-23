@@ -172,6 +172,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string TopicData { get; set; } = string.Empty;
 
         [IgnoreColumn()]
+        public int LastReplyId { get; set; }
+        
+        [IgnoreColumn()]
+        public int Rating { get; set; }
+
+        [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
         {
             get => this;
@@ -181,6 +187,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return this;
         }
+
+        [IgnoreColumn()]
+        public int SubscriberCount => new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: this.PortalId, moduleId: this.ModuleId, forumId: this.ForumId, topicId: this.TopicId);
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
