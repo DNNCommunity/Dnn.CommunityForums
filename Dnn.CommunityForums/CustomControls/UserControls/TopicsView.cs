@@ -740,7 +740,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if ((this.bModerate && this.bDelete) || ((this.bDelete && authorId == this.UserId && !isLocked)))
                     {
-                        sTopicsTemplate = sTopicsTemplate.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_modDel(" + this.ModuleId + "," + this.ForumId + "," + topicId.ToString() + ");\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
+                        sTopicsTemplate = sTopicsTemplate.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_topicDel(" + this.ModuleId + "," + this.ForumId + "," + topicId.ToString() + ");\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
                     }
                     else
                     {
