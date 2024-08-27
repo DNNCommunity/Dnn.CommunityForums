@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(this.PortalId, this.ForumModuleId);
+                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetUserFromHttpContext(this.PortalId, this.ForumModuleId);
             }
         }
 

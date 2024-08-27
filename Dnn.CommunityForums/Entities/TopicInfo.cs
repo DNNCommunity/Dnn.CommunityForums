@@ -186,7 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor()
         {
-            this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.Content.AuthorId));
+            this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(this.PortalId, this.Content.AuthorId));
             if (this.author == null)
             {
                 this.author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();

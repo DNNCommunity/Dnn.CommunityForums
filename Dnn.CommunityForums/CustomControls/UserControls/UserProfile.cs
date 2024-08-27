@@ -130,9 +130,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             Literal lit = new Literal();
 
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
             user.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(user.UserRoles, this.PortalId, this.ForumModuleId, "CanRead");
-            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID));
+            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID));
             sTemplate = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sTemplate, author, this.ImagePath, this.CurrentUserType, false, false, false, string.Empty, this.UserInfo.UserID, this.TimeZoneOffset);
             sTemplate = this.RenderModals(sTemplate);
 
@@ -358,7 +358,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (this.CanEditMode())
             {
-                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID);
+                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
                 if (user != null)
                 {
                     if (this.MainSettings.AllowSignatures == 1)
@@ -375,7 +375,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 }
 
-                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().Save<int>(user, user.UserId);
+                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).Save<int>(user, user.UserId);
             }
 
             return true;

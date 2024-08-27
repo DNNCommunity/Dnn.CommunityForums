@@ -27,197 +27,197 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
     using System.Text;
     using System.Web;
 
-	public class HandlerBase : System.Web.IHttpHandler
-	{
-		internal enum OutputCodes : int
-		{
-			Success,
-			UnsupportedRequest,
-			AuthenticationFailed,
-			Exception,
-			NoResults,
-			AccessDenied,
-		}
+    public class HandlerBase : System.Web.IHttpHandler
+    {
+        internal enum OutputCodes : int
+        {
+            Success,
+            UnsupportedRequest,
+            AuthenticationFailed,
+            Exception,
+            NoResults,
+            AccessDenied,
+        }
 
-		private Hashtable _params;
-		private bool _isValid = false;
-		private int _gid = -1;
-		private int _groupid = -1;
-		private int _upid = -1;
-		private DotNetNuke.Entities.Portals.PortalSettings _ps;
-		private SettingsInfo _mainSettings;
-		private bool _AdminRequired = false;
+        private Hashtable _params;
+        private bool _isValid = false;
+        private int _gid = -1;
+        private int _groupid = -1;
+        private int _upid = -1;
+        private DotNetNuke.Entities.Portals.PortalSettings _ps;
+        private SettingsInfo _mainSettings;
+        private bool _AdminRequired = false;
 
-		public bool AdminRequired
-		{
-			get
-			{
-				return this._AdminRequired;
-			}
+        public bool AdminRequired
+        {
+            get
+            {
+                return this._AdminRequired;
+            }
 
-			set
-			{
-				this._AdminRequired = value;
-			}
-		}
+            set
+            {
+                this._AdminRequired = value;
+            }
+        }
 
-		private int _pid = -1;
-		private int _mid = -1;
-		private int _UserId = -1;
+        private int _pid = -1;
+        private int _mid = -1;
+        private int _UserId = -1;
 
-		public int UserId
-		{
-			get
-			{
-				return this._UserId;
-			}
+        public int UserId
+        {
+            get
+            {
+                return this._UserId;
+            }
 
-			set
-			{
-				this._UserId = value;
-			}
-		}
+            set
+            {
+                this._UserId = value;
+            }
+        }
 
-		public int PortalId
-		{
-			get
-			{
-				if (HttpContext.Current.Request.QueryString["PortalId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["PortalId"]))
-				{
-					return int.Parse(HttpContext.Current.Request.QueryString["PortalId"]);
-				}
-				else
-				{
-					return this._pid;
-				}
-			}
-		}
+        public int PortalId
+        {
+            get
+            {
+                if (HttpContext.Current.Request.QueryString["PortalId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["PortalId"]))
+                {
+                    return int.Parse(HttpContext.Current.Request.QueryString["PortalId"]);
+                }
+                else
+                {
+                    return this._pid;
+                }
+            }
+        }
 
-		public int ModuleId
-		{
-			get
-			{
-				if (HttpContext.Current.Request.QueryString["ModuleId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["ModuleId"]))
-				{
-					return int.Parse(HttpContext.Current.Request.QueryString["ModuleId"]);
-				}
-				else
-				{
-					return this._mid;
-				}
-			}
-		}
+        public int ModuleId
+        {
+            get
+            {
+                if (HttpContext.Current.Request.QueryString["ModuleId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["ModuleId"]))
+                {
+                    return int.Parse(HttpContext.Current.Request.QueryString["ModuleId"]);
+                }
+                else
+                {
+                    return this._mid;
+                }
+            }
+        }
 
-		public int TabId
-		{
-			get
-			{
-				if (HttpContext.Current.Request.QueryString["TabId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["TabId"]))
-				{
-					return int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
-				}
-				else
-				{
-					return -1;
-				}
-			}
-		}
+        public int TabId
+        {
+            get
+            {
+                if (HttpContext.Current.Request.QueryString["TabId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["TabId"]))
+                {
+                    return int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+        }
 
-		public bool IsDebug
-		{
-			get
-			{
-				if (HttpContext.Current.Request.QueryString["amdebug"] != null)
-				{
-					return bool.Parse(HttpContext.Current.Request.QueryString["amdebug"]);
-				}
-				else
-				{
-					return false;
-				}
-			}
-		}
+        public bool IsDebug
+        {
+            get
+            {
+                if (HttpContext.Current.Request.QueryString["amdebug"] != null)
+                {
+                    return bool.Parse(HttpContext.Current.Request.QueryString["amdebug"]);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
-		public SettingsInfo MainSettings
-		{
-			get
-			{
-				return this._mainSettings;
-			}
-		}
+        public SettingsInfo MainSettings
+        {
+            get
+            {
+                return this._mainSettings;
+            }
+        }
 
-		public bool IsValid
-		{
-			get
-			{
-				return this._isValid;
-			}
-		}
+        public bool IsValid
+        {
+            get
+            {
+                return this._isValid;
+            }
+        }
 
-		public DotNetNuke.Entities.Portals.PortalSettings PS
-		{
-			get
-			{
-				return this._ps;
-			}
-		}
+        public DotNetNuke.Entities.Portals.PortalSettings PS
+        {
+            get
+            {
+                return this._ps;
+            }
+        }
 
-		public int RequestOption
-		{
-			get
-			{
-				if (HttpContext.Current.Request.QueryString["opt"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["opt"]))
-				{
-					return int.Parse(HttpContext.Current.Request.QueryString["opt"]);
-				}
-				else
-				{
-					return -1;
-				}
-			}
-		}
+        public int RequestOption
+        {
+            get
+            {
+                if (HttpContext.Current.Request.QueryString["opt"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["opt"]))
+                {
+                    return int.Parse(HttpContext.Current.Request.QueryString["opt"]);
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+        }
 
-		public Hashtable Params
-		{
-			get
-			{
-				return this._params;
-			}
-		}
+        public Hashtable Params
+        {
+            get
+            {
+                return this._params;
+            }
+        }
 
-		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-		public int UPID => throw new NotImplementedException();
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public int UPID => throw new NotImplementedException();
 
-		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-		public bool IsAuthenticated
-		{
-			get => throw new NotImplementedException();
-			set => throw new NotImplementedException();
-		}
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public bool IsAuthenticated
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
 
-		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-		public string Username
-		{
-			get => throw new NotImplementedException();
-			set => throw new NotImplementedException();
-		}
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public string Username
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
-		{
-			get
-			{
-                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(this.PortalId, this.ModuleId);
-			}
-		}
+        {
+            get
+            {
+                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetUserFromHttpContext(this.PortalId, this.ModuleId);
+            }
+        }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public virtual bool IsReusable
-		{
-			get
-			{
-				return false;
-			}
-		}
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public virtual void ProcessRequest(System.Web.HttpContext context)
         {

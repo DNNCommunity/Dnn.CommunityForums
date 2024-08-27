@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser = null;
             if (string.IsNullOrEmpty(this.ForumIds))
             {
-                forumUser = forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(this.PortalId, this.ModuleId);
+                forumUser = forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetUserFromHttpContext(this.PortalId, this.ModuleId);
                 if (string.IsNullOrEmpty(forumUser.UserForums))
                 {
                     this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, this.PortalId, this.ModuleId);

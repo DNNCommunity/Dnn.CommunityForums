@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpGet]
         public HttpResponseMessage GetUserProfile(int userId)
         {
-            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.ActiveModule.PortalID, userId);
+            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).GetByUserId(this.ActiveModule.PortalID, userId);
 
             if (up == null)
             {
@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpPost]
         public HttpResponseMessage UpdateUserProfile(UserProfileDTO dto)
         {
-            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.ActiveModule.PortalID, dto.UserId);
+            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).GetByUserId(this.ActiveModule.PortalID, dto.UserId);
 
             if (up == null)
             {
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 up.RewardPoints = dto.RewardPoints.Value;
             }
 
-            new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().Update(up);
+            new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).Update(up);
 
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (dto.SecurityType == 1)
                         {
-                            var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.ActiveModule.PortalID, Convert.ToInt32(dto.SecurityId));
+                            var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).GetByUserId(this.ActiveModule.PortalID, Convert.ToInt32(dto.SecurityId));
                             dto.SecurityId = ui != null ? ui.UserId.ToString() : string.Empty;
                         }
                         else
