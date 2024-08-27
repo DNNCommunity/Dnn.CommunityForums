@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.UID > 0 && !this.Page.IsPostBack)
             {
-                var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID);
+                var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
                 this.drpPrefDefaultSort.SelectedIndex = this.drpPrefDefaultSort.Items.IndexOf(this.drpPrefDefaultSort.Items.FindByValue(ui.PrefDefaultSort.Trim()));
                 this.drpPrefPageSize.SelectedIndex = this.drpPrefPageSize.Items.IndexOf(this.drpPrefPageSize.Items.FindByValue(ui.PrefPageSize.ToString()));
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (this.UserId == this.UID || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser)
             {
-                var upi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID);
+                var upi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
                 if (upi != null)
                 {
                     upi.PrefDefaultSort = Utilities.XSSFilter(this.drpPrefDefaultSort.SelectedItem.Value, true);
@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
                     }
-                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().Save<int>(upi, upi.UserId);
+                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).Save<int>(upi, upi.UserId);
 
                     this.Response.Redirect(this.NavigateUrl(this.TabId));
                 }

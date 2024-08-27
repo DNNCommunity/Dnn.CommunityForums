@@ -210,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             if (ti.IsApproved && ti.Author.AuthorId > 0)
             {   // TODO: put this in a better place and make it consistent with reply counter
-                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().UpdateUserTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
+                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ti.Forum.ModuleId).UpdateUserTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
             }
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(ti.Forum.PortalId, ti.Content.AuthorId);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);

@@ -44,6 +44,9 @@ using DotNetNuke.Entities.Users;
 
         public int PortalId { get; set; }
 
+        [IgnoreColumn]
+        internal int ModuleId { get; set; }
+
         public int TopicCount { get; set; }
 
         public int ReplyCount { get; set; }

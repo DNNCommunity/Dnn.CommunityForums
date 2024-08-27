@@ -54,7 +54,7 @@ using Microsoft.ApplicationBlocks.Data;
         public IDataReader Profiles_MemberList(int PortalId, int ModuleId, int MaxRows, int RowIndex, string Filter) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public void Profile_UpdateTopicCount(int PortalId, int UserId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().UpdateUserTopicCount(PortalId, UserId);
+        public void Profile_UpdateTopicCount(int PortalId, int UserId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).UpdateUserTopicCount(PortalId, UserId);
         #endregion
     }
     #endregion
