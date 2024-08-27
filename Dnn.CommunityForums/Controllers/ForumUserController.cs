@@ -146,13 +146,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetAuthenticatedUser [renamed method]")]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetUserFromHttpContext [renamed method]")]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId)
         {
-            return GetAuthenticatedUser(portalId, moduleId);
+            return this.GetUserFromHttpContext(portalId, moduleId);
         }
 
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetAuthenticatedUser(int portalId, int moduleId)
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUserFromHttpContext(int portalId, int moduleId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = null;
             if (Thread.CurrentPrincipal.Identity.IsAuthenticated)
@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetDNNUser(int portalId, string userName) => this.GetByUserId(portalId, GetUserIdByUserName(portalId, userName));
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetAuthenticatedUser(int portalId, int moduleId, string userName)
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUserFromHttpContext(int portalId, int moduleId, string userName)
         {
             return this.GetDNNUser(portalId, userName);
         }

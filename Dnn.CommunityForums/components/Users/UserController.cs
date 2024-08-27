@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public class UserController
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public User GetUser(int PortalId, int ModuleId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).GetAuthenticatedUser(PortalId, ModuleId);
+        public User GetUser(int PortalId, int ModuleId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).GetUserFromHttpContext(PortalId, ModuleId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public User DNNGetCurrentUser(int PortalId, int ModuleId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).DNNGetCurrentUser(PortalId, ModuleId);
@@ -53,10 +53,10 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public User GetUser(int PortalId, int ModuleId, int userId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).GetAuthenticatedUser(PortalId, userId);
+        public User GetUser(int PortalId, int ModuleId, int userId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).GetUserFromHttpContext(PortalId, userId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public User GetUser(int PortalId, int ModuleId, string userName) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).GetAuthenticatedUser(PortalId, ModuleId, userName);
+        public User GetUser(int PortalId, int ModuleId, string userName) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).GetUserFromHttpContext(PortalId, ModuleId, userName);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public User FillProfile(int PortalId, int ModuleId, User u) => throw new NotImplementedException();

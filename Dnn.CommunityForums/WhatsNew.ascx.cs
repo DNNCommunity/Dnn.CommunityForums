@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo CurrentUser
         {
-            get { return this.currentUser ?? (this.currentUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetAuthenticatedUser(this.PortalId, this.ModuleId)); }
+            get { return this.currentUser ?? (this.currentUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetUserFromHttpContext(this.PortalId, this.ModuleId)); }
         }
 
         private string AuthorizedForums
