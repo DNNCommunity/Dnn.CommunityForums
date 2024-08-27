@@ -1,0 +1,23 @@
+{
+  "LegacyTokenReplacements": {
+    "ObsoleteTokens": [
+      "[DATECREATED]",
+      "[OCCUPATION]",
+      "[WEBSITE]",
+      "[AF:PROFILE:YAHOO]",
+      "[AF:PROFILE:MSN]",
+      "[AF:PROFILE:ICQ]",
+      "[AF:PROFILE:AOL]",
+      "[AF:PROFILE:OCCUPATION]",
+      "[AF:PROFILE:INTERESTS]",
+      "[AF:PROFILE:LOCATION]",
+      "[AF:PROFILE:WEBSITE]",
+      "[AF:CONTROL:AVATAREDIT]",
+      "[AF:BUTTON:PROFILEEDIT]",
+      "[AF:BUTTON:PROFILESAVE]",
+      "[AF:BUTTON:PROFILECANCEL]",
+      "[AF:PROFILE:BIO]",
+      "[MODUSERSETTINGS]"
+    ]
+  }
+}
