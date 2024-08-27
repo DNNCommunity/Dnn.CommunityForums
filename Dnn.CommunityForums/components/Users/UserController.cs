@@ -35,28 +35,28 @@ namespace DotNetNuke.Modules.ActiveForums
     public class UserController
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public User GetUser(int PortalId, int ModuleId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, ModuleId);
+        public User GetUser(int PortalId, int ModuleId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).GetAuthenticatedUser(PortalId, ModuleId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public User DNNGetCurrentUser(int PortalId, int ModuleId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().DNNGetCurrentUser(PortalId, ModuleId);
+        public User DNNGetCurrentUser(int PortalId, int ModuleId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).DNNGetCurrentUser(PortalId, ModuleId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        private User GetDNNUser(int portalId, int userId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, userId);
+        private User GetDNNUser(int portalId, int userId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).GetByUserId(portalId, userId);
 
-        private User GetDNNUser(int portalId, string userName) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetDNNUser(portalId, userName);
+        private User GetDNNUser(int portalId, string userName) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).GetDNNUser(portalId, userName);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public User GetDNNUser(string userName)
         {
             DotNetNuke.Entities.Users.UserInfo dnnUser = DotNetNuke.Entities.Users.UserController.GetUserByName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, userName);
-            return (User) new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, dnnUser.UserID);
+            return (User) new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).GetByUserId(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, dnnUser.UserID);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public User GetUser(int PortalId, int ModuleId, int userId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, ModuleId);
+        public User GetUser(int PortalId, int ModuleId, int userId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).GetAuthenticatedUser(PortalId, userId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public User GetUser(int PortalId, int ModuleId, string userName) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, ModuleId, userName);
+        public User GetUser(int PortalId, int ModuleId, string userName) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).GetAuthenticatedUser(PortalId, ModuleId, userName);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public User FillProfile(int PortalId, int ModuleId, User u) => throw new NotImplementedException();

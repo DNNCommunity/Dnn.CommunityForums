@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             // Make sure the user has read access
-            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(portalId, moduleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetAuthenticatedUser(portalId, moduleId);
             if (u == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(attachment.CanRead, u.UserRoles))
             {
                 this.Response.StatusCode = 401;

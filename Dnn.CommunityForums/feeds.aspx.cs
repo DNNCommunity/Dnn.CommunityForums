@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private string BuildRSS(int portalId, int tabId, int moduleId, int intPosts, int forumID, bool ingnoreSecurity, bool includeBody)
         {
             PortalSettings ps = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(portalId, moduleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetAuthenticatedUser(portalId, moduleId);
 
             DataSet ds = DataProvider.Instance().UI_TopicsView(portalId, moduleId, forumID, u.UserId, 0, 20, u.IsSuperUser, SortColumns.ReplyCreated);
             if (ds.Tables.Count > 0)

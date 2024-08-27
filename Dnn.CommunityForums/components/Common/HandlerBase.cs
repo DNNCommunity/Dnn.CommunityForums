@@ -206,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 		{
 			get
 			{
-                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(this.PortalId, this.ModuleId);
+                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetAuthenticatedUser(this.PortalId, this.ModuleId);
 			}
 		}
 

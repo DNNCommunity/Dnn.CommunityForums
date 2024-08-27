@@ -42,6 +42,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class ForumUserController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
     {
+        private int ModuleId = -1;
+        internal ForumUserController(int moduleId)
+        {
+            this.ModuleId = moduleId;
+        }
+
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetById(int portalId, int profileId)
         {
             throw new NotImplementedException("There is no probably need to call this method; if you do, you probably should be using GetByUserId.");
@@ -64,9 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     user = this.Find("WHERE UserId = @0", userId).FirstOrDefault();
                     if (user != null)
                     {
-                        user.UserInfo =
-                            DotNetNuke.Entities.Users.UserController.GetUserById(portalId: user.PortalId,
-                                userId: userId);
+                        user.UserInfo = DotNetNuke.Entities.Users.UserController.GetUserById(portalId: user.PortalId, userId: userId);
                     }
                     else
                     {
@@ -116,8 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         PrefPageSize = 20,
                     };
                 }
-
-               // user.PortalSettings = Utilities.GetPortalSettings(portalId); 
+                user.ModuleId = this.ModuleId;
                 DataCache.UserCacheStore(cachekey, user);
             }
 
@@ -142,7 +145,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetAuthenticatedUser [renamed method]")]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId)
+        {
+            return GetAuthenticatedUser(portalId, moduleId);
+        }
+
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetAuthenticatedUser(int portalId, int moduleId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = null;
             if (Thread.CurrentPrincipal.Identity.IsAuthenticated)
@@ -154,12 +163,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 else if (HttpContext.Current?.Items["DCFForumUserInfo"] != null)
                 {
                     u = (DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo)HttpContext.Current?.Items["DCFForumUserInfo"];
-                    u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, u.UserId);
+                    u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId, u.UserId);
                 }
                 else
                 {
                     u = this.DNNGetCurrentUser(portalId, moduleId);
                 }
+
+                u.ModuleId = moduleId;
                 if (u != null)
                 {
                     if (HttpContext.Current?.Items["DCFForumUserInfo"] == null)
@@ -168,6 +179,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
 
                 }
+
+                u.ModuleId = this.ModuleId;
                 return u;
             }
             else
@@ -192,6 +205,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     PrefDefaultShowReplies = false,
                     PrefDefaultSort = "ASC",
                     PrefPageSize = 20,
+                    ModuleId = this.ModuleId,
                 };
             }
         }
@@ -199,16 +213,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo DNNGetCurrentUser(int portalId, int moduleId)
         {
             DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, cu.UserID);
+            return this.GetByUserId(portalId, cu.UserID);
         }
 
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetDNNUser(int portalId, int userId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, userId);
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetDNNUser(int portalId, int userId) => this.GetByUserId(portalId, userId);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetDNNUser(int portalId, string userName) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, GetUserIdByUserName(portalId, userName));
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetDNNUser(int portalId, string userName) => this.GetByUserId(portalId, GetUserIdByUserName(portalId, userName));
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId, string userName)
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetAuthenticatedUser(int portalId, int moduleId, string userName)
         {
             return this.GetDNNUser(portalId, userName);
         }
@@ -216,7 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user)
         {
             user.DateUpdated = DateTime.UtcNow;
-            var x = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().Save<int>(user, user.ProfileId);
+            var x = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(user.ModuleId).Save<int>(user, user.ProfileId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(user.PortalId, user.UserId);
             return x.UserId;
         }
@@ -346,6 +361,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             }
+
             if (portalSettings == null)
             {
                 return null;
@@ -385,19 +401,81 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     outputTemplate = string.Concat("<a href='", Utilities.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }), "' class='", profileLinkClass, "' rel='nofollow'>{0}</a>");
             }
 
-            var displayMode = mainSettings.UserNameDisplay + string.Empty;
+            var outputName = GetDisplayName(portalSettings, mainSettings, isMod, isAdmin, userId, username, firstName, lastName, displayName);
+            outputName = HttpUtility.HtmlEncode(outputName);
+
+            return string.Format(outputTemplate, outputName);
+        }
+
+        internal static bool CanLinkToProfile(DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            if (portalSettings == null)
+            {
+                portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+            }
+
+            if (portalSettings == null)
+            {
+                return false;
+            }
+
+            bool canLinkToProfile = false;
+            if (forumUser?.UserId > 0 &&
+                portalSettings?.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger &&
+                portalSettings?.UserTabId != -1)
+            {
+                var profileVisibility = mainSettings.ProfileVisibility;
+
+                switch (profileVisibility)
+                {
+                    case ProfileVisibilities.Disabled:
+                        canLinkToProfile = false;
+                        break;
+
+                    case ProfileVisibilities.Everyone:
+                        canLinkToProfile = true;
+                        break;
+
+                    case ProfileVisibilities.RegisteredUsers:
+                        canLinkToProfile = HttpContext.Current.Request.IsAuthenticated;
+                        break;
+
+                    case ProfileVisibilities.Moderators:
+                        canLinkToProfile = accessingUser != null && (accessingUser.GetIsMod(moduleId) || accessingUser.IsAdmin);
+                        break;
+
+                    case ProfileVisibilities.Admins:
+                        canLinkToProfile = accessingUser != null && accessingUser.IsAdmin;
+                        break;
+                }
+            }
+
+        return canLinkToProfile;
+        }
+
+        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "")
+        {
+            if (portalSettings == null)
+            {
+                portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+            }
+            if (portalSettings == null)
+            {
+                return null;
+            }
+
 
             string outputName = null;
             UserInfo user;
 
-            switch (displayMode.ToUpperInvariant())
+            switch (mainSettings.UserNameDisplay.ToUpperInvariant())
             {
                 case "DISPLAYNAME":
 
-                    if (string.IsNullOrWhiteSpace(username) && userId > 0)
+                    if (string.IsNullOrWhiteSpace(displayName) && userId > 0)
                     {
                         user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
-                        displayName = (user != null) ? user.DisplayName : null;
+                        displayName = user?.DisplayName;
                     }
 
                     outputName = displayName;
@@ -408,7 +486,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     if (string.IsNullOrWhiteSpace(username) && userId > 0)
                     {
                         user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
-                        username = (user != null) ? user.Username : null;
+                        username = user?.Username;
                     }
 
                     outputName = username;
@@ -419,7 +497,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     if (string.IsNullOrWhiteSpace(firstName) && userId > 0)
                     {
                         user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
-                        firstName = (user != null) ? user.FirstName : null;
+                        firstName = user?.FirstName;
                     }
 
                     outputName = firstName;
@@ -430,7 +508,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     if (string.IsNullOrWhiteSpace(lastName) && userId > 0)
                     {
                         user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
-                        lastName = (user != null) ? user.LastName : null;
+                        lastName = user?.LastName;
                     }
 
                     outputName = lastName;
@@ -440,23 +518,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     if (string.IsNullOrWhiteSpace(firstName) && string.IsNullOrWhiteSpace(lastName) && userId > 0)
                     {
                         user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
-                        firstName = (user != null) ? Utilities.SafeTrim(user.FirstName) : null;
-                        lastName = (user != null) ? Utilities.SafeTrim(user.LastName) : null;
+                        firstName = Utilities.SafeTrim(user?.FirstName);
+                        lastName = Utilities.SafeTrim(user?.LastName);
                     }
 
                     outputName = string.Concat(firstName, " ", lastName);
                     break;
             }
 
-
             outputName = Utilities.SafeTrim(outputName);
-
             if (string.IsNullOrWhiteSpace(outputName))
+            {
                 outputName = userId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+            }
 
-            outputName = HttpUtility.HtmlEncode(outputName);
-
-            return string.Format(outputTemplate, outputName);
+            return HttpUtility.HtmlEncode(outputName);
         }
 
         internal static string UserStatus(string themePath, bool isUserOnline, int userID, int moduleID, string altOnlineText = "User is Online", string altOfflineText = "User is Offline")
@@ -492,7 +568,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal void UpdateUserTopicCount(int portalId, int userId)
+        internal static void UpdateUserTopicCount(int portalId, int userId)
         {
             string sSql = "UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles SET TopicCount = ISNULL((Select Count(t.TopicId) FROM ";
             sSql += "{databaseOwner}{objectQualifier}activeforums_Topics as t INNER JOIN ";
@@ -504,7 +580,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, portalId, userId);
         }
 
-        internal string GetUsersOnline(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        internal string GetUsersOnline(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             bool isAdmin = forumUser.IsAdmin || forumUser.IsSuperUser;
             var sb = new StringBuilder();
@@ -515,7 +591,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     sb.Append(",");
                 }
-                sb.Append(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, moduleId, true, false, isAdmin, user.UserId, user.Username, user.FirstName, user.LastName, user.DisplayName));
+                sb.Append(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, mainSettings, false, isAdmin, user.UserId, user.Username, user.FirstName, user.LastName, user.DisplayName));
             }
                 return sb.ToString();
         }

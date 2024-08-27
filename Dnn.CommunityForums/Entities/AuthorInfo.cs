@@ -37,9 +37,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.forumUserInfo = forumUserInfo;
         }
 
-        public AuthorInfo(int PortalId, int UserId)
+        public AuthorInfo(int PortalId, int ModuleId, int UserId)
         {
-            this.forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, UserId);
+            this.forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(ModuleId).GetByUserId(PortalId, UserId);
             if (this.forumUserInfo == null)
             {
                 this.AuthorId = UserId;

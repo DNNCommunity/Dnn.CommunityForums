@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -325,6 +326,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.Content.DateCreated = Utilities.SafeConvertDateTime(this.drForum["DateCreated"]);
             
             this.topic.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
+            this.topic.Author.AuthorId = Utilities.SafeConvertInt(this.drForum["AuthorId"]);
+            this.topic.Author.DisplayName = this.drForum["DisplayName"].ToString();
+            this.topic.Author.FirstName = this.drForum["FirstName"].ToString();
+            this.topic.Author.LastName = this.drForum["LastName"].ToString();
+            this.topic.Author.Username = this.drForum["UserName"].ToString();
             this.topic.Forum = this.ForumInfo;
             this.topic.LastReply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             this.topic.LastReply.TopicId = this.topic.TopicId;
@@ -1010,7 +1016,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             
             var authorId = reply.ReplyId > 0 ? reply.Content.AuthorId : this.topic.Content.AuthorId;
-            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, reply.ReplyId > 0 ? reply.Content.AuthorId : this.topic.Content.AuthorId);
+            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, reply.ReplyId > 0 ? reply.Content.AuthorId : this.topic.Content.AuthorId);
             var tags = dr.GetString("Tags");
 
             // Replace Tags Control
@@ -1037,19 +1043,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             var sbOutput = new StringBuilder(sOutput);
-
-            if (reply.ReplyId > 0)
-            {
-                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostActionTokens(sbOutput,
-                    reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(),
-                    this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType, this.CanReply, this.useListActions);
-            }
-            else
-            {
-                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostActionTokens(sbOutput,
-                    this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(),
-                    this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType, this.CanReply, this.useListActions);
-            }
+            sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostActionTokens(sbOutput,
+                reply.ReplyId > 0 ? (IPostInfo)reply : this.topic,
+                this.PortalSettings,
+                this.MainSettings,
+                new Services.URLNavigator().NavigationManager(),
+                this.ForumUser,
+                HttpContext.Current.Request,
+                this.TabId,
+                this.useListActions);
 
             //////////#region "topic actions"
             //////////// Delete Action

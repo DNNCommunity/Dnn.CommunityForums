@@ -201,4 +201,16 @@
   <data name="[RSSLINK].Text" xml:space="preserve">
     <value>&lt;a href="{0}" target="_blank"&gt;&lt;img src="[FORUM:THEMELOCATION]images/rss.png" border="0" alt="[RESX:RSS]" /&gt;&lt;/a&gt;</value>
   </data>
+  <data name="[DISPLAYNAMELINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMUSER:DISPLAYNAME]&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMLASTPOSTAUTHORDISPLAYNAMELINK].Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUM:LASTPOSTAUTHORDISPLAYNAME]&lt;/a&gt;</value>
+  </data>
+  <data name="[TOPICAUTHORDISPLAYNAMELINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMTOPIC:AUTHORDISPLAYNAME]&lt;/a&gt;</value>
+  </data>
+  <data name="[TOPICLASTPOSTAUTHORDISPLAYNAMELINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]&lt;/a&gt;</value>
+  </data>
 </root>

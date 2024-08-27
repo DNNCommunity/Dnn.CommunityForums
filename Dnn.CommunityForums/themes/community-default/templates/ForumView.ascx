@@ -37,8 +37,15 @@
 						<td class="dcf-col dcf-col-text">
 							<div class="dcf-col-text-inner">
 								[FORUMICONCSS]
-								<div class="dcf-forum-title-text"><h4 class="dcf-forum-title">[FORUM:FORUMLINK|<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]</h4>
-								<div class="dcf-forum-description">[FORUM:FORUMDESCRIPTION]</div>
+
+                                <div class="dcf-forum-title-text">
+                                    <%--<h4 class="dcf-forum-title">[FORUMNAME]</h4>--%>
+								    <h4 class="dcf-forum-title">
+                                            [FORUM:FORUMLINK|
+                                            <a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>
+                                            ]
+                                    </h4>
+								    <div class="dcf-forum-description">[FORUM:FORUMDESCRIPTION]</div>
 								</div>
 							</div>
 						</td>
@@ -47,7 +54,12 @@
 						<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
 						<td class="dcf-col dcf-col-last-post">
 							<span class="dcf-lastpost-subject">[LASTPOSTSUBJECT:25]</span>
-                            <span class="dcf-lastpost-author">[FORUM:LASTPOSTDISPLAYNAME|[RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;{0}]</span>
+                            <%--<span class="dcf-lastpost-author">[RESX:BY] [DISPLAYNAME]</span>--%>
+                            <span class="dcf-lastpost-author">
+                                [FORUM:LASTPOSTAUTHORDISPLAYNAMELINK|
+                                [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUM:LASTPOSTAUTHORDISPLAYNAME]</a>|
+                                [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>[FORUM:LASTPOSTAUTHORDISPLAYNAME]
+                                ]</span>
 							<span class="dcf-lastpost-date">[FORUM:LASTPOSTDATE]</span>
 						</td>
 					</tr>
@@ -71,7 +83,7 @@
 									<td class="dcf-col dcf-col-topics">[FORUM:TOTALTOPICS]</td>
 									<td class="dcf-col dcf-col-replies">[FORUM:TOTALREPLIES]</td>
 									<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
-									<td class="dcf-col dcf-col-last-post"><div class="af_lastpost" style="white-space:nowrap;">[LASTPOSTSUBJECT:25][FORUM:LASTPOSTDISPLAYNAME|<br />[RESX:BY]&nbsp;{0}][FORUM:LASTPOSTDATE|<br />{0}]</div></td>
+									<td class="dcf-col dcf-col-last-post"><div class="af_lastpost" style="white-space:nowrap;">[LASTPOSTSUBJECT:25]<br />[RESX:BY] [DISPLAYNAME]<br />[LASTPOSTDATE]</div></td>
 								</tr>
 					[/SUBFORUMS]
 				</tbody>

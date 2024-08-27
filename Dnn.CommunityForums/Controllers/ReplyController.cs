@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ri.GetTopic();
                 ri.Topic.GetForum();
                 ri.GetContent();
-                ri.Author = ri.GetAuthor(ri.PortalId, ri.Content.AuthorId);
+                ri.Author = ri.GetAuthor(ri.PortalId, ri.ModuleId, ri.Content.AuthorId);
             }
 
             return ri;

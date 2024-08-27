@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string GetDisplayName(int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name")
             => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(null, moduleId, linkProfile, isMod, isAdmin, userId, username, firstName, lastName, displayName, profileLinkClass, profileNameClass);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Not used.")]
         internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name")
             => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, moduleId, linkProfile, isMod, isAdmin, userId, username, firstName = "", lastName = "", displayName = "", profileLinkClass = "af-profile-link", profileNameClass = "af-profile-name");
 
@@ -58,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
         /// </summary>
         /// <returns>ReturnType 0 Returns RankDisplay ReturnType 1 Returns RankName</returns>
         public static string GetUserRank(int portalId, int moduleID, int userID, int posts, int returnType)
-            => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(moduleID, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, userID), returnType);
+            => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(moduleID, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleID).GetByUserId(portalId, userID), returnType);
         #endregion "Deprecated Methods"
     }
 }

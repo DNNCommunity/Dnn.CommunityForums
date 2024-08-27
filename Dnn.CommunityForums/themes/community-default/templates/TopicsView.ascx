@@ -211,7 +211,7 @@
 								<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
 								<td class="dcf-col dcf-col-last-post">
 									<span class="dcf-lastpost-subject">[LASTPOSTSUBJECT:25]</span>
-									<span class="dcf-lastpost-author">[RESX:BY]&nbsp;[DISPLAYNAME]</span>
+									<span class="dcf-lastpost-author">[RESX:BY] <i class="fa fa-user fa-blue"></i>&nbsp;[DISPLAYNAME]</span>
 									<span class="dcf-lastpost-date">[LASTPOSTDATE]</span>
 								</td>
 							</tr>

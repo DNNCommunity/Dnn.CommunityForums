@@ -172,12 +172,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string TopicData { get; set; } = string.Empty;
 
         [IgnoreColumn()]
-        public int LastReplyId { get; set; }
-        
-        [IgnoreColumn()]
-        public int Rating { get; set; }
-
-        [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
         {
             get => this;
@@ -187,9 +181,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return this;
         }
-
-        [IgnoreColumn()]
-        public int SubscriberCount => new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: this.PortalId, moduleId: this.ModuleId, forumId: this.ForumId, topicId: this.TopicId);
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
@@ -220,7 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author
         {
-            get => this.author ?? (this.author = this.GetAuthor(this.PortalId, this.Content.AuthorId));
+            get => this.author ?? (this.author = this.GetAuthor(this.PortalId, this.ModuleId, this.Content.AuthorId));
             set => this.author = value;
         }
 
@@ -234,14 +225,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo LastReplyAuthor
         {
-            get => this.lastReplyAuthor ?? (this.lastReplyAuthor = this.lastReply == null ? null : this.GetAuthor(this.PortalId, this.lastReply.Content.AuthorId));
+            get => this.lastReplyAuthor ?? (this.lastReplyAuthor = this.lastReply == null ? null : this.GetAuthor(this.PortalId, this.ModuleId, this.lastReply.Content.AuthorId));
             set => this.lastReplyAuthor = value;
         }
 
         [IgnoreColumn()]
-        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor(int portalId, int authorId)
+        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor(int portalId, int moduleId, int authorId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, authorId);
+            return new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, moduleId, authorId);
         }
 
         [IgnoreColumn()]
@@ -467,7 +458,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
-                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.Forum.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID), this)
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.Forum.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this)
                 {
                     AccessingUser = accessingUser,
                 };
@@ -517,6 +508,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         {
                             @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
                         }
+
                         return PropertyAccess.FormatString(Utilities.NavigateURL(this.Forum.TabId, string.Empty, @params.ToArray()), format);
                     }
 
@@ -536,6 +528,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         {
                             @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
                         }
+
                         return PropertyAccess.FormatString(Utilities.NavigateURL(this.Forum.TabId, string.Empty, @params.ToArray()), format);
                     }
 
@@ -557,9 +550,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "dateupdated":
                     return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateUpdated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
                 case "modipaddress":
-                    return !this.Forum.GetIsMod(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID)) ? string.Empty : PropertyAccess.FormatString(this.Content.IPAddress, format);
+                    return !this.Forum.GetIsMod(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)) ? string.Empty : PropertyAccess.FormatString(this.Content.IPAddress, format);
                 case "modeditdate":
-                    if (this.Forum.GetIsMod(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID)) &&
+                    if (this.Forum.GetIsMod(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)) &&
                         this.Content.DateUpdated != this.Content.DateCreated)
                     {
                         return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateUpdated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
@@ -571,41 +564,88 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "editdate":
                     return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateUpdated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
                 case "authorid":
-                    return PropertyAccess.FormatString(this.Author.AuthorId.ToString(), format);
+                    return PropertyAccess.FormatString(this.Content.AuthorId.ToString(), format);
                 case "authorname":
-                    return PropertyAccess.FormatString(this.Content.AuthorName.ToString(), format);
+                    return PropertyAccess.FormatString(this.Content.AuthorName, format);
+                case "authordisplaynamelink":
+                    return PropertyAccess.FormatString(
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.CanLinkToProfile(
+                        this.Forum.PortalSettings,
+                        this.Forum.MainSettings,
+                        this.ModuleId,
+                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                            accessingUser.PortalID,
+                            accessingUser.UserID),
+                        this.Author.ForumUser) ?
+                            Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
+                                string.Empty,
+                                new[] { $"userId={this.Content.AuthorId}" })
+                            : string.Empty,
+                        format);
                 case "authordisplayname":
-                    return PropertyAccess.FormatString(this.Author.DisplayName.ToString(), format);
+                    return PropertyAccess.FormatString(
+                        string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName :
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
+                                this.Forum.PortalSettings,
+                                this.Forum.MainSettings,
+                                isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId),
+                                isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
+                                this.Author.AuthorId,
+                                this.Author.Username,
+                                this.Author.FirstName,
+                                this.Author.LastName,
+                                this.Author.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.Content.AuthorName),
+                        format);
                 case "authorfirstname":
-                    return PropertyAccess.FormatString(this.Author.FirstName.ToString(), format);
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName : this.Author.FirstName, format);
                 case "authorlastname":
-                    return PropertyAccess.FormatString(this.Author.LastName.ToString(), format);
-                case "authoremail":
-                    return PropertyAccess.FormatString(this.Author.Email.ToString(), format);
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName : this.Author.LastName, format);
                 case "lastreplyauthorid":
-                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Author.AuthorId.ToString(), format) : string.Empty;
+                    return PropertyAccess.FormatString(this.LastReply?.Author?.AuthorId.ToString(), format);
                 case "lastreplyauthorname":
-                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Content.AuthorName.ToString(), format) : string.Empty;
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.LastReply?.Content?.AuthorName) ? string.Empty : this.LastReply?.Content?.AuthorName, format);
                 case "lastreplyauthordisplayname":
-                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Author.DisplayName.ToString(), format) : string.Empty;
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.LastReply?.Author?.DisplayName) ? this.LastReply?.Content?.AuthorName : this.LastReply?.Author?.DisplayName, format);
                 case "lastreplyauthorfirstname":
-                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Author.FirstName.ToString(), format) : string.Empty;
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.LastReply?.Author?.FirstName) ? this.LastReply?.Content?.AuthorName : this.LastReply?.Author?.FirstName, format);
                 case "lastreplyauthorlastname":
-                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Author.LastName.ToString(), format) : string.Empty;
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.LastReply?.Author?.LastName) ? this.LastReply?.Content?.AuthorName : this.LastReply?.Author?.LastName, format);
                 case "lastreplyauthoremail":
-                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply.Author.Email.ToString(), format) : string.Empty;
-                case "lastpostauthor":
-                    return this.LastReplyId > 0 ? this.LastReply.Author.AuthorId > 0 ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.Forum.PortalSettings, this.Forum.ModuleId, true, 
-                            new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId), 
-                            new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || 
-                            new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser, this.LastReply.Author.AuthorId, this.LastReply.Author.Username, this.LastReply.Author.FirstName, this.LastReply.Author.LastName, this.LastReply.Author.DisplayName).Replace("&amp;#", "&#")
-                       : this.LastReply.Content.AuthorName : string.Empty;
+                    return this.LastReplyId > 0 ? PropertyAccess.FormatString(this.LastReply?.Author?.Email, format) : string.Empty;
+                case "lastpostauthordisplaynamelink":
+                    return PropertyAccess.FormatString(
+                        this.LastReplyId > 0 && this.LastReply.Author.AuthorId > 0 ?
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.CanLinkToProfile(
+                                this.Forum.PortalSettings,
+                                this.Forum.MainSettings,
+                                this.ModuleId,
+                                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                    accessingUser.PortalID,
+                                    accessingUser.UserID),
+                                this.LastReply.Author.ForumUser) ?
+                                Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
+                                    string.Empty,
+                                    new[] { $"userId={this.LastReplyAuthor.AuthorId}" })
+                                : string.Empty : string.Empty, format);
+                case "lastpostauthordisplayname":
+                    return PropertyAccess.FormatString(
+                        this.LastReplyId > 0 ? this.LastReply.Author.AuthorId > 0 ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
+                                this.Forum.PortalSettings,
+                                this.Forum.MainSettings,
+                                isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId),
+                                isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
+                                this.LastReply.Author.AuthorId,
+                                this.LastReply.Author.Username,
+                                this.LastReply.Author.FirstName,
+                                this.LastReply.Author.LastName,
+                                this.LastReply.Author.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.LastReply.Content.AuthorName)
+                            : this.LastReply.Content.AuthorName : string.Empty, format);
                 case "statuscssclass":
-                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
+                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
                 case "posticon":
-                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
+                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
                 case "posticoncss":
-                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
+                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
             }
 
             propertyNotFound = true;

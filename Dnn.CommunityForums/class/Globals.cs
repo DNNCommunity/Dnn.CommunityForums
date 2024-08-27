@@ -459,6 +459,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string CultureInfoForUser = "AF-usercultureinfo-{0}";
         public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
 
+        public const string ObsoleteTokens = "AF-obsoletetokens";
+
         // public const string ForumView = "AF-{0}-FV-{1}";
         // public const string AllSettings = "AF-afset{0}";
         // public const string GroupInfo = "AF-gi{0}";

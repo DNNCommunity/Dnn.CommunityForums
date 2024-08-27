@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (string.IsNullOrEmpty(userRoles))
             {
-                userRoles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, userId).UserRoles;
+                userRoles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId).UserRoles;
             }
 
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId, moduleId, forumId, false, -1);
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (subs.Count > 0)
             {
-                var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, authorId);
+                var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, moduleId, authorId);
                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleId, tabId, string.Empty, author, fi, subs, requestUrl);
             }
         }

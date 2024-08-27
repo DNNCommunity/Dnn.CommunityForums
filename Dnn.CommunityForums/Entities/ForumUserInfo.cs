@@ -20,11 +20,12 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-using System;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
+    using System;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Tokens;
+    using DotNetNuke.UI.UserControls;
 
     [TableName("activeforums_UserProfiles")]
     [PrimaryKey("ProfileId", AutoIncrement = true)]
@@ -33,14 +34,17 @@ using DotNetNuke.Entities.Users;
     {
         private DotNetNuke.Entities.Users.UserInfo userInfo;
         private PortalSettings portalSettings;
+        private SettingsInfo mainSettings;
         private string userRoles = Globals.DefaultAnonRoles + "|-1;||";
 
         public ForumUserInfo()
         {
             this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
         }
-
+        
         public int ProfileId { get; set; }
+
+        [IgnoreColumn] internal int ModuleId { get; set; }
 
         public int UserId { get; set; } = -1;
 
@@ -157,8 +161,15 @@ using DotNetNuke.Entities.Users;
         [IgnoreColumn]
         public PortalSettings PortalSettings
         {
-            get => this.portalSettings ?? (this.portalSettings = Utilities.GetPortalSettings(this.PortalId)); 
+            get => this.portalSettings ?? (this.portalSettings = Utilities.GetPortalSettings(this.PortalId));
             set => this.portalSettings = value;
+        }
+        
+        [IgnoreColumn]
+        public SettingsInfo MainSettings
+        {
+            get => this.mainSettings ?? (this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId));
+            set => this.mainSettings = value;
         }
 
         [IgnoreColumn]
@@ -224,6 +235,7 @@ using DotNetNuke.Entities.Users;
 
             return RoleIds;
         }
+
          [IgnoreColumn]
          internal int GetLastReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
          {
@@ -316,7 +328,7 @@ using DotNetNuke.Entities.Users;
         internal int GetLastTopicReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
             var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
-            if (topicTrak != null )
+            if (topicTrak != null)
             {
                 return topicTrak.LastReplyId;
             }
@@ -388,6 +400,22 @@ using DotNetNuke.Entities.Users;
                     return PropertyAccess.FormatString(this.AnswerCount.ToString(), format);
                 case "rewardpoints":
                     return PropertyAccess.FormatString(this.RewardPoints.ToString(), format);
+                case "userprofilelink":
+                    return PropertyAccess.FormatString(
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.CanLinkToProfile(
+                            this.PortalSettings,
+                            this.MainSettings,
+                            this.ModuleId,
+                            new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                accessingUser.PortalID,
+                                accessingUser.UserID),
+                            this)
+                            ? Utilities.NavigateURL(this.portalSettings.UserTabId,
+                                string.Empty,
+                                new[] { $"userId={this.UserId}" })
+                            : string.Empty,
+                        format);
+
 
             }
 

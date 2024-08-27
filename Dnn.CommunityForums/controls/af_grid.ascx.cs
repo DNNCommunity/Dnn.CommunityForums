@@ -436,7 +436,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var firstName = this.currentRow["AuthorFirstName"].ToString();
             var lastName = this.currentRow["AuthorLastName"].ToString();
             var displayName = this.currentRow["AuthorDisplayName"].ToString();
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
         public string GetLastPostAuthor()
@@ -451,7 +451,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var firstName = this.currentRow["LastReplyFirstName"].ToString();
             var lastName = this.currentRow["LastReplyLastName"].ToString();
             var displayName = this.currentRow["LastReplyDisplayName"].ToString();
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
         public string GetLastPostTime()

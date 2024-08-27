@@ -349,7 +349,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var topicTemplateID = this.ForumInfo.TopicTemplateId;
                     message = Utilities.CleanString(this.PortalId, message, this.allowHTML, this.editorType, this.ForumInfo.UseFilter, this.ForumInfo.AllowScript, this.ForumModuleId, this.ImagePath, this.ForumInfo.AllowEmoticons);
                     message = Utilities.ManageImagePath(message, HttpContext.Current.Request.Url);
-                    var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UserId);
+                    var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UserId);
                     message = TemplateUtils.PreviewTopic(topicTemplateID, this.ForumInfo, user, message, this.ImagePath, DateTime.UtcNow, this.CurrentUserType, this.UserId, this.TimeZoneOffset);
                     this.hidPreviewText.Value = message;
                     break;
@@ -609,14 +609,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (postId == this.TopicId)
                         {
                             ci = ti.Content;
-                            sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated, this.PortalId, this.UserId));
+                            sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated, this.PortalId, this.UserId));
 
                         }
                         else
                         {
                             var ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(postId);
                             ci = ri.Content;
-                            sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated, this.PortalId, this.UserId));
+                            sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated, this.PortalId, this.UserId));
                         }
 
                         if (ci != null)

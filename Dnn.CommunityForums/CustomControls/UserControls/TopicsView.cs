@@ -555,7 +555,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 
                 topicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicActionTokens(new StringBuilder(topicTemplate),
                     topicInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(),
-                    this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType, this.CanReply).ToString();
+                    this.ForumUser, HttpContext.Current.Request, this.TabId).ToString();
 
                 ////////if ((this.bModerate && this.bDelete) || ((this.bDelete && topicInfo.Content.AuthorId == this.UserId && !topicInfo.IsLocked)))
                 ////////{
