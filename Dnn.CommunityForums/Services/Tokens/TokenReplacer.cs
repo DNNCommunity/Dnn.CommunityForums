@@ -38,6 +38,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     using Newtonsoft.Json;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Host;
 
     internal class TokenReplacer : BaseCustomTokenReplace, IPropertyAccess
     {
@@ -83,13 +85,19 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource["forum"] = forumInfo;
             this.PropertySource["forumuser"] = forumUser;
             this.PropertySource["user"] = forumUser.UserInfo;
+            this.PropertySource["profile"] = new ProfilePropertyAccess(forumUser.UserInfo);
+            this.PropertySource["membership"] = new MembershipPropertyAccess(forumUser.UserInfo);
             this.PropertySource["tab"] = portalSettings.ActiveTab;
+            this.PropertySource["module"] = forumInfo.ModuleInfo;
             this.PropertySource["portal"] = portalSettings;
-            this.TokenContext.User = forumUser.UserInfo;
-            this.TokenContext.AccessingUser = forumUser.UserInfo;
-            this.TokenContext.Tab = portalSettings.ActiveTab;
-            this.TokenContext.Portal = portalSettings;
-            this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
+            this.PropertySource["host"] = new HostPropertyAccess();
+            this.CurrentAccessLevel = Scope.DefaultSettings;
+            //this.TokenContext.User = forumUser.UserInfo;
+            //this.TokenContext.AccessingUser = forumUser.UserInfo;
+            //this.TokenContext.Tab = portalSettings.ActiveTab;
+            //this.TokenContext.Module = forumInfo.ModuleInfo;
+            //this.TokenContext.Portal = portalSettings;
+            //this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
         public TokenReplacer(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo)
@@ -99,13 +107,19 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource["forumtopic"] = topicInfo;
             this.PropertySource["forumuser"] = forumUser;
             this.PropertySource["user"] = topicInfo.Author.ForumUser.UserInfo;
+            this.PropertySource["profile"] = new ProfilePropertyAccess(topicInfo.Author.ForumUser.UserInfo);
+            this.PropertySource["membership"] = new MembershipPropertyAccess(topicInfo.Author.ForumUser.UserInfo);
             this.PropertySource["tab"] = portalSettings.ActiveTab;
+            this.PropertySource["module"] = topicInfo.Forum.ModuleInfo;
             this.PropertySource["portal"] = portalSettings;
-            this.TokenContext.User = topicInfo.Author.ForumUser.UserInfo;
-            this.TokenContext.AccessingUser = forumUser.UserInfo;
-            this.TokenContext.Tab = portalSettings.ActiveTab;
-            this.TokenContext.Portal = portalSettings;
-            this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
+            this.PropertySource["host"] = new HostPropertyAccess();
+            this.CurrentAccessLevel = Scope.DefaultSettings;
+            //this.TokenContext.User = topicInfo.Author.ForumUser.UserInfo;
+            //this.TokenContext.AccessingUser = forumUser.UserInfo;
+            //this.TokenContext.Tab = portalSettings.ActiveTab;
+            //this.TokenContext.Module = topicInfo.Forum.ModuleInfo;
+            //this.TokenContext.Portal = portalSettings;
+            //this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
         }
         
         public TokenReplacer(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.IPostInfo postInfo)
@@ -116,13 +130,19 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource["forumpost"] = postInfo;
             this.PropertySource["forumuser"] = forumUser;
             this.PropertySource["user"] = postInfo.Author.ForumUser.UserInfo;
+            this.PropertySource["profile"] = new ProfilePropertyAccess(postInfo.Author.ForumUser.UserInfo);
+            this.PropertySource["membership"] = new MembershipPropertyAccess(postInfo.Author.ForumUser.UserInfo);
             this.PropertySource["tab"] = portalSettings.ActiveTab;
+            this.PropertySource["module"] = postInfo.Forum.ModuleInfo;
             this.PropertySource["portal"] = portalSettings;
-            this.TokenContext.User = postInfo.Author.ForumUser.UserInfo;
-            this.TokenContext.AccessingUser = forumUser.UserInfo;
-            this.TokenContext.Tab = portalSettings.ActiveTab;
-            this.TokenContext.Portal = portalSettings;
-            this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
+            this.PropertySource["host"] = new HostPropertyAccess();
+            this.CurrentAccessLevel = Scope.DefaultSettings;
+            //this.TokenContext.User = postInfo.Author.ForumUser.UserInfo;
+            //this.TokenContext.AccessingUser = forumUser.UserInfo;
+            //this.TokenContext.Tab = portalSettings.ActiveTab;
+            //this.TokenContext.Module = postInfo.Forum.ModuleInfo;
+            //this.TokenContext.Portal = portalSettings;
+            //this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
         }
         
         public TokenReplacer(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
@@ -130,13 +150,19 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource["resx"] = this;
             this.PropertySource["forumuser"] = forumUser;
             this.PropertySource["user"] = forumUser.UserInfo;
+            this.PropertySource["profile"] = new ProfilePropertyAccess(forumUser.UserInfo);
+            this.PropertySource["membership"] = new MembershipPropertyAccess(forumUser.UserInfo);
             this.PropertySource["tab"] = portalSettings.ActiveTab;
+            this.PropertySource["module"] = forumUser.ModuleInfo;
             this.PropertySource["portal"] = portalSettings;
-            this.TokenContext.User = forumUser.UserInfo;
-            this.TokenContext.AccessingUser = forumUser.UserInfo;
-            this.TokenContext.Tab = portalSettings.ActiveTab;
-            this.TokenContext.Portal = portalSettings;
-            this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
+            this.PropertySource["host"] = new HostPropertyAccess();
+            this.CurrentAccessLevel = Scope.DefaultSettings;
+            //this.TokenContext.User = forumUser.UserInfo;
+            //this.TokenContext.AccessingUser = forumUser.UserInfo;
+            //this.TokenContext.Tab = portalSettings.ActiveTab;
+            //this.TokenContext.Module = forumUser.ModuleInfo;
+            //this.TokenContext.Portal = portalSettings;
+            //this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
         }
         
         public TokenReplacer(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author)
@@ -144,13 +170,19 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource["resx"] = this;
             this.PropertySource["forumuser"] = forumUser;
             this.PropertySource["user"] = author.ForumUser.UserInfo;
+            this.PropertySource["profile"] = new ProfilePropertyAccess(author.ForumUser.UserInfo);
+            this.PropertySource["membership"] = new MembershipPropertyAccess(author.ForumUser.UserInfo);
             this.PropertySource["tab"] = portalSettings.ActiveTab;
+            this.PropertySource["module"] = forumUser.ModuleInfo;
             this.PropertySource["portal"] = portalSettings;
-            this.TokenContext.User = author.ForumUser.UserInfo;
-            this.TokenContext.AccessingUser = forumUser.UserInfo;
-            this.TokenContext.Tab = portalSettings.ActiveTab;
-            this.TokenContext.Portal = portalSettings;
-            this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
+            this.PropertySource["host"] = new HostPropertyAccess();
+            this.CurrentAccessLevel = Scope.DefaultSettings;
+            //this.TokenContext.User = author.ForumUser.UserInfo;
+            //this.TokenContext.AccessingUser = forumUser.UserInfo;
+            //this.TokenContext.Tab = portalSettings.ActiveTab;
+            //this.TokenContext.Module = forumUser.ModuleInfo;
+            //this.TokenContext.Portal = portalSettings;
+            //this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
         public new string ReplaceTokens(string source)
@@ -179,6 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 AccessingUser = forumUser.UserInfo,
                 DebugMessages = false,
                 PortalSettings = portalSettings,
+                ModuleInfo = forumUser.ModuleInfo,
                 User = forumUser.UserInfo,
                 ModuleId = forumModuleId,
             };
@@ -280,7 +313,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
-        internal static StringBuilder ReplacePostActionTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, HttpRequest request, int tabId, bool useListActions = true)
+        internal static StringBuilder ReplacePostActionTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, HttpRequest request, int tabId, bool canReply, bool useListActions = true)
         {
             bool bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Delete, forumUser.UserRoles);
             bool bLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(post.Forum.Security.Lock, forumUser.UserRoles);
@@ -546,6 +579,21 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             };
             template = new StringBuilder(tokenReplace.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplace.ReplaceTokens(template.ToString()));
+
+
+
+            
+            var tokenReplace2 = new DotNetNuke.Services.Tokens.TokenReplace
+            {
+                AccessingUser = forumUser.UserInfo,
+                DebugMessages = false,
+                PortalSettings = portalSettings,
+                ModuleInfo = forum.ModuleInfo,
+                User = forumUser.UserInfo,
+                ModuleId = forum.ModuleId,
+            };
+            template = new StringBuilder(tokenReplace2.ReplaceEnvironmentTokens(template.ToString()));
+
             return template;
         }
 

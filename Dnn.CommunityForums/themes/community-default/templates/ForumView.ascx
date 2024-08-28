@@ -1,5 +1,23 @@
 <%@ Register TagPrefix="af" Assembly="DotNetNuke.Modules.ActiveForums" Namespace="DotNetNuke.Modules.ActiveForums.Controls"%>
 <div class="dcf-forum-view">
+    USER:EMAIL: [USER:EMAIL]
+    <br />
+    USER:FULLNAME: [USER:FULLNAME]
+    <br />
+    PROFILE:CITY: [PROFILE:CITY]
+    <br />
+    PROFILE:COUNTRY: [PROFILE:COUNTRY]
+    <br />
+    MEMBERSHIP:CREATEDONDATE: [MEMBERSHIP:CREATEDONDATE]
+    <br />
+    MEMBERSHIP:LASTLOGINDATE: [MEMBERSHIP:LASTLOGINDATE]
+    <br />
+    PORTAL:PORTALNAME: [PORTAL:PORTALNAME]
+    <br />
+    MODULE:MODULETITLE: [MODULE:MODULETITLE]
+    <br />
+    TAB:TABNAME: [TAB:TABNAME]
+
 [BREADCRUMB]
 [GROUPSECTION]
 <div class="dcf-forums">
@@ -7,7 +25,7 @@
             <h3 class="dcf-group-title">[RESX:Group]: [FORUM:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUM:GROUPNAME]</a>]</h3>
 			<span class="dcf-group-collapse">[GROUPCOLLAPSE]</span>
 		</div>
-		
+
 			[GROUP]
 			<div class="dcf-forums-group">
 				<table class="dcf-table dcf-table-100">
@@ -31,9 +49,10 @@
 						</tr>
 					</thead>
 					[FORUMS]
+                    
+
 					<tbody>
 					<tr class="dcf-table-body-row dcf-main-forums">
-						
 						<td class="dcf-col dcf-col-text">
 							<div class="dcf-col-text-inner">
 								[FORUMICONCSS]
@@ -77,7 +96,8 @@
 
 									<td class="dcf-col dcf-col-icon"></td>
 									<td class="dcf-col dcf-col-text">
-												<span class="aftopictitle">[FORUM:FORUMLINK|<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]</span>
+                                        <span class="aftopictitle">[FORUM:FORUMLINK|<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]</span>
+                                        <span class="aftopictitle">[FORUM:PARENTFORUMNAME]</span>
 												<span class="aftopicsubtitle">[FORUM:FORUMDESCRIPTION]</span>
 									</td>
 									<td class="dcf-col dcf-col-topics">[FORUM:TOTALTOPICS]</td>

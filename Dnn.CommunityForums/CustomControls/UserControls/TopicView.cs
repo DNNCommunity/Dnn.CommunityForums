@@ -1051,6 +1051,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.ForumUser,
                 HttpContext.Current.Request,
                 this.TabId,
+                CanReply,
                 this.useListActions);
 
             //////////#region "topic actions"

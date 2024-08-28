@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Web;
+using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -48,6 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private Hashtable forumSettings;
         private SettingsInfo mainSettings;
         private PortalSettings portalSettings;
+        private ModuleInfo moduleInfo;
 
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
@@ -332,7 +334,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public SettingsInfo MainSettings
         {
-            get => this.mainSettings ?? (this.mainSettings = LoadMainSettings()); 
+            get => this.mainSettings ?? (this.mainSettings = this.LoadMainSettings());
             set => this.mainSettings = value;
         }
 
@@ -344,7 +346,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public PortalSettings PortalSettings
         {
-            get => this.portalSettings ?? (this.portalSettings = LoadPortalSettings()); 
+            get => this.portalSettings ?? (this.portalSettings = this.LoadPortalSettings());
             set => this.portalSettings = value;
         }
 
@@ -363,6 +365,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         internal Hashtable LoadSettings()
         {
             return DataCache.GetSettings(this.ModuleId, this.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, this.ModuleId, this.ForumSettingsKey), true);
+        }
+
+        [IgnoreColumn]
+        public ModuleInfo ModuleInfo
+        {
+            get => this.moduleInfo ?? (this.moduleInfo = this.LoadModuleInfo());
+            set => this.moduleInfo = value;
+        }
+
+        internal ModuleInfo LoadModuleInfo()
+        {
+            return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
         }
 
         [IgnoreColumn()]

@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadSettings();
                     forum.LoadPortalSettings();
                     forum.LoadMainSettings();
+                    forum.LoadModuleInfo();
                     forum.LoadSecurity();
                 }
 
