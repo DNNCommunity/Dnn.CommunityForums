@@ -43,7 +43,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
         }
-        
+
+        public ForumUserInfo(int moduleId)
+        {
+            this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
+            this.ModuleId = moduleId;
+        }
+
         public int ProfileId { get; set; }
 
         [IgnoreColumn] internal int ModuleId { get; set; }
@@ -379,21 +385,19 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "userid":
                     return PropertyAccess.FormatString(this.UserId.ToString(), format);
                 case "username":
-                    return PropertyAccess.FormatString(this.Username.ToString(), format);
+                    return PropertyAccess.FormatString(this.Username, format);
                 case "avatar":
-                    return PropertyAccess.FormatString(this.Avatar.ToString(), format);
+                    return PropertyAccess.FormatString(this.Avatar, format);
                 case "usercaption":
-                    return PropertyAccess.FormatString(this.UserCaption.ToString(), format);
-                case "signature":
-                    return PropertyAccess.FormatString(this.Signature.ToString(), format);
+                    return PropertyAccess.FormatString(this.UserCaption, format);
                 case "displayname":
                     return PropertyAccess.FormatString(this.DisplayName, format);
                 case "email":
                     return PropertyAccess.FormatString(this.Email, format);
                 case "firstname":
-                    return PropertyAccess.FormatString(this.FirstName.ToString(), format);
+                    return PropertyAccess.FormatString(this.FirstName, format);
                 case "lastname":
-                    return PropertyAccess.FormatString(this.LastName.ToString(), format);
+                    return PropertyAccess.FormatString(this.LastName, format);
                 case "datecreated":
                     return Utilities.GetUserFormattedDateTime((DateTime?)this.DateCreated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
                 case "dateupdated":
@@ -429,8 +433,29 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 new[] { $"userId={this.UserId}" })
                             : string.Empty,
                         format);
+                case "signature":
+                    var sSignature = string.Empty;
+                    if (mainSettings.AllowSignatures != 0 && !this.PrefBlockSignatures && !this.SignatureDisabled)
+                    {
+                        sSignature = this?.Signature ?? string.Empty;
+                        if (!string.IsNullOrEmpty(sSignature))
+                        {
+                            sSignature = Utilities.ManageImagePath(sSignature);
 
+                            switch (mainSettings.AllowSignatures)
+                            {
+                                case 1:
+                                    sSignature = System.Web.HttpUtility.HtmlEncode(sSignature);
+                                    sSignature = sSignature.Replace(System.Environment.NewLine, "<br />");
+                                    break;
+                                case 2:
+                                    sSignature = System.Web.HttpUtility.HtmlDecode(sSignature);
+                                    break;
+                            }
+                        }
+                    }
 
+                    return PropertyAccess.FormatString(sSignature, format);
             }
 
             propertyNotFound = true;

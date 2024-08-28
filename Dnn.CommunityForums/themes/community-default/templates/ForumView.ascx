@@ -1,6 +1,6 @@
 <%@ Register TagPrefix="af" Assembly="DotNetNuke.Modules.ActiveForums" Namespace="DotNetNuke.Modules.ActiveForums.Controls"%>
 <div class="dcf-forum-view">
-    USER:EMAIL: [USER:EMAIL]
+<%--    USER:EMAIL: [USER:EMAIL]
     <br />
     USER:FULLNAME: [USER:FULLNAME]
     <br />
@@ -16,7 +16,7 @@
     <br />
     MODULE:MODULETITLE: [MODULE:MODULETITLE]
     <br />
-    TAB:TABNAME: [TAB:TABNAME]
+    TAB:TABNAME: [TAB:TABNAME]--%>
 
 [BREADCRUMB]
 [GROUPSECTION]

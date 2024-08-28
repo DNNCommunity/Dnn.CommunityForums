@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource["resx"] = this;
             this.PropertySource["forum"] = topicInfo.Forum;
             this.PropertySource["forumtopic"] = topicInfo;
-            this.PropertySource["forumuser"] = forumUser;
+            this.PropertySource["forumuser"] = topicInfo.Author.ForumUser;
             this.PropertySource["user"] = topicInfo.Author.ForumUser.UserInfo;
             this.PropertySource["profile"] = new ProfilePropertyAccess(topicInfo.Author.ForumUser.UserInfo);
             this.PropertySource["membership"] = new MembershipPropertyAccess(topicInfo.Author.ForumUser.UserInfo);
@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource["forum"] = postInfo.Forum;
             this.PropertySource["forumtopic"] = postInfo.Topic;
             this.PropertySource["forumpost"] = postInfo;
-            this.PropertySource["forumuser"] = forumUser;
+            this.PropertySource["forumuser"] = postInfo.Author.ForumUser;
             this.PropertySource["user"] = postInfo.Author.ForumUser.UserInfo;
             this.PropertySource["profile"] = new ProfilePropertyAccess(postInfo.Author.ForumUser.UserInfo);
             this.PropertySource["membership"] = new MembershipPropertyAccess(postInfo.Author.ForumUser.UserInfo);
@@ -575,24 +575,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceResourceTokens(template.ToString()));
             var tokenReplace = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(portalSettings, forumUser, forum)
             {
+                CurrentAccessLevel = Scope.DefaultSettings,
                 AccessingUser = forumUser.UserInfo,
             };
             template = new StringBuilder(tokenReplace.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplace.ReplaceTokens(template.ToString()));
-
-
-
-            
-            var tokenReplace2 = new DotNetNuke.Services.Tokens.TokenReplace
-            {
-                AccessingUser = forumUser.UserInfo,
-                DebugMessages = false,
-                PortalSettings = portalSettings,
-                ModuleInfo = forum.ModuleInfo,
-                User = forumUser.UserInfo,
-                ModuleId = forum.ModuleId,
-            };
-            template = new StringBuilder(tokenReplace2.ReplaceEnvironmentTokens(template.ToString()));
 
             return template;
         }
@@ -637,33 +624,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 template.Replace("[FORUMUSER:REWARDPOINTS]", string.Empty);
             }
 
-            if (template.ToString().Contains("[FORUMUSER:SIGNATURE]"))
-            {
-                // Signature
-                var sSignature = string.Empty;
-                if (mainSettings.AllowSignatures != 0 && !forumUser.PrefBlockSignatures && !forumUser.SignatureDisabled)
-                {
-                    sSignature = forumUser?.Signature;
-
-                    if (sSignature != string.Empty)
-                    {
-                        sSignature = Utilities.ManageImagePath(sSignature);
-                    }
-
-                    switch (mainSettings.AllowSignatures)
-                    {
-                        case 1:
-                            sSignature = HttpUtility.HtmlEncode(sSignature);
-                            sSignature = sSignature.Replace(System.Environment.NewLine, "<br />");
-                            break;
-                        case 2:
-                            sSignature = HttpUtility.HtmlDecode(sSignature);
-                            break;
-                    }
-                }
-
-                template.Replace("[FORUMUSER:SIGNATURE]", sSignature);
-            }
 
             // Rank
             template.Replace("[FORUMUSER:RANKDISPLAY]", (forumUser.UserId > 0) ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(forumModuleId, forumUser, 0) : string.Empty);
@@ -1570,22 +1530,22 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             const string pattern = @"(?<token>(?:(?<text>\[\])|\[(?:(?<object>[^{}\]\[:]+):(?<property>[^\]\[\|]+))(?:\|(?:(?<format>[^\]\[]+)\|(?<ifEmpty>[^\]\[]+))|\|(?:(?<format>[^\|\]\[]+)))?\])|(?<text>\[[^\]\[]+\])|(?<text>[^\]\[]+)\1)";
             var matches = new Regex(pattern).Matches(source);
-            int goodMatches = 0;
+           // int goodMatches = 0;
             if (matches.Count > 0)
             {
                 foreach (Match match in matches)
                 {
                     if (!string.IsNullOrEmpty(match.Groups["token"]?.Value) && match.Groups["object"] != null && this.PropertySource.ContainsKey(match.Groups["object"].Value.ToLowerInvariant()))
                     {
-                        goodMatches++;
+                        //goodMatches++;
                         source = source.Replace(match.Groups["token"].Value, this.ReplaceTokens(match.Groups["token"].Value));
                     }
                 }
 
-                if (goodMatches > 0)
-                {
-                    this.ReplaceEmbeddedTokens(source);
-                }
+                //if (goodMatches > 0)
+                //{
+                //    this.ReplaceEmbeddedTokens(source);
+                //}
             }
 
             return source;

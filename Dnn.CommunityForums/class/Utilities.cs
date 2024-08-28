@@ -945,20 +945,23 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string ManageImagePath(string sHTML, Uri hostUri)
         {
-            string hostWithScheme = hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();
-
-            var iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
-            while (iStart != -1)
+            if (!string.IsNullOrEmpty(sHTML))
             {
-                sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
-                iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
-            }
+                string hostWithScheme = hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();
 
-            iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
-            while (iStart != -1)
-            {
-                sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
+                var iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
+                while (iStart != -1)
+                {
+                    sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
+                    iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
+                }
+
                 iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
+                while (iStart != -1)
+                {
+                    sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
+                    iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
+                }
             }
 
             return sHTML;

@@ -325,23 +325,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.Content.AuthorName = this.drForum["TopicAuthor"].ToString();
             this.topic.Content.DateCreated = Utilities.SafeConvertDateTime(this.drForum["DateCreated"]);
             
-            this.topic.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
-            this.topic.Author.AuthorId = Utilities.SafeConvertInt(this.drForum["AuthorId"]);
-            this.topic.Author.DisplayName = this.drForum["DisplayName"].ToString();
-            this.topic.Author.FirstName = this.drForum["FirstName"].ToString();
-            this.topic.Author.LastName = this.drForum["LastName"].ToString();
-            this.topic.Author.Username = this.drForum["UserName"].ToString();
+            this.topic.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, this.topic.Content.AuthorId);
+            this.topic.Author.ForumUser.UserInfo.DisplayName = this.drForum["DisplayName"].ToString();
+            this.topic.Author.ForumUser.UserInfo.FirstName = this.drForum["FirstName"].ToString();
+            this.topic.Author.ForumUser.UserInfo.LastName = this.drForum["LastName"].ToString();
+            this.topic.Author.ForumUser.UserInfo.Username = this.drForum["UserName"].ToString();
+
             this.topic.Forum = this.ForumInfo;
+            
             this.topic.LastReply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             this.topic.LastReply.TopicId = this.topic.TopicId;
             this.topic.LastReply.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             this.topic.LastReply.Content.DateCreated = Utilities.SafeConvertDateTime(this.drForum["LastPostDate"]);
             this.topic.LastReply.Content.AuthorId = Utilities.SafeConvertInt(this.drForum["LastPostAuthorId"]);
-            this.topic.LastReply.Author.AuthorId = Utilities.SafeConvertInt(this.drForum["LastPostAuthorId"]);
-            this.topic.LastReply.Author.DisplayName = this.drForum["LastPostDisplayName"].ToString();
-            this.topic.LastReply.Author.FirstName = this.drForum["LastPostFirstName"].ToString();
-            this.topic.LastReply.Author.LastName = this.drForum["LastPostLastName"].ToString();
-            this.topic.LastReply.Author.Username = this.drForum["LastPostUserName"].ToString();
+
+            this.topic.LastReply.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, this.topic.LastReply.Content.AuthorId);
+            this.topic.LastReply.Author.ForumUser.UserInfo.DisplayName = this.drForum["LastPostDisplayName"].ToString();
+            this.topic.LastReply.Author.ForumUser.UserInfo.FirstName = this.drForum["LastPostFirstName"].ToString();
+            this.topic.LastReply.Author.ForumUser.UserInfo.LastName = this.drForum["LastPostLastName"].ToString();
+            this.topic.LastReply.Author.ForumUser.UserInfo.Username = this.drForum["LastPostUserName"].ToString();
+
             this.topicTemplateId = Utilities.SafeConvertInt(this.drForum["TopicTemplateId"]);
             this.tags = this.drForum["Tags"].ToString();
             this.allowLikes = Utilities.SafeConvertBool(this.drForum["AllowLikes"]);

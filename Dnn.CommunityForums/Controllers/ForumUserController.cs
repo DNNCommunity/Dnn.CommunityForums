@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                     else
                     {
-                        user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo
+                        user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(this.ModuleId)
                         {
                             UserId = userId,
                             PortalId = portalId,
@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
                 else
                 {
-                    user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo
+                    user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(this.ModuleId)
                     {
                         UserId = -1,
                         PortalId = portalId,
@@ -120,6 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         PrefPageSize = 20,
                     };
                 }
+
                 user.ModuleId = this.ModuleId;
                 DataCache.UserCacheStore(cachekey, user);
             }
