@@ -53,19 +53,20 @@
 					</tr>
 
 					[SUBFORUMS]
-					<!-- <tr class="dcf-table-body-row dcf-sub-forums">
-						<td class="dcf-col dcf-col-icon"></td>
-						<td class="dcf-col" colspan="5">
-							<h5 class="dcf-sub-forum-title">Child Forums</h5>
-						</td>
-					</tr> -->
-					
-					<tr class="dcf-table-body-row dcf-sub-forums">
+                    <tr class="dcf-table-body-row dcf-sub-forums">
+                        <td class="dcf-col dcf-col-icon"></td>
+                        <td class="dcf-col" colspan="5">
+                            <h5 class="dcf-sub-forum-title">[RESX:Child] [RESX:FORUMS]</h5>
+                        </td>
+                    </tr>
+
+                    <tr class="dcf-table-body-row dcf-sub-forums">
 
 
 									<td class="dcf-col dcf-col-icon"></td>
 									<td class="dcf-col dcf-col-text">
 												<span class="aftopictitle">[FORUMNAME]</span>
+                                                <span class="aftopictitle">([RESX:Child] [RESX:of] [FORUM:PARENTFORUMNAME])</span>
 												<span class="aftopicsubtitle">[FORUMDESCRIPTION]</span>
 									</td>
 									<td class="dcf-col dcf-col-topics">[TOTALTOPICS]</td>
