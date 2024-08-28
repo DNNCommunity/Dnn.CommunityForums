@@ -1749,4 +1749,10 @@ Von
   <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
     <value>Vorlagentoken, das beginnt mit: {0} ist veraltet und kann nicht ersetzt werden. Aus Vorlage(n) entfernen.</value>
   </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Kind</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>von</value>
+  </data>
 </root>

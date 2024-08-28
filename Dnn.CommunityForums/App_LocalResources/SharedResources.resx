@@ -1749,4 +1749,10 @@ From,
   <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
     <value>Template Token starting with: {0} is obsolete and has no replacement. Remove from template(s).</value>
   </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Child</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>of</value>
+  </data>
 </root>

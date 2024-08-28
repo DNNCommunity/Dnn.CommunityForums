@@ -1764,4 +1764,10 @@ De,
   <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
     <value>Jeton de modèle commençant par : {0} est obsolète et ne peut pas être remplacé. Supprimer du ou des modèles.</value>
   </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Enfant</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>de</value>
+  </data>
 </root>

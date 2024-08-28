@@ -1749,4 +1749,10 @@ De
   <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
     <value>El token de plantilla que comienza con: {0} está obsoleto y no tiene reemplazo. Eliminar de la(s) plantilla(s).</value>
   </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Niño</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>de</value>
+  </data>
 </root>
