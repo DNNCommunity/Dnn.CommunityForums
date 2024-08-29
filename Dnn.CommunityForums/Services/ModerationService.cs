@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.replyId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this.replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.replyId);
 
                 if (reply == null)
                 {
@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var ms = SettingsBase.GetModuleSettings(this.moduleId);
             if (this.replyId > 0 & this.replyId != this.topicId)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this.replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.replyId);
 
                 if (reply == null)
                 {
@@ -228,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int authorId;
             if (this.replyId > 0 & this.replyId != this.topicId)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this.replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.replyId);
 
                 if (reply == null)
                 {
