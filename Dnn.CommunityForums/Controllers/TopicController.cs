@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 ti.GetForum();
                 ti.GetContent();
-                ti.GetAuthor(ti.PortalId, ti.Content.AuthorId);
+                ti.GetAuthor(ti.PortalId, ti.ModuleId, ti.Content.AuthorId);
             }
 
             return ti;
@@ -208,10 +208,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 ti.Content.DateCreated = DateTime.UtcNow;
             }
+
             if (ti.IsApproved && ti.Author.AuthorId > 0)
-            {   // TODO: put this in a better place and make it consistent with reply counter
-                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().UpdateUserTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
+            {
+                // TODO: put this in a better place and make it consistent with reply counter
+                DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
             }
+
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(ti.Forum.PortalId, ti.Content.AuthorId);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
             DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
@@ -220,14 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
 
             // TODO: convert to use DAL2?
-            int topicId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Save(ti.Forum.PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart, ti.AnnounceEnd, ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
-            if (ti.IsApproved && ti.Author.AuthorId > 0)
-            {   // TODO: put this in a better place and make it consistent with reply counter
-                var uc = new Data.Profiles();
-                uc.Profile_UpdateTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
-            }
-
-            return topicId;
+            return Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Save(ti.Forum.PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart, ti.AnnounceEnd, ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
         }
 
         public void DeleteById(int topicId)

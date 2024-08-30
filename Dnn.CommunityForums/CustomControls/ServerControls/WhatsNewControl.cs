@@ -197,7 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             IDataReader dr;
             if (this.ForumIds == string.Empty && this.FilterByUserId > 0)
             {
-                var u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().DNNGetCurrentUser(this.PortalId, -1);
+                var u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).DNNGetCurrentUser(this.PortalId, -1);
                 this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, this.PortalId, -1);
                 this.ForumIds = this.ForumIds.Replace(";", ":");
                 dr = DataProvider.Instance().GetPostsByUser(this.PortalId, this.Rows, this.UserInfo.IsSuperUser, this.UserInfo.UserID, this.FilterByUserId, this.TopicsOnly, this.ForumIds);

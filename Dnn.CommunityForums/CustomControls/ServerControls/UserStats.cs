@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                     }
                 }
-                var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, this.UserId));
+                var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId, this.UserId));
                 output = TemplateUtils.ParseProfileTemplate(this.ModuleId, tmp, author, string.Empty, CurrentUserTypes.Anon, false, false, false, string.Empty, cu.UserID, Utilities.GetTimeZoneOffsetForUser(portalId, this.UserId));
                 output = Utilities.LocalizeControl(output);
                 writer.Write(output);

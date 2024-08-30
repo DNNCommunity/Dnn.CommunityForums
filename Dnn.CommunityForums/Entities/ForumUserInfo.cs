@@ -1,7 +1,8 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
+//
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -16,14 +17,14 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-using System;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
+    using System;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Modules;
 
     [TableName("activeforums_UserProfiles")]
     [PrimaryKey("ProfileId", AutoIncrement = true)]
@@ -31,11 +32,20 @@ using DotNetNuke.Entities.Users;
     public class ForumUserInfo
     {
         private DotNetNuke.Entities.Users.UserInfo userInfo;
+        private PortalSettings portalSettings;
+        private SettingsInfo mainSettings;
+        private ModuleInfo moduleInfo;
         private string userRoles = Globals.DefaultAnonRoles + "|-1;||";
 
         public ForumUserInfo()
         {
             this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
+        }        
+
+        public ForumUserInfo(int moduleId)
+        {
+            this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
+            this.ModuleId = moduleId;
         }
 
         public int ProfileId { get; set; }
@@ -43,6 +53,9 @@ using DotNetNuke.Entities.Users;
         public int UserId { get; set; } = -1;
 
         public int PortalId { get; set; }
+
+        [IgnoreColumn]
+        internal int ModuleId { get; set; }
 
         public int TopicCount { get; set; }
 
@@ -152,6 +165,31 @@ using DotNetNuke.Entities.Users;
         [IgnoreColumn]
         TimeSpan TimeZoneOffsetForUser => Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
 
+        public PortalSettings PortalSettings
+        {
+            get => this.portalSettings ?? (this.portalSettings = Utilities.GetPortalSettings(this.PortalId));
+            set => this.portalSettings = value;
+        }
+        
+        [IgnoreColumn]
+        public SettingsInfo MainSettings
+        {
+            get => this.mainSettings ?? (this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId));
+            set => this.mainSettings = value;
+        }
+
+        [IgnoreColumn]
+        public ModuleInfo ModuleInfo
+        {
+            get => this.moduleInfo ?? (this.moduleInfo = this.LoadModuleInfo());
+            set => this.moduleInfo = value;
+        }
+
+        internal ModuleInfo LoadModuleInfo()
+        {
+            return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
+        }
+
         [IgnoreColumn]
         public DotNetNuke.Entities.Users.UserInfo UserInfo
         {
@@ -176,7 +214,7 @@ using DotNetNuke.Entities.Users;
                 }
                 ids += "|" + this.UserId + "|" + string.Empty + "|";
                 this.userRoles = ids;
-                return ids;
+                return this.userRoles;
             }
 
             set

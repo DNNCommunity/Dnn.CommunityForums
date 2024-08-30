@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo = this.ForumUserInfo;
             if (forumUserInfo == null & this.UID > 0)
             {
-                forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID);
+                forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
             }
 
             if (forumUserInfo != null)
@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (!(this.CurrentUserType == CurrentUserTypes.Anon) && !(this.CurrentUserType == CurrentUserTypes.Auth))
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, this.UID);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
                 if (forumUserInfo != null)
                 {
                     forumUserInfo.RewardPoints = Convert.ToInt32(e.Parameters[1]);

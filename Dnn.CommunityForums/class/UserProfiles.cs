@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
         /// </summary>
         /// <returns>ReturnType 0 Returns RankDisplay ReturnType 1 Returns RankName</returns>
         public static string GetUserRank(int portalId, int moduleID, int userID, int posts, int returnType)
-            => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(moduleID, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, userID), returnType);
+            => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(moduleID, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleID).GetByUserId(portalId, userID), returnType);
         #endregion "Deprecated Methods"
     }
 }

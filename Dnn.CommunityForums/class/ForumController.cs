@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList().")]
         public string GetForumsHtmlOption(int portalId, int moduleId, User currentUser)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, currentUser.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, currentUser.UserId);
             return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(moduleId, user);
         }
 

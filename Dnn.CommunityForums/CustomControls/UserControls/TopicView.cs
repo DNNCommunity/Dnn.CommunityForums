@@ -1330,7 +1330,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var signatureDisabled = dr.GetBoolean("SignatureDisabled");
 
             // Perform Profile Related replacements
-            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.PortalId, authorId));
+            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, authorId));
             sOutput = TemplateUtils.ParseProfileTemplate(this.ForumModuleId,  sOutput, author, this.ImagePath, this.CurrentUserType, true, this.UserPrefHideAvatars, this.UserPrefHideSigs, ipAddress, this.UserId, this.TimeZoneOffset);
 
 

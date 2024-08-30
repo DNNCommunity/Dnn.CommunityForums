@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author
         {
-            get => this.author ?? (this.author = this.GetAuthor(this.PortalId, this.Content.AuthorId));
+            get => this.author ?? (this.author = this.GetAuthor(this.PortalId, this.ModuleId, this.Content.AuthorId));
             set => this.author = value;
         }
 
@@ -206,14 +206,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo LastReplyAuthor
         {
-            get => this.lastReplyAuthor ?? (this.lastReplyAuthor = this.lastReply == null ? null : this.GetAuthor(this.PortalId, this.lastReply.Content.AuthorId));
+            get => this.lastReplyAuthor ?? (this.lastReplyAuthor = this.lastReply == null ? null : this.GetAuthor(this.PortalId, this.ModuleId, this.lastReply.Content.AuthorId));
             set => this.lastReplyAuthor = value;
         }
 
         [IgnoreColumn()]
-        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor(int portalId, int authorId)
+        internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor(int portalId, int moduleId, int authorId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, authorId);
+            return new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, moduleId, authorId);
         }
 
         [IgnoreColumn()]

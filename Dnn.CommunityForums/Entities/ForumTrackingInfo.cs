@@ -83,7 +83,7 @@ internal class ForumTrackingInfo
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetForumUser()
         {
-            this.forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.Forum.PortalId, this.UserId);
+            this.forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.Forum.ModuleId).GetByUserId(this.Forum.PortalId, this.UserId);
             if (this.forumUser == null)
             {
                 this.forumUser = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo
