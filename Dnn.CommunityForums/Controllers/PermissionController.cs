@@ -176,7 +176,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static bool HasAccess(string authorizedRoles, string userRoles)
         {
-            return HasRequiredPerm(authorizedRoles.Split(new[] { ';' }), userRoles.Split(new[] { ';' }));
+            return string.IsNullOrEmpty(authorizedRoles) || string.IsNullOrEmpty(userRoles) ? false : HasRequiredPerm(authorizedRoles.Split(new[] { ';' }), userRoles.Split(new[] { ';' }));
         }
 
         internal static bool HasRequiredPerm(string[] authorizedRoles, string[] userRoles)

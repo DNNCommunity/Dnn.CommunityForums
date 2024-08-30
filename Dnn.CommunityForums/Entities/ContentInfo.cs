@@ -31,11 +31,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     {
         public int ContentId { get; set; }
 
-        public string Subject { get; set; }
+        public string Subject { get; set; } = string.Empty;
 
-        public string Summary { get; set; }
+        public string Summary { get; set; } = string.Empty;
 
-        public string Body { get; set; }
+        public string Body { get; set; } = string.Empty;
 
         public DateTime DateCreated { get; set; } /* TODO: Once Reply_Save etc. moved from stored procedures to DAL2 for saving, update this to auto-set dates */
 
