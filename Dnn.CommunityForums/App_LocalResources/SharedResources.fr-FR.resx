@@ -1755,5 +1755,10 @@ De,
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>Le {0} de rubrique pour l’ID de suivi de {1} est introuvable dans la base de données ; Vous devrez réparer cela dans la base de données ou supprimer les données invalides. Veuillez visiter le dépôt Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour les étapes de dépannage.</value>
   </data>
-
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Enfant</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>de</value>
+  </data>
 </root>

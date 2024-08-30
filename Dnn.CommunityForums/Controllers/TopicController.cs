@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 ti.GetForum();
                 ti.GetContent();
-                ti.GetAuthor();
+                ti.GetAuthor(ti.PortalId, ti.ModuleId, ti.Content.AuthorId);
             }
 
             return ti;

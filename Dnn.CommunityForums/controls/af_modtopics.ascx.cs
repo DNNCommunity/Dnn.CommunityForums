@@ -123,7 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 }
                                 else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                                 {
-                                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(tmpReplyId);
+                                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(tmpReplyId);
                                     if (ri != null)
                                     {
                                         new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Delete(this.PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);

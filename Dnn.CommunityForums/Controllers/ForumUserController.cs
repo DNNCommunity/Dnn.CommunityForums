@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 log.AddProperty("Message", userBannedMsg);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
 
-                DataProvider.Instance().Topics_Delete_For_User(moduleId: moduleId, userId: bannedUser.UserID, delBehavior: SettingsBase.GetModuleSettings(moduleId).DeleteBehavior);
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete_For_User(moduleId: moduleId, userId: bannedUser.UserID, delBehavior: SettingsBase.GetModuleSettings(moduleId).DeleteBehavior);
                 bannedUser.Membership.Approved = false;
                 DotNetNuke.Entities.Users.UserController.UpdateUser(portalId: portalId, user: bannedUser, loggedAction: true);
                 DataCache.CacheClearPrefix(moduleId, string.Format("AF-FV-{0}-{1}", portalId, moduleId));
