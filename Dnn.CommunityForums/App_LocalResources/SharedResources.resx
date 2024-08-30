@@ -1740,4 +1740,10 @@ From,
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>The Topic {0} for Topic Tracking Id {1} is not found in the database; you will need to repair this in the database, or delete the invalid data.. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
   </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Child</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>of</value>
+  </data>
 </root>
