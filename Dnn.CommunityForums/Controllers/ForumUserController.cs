@@ -18,34 +18,32 @@
 // DEALINGS IN THE SOFTWARE.
 //
 //
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.ActiveForums.API;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.UI.UserControls;
-using Microsoft.ApplicationBlocks.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Social.Notifications;
+    using System;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Web;
+
     internal class ForumUserController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
     {
-        private int ModuleId = -1;
+        private readonly int moduleId = -1;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ForumUserController"/> class.
+        /// </summary>
+        /// <param name="moduleId"></param>
         internal ForumUserController(int moduleId)
         {
-            this.ModuleId = moduleId;
+            this.moduleId = moduleId;
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetById(int portalId, int profileId)
@@ -74,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                     else
                     {
-                        user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(this.ModuleId)
+                        user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(this.moduleId)
                         {
                             UserId = userId,
                             PortalId = portalId,
@@ -101,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
                 else
                 {
-                    user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(this.ModuleId)
+                    user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(this.moduleId)
                     {
                         UserId = -1,
                         PortalId = portalId,
@@ -121,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     };
                 }
 
-                user.ModuleId = this.ModuleId;
+                user.ModuleId = this.moduleId;
                 DataCache.UserCacheStore(cachekey, user);
             }
 
@@ -146,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetUserFromHttpContext [renamed method]")]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetUserFromHttpContext() [renamed method]")]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId)
         {
             return this.GetUserFromHttpContext(portalId, moduleId);
@@ -164,7 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 else if (HttpContext.Current?.Items["DCFForumUserInfo"] != null)
                 {
                     u = (DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo)HttpContext.Current?.Items["DCFForumUserInfo"];
-                    u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId, u.UserId);
+                    u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, u.UserId);
                 }
                 else
                 {
@@ -181,12 +179,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 }
 
-                u.ModuleId = this.ModuleId;
+                u.ModuleId = moduleId;
                 return u;
             }
             else
             {
-                return new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo
+                return new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(moduleId)
                 {
                     UserId = -1,
                     PortalId = portalId,
@@ -206,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     PrefDefaultShowReplies = false,
                     PrefDefaultSort = "ASC",
                     PrefPageSize = 20,
-                    ModuleId = this.ModuleId,
+                    ModuleId = moduleId,
                 };
             }
         }
@@ -214,20 +212,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo DNNGetCurrentUser(int portalId, int moduleId)
         {
             DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-            return this.GetByUserId(portalId, cu.UserID);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, cu.UserID);
         }
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetDNNUser(int portalId, int userId) => this.GetByUserId(portalId, userId);
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetDNNUser(int portalId, int userId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).GetByUserId(portalId, userId);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetDNNUser(int portalId, string userName) => this.GetByUserId(portalId, GetUserIdByUserName(portalId, userName));
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetDNNUser(int portalId, string userName) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).GetByUserId(portalId, GetUserIdByUserName(portalId, userName));
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUserFromHttpContext(int portalId, int moduleId, string userName)
-        {
-            return this.GetDNNUser(portalId, userName);
-        }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId, string userName) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).GetByUserId(portalId, GetUserIdByUserName(portalId, userName));
 
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user)
         {
@@ -312,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 log.AddProperty("Message", userBannedMsg);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
 
-                DataProvider.Instance().Topics_Delete_For_User(moduleId: moduleId, userId: bannedUser.UserID, delBehavior: SettingsBase.GetModuleSettings(moduleId).DeleteBehavior);
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete_For_User(moduleId: moduleId, userId: bannedUser.UserID, delBehavior: SettingsBase.GetModuleSettings(moduleId).DeleteBehavior);
                 bannedUser.Membership.Approved = false;
                 DotNetNuke.Entities.Users.UserController.UpdateUser(portalId: portalId, user: bannedUser, loggedAction: true);
                 DataCache.CacheClearPrefix(moduleId, string.Format("AF-FV-{0}-{1}", portalId, moduleId));

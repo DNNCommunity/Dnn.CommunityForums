@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public ForumUserInfo()
         {
             this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
-        }
+        }        
 
         public ForumUserInfo(int moduleId)
         {
@@ -52,11 +52,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int ProfileId { get; set; }
 
-        [IgnoreColumn] internal int ModuleId { get; set; }
-
         public int UserId { get; set; } = -1;
 
         public int PortalId { get; set; }
+
+        [IgnoreColumn]
+        internal int ModuleId { get; set; }
 
         public int TopicCount { get; set; }
 

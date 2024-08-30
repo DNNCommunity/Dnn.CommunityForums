@@ -41,8 +41,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public int GetTopicsReadCountForUserForum(int userId, int forumId)
         {
             return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking tt LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics t ON t.TopicId = tt.TopicId WHERE tt.UserId = @0 AND tt.ForumId = @1 AND t.IsDeleted = 0", userId, forumId).FirstOrDefault();
-
-            return this.Count("WHERE UserId = @0 AND ForumId = @1", userId, forumId);
         }
     }
 }

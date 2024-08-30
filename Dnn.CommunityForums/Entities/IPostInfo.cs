@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         int ForumId { get; set; }
 
         int TopicId { get; set; }
-        
+
         int PostId { get; }
 
         int ReplyId { get; }
@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         int ModuleId { get; }
 
         int ContentId { get; set; }
-        
+
         bool IsTopic { get; }
 
         bool IsReply { get; }

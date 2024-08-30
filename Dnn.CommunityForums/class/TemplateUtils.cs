@@ -346,6 +346,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return GetPostInfo(moduleId, user, imagePath, isMod, ipAddress, isUserOnline, currentUserType, currentUserId, userPrefHideAvatar, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use GetPostInfo(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, bool isMod, string ipAddress, bool isUserOnline, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)")]
         public static string GetPostInfo(int portalId, int moduleId, int userId, string username, User up, string imagePath, bool isMod, string ipAddress, bool isUserOnline, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)
         {
             var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, up.UserId);

@@ -18,9 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-#pragma warning disable SA1402 // File may only contain a single type
-#pragma warning disable SA1403 // File may only contain a single namespace
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -29,7 +26,9 @@ namespace DotNetNuke.Modules.ActiveForums
     public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.TopicInfo { }
 }
 
+#pragma warning disable SA1403 // File may only contain a single namespace
 namespace DotNetNuke.Modules.ActiveForums.Entities
+#pragma warning restore SA1403 // File may only contain a single namespace
 {
     using System;
     using System.Collections.Generic;
@@ -43,7 +42,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     [TableName("activeforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
-    public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.IPostInfo
+#pragma warning disable SA1402 // File may only contain a single type
+    public class TopicInfo : IPostInfo
+#pragma warning restore SA1402 // File may only contain a single type
        
     {
         [IgnoreColumn()]
@@ -72,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private int forumId = -1;
         private string tags = string.Empty;
         private string selectedcategories;
-
+        
         public int TopicId { get; set; }
 
         [IgnoreColumn] 
@@ -170,7 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int PrevTopic { get; set; }
 
         public string TopicData { get; set; } = string.Empty;
-
+        
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
         {
