@@ -54,11 +54,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return ri;
         }
 
-        internal static DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetReply(int replyId)
-        {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
-        }
-
         public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, int delBehavior)
         {
             var ri = this.GetById(replyId);
