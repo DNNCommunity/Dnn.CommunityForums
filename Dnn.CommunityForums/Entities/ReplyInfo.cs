@@ -46,9 +46,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get => this.Topic.ForumId;
             set => this.Topic.ForumId = value;
         }
-        
+
         [IgnoreColumn()]
         public int PostId {  get => this.ReplyId; }
+
+        [IgnoreColumn] 
+        public bool IsTopic => false;
+
+        [IgnoreColumn] 
+        public bool IsReply => true;
 
         public int ReplyId { get; set; }
 
@@ -121,6 +127,111 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
 
             return this.author;
+        }
+
+        internal DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus GetReplyStatusForUser(ForumUserInfo forumUser)
+        {
+            var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserRoles);
+
+            if (!canView)
+            {
+                return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Forbidden;
+            }
+
+            try
+            {
+                if (this.ReplyId > forumUser?.GetLastTopicReplyRead(this.Topic))
+                {
+                    return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.New;
+                }
+
+                if (forumUser != null && forumUser.GetIsReplyRead(this))
+                {
+                    return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Read;
+                }
+
+                return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Unread;
+            }
+            catch (Exception e)
+            {
+                /* this is to handle some limited unit testing without retrieving data */
+                return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Unread;
+            }
+        }
+
+        public DotNetNuke.Modules.ActiveForums.Enums.PostStatus GetPostStatusForUser(ForumUserInfo forumUser)
+        {
+            switch (this.GetReplyStatusForUser(forumUser))
+            {
+                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Forbidden:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Forbidden;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.New:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.New;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Unread:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Unread;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Read:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Read;
+                    }
+
+                default:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Unread;
+                    }
+            }
+        }
+
+        public string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            string css = string.Empty;
+            switch (this.GetPostStatusForUser(forumUser))
+            {
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Forbidden:
+                    {
+                        css = "dcf-poststatus-no-access";
+                        break;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.New:
+                    {
+                        css = "dcf-poststatus-new";
+                        break;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Unread:
+                    {
+                        css = "dcf-poststatus-unread";
+                        break;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Read:
+                    {
+                        css = "dcf-poststatus-read";
+                        break;
+                    }
+
+                default:
+                    {
+                        css = "dcf-poststatus-unread";
+                        break;
+                    }
+            }
+
+            if (this.Author?.AuthorId == forumUser?.UserId)
+            {
+                css += " dcf-poststatus-authored";
+            }
+
+            return css;
         }
     }
 }
