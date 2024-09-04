@@ -489,7 +489,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string subject = Utilities.SafeConvertString(dr["Subject"]);
                     DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.GetById(topicId);
-                    topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(portalId: portalId, moduleId: moduleId, topicId: topicId, subject: subject, forumInfo: forumInfo);
+                    topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrlSegment(portalId: portalId, moduleId: moduleId, topicId: topicId, subject: subject, forumInfo: forumInfo);
                     tc.Update(topicInfo);
                 }
 

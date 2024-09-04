@@ -21,10 +21,11 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
+    using DotNetNuke.Abstractions;
 
     internal static class UrlController
     {
-        internal static string BuildTopicUrl(int portalId, int moduleId, int topicId, string subject, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
+        internal static string BuildTopicUrlSegment(int portalId, int moduleId, int topicId, string subject, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             var cleanSubject = Utilities.CleanName(subject).ToLowerInvariant();
             if (SimulateIsNumeric.IsNumeric(cleanSubject))
@@ -74,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return topicUrl;
         }
 
-        internal static string BuildForumUrl(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
+        internal static string BuildForumUrlSegment(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             string url = "/";
 
@@ -89,6 +90,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             return url;
+        }
+
+        internal static string BuildForumUrl(INavigationManager navigationManager, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
+        {
+            // Build the forum Url
+            return mainSettings.UseShortUrls ? navigationManager.NavigateURL(forumInfo.TabId, portalSettings, string.Empty, new[] { $"{ParamKeys.ForumId}={forumInfo.ForumID}" })
+                : navigationManager.NavigateURL(forumInfo.TabId, portalSettings, string.Empty, new[] { $"{ParamKeys.ForumId}={forumInfo.ForumID}", $"{ParamKeys.ViewType}={Views.Topics}" });
+        }
+
+        internal static string BuildModeratorUrl(INavigationManager navigationManager, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
+        {
+            return navigationManager.NavigateURL(forumInfo.TabId, portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={forumInfo.ForumID}" });
         }
     }
 }

@@ -743,7 +743,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(portalId: this.PortalId, moduleId: this.ForumModuleId, topicId: this.TopicId, subject: subject, forumInfo: this.ForumInfo);
+            ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrlSegment(portalId: this.PortalId, moduleId: this.ForumModuleId, topicId: this.TopicId, subject: subject, forumInfo: this.ForumInfo);
 
             ti.Content.Body = body;
             ti.Content.Subject = subject;
