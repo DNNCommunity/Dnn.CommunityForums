@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.Topic.ModuleId).GetByUserId(this.Topic.PortalId, this.UserId);
             if (this.forumUser == null)
             {
-                this.forumUser = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo
+                this.forumUser = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(this.Topic.ModuleId)
                 {
                     UserId = this.UserId,
                 };

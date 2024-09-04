@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string URL => !string.IsNullOrEmpty(this.TopicUrl) && !string.IsNullOrEmpty(this.ForumURL) ? this.ForumURL + this.TopicUrl : string.Empty;
 
         [IgnoreColumn]
-        public string ForumURL => string.IsNullOrEmpty(this.Forum.PrefixURL) && !string.IsNullOrEmpty(this.TopicUrl) ? "/" + this.Forum.PrefixURL + "/" : string.Empty;
+        public string ForumURL => !string.IsNullOrEmpty(this.Forum.PrefixURL) && !string.IsNullOrEmpty(this.TopicUrl) ? "/" + this.Forum.PrefixURL + "/" : string.Empty;
 
         public int NextTopic { get; set; }
 
@@ -293,11 +293,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> TopicProperties
         {
-            set
-            {
-                this.TopicData = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(this.Forum, value);
-            }
-
             get
             {
                 if (this.TopicData == string.Empty)

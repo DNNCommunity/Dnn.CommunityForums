@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     try
                     {
                         DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(this.PortalId);
-                        tmp = tmp.Replace("[LASTAUTHOR]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this.ModuleId, true, this.ForumUser.GetIsMod(this.ModuleId), this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, -1, auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
+                        tmp = tmp.Replace("[LASTAUTHOR]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this._mainSettings, this.ForumUser.GetIsMod(this.ModuleId), this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, -1, auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
                     }
                     catch (Exception ex)
                     {
@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 else
                 {
                     DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(this.PortalId);
-                    tmp = tmp.Replace("[LASTAUTHOR]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this.ModuleId, true, this.ForumUser.GetIsMod(this.ModuleId), this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
+                    tmp = tmp.Replace("[LASTAUTHOR]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this._mainSettings, this.ForumUser.GetIsMod(this.ModuleId), this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
                 }
 
                 if (this._canEdit)

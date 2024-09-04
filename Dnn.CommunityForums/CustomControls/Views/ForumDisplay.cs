@@ -227,11 +227,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sForum = sForum.Replace("[LASTPOSTDATE]", lastpostdate);
             }
 
-            // TODO: Properly check "canview"
-            string sIcon = TemplateUtils.ShowIcon(true, fid, this.UserId, DateTime.Parse(lastpostdate), lastReadDate, lastreplyid);
-            string sIconImage = "<img alt=\"" + forumname + "\" src=\"" + this.ThemePath + "images/" + sIcon + "\" />";
-
-            // sForum = sForum.Replace("[FORUMICON]", sIconImage);
             sForum = sForum.Replace("[FORUMICON]", "<div style=\"height:30px;margin=right:10px;\"><i class=\"fa fa-folder fa-2x fa-blue\"></i></div>");
             sForum = sForum.Replace("[CSS:FORUMICON]", "affoldernorm");
             sForum = sForum.Replace("[CSS:FORUMICONSM]", "affoldersmnorm");

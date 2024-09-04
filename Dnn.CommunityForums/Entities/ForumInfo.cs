@@ -30,7 +30,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Tokens;
+
 
     [TableName("activeforums_Forums")]
     [PrimaryKey("ForumID", AutoIncrement = true)] /* ForumID because needs to match property name NOT database column name */
