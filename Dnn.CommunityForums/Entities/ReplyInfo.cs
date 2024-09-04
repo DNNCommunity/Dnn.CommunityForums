@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn()]
         public string Summary => Content.Summary;
-
+        
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
@@ -126,8 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get => this.author ?? (this.author = this.GetAuthor(this.PortalId, this.ModuleId, this.Content.AuthorId));
             set => this.author = value;
         }
-        
-        [IgnoreColumn()]
+
         internal DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo GetAuthor(int portalId, int moduleId, int authorId)
         {
             return new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, moduleId, authorId);
@@ -237,7 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return css;
         }
-
+        
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
         {
@@ -325,6 +324,5 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             propertyNotFound = true;
             return string.Empty;
 }
-
     }
 }

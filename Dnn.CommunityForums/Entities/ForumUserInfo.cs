@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
@@ -42,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public ForumUserInfo()
         {
             this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
-        }        
+        }
 
         public ForumUserInfo(int moduleId)
         {
@@ -73,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
-        public DateTime? DateUpdated { get; set; } 
+        public DateTime? DateUpdated { get; set; }
 
         public DateTime? DateLastActivity { get; set; }
 
@@ -173,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get => this.portalSettings ?? (this.portalSettings = Utilities.GetPortalSettings(this.PortalId));
             set => this.portalSettings = value;
         }
-        
+
         [IgnoreColumn]
         public SettingsInfo MainSettings
         {
@@ -272,11 +274,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                  return topicTrak.LastReplyId;
              }
 
-             return 0;
+            return 0;
 
-             // from stored procedure
-             // CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
-         }
+            // from stored procedure
+            // CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
+        }
 
         internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
          {
@@ -294,7 +296,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                  return topicTrak.TopicId;
              }
 
-             return 0;
+            return 0;
 
              // from stored procedure
              // CASE WHEN FT.MaxTopicRead > TT.TopicId OR TT.TopicId IS NULL THEN ISNULL(FT.MaxTopicRead,0) ELSE TT.TopicId END AS UserLastTopicRead,

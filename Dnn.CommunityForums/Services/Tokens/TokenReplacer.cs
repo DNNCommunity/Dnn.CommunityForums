@@ -22,14 +22,19 @@ using System.IO;
 
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 {
+    using System;
     using System.Collections.Generic;
     using System.Data.SqlTypes;
     using System.Linq;
     using System.Text;
     using System;
     using System.Text.RegularExpressions;
+    using System.Web;
+
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Services.Log.EventLog;
     using System.Web;
@@ -41,12 +46,20 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Host;
 
-    internal class TokenReplacer : BaseCustomTokenReplace, IPropertyAccess
+    internal class TokenReplacer : DotNetNuke.Services.Tokens.BaseCustomTokenReplace
     {
-        //public class LegacyTokenReplacements
-        //{
-        //    public string[] ObsoleteTokens { get; set; }
-        //}
+        private const string PropertySource_resx = "resx";
+        private const string PropertySource_forum = "forum";
+        private const string PropertySource_forumuser = "forumuser";
+        private const string PropertySource_user = "user";
+        private const string PropertySource_profile = "profile";
+        private const string PropertySource_membership = "membership";
+        private const string PropertySource_tab = "tab";
+        private const string PropertySource_module = "module";
+        private const string PropertySource_portal = "portal";
+        private const string PropertySource_host = "host";
+        private const string PropertySource_forumtopic = "forumtopic";
+        private const string PropertySource_forumpost = "forumpost";
 
 
         //private static string[] GetObsoleteTokens()
@@ -81,16 +94,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         
         public TokenReplacer(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
-            this.PropertySource["resx"] = this;
-            this.PropertySource["forum"] = forumInfo;
-            this.PropertySource["forumuser"] = forumUser;
-            this.PropertySource["user"] = forumUser.UserInfo;
-            this.PropertySource["profile"] = new ProfilePropertyAccess(forumUser.UserInfo);
-            this.PropertySource["membership"] = new MembershipPropertyAccess(forumUser.UserInfo);
-            this.PropertySource["tab"] = portalSettings.ActiveTab;
-            this.PropertySource["module"] = forumInfo.ModuleInfo;
-            this.PropertySource["portal"] = portalSettings;
-            this.PropertySource["host"] = new HostPropertyAccess();
+            this.PropertySource[key: PropertySource_resx] = new DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer();
+            this.PropertySource[key: PropertySource_forum] = forumInfo;
+            this.PropertySource[key: PropertySource_forumuser] = forumUser;
+            this.PropertySource[key: PropertySource_user] = forumUser.UserInfo;
+            this.PropertySource[key: PropertySource_profile] = new ProfilePropertyAccess(forumUser.UserInfo);
+            this.PropertySource[key: PropertySource_membership] = new MembershipPropertyAccess(forumUser.UserInfo);
+            this.PropertySource[key: PropertySource_tab] = portalSettings.ActiveTab;
+            this.PropertySource[key: PropertySource_module] = forumInfo.ModuleInfo;
+            this.PropertySource[key: PropertySource_portal] = portalSettings;
+            this.PropertySource[key: PropertySource_host] = new HostPropertyAccess();
             this.CurrentAccessLevel = Scope.DefaultSettings;
             //this.TokenContext.User = forumUser.UserInfo;
             //this.TokenContext.AccessingUser = forumUser.UserInfo;
@@ -102,17 +115,17 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         public TokenReplacer(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo)
         {
-            this.PropertySource["resx"] = this;
-            this.PropertySource["forum"] = topicInfo.Forum;
-            this.PropertySource["forumtopic"] = topicInfo;
-            this.PropertySource["forumuser"] = topicInfo.Author.ForumUser;
-            this.PropertySource["user"] = topicInfo.Author.ForumUser.UserInfo;
-            this.PropertySource["profile"] = new ProfilePropertyAccess(topicInfo.Author.ForumUser.UserInfo);
-            this.PropertySource["membership"] = new MembershipPropertyAccess(topicInfo.Author.ForumUser.UserInfo);
-            this.PropertySource["tab"] = portalSettings.ActiveTab;
-            this.PropertySource["module"] = topicInfo.Forum.ModuleInfo;
-            this.PropertySource["portal"] = portalSettings;
-            this.PropertySource["host"] = new HostPropertyAccess();
+            this.PropertySource[key: PropertySource_resx] = new DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer();
+            this.PropertySource[key: PropertySource_forum] = topicInfo.Forum;
+            this.PropertySource[key: PropertySource_forumtopic] = topicInfo;
+            this.PropertySource[key: PropertySource_forumuser] = topicInfo.Author.ForumUser;
+            this.PropertySource[key: PropertySource_user] = topicInfo.Author.ForumUser.UserInfo;
+            this.PropertySource[key: PropertySource_profile] = new ProfilePropertyAccess(topicInfo.Author.ForumUser.UserInfo);
+            this.PropertySource[key: PropertySource_membership] = new MembershipPropertyAccess(topicInfo.Author.ForumUser.UserInfo);
+            this.PropertySource[key: PropertySource_tab] = portalSettings.ActiveTab;
+            this.PropertySource[key: PropertySource_module] = topicInfo.Forum.ModuleInfo;
+            this.PropertySource[key: PropertySource_portal] = portalSettings;
+            this.PropertySource[key: PropertySource_host] = new HostPropertyAccess();
             this.CurrentAccessLevel = Scope.DefaultSettings;
             //this.TokenContext.User = topicInfo.Author.ForumUser.UserInfo;
             //this.TokenContext.AccessingUser = forumUser.UserInfo;
@@ -121,21 +134,21 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             //this.TokenContext.Portal = portalSettings;
             //this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
         }
-        
+
         public TokenReplacer(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.IPostInfo postInfo)
         {
-            this.PropertySource["resx"] = this;
-            this.PropertySource["forum"] = postInfo.Forum;
-            this.PropertySource["forumtopic"] = postInfo.Topic;
-            this.PropertySource["forumpost"] = postInfo;
-            this.PropertySource["forumuser"] = postInfo.Author.ForumUser;
-            this.PropertySource["user"] = postInfo.Author.ForumUser.UserInfo;
-            this.PropertySource["profile"] = new ProfilePropertyAccess(postInfo.Author.ForumUser.UserInfo);
-            this.PropertySource["membership"] = new MembershipPropertyAccess(postInfo.Author.ForumUser.UserInfo);
-            this.PropertySource["tab"] = portalSettings.ActiveTab;
-            this.PropertySource["module"] = postInfo.Forum.ModuleInfo;
-            this.PropertySource["portal"] = portalSettings;
-            this.PropertySource["host"] = new HostPropertyAccess();
+            this.PropertySource[key: PropertySource_resx] = new DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer();
+            this.PropertySource[key: PropertySource_forum] = postInfo.Forum;
+            this.PropertySource[key: PropertySource_forumtopic] = postInfo.Topic;
+            this.PropertySource[key: PropertySource_forumpost] = postInfo;
+            this.PropertySource[key: PropertySource_forumuser] = postInfo.Author.ForumUser;
+            this.PropertySource[key: PropertySource_user] = postInfo.Author.ForumUser.UserInfo;
+            this.PropertySource[key: PropertySource_profile] = new ProfilePropertyAccess(postInfo.Author.ForumUser.UserInfo);
+            this.PropertySource[key: PropertySource_membership] = new MembershipPropertyAccess(postInfo.Author.ForumUser.UserInfo);
+            this.PropertySource[key: PropertySource_tab] = portalSettings.ActiveTab;
+            this.PropertySource[key: PropertySource_module] = postInfo.Forum.ModuleInfo;
+            this.PropertySource[key: PropertySource_portal] = portalSettings;
+            this.PropertySource[key: PropertySource_host] = new HostPropertyAccess();
             this.CurrentAccessLevel = Scope.DefaultSettings;
             //this.TokenContext.User = postInfo.Author.ForumUser.UserInfo;
             //this.TokenContext.AccessingUser = forumUser.UserInfo;
@@ -144,18 +157,18 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             //this.TokenContext.Portal = portalSettings;
             //this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
         }
-        
+
         public TokenReplacer(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
-            this.PropertySource["resx"] = this;
-            this.PropertySource["forumuser"] = forumUser;
-            this.PropertySource["user"] = forumUser.UserInfo;
-            this.PropertySource["profile"] = new ProfilePropertyAccess(forumUser.UserInfo);
-            this.PropertySource["membership"] = new MembershipPropertyAccess(forumUser.UserInfo);
-            this.PropertySource["tab"] = portalSettings.ActiveTab;
-            this.PropertySource["module"] = forumUser.ModuleInfo;
-            this.PropertySource["portal"] = portalSettings;
-            this.PropertySource["host"] = new HostPropertyAccess();
+            this.PropertySource[key: PropertySource_resx] = new DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer();
+            this.PropertySource[key: PropertySource_forumuser] = forumUser;
+            this.PropertySource[key: PropertySource_user] = forumUser.UserInfo;
+            this.PropertySource[key: PropertySource_profile] = new ProfilePropertyAccess(forumUser.UserInfo);
+            this.PropertySource[key: PropertySource_membership] = new MembershipPropertyAccess(forumUser.UserInfo);
+            this.PropertySource[key: PropertySource_tab] = portalSettings.ActiveTab;
+            this.PropertySource[key: PropertySource_module] = forumUser.ModuleInfo;
+            this.PropertySource[key: PropertySource_portal] = portalSettings;
+            this.PropertySource[key: PropertySource_host] = new HostPropertyAccess();
             this.CurrentAccessLevel = Scope.DefaultSettings;
             //this.TokenContext.User = forumUser.UserInfo;
             //this.TokenContext.AccessingUser = forumUser.UserInfo;
@@ -164,18 +177,18 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             //this.TokenContext.Portal = portalSettings;
             //this.TokenContext.CurrentAccessLevel = Scope.DefaultSettings;
         }
-        
+
         public TokenReplacer(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author)
         {
-            this.PropertySource["resx"] = this;
-            this.PropertySource["forumuser"] = forumUser;
-            this.PropertySource["user"] = author.ForumUser.UserInfo;
-            this.PropertySource["profile"] = new ProfilePropertyAccess(author.ForumUser.UserInfo);
-            this.PropertySource["membership"] = new MembershipPropertyAccess(author.ForumUser.UserInfo);
-            this.PropertySource["tab"] = portalSettings.ActiveTab;
-            this.PropertySource["module"] = forumUser.ModuleInfo;
-            this.PropertySource["portal"] = portalSettings;
-            this.PropertySource["host"] = new HostPropertyAccess();
+            this.PropertySource[key: PropertySource_resx] = new DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer();
+            this.PropertySource[key: PropertySource_forumuser] = forumUser;
+            this.PropertySource[key: PropertySource_user] = author.ForumUser.UserInfo;
+            this.PropertySource[key: PropertySource_profile] = new ProfilePropertyAccess(author.ForumUser.UserInfo);
+            this.PropertySource[key: PropertySource_membership] = new MembershipPropertyAccess(author.ForumUser.UserInfo);
+            this.PropertySource[key: PropertySource_tab] = portalSettings.ActiveTab;
+            this.PropertySource[key: PropertySource_module] = forumUser.ModuleInfo;
+            this.PropertySource[key: PropertySource_portal] = portalSettings;
+            this.PropertySource[key: PropertySource_host] = new HostPropertyAccess();
             this.CurrentAccessLevel = Scope.DefaultSettings;
             //this.TokenContext.User = author.ForumUser.UserInfo;
             //this.TokenContext.AccessingUser = forumUser.UserInfo;
@@ -204,8 +217,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 template.Replace("[FORUMMAINLINK]", string.Format(GetTokenFormatString("[FORUMMAINLINK]", portalSettings, language), urlNavigator.NavigateURL(tabId)));
             }
-            
-            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceResourceTokens(template.ToString()));
+
+            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template.ToString()));
             var tokenReplace = new DotNetNuke.Services.Tokens.TokenReplace
             {
                 AccessingUser = forumUser.UserInfo,
@@ -218,7 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = new StringBuilder(tokenReplace.ReplaceEnvironmentTokens(template.ToString()));
             return template;
         }
-        
+
         internal static StringBuilder ReplaceTopicActionTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, HttpRequest request, int tabId, bool useListActions = true)
         {
             bool bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(topic.Forum.Security.Delete, forumUser.UserRoles);
@@ -232,84 +245,85 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             bool bPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(topic.Forum.Security.Pin, forumUser.UserRoles);
             bool bBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(topic.Forum.Security.Ban, forumUser.UserRoles);
             bool isTrusted = Utilities.IsTrusted((int)topic.Forum.DefaultTrustValue, forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(topic.Forum.Security.Trust, forumUser.UserRoles));
+
             
-            
-             if (bDelete && (bModerate || (topic.Content.AuthorId == forumUser.UserId && !topic.IsLocked)))
-             {
-                 template.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_topicDel(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
-             }
-             else
-             {
-                 template.Replace("[ACTIONS:DELETE]", string.Empty);
-             }
+            if (bDelete && (bModerate || (topic.Content.AuthorId == forumUser.UserId && !topic.IsLocked)))
+            {
+                template.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_topicDel(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
+            }
+            else
+            {
+                template.Replace("[ACTIONS:DELETE]", string.Empty);
+            }
 
-             if ((bModerate && bEdit) || (bEdit && topic.Content.AuthorId == forumUser.UserId && (mainSettings.EditInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, topic.Content.DateCreated, DateTime.UtcNow) < mainSettings.EditInterval)))
-             {
-                     string[] editParams = { ParamKeys.ViewType + "=post", "action=te", ParamKeys.ForumId + "=" + topic.Forum.ForumID, ParamKeys.TopicId + "=" + topic.TopicId.ToString() };
-                     template.Replace("[ACTIONS:EDIT]", "<a title=\"[RESX:EditTopic]\" href=\"" + Utilities.NavigateURL(tabId, string.Empty, editParams) + "\"><i class=\"fa fa-pencil-square-o fa-fw fa-blue\"></i></a>");
-                     template.Replace("[AF:QUICKEDITLINK]", "<a href=\"javascript:void(0)\" title=\"[RESX:TopicQuickEdit]\" onclick=\"amaf_quickEdit(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");\"><i class=\"fa fa-cog fa-fw fa-blue\"></i></a>");
-                     ;            }
-             else
-             {
-                 template.Replace("[AF:QUICKEDITLINK]", string.Empty);
-                 template.Replace("[ACTIONS:EDIT]", string.Empty);
-             }
+            if ((bModerate && bEdit) || (bEdit && topic.Content.AuthorId == forumUser.UserId && (mainSettings.EditInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, topic.Content.DateCreated, DateTime.UtcNow) < mainSettings.EditInterval)))
+            {
+                string[] editParams = { ParamKeys.ViewType + "=post", "action=te", ParamKeys.ForumId + "=" + topic.Forum.ForumID, ParamKeys.TopicId + "=" + topic.TopicId.ToString() };
+                template.Replace("[ACTIONS:EDIT]", "<a title=\"[RESX:EditTopic]\" href=\"" + Utilities.NavigateURL(tabId, string.Empty, editParams) + "\"><i class=\"fa fa-pencil-square-o fa-fw fa-blue\"></i></a>");
+                template.Replace("[AF:QUICKEDITLINK]", "<a href=\"javascript:void(0)\" title=\"[RESX:TopicQuickEdit]\" onclick=\"amaf_quickEdit(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");\"><i class=\"fa fa-cog fa-fw fa-blue\"></i></a>");
+                ;
+            }
+            else
+            {
+                template.Replace("[AF:QUICKEDITLINK]", string.Empty);
+                template.Replace("[ACTIONS:EDIT]", string.Empty);
+            }
 
-             if (bMove && (bModerate || (topic.Content.AuthorId == forumUser.UserId)))
-             {
+            if (bMove && (bModerate || (topic.Content.AuthorId == forumUser.UserId)))
+            {
 
-                 template.Replace("[ACTIONS:MOVE]", "<a href=\"javascript:void(0)\" onclick=\"javascript:amaf_openMove(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");\" title=\"[RESX:MoveTopic]\" style=\"vertical-align:middle;\" /><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i></a>");
-             }
-             else
-             {
-                 template.Replace("[ACTIONS:MOVE]", string.Empty);
-             }
+                template.Replace("[ACTIONS:MOVE]", "<a href=\"javascript:void(0)\" onclick=\"javascript:amaf_openMove(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");\" title=\"[RESX:MoveTopic]\" style=\"vertical-align:middle;\" /><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i></a>");
+            }
+            else
+            {
+                template.Replace("[ACTIONS:MOVE]", string.Empty);
+            }
 
-             if (bLock && (bModerate || (topic.Content.AuthorId == forumUser.UserId)))
-             {
+            if (bLock && (bModerate || (topic.Content.AuthorId == forumUser.UserId)))
+            {
 
-                 template.Replace("[ACTIONS:LOCK]", "<a href=\"javascript:void(0)\" class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_Lock(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");};\" title=\"[RESX:LockTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-lock fa-fw fa-blue dcf-topic-lock-inner\"></i></a>");
-             }
-             else
-             {
-                 template.Replace("[ACTIONS:LOCK]", string.Empty);
-             }
+                template.Replace("[ACTIONS:LOCK]", "<a href=\"javascript:void(0)\" class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_Lock(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");};\" title=\"[RESX:LockTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-lock fa-fw fa-blue dcf-topic-lock-inner\"></i></a>");
+            }
+            else
+            {
+                template.Replace("[ACTIONS:LOCK]", string.Empty);
+            }
 
-             if (bPin && (bModerate || (topic.Content.AuthorId == forumUser.UserId)))
-             {
-                 template.Replace("[ACTIONS:PIN]", "<a href=\"javascript:void(0)\" class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_Pin(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");};\" title=\"[RESX:PinTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner\"></i></a>");
-             }
-             else
-             {
-                 template.Replace("[ACTIONS:PIN]", string.Empty);
-             }
+            if (bPin && (bModerate || (topic.Content.AuthorId == forumUser.UserId)))
+            {
+                template.Replace("[ACTIONS:PIN]", "<a href=\"javascript:void(0)\" class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_Pin(" + topic.Forum.ModuleId + "," + topic.Forum.ForumID + "," + topic.TopicId.ToString() + ");};\" title=\"[RESX:PinTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner\"></i></a>");
+            }
+            else
+            {
+                template.Replace("[ACTIONS:PIN]", string.Empty);
+            }
 
-             if (topic.IsLocked)
-             {
-                 template.Replace("fa-lock", "fa-unlock");
-                 template.Replace("[RESX:Lock]", "[RESX:UnLock]");
-                 template.Replace("[RESX:LockTopic]", "[RESX:UnLockTopic]");
-                 template.Replace("[RESX:Confirm:Lock]", "[RESX:Confirm:UnLock]");
-                 template.Replace("[ICONLOCK]", "&nbsp;&nbsp;<i id=\"af-topicsview-lock-" + topic.TopicId.ToString() + "\" class=\"fa fa-lock fa-fw fa-red\"></i>");
-             }
-             else
-             {
-                 template.Replace("[ICONLOCK]", "&nbsp;&nbsp;<i id=\"af-topicsview-lock-" + topic.TopicId.ToString() + "\" class=\"fa fa-fw fa-red\"></i>");
-             }
+            if (topic.IsLocked)
+            {
+                template.Replace("fa-lock", "fa-unlock");
+                template.Replace("[RESX:Lock]", "[RESX:UnLock]");
+                template.Replace("[RESX:LockTopic]", "[RESX:UnLockTopic]");
+                template.Replace("[RESX:Confirm:Lock]", "[RESX:Confirm:UnLock]");
+                template.Replace("[ICONLOCK]", "&nbsp;&nbsp;<i id=\"af-topicsview-lock-" + topic.TopicId.ToString() + "\" class=\"fa fa-lock fa-fw fa-red\"></i>");
+            }
+            else
+            {
+                template.Replace("[ICONLOCK]", "&nbsp;&nbsp;<i id=\"af-topicsview-lock-" + topic.TopicId.ToString() + "\" class=\"fa fa-fw fa-red\"></i>");
+            }
 
-             if (topic.IsPinned)
-             {
-                 template.Replace("dcf-topic-pin-pin", "dcf-topic-pin-unpin");
-                 template.Replace("[RESX:Pin]", "[RESX:UnPin]");
-                 template.Replace("[RESX:PinTopic]", "[RESX:UnPinTopic]");
-                 template.Replace("[RESX:Confirm:Pin]", "[RESX:Confirm:UnPin]");
-                 template.Replace("[ICONPIN]", "&nbsp;&nbsp;<i id=\"af-topicsview-pin-" + topic.TopicId.ToString() + "\" class=\"fa fa-thumb-tack fa-fw fa-red\"></i>");
-             }
-             else
-             {
-                 template.Replace("[ICONPIN]", "&nbsp;&nbsp;<i id=\"af-topicsview-pin-" + topic.TopicId.ToString() + "\" class=\"fa fa-fw fa-red\"></i>");
-             }
-            
+            if (topic.IsPinned)
+            {
+                template.Replace("dcf-topic-pin-pin", "dcf-topic-pin-unpin");
+                template.Replace("[RESX:Pin]", "[RESX:UnPin]");
+                template.Replace("[RESX:PinTopic]", "[RESX:UnPinTopic]");
+                template.Replace("[RESX:Confirm:Pin]", "[RESX:Confirm:UnPin]");
+                template.Replace("[ICONPIN]", "&nbsp;&nbsp;<i id=\"af-topicsview-pin-" + topic.TopicId.ToString() + "\" class=\"fa fa-thumb-tack fa-fw fa-red\"></i>");
+            }
+            else
+            {
+                template.Replace("[ICONPIN]", "&nbsp;&nbsp;<i id=\"af-topicsview-pin-" + topic.TopicId.ToString() + "\" class=\"fa fa-fw fa-red\"></i>");
+            }
+
             return template;
         }
 
@@ -486,7 +500,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             else
             {
                 // Not Answered
-                if (post.IsReply && (bEdit && (bModerate || (forumUser.UserId == post.Topic.Author.AuthorId && !post.Topic.IsLocked) )))
+                if (post.IsReply && (bEdit && (bModerate || (forumUser.UserId == post.Topic.Author.AuthorId && !post.Topic.IsLocked))))
                 {
                     // Can mark answer
                     if (useListActions)
@@ -572,7 +586,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + forum.ForumName + "','" + forumUrl + "');\"><img src=\"" + mainSettings.ThemeLocation + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>");
             }
 
-            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceResourceTokens(template.ToString()));
+            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template.ToString()));
             var tokenReplace = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(portalSettings, forumUser, forum)
             {
                 CurrentAccessLevel = Scope.DefaultSettings,
@@ -803,7 +817,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             if (template.ToString().Contains("[ICONPIN]"))
             {
-                template.Replace("[ICONPIN]", string.Format(GetTokenFormatString( topic.IsPinned ? "[ICONPIN]-ShowIcon" : "[ICONPIN]-HideIcon", portalSettings, language), topic.TopicId.ToString()));
+                template.Replace("[ICONPIN]", string.Format(GetTokenFormatString(topic.IsPinned ? "[ICONPIN]-ShowIcon" : "[ICONPIN]-HideIcon", portalSettings, language), topic.TopicId.ToString()));
             }
 
             if (template.ToString().Contains("[TOPICURL]") ||
@@ -983,7 +997,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 }
             }
 
-            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceResourceTokens(template.ToString()));
+            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template.ToString()));
             var tokenReplace = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(portalSettings, forumUser, topic)
             {
                 AccessingUser = forumUser.UserInfo
@@ -1005,7 +1019,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             template = RemoveObsoleteTokens(template);
             template = MapLegacyPostTokenSynonyms(template, forumUser, post, portalSettings, language);
-            
+
             // Perform Profile Related replacements
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(post.PortalId, post.Forum.ModuleId, post.Author.AuthorId);
             if (template.ToString().Contains("[POSTINFO]"))
@@ -1014,8 +1028,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 template.Replace("[POSTINFO]", sPostInfo);
             }
             template = ReplaceBody(template, post.Content, mainSettings, request.Url);
-            
-            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceResourceTokens(template.ToString()));
+
+            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template.ToString()));
             var tokenReplace = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(portalSettings, forumUser, post)
             {
                 AccessingUser = forumUser.UserInfo
@@ -1148,7 +1162,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         }
 
         internal static StringBuilder MapLegacyModuleTokenSynonyms(StringBuilder template)
-        { 
+        {
             template = ReplaceTokenSynonym(template, "[MODULEID]", "[MODULE:MODULEID]");
             template = ReplaceTokenSynonym(template, "[TABID]", "[TAB:TABID]");
             return template;
@@ -1329,7 +1343,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         private static StringBuilder ReplaceLegacyTokenWithFormatString(StringBuilder template, TokenReplacer tokenReplacer, DotNetNuke.Entities.Portals.PortalSettings portalSettings, string language, string oldTokenName, string newTokenNamePrefix, string formatStringResourceKey, string replaceWithIfEmpty = "")
         {
             string formatString = GetTokenFormatString(formatStringResourceKey, portalSettings, language);
-            formatString = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceResourceTokens(formatString);
+            formatString = DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(formatString);
             if (tokenReplacer.ContainsTokens(formatString))
             {
                 formatString = tokenReplacer.ReplaceTokens(formatString);
@@ -1530,7 +1544,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             const string pattern = @"(?<token>(?:(?<text>\[\])|\[(?:(?<object>[^{}\]\[:]+):(?<property>[^\]\[\|]+))(?:\|(?:(?<format>[^\]\[]+)\|(?<ifEmpty>[^\]\[]+))|\|(?:(?<format>[^\|\]\[]+)))?\])|(?<text>\[[^\]\[]+\])|(?<text>[^\]\[]+)\1)";
             var matches = new Regex(pattern).Matches(source);
-           // int goodMatches = 0;
+            // int goodMatches = 0;
             if (matches.Count > 0)
             {
                 foreach (Match match in matches)
