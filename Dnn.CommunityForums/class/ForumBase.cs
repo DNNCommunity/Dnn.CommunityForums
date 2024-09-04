@@ -40,8 +40,6 @@ using DotNetNuke.Services.Localization;
         private int? replyId;
         private int? quoteId;
         private int? authorid;
-        private bool? jumpToLastPost;
-        private string templatePath = string.Empty;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo foruminfo;
         private XmlDocument forumData;
 
@@ -382,10 +380,6 @@ using DotNetNuke.Services.Localization;
         }
 
         public int SocialGroupId { get; set; }
-
-        public bool CanRead => this.canRead ?? this.SecurityCheck("read");
-
-        public bool CanView => this.canView ?? this.SecurityCheck("view");
 
         public bool CanCreate
         {

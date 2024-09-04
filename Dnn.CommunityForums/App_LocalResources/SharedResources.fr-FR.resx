@@ -1761,4 +1761,13 @@ De,
   <data name="[RESX:of].Text" xml:space="preserve">
     <value>de</value>
   </data>
+  <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
+    <value>Template Token : {0} est obsolète. Remplacez par {1}.</value>
+  </data>
+  <data name="[RESX:RemoveObsoleteToken].Text" xml:space="preserve">
+    <value>Jeton de modèle : {0} est obsolète et ne peut pas être remplacé. Supprimer du ou des modèles.</value>
+  </data>
+  <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
+    <value>Jeton de modèle commençant par : {0} est obsolète et ne peut pas être remplacé. Supprimer du ou des modèles.</value>
+  </data>
 </root>
