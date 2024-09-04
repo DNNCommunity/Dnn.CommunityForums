@@ -151,6 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
         public const string ControlPanelResourceFile = Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx";
+        public const string LegacyTokenResourceFile = Globals.ModulePath + "App_LocalResources/LegacyTokenResources.resx";
         public const string CacheDependencyFile = Globals.ModulePath + "cache/cachedep.resources";
 
         public const string ForumsControlsRegisterAMTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
@@ -162,6 +163,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const int GroupCount = 10000000;
         public const int ForumCount = 10000000;
         public const int SiteCount = -1;
+
+        public const string DefaultDateFormat = "g";
 
         public const string ModerationNotificationType = "AF-ForumModeration";
         public const string ContentAlertNotificationType = "AF-ContentAlert";

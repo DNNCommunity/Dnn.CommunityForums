@@ -408,9 +408,9 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         #endregion "Deprecated Methods"
 
-        private static string GetPostInfo(int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, bool isMod, string ipAddress, bool isUserOnline, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)
+        internal static string GetPostInfo(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, bool isMod, string ipAddress, bool isUserOnline, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)
         {
-            var sPostInfo = ParseProfileInfo(ModuleId, user, imagePath, isMod, ipAddress, currentUserType, currentUserId, userPrefHideAvatar, timeZoneOffset);
+            var sPostInfo = ParseProfileInfo(moduleId, user, imagePath, isMod, ipAddress, currentUserType, currentUserId, userPrefHideAvatar, timeZoneOffset);
             if (sPostInfo.ToLower().Contains("<br"))
             {
                 return sPostInfo;
@@ -883,6 +883,20 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = template.Substring(0, intStartTag) + subTemplate + template.Substring(intEndTag + endTag.Length);
             }
 
+            return template;
+        }
+
+        public static StringBuilder ReplaceSubSection(StringBuilder template, string subTemplate, string startTag, string endTag)
+        {
+            var intStartTag = template.ToString().IndexOf(startTag, StringComparison.Ordinal);
+            var intEndTag = template.ToString().IndexOf(endTag, StringComparison.Ordinal);
+            if (intStartTag >= 0 && intEndTag > intStartTag)
+            {
+                var intSubTempStart = intStartTag + startTag.Length;
+                var intSubTempEnd = intEndTag - 1;
+                var intSubTempLength = intSubTempEnd - intSubTempStart;
+                template = new StringBuilder(template.ToString().Substring(0, intStartTag) + subTemplate + template.ToString().Substring(intEndTag + endTag.Length));
+            }
             return template;
         }
 

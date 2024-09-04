@@ -1,7 +1,8 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
+//
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -16,14 +17,15 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
+
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     /// <summary>
     /// Author is really the same as a user. Just separated out to make code more understandable.
     /// </summary>
-	public class AuthorInfo
+    public class AuthorInfo
     {
         private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo;
 
@@ -39,7 +41,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public AuthorInfo(int portalId, int moduleId, int userId)
         {
-            this.forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).GetByUserId(portalId, userId);
+            this.forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId);
+            if (this.forumUserInfo == null)
+            {
+                this.AuthorId = userId;
+                this.DisplayName = this.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+            }
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser { get => this.forumUserInfo; set => this.forumUserInfo = value; }
