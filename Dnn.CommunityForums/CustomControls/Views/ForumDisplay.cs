@@ -227,9 +227,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sForum = sForum.Replace("[LASTPOSTDATE]", lastpostdate);
             }
 
-            string sIconImage = "<img alt=\"" + forumname + "\" src=\"" + this.ThemePath + "images/" + this.ForumInfo.GetForumFolderIcon(this.ForumUser, this.MainSettings) + "\" />";
-
-            // sForum = sForum.Replace("[FORUMICON]", sIconImage);
             sForum = sForum.Replace("[FORUMICON]", "<div style=\"height:30px;margin=right:10px;\"><i class=\"fa fa-folder fa-2x fa-blue\"></i></div>");
             sForum = sForum.Replace("[CSS:FORUMICON]", "affoldernorm");
             sForum = sForum.Replace("[CSS:FORUMICONSM]", "affoldersmnorm");

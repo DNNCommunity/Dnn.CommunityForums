@@ -21,26 +21,31 @@
 using System.Runtime.CompilerServices;
 using System.Web.UI;
 
-#pragma warning disable SA1402 // File may only contain a single type
-#pragma warning disable SA1403 // File may only contain a single namespace
-#pragma warning disable SA1649 // File name should match first type name
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
 
     [Obsolete("Deprecated in Community Forums. Remove in 10.00.00. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
 
-    public class TokensController { TokensController() { throw new NotImplementedException(); } }
+#pragma warning disable SA1402 // File may only contain a single type
+#pragma warning disable SA1649 // File name should match first type name
+    public class TokensController { private TokensController() => throw new NotImplementedException(); }
+#pragma warning restore SA1649 // File name should match first type name
+#pragma warning restore SA1402 // File may only contain a single type
 }
 
+#pragma warning disable SA1403 // File may only contain a single namespace
 namespace DotNetNuke.Modules.ActiveForums.Controllers
+#pragma warning restore SA1403 // File may only contain a single namespace
 {
     using System;
     using System.Collections.Generic;
     using System.Web;
     using DotNetNuke.Modules.ActiveForums.Entities;
 
+#pragma warning disable SA1402 // File may only contain a single type
     internal class TokenController
+#pragma warning restore SA1402 // File may only contain a single type
     {
 
         internal static List<Token> TokensList(int moduleId, string group)

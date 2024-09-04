@@ -75,8 +75,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs, Uri requestUrl)")]
         public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<DotNetNuke.Modules.ActiveForums.SubscriptionInfo> subs) => throw new NotImplementedException();
-       
-        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs, Uri requestUrl)
+
+        internal static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs, Uri requestUrl)
         {
             var navigationManager = (INavigationManager)new Services.URLNavigator().NavigationManager();
             DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = Utilities.GetPortalSettings(portalId);

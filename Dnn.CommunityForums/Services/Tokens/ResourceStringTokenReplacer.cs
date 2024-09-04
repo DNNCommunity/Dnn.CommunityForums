@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 {
     using System.Text.RegularExpressions;
@@ -40,8 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         internal static string ReplaceResourceTokens(string tokenizedText)
         {
-            const string pattern = @"(\[RESX:.+?\])";
-            var matches = new Regex(pattern).Matches(tokenizedText);
+            var matches = RegexUtils.GetCachedRegex(@"(\[RESX:.+?\])", RegexOptions.IgnoreCase).Matches(tokenizedText);
             foreach (Match match in matches)
             {
                 var sKey = match.Value;

@@ -68,6 +68,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadSubForums();
                     forum.LoadProperties();
                     forum.LoadSettings();
+                    forum.LoadPortalSettings();
+                    forum.LoadMainSettings();
+                    forum.LoadModuleInfo();
                     forum.LoadSecurity();
                     forums.Add(forum);
                 }
@@ -89,6 +92,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadForumGroup();
                     forum.LoadProperties();
                     forum.LoadSettings();
+                    forum.LoadPortalSettings();
+                    forum.LoadMainSettings();
+                    forum.LoadModuleInfo();
                     forum.LoadSecurity();
                     forums.Add(forum);
                 }

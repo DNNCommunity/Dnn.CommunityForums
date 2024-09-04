@@ -605,24 +605,8 @@ namespace DotNetNuke.Modules.ActiveForums
                             userDisplay = "none";
                         }
 
-                        DotNetNuke.Modules.ActiveForums.Entities.ContentInfo ci;
-                        if (postId == this.TopicId)
-                        {
-                            ci = ti.Content;
-                            sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated, this.PortalId, this.UserId));
-
-                        }
-                        else
-                        {
-                            var ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(postId);
-                            ci = ri.Content;
-                            sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated, this.PortalId, this.UserId));
-                        }
-
-                        if (ci != null)
-                        {
-
-                        }
+                        var post = postId == this.TopicId ? ti : (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(postId);
+                        sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, post.Author.AuthorId, post.Author.Username, post.Author.FirstName, post.Author.LastName, post.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(post.Content.DateCreated, this.PortalId, this.UserId));
                     }
 
                     if (this.allowHTML && this.editorType != EditorTypes.TEXTBOX)

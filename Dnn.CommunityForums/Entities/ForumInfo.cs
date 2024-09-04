@@ -34,7 +34,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.Tokens;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Tokens;
+
 
     [TableName("activeforums_Forums")]
     [PrimaryKey("ForumID", AutoIncrement = true)] /* ForumID because needs to match property name NOT database column name */
@@ -366,6 +369,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         internal Hashtable LoadSettings()
         {
             return DataCache.GetSettings(this.ModuleId, this.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, this.ModuleId, this.ForumSettingsKey), true);
+        }
+
+        [IgnoreColumn]
+        public ModuleInfo ModuleInfo
+        {
+            get => this.moduleInfo ?? (this.moduleInfo = this.LoadModuleInfo());
+            set => this.moduleInfo = value;
+        }
+
+        internal ModuleInfo LoadModuleInfo()
+        {
+            return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
         }
 
         [IgnoreColumn]

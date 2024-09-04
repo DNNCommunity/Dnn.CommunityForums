@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Common.Utilities;
 
     internal class TokenReplacer : DotNetNuke.Services.Tokens.BaseCustomTokenReplace
     {
@@ -1507,43 +1508,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return string.Empty;
         }
 
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
-        }
-
-        public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
-        {
-            return Utilities.GetSharedResource($"[RESX:{propertyName}]");
-        }
-        
-        internal static string ReplaceResourceTokens(string tokenizedText)
-        {
-
-            const string pattern = @"(\[RESX:.+?\])";
-            var matches = new Regex(pattern).Matches(tokenizedText);
-            foreach (Match match in matches)
-            {
-                var sKey = match.Value;
-                string sReplace = Utilities.GetSharedResource(match.Value);
-                var newValue = match.Value;
-                if (!string.IsNullOrEmpty(sReplace))
-                {
-                    newValue = sReplace;
-                }
-                tokenizedText = tokenizedText.Replace(sKey, newValue);
-            }
-
-            return tokenizedText;
-        }
-
         internal string ReplaceEmbeddedTokens(string source)
         {
             const string pattern = @"(?<token>(?:(?<text>\[\])|\[(?:(?<object>[^{}\]\[:]+):(?<property>[^\]\[\|]+))(?:\|(?:(?<format>[^\]\[]+)\|(?<ifEmpty>[^\]\[]+))|\|(?:(?<format>[^\|\]\[]+)))?\])|(?<text>\[[^\]\[]+\])|(?<text>[^\]\[]+)\1)";
-            var matches = new Regex(pattern).Matches(source);
+            var matches = RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase, 30).Matches(source);
             // int goodMatches = 0;
             if (matches.Count > 0)
             {
