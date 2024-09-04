@@ -446,7 +446,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
             }
 
-        return canLinkToProfile;
+            return canLinkToProfile;
         }
 
         internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "")
@@ -459,7 +459,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 return null;
             }
-
 
             string outputName = null;
             UserInfo user;
@@ -589,7 +588,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
                 sb.Append(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, mainSettings, false, isAdmin, user.UserId, user.Username, user.FirstName, user.LastName, user.DisplayName));
             }
-                return sb.ToString();
+            return sb.ToString();
         }
     }
 }

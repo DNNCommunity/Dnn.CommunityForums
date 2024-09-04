@@ -920,7 +920,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                return VirtualPathUtility.ToAbsolute(url);
+                return System.Web.VirtualPathUtility.ToAbsolute(url);
             }
             catch (Exception ex)
             {
@@ -947,7 +947,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (!string.IsNullOrEmpty(sHTML))
             {
-                string hostWithScheme = hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();
+                string hostWithScheme =
+                    hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();
 
                 var iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
                 while (iStart != -1)
@@ -1759,6 +1760,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // signal to platform that module has updated content in order to be included in incremental search crawls
             DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(moduleId);
         }
+
         internal static string LocalizeString(string key, string resourceFile, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, string language = "en-US")
         {
             return DotNetNuke.Services.Localization.Localization.GetString(key, resourceFile, (DotNetNuke.Entities.Portals.PortalSettings)portalSettings, language);

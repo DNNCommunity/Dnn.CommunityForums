@@ -34,32 +34,22 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         #region "Deprecated Methods"
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Not used.")]
-        public static string GetAvatar(int userID, int avatarWidth, int avatarHeight)
-                => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(userID, avatarWidth, avatarHeight);
+        public static string GetAvatar(int userID, int avatarWidth, int avatarHeight) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use method with PortalSettings as a parameter.")]
-        public static string GetDisplayName(int moduleId, int userID, string username, string firstName = "", string lastName = "", string displayName = "", string profileNameClass = "af-profile-name")
-            => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings: null, moduleId, linkProfile: false, false, false, userID, username, firstName, lastName, displayName, null, profileNameClass);
+        public static string GetDisplayName(int moduleId, int userID, string username, string firstName = "", string lastName = "", string displayName = "", string profileNameClass = "af-profile-name") => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use method with PortalSettings as a parameter.")]
-        public static string GetDisplayName(int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name")
-            => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(null, moduleId, linkProfile, isMod, isAdmin, userId, username, firstName, lastName, displayName, profileLinkClass, profileNameClass);
+        public static string GetDisplayName(int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name") => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Not used.")]
-        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name")
-            => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, moduleId, linkProfile, isMod, isAdmin, userId, username, firstName = "", lastName = "", displayName = "", profileLinkClass = "af-profile-link", profileNameClass = "af-profile-name");
+        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name") => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Not used.")]
-        public static string UserStatus(string themePath, bool isUserOnline, int userID, int moduleID, string altOnlineText = "User is Online", string altOfflineText = "User is Offline")
-            => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UserStatus(themePath, isUserOnline, userID, moduleID, altOnlineText = "User is Online", altOfflineText = "User is Offline");
+        public static string UserStatus(string themePath, bool isUserOnline, int userID, int moduleID, string altOnlineText = "User is Online", string altOfflineText = "User is Offline") => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank()")]
-        /// <summary>
-        /// Returns the Rank for the user
-        /// </summary>
-        /// <returns>ReturnType 0 Returns RankDisplay ReturnType 1 Returns RankName</returns>
-        public static string GetUserRank(int portalId, int moduleID, int userID, int posts, int returnType)
-            => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(moduleID, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleID).GetByUserId(portalId, userID), returnType);
+        public static string GetUserRank(int portalId, int moduleID, int userID, int posts, int returnType) => throw new NotImplementedException();
         #endregion "Deprecated Methods"
     }
 }
