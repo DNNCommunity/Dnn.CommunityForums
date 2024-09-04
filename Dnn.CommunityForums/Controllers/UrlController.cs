@@ -91,12 +91,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return url;
         }
+
         internal static string BuildForumUrl(INavigationManager navigationManager, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             // Build the forum Url
-            return mainSettings.UseShortUrls ? navigationManager.NavigateURL(forumInfo.TabId, portalSettings, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumInfo.ForumID) })
-                                            : navigationManager.NavigateURL(forumInfo.TabId, portalSettings, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumInfo.ForumID), string.Concat(ParamKeys.ViewType, "=", Views.Topics) });
+            return mainSettings.UseShortUrls ? navigationManager.NavigateURL(forumInfo.TabId, portalSettings, string.Empty, new[] { $"{ParamKeys.ForumId}={forumInfo.ForumID}" })
+                : navigationManager.NavigateURL(forumInfo.TabId, portalSettings, string.Empty, new[] { $"{ParamKeys.ForumId}={forumInfo.ForumID}", $"{ParamKeys.ViewType}={Views.Topics}" });
         }
+
         internal static string BuildModeratorUrl(INavigationManager navigationManager, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             return navigationManager.NavigateURL(forumInfo.TabId, portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={forumInfo.ForumID}" });
