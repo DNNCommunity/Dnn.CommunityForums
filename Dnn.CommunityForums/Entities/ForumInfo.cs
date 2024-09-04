@@ -26,18 +26,35 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Linq;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Tokens;
+
 
     [TableName("activeforums_Forums")]
     [PrimaryKey("ForumID", AutoIncrement = true)] /* ForumID because needs to match property name NOT database column name */
     [Scope("ModuleId")]
 
     // TODO [Cacheable("activeforums_Forums", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
-    public partial class ForumInfo
+    public class ForumInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
+
         private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
         private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
+        private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
+        private Hashtable forumSettings;
+        private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
+        private PortalSettings portalSettings;
+        private ModuleInfo moduleInfo;
+
+        public ForumInfo()
+        {
+            this.PortalSettings = Utilities.GetPortalSettings(this.PortalId);
+        }
 
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
@@ -96,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool HasProperties { get; set; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo ForumGroup
         {
             get => this.forumGroup ?? (this.forumGroup = this.LoadForumGroup());
@@ -110,31 +127,31 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                string message = String.Format(Utilities.GetSharedResource("[RESX:ForumGroupMissingForForum]"), this.ForumGroupId, this.ForumID);
+                var message = string.Format(Utilities.GetSharedResource("[RESX:ForumGroupMissingForForum]"), this.ForumGroupId, this.ForumID);
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
 
-                var ex = new NullReferenceException(String.Format(Utilities.GetSharedResource("[RESX:ForumGroupMissingForForum]"), this.ForumGroupId, this.ForumID));
+                var ex = new NullReferenceException(string.Format(Utilities.GetSharedResource("[RESX:ForumGroupMissingForForum]"), this.ForumGroupId, this.ForumID));
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 throw ex;
             }
 
             return group;
         }
-        
-        [IgnoreColumn()]
+
+        [IgnoreColumn]
         public string GroupName => this.ForumGroup.GroupName;
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string GroupPrefixURL => this.ForumGroup.PrefixURL;
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string LastTopicUrl { get; set; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public DateTime LastRead { get; set; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string LastPostFirstName
         {
             get
@@ -155,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string LastPostLastName
         {
             get
@@ -176,7 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string LastPostDisplayName
         {
             get
@@ -197,25 +214,29 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public bool InheritSecurity => this.PermissionsId == this.ForumGroup.PermissionsId;
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public bool InheritSettings => this.ForumSettingsKey == this.ForumGroup.GroupSettingsKey;
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public int SubscriberCount => new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: this.PortalId, moduleId: this.ModuleId, forumId: this.ForumID);
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string ParentForumName => this.ParentForumId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ParentForumId, this.ModuleId).ForumName : string.Empty;
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
+        public string ParentForumUrlPrefix => this.ParentForumId > 0 ? new Controllers.ForumController().GetById(this.ParentForumId, this.ModuleId).PrefixURL : string.Empty;
+
+
+        [IgnoreColumn]
         public int TabId => new DotNetNuke.Entities.Modules.ModuleController().GetModule(this.ModuleId).TabID;
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string ForumURL => URL.ForumLink(this.TabId, this);
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> SubForums
         {
             get => this.subforums ?? this.LoadSubForums();
@@ -229,7 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         private List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> properties;
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties
         {
             get => this.properties ?? (this.properties = this.LoadProperties());
@@ -243,264 +264,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         #region "Settings & Security"
 
-        private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
-        private Hashtable forumSettings;
-
-        [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
+        [IgnoreColumn]
+        public bool GetIsMod(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
-            get => this.security ?? (this.security = this.LoadSecurity());
-            set => this.security = value;
+            return (!(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, this.PortalId, this.ModuleId, "CanApprove"))));
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo LoadSecurity()
-        {
-            var security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(this.PermissionsId, this.ModuleId);
-            if (security == null)
-            {
-                security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.ModuleId);
-                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
-                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                string message = String.Format(Utilities.GetSharedResource("[RESX:PermissionsMissingForForum]"), this.PermissionsId, this.ForumID);
-                log.AddProperty("Message", message);
-                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-            }
-
-            return security;
-        }
-
-        [IgnoreColumn()]
-        public Hashtable ForumSettings
-        {
-            get => this.forumSettings ?? (this.forumSettings = this.LoadSettings());
-            set => this.forumSettings = value;
-        }
-
-        internal Hashtable LoadSettings()
-        {
-            return (Hashtable)DataCache.GetSettings(this.ModuleId, this.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, this.ModuleId, this.ForumSettingsKey), true);
-        }
-
-        [IgnoreColumn()]
-        public bool AllowAttach => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowAttach]);
-
-        [IgnoreColumn()]
-        public bool AllowEmoticons => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowEmoticons]);
-
-        [IgnoreColumn()]
-        public bool AllowHTML => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowHTML]);
-
-        [IgnoreColumn()]
-        public bool AllowLikes => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowLikes]);
-
-        [IgnoreColumn()]
-        public bool AllowPostIcon => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowPostIcon]);
-
-        [IgnoreColumn()]
-        public bool AllowRSS => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowRSS]);
-
-        [IgnoreColumn()]
-        public bool AllowScript => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowScript]);
-
-        [IgnoreColumn()]
-        public bool AllowSubscribe => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowSubscribe]);
-
-        [IgnoreColumn()]
-        public int AttachCount => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.AttachCount], 3);
-
-        [IgnoreColumn()]
-        public int AttachMaxSize => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.AttachMaxSize], 1000);
-
-        [IgnoreColumn()]
-        public string AttachTypeAllowed => Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.AttachTypeAllowed], ".jpg,.gif,.png");
-
-        [IgnoreColumn()]
-        public bool AttachAllowBrowseSite => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AttachAllowBrowseSite]);
-
-        [IgnoreColumn()]
-        public int MaxAttachWidth => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.MaxAttachWidth], 800);
-
-        [IgnoreColumn()]
-        public int MaxAttachHeight => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.MaxAttachHeight], 800);
-
-        [IgnoreColumn()]
-        public bool AttachInsertAllowed => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AttachInsertAllowed]);
-
-        [IgnoreColumn()]
-        public bool ConvertingToJpegAllowed => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.ConvertingToJpegAllowed]);
-
-        [IgnoreColumn()]
-        public string EditorHeight => Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorHeight], "400");
-
-        [IgnoreColumn()]
-        public EditorTypes EditorMobile
-        {
-            get
-            {
-                EditorTypes parseValue;
-                return Enum.TryParse(Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorMobile], EditorTypes.HTMLEDITORPROVIDER.ToString()), true, out parseValue)
-                           ? parseValue
-                           : EditorTypes.HTMLEDITORPROVIDER;
-            }
-        }
-
-        [IgnoreColumn()]
-        public EditorTypes EditorType
-        {
-            get
-            {
-                EditorTypes parseValue;
-                return Enum.TryParse(Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorType], EditorTypes.HTMLEDITORPROVIDER.ToString()), true, out parseValue)
-                           ? parseValue
-                           : EditorTypes.HTMLEDITORPROVIDER;
-            }
-        }
-
-        [IgnoreColumn()]
-        public HTMLPermittedUsers EditorPermittedUsers
-        {
-            get
-            {
-                HTMLPermittedUsers parseValue;
-                return Enum.TryParse(Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorPermittedUsers], "1"), true, out parseValue)
-                           ? parseValue
-                           : HTMLPermittedUsers.AuthenticatedUsers;
-            }
-        }
-
-        [IgnoreColumn()]
-        public string EditorWidth => Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorWidth], "100%");
-
-        [IgnoreColumn()]
-        public string EmailAddress => Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EmailAddress], string.Empty);
-
-        [IgnoreColumn()]
-        public bool IndexContent => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.IndexContent]);
-
-        /// <summary>
-        /// Indicates a moderated forum
-        /// </summary>
-        [IgnoreColumn()]
-        public bool IsModerated => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.IsModerated]);
-
-        [IgnoreColumn()]
-        public int TopicsTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.TopicsTemplateId]);
-
-        [IgnoreColumn()]
-        public int TopicTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.TopicTemplateId]);
-
-        [IgnoreColumn()]
-        public int TopicFormId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.TopicFormId]);
-
-        [IgnoreColumn()]
-        public int ReplyFormId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ReplyFormId]);
-
-        [IgnoreColumn()]
-        public int QuickReplyFormId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.QuickReplyFormId]);
-
-        [IgnoreColumn()]
-        public int ProfileTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ProfileTemplateId]);
-
-        [IgnoreColumn()]
-        public bool UseFilter => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.UseFilter]);
-
-        [IgnoreColumn()]
-        public int AutoTrustLevel => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.AutoTrustLevel]);
-
-        [IgnoreColumn()]
-        public TrustTypes DefaultTrustValue
-        {
-            get
-            {
-                TrustTypes parseValue;
-                return Enum.TryParse(Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.DefaultTrustLevel], "0"), true, out parseValue)
-                       ? parseValue
-                       : TrustTypes.NotTrusted;
-            }
-        }
-
-        [IgnoreColumn()]
-        public int ModApproveTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ModApproveTemplateId]);
-
-        [IgnoreColumn()]
-        public int ModRejectTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ModRejectTemplateId]);
-
-        [IgnoreColumn()]
-        public int ModMoveTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ModMoveTemplateId]);
-
-        [IgnoreColumn()]
-        public int ModDeleteTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ModDeleteTemplateId]);
-
-        [IgnoreColumn()]
-        public int ModNotifyTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ModNotifyTemplateId]);
-
-        [IgnoreColumn()]
-        public bool AllowTags => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowTags]);
-
-        [IgnoreColumn()]
-        public bool AutoSubscribeEnabled => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AutoSubscribeEnabled]);
-
-        [IgnoreColumn()]
-        public string AutoSubscribeRoles => Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.AutoSubscribeRoles], string.Empty);
-
-        [IgnoreColumn()]
-        public bool AutoSubscribeNewTopicsOnly => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AutoSubscribeNewTopicsOnly]);
-
-        /// <summary>
-        ///  Minimum posts required to create a topic in this forum if the user is not trusted
-        /// </summary>
-        [IgnoreColumn()]
-        public int CreatePostCount => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.CreatePostCount]);
-
-        /// <summary>
-        /// Minimum posts required to reply to a topic in this forum if the user is not trusted
-        /// </summary>
-        [IgnoreColumn()]
-        public int ReplyPostCount => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ReplyPostCount]);
-
-        #region "Deprecated Methods"
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn()]
-        public int LastPostLastPostID { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn()]
-        public int LastPostParentPostID { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn()]
-        public int CustomFieldType { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn()]
-        public int AttachMaxHeight
-        {
-            get { return Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.AttachMaxHeight], 500); }
-        }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn()]
-        public int AttachMaxWidth
-        {
-            get { return Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.AttachMaxWidth], 500); }
-        }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn()]
-        public int EditorStyle
-        {
-            get { return Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.EditorStyle], 1); }
-        }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn()]
-        public string EditorToolBar
-        {
-            get { return Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorToolbar], "bold,italic,underline"); }
-        }
-        #endregion "Deprecated Methods"
-        #endregion
+        [IgnoreColumn]
+        public string ThemeLocation => Utilities.ResolveUrl(SettingsBase.GetModuleSettings(this.ModuleId).ThemeLocation);
 
         [IgnoreColumn]
         internal DotNetNuke.Modules.ActiveForums.Enums.ForumStatus GetForumStatusForUser(ForumUserInfo forumUser)
@@ -511,6 +282,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.Forbidden;
             }
+
             if (this.LastTopicId == 0)
             {
                 return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.Empty;
@@ -537,6 +309,302 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
+
+
+        [IgnoreColumn]
+        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
+        {
+            get => this.security ?? (this.security = this.LoadSecurity());
+            set => this.security = value;
+        }
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo LoadSecurity()
+        {
+            var security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(this.PermissionsId, this.ModuleId);
+            if (security == null)
+            {
+                security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.ModuleId);
+                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                var message = string.Format(Utilities.GetSharedResource("[RESX:PermissionsMissingForForum]"), this.PermissionsId, this.ForumID);
+                log.AddProperty("Message", message);
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+            }
+
+            return security;
+        }
+
+        [IgnoreColumn]
+        public SettingsInfo MainSettings
+        {
+            get => this.mainSettings ?? (this.mainSettings = this.LoadMainSettings());
+            set => this.mainSettings = value;
+        }
+
+        internal SettingsInfo LoadMainSettings()
+        {
+            return SettingsBase.GetModuleSettings(this.ModuleId);
+        }
+
+        [IgnoreColumn]
+        public PortalSettings PortalSettings
+        {
+            get => this.portalSettings ?? (this.portalSettings = this.LoadPortalSettings());
+            set => this.portalSettings = value;
+        }
+
+        internal PortalSettings LoadPortalSettings()
+        {
+            return Utilities.GetPortalSettings(this.PortalId);
+        }
+
+        [IgnoreColumn]
+        public Hashtable ForumSettings
+        {
+            get => this.forumSettings ?? (this.forumSettings = this.LoadSettings());
+            set => this.forumSettings = value;
+        }
+
+        internal Hashtable LoadSettings()
+        {
+            return DataCache.GetSettings(this.ModuleId, this.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, this.ModuleId, this.ForumSettingsKey), true);
+        }
+
+        [IgnoreColumn]
+        public ModuleInfo ModuleInfo
+        {
+            get => this.moduleInfo ?? (this.moduleInfo = this.LoadModuleInfo());
+            set => this.moduleInfo = value;
+        }
+
+        internal ModuleInfo LoadModuleInfo()
+        {
+            return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
+        }
+
+        [IgnoreColumn]
+        public bool AllowAttach => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowAttach]);
+
+        [IgnoreColumn]
+        public bool AllowEmoticons => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowEmoticons]);
+
+        [IgnoreColumn]
+        public bool AllowHTML => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowHTML]);
+
+        [IgnoreColumn]
+        public bool AllowLikes => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowLikes]);
+
+        [IgnoreColumn]
+        public bool AllowPostIcon => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowPostIcon]);
+
+        [IgnoreColumn]
+        public bool AllowRSS => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowRSS]);
+
+        [IgnoreColumn]
+        public bool AllowScript => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowScript]);
+
+        [IgnoreColumn]
+        public bool AllowSubscribe => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowSubscribe]);
+
+        [IgnoreColumn]
+        public int AttachCount => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.AttachCount], 3);
+
+        [IgnoreColumn]
+        public int AttachMaxSize => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.AttachMaxSize], 1000);
+
+        [IgnoreColumn]
+        public string AttachTypeAllowed => Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.AttachTypeAllowed], ".jpg,.gif,.png");
+
+        [IgnoreColumn]
+        public bool AttachAllowBrowseSite => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AttachAllowBrowseSite]);
+
+        [IgnoreColumn]
+        public int MaxAttachWidth => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.MaxAttachWidth], 800);
+
+        [IgnoreColumn]
+        public int MaxAttachHeight => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.MaxAttachHeight], 800);
+
+        [IgnoreColumn]
+        public bool AttachInsertAllowed => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AttachInsertAllowed]);
+
+        [IgnoreColumn]
+        public bool ConvertingToJpegAllowed => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.ConvertingToJpegAllowed]);
+
+        [IgnoreColumn]
+        public string EditorHeight => Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorHeight], "400");
+
+        [IgnoreColumn]
+        public EditorTypes EditorMobile
+        {
+            get
+            {
+                EditorTypes parseValue;
+                return Enum.TryParse(Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorMobile], EditorTypes.HTMLEDITORPROVIDER.ToString()), true, out parseValue)
+                           ? parseValue
+                           : EditorTypes.HTMLEDITORPROVIDER;
+            }
+        }
+
+        [IgnoreColumn]
+        public EditorTypes EditorType
+        {
+            get
+            {
+                EditorTypes parseValue;
+                return Enum.TryParse(Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorType], EditorTypes.HTMLEDITORPROVIDER.ToString()), true, out parseValue)
+                           ? parseValue
+                           : EditorTypes.HTMLEDITORPROVIDER;
+            }
+        }
+
+        [IgnoreColumn]
+        public HTMLPermittedUsers EditorPermittedUsers
+        {
+            get
+            {
+                HTMLPermittedUsers parseValue;
+                return Enum.TryParse(Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorPermittedUsers], "1"), true, out parseValue)
+                           ? parseValue
+                           : HTMLPermittedUsers.AuthenticatedUsers;
+            }
+        }
+
+        [IgnoreColumn]
+        public string EditorWidth => Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorWidth], "100%");
+
+        [IgnoreColumn]
+        public string EmailAddress => Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EmailAddress], string.Empty);
+
+        [IgnoreColumn]
+        public bool IndexContent => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.IndexContent]);
+
+        /// <summary>
+        /// Indicates a moderated forum
+        /// </summary>
+        [IgnoreColumn]
+        public bool IsModerated => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.IsModerated]);
+
+        [IgnoreColumn]
+        public int TopicsTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.TopicsTemplateId]);
+
+        [IgnoreColumn]
+        public int TopicTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.TopicTemplateId]);
+
+        [IgnoreColumn]
+        public int TopicFormId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.TopicFormId]);
+
+        [IgnoreColumn]
+        public int ReplyFormId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ReplyFormId]);
+
+        [IgnoreColumn]
+        public int QuickReplyFormId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.QuickReplyFormId]);
+
+        [IgnoreColumn]
+        public int ProfileTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ProfileTemplateId]);
+
+        [IgnoreColumn]
+        public bool UseFilter => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.UseFilter]);
+
+        [IgnoreColumn]
+        public int AutoTrustLevel => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.AutoTrustLevel]);
+
+        [IgnoreColumn]
+        public TrustTypes DefaultTrustValue
+        {
+            get
+            {
+                TrustTypes parseValue;
+                return Enum.TryParse(Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.DefaultTrustLevel], "0"), true, out parseValue)
+                       ? parseValue
+                       : TrustTypes.NotTrusted;
+            }
+        }
+
+        [IgnoreColumn]
+        public int ModApproveTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ModApproveTemplateId]);
+
+        [IgnoreColumn]
+        public int ModRejectTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ModRejectTemplateId]);
+
+        [IgnoreColumn]
+        public int ModMoveTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ModMoveTemplateId]);
+
+        [IgnoreColumn]
+        public int ModDeleteTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ModDeleteTemplateId]);
+
+        [IgnoreColumn]
+        public int ModNotifyTemplateId => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ModNotifyTemplateId]);
+
+        [IgnoreColumn]
+        public bool AllowTags => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AllowTags]);
+
+        [IgnoreColumn]
+        public bool AutoSubscribeEnabled => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AutoSubscribeEnabled]);
+
+        [IgnoreColumn]
+        public string AutoSubscribeRoles => Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.AutoSubscribeRoles], string.Empty);
+
+        [IgnoreColumn]
+        public bool AutoSubscribeNewTopicsOnly => Utilities.SafeConvertBool(this.ForumSettings[ForumSettingKeys.AutoSubscribeNewTopicsOnly]);
+
+        /// <summary>
+        ///  Minimum posts required to create a topic in this forum if the user is not trusted
+        /// </summary>
+        [IgnoreColumn]
+        public int CreatePostCount => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.CreatePostCount]);
+
+        /// <summary>
+        /// Minimum posts required to reply to a topic in this forum if the user is not trusted
+        /// </summary>
+        [IgnoreColumn]
+        public int ReplyPostCount => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ReplyPostCount]);
+
+        #region "Deprecated Methods"
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn]
+        public int LastPostLastPostID { get; set; }
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn]
+        public int LastPostParentPostID { get; set; }
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn]
+        public int CustomFieldType { get; set; }
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn]
+        public int AttachMaxHeight
+        {
+            get { return Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.AttachMaxHeight], 500); }
+        }
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn]
+        public int AttachMaxWidth
+        {
+            get { return Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.AttachMaxWidth], 500); }
+        }
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn]
+        public int EditorStyle
+        {
+            get { return Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.EditorStyle], 1); }
+        }
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn]
+        public string EditorToolBar
+        {
+            get { return Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorToolbar], "bold,italic,underline"); }
+        }
+        #endregion "Deprecated Methods"
+        #endregion
+
+
+
         [IgnoreColumn]
         internal string GetForumStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
@@ -546,22 +614,27 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     {
                         return "dcf-forumstatus-no-access";
                     }
+
                 case ForumStatus.Empty:
                     {
                         return "dcf-forumstatus-no-topics";
                     }
+
                 case ForumStatus.NewTopics:
                     {
                         return "dcf-forumstatus-new-topics";
                     }
+
                 case ForumStatus.UnreadTopics:
                     {
                         return "dcf-forumstatus-unread-topics";
                     }
+
                 case ForumStatus.AllTopicsRead:
                     {
                         return "dcf-forumstatus-all-topics-read";
                     }
+
                 default:
                     {
                         return "dcf-forumstatus-all-topics-read";
@@ -578,22 +651,27 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     {
                         return mainSettings.ThemeLocation + "images/folder_forbidden.png";
                     }
+
                 case ForumStatus.Empty:
                     {
                         return mainSettings.ThemeLocation + "images/folder_closed.png";
                     }
+
                 case ForumStatus.NewTopics:
                     {
                         return mainSettings.ThemeLocation + "images/folder_new.png";
                     }
+
                 case ForumStatus.UnreadTopics:
                     {
                         return mainSettings.ThemeLocation + "images/folder_new.png";
                     }
+
                 case ForumStatus.AllTopicsRead:
                     {
                         return mainSettings.ThemeLocation + "images/folder.png";
                     }
+
                 default:
                     {
                         return mainSettings.ThemeLocation + "images/folder.png";
@@ -610,27 +688,253 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     {
                         return "fa-folder fa-grey";
                     }
+
                 case ForumStatus.Empty:
                     {
                         return "fa-folder-o fa-grey";
                     }
+
                 case ForumStatus.NewTopics:
                     {
                         return "fa-folder fa-red";
                     }
+
                 case ForumStatus.UnreadTopics:
                     {
                         return "fa-folder fa-red";
                     }
+
                 case ForumStatus.AllTopicsRead:
                     {
                         return "fa-folder fa-blue";
                     }
+
                 default:
                     {
                         return "fa-folder fa-blue";
                     }
             }
+        }
+
+        [IgnoreColumn]
+        public DotNetNuke.Services.Tokens.CacheLevel Cacheability
+        {
+            get
+            {
+                return DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
+            }
+        }
+
+
+        /// <inheritdoc/>
+        public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+        {
+            // replace any embedded tokens in format string
+            if (format.Contains("!(") && format.Contains(")!"))
+            {
+                format = format.Replace("!(", "[").Replace(")!", "]");
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this)
+                {
+                    AccessingUser = accessingUser,
+                };
+                format = tokenReplacer.ReplaceEmbeddedTokens(format);
+            }
+
+            propertyName = propertyName.ToLowerInvariant();
+
+            if (propertyName.Contains("lastpostsubject:"))
+            {
+                if (this.LastPostID > 0)
+                {
+                    int intLength = 0;
+                    if ((propertyName.ToString().IndexOf("[lastpostsubject:", 0) + 1) > 0)
+                    {
+                        int inStart = (propertyName.ToString().IndexOf("[lastpostsubject:", 0) + 1) + 17;
+                        int inEnd = (propertyName.ToString().IndexOf("]", inStart - 1) + 1);
+                        string sLength = propertyName.ToString().Substring(inStart - 1, inEnd - inStart);
+                        intLength = Convert.ToInt32(sLength);
+                    }
+
+                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(this.LastPostID, this.LastTopicId, System.Web.HttpUtility.HtmlDecode(this.LastPostSubject), intLength, this), format);
+                }
+            }
+
+            switch (propertyName)
+            {
+                case "forumid":
+                    return PropertyAccess.FormatString(this.ForumID.ToString(), format);
+                case "themelocation":
+                    return PropertyAccess.FormatString(this.ThemeLocation.ToString(), format);
+                case "forumdescription":
+                    return PropertyAccess.FormatString(this.ForumDesc, format);
+                case "forumname":
+                    return PropertyAccess.FormatString(this.ForumName, format);
+                case "forumnamenolink":
+                    return PropertyAccess.FormatString(this.ForumName, format);
+                case "forumgroupid":
+                    return PropertyAccess.FormatString(this.ForumGroupId.ToString(), format);
+                case "grouplink":
+                case "forumgrouplink":
+                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.TabId,
+                            this.ModuleId,
+                            this.ForumGroup.PrefixURL,
+                            string.Empty,
+                            this.ForumGroupId,
+                            -1,
+                            -1,
+                            -1,
+                            string.Empty,
+                            1,
+                            -1,
+                            -1),
+                        format);
+                case "forumlink":
+                case "forumurl":
+                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.TabId,
+                            this.ModuleId,
+                            this.ForumGroup.PrefixURL,
+                            this.PrefixURL,
+                            this.ForumGroupId,
+                            this.ForumID,
+                            -1,
+                            -1,
+                            string.Empty,
+                            1,
+                            -1,
+                            this.SocialGroupId),
+                        format);
+                case "parentforumlink":
+                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.TabId,
+                            this.ModuleId,
+                            this.ForumGroup.PrefixURL,
+                            this.ParentForumUrlPrefix,
+                            this.ForumGroupId,
+                            this.ParentForumId,
+                            -1,
+                            -1,
+                            string.Empty,
+                            1,
+                            -1,
+                            this.SocialGroupId),
+                        format);
+                case "lastpostdate":
+                    return this.LastPostID < 1
+                        ? string.Empty
+                        : PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime(
+                                (DateTime?)this.LastPostDateTime,
+                                formatProvider,
+                                accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)),
+                            format);
+                case "parentforumname":
+                    return this.ParentForumId < 1
+                        ? string.Empty
+                        : PropertyAccess.FormatString(this.ParentForumName, format);
+                case "parentforumid":
+                    return this.ParentForumId < 1
+                        ? string.Empty
+                        : PropertyAccess.FormatString(this.ParentForumId.ToString(), format);
+                case "forumgroupname":
+                case "groupname":
+                    return PropertyAccess.FormatString(this.ForumGroup.GroupName, format);
+                case "socialgroupid":
+                    return PropertyAccess.FormatString(this.SocialGroupId.ToString(), format);
+                case "lastpostid":
+                    return PropertyAccess.FormatString(this.LastPostID.ToString(), format);
+                case "subscribercount":
+                    return PropertyAccess.FormatString(this.SubscriberCount.ToString(), format);
+                case "totaltopics":
+                    return PropertyAccess.FormatString(this.TotalTopics.ToString(), format);
+                case "totalreplies":
+                    return PropertyAccess.FormatString(this.TotalReplies.ToString(), format);
+                case "lastpostsubject":
+                    return this.LastPostID < 1
+                        ? string.Empty
+                        : PropertyAccess.FormatString(this.LastPostSubject.ToString(), format);
+                case "lastpostuserid":
+                    return this.LastPostID < 1
+                        ? string.Empty
+                        : PropertyAccess.FormatString(this.LastPostUserID.ToString(), format);
+                case "lastpostusername":
+                    return this.LastPostID < 1
+                        ? string.Empty
+                        : PropertyAccess.FormatString(this.LastPostUserName.ToString(), format);
+                case "lastpostfirstname":
+                    return this.LastPostID < 1
+                        ? string.Empty
+                        : PropertyAccess.FormatString(this.LastPostFirstName.ToString(), format);
+                case "lastpostlastname":
+                    return this.LastPostID < 1
+                        ? string.Empty
+                        : PropertyAccess.FormatString(this.LastPostLastName.ToString(), format);
+                case "lastpostauthordisplaynamelink":
+                    return PropertyAccess.FormatString(
+                        this.LastPostID > 0 && this.LastPostUserID > 0 ?
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.CanLinkToProfile(
+                                this.PortalSettings,
+                                this.MainSettings,
+                                this.ModuleId,
+                                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                    accessingUser.PortalID,
+                                    accessingUser.UserID),
+                                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                    accessingUser.PortalID,
+                                    this.LastPostUserID)) ?
+                                Utilities.NavigateURL(this.PortalSettings.UserTabId,
+                                    string.Empty,
+                                    new[] { $"userId={this.LastPostUserID}" })
+                                : string.Empty : string.Empty, format);
+                case "lastpostdisplayname":
+                case "lastpostauthordisplayname":
+                    return PropertyAccess.FormatString(
+                        this.LastPostID > 0 && this.LastPostUserID > 0 ?
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
+                                this.PortalSettings,
+                                this.MainSettings,
+                                isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId),
+                                isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
+                                this.LastPostUserID,
+                                this.LastPostUserName,
+                                this.LastPostFirstName,
+                                this.LastPostLastName,
+                                this.LastPostDisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.LastPostDisplayName)
+                            : string.Empty, format);
+
+                case "statuscssclass":
+                    return PropertyAccess.FormatString(
+                        this.GetForumStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                accessingUser.PortalID,
+                                accessingUser.UserID)),
+                        format);
+                case "forumicon":
+                    return PropertyAccess.FormatString(
+                        this.GetForumFolderIcon(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                accessingUser.PortalID,
+                                accessingUser.UserID),
+                            this.mainSettings),
+                        format);
+                case "forumiconcss":
+                    return PropertyAccess.FormatString(
+                        this.GetForumFolderIconCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                accessingUser.PortalID,
+                                accessingUser.UserID)),
+                        format);
+                case "rsslink":
+                    {
+                        if (this.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Security.Read, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).UserRoles))
+                        {
+                            var url = new Uri(Utilities.NavigateURL(this.TabId));
+                            return PropertyAccess.FormatString(
+                                $"{url.Scheme}://{url.Host}:{url.Port}/DesktopModules/ActiveForums/feeds.aspx?portalid={this.PortalId}&forumid={this.ForumID}&tabid={this.TabId}&moduleid={this.ModuleId}" + (this.SocialGroupId > 0 ? $"&GroupId={this.SocialGroupId}" : string.Empty),
+                                format);
+                        }
+
+                        return string.Empty;
+                    }
+
+            }
+
+            propertyNotFound = true;
+            return string.Empty;
         }
     }
 }

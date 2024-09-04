@@ -1462,6 +1462,8 @@
     <Compile Include="Services\Controllers\LikeController.cs" />
     <Compile Include="Services\ForumAuthorizeAttribute.cs" />
     <Compile Include="Services\ServicesHelper.cs" />
+    <Compile Include="Services\Tokens\ResourceStringTokenReplacer.cs" />
+    <Compile Include="Services\Tokens\TokenReplacer.cs" />
     <Compile Include="Services\URLNavigator.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
