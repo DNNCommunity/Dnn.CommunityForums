@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -41,44 +41,34 @@ namespace DotNetNuke.Modules.ActiveForums
     public class Email : DotNetNuke.Modules.ActiveForums.Entities.EmailInfo
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
-        public string BodyText { get => this.Body; set => this.Body = value; }
+        public string BodyText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
-        public string BodyHTML { get => this.Body; set => this.Body = value; }
+        public string BodyHTML { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEMail().")]
-        public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(templateId, portalId, moduleId, tabId, forumId, topicId, replyId, comments, author);
+        public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators().")]
-        public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(templateId: templateId, portalId: portalId, moduleID: moduleID, forumId: forumId, topicId: topicId, replyId: replyId, tabID: tabID, comments: comments, user: null);
+        public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators().")]
-        public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments, UserInfo user) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(templateId, portalId, forumId, topicId, replyId, moduleID, tabID, comments, user);
+        public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments, UserInfo user) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controller.EmailController.SendTemplatedEmail()")]
         public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controller.EmailController.SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body).")]
-        public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(portalId, moduleId, fromEmail, toEmail, subject, bodyHTML);
+        public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controller.EmailController.SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body).")]
-        public static void SendNotification(string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(-1, -1, fromEmail, toEmail, subject, bodyHTML);
+        public static void SendNotification(string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use  DotNetNuke.Modules.ActiveForums.Controller.EmailController.SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body).")]
-        public static void SendNotification(int portalId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(portalId, -1, fromEmail, toEmail, subject, bodyHTML);
+        public static void SendNotification(int portalId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use  DotNetNuke.Modules.ActiveForums.Controller.EmailController.Send().")]
-        public void Send()
-        {
-            DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.EmailInfo()
-            {
-                Body = this.Body,
-                From = this.From,
-                Subject = this.Subject,
-                ModuleId = this.ModuleId,
-                PortalId = this.PortalId,
-                Recipients = this.Recipients,
-            });
-        }
+        public void Send() => throw new NotImplementedException();
+
     }
 }

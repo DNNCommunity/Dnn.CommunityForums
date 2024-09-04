@@ -240,7 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, this.portalId, this.ForumId, ri.TopicId, replyId, this.moduleId, this.PageId, string.Empty);
+                DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(this.portalId, this.TabId, this.moduleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId, HttpContext.Current.Request.Url.ToString());
                 string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
                 HttpContext.Current.Response.Redirect(Utilities.NavigateURL(this.PageId, string.Empty, @params), false);
             }

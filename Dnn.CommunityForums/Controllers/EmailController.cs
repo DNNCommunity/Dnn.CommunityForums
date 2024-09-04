@@ -67,50 +67,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             });
         }
 
-        public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments)
-        {
-            SendEmailToModerators(templateId: templateId, portalId: portalId, moduleID: moduleID, forumId: forumId, topicId: topicId, replyId: replyId, tabID: tabID, comments: comments, user: null);
-        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
+        public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments) => throw new NotImplementedException();
 
-        public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments, UserInfo user)
-        {
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
-            if (fi == null)
-            {
-                return;
-            }
-
-            var subs = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
-            DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, moduleID, forumId).ForEach(moderator =>
-            {
-                var si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
-                {
-                    PortalId = portalId,
-                    ModuleId = moduleID,
-                    ForumId = forumId,
-                    UserId = moderator.UserID,
-                    Email = moderator.Email,
-                };
-                if (!subs.Contains(si))
-                {
-                    subs.Add(si);
-                }
-            });
-            if (subs.Count > 0)
-            {
-                SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleID, tabID, comments, user.UserID, fi, subs, null);
-            }
-        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
+        internal static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments, UserInfo user) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs, Uri requestUrl)")]
-        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<DotNetNuke.Modules.ActiveForums.SubscriptionInfo> subs)
-        {
-            List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subscribers = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
-            subs.ForEach(s => subscribers.Add(s));
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo)fi;
-            SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleID, tabID, comments, userId, forum, subscribers, HttpContext.Current.Request.Url);
-        }
-
+        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<DotNetNuke.Modules.ActiveForums.SubscriptionInfo> subs) => throw new NotImplementedException();
+       
         public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs, Uri requestUrl)
         {
             var uc = new DotNetNuke.Entities.Users.UserController();
@@ -162,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 9.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body).")]
-        public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => SendNotification(portalId, moduleId, fromEmail, toEmail, subject, bodyHTML);
+        public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => throw new NotImplementedException();
 
         public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body)
         {
