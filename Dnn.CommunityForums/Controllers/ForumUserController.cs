@@ -68,9 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     user = this.Find("WHERE UserId = @0", userId).FirstOrDefault();
                     if (user != null)
                     {
-                        user.UserInfo =
-                            DotNetNuke.Entities.Users.UserController.GetUserById(portalId: user.PortalId,
-                                userId: userId);
+                        user.UserInfo = DotNetNuke.Entities.Users.UserController.GetUserById(portalId: user.PortalId, userId: userId);
                     }
                     else
                     {

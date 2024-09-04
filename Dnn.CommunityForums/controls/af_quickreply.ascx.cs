@@ -257,7 +257,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo();
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(this.ForumModuleId);
             if (this.UserId > 0)
             {
                 user = this.ForumUser;
