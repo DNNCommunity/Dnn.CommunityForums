@@ -1755,4 +1755,16 @@ Von
   <data name="[RESX:of].Text" xml:space="preserve">
     <value>von</value>
   </data>
+  <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
+    <value>Der {0} für die {1} der Themenverfolgungs-ID wird in der Datenbank nicht gefunden. Sie müssen dies in der Datenbank reparieren oder die ungültigen Daten löschen. Bitte besuchen Sie das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki für Schritte zur Fehlerbehebung überprüfen können.</value>
+  </data>
+  <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
+    <value>Vorlagentoken: {0} ist veraltet. Ersetzen durch {1}.</value>
+  </data>
+  <data name="[RESX:RemoveObsoleteToken].Text" xml:space="preserve">
+    <value>Vorlagentoken: {0} ist veraltet und kann nicht ersetzt werden. Aus Vorlage(n) entfernen.</value>
+  </data>
+  <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
+    <value>Vorlagentoken, das beginnt mit: {0} ist veraltet und kann nicht ersetzt werden. Aus Vorlage(n) entfernen.</value>
+  </data>
 </root>

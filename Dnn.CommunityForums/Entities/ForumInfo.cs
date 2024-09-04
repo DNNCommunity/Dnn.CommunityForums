@@ -557,6 +557,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int ReplyPostCount => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ReplyPostCount]);
 
         #region "Deprecated Methods"
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn()]
         public int LastPostLastPostID { get; set; }
@@ -598,7 +599,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
         #endregion "Deprecated Methods"
 
-        [IgnoreColumn]
         internal string GetForumStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             switch (this.GetForumStatusForUser(forumUser))
@@ -630,7 +630,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn]
         internal string GetForumFolderIcon(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings)
         {
             switch (this.GetForumStatusForUser(forumUser))
@@ -662,7 +661,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn]
         internal string GetForumFolderIconCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             switch (this.GetForumStatusForUser(forumUser))
@@ -705,7 +703,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
 
         /// <inheritdoc/>
-        [IgnoreColumn]
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             // replace any embedded tokens in format string
@@ -915,5 +912,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             propertyNotFound = true;
             return string.Empty;
         }
+        
     }
 }

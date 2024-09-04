@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private int forumId = -1;
         private string tags = string.Empty;
         private string selectedcategories;
-        
+
         public int TopicId { get; set; }
 
         [IgnoreColumn] 
@@ -314,7 +314,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn()]
         internal DotNetNuke.Modules.ActiveForums.Enums.TopicStatus GetTopicStatusForUser(ForumUserInfo forumUser)
         {
             var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserRoles);
@@ -346,7 +345,37 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn()]
+        public DotNetNuke.Modules.ActiveForums.Enums.PostStatus GetPostStatusForUser(ForumUserInfo forumUser)
+        {
+            switch (this.GetTopicStatusForUser(forumUser))
+            {
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Forbidden:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Forbidden;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.New:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.New;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Unread;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Read:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Read;
+                    }
+
+                default:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Unread;
+                    }
+            }
+        }
+
         internal string GetTopicStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             string css = string.Empty;
@@ -357,21 +386,25 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         css = "dcf-topicstatus-no-access";
                         break;
                     }
+
                 case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.New:
                     {
                         css = "dcf-topicstatus-new";
                         break;
                     }
+
                 case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread:
                     {
                         css = "dcf-topicstatus-unread";
                         break;
                     }
+
                 case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Read:
                     {
                         css = "dcf-topicstatus-read";
                         break;
                     }
+
                 default:
                     {
                         css = "dcf-topicstatus-unread";
@@ -383,10 +416,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 css += " dcf-topicstatus-authored";
             }
+
             return css;
 
         }
-        
+
         internal string GetTopicStatusIconCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             switch (this.GetTopicStatusForUser(forumUser))
@@ -400,35 +434,39 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     {
                         return "fa fa-file-o fa-2x fa-grey";
                     }
-
             }
+
         }
 
         public string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             string css = string.Empty;
-            switch (this.GetTopicStatusForUser(forumUser))
+            switch (this.GetPostStatusForUser(forumUser))
             {
-                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Forbidden:
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Forbidden:
                     {
                         css = "dcf-poststatus-no-access";
                         break;
                     }
-                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.New:
+
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.New:
                     {
                         css = "dcf-poststatus-new";
                         break;
                     }
-                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread:
+
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Unread:
                     {
                         css = "dcf-poststatus-unread";
                         break;
                     }
-                case DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Read:
+
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Read:
                     {
                         css = "dcf-poststatus-read";
                         break;
                     }
+
                 default:
                     {
                         css = "dcf-poststatus-unread";
@@ -443,7 +481,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return css;
         }
-
                 
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
@@ -652,5 +689,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             propertyNotFound = true;
             return string.Empty;
         }
+
+        
     }
 }

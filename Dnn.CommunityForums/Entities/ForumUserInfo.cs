@@ -229,7 +229,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn]
         private string GetRoleIds(UserInfo u, int PortalId)
         {
             string RoleIds = string.Empty;
@@ -257,8 +256,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return RoleIds;
         }
 
-         [IgnoreColumn]
-         internal int GetLastReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
+        internal int GetLastReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
          {
              var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
              var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.UserId, ti.ForumId);
@@ -280,8 +278,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
              // CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
          }
 
-         [IgnoreColumn]
-         internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
+        internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
          {
              var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
              var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.UserId, ti.ForumId);
@@ -302,8 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
              // from stored procedure
              // CASE WHEN FT.MaxTopicRead > TT.TopicId OR TT.TopicId IS NULL THEN ISNULL(FT.MaxTopicRead,0) ELSE TT.TopicId END AS UserLastTopicRead,
          }
-        
-        [IgnoreColumn]
+
         internal bool GetIsTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
             var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
@@ -315,7 +311,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return false;
         }
 
-        [IgnoreColumn]
         internal bool GetIsReplyRead(DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri)
         {
             var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ri.TopicId);
@@ -327,7 +322,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return false;
         }
 
-        [IgnoreColumn]
         internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
         {
             var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.UserId, fi.ForumID);
@@ -339,13 +333,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return 0;
         }
 
-        [IgnoreColumn]
         internal int GetTopicReadCount(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountForUserForum(this.UserId, fi.ForumID);
         }
 
-        [IgnoreColumn]
         internal int GetLastTopicReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
             var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
@@ -357,7 +349,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return 0;
         }
 
-         
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
         {
@@ -367,7 +358,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn]
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
 

@@ -18,6 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Collections.Generic;
+using DotNetNuke.Data;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
@@ -36,6 +39,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo> GetTopicsTrackingForUserForum(int userId, int forumId)
         {
             return this.Find("WHERE UserId = @0 AND ForumId = @1", userId, forumId).OrderBy(t => t.ForumId).ThenBy(t => t.DateAdded);
+        }
+
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo> GetTopicsTrackingForUser(int userId)
+        {
+            return this.Find("WHERE UserId = @0", userId).OrderBy(t => t.ForumId).ThenBy(t => t.DateAdded);
         }
 
         public int GetTopicsReadCountForUserForum(int userId, int forumId)

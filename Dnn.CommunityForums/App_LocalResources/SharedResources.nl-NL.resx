@@ -1795,4 +1795,13 @@ Van,
   <data name="[RESX:of].Text" xml:space="preserve">
     <value>van</value>
   </data>
+  <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
+    <value>Template Token: {0} is verouderd. Vervang door {1}.</value>
+  </data>
+  <data name="[RESX:RemoveObsoleteToken].Text" xml:space="preserve">
+    <value>Sjabloontoken: {0} is verouderd en kan niet worden vervangen. Verwijderen uit sjabloon(s).</value>
+  </data>
+  <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
+    <value>Template Token beginnend met: {0} is verouderd en kan niet worden vervangen. Verwijderen uit sjabloon(s).</value>
+  </data>
 </root>

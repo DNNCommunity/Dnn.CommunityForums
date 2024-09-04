@@ -18,44 +18,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums.Entities
+namespace DotNetNuke.Modules.ActiveForums.Enums
 {
-    using DotNetNuke.ComponentModel.DataAnnotations;
-    using DotNetNuke.Services.Tokens;
-    using System;
-
-    public interface IPostInfo : DotNetNuke.Services.Tokens.IPropertyAccess
+    public enum PostStatus
     {
-        int ForumId { get; set; }
-
-        int TopicId { get; set; }
-
-        int PostId { get; }
-
-        int ReplyId { get; }
-        
-        int PortalId { get; }
-
-        int StatusId { get; }
-
-        int ModuleId { get; }
-
-        int ContentId { get; set; }
-
-        bool IsTopic { get; }
-
-        bool IsReply { get; }
-
-        DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author { get; set; }
-
-        DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content { get; set; }
-
-        DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum { get; set; }
-
-        DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic { get; }
-
-        DotNetNuke.Modules.ActiveForums.Enums.PostStatus GetPostStatusForUser(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
-
-        string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
+        Forbidden,
+        New,
+        Unread,
+        Read,
     }
 }

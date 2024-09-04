@@ -132,8 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, moduleId, authorId);
         }
-        
-        [IgnoreColumn()]
+
         internal DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus GetReplyStatusForUser(ForumUserInfo forumUser)
         {
             var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserRoles);
@@ -163,32 +162,67 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Unread;
             }
         }
-        
-        public string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+
+        public DotNetNuke.Modules.ActiveForums.Enums.PostStatus GetPostStatusForUser(ForumUserInfo forumUser)
         {
-            string css = string.Empty;
             switch (this.GetReplyStatusForUser(forumUser))
             {
                 case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Forbidden:
                     {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Forbidden;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.New:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.New;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Unread:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Unread;
+                    }
+
+                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Read:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Read;
+                    }
+
+                default:
+                    {
+                        return DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Unread;
+                    }
+            }
+        }
+
+        public string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            string css = string.Empty;
+            switch (this.GetPostStatusForUser(forumUser))
+            {
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Forbidden:
+                    {
                         css = "dcf-poststatus-no-access";
                         break;
                     }
-                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.New:
+
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.New:
                     {
                         css = "dcf-poststatus-new";
                         break;
                     }
-                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Unread:
+
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Unread:
                     {
                         css = "dcf-poststatus-unread";
                         break;
                     }
-                case DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Read:
+
+                case DotNetNuke.Modules.ActiveForums.Enums.PostStatus.Read:
                     {
                         css = "dcf-poststatus-read";
                         break;
                     }
+
                 default:
                     {
                         css = "dcf-poststatus-unread";
@@ -212,6 +246,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
             }
         }
+
         [IgnoreColumn]
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
@@ -290,5 +325,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             propertyNotFound = true;
             return string.Empty;
 }
+
     }
 }
