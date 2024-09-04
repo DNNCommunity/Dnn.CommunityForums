@@ -916,6 +916,19 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
+        internal static string ResolveUrl(string url)
+        {
+            try
+            {
+                return System.Web.VirtualPathUtility.ToAbsolute(url);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return url;
+            }
+        }
+
         internal static string MapPath(string path)
         {
             try
@@ -932,20 +945,24 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string ManageImagePath(string sHTML, Uri hostUri)
         {
-            string hostWithScheme = hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();
-
-            var iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
-            while (iStart != -1)
+            if (!string.IsNullOrEmpty(sHTML))
             {
-                sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
-                iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
-            }
+                string hostWithScheme =
+                    hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();
 
-            iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
-            while (iStart != -1)
-            {
-                sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
+                var iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
+                while (iStart != -1)
+                {
+                    sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
+                    iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
+                }
+
                 iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
+                while (iStart != -1)
+                {
+                    sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
+                    iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
+                }
             }
 
             return sHTML;
@@ -1742,6 +1759,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             // signal to platform that module has updated content in order to be included in incremental search crawls
             DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(moduleId);
+        }
+
+        internal static string LocalizeString(string key, string resourceFile, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, string language = "en-US")
+        {
+            return DotNetNuke.Services.Localization.Localization.GetString(key, resourceFile, (DotNetNuke.Entities.Portals.PortalSettings)portalSettings, language);
         }
     }
 }

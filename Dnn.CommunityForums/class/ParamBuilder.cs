@@ -18,16 +18,21 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
 
+    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
     public class ParamBuilder
     {
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public Dictionary<string, object> Params { get; set; }
-
+        
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string[] ParamArray
         {
             get
@@ -36,6 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string QueryString
         {
             get
@@ -44,16 +50,19 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public ParamBuilder()
         {
             this.Params = new Dictionary<string, object>();
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public ParamBuilder(Dictionary<string, object> parameters)
         {
             this.Params = parameters;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public ParamBuilder(string queryString, bool urlEncoded = true)
         {
             if (string.IsNullOrWhiteSpace(queryString))
@@ -87,6 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public void Set(string key, object value)
         {
             if (string.IsNullOrWhiteSpace(key))
