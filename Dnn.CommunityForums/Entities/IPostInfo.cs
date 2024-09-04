@@ -20,7 +20,7 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    public interface IPostInfo
+    public interface IPostInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
         int ForumId { get; set; }
 
@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic { get; }
 
-        DotNetNuke.Modules.ActiveForums.Enums.PostStatus GetPostStatusForUser(ForumUserInfo forumUser);
+        DotNetNuke.Modules.ActiveForums.Enums.PostStatus GetPostStatusForUser(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
 
         string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
     }
