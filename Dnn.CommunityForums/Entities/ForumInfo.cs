@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Linq;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Services.Log.EventLog;
 
     [TableName("activeforums_Forums")]
@@ -457,6 +458,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public int ReplyPostCount => Utilities.SafeConvertInt(this.ForumSettings[ForumSettingKeys.ReplyPostCount]);
 
+        #region "Deprecated Methods"
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn()]
         public int LastPostLastPostID { get; set; }
@@ -496,6 +499,138 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get { return Utilities.SafeConvertString(this.ForumSettings[ForumSettingKeys.EditorToolbar], "bold,italic,underline"); }
         }
+        #endregion "Deprecated Methods"
         #endregion
+
+        [IgnoreColumn]
+        internal DotNetNuke.Modules.ActiveForums.Enums.ForumStatus GetForumStatusForUser(ForumUserInfo forumUser)
+        {
+            var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Security.View, forumUser?.UserRoles);
+
+            if (!canView)
+            {
+                return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.Forbidden;
+            }
+            if (this.LastTopicId == 0)
+            {
+                return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.Empty;
+            }
+
+            try
+            {
+                if (this.LastTopicId > forumUser?.GetLastTopicRead(this))
+                {
+                    return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.NewTopics;
+                }
+
+                if (forumUser?.UserId == -1 || this.TotalTopics > forumUser?.GetTopicReadCount(this))
+                {
+                    return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.UnreadTopics;
+                }
+
+                return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.AllTopicsRead;
+            }
+            catch
+            {
+                /* this is to handle some limited unit testing without retrieving data */
+                return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.UnreadTopics;
+            }
+        }
+
+        [IgnoreColumn]
+        internal string GetForumStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            switch (this.GetForumStatusForUser(forumUser))
+            {
+                case ForumStatus.Forbidden:
+                    {
+                        return "dcf-forumstatus-no-access";
+                    }
+                case ForumStatus.Empty:
+                    {
+                        return "dcf-forumstatus-no-topics";
+                    }
+                case ForumStatus.NewTopics:
+                    {
+                        return "dcf-forumstatus-new-topics";
+                    }
+                case ForumStatus.UnreadTopics:
+                    {
+                        return "dcf-forumstatus-unread-topics";
+                    }
+                case ForumStatus.AllTopicsRead:
+                    {
+                        return "dcf-forumstatus-all-topics-read";
+                    }
+                default:
+                    {
+                        return "dcf-forumstatus-all-topics-read";
+                    }
+            }
+        }
+
+        [IgnoreColumn]
+        internal string GetForumFolderIcon(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings)
+        {
+            switch (this.GetForumStatusForUser(forumUser))
+            {
+                case ForumStatus.Forbidden:
+                    {
+                        return mainSettings.ThemeLocation + "images/folder_forbidden.png";
+                    }
+                case ForumStatus.Empty:
+                    {
+                        return mainSettings.ThemeLocation + "images/folder_closed.png";
+                    }
+                case ForumStatus.NewTopics:
+                    {
+                        return mainSettings.ThemeLocation + "images/folder_new.png";
+                    }
+                case ForumStatus.UnreadTopics:
+                    {
+                        return mainSettings.ThemeLocation + "images/folder_new.png";
+                    }
+                case ForumStatus.AllTopicsRead:
+                    {
+                        return mainSettings.ThemeLocation + "images/folder.png";
+                    }
+                default:
+                    {
+                        return mainSettings.ThemeLocation + "images/folder.png";
+                    }
+            }
+        }
+
+        [IgnoreColumn]
+        internal string GetForumFolderIconCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            switch (this.GetForumStatusForUser(forumUser))
+            {
+                case ForumStatus.Forbidden:
+                    {
+                        return "fa-folder fa-grey";
+                    }
+                case ForumStatus.Empty:
+                    {
+                        return "fa-folder-o fa-grey";
+                    }
+                case ForumStatus.NewTopics:
+                    {
+                        return "fa-folder fa-red";
+                    }
+                case ForumStatus.UnreadTopics:
+                    {
+                        return "fa-folder fa-red";
+                    }
+                case ForumStatus.AllTopicsRead:
+                    {
+                        return "fa-folder fa-blue";
+                    }
+                default:
+                    {
+                        return "fa-folder fa-blue";
+                    }
+            }
+        }
     }
 }

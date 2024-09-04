@@ -1430,6 +1430,10 @@
     <Compile Include="Entities\ReplyInfo.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
     <Compile Include="Entities\TopicTrackingInfo.cs" />
+    <Compile Include="Enums\ForumStatus.cs" />
+    <Compile Include="Enums\PostStatus.cs" />
+    <Compile Include="Enums\ReplyStatus.cs" />
+    <Compile Include="Enums\TopicStatus.cs" />
     <Compile Include="Services\ProcessType.cs" />
     <Compile Include="Entities\ProcessQueueInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
