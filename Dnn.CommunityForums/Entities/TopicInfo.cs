@@ -304,6 +304,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(this.TopicData);
                 }
             }
+
+            set
+            {
+                this.TopicData = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(this.Forum, value);
+            }
         }
 
         [IgnoreColumn]
