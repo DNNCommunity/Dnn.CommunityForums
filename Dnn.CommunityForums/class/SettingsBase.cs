@@ -41,32 +41,9 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Public Properties
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
-        {
-            get
-            {
-                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetUserFromHttpContext(this.PortalId, this.ForumModuleId);
-            }
-        }
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetUserFromHttpContext(this.PortalId, this.ForumModuleId);
 
-        internal string UserForumsList
-        {
-            get
-            {
-                string forums;
-                if (string.IsNullOrEmpty(this.ForumUser.UserForums))
-                {
-                    forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ForumModuleId);
-                    this.ForumUser.UserForums = forums;
-                }
-                else
-                {
-                    forums = this.ForumUser.UserForums;
-                }
-
-                return forums;
-            }
-        }
+        internal string UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ForumModuleId);
 
         public int ForumModuleId
         {
