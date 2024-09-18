@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public string BuildUrl(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int topicId, string topicURL, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId)
         {
             var mainSettings = SettingsBase.GetModuleSettings(moduleId);
-            DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId, tabId, true).PortalID);
+            DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings();
             var @params = new List<string>();
 
             if (!mainSettings.URLRewriteEnabled || (((string.IsNullOrEmpty(forumPrefix) && forumID > 0 && string.IsNullOrEmpty(groupPrefix)) || (string.IsNullOrEmpty(forumPrefix) && string.IsNullOrEmpty(groupPrefix) && forumGroupId > 0)) && string.IsNullOrEmpty(otherPrefix)))

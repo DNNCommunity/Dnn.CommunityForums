@@ -55,7 +55,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private ModuleInfo moduleInfo;
         private int? subscriberCount = 0;
         private string rssLink;
-        private string forumLink;
 
         public ForumInfo()
         {
@@ -619,34 +618,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn]
-        public string ForumLink
-        {
-            get
-            {
-                if (this.forumLink == null)
-                {
-                    this.forumLink = new ControlUtils().BuildUrl(
-                        this.TabId,
-                        this.ModuleId,
-                        this.ForumGroup.PrefixURL,
-                        this.PrefixURL,
-                        this.ForumGroupId,
-                        this.ForumID,
-                        -1,
-                        -1,
-                        string.Empty,
-                        1,
-                        -1,
-                        this.SocialGroupId);
-                }
-
-                return this.forumLink;
-            }
-        }
-        
-
-            #region "Deprecated Methods"
+        #region "Deprecated Methods"
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
@@ -835,7 +807,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         intLength = Convert.ToInt32(sLength);
                     }
 
-                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(this.LastPostID, this.LastTopicId, System.Web.HttpUtility.HtmlDecode(this.LastPostSubject), intLength, this), format);
+                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(this.LastPostID, this.LastTopicId, System.Web.HttpUtility.HtmlDecode(this.LastPostSubject), intLength, this, this.PortalSettings.ActiveTab.TabID), format);
                 }
             }
 
@@ -855,7 +827,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(this.ForumGroupId.ToString(), format);
                 case "grouplink":
                 case "forumgrouplink":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.TabId,
+                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
+                            this.PortalSettings.ActiveTab.TabID,
                             this.ModuleId,
                             this.ForumGroup.PrefixURL,
                             string.Empty,
@@ -870,9 +843,21 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         format);
                 case "forumlink":
                 case "forumurl":
-                    return PropertyAccess.FormatString(this.ForumLink, format);
+                    return PropertyAccess.FormatString(
+                     new ControlUtils().BuildUrl(this.PortalSettings.ActiveTab.TabID,
+                         this.ModuleId,
+                         this.ForumGroup.PrefixURL,
+                         this.PrefixURL,
+                         this.ForumGroupId,
+                         this.ForumID,
+                         -1,
+                         -1,
+                         string.Empty,
+                         1,
+                         -1,
+                         this.SocialGroupId), format);
                 case "parentforumlink":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.TabId,
+                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.ActiveTab.TabID,
                             this.ModuleId,
                             this.ForumGroup.PrefixURL,
                             this.ParentForumUrlPrefix,
@@ -980,7 +965,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         this.GetForumFolderIcon(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
                                 accessingUser.PortalID,
                                 accessingUser.UserID),
-                            this.mainSettings),
+                            this.MainSettings),
                         format);
                 case "forumiconcss":
                     return PropertyAccess.FormatString(

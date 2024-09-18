@@ -502,7 +502,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(this.ForumGroupId.ToString(), format);
                 case "grouplink":
                 case "forumgrouplink":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.TabId,
+                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.ActiveTab.TabID,
                             this.ModuleId,
                             this.PrefixURL,
                             string.Empty,

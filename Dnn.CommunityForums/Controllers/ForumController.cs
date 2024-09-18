@@ -562,7 +562,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static string GetLastPostSubjectLinkTag(int lastPostID, int parentPostID, string subject, int length, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
+        internal static string GetLastPostSubjectLinkTag(int lastPostID, int parentPostID, string subject, int length, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int tabId)
         {
             var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(parentPostID);
             var sb = new StringBuilder();
@@ -574,16 +574,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 subject = subject.Substring(0, length) + "...";
             }
-            string sURL = new ControlUtils().TopicURL(fi.TabId, fi.ModuleId, parentPostID, fi.ForumGroup.PrefixURL, fi.PrefixURL, ti?.TopicUrl);
+            string sURL = new ControlUtils().TopicURL(tabId, fi.ModuleId, parentPostID, fi.ForumGroup.PrefixURL, fi.PrefixURL, ti?.TopicUrl);
             if (sURL.Contains("~/"))
             {
-                sURL = Utilities.NavigateURL(fi.TabId, "", new[] { ParamKeys.TopicId + "=" + parentPostID, ParamKeys.ContentJumpId + "=" + lastPostID });
+                sURL = Utilities.NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.TopicId}={parentPostID}",  $"{ParamKeys.ContentJumpId}={lastPostID}" });
             }
             if (sURL.EndsWith("/") && lastPostID != parentPostID)
             {
-                sURL += Utilities.UseFriendlyURLs(fi.ModuleId) ? String.Concat("#", lastPostID) : String.Concat("?", ParamKeys.ContentJumpId, "=", lastPostID);
+                sURL += Utilities.UseFriendlyURLs(fi.ModuleId) ? $"#{lastPostID}" : $"?{ParamKeys.ContentJumpId}={lastPostID}";
             }
-            sb.Append("<a href=\"" + sURL + "\">" +  System.Web.HttpUtility.HtmlEncode(subject) + "</a>");
+            sb.Append("<a href=\"" + sURL + "\">" + System.Web.HttpUtility.HtmlEncode(subject) + "</a>");
             return sb.ToString();
         }
     }
