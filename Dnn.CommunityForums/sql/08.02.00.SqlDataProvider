@@ -1882,7 +1882,7 @@ BEGIN
 		UPDATE {databaseOwner}{objectQualifier}activeforums_Topics
 			SET ReplyCount = @TotalReplies
 			WHERE TopicId = @NewTopicId
-		UPDATE{databaseOwner}{objectQualifier}activeforums_ForumTopics
+		UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics
 			SET LastReplyId = @MaxReplyId
 			WHERE TopicId = @NewTopicId
 	END
