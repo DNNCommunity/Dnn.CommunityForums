@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2013-2024 by DNN Community
+// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -168,6 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         TimeSpan TimeZoneOffsetForUser => Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
 
+        [IgnoreColumn]
         public PortalSettings PortalSettings
         {
             get => this.portalSettings ?? (this.portalSettings = Utilities.GetPortalSettings(this.PortalId));
