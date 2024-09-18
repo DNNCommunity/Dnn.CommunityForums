@@ -540,7 +540,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return HttpUtility.HtmlEncode(outputName);
         }
 
-        internal static string UserStatus(string themePath, bool isUserOnline, int userID, int moduleID, string altOnlineText = "User is Online", string altOfflineText = "User is Offline")
+        internal static string UserStatus(string themePath, bool isUserOnline, int userID, int moduleID)
         {
             if (isUserOnline)
             {

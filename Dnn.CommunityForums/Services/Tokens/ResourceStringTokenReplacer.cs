@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Text;
 using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
@@ -40,9 +41,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return Utilities.GetSharedResource($"[RESX:{propertyName}]");
         }
 
-        internal static string ReplaceResourceTokens(string tokenizedText)
+        internal static StringBuilder ReplaceResourceTokens(StringBuilder tokenizedText)
         {
-            var matches = RegexUtils.GetCachedRegex(@"(\[RESX:.+?\])", RegexOptions.Compiled).Matches(tokenizedText);
+            var matches = RegexUtils.GetCachedRegex(@"(\[RESX:.+?\])", RegexOptions.Compiled).Matches(tokenizedText.ToString());
             foreach (Match match in matches)
             {
                 var sKey = match.Value;
@@ -52,11 +53,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 {
                     newValue = sReplace;
                 }
-                tokenizedText = tokenizedText.Replace(sKey, newValue);
+
+                tokenizedText.Replace(sKey, newValue);
             }
 
             return tokenizedText;
         }
-
     }
 }

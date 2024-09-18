@@ -213,4 +213,16 @@
   <data name="[TOPICLASTPOSTAUTHORDISPLAYNAMELINK].Text" xml:space="preserve">
     <value>&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]&lt;/a&gt;</value>
   </data>
+  <data name="[FORUMUSER-USEROFFLINECSS].Text" xml:space="preserve">
+    <value>af-status-offline dcf-status-offline</value>
+  </data>
+  <data name="[FORUMUSER-USEROFFLINE].Text" xml:space="preserve">
+    <value>&lt;span class="af-user-status af-status-offline dcf-status-offline"&gt;&lt;i class="fa fa-circle fa-red"&gt;&lt;/i&gt;&lt;/span&gt;</value>
+  </data>
+  <data name="[FORUMUSER-USERONLINECSS].Text" xml:space="preserve">
+    <value>af-status-online dcf-status-online</value>
+  </data>
+  <data name="[FORUMUSER-USERONLINE].Text" xml:space="preserve">
+    <value>&lt;span class="af-user-status af-status-online dcf-status-online"&gt;&lt;i class="fa fa-circle fa-blue"&gt;&lt;/i&gt;&lt;/span&gt;</value>
+  </data>
 </root>

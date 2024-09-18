@@ -208,7 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 template.Replace("[FORUMMAINLINK]", string.Format(GetTokenFormatString("[FORUMMAINLINK]", portalSettings, language), urlNavigator.NavigateURL(tabId)));
             }
 
-            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template.ToString()));
+            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplace = new DotNetNuke.Services.Tokens.TokenReplace
             {
                 AccessingUser = forumUser.UserInfo,
@@ -571,7 +571,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + forum.ForumName + "','" + forumUrl + "');\"><img src=\"" + mainSettings.ThemeLocation + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>");
             }
 
-            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template.ToString()));
+            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(portalSettings, forumUser, forum)
             {
                 CurrentAccessLevel = Scope.DefaultSettings,
@@ -600,7 +600,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 template.Replace("[GROUPCOLLAPSE]", DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{forumGroup.ForumGroupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")));
             }
 
-            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template.ToString()));
+            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(portalSettings, forumUser, forumGroup)
             {
                 CurrentAccessLevel = Scope.DefaultSettings,
@@ -620,71 +620,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = RemoveObsoleteTokens(template);
             template = MapLegacyUserTokenSynonyms(template, forumUser, portalSettings, language);
 
-            template.Replace("[FORUMUSER:DISPLAYNAME]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, mainSettings, forumUser.GetIsMod(forumModuleId), forumUser.IsAdmin, forumUser.UserId, forumUser.Username, forumUser.FirstName, forumUser.LastName, forumUser.DisplayName));
-
-            template.Replace("[FORUMUSER:USERID]", forumUser?.UserId.ToString());
-            template.Replace("[FORUMUSER:USERNAME]", HttpUtility.HtmlEncode(forumUser?.Username).Replace("&amp;#", "&#"));
-            template.Replace("[FORUMUSER:FIRSTNAME]", HttpUtility.HtmlEncode(forumUser?.FirstName).Replace("&amp;#", "&#"));
-            template.Replace("[FORUMUSER:LASTNAME]", HttpUtility.HtmlEncode(forumUser?.LastName).Replace("&amp;#", "&#"));
-            template.Replace("[FORUMUSER:FULLNAME]", string.Concat(forumUser?.FirstName, " ", forumUser?.LastName));
-            template.Replace("[FORUMUSER:USERCAPTION]", forumUser.UserCaption);
-            template.Replace("[FORUMUSER:EMAIL]", forumUser.Email);
-
-            // Post Count
-            template.Replace("[FORUMUSER:POSTCOUNT]", (forumUser.PostCount == 0) ? string.Empty : forumUser.PostCount.ToString());
-            template.Replace("[FORUMUSER:DATELASTPOST]", (forumUser.DateLastPost == DateTime.MinValue) ? string.Empty : Utilities.GetUserFormattedDateTime(forumUser.DateLastPost, forumUser.PortalId, accessingUser.UserId));
-            template.Replace("[FORUMUSER:TOPICCOUNT]", forumUser.TopicCount.ToString());
-            template.Replace("[FORUMUSER:REPLYCOUNT]", forumUser.ReplyCount.ToString());
-            template.Replace("[FORUMUSER:VIEWCOUNT]", forumUser?.ViewCount.ToString());
-
-            // Points
-            if (mainSettings.EnablePoints && forumUser?.UserId > 0)
+            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template);
+            var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(portalSettings, forumUser)
             {
-                var totalPoints = (forumUser?.TopicCount * mainSettings.TopicPointValue) + (forumUser?.ReplyCount * mainSettings.ReplyPointValue) + (forumUser?.AnswerCount * mainSettings.AnswerPointValue) + forumUser?.RewardPoints;
-                template.Replace("[FORUMUSER:TOTALPOINTS]", totalPoints.ToString());
-                template.Replace("[FORUMUSER:ANSWERCOUNT]", forumUser?.AnswerCount.ToString());
-                template.Replace("[FORUMUSER:REWARDPOINTS]", forumUser?.RewardPoints.ToString());
-            }
-            else
-            {
-                template.Replace("[FORUMUSER:TOTALPOINTS]", string.Empty);
-                template.Replace("[FORUMUSER:ANSWERCOUNT]", string.Empty);
-                template.Replace("[FORUMUSER:REWARDPOINTS]", string.Empty);
-            }
-
-
-            // Rank
-            template.Replace("[FORUMUSER:RANKDISPLAY]", (forumUser.UserId > 0) ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(forumModuleId, forumUser, 0) : string.Empty);
-            template.Replace("[FORUMUSER:RANKNAME]", (forumUser.UserId > 0) ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(forumModuleId, forumUser, 1) : string.Empty);
-
-            // Avatar
-            if (template.ToString().Contains("[FORUMUSER:AVATAR]"))
-            {
-                var sAvatar = string.Empty;
-                if (!forumUser.PrefBlockAvatars && !forumUser.AvatarDisabled)
-                {
-                    sAvatar = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(
-                        forumUser.UserId,
-                        mainSettings.AvatarWidth,
-                        mainSettings.AvatarHeight);
-
-                }
-
-                template.Replace("[FORUMUSER:AVATAR]", sAvatar);
-            }
-
-            // User Status
-            var sUserStatus = string.Empty;
-            if (mainSettings.UsersOnlineEnabled && forumUser.UserId > 0)
-            {
-                sUserStatus = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UserStatus(mainSettings.ThemeLocation, forumUser.IsUserOnline, forumUser.UserId, forumModuleId, "[RESX:UserOnline]", "[RESX:UserOffline]");
-            }
-
-            template.Replace("[FORUMUSER:USERSTATUS]", sUserStatus);
-            template.Replace("[FORUMUSER:USERSTATUS:CSS]", sUserStatus.Contains("online") ? "af-status-online" : "af-status-offline");
-
-            template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[FORUMUSER:DATELASTACTIVITY", forumUser.DateLastActivity, portalSettings, forumUser);
-            template = ExtractAndReplaceDateTokenWithOptionalFormatParameter(template, "[FORUMUSER:DATECREATED", forumUser.DateCreated, portalSettings, forumUser);
+                CurrentAccessLevel = Scope.DefaultSettings,
+                AccessingUser = forumUser.UserInfo,
+            };
+            template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
+            template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
 
             return template;
         }
@@ -724,8 +667,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
 
 
-            // replace tokens unique to topic itself
-            template.Replace("[REPLIES]", topic.ReplyCount.ToString());
+            //// replace tokens unique to topic itself
+            //template.Replace("[REPLIES]", topic.ReplyCount.ToString());
 
             string sBodyTitle = GetTopicTitle(topic.Content.Body);
 
@@ -1012,7 +955,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 }
             }
 
-            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template.ToString()));
+            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplace = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(portalSettings, forumUser, topic)
             {
                 AccessingUser = forumUser.UserInfo
@@ -1044,13 +987,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             }
             template = ReplaceBody(template, post.Content, mainSettings, request.Url);
 
-            template = new StringBuilder(DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template.ToString()));
-            var tokenReplace = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(portalSettings, forumUser, post)
+            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(template);
+            var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(portalSettings, forumUser, post)
             {
                 AccessingUser = forumUser.UserInfo
             };
-            template = new StringBuilder(tokenReplace.ReplaceEmbeddedTokens(template.ToString()));
-            template = new StringBuilder(tokenReplace.ReplaceTokens(template.ToString()));
+            template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
+            template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
 
             return template;
         }
@@ -1330,6 +1273,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = ReplaceTokenSynonym(template, "[SUMMARY]", "[FORUMTOPIC:SUMMARY]");
             template = ReplaceTokenSynonym(template, "[TOPICSUBSCRIBERCOUNT]", "[FORUMTOPIC:SUBSCRIBERCOUNT]");
             template = ReplaceTokenSynonym(template, "[TOPICSUBJECT]", "[FORUMTOPIC:SUBJECT]");
+            template = ReplaceTokenSynonym(template, "[REPLIES]", "[FORUMTOPIC:REPLYCOUNT]");
             template = ReplaceTokenSynonym(template, "[REPLYCOUNT]", "[FORUMTOPIC:REPLYCOUNT]");
             template = ReplaceTokenSynonym(template, "[VIEWCOUNT]", "[FORUMTOPIC:VIEWCOUNT]");
             template = ReplaceTokenSynonym(template, "[TOPICURL]", "[FORUMTOPIC:URL]");
@@ -1376,7 +1320,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         private static StringBuilder ReplaceLegacyTokenWithFormatString(StringBuilder template, TokenReplacer tokenReplacer, DotNetNuke.Entities.Portals.PortalSettings portalSettings, string language, string oldTokenName, string newTokenNamePrefix, string formatStringResourceKey, string replaceWithIfEmpty = "")
         {
             string formatString = GetTokenFormatString(formatStringResourceKey, portalSettings, language);
-            formatString = DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(formatString);
+            formatString = DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(new StringBuilder(formatString)).ToString();
             if (tokenReplacer.ContainsTokens(formatString))
             {
                 formatString = tokenReplacer.ReplaceTokens(formatString);
@@ -1449,7 +1393,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         }
 
-        private static string GetTokenFormatString(string key, DotNetNuke.Entities.Portals.PortalSettings portalSettings, string language = "en-US")
+        internal static string GetTokenFormatString(string key, DotNetNuke.Entities.Portals.PortalSettings portalSettings, string language = "en-US")
         {
             string formatString = Utilities.LocalizeString(key, Globals.LegacyTokenResourceFile, (DotNetNuke.Entities.Portals.PortalSettings)portalSettings, language);
             return formatString;
