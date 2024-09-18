@@ -124,7 +124,7 @@
     <value>&lt;i class="fa fa-file-o fa-grey"&gt;&lt;/i&gt;&amp;nbsp;{0}</value>
   </data>
   <data name="[FORUMGROUPLINK].Text" xml:space="preserve">
-    <value>&lt;a href="{0}" class="dcf-forumgroup-link"&gt;[FORUM:GROUPNAME]&lt;/a&gt;</value>
+    <value>&lt;a href="{0}" class="dcf-forumgroup-link"&gt;[FORUMGROUP:GROUPNAME]&lt;/a&gt;</value>
   </data>
   <data name="[FORUMICONCSS-Forbidden].Text" xml:space="preserve">
     <value>&lt;div class="dcf-forum-icon" style="height:30px;margin-right:10px;"&gt;&lt;i class="fa fa-folder fa-grey fa-2x"&gt;&lt;/i&gt;&lt;/div&gt;</value>

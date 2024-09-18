@@ -266,12 +266,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                         sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
 
                                         StringBuilder sGroupSectionTempStringBuilder = new StringBuilder(sGroupSectionTemp);
-                                        sGroupSectionTempStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(sGroupSectionTempStringBuilder, fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
+                                        sGroupSectionTempStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sGroupSectionTempStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
                                         sGroupSectionTemp = sGroupSectionTempStringBuilder.ToString();
 
                                         //any replacements on the group
                                         StringBuilder sNewGroupStringBuilder = new StringBuilder("<div id=\"group" + fi.ForumGroupId + "\" class=\"afgroup\">" + sGroupTemplate + "</div>");
-                                        sNewGroupStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(sNewGroupStringBuilder, fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
+                                        sNewGroupStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sNewGroupStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
                                         string sNewGroup = sNewGroupStringBuilder.ToString(); 
 
                                         sGroupSectionTemp = TemplateUtils.ReplaceSubSection(sGroupSectionTemp, sNewGroup, "[GROUP]", "[/GROUP]");
@@ -400,6 +400,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             StringBuilder templateStringBuilder = new StringBuilder(template);
             templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
+            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(templateStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
 
             if (templateStringBuilder.ToString().Contains("[AF:CONTROL:TOGGLESUBSCRIBE]"))
             {

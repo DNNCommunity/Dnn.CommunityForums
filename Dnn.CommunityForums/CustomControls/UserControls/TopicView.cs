@@ -501,9 +501,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Parse Meta Template
             if (!string.IsNullOrEmpty(this.MetaTemplate))
             {
-                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
-                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(this.MetaTemplate), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request).ToString();
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
 
                 this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", this.tags);
 
@@ -565,6 +566,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 
                 sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(sOutput), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request).ToString();
                 sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(sOutput), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
+                sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(new StringBuilder(sOutput), this.ForumInfo.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
                 sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(new StringBuilder(sOutput), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
 
                 sOutput = Utilities.LocalizeControl(sOutput);

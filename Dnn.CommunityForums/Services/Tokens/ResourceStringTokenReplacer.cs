@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         internal static string ReplaceResourceTokens(string tokenizedText)
         {
-            var matches = RegexUtils.GetCachedRegex(@"(\[RESX:.+?\])", RegexOptions.IgnoreCase).Matches(tokenizedText);
+            var matches = RegexUtils.GetCachedRegex(@"(\[RESX:.+?\])", RegexOptions.Compiled).Matches(tokenizedText);
             foreach (Match match in matches)
             {
                 var sKey = match.Value;

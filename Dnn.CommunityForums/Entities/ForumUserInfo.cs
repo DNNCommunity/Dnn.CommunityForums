@@ -372,6 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 };
                 format = tokenReplacer.ReplaceEmbeddedTokens(format);
             }
+
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {

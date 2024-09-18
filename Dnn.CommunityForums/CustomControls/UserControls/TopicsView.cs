@@ -215,6 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             if (!string.IsNullOrEmpty(this.MetaTemplate))
                             {
                                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
+                                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
                                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
 
                                 this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", string.Empty);
@@ -347,6 +348,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             StringBuilder stringBuilder = new StringBuilder(sOutput);
             stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
+            stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(stringBuilder, this.ForumInfo.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
             stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(stringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId);
             sOutput = stringBuilder.ToString();
 

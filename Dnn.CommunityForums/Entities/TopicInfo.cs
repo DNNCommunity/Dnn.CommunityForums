@@ -72,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private int forumId = -1;
         private string tags = string.Empty;
         private string selectedcategories;
+        private int? subscriberCount = 0;
 
         public int TopicId { get; set; }
 
@@ -178,9 +179,21 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return this;
         }
-
+        
         [IgnoreColumn]
-        public int SubscriberCount => new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: this.PortalId, moduleId: this.ModuleId, forumId: this.ForumId, topicId: this.TopicId);
+        public int SubscriberCount
+        {
+            get
+            {
+                if (this.subscriberCount == null)
+                {
+                    this.subscriberCount = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: this.PortalId, moduleId: this.ModuleId, forumId: this.ForumId, topicId: this.TopicId);
+                }
+
+                return (int)this.subscriberCount;
+
+            }
+        }
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
@@ -503,6 +516,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 };
                 format = tokenReplacer.ReplaceEmbeddedTokens(format);
             }
+
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {

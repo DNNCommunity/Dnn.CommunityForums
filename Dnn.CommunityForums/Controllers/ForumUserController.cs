@@ -223,13 +223,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId, string userName) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).GetByUserId(portalId, GetUserIdByUserName(portalId, userName));
-
+        
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user)
         {
             user.DateUpdated = DateTime.UtcNow;
             var x = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(user.ModuleId).Save<int>(user, user.ProfileId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(user.PortalId, user.UserId);
             return x.UserId;
+        }
+
+        public bool GetUserIsAdmin(int portalId, int moduleId, int userId)
+        {
+            return this.GetByUserId(portalId, userId).IsAdmin;
+        }
+
+        public bool GetUserIsSuperUser(int portalId, int moduleId, int userId)
+        {
+            return this.GetByUserId(portalId, userId).IsSuperUser;
         }
 
         private struct JournalContentForUser
