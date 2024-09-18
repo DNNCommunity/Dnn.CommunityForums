@@ -152,12 +152,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool IsAnonymous => this.UserId == -1;
 
         [IgnoreColumn]
-        public bool IsUserOnline { get; set; }
+        public bool IsUserOnline => this.DateLastActivity > DateTime.UtcNow.AddMinutes(-5);
 
         [IgnoreColumn]
         public CurrentUserTypes CurrentUserType { get; set; }
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public string ForumsAllowed { get; set; }
 
         [IgnoreColumn]
