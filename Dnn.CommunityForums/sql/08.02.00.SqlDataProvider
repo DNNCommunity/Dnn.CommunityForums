@@ -1657,6 +1657,7 @@ GO
 
 /* End - update activeforums_UI_MyTopicsView procedure to remove LastReplyDate */
 
+
 /* Begin - restructure table; drop unused columns; drop composite primary key not supported by DAL2; add identity primary key */
 
 IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostDate' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumTopics]'))
@@ -1881,7 +1882,7 @@ BEGIN
 		UPDATE {databaseOwner}{objectQualifier}activeforums_Topics
 			SET ReplyCount = @TotalReplies
 			WHERE TopicId = @NewTopicId
-		UPDATE{databaseOwner}{objectQualifier}activeforums_ForumTopics
+		UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics
 			SET LastReplyId = @MaxReplyId
 			WHERE TopicId = @NewTopicId
 	END
