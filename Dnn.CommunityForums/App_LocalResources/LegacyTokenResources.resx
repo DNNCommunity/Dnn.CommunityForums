@@ -225,4 +225,133 @@
   <data name="[FORUMUSER-USERONLINE].Text" xml:space="preserve">
     <value>&lt;span class="af-user-status af-status-online dcf-status-online"&gt;&lt;i class="fa fa-circle fa-blue"&gt;&lt;/i&gt;&lt;/span&gt;</value>
   </data>
+  <data name="[FORUMPOST:ACTIONS:DELETE:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0);" class="af-actions" onclick="{0}" title="[RESX:Delete]"&gt;&lt;i class="fa fa-trash-o fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Delete]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:DELETE:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li onclick="{0}" title="[RESX:Delete]"&gt;&lt;i class="fa fa-trash-o fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Delete]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:DELETE:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0)" onclick="{0}" style="vertical-align:middle;" title="[RESX:DeleteTopic]"&gt;&lt;i class="fa fa-trash-o fa-fw fa-blue"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:DELETE:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li onclick="{0}" title="[RESX:Delete]"&gt;&lt;i class="fa fa-trash-o fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Delete]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:ALERT:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" class="af-actions" title="[RESX:Alert]"&gt;&lt;i class="fa fa-bell-o fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Alert]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:ALERT:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li onclick="window.location.href='{0}';" title="[RESX:Alert]"&gt;&lt;i class="fa fa-bell-o fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Alert]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:EDIT:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" title="[RESX:Edit]" class="af-actions"&gt;&lt;i class="fa fa-pencil fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Edit]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:EDIT:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li onclick="window.location.href='{0}';" title="[RESX:Edit]"&gt;&lt;i class="fa fa-pencil fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Edit]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:LOCK:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0)" class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:LockTopic]" style="vertical-align:middle;"&gt;&lt;i class="fa fa-lock fa-fw fa-blue dcf-topic-lock-inner"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:LOCK:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:LockTopic]"&gt;&lt;i class="fa fa-lock fa-fm fa-blue dcf-topic-lock-inner"&gt;&lt;/i&gt;&lt;span class="dcf-topic-lock-text dcf-link-text"&gt;[RESX:Lock]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:MOVE:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0)" onclick="{0}" title="[RESX:MoveTopic]" style="vertical-align:middle;"&gt;&lt;i class="fa fa-exchange fa-rotate-90 fa-blue"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:MOVE:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li onclick="{0}" title="[RESX:Move]"&gt;&lt;i class="fa fa-exchange fa-rotate-90 fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Move]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:PIN:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0)" class="dcf-topic-pin-outer" onclick="{0}" title="[RESX:PinTopic]" style="vertical-align:middle;"&gt;&lt;i class="fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:PIN:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li class="dcf-topic-pin-outer" onclick="{0}" title="[RESX:PinTopic]"&gt;&lt;i class="fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-unpin dcf-topic-pin-inner"&gt;&lt;/i&gt;&lt;span class="dcf-topic-pin-text dcf-link-text"&gt;[RESX:Pin]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:UNLOCK:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0)" class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:UnLockTopic]" style="vertical-align:middle;"&gt;&lt;i class="fa fa-unlock fa-fw fa-blue dcf-topic-lock-inner"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:UNLOCK:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:UnLockTopic]"&gt;&lt;i class="fa fa-unlock fa-fm fa-blue dcf-topic-lock-inner"&gt;&lt;/i&gt;&lt;span class="dcf-topic-lock-text dcf-link-text"&gt;[RESX:UnLock]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:UNPIN:HYPERLINK].Text" xml:space="preserve">
+    <value>title="[RESX:UnPinTopic]" style="vertical-align:middle;"&gt;&lt;i class="fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:UNPIN:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li class="dcf-topic-pin-outer" onclick="{0}" title="[RESX:UnPinTopic]"&gt;&lt;i class="fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-unpin dcf-topic-pin-inner"&gt;&lt;/i&gt;&lt;span class="dcf-topic-pin-text dcf-link-text"&gt;[RESX:UnPin]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:EDIT:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" title="[RESX:EditTopic]"&gt;&lt;i class="fa fa-pencil-square-o fa-fw fa-blue"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:EDIT:LISTITEM]" xml:space="preserve">
+    <value>&lt;li onclick="window.location.href='{0}"';" title="[RESX:TopicQuickEdit]"&gt;&lt;i class="fa fa-pencil fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:TopicQuickEdit]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:LOCK:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0)" class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:LockTopic]" style="vertical-align:middle;"&gt;&lt;i class="fa fa-lock fa-fw fa-blue dcf-topic-lock-inner"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:LOCK:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:LockTopic]"&gt;&lt;i class="fa fa-lock fa-fm fa-blue dcf-topic-lock-inner"&gt;&lt;/i&gt;&lt;span class="dcf-topic-lock-text dcf-link-text"&gt;[RESX:Lock]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:MOVE:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0)" onclick="{0}" title="[RESX:MoveTopic]" style="vertical-align:middle;"&gt;&lt;i class="fa fa-exchange fa-rotate-90 fa-blue"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:MOVE:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li onclick="{0}" title="[RESX:Move]"&gt;&lt;i class="fa fa-exchange fa-rotate-90 fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Move]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:PIN:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0)" class="dcf-topic-pin-outer" onclick="{0}" title="[RESX:PinTopic]" style="vertical-align:middle;"&gt;&lt;i class="fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:PIN:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li class="dcf-topic-pin-outer" onclick="{0}" title="[RESX:PinTopic]"&gt;&lt;i class="fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-unpin dcf-topic-pin-inner"&gt;&lt;/i&gt;&lt;span class="dcf-topic-pin-text dcf-link-text"&gt;[RESX:Pin]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:QUICKEDIT:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0)" title="[RESX:TopicQuickEdit]" onclick="{0}"&gt;&lt;i class="fa fa-cog fa-fw fa-blue"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:QUICKEDIT:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li onclick="window.location.href='{0}"';" title="[RESX:EditTopic]"&gt;&lt;i class="fa fa-cog fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:EditTopic]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:UNLOCK:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0)" class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:UnLockTopic]" style="vertical-align:middle;"&gt;&lt;i class="fa fa-unlock fa-fw fa-blue dcf-topic-lock-inner"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:UNLOCK:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:UnLockTopic]"&gt;&lt;i class="fa fa-unlock fa-fm fa-blue dcf-topic-lock-inner"&gt;&lt;/i&gt;&lt;span class="dcf-topic-lock-text dcf-link-text"&gt;[RESX:UnLock]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:UNPIN:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="javascript:void(0)" class="dcf-topic-pin-outer" onclick="{0}" title="[RESX:UnPinTopic]" style="vertical-align:middle;"&gt;&lt;i class="fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMTOPIC:ACTIONS:UNPIN:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li class="dcf-topic-pin-outer" onclick="{0}" title="[RESX:UnPinTopic]"&gt;&lt;i class="fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-unpin dcf-topic-pin-inner"&gt;&lt;/i&gt;&lt;span class="dcf-topic-pin-text dcf-link-text"&gt;[RESX:UnPin]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:BAN:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" class="af-actions" tooltip="[RESX:Tips:Ban]" title="[RESX:Ban]"&gt;&lt;i class="fa fa-ban fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Ban]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:BAN:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li onclick="window.location.href='{0}';" title="[RESX:Ban]"&gt;&lt;i class="fa fa-ban fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Ban]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:QUOTE:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" class="af-actions" title="[RESX:Quote]"&gt;&lt;i class="fa fa-quote-left fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Quote]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:QUOTE:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li onclick="window.location.href='{0}';" title="[RESX:Quote]"&gt;&lt;i class="fa fa-quote-left fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Quote]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:REPLY:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" class="af-actions" title="[RESX:Reply]"&gt;&lt;i class="fa fa-reply fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Reply]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:REPLY:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li onclick="window.location.href='{0}';" title="[RESX:Reply]"&gt;&lt;i class="fa fa-reply fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Reply]&lt;/span&gt;&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:MARKANSWER:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;a href="#" onclick="{0}" class="af-actions af-markanswer" title="[RESX:Status:SelectAnswer]"&gt;[RESX:Status:SelectAnswer]&lt;/a&gt;</value>
+  </data>
+  <data name="[FORUMPOST:ACTIONS:MARKANSWER:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li onclick="{0}" class="af-markanswer" title="[RESX:Status:SelectAnswer]"&gt;[RESX:Status:SelectAnswer]&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:SELECTEDANSWER:HYPERLINK].Text" xml:space="preserve">
+    <value>&lt;span class="af-actions af-answered" title="[RESX:Status:Answer]"&gt;{0}&lt;/span&gt;</value>
+  </data>
+  <data name="[FORUMPOST:SELECTEDANSWER:LISTITEM].Text" xml:space="preserve">
+    <value>&lt;li class="af-answered" title="[RESX:Status:Answer]"&gt;{0}&lt;/li&gt;</value>
+  </data>
+  <data name="[FORUMPOST:SELECTEDANSWER].Text" xml:space="preserve">
+    <value>{0}</value>
+  </data>
 </root>

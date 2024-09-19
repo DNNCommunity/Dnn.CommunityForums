@@ -3,7 +3,7 @@
 		<%@ Register TagPrefix="am" TagName="MiniSearch" Src="~/DesktopModules/ActiveForums/controls/af_searchquick.ascx"%>
 			<div class="dcf-topics-view">
 				<div class="dcf-breadcrumb py-2 border-bottom border-top">
-					<i class="fa fa-home"></i>  [FORUMMAINLINK]
+					<i class="fa fa-home"></i>  [FORUM:FORUMMAINLINK|<a href="{0}" class="dcf-forums-link">[RESX:ForumMain]</a>]
 					<i class="fa fa-chevron-right"></i> [FORUMGROUPLINK]
 				</div>
 				
@@ -11,7 +11,7 @@
 
 					<div class="flex-grow-1">
 						
-						<h2 class="dcf-forum-title h4 mb-0 mt-2">[TRESX:Forum]: [FORUMLINK]</h2>
+						<h2 class="dcf-forum-title h4 mb-0 mt-2">[TRESX:Forum]: [FORUM:FORUMLINK|<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]</h2>
 						<div class="dcf-buttons mt-4">[ADDTOPIC]</div>
 					</div>
 					<div class="text-right text-end">
@@ -19,7 +19,7 @@
 							<div class="dcf-forum-search-subscribe">
 								<div class="dcf-forum-search">[MINISEARCH]</div>
 								<div class="dcf-forum-subscribers">
-									<i class="fa fa-envelope fa-fw fa-grey"></i> <span id="af-topicsview-forumsubscribercount">[FORUMSUBSCRIBERCOUNT]</span> [RESX:FORUMSUBSCRIBERCOUNT]
+									<i class="fa fa-envelope fa-fw fa-grey"></i> <span id="af-topicsview-forumsubscribercount">[FORUM:SUBSCRIBERCOUNT]</span> [RESX:FORUMSUBSCRIBERCOUNT]
 								</div>
 								<div class="dcf-subscribe-forum">[FORUMSUBSCRIBE]</div>
 							</div>
@@ -65,7 +65,8 @@
 					[ANNOUNCEMENT]
 						<tbody>
 							<tr class="dcf-table-body-row">
-								<td class="dcf-col dcf-col-icon ">[POSTICON]</td>
+								<td class="dcf-col dcf-col-icon ">[FORUMTOPIC:POSTICON|<div><i class="{0}"></i></div>
+                                    ]</td>
 								<td class="dcf-col dcf-col-subject w-100" title="[BODYTITLE]">
 									<div class="dcf-subject">
 										<h4 class="dcf-title h5 mt-0 mb-2">[SUBJECTLINK][AF:ICONLINK:LASTREAD]</h4>
@@ -74,23 +75,26 @@
 										</div>
 										<div class="dcf-forum-description">[BODYTITLE]</div>
 										<div class="dcf-topic-tools">
-										[ACTIONS:EDIT]
-										[ACTIONS:MOVE]
-										[ACTIONS:LOCK]
-										[ACTIONS:PIN]
-										[ACTIONS:DELETE]
+                                            [FORUMTOPIC:ACTIONQUICKEDITONCLICK|<a href="javascript:void(0)" title="[RESX:TopicQuickEdit]" onclick="{0}"><i class="fa fa-cog fa-fw fa-blue"></i></a>]
+                                            [FORUMTOPIC:ACTIONDELETEONCLICK|<a href="javascript:void(0)" onclick="{0}" style="vertical-align: middle;" title="[RESX:DeleteTopic]"><i class="fa fa-trash-o fa-fw fa-blue"></i></a>]
+                                            [FORUMTOPIC:ACTIONEDITONCLICK|<a href="{0}" title="[RESX:EditTopic]"><i class="fa fa-pencil-square-o fa-fw fa-blue"></i></a>]
+                                            [FORUMTOPIC:ACTIONMOVEONCLICK|<a href="javascript:void(0)" onclick="{0}" title="[RESX:MoveTopic]" style="vertical-align: middle;"><i class="fa fa-exchange fa-rotate-90 fa-blue"></i></a>]
+                                            [FORUMTOPIC:ACTIONLOCKONCLICK|<a href="javascript:void(0)" class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:LockTopic]" style="vertical-align: middle;"><i class="fa fa-lock fa-fw fa-blue dcf-topic-lock-inner"></i></a>]
+                                            [FORUMTOPIC:ACTIONUNLOCKONCLICK|<a href="javascript:void(0)" class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:UnLockTopic]" style="vertical-align: middle;"><i class="fa fa-unlock fa-fw fa-blue dcf-topic-lock-inner"></i></a>]
+                                            [FORUMTOPIC:ACTIONPINONCLICK|<a href="javascript:void(0)" class="dcf-topic-pin-outer" onclick="{0}" title="[RESX:PinTopic]" style="vertical-align: middle;"><i class="fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner"></i></a>]
+                                            [FORUMTOPIC:ACTIONUNPINONCLICK|<a href="javascript:void(0)" class="dcf-topic-pin-outer" onclick="{0}" title="[RESX:UnPinTopic]" style="vertical-align: middle;"><i class="fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner"></i></a>]
 									</div>
 									</div>
 									<div>[POSTRATINGDISPLAY]</div>
 									<div rowspan="2" class="dcf-status">[STATUS]</div>
 								</td>
-								<td class="dcf-col dcf-col-replies">[REPLIES]</td>
-								<td class="dcf-col dcf-col-views">[VIEWS]</td>
-								<td class="dcf-col dcf-col-views">[TOPICSUBSCRIBERCOUNT]</td>
+								<td class="dcf-col dcf-col-replies">[FORUMTOPIC:REPLYCOUNT]</td>
+								<td class="dcf-col dcf-col-views">[FORUMTOPIC:VIEWCOUNT]</td>
+								<td class="dcf-col dcf-col-views">[FORUMTOPIC:SUBSCRIBERCOUNT]</td>
 								<td class="dcf-col dcf-col-last-post">
 									<div class="dcf-_lastpost" style="white-space:nowrap;">[LASTPOST][RESX:BY]
 										<i class="fa fa-user fa-blue"></i>&nbsp;[LASTPOSTDISPLAYNAME][AF:ICONLINK:LASTREPLY]
-										<br />[LASTPOSTDATE][/LASTPOST]
+										<br />[FORUMTOPIC:LASTPOSTDATE][/LASTPOST]
 									</div>
 								</td>
 							</tr>
@@ -154,7 +158,8 @@
 						<tbody>
 							<tr class="dcf-table-body-row">
 								<td class="dcf-col dcf-col-icon">
-						[POSTICON]
+                                    [FORUMTOPIC:POSTICON|<div><i class="{0}"></i></div>
+                                    ]
 					</td>
 								<td class="dcf-col dcf-col-subject">
 									<div class="dcf-subject" title="[BODYTITLE]">
@@ -164,13 +169,15 @@
 										</div>
 										<div class="dcf-topic-description text-break">[BODYTITLE]</div>
 										<div class="dcf-topic-tools">
-								[AF:QUICKEDITLINK]
-								[ACTIONS:DELETE]
-								[ACTIONS:EDIT]
-								[ACTIONS:MOVE]
-								[ACTIONS:LOCK]
-								[ACTIONS:PIN]
-							</div>
+                                            [FORUMTOPIC:ACTIONQUICKEDITONCLICK|<a href="javascript:void(0)" title="[RESX:TopicQuickEdit]" onclick="{0}"><i class="fa fa-cog fa-fw fa-blue"></i></a>]
+                                            [FORUMTOPIC:ACTIONDELETEONCLICK|<a href="javascript:void(0)" onclick="{0}" style="vertical-align: middle;" title="[RESX:DeleteTopic]"><i class="fa fa-trash-o fa-fw fa-blue"></i></a>]
+                                            [FORUMTOPIC:ACTIONEDITONCLICK|<a href="{0}" title="[RESX:EditTopic]"><i class="fa fa-pencil-square-o fa-fw fa-blue"></i></a>]
+                                            [FORUMTOPIC:ACTIONMOVEONCLICK|<a href="javascript:void(0)" onclick="{0}" title="[RESX:MoveTopic]" style="vertical-align: middle;"><i class="fa fa-exchange fa-rotate-90 fa-blue"></i></a>]
+                                            [FORUMTOPIC:ACTIONLOCKONCLICK|<a href="javascript:void(0)" class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:LockTopic]" style="vertical-align: middle;"><i class="fa fa-lock fa-fw fa-blue dcf-topic-lock-inner"></i></a>]
+                                            [FORUMTOPIC:ACTIONUNLOCKONCLICK|<a href="javascript:void(0)" class="dcf-topic-lock-outer" onclick="{0}" title="[RESX:UnLockTopic]" style="vertical-align: middle;"><i class="fa fa-unlock fa-fw fa-blue dcf-topic-lock-inner"></i></a>]
+                                            [FORUMTOPIC:ACTIONPINONCLICK|<a href="javascript:void(0)" class="dcf-topic-pin-outer" onclick="{0}" title="[RESX:PinTopic]" style="vertical-align: middle;"><i class="fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner"></i></a>]
+                                            [FORUMTOPIC:ACTIONUNPINONCLICK|<a href="javascript:void(0)" class="dcf-topic-pin-outer" onclick="{0}" title="[RESX:UnPinTopic]" style="vertical-align: middle;"><i class="fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner"></i></a>]
+                                        </div>
 										<div>
 								[AF:PROPERTIES]
 								[AF:PROPERTY:LABEL]:[AF:PROPERTY:VALUE]
@@ -178,15 +185,15 @@
 							</div>
 									</div>
 								</td>
-								<td class="dcf-col dcf-col-replies">[REPLIES]</td>
+								<td class="dcf-col dcf-col-replies">[FORUMTOPIC:REPLYCOUNT]</td>
 								<td class="dcf-col dcf-col-ratings">[POSTRATINGDISPLAY]</td>
 								<td class="dcf-col dcf-col-status">[STATUS]</td>
-								<td class="dcf-col dcf-col-views">[VIEWS]</td>
-								<td class="dcf-col dcf-col-subscribers">[TOPICSUBSCRIBERCOUNT]</td>
+								<td class="dcf-col dcf-col-views">[FORUMTOPIC:VIEWCOUNT]</td>
+								<td class="dcf-col dcf-col-subscribers">[FORUMTOPIC:SUBSCRIBERCOUNT]</td>
 								<td class="dcf-col dcf-col-last-post">
 									<div class="dcf-last-post">[LASTPOST][RESX:BY]
 										<i class="fa fa-user fa-blue"></i>&nbsp;[LASTPOSTDISPLAYNAME][AF:ICONLINK:LASTREPLY]
-										<br />[LASTPOSTDATE][/LASTPOST]
+										<br />[FORUMTOPIC:LASTPOSTDATE][/LASTPOST]
 									</div>
 								</td>
 							</tr>

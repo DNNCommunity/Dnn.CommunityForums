@@ -10,7 +10,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="dcf-breadcrumb">[FORUMMAINLINK] <i class="fa fa-chevron-right"></i> [FORUM:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUM:GROUPNAME]</a>] <i class="fa fa-chevron-right"></i> [FORUM:FORUMLINK|<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]</div>
+		<div class="dcf-breadcrumb">[FORUM:FORUMMAINLINK|<a href="{0}" class="dcf-forums-link">[RESX:ForumMain]</a>] <i class="fa fa-chevron-right"></i> [FORUMGROUP:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUMGROUP:GROUPNAME]</a>] <i class="fa fa-chevron-right"></i> [FORUM:FORUMLINK|<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]</div>
 		<div class="dcf-header-content">
 
 			<div class="dcf-cols">
@@ -69,11 +69,11 @@
 							<header class="dcf-topic-content-top">
 								<div class="dcf-cols">
 									<div class="dcf-col-25">
-										<div class="dcf-postdate">[POSTDATE] </div>
+										<div class="dcf-postdate">[FORUMPOST:DATECREATED]</div>
 										
 									</div>
 									<div class="dcf-col-75">
-										<div class="dcf-toolbar dcf-topic-actions">[AF:CONTROL:TOPICACTIONS]</div>
+										<div class="dcf-toolbar dcf-topic-actions">[DCF:TOOLBAR:POSTACTIONS]</div>
 									</div>
 								</div>
 							</header>
@@ -105,7 +105,7 @@
 
                                 <div class="dcf-cols dcf-post-footer-bottom">
 									<div class="dcf-col-50">
-										[MODEDITDATE]
+                                        [FORUMPOST:MODEDITDATE]
 									</div>
 									<div class="dcf-col-50 dcf-text-end dcf-post-likes">
 										[LIKESx2]
@@ -132,11 +132,11 @@
 							<header class="dcf-topic-content-top">
 								<div class="dcf-cols">
 									<div class="dcf-col-25">
-										<div class="dcf-postdate">[POSTDATE] </div>
+										<div class="dcf-postdate">[FORUMPOST:DATECREATED]</div>
 										
 									</div>
 									<div class="dcf-col-75">
-										<div class="dcf-toolbar dcf-topic-actions">[AF:CONTROL:TOPICACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
+										<div class="dcf-toolbar dcf-topic-actions">[DCF:TOOLBAR:POSTACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
                                         
 									</div>
 								</div>
@@ -165,7 +165,7 @@
 
 								<div class="dcf-cols dcf-post-footer-bottom">
 									<div class="dcf-col-50">
-										[MODEDITDATE]
+                                        [FORUMPOST:MODEDITDATE]
 									</div>
 									<div class="dcf-col-50 dcf-text-end dcf-post-likes">
 										[LIKESx2]

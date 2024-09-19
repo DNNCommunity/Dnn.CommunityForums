@@ -1755,13 +1755,16 @@ De
   <data name="[RESX:of].Text" xml:space="preserve">
     <value>de</value>
   </data>
-  <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
+  <data name="[RESX:ReplaceObsoleteToken].Text_Duplicate[1]" xml:space="preserve">
     <value>Token de plantilla: {0} está obsoleto. Reemplace con {1}.</value>
   </data>
-  <data name="[RESX:RemoveObsoleteToken].Text" xml:space="preserve">
+  <data name="[RESX:RemoveObsoleteToken].Text_Duplicate[1]" xml:space="preserve">
     <value>Token de plantilla: {0} está obsoleto y no tiene reemplazo. Eliminar de la(s) plantilla(s).</value>
   </data>
-  <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
+  <data name="[RESX:RemoveObsoletePrefixedToken].Text_Duplicate[1]" xml:space="preserve">
     <value>El token de plantilla que comienza con: {0} está obsoleto y no tiene reemplazo. Eliminar de la(s) plantilla(s).</value>
+  </data>
+  <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
+    <value>Elimina todas las entradas del usuario y desautoriza al usuario.</value>
   </data>
 </root>

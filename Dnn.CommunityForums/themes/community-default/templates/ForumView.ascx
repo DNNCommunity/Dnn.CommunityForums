@@ -1,28 +1,10 @@
 <%@ Register TagPrefix="af" Assembly="DotNetNuke.Modules.ActiveForums" Namespace="DotNetNuke.Modules.ActiveForums.Controls"%>
 <div class="dcf-forum-view">
-<%--    USER:EMAIL: [USER:EMAIL]
-    <br />
-    USER:FULLNAME: [USER:FULLNAME]
-    <br />
-    PROFILE:CITY: [PROFILE:CITY]
-    <br />
-    PROFILE:COUNTRY: [PROFILE:COUNTRY]
-    <br />
-    MEMBERSHIP:CREATEDONDATE: [MEMBERSHIP:CREATEDONDATE]
-    <br />
-    MEMBERSHIP:LASTLOGINDATE: [MEMBERSHIP:LASTLOGINDATE]
-    <br />
-    PORTAL:PORTALNAME: [PORTAL:PORTALNAME]
-    <br />
-    MODULE:MODULETITLE: [MODULE:MODULETITLE]
-    <br />
-    TAB:TABNAME: [TAB:TABNAME]--%>
-
 [BREADCRUMB]
 [GROUPSECTION]
 <div class="dcf-forums">
 		<div class="dcf-group-title-wrap">
-            <h3 class="dcf-group-title">[RESX:Group]: [FORUM:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUM:GROUPNAME]</a>]</h3>
+            <h3 class="dcf-group-title">[RESX:Group]: [FORUMGROUP:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUMGROUP:GROUPNAME]</a>]</h3>
 			<span class="dcf-group-collapse">[GROUPCOLLAPSE]</span>
 		</div>
 
@@ -58,7 +40,6 @@
 								[FORUMICONCSS]
 
                                 <div class="dcf-forum-title-text">
-                                    <%--<h4 class="dcf-forum-title">[FORUMNAME]</h4>--%>
 								    <h4 class="dcf-forum-title">
                                             [FORUM:FORUMLINK|
                                             <a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>
@@ -73,7 +54,6 @@
 						<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
 						<td class="dcf-col dcf-col-last-post">
 							<span class="dcf-lastpost-subject">[LASTPOSTSUBJECT:25]</span>
-                            <%--<span class="dcf-lastpost-author">[RESX:BY] [DISPLAYNAME]</span>--%>
                             <span class="dcf-lastpost-author">
                                 [FORUM:LASTPOSTAUTHORDISPLAYNAMELINK|
                                 [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUM:LASTPOSTAUTHORDISPLAYNAME]</a>|
@@ -104,8 +84,11 @@
                         <td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
                         <td class="dcf-col dcf-col-last-post">
                             <div class="af_lastpost" style="white-space: nowrap;">[LASTPOSTSUBJECT:25]<br />
-                                [RESX:BY] [DISPLAYNAME]<br />
-                                [LASTPOSTDATE]</div>
+                                [FORUM:LASTPOSTAUTHORDISPLAYNAMELINK|
+                                [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUM:LASTPOSTAUTHORDISPLAYNAME]</a>|
+                                [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>[FORUM:LASTPOSTAUTHORDISPLAYNAME]
+                                ]<br />
+                                [FORUM:LASTPOSTDATE]</div>
                         </td>
                     </tr>
 					[/SUBFORUMS]

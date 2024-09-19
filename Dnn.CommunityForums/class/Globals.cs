@@ -385,6 +385,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string MySubscriptions = "afsubscriptions";
         public const string ModerateTopics = "modtopics";
         public const string ModerateBan = "modban";
+        public const string ModerateReport = "modreport";
     }
 
     internal static class GridTypes

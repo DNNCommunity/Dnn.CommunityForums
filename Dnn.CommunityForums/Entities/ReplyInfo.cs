@@ -286,43 +286,314 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "authorname":
                     return PropertyAccess.FormatString(this.Content.AuthorName.ToString(), format);
                 case "authordisplayname":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName :
-                        DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
-                            this.Forum.PortalSettings,
-                            this.Forum.MainSettings,
-                            isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId),
-                            isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
-                            this.Author.AuthorId,
-                            this.Author.Username,
-                            this.Author.FirstName,
-                            this.Author.LastName,
-                            this.Author.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.Content.AuthorName), format);
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName)
+                            ? this.Content.AuthorName
+                            : Controllers.ForumUserController.GetDisplayName(
+                                    this.Forum.PortalSettings,
+                                    this.Forum.MainSettings,
+                                    new Controllers.ForumUserController(this.ModuleId)
+                                        .GetByUserId(accessingUser.PortalID, accessingUser.UserID)
+                                        .GetIsMod(this.ModuleId),
+                                    new Controllers.ForumUserController(this.ModuleId)
+                                        .GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin ||
+                                    new Controllers.ForumUserController(this.ModuleId)
+                                        .GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
+                                    this.Author.AuthorId,
+                                    this.Author.Username,
+                                    this.Author.FirstName,
+                                    this.Author.LastName,
+                                    this.Author.DisplayName).Replace("&amp;#", "&#")
+                                .Replace("Anonymous", this.Content.AuthorName),
+                        format);
                 case "authorfirstname":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName : this.Author.FirstName, format);
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName)
+                            ? this.Content.AuthorName
+                            : this.Author.FirstName,
+                        format);
                 case "authorlastname":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName : this.Author.LastName.ToString(), format);
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName)
+                            ? this.Content.AuthorName
+                            : this.Author.LastName.ToString(),
+                        format);
                 case "authoremail":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? string.Empty : this.Author.Email.ToString(), format);
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName)
+                            ? string.Empty
+                            : this.Author.Email.ToString(),
+                        format);
                 case "statuscssclass":
-                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
+                    return PropertyAccess.FormatString(this.GetPostStatusCss(
+                            new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID,
+                                accessingUser.UserID)),
+                        format);
                 case "posticon":
-                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
+                    return PropertyAccess.FormatString(this.GetPostStatusCss(
+                            new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID,
+                                accessingUser.UserID)),
+                        format);
                 case "posticoncss":
-                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
+                    return PropertyAccess.FormatString(this.GetPostStatusCss(
+                            new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID,
+                                accessingUser.UserID)),
+                        format);
                 case "datecreated":
-                    return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateCreated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
+                    return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime(
+                            (DateTime?)this.Content.DateCreated,
+                            formatProvider,
+                            accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)),
+                        format);
                 case "dateupdated":
-                    return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateUpdated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
+                    return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime(
+                            (DateTime?)this.Content.DateUpdated,
+                            formatProvider,
+                            accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)),
+                        format);
                 case "modeditdate":
-                    if (this.Forum.GetIsMod(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)) &&
+                    if (this.Forum.GetIsMod(
+                            new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID,
+                                accessingUser.UserID)) &&
                         this.Content.DateUpdated != this.Content.DateCreated)
                     {
-                        return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateUpdated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
+                        return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime(
+                                (DateTime?)this.Content.DateUpdated,
+                                formatProvider,
+                                accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)),
+                            format);
                     }
 
                     return string.Empty;
                 case "editdate":
-                    return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime((DateTime?)this.Content.DateUpdated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)), format);
+                    return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime(
+                            (DateTime?)this.Content.DateUpdated,
+                            formatProvider,
+                            accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)),
+                        format);
+                case "selectedanswer":
+                    if (this.IsReply && this.StatusId == 1)
+                    {
+                        return PropertyAccess.FormatString(
+                            Utilities.GetSharedResource("[RESX:Status:Answer]"),
+                            format);
+                    }
+
+                    return string.Empty;
+
+                case "actioneditonclick":
+                    {
+                        var bEdit = Controllers.PermissionController.HasPerm(this.Forum.Security.Edit,
+                            accessingUser.UserID,
+                            accessingUser.PortalID);
+                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
+                            accessingUser.UserID,
+                            accessingUser.PortalID);
+                        if (bEdit &&
+                            (bModerate ||
+                             ((this.Author.AuthorId == accessingUser.UserID) && (this.Forum.MainSettings.EditInterval == 0 || DateTime.UtcNow.Subtract(this.Content.DateCreated).Minutes > this.Forum.MainSettings.EditInterval))))
+                        {
+                            var editParams = new List<string>()
+                            {
+                                $"{ParamKeys.ViewType}={Views.Post}",
+                                $"{ParamKeys.Action}={PostActions.ReplyEdit}",
+                                $"{ParamKeys.ForumId}={this.ForumId}",
+                                $"{ParamKeys.TopicId}={this.TopicId}",
+                                $"{ParamKeys.PostId}={this.PostId}",
+                            };
+                            if (this.Forum.SocialGroupId > 0)
+                            {
+                                editParams.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+                            }
+
+                            return PropertyAccess.FormatString(
+                                Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, editParams.ToArray()),
+                                format);
+                        }
+                        return string.Empty;
+                    }
+                case "actionreplyonclick":
+                    {
+                        var bReply = Controllers.PermissionController.HasPerm(this.Forum.Security.Reply,
+                            accessingUser.UserID,
+                            accessingUser.PortalID);
+                        var bTrust = Controllers.PermissionController.HasPerm(this.Forum.Security.Trust,
+                            accessingUser.UserID,
+                            accessingUser.PortalID);
+                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
+                            accessingUser.UserID,
+                            accessingUser.PortalID);
+                        if (bReply &&
+                            (bTrust ||
+                             bModerate ||
+                             ((!this.Topic.IsLocked) &&
+                              (this.Forum.ReplyPostCount <= 0 ||
+                               new Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                   accessingUser.PortalID,
+                                   accessingUser.UserID).PostCount >= this.Forum.ReplyPostCount))))
+                        {
+                            var @params = new List<string>()
+                            {
+                                $"{ParamKeys.ViewType}={Views.Post}",
+                                $"{ParamKeys.Action}={PostActions.Reply}",
+                                $"{ParamKeys.ForumId}={this.ForumId}",
+                                $"{ParamKeys.TopicId}={this.TopicId}",
+                                $"{ParamKeys.ReplyId}={this.PostId}",
+                            };
+                            if (this.Forum.SocialGroupId > 0)
+                            {
+                                @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+                            }
+
+                            return PropertyAccess.FormatString(
+                                Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()),
+                                format);
+                        }
+                    }
+
+                    return string.Empty;
+                case "actionquoteonclick":
+                    {
+                        var bReply = Controllers.PermissionController.HasPerm(this.Forum.Security.Reply,
+                            accessingUser.UserID,
+                            accessingUser.PortalID);
+                        var bTrust = Controllers.PermissionController.HasPerm(this.Forum.Security.Trust,
+                            accessingUser.UserID,
+                            accessingUser.PortalID);
+                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
+                            accessingUser.UserID,
+                            accessingUser.PortalID);
+                        if (bReply &&
+                            (bTrust ||
+                             bModerate ||
+                             ((!this.Topic.IsLocked) &&
+                              (this.Forum.ReplyPostCount <= 0 ||
+                               new Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                   accessingUser.PortalID,
+                                   accessingUser.UserID).PostCount >= this.Forum.ReplyPostCount))))
+                        {
+                            var @params = new List<string>()
+                            {
+                                $"{ParamKeys.ViewType}={Views.Post}",
+                                $"{ParamKeys.Action}={PostActions.Reply}",
+                                $"{ParamKeys.ForumId}={this.ForumId}",
+                                $"{ParamKeys.TopicId}={this.TopicId}",
+                                $"{ParamKeys.QuoteId}={this.PostId}",
+                            };
+                            if (this.Forum.SocialGroupId > 0)
+                            {
+                                @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+                            }
+
+                            return PropertyAccess.FormatString(
+                                Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()),
+                                format);
+                        }
+                    }
+
+                    return string.Empty;
+                case "actiondeleteonclick":
+                    {
+                        var bDelete = Controllers.PermissionController.HasPerm(this.Forum.Security.Delete,
+                            accessingUser.UserID,
+                            accessingUser.PortalID);
+                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
+                            accessingUser.UserID,
+                            accessingUser.PortalID);
+                        if (bDelete && (bModerate ||
+                                        (this.Author.AuthorId == accessingUser.UserID && !this.Topic.IsLocked)))
+                        {
+                            return PropertyAccess.FormatString(
+                                $"amaf_postDel({this.ModuleId},{this.ForumId},{this.TopicId},{this.ReplyId})",
+                                format);
+                        }
+                    }
+
+                    return string.Empty;
+                case "actionalertonclick":
+                    {
+                        if (accessingUser.UserID > 0)
+                        {
+                            var editParams = new List<string>()
+                            {
+                                $"{ParamKeys.ViewType}={Views.ModerateReport}",
+                                $"{ParamKeys.ForumId}={this.ForumId}",
+                                $"{ParamKeys.TopicId}={this.TopicId}",
+                                $"{ParamKeys.ReplyId}={this.ReplyId}",
+                            };
+                            if (this.Forum.SocialGroupId > 0)
+                            {
+                                editParams.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+                            }
+
+                            return PropertyAccess.FormatString(
+                                Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, editParams.ToArray()),
+                                format);
+                        }
+                    }
+
+                    return string.Empty;
+
+                case "actionbanonclick":
+                    {
+                        // (Note: can't ban yourself or a superuser/admin)
+                        var bBan = Controllers.PermissionController.HasPerm(this.Forum.Security.Ban,
+                            accessingUser.UserID,
+                            accessingUser.PortalID);
+                        if ((bBan || accessingUser.IsAdmin || accessingUser.IsSuperUser) &&
+                            (this.Author.AuthorId != -1) && (this.Author.AuthorId != accessingUser.UserID) && (this.Author != null) && (!this.Author.ForumUser.IsSuperUser) && (!this.Author.ForumUser.IsAdmin))
+                        {
+                            var @params = new List<string>()
+                            {
+                                $"{ParamKeys.ViewType}={Views.ModerateBan}",
+                                $"{ParamKeys.ForumId}={this.ForumId}",
+                                $"{ParamKeys.TopicId}={this.TopicId}",
+                                $"{ParamKeys.ReplyId}={this.ReplyId}",
+                                $"{ParamKeys.AuthorId}={this.Author.AuthorId}",
+                            };
+
+                            return PropertyAccess.FormatString(
+                                Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()),
+                                format);
+                        }
+                    }
+
+                    return string.Empty;
+                case "actionmarkansweronclick":
+                    {
+                        if (this.IsReply && this.Topic.StatusId > 0 && this.Topic.StatusId != 3 && this.StatusId != 1)
+                        {
+                            var bEdit = Controllers.PermissionController.HasPerm(this.Forum.Security.Edit,
+                                accessingUser.UserID,
+                                accessingUser.PortalID);
+                            var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
+                                accessingUser.UserID,
+                                accessingUser.PortalID);
+                            if (bEdit && (bModerate || (accessingUser.UserID == this.Topic.Author.AuthorId && !this.Topic.IsLocked)))
+                            {
+                                return PropertyAccess.FormatString(
+                                    $"javascript:amaf_MarkAsAnswer({this.ModuleId},{this.ForumId},{this.TopicId},{this.ReplyId});",
+                                    format);
+                            }
+                        }
+
+                        return string.Empty;
+                    }
+
+                case "actionmoveonclick": /* only valid for topic not for reply */
+                    return string.Empty;
+                case "actionlockonclick": /* only valid for topic not for reply */
+                    return string.Empty;
+                case "actionunlockonclick": /* only valid for topic not for reply */
+                    return string.Empty;
+                case "actionpinonclick": /* only valid for topic not for reply */
+                    return string.Empty;
+                case "actionunpinonclick": /* only valid for topic not for reply */
+                    return string.Empty;
+                case "iconpinned": /* only valid for topic not for reply */
+                    return string.Empty;
+                case "iconunpinned": /* only valid for topic not for reply */
+                    return string.Empty;
+                case "iconlocked": /* only valid for topic not for reply */
+                    return string.Empty;
+                case "iconunlocked": /* only valid for topic not for reply */
+                    return string.Empty;
             }
 
             propertyNotFound = true;

@@ -12,7 +12,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="dcf-breadcrumb py-2 border-bottom">[FORUMMAINLINK] <i class="fa fa-chevron-right"></i> [FORUMGROUPLINK] <i class="fa fa-chevron-right"></i> [FORUMLINK]</div>
+		<div class="dcf-breadcrumb py-2 border-bottom">[FORUM:FORUMMAINLINK|<a href="{0}" class="dcf-forums-link">[RESX:ForumMain]</a>] <i class="fa fa-chevron-right"></i> [FORUMGROUP:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUMGROUP:GROUPNAME]</a>] <i class="fa fa-chevron-right"></i> [FORUM:FORUMLINK|<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]</div>
 		<div class="dcf-header-content mt-4">
 
 			<div class="d-md-flex">
@@ -26,8 +26,8 @@
 				<div class="">
 					<div class="dcf-topic-controls text-right text-end">
                         <div class="dcf-forum-subscribers"><i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[AF:LABEL:ReplyCount] [RESX:REPLIES]</div>
-                        <div class="dcf-forum-subscribers"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;<span id="af-topicview-topicsubscribercount">[TOPICSUBSCRIBERCOUNT]</span> [RESX:TOPICSUBSCRIBERCOUNT]</div>
-                        <div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUMSUBSCRIBERCOUNT]&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
+                        <div class="dcf-forum-subscribers"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;<span id="af-topicview-topicsubscribercount">[FORUMTOPIC:SUBSCRIBERCOUNT]</span> [RESX:TOPICSUBSCRIBERCOUNT]</div>
+                        <div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUM:SUBSCRIBERCOUNT]&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
 
 						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
                         <span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
@@ -70,8 +70,8 @@
 					<div class="dcf-topic-content px-3">
 							<header class="dcf-topic-content-top ">
 								<div class="d-flex flex-wrap pb-2">
-									<div class="dcf-postdate">[POSTDATE] </div>
-									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[AF:CONTROL:TOPICACTIONS]</div>
+									<div class="dcf-postdate">[FORUMPOST:DATECREATED]</div>
+									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[DCF:TOOLBAR:POSTACTIONS]</div>
 								</div>
 							</header>
 							<section class="dcf-topic-content-main py-4">
@@ -89,12 +89,16 @@
 								
 							</section>
 							<footer class="dcf-post-footer">
-								<div class="dcf-post-signature">
-									[SIGNATURE]
-								</div>
+                                <!--
+                                <div class="dcf-post-signature">
+                                    [SIGNATURE]
+                                </div>
+                                -->
+                                [FORUMUSER:SIGNATURE|<div class="dcf-post-signature">{0}</div>
+                                ]
 								<div class="dcf-post-footer-bottom">
 									<div class="dcf-col-50">
-										[MODEDITDATE]
+                                        [FORUMPOST:MODEDITDATE]
 									</div>
 									<div class="dcf-col-50 text-right text-end dcf-post-likes">
 										[LIKESx2]
@@ -118,8 +122,8 @@
 						<div class="dcf-topic-content px-3">
 							<header class="dcf-topic-content-top ">
 								<div class="d-flex flex-wrap pb-2">
-									<div class="dcf-postdate">[POSTDATE] </div>
-									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[AF:CONTROL:TOPICACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
+									<div class="dcf-postdate">[FORUMPOST:DATECREATED]</div>
+									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[DCF:TOOLBAR:POSTACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
 								</div>
 							</header>
 							<section class="dcf-topic-content-main py-4">
@@ -140,12 +144,16 @@
 								
 							</section>
 							<footer class="dcf-post-footer">
-								<div class="dcf-post-signature">
-									[SIGNATURE]
-								</div>
+                                <!--
+                                <div class="dcf-post-signature">
+                                    [SIGNATURE]
+                                </div>
+                                -->
+                                [FORUMUSER:SIGNATURE|<div class="dcf-post-signature">{0}</div>
+                                ]
 								<div class="dcf-post-footer-bottom">
 									<div class="dcf-col-50">
-										[MODEDITDATE]
+                                        [FORUMPOST:MODEDITDATE]
 									</div>
 									<div class="dcf-col-50 text-right text-end dcf-post-likes">
 										[LIKESx2]

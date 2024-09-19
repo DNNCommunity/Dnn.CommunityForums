@@ -1755,13 +1755,16 @@ From,
   <data name="[RESX:of].Text" xml:space="preserve">
     <value>of</value>
   </data>
-  <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
+  <data name="[RESX:ReplaceObsoleteToken].Text_Duplicate[1]" xml:space="preserve">
     <value>Template Token: {0} is obsolete. Replace with {1}.</value>
   </data>
-  <data name="[RESX:RemoveObsoleteToken].Text" xml:space="preserve">
+  <data name="[RESX:RemoveObsoleteToken].Text_Duplicate[1]" xml:space="preserve">
     <value>Template Token: {0} is obsolete and has no replacement. Remove from template(s).</value>
   </data>
-  <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
+  <data name="[RESX:RemoveObsoletePrefixedToken].Text_Duplicate[1]" xml:space="preserve">
     <value>Template Token starting with: {0} is obsolete and has no replacement. Remove from template(s).</value>
+  </data>
+  <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
+    <value>Deletes all posts for this user and unauthorizes the user.</value>
   </data>
 </root>
