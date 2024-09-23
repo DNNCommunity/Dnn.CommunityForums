@@ -267,6 +267,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 cc.PortalId = this.PortalId;
                 cc.PageId = this.TabId;
                 cc.ModuleId = this.ModuleId;
+                cc.ForumModuleId = this.ForumModuleId;
                 cc.User = this.ForumUser;
                 string authorizedViewRoles = this.ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(this.TabId, this.PortalId).ToString("VIEW") : this.ModuleConfiguration.ModulePermissions.ToString("VIEW");
                 cc.DefaultViewRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, authorizedViewRoles.Split(';'));

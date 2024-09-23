@@ -40,8 +40,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int ForumId { get; set; }
-
+        
         public int ModuleId { get; set; }
+
+        public int ForumModuleId { get; set; }
 
         public string MembersLink { get; set; }
 

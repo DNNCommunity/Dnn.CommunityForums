@@ -54,7 +54,7 @@ using DotNetNuke.Services.Localization;
 
         public XmlDocument ForumData
         {
-            get => this.forumData ?? (this.forumData = this.ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.ControlConfig.PortalId, this.ControlConfig.ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.PortalId, this.ModuleId));
+            get => this.forumData ?? (this.forumData = this.ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.ControlConfig.PortalId, this.ControlConfig.ForumModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.PortalId, this.ForumModuleId));
             set => this.forumData = value;
         }
 

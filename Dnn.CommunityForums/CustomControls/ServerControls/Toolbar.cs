@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb = tb.Replace("[AF:TB:MemberList]", string.Empty);
             tb = tb.Replace("[AF:TB:MySettings]", string.Empty);
             tb = tb.Replace("[AF:TB:MySubscriptions]", string.Empty);
-            tb = tb.Replace("[AF:TB:ControlPanel]", "<af:link id=\"lnkControlPanel\" NavigateUrl=\"" + Utilities.NavigateURL(this.PageId, "EDIT", "mid=" + this.ControlConfig.ModuleId) + "\" EnabledRoles=\"" + this.ControlConfig.AdminRoles + "\" Text=\"[RESX:ControlPanel]\" runat=\"server\" />");
+            tb = tb.Replace("[AF:TB:ControlPanel]", "<af:link id=\"lnkControlPanel\" NavigateUrl=\"" + Utilities.NavigateURL(this.PageId, "EDIT", "mid=" + this.ControlConfig.ForumModuleId) + "\" EnabledRoles=\"" + this.ControlConfig.AdminRoles + "\" Text=\"[RESX:ControlPanel]\" runat=\"server\" />");
 
             // TODO: Check for moderator
             tb = tb.Replace("[AF:TB:ModList]", string.Empty);
