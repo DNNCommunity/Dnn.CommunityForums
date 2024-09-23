@@ -67,8 +67,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             base.OnInit(e);
 
             this.ambtnSubmit.Click += new System.EventHandler(this.ambtnSubmit_Click);
-
+            
             this.moduleId = this.ControlConfig.ModuleId;
+            this.ForumModuleId = this.ControlConfig.ForumModuleId;
             this.portalId = this.ControlConfig.PortalId;
             if (this.ForumInfo == null)
             {
