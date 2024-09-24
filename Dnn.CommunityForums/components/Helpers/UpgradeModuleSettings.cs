@@ -18,11 +18,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums.Helpers
 {
     using System.Reflection;
     using System.Web.UI;
     using System.Xml;
+    using System.Xml.Linq;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -171,6 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 {
                                     string xpath = $"//defaultforums/forum/security[@type='{secType}']";
 
+
                                     if (xDoc.DocumentElement.SelectSingleNode(xpath).ChildNodes.Count == 16)
                                     {
                                         xDoc.DocumentElement.SelectSingleNode(xpath).AddElement("moduser", string.Empty);
@@ -181,6 +185,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 forumConfig = xDoc.OuterXml;
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", forumConfig);
+                                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
+                                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
                                 DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
                                 DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
                             }
@@ -189,6 +195,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 }
             }
         }
+
         internal static void UpgradeSocialGroupForumConfigModuleSettings_080200()
         {
             foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
@@ -208,24 +215,43 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 foreach (string secType in secTypes)
                                 {
                                     string xpath = $"//defaultforums/forum/security[@type='{secType}']";
-
-                                    if (xDoc.DocumentElement.SelectSingleNode(xpath).ChildNodes.Count == 17)
+                                    foreach (var nodename in new string[] { "modlock", "modpin", "modmove", "moddelete", "modedit", "modapprove", "moduser" })
                                     {
-                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modlock").RemoveAll();
-                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modpin").RemoveAll();
-                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("moddelete").RemoveAll();
-                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modedit").RemoveAll();
-                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modapprove").RemoveAll();
-                                        xDoc.DocumentElement.SelectSingleNode(xpath).AddElement("moderate", string.Empty);
-                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("moderate").AddAttribute("value", "false");
-                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("moduser").RemoveAll();
-                                        xDoc.DocumentElement.SelectSingleNode(xpath).AddElement("ban", string.Empty);
-                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("ban").AddAttribute("value", "false");
+                                        if (xDoc.DocumentElement.SelectSingleNode(xpath).InnerXml.Contains(nodename))
+                                        {
+                                            try
+                                            {
+
+                                                xDoc.DocumentElement.SelectSingleNode(xpath).RemoveChild(xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode(nodename));
+                                            }
+                                            catch
+                                            {
+                                            }
+                                        }
+                                    }
+
+                                    foreach (var nodename in new string[] { "moderate", "ban" })
+                                    {
+                                        if (!xDoc.DocumentElement.SelectSingleNode(xpath).InnerXml.Contains(nodename))
+                                        {
+                                            try
+                                            {
+
+                                                xDoc.DocumentElement.SelectSingleNode(xpath).AddElement(nodename, string.Empty);
+                                                xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode(nodename).AddAttribute("value", "false");
+                                            }
+                                            catch
+                                            {
+                                            }
+                                        }
                                     }
                                 }
+
                                 ForumConfig = xDoc.OuterXml;
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", ForumConfig);
+                                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
+                                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
                                 DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
                                 DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
                             }

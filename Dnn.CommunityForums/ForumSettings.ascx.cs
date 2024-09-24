@@ -421,6 +421,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
+                /* this is to avoid a scenario where a site was upgraded from pre-8.1, these might still be invalid and need to be cleaned up using update logic */
+                if (this.ForumConfig.Contains("modmove") ||
+                    this.ForumConfig.Contains("moddelete") ||
+                    this.ForumConfig.Contains("modedit") ||
+                    this.ForumConfig.Contains("modapprove") ||
+                    this.ForumConfig.Contains("moduser") ||
+                    this.ForumConfig.Contains("modpin") ||
+                    this.ForumConfig.Contains("modlock"))
+                {
+                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080100();
+                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
+                }
+
                 xDoc.LoadXml(this.ForumConfig);
             }
 

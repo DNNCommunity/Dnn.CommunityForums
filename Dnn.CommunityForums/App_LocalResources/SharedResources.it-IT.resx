@@ -1753,15 +1753,6 @@ Da
   <data name="[RESX:of].Text" xml:space="preserve">
     <value>di</value>
   </data>
-  <data name="[RESX:ReplaceObsoleteToken].Text_Duplicate[1]" xml:space="preserve">
-    <value>Token modello: {0} è obsoleto. Sostituire con {1}.</value>
-  </data>
-  <data name="[RESX:RemoveObsoleteToken].Text_Duplicate[1]" xml:space="preserve">
-    <value>Token modello: {0} è obsoleto e non ha sostituzione. Rimuovi dal/i modello/i.</value>
-  </data>
-  <data name="[RESX:RemoveObsoletePrefixedToken].Text_Duplicate[1]" xml:space="preserve">
-    <value>Template Token che inizia con: {0} è obsoleto e non ha sostituzione. Rimuovi dal/i modello/i.</value>
-  </data>
   <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
     <value>Elimina tutti i post per questo utente e annulla l'autorizzazione dell'utente.</value>
   </data>
