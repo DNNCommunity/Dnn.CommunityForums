@@ -777,13 +777,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 accessingUser.UserID)),
                         format);
                 case "posticoncss":
-<<<<<<< Updated upstream
                     return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
-=======
-                    return PropertyAccess.FormatString(this.GetPostStatusCss(
-                            new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID,
-                                accessingUser.UserID)),
-                        format);
                 case "iconpinned":
                     return this.IsPinned
                         ? PropertyAccess.FormatString(this.TopicId.ToString(), format)
@@ -1091,7 +1085,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return string.Empty;
                 case "actionmarkansweronclick": /* this applies only to replies not original topic */
                     return string.Empty;
->>>>>>> Stashed changes
             }
 
             propertyNotFound = true;
