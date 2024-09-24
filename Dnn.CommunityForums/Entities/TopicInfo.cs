@@ -777,6 +777,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 accessingUser.UserID)),
                         format);
                 case "posticoncss":
+<<<<<<< Updated upstream
+                    return PropertyAccess.FormatString(this.GetPostStatusCss(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
+=======
                     return PropertyAccess.FormatString(this.GetPostStatusCss(
                             new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID,
                                 accessingUser.UserID)),
@@ -809,7 +812,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             accessingUser.PortalID);
                         if (bEdit &&
                             (bModerate ||
-                             ((this.Author.AuthorId == accessingUser.UserID) && (this.Forum.MainSettings.EditInterval == 0 || DateTime.UtcNow.Subtract(this.Content.DateCreated).Minutes > this.Forum.MainSettings.EditInterval))))
+                             ((this.Author.AuthorId == accessingUser.UserID) && (this.Forum.MainSettings.EditInterval == 0 || DateTime.UtcNow.Subtract(this.Content.DateCreated).TotalMinutes > this.Forum.MainSettings.EditInterval))))
                         {
                             var @params = new List<string>()
                             {
@@ -921,7 +924,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             accessingUser.PortalID);
                         if (bEdit &&
                             (bModerate ||
-                             ((this.Author.AuthorId == accessingUser.UserID) && (this.Forum.MainSettings.EditInterval == 0 || DateTime.UtcNow.Subtract(this.Content.DateCreated).Minutes > this.Forum.MainSettings.EditInterval))))
+                             ((this.Author.AuthorId == accessingUser.UserID) && (this.Forum.MainSettings.EditInterval == 0 || DateTime.UtcNow.Subtract(this.Content.DateCreated).TotalMinutes > this.Forum.MainSettings.EditInterval))))
                         {
                             return PropertyAccess.FormatString(
                                 $"amaf_quickEdit({this.ModuleId},{this.ForumId},{this.TopicId});",
@@ -1088,6 +1091,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return string.Empty;
                 case "actionmarkansweronclick": /* this applies only to replies not original topic */
                     return string.Empty;
+>>>>>>> Stashed changes
             }
 
             propertyNotFound = true;
