@@ -38,6 +38,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Modules;
+    using System.Collections;
 
     [TableName("activeforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
@@ -545,7 +547,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
                         }
 
-                        return PropertyAccess.FormatString(Utilities.NavigateURL(this.Forum.TabId, string.Empty, @params.ToArray()), format);
+                        return PropertyAccess.FormatString(Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()), format);
                     }
 
                     return string.Empty;
@@ -565,7 +567,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
                         }
 
-                        return PropertyAccess.FormatString(Utilities.NavigateURL(this.Forum.TabId, string.Empty, @params.ToArray()), format);
+                        return PropertyAccess.FormatString(Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()), format);
                     }
 
                     return string.Empty;

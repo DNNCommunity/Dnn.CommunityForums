@@ -755,7 +755,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         intLength = Convert.ToInt32(sLength);
                     }
 
-                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(this.LastPostID, this.LastTopicId, System.Web.HttpUtility.HtmlDecode(this.LastPostSubject), intLength, this), format);
+                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(this.LastPostID, this.LastTopicId, System.Web.HttpUtility.HtmlDecode(this.LastPostSubject), intLength, this, this.PortalSettings.ActiveTab.TabID), format);
                 }
             }
 
@@ -775,7 +775,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(this.ForumGroupId.ToString(), format);
                 case "grouplink":
                 case "forumgrouplink":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.TabId,
+                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
+                            this.PortalSettings.ActiveTab.TabID,
                             this.ModuleId,
                             this.ForumGroup.PrefixURL,
                             string.Empty,
@@ -790,21 +791,21 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         format);
                 case "forumlink":
                 case "forumurl":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.TabId,
-                            this.ModuleId,
-                            this.ForumGroup.PrefixURL,
-                            this.PrefixURL,
-                            this.ForumGroupId,
-                            this.ForumID,
-                            -1,
-                            -1,
-                            string.Empty,
-                            1,
-                            -1,
-                            this.SocialGroupId),
-                        format);
+                    return PropertyAccess.FormatString(
+                     new ControlUtils().BuildUrl(this.PortalSettings.ActiveTab.TabID,
+                         this.ModuleId,
+                         this.ForumGroup.PrefixURL,
+                         this.PrefixURL,
+                         this.ForumGroupId,
+                         this.ForumID,
+                         -1,
+                         -1,
+                         string.Empty,
+                         1,
+                         -1,
+                         this.SocialGroupId), format);
                 case "parentforumlink":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.TabId,
+                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.ActiveTab.TabID,
                             this.ModuleId,
                             this.ForumGroup.PrefixURL,
                             this.ParentForumUrlPrefix,
@@ -910,7 +911,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         this.GetForumFolderIcon(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
                                 accessingUser.PortalID,
                                 accessingUser.UserID),
-                            this.mainSettings),
+                            this.MainSettings),
                         format);
                 case "forumiconcss":
                     return PropertyAccess.FormatString(

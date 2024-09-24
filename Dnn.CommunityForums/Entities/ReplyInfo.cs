@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Collections;
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
@@ -27,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Tokens;
     using global::DotNetNuke.ComponentModel.DataAnnotations;
@@ -42,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author;
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public int ForumId
         {
             get => this.Topic.ForumId;
@@ -74,13 +77,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool IsDeleted { get; set; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public int PortalId { get => this.Forum.PortalId; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public int ModuleId { get => this.Forum.ModuleId; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
         {
             get => this.topicInfo ?? (this.topicInfo = this.GetTopic());
@@ -91,17 +94,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
         }
-
-        [IgnoreColumn()]
+        
+        [IgnoreColumn]
         public string Subject => Content.Subject;
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string Body => Content.Body;
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string Summary => Content.Summary;
         
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
             get => this.contentInfo ?? (this.contentInfo = this.GetContent());
@@ -113,14 +116,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId);
         }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
             get => this.Topic.Forum;
             set => this.Topic.Forum = value;
         }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author
         {
             get => this.author ?? (this.author = this.GetAuthor(this.PortalId, this.ModuleId, this.Content.AuthorId));
