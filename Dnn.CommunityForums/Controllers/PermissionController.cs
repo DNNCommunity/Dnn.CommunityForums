@@ -348,26 +348,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return null;
             }
         }
-        
-        public static bool HasPerm(string authorizedRoles, int userId, int portalId)
+
+        public static bool HasPerm(string authorizedRoles, int portalId, int moduleId, int userId)
         {
-            string userRoles;
-            userRoles = UserRolesDictionary.GetRoles(portalId, userId);
-            if (string.IsNullOrEmpty(userRoles))
-            {
-                string[] roles = DotNetNuke.Entities.Users.UserController.GetUserById(portalId, userId).Roles;
-                string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(portalId, roles);
-                userRoles = roleIds + "|" + userId + "|" + string.Empty + "|";
-                UserRolesDictionary.AddRoles(portalId, userId, userRoles);
-            }
-
-            if (string.IsNullOrEmpty(userRoles))
-            {
-                return false;
-            }
-
-            return HasPerm(authorizedRoles, userRoles);
+            return HasPerm(authorizedRoles, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId).UserRoles);
         }
+
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
+        public static bool HasPerm(string authorizedRoles, int userId, int portalId) => throw new NotImplementedException();
 
         public string GetPermSet(int moduleId, int permissionsId, string requestedAccess)
         {

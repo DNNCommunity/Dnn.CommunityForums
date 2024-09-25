@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                     return false;
             }
 
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, userInfo.UserID, portalId);
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, portalId, moduleId, userInfo.UserID);
         }
     }
 }
