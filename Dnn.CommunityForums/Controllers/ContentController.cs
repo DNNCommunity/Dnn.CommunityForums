@@ -25,5 +25,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class ContentController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo>
     {
+        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetById(int contentId, int moduleId)
+        {
+            string cachekey = string.Format(CacheKeys.ContentInfo, moduleId, contentId);
+            DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ContentInfo;
+            if (content == null)
+            {
+                content = base.GetById(contentId, moduleId);
+                DataCache.ContentCacheStore(moduleId, cachekey, content);
+            }
+
+            return content;
+        }
     }
 }

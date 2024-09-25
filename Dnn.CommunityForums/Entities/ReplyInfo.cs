@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId, this.ModuleId);
         }
 
         [IgnoreColumn]
@@ -137,15 +137,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus GetReplyStatusForUser(ForumUserInfo forumUser)
         {
-            var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserRoles);
-
-            if (!canView)
+            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserRoles))
             {
                 return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.Forbidden;
             }
 
             try
             {
+                if (forumUser?.UserId == -1)
+                {
+                    return Enums.ReplyStatus.Unread;
+                }
+
                 if (this.ReplyId > forumUser?.GetLastTopicReplyRead(this.Topic))
                 {
                     return DotNetNuke.Modules.ActiveForums.Enums.ReplyStatus.New;

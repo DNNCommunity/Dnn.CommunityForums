@@ -49,12 +49,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
         private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
+        private DotNetNuke.Modules.ActiveForums.Entities.IPostInfo lastPostInfo;
         private Hashtable forumSettings;
         private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
         private PortalSettings portalSettings;
         private ModuleInfo moduleInfo;
         private int? subscriberCount = 0;
         private string rssLink;
+        private List<PropertyInfo> properties;
+        private string lastPostSubject;
 
         public ForumInfo()
         {
@@ -99,7 +102,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int LastReplyId { get; set; }
 
-        public string LastPostSubject { get; set; }
+        public string LastPostSubject
+        {
+            get => this.lastPostSubject ?? (this.lastPostSubject = this.LastPost.Topic.Subject);
+            set => this.lastPostSubject = value;
+        }
+
+        [IgnoreColumn]
+        public DotNetNuke.Modules.ActiveForums.Entities.IPostInfo LastPost
+        {
+            get => this.lastPostInfo ?? (this.lastPostInfo = this.LastReplyId == 0 ? (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo) new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.LastTopicId) : new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.LastReplyId));
+            set => this.lastPostInfo = value;
+        }
 
         [ColumnName("LastPostAuthorName")]
         public string LastPostUserName { get; set; }
@@ -273,7 +287,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return this.subforums;
         }
 
-        private List<PropertyInfo> properties;
 
         [IgnoreColumn]
         public List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties
@@ -314,14 +327,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             try
             {
-                if (this.LastTopicId > forumUser?.GetLastTopicRead(this))
-                {
-                    return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.NewTopics;
-                }
-
                 if (forumUser?.UserId == -1 || this.TotalTopics > forumUser?.GetTopicReadCount(this))
                 {
                     return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.UnreadTopics;
+                }
+
+                if (this.LastTopicId > forumUser?.GetLastTopicRead(this))
+                {
+                    return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.NewTopics;
                 }
 
                 return DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.AllTopicsRead;
@@ -769,15 +782,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     }
             }
         }
-
+        
+        /// <inheritdoc/>
         [IgnoreColumn]
-        public DotNetNuke.Services.Tokens.CacheLevel Cacheability
-        {
-            get
-            {
-                return DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
-            }
-        }
+        public DotNetNuke.Services.Tokens.CacheLevel Cacheability => DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
 
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
@@ -807,7 +815,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         intLength = Convert.ToInt32(sLength);
                     }
 
-                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(this.LastPostID, this.LastTopicId, System.Web.HttpUtility.HtmlDecode(this.LastPostSubject), intLength, this, this.PortalSettings.ActiveTab.TabID), format);
+                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(this.LastPost, intLength, this, this.PortalSettings.ActiveTab.TabID), format);
                 }
             }
 

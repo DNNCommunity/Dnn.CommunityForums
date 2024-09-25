@@ -22,8 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
 
-    [Obsolete(
-        "Deprecated in Community Forums. Scheduled for removal in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.TopicInfo")]
+    [Obsolete("Deprecated in Community Forums. Scheduled for removal in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.TopicInfo")]
     public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
     {
     }
@@ -49,7 +48,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 #pragma warning disable SA1402 // File may only contain a single type
     public class TopicInfo : IPostInfo
 #pragma warning restore SA1402 // File may only contain a single type
-
     {
         [IgnoreColumn]
         public class Category
@@ -202,7 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         internal ContentInfo GetContent()
         {
-            return new Controllers.ContentController().GetById(this.ContentId);
+            return new Controllers.ContentController().GetById(this.ContentId, this.ModuleId);
         }
 
         [IgnoreColumn]
@@ -278,7 +276,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     this.categories = new Controllers.CategoryController()
                         .Find("WHERE ForumId = @0 OR ForumGroupid = @1", this.ForumId, this.Forum.ForumGroupId)
-                        .Select(c => { return new Category(c.TagId, c.TagName, false); }).ToList();
+                        .Select(c => new Category(c.TagId, c.TagName, false)).ToList();
                     var topicCategoryIds = new Controllers.TopicCategoryController().GetForTopic(this.TopicId)
                         .Select(t => t.TagId);
                     topicCategoryIds.ForEach(tc =>
@@ -295,49 +293,32 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public string SelectedCategoriesAsString
         {
-            get
-            {
-                if (this.selectedcategories == null)
-                {
-                    this.selectedcategories = string.Join(";", this.SelectedCategories.Select(c => c.id.ToString()));
-                }
-
-                return this.selectedcategories;
-            }
-
+            get => this.selectedcategories ?? (this.selectedcategories = string.Join(";", this.SelectedCategories.Select(c => c.id.ToString())));
             set => this.selectedcategories = value;
         }
 
         [IgnoreColumn]
         public IEnumerable<TopicPropertyInfo> TopicProperties
         {
-            get
-            {
-                if (this.TopicData == string.Empty)
-                {
-                    return null;
-                }
-                else
-                {
-                    return Controllers.TopicPropertyController.Deserialize(this.TopicData);
-                }
-            }
-
+            get => this.TopicData == string.Empty ? null : Controllers.TopicPropertyController.Deserialize(this.TopicData);
             set => this.TopicData = Controllers.TopicPropertyController.Serialize(this.Forum, value);
         }
 
         [IgnoreColumn]
         internal Enums.TopicStatus GetTopicStatusForUser(ForumUserInfo forumUser)
         {
-            var canView = Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserRoles);
-
-            if (!canView)
+            if (!Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserRoles))
             {
                 return Enums.TopicStatus.Forbidden;
             }
 
             try
             {
+                if (forumUser?.UserId == -1)
+                {
+                    return Enums.TopicStatus.Unread;
+                }
+
                 if (this.TopicId > forumUser?.GetLastTopicRead(this))
                 {
                     return Enums.TopicStatus.New;
@@ -350,7 +331,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 return Enums.TopicStatus.Unread;
             }
-
             catch
             {
                 /* this is to handle some limited unit testing without retrieving data */
@@ -391,7 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal string GetTopicStatusCss(ForumUserInfo forumUser)
         {
-            var css = string.Empty;
+            string css;
             switch (this.GetTopicStatusForUser(forumUser))
             {
                 case Enums.TopicStatus.Forbidden:
@@ -451,7 +431,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string GetPostStatusCss(ForumUserInfo forumUser)
         {
-            var css = string.Empty;
+            string css;
             switch (this.GetPostStatusForUser(forumUser))
             {
                 case Enums.PostStatus.Forbidden:
@@ -492,9 +472,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return css;
         }
-
+        
+        /// <inheritdoc/>
         [IgnoreColumn] public CacheLevel Cacheability => CacheLevel.notCacheable;
-
+        
+        /// <inheritdoc/>
         [IgnoreColumn]
         public string GetProperty(string propertyName,
             string format,
@@ -595,13 +577,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "rating":
                     return this.Rating < 1 ? string.Empty : PropertyAccess.FormatString(this.Rating.ToString(), format);
                 case "topicurl":
-                    return PropertyAccess.FormatString(this.TopicUrl.ToString(), format);
+                    return PropertyAccess.FormatString(this.TopicUrl, format);
                 case "forumurl":
-                    return PropertyAccess.FormatString(this.ForumURL.ToString(), format);
+                    return PropertyAccess.FormatString(this.ForumURL, format);
                 case "link":
-                    return PropertyAccess.FormatString(this.URL.ToString(), format);
+                    return PropertyAccess.FormatString(this.URL, format);
                 case "url":
-                    return PropertyAccess.FormatString(this.URL.ToString(), format);
+                    return PropertyAccess.FormatString(this.URL, format);
                 case "lastreplydisplayname":
                     return PropertyAccess.FormatString(this.lastReplyAuthor.DisplayName, format);
                 case "datecreated":
@@ -666,7 +648,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             this.Author.ForumUser)
                             ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
                                 string.Empty,
-                                new[] { $"userId={this.Content.AuthorId}" })
+                                $"userId={this.Content.AuthorId}")
                             : string.Empty,
                         format);
                 case "authordisplayname":
@@ -739,7 +721,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 this.LastReply.Author.ForumUser)
                                 ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
                                     string.Empty,
-                                    new[] { $"userId={this.LastReplyAuthor.AuthorId}" })
+                                    $"userId={this.LastReplyAuthor.AuthorId}")
                                 : string.Empty
                             : string.Empty,
                         format);

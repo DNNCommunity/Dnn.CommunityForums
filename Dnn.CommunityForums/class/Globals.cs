@@ -453,6 +453,12 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ForumGroupSettings = "AF-{0}-fgs-{1}";
         public const string PermissionsInfo = "AF-{0}-perms-{1}";
 
+        
+        public const string ContentInfo = "AF-{0}-ci-{1}";
+        public const string TopicTrackingInfo = "AF-{0}-tti-{1}-{2}";
+        public const string ForumTrackingInfo = "AF-{0}-fti-{1}-{2}";
+        public const string TopicReadCount = "AF-{0}-trc-{1}-{2}";
+
         public const string RoleNames = "AF-rn-{0}";
         public const string RoleIDs = "AF-rids-{0}";
         public const string Roles = "AF-roles-{0}";

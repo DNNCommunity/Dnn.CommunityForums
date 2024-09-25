@@ -115,6 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[key: PropertySource_host] = new HostPropertyAccess();
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
+
         public TokenReplacer(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo)
         {
             this.PropertySource[key: PropertySource_resx] = new DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer();
@@ -475,32 +476,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 topic.Content.Summary = topic.Content.Summary.Replace("<br />", "  ");
             }
 
-
-            //if (topic.IsLocked)
-            //{
-            //    template.Replace("fa-lock", "fa-unlock");
-            //    template.Replace("[RESX:Lock]", "[RESX:UnLock]");
-            //    template.Replace("[RESX:LockTopic]", "[RESX:UnLockTopic]");
-            //    template.Replace("[RESX:Confirm:Lock]", "[RESX:Confirm:UnLock]");
-            //}
-
-            //if (template.ToString().Contains("[ICONLOCK]"))
-            //{
-            //    template.Replace("[ICONLOCK]", string.Format(GetTokenFormatString(topic.IsLocked ? "[ICONLOCK]-ShowIcon" : "[ICONLOCK]-HideIcon", portalSettings, language), topic.TopicId.ToString()));
-            //}
-
-            //if (topic.IsPinned)
-            //{
-            //    template.Replace("dcf-topic-pin-pin", "dcf-topic-pin-unpin");
-            //    template.Replace("[RESX:Pin]", "[RESX:UnPin]");
-            //    template.Replace("[RESX:PinTopic]", "[RESX:UnPinTopic]");
-            //    template.Replace("[RESX:Confirm:Pin]", "[RESX:Confirm:UnPin]");
-            //}
-
-            //if (template.ToString().Contains("[ICONPIN]"))
-            //{
-            //    template.Replace("[ICONPIN]", string.Format(GetTokenFormatString(topic.IsPinned ? "[ICONPIN]-ShowIcon" : "[ICONPIN]-HideIcon", portalSettings, language), topic.TopicId.ToString()));
-            //}
 
             if (template.ToString().Contains("[TOPICURL]") ||
                 template.ToString().Contains("[AF:ICONLINK:LASTREAD]") ||
@@ -1040,7 +1015,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                     portalSettings,
                     language,
                     "[ICONUNPINNED]",
-                    "[FORUFORUMTOPICMPOST:ICONUNPINNED",
+                    "[FORUMTOPIC:ICONUNPINNED",
                     "[ICONPIN]-HideIcon");
             }
 
@@ -1215,7 +1190,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             return ReplaceTokenSynonym(template, oldTokenNamePrefix, newTokenNamePrefix);
         }
-
+        
         internal static StringBuilder ReplaceTokenSynonym(StringBuilder template, string fromToken, string toToken)
         {
             if (template.ToString().Contains(fromToken))
@@ -1226,6 +1201,21 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 log.AddProperty("Message", message);
                 LogController.Instance.AddLog(log);
                 return template.Replace(fromToken, toToken);
+            }
+
+            return template;
+        }
+        internal static string ReplaceTokenSynonym(string template, string fromToken, string toToken)
+        {
+            if (template.Contains(fromToken))
+            {
+                var log = new LogInfo { LogTypeKey = Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                var message = string.Format(Utilities.GetSharedResource("[RESX:ReplaceObsoleteToken]"), fromToken, toToken);
+                log.AddProperty("Message", message);
+                LogController.Instance.AddLog(log);
+                template = template.Replace(fromToken, toToken);
+                return template;
             }
 
             return template;
@@ -1362,37 +1352,29 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             var sw = new Stopwatch();
 #endif
             var matches = RegexUtils.GetCachedRegex(Pattern, RegexOptions.Compiled & RegexOptions.IgnorePatternWhitespace, 30).Matches(source);
-            // int goodMatches = 0;
-            var sb = new StringBuilder(source);
+
             if (matches.Count > 0)
             {
+                var sb = new StringBuilder(source);
                 foreach (Match match in matches)
                 {
                     if (!string.IsNullOrEmpty(match.Groups["token"]?.Value) && match.Groups["object"] != null && this.PropertySource.ContainsKey(match.Groups["object"].Value.ToLowerInvariant()))
                     {
 #if DEBUG
-                        sw.Start();
+                        sw.Restart();
 #endif
-                        //goodMatches++;
-                        sb.Replace(match.Groups["token"].Value, this.ReplaceTokens(match.Groups["token"].Value));
-
+                        sb.Replace(match.Groups["token"]?.Value, this.ReplaceTokens(match.Groups["token"]?.Value));
 #if DEBUG
                         sw.Stop();
-                        Debug.WriteLine($"{sw.Elapsed} : TOKEN: {match.Groups["token"].Value}");
+                        Debug.WriteLine($"{sw.Elapsed} : TOKEN: {match.Groups["token"]?.Value}");
 #endif
                     }
                 }
 
-                //if (goodMatches > 0)
-                //{
-                //    sw.Start();
-                //    this.ReplaceTokens(source);
-                //    sw.Stop();
-                //    Debug.WriteLine($"{sw.Elapsed} : source: {source}");
-                //}
+                return sb.ToString();
             }
 
-            return sb.ToString();
+            return source;
         }
     }
 }

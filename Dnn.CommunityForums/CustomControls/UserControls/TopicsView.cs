@@ -129,6 +129,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     topicsTemplate = topicsTemplate.Replace("[NOTOOLBAR]", string.Empty);
                 }
 
+                if (topicsTemplate.Contains("[AF:CONTROL:TOPICACTIONS]"))
+                {
+                    DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTokenSynonym(
+                        topicsTemplate,
+                        "[AF:CONTROL:TOPICACTIONS]",
+                        "[DCF:TOOLBAR:TOPICACTIONS]");
+                }
+
+                if (topicsTemplate.Contains("[DCF:CONTROL:TOPICACTIONS]"))
+                {
+                    this.useListActions = true;
+                    topicsTemplate = topicsTemplate.Replace("[DCF:CONTROL:TOPICACTIONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicActions"));
+                }
+
                 this.pageSize = this.MainSettings.PageSize;
                 if (this.UserId > 0)
                 {
@@ -192,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                         if (this.bView)
                         {
-                            
+
                             this.topicRowCount = Convert.ToInt32(this.drForum["TopicRowCount"]);
                             if (this.UserId > 0)
                             {
@@ -200,8 +214,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
 
                             if (this.MainSettings.UseSkinBreadCrumb)
-                            {                        
-                                string groupURL =  new ControlUtils().BuildUrl(this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, string.Empty, this.ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
+                            {
+                                string groupURL = new ControlUtils().BuildUrl(this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, string.Empty, this.ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
                                 DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + groupURL + "\">" + this.ForumInfo.ForumGroup.GroupName + "</a>");
                                 topicsTemplate = topicsTemplate.Replace("<div class=\"afcrumb\">[FORUMMAINLINK] > [FORUMGROUPLINK]</div>", string.Empty);
                             }
@@ -353,7 +367,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(stringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId);
             sOutput = stringBuilder.ToString();
 
-            sOutput = TemplateUtils.ReplaceSubSection(sOutput, sAnnounce, "[ANNOUNCEMENTS]", "[/ANNOUNCEMENTS]"); 
+            sOutput = TemplateUtils.ReplaceSubSection(sOutput, sAnnounce, "[ANNOUNCEMENTS]", "[/ANNOUNCEMENTS]");
             sOutput = Utilities.LocalizeControl(sOutput);
             this.Controls.Add(this.ParseControl(sOutput));
             this.BuildPager();
@@ -410,74 +424,74 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
         private string ParseControls(string Template)
-         {
-             string MyTheme = this.MainSettings.Theme;
-             string sOutput = Template;
-             sOutput = "<%@ Register TagPrefix=\"ac\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>" + sOutput;
+        {
+            string MyTheme = this.MainSettings.Theme;
+            string sOutput = Template;
+            sOutput = "<%@ Register TagPrefix=\"ac\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>" + sOutput;
 
-             //Forum Drop Downlist
-             sOutput = sOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
-             //Tag Cloud
-             sOutput = sOutput.Replace("[AF:CONTROLS:TAGCLOUD]", "<ac:tagcloud ModuleId=\"" + this.ModuleId + "\" PortalId=\"" + this.PortalId + "\" tabid=\"" + this.TabId + "\" runat=\"server\" />");
-
-            
-             //Forum Subscription Control
-             if (this.bSubscribe)
-             {
-                 Controls.ToggleSubscribe subControl = new Controls.ToggleSubscribe(this.ForumModuleId, this.ForumId, -1, 0);
-                 subControl.Checked = isSubscribedForum;
-                 subControl.Text = "[RESX:Subscribe]";
-                 sOutput = sOutput.Replace("[FORUMSUBSCRIBE]", subControl.Render());
-             }
-             else
-             {
-                 sOutput = sOutput.Replace("[FORUMSUBSCRIBE]", string.Empty);
-             }
-             if (this.Request.IsAuthenticated)
-             {
-                 sOutput = sOutput.Replace("[MARKFORUMREAD]", "<am:MarkForumRead EnableViewState=\"False\" id=\"amMarkForumRead\" MID=\"" + this.ForumModuleId + "\" runat=\"server\" />");
-             }
-             else
-             {
-                 sOutput = sOutput.Replace("[MARKFORUMREAD]", string.Empty);
-             }
-
-             if (this.CanCreate)
-             {
-                 string[] Params = { };
-                 if (this.SocialGroupId <= 0)
-                 {
-                     Params = new string[] { ParamKeys.ViewType + "=post", ParamKeys.ForumId + "=" + this.ForumId };
-                 }
-                 else
-                 {
-                     Params = new string[] { ParamKeys.ViewType + "=post", ParamKeys.ForumId + "=" + this.ForumId, "GroupId=" + this.SocialGroupId, };
-                 }
-                 sOutput = sOutput.Replace("[ADDTOPIC]", "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, Params) + "\" class=\"dnnPrimaryAction\">[RESX:AddTopic]</a>");
-             }
-             else
-             {
-                 sOutput = sOutput.Replace("[ADDTOPIC]", "<div class=\"amnormal\">[RESX:NotAuthorizedTopic]</div>");
-             }
-             sOutput = sOutput.Replace("[ADDPOLL]", string.Empty);
-             
-             if (this.Request.IsAuthenticated)
-             {
-                 string Url = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=sendto", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
-                 sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + Url + "\" rel=\"nofollow\"><img src=\"" + Utilities.ResolveUrl(this.MainSettings.ThemeLocation + "/images/email16.png") + "\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
-             }
-             else
-             {
-                 sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", string.Empty);
-             }
-             sOutput = sOutput.Replace("[MINISEARCH]", "<am:MiniSearch id=\"amMiniSearch\" runat=\"server\" EnableViewState=\"False\" MID=\"" + this.ModuleId + "\" TID=\"" + this.TabId + "\" FID=\"" + this.ForumId + "\" />");
-             sOutput = sOutput.Replace("[PAGER1]", "<am:pagernav id=\"Pager1\" runat=\"server\" EnableViewState=\"False\" />");
-             sOutput = sOutput.Replace("[PAGER2]", "<am:pagernav id=\"Pager2\" runat=\"server\" EnableViewState=\"False\" />");
+            //Forum Drop Downlist
+            sOutput = sOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
+            //Tag Cloud
+            sOutput = sOutput.Replace("[AF:CONTROLS:TAGCLOUD]", "<ac:tagcloud ModuleId=\"" + this.ModuleId + "\" PortalId=\"" + this.PortalId + "\" tabid=\"" + this.TabId + "\" runat=\"server\" />");
 
 
+            //Forum Subscription Control
+            if (this.bSubscribe)
+            {
+                Controls.ToggleSubscribe subControl = new Controls.ToggleSubscribe(this.ForumModuleId, this.ForumId, -1, 0);
+                subControl.Checked = isSubscribedForum;
+                subControl.Text = "[RESX:Subscribe]";
+                sOutput = sOutput.Replace("[FORUMSUBSCRIBE]", subControl.Render());
+            }
+            else
+            {
+                sOutput = sOutput.Replace("[FORUMSUBSCRIBE]", string.Empty);
+            }
+            if (this.Request.IsAuthenticated)
+            {
+                sOutput = sOutput.Replace("[MARKFORUMREAD]", "<am:MarkForumRead EnableViewState=\"False\" id=\"amMarkForumRead\" MID=\"" + this.ForumModuleId + "\" runat=\"server\" />");
+            }
+            else
+            {
+                sOutput = sOutput.Replace("[MARKFORUMREAD]", string.Empty);
+            }
 
-             return sOutput;
-         }
+            if (this.CanCreate)
+            {
+                string[] Params = { };
+                if (this.SocialGroupId <= 0)
+                {
+                    Params = new string[] { ParamKeys.ViewType + "=post", ParamKeys.ForumId + "=" + this.ForumId };
+                }
+                else
+                {
+                    Params = new string[] { ParamKeys.ViewType + "=post", ParamKeys.ForumId + "=" + this.ForumId, "GroupId=" + this.SocialGroupId, };
+                }
+                sOutput = sOutput.Replace("[ADDTOPIC]", "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, Params) + "\" class=\"dnnPrimaryAction\">[RESX:AddTopic]</a>");
+            }
+            else
+            {
+                sOutput = sOutput.Replace("[ADDTOPIC]", "<div class=\"amnormal\">[RESX:NotAuthorizedTopic]</div>");
+            }
+            sOutput = sOutput.Replace("[ADDPOLL]", string.Empty);
+
+            if (this.Request.IsAuthenticated)
+            {
+                string Url = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=sendto", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
+                sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + Url + "\" rel=\"nofollow\"><img src=\"" + Utilities.ResolveUrl(this.MainSettings.ThemeLocation + "/images/email16.png") + "\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
+            }
+            else
+            {
+                sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", string.Empty);
+            }
+            sOutput = sOutput.Replace("[MINISEARCH]", "<am:MiniSearch id=\"amMiniSearch\" runat=\"server\" EnableViewState=\"False\" MID=\"" + this.ModuleId + "\" TID=\"" + this.TabId + "\" FID=\"" + this.ForumId + "\" />");
+            sOutput = sOutput.Replace("[PAGER1]", "<am:pagernav id=\"Pager1\" runat=\"server\" EnableViewState=\"False\" />");
+            sOutput = sOutput.Replace("[PAGER2]", "<am:pagernav id=\"Pager2\" runat=\"server\" EnableViewState=\"False\" />");
+
+
+
+            return sOutput;
+        }
 
         private string ParseTopics(string Template, DataTable Topics, string Section)
         {
@@ -537,6 +551,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     topicInfo.Content.Summary = topicInfo.Content.Summary.Replace(System.Environment.NewLine, "<br />");
                 }
+
                 topicInfo.Author.FirstName = topicInfo.Author.FirstName.Replace("&amp;#", "&#");
                 topicInfo.Author.LastName = topicInfo.Author.LastName.Replace("&amp;#", "&#");
                 topicInfo.Author.DisplayName = topicInfo.Author.DisplayName.Replace("&amp;#", "&#");
@@ -570,7 +585,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         string tmp = sPropTemplate;
                         var pName = HttpUtility.HtmlDecode(p.Name);
-                        var pValue = HttpUtility.HtmlDecode(p.Value); 
+                        var pValue = HttpUtility.HtmlDecode(p.Value);
                         tmp = tmp.Replace("[AF:PROPERTY:LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
                         tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
                         topicTemplate = topicTemplate.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
@@ -588,29 +603,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 StringBuilder stringBuilder = new StringBuilder(topicTemplate);
-                if (stringBuilder.ToString().Contains("[AF:CONTROL:TOPICACTIONS]"))
-                {
-                    DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTokenSynonym(
-                        stringBuilder,
-                        "[AF:CONTROL:TOPICACTIONS]",
-                        "[DCF:TOOLBAR:TOPICACTIONS]");
-                }
-
-                if (stringBuilder.ToString().Contains("[DCF:CONTROL:TOPICACTIONS]"))
-                {
-                    this.useListActions = true;
-                    stringBuilder.Replace("[DCF:CONTROL:TOPICACTIONS]",  TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicActions"));
-                }
-
-                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicActionTokens(stringBuilder,
-                                                                                                                       topicInfo,
-                                                                                                                       this.PortalSettings,
-                                                                                                                       this.MainSettings,
-                                                                                                                       new Services.URLNavigator().NavigationManager(),
-                                                                                                                       this.ForumUser,
-                                                                                                                       HttpContext.Current.Request,
-                                                                                                                       this.TabId,
-                                                                                                                       this.useListActions);
 
                 if (this.UserId == -1 || topicInfo.LastReplyId == 0)
                 {
@@ -622,6 +614,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     stringBuilder.Replace("[AF:ICONLINK:LASTREAD]", string.Empty);
                     stringBuilder.Replace("[AF:URL:LASTREAD]", string.Empty);
                 }
+
+                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicActionTokenSynonyms(stringBuilder,
+                    this.ForumUser,
+                    topicInfo,
+                    this.PortalSettings,
+                    this.ForumUser.UserInfo?.Profile?.PreferredLocale,
+                    this.useListActions);
+
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(stringBuilder, topicInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request);
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceUserTokens(stringBuilder, this.PortalSettings, this.MainSettings, topicInfo.Author.ForumUser, this.ForumUser, this.ForumModuleId);
 
@@ -720,19 +720,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sOut += "<a href=\"" + this.NavigateUrl(tabID, string.Empty, Params.ToArray()) + "\">" + i + "</a>&nbsp;";
 
                         if (intPostPages > 4)
-                    {
-                        sOut += "...&nbsp;";
-                    }
+                        {
+                            sOut += "...&nbsp;";
+                        }
 
                         Params = new List<string> { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
                         if (this.MainSettings.UseShortUrls)
-                    {
+                        {
                             Params = new List<string> { ParamKeys.TopicId + "=" + postID };
-                    }
+                        }
                         if (i > 1)
-                    {
+                        {
                             Params.Add(ParamKeys.PageJumpId + "=" + i);
-                    }
+                        }
                         sOut += "<a href=\"" + this.NavigateUrl(tabID, string.Empty, Params.ToArray()) + "\">" + i + "</a>&nbsp;";
 
                         sOut += "<a href=\"" + this.NavigateUrl(tabID, string.Empty, Params.ToArray()) + "\">" + i + "</a>&nbsp;";

@@ -27,10 +27,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class ForumTrackingController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo>
     {
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo GetByUserIdForumId(int userId, int forumId)
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo GetByUserIdForumId(int moduleId, int userId, int forumId)
         {
-            // this accommodates duplicates which may exist since currently no uniqueness applied in database
-            return this.Find("WHERE UserId = @0 AND ForumId = @1", userId, forumId).OrderBy(t => t.LastAccessDateTime).FirstOrDefault();
+                string cachekey = string.Format(CacheKeys.ForumTrackingInfo, moduleId, userId, forumId);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo forumTrackingInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo;
+                if (forumTrackingInfo == null)
+                {
+                    // this accommodates duplicates which may exist since currently no uniqueness applied in database
+                    forumTrackingInfo = this.Find("WHERE UserId = @0 AND ForumId = @1", userId, forumId).OrderBy(t => t.LastAccessDateTime).FirstOrDefault();
+                    DataCache.ContentCacheStore(moduleId, cachekey, forumTrackingInfo);
+                }
+
+                return forumTrackingInfo;
         }
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo> GetForumsTrackingForUser(int userId)
