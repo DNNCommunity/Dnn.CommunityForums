@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     }
 
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
-                                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.ForumTabId, this.ForumModuleId, fi.ForumGroupId, tmpForumId, tmpTopicId, -tmpReplyId, ri.Content.AuthorId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.ForumTabId, this.ForumModuleId, fi.ForumGroupId, tmpForumId, tmpTopicId, tmpReplyId, ri.Content.AuthorId);
                                 }
                             }
 

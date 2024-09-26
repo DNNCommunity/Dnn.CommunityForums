@@ -1764,6 +1764,15 @@ De,
   <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
     <value>Jeton de modèle commençant par : {0} est obsolète et ne peut pas être remplacé. Supprimer du ou des modèles.</value>
   </data>
+  <data name="[RESX:UnableToFindReplyToProcess].Text" xml:space="preserve">
+    <value>La file d’attente de traitement des forums de la communauté DNN n’a pas pu traiter les {0} de réponse car elle n’existe pas et a probablement été supprimée avant le traitement. Aucune autre action n’aura lieu pour cette réponse. Si vous voyez ce message fréquemment, veuillez visiter le référentiel Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour connaître les étapes de dépannage.</value>
+  </data>
+  <data name="[RESX:UnableToFindTopicToProcess].Text" xml:space="preserve">
+    <value>La file d’attente de traitement des forums de la communauté DNN n’a pas pu traiter les {0} de sujet car elle n’existe pas et a probablement été supprimée avant le traitement. Aucune autre action n’aura lieu pour cette réponse. Si vous voyez ce message fréquemment, veuillez visiter le référentiel Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour connaître les étapes de dépannage.</value>
+  </data>
+  <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
+    <value>La file d’attente de traitement des forums de la communauté DNN n’a pas pu traiter les éléments {0} et ils sont dans la file d’attente depuis plus de 7 jours. Aucune autre mesure ne sera prise à l’égard de cet article. Si vous voyez ce message fréquemment, veuillez visiter le référentiel Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour connaître les étapes de dépannage.</value>
+  </data>
   <data name="[RESX:Child].Text" xml:space="preserve">
     <value>Enfant</value>
   </data>

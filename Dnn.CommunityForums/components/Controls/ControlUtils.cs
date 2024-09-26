@@ -28,7 +28,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class ControlUtils
     {
-        public string BuildPager(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int pageCount)
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
+        public string BuildPager(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int pageCount) => throw new NotImplementedException();
+        public string BuildPager(int portalId, int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int pageCount)
         {
             if (pageCount == 1)
             {
@@ -75,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    sb.AppendFormat("<td class=\"afpg-page\"><a href=\"{0}\"><span>{1}</span></a></td>", this.BuildUrl(tabId, moduleId, groupPrefix, forumPrefix, forumGroupId, forumID, tagId, categoryId, otherPrefix, i, -1, -1), i);
+                    sb.AppendFormat("<td class=\"afpg-page\"><a href=\"{0}\"><span>{1}</span></a></td>", this.BuildUrl(portalId, tabId, moduleId, groupPrefix, forumPrefix, forumGroupId, forumID, tagId, categoryId, otherPrefix, i, -1, -1), i);
                 }
 
                 if (i == pageCount)
@@ -89,15 +91,21 @@ namespace DotNetNuke.Modules.ActiveForums
             return sb.ToString();
         }
 
-        public string BuildUrl(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId)
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
+        public string BuildUrl(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId) => throw new NotImplementedException();
+
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
+        public string BuildUrl(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int topicId, string topicURL, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId) => throw new NotImplementedException();
+
+        public string BuildUrl(int portalId, int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId)
         {
-            return this.BuildUrl(tabId, moduleId, groupPrefix, forumPrefix, forumGroupId, forumID, -1, string.Empty, tagId, categoryId, otherPrefix, pageId, contentId, socialGroupId);
+            return this.BuildUrl(portalId, tabId, moduleId, groupPrefix, forumPrefix, forumGroupId, forumID, -1, string.Empty, tagId, categoryId, otherPrefix, pageId, contentId, socialGroupId);
         }
 
-        public string BuildUrl(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int topicId, string topicURL, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId)
+        public string BuildUrl(int portalId, int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int topicId, string topicURL, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId)
         {
             var mainSettings = SettingsBase.GetModuleSettings(moduleId);
-            DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings();
+            DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(portalId);
             var @params = new List<string>();
 
             if (!mainSettings.URLRewriteEnabled || (((string.IsNullOrEmpty(forumPrefix) && forumID > 0 && string.IsNullOrEmpty(groupPrefix)) || (string.IsNullOrEmpty(forumPrefix) && string.IsNullOrEmpty(groupPrefix) && forumGroupId > 0)) && string.IsNullOrEmpty(otherPrefix)))

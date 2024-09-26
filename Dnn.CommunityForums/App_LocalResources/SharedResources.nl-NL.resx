@@ -1789,6 +1789,15 @@ Van,
   <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
     <value>Template Token beginnend met: {0} is verouderd en kan niet worden vervangen. Verwijderen uit sjabloon(s).</value>
   </data>
+  <data name="[RESX:UnableToFindReplyToProcess].Text" xml:space="preserve">
+    <value>De proceswachtrij van DNN-communityforums kan geen antwoord {0} verwerken omdat deze niet bestaat en waarschijnlijk is verwijderd voordat deze is verwerkt. Er zal geen verdere actie worden ondernomen voor dit antwoord. Als u dit bericht vaak ziet, ga dan naar de Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums) van de DNN-communityforums, waar u een probleem kunt melden of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
+  </data>
+  <data name="[RESX:UnableToFindTopicToProcess].Text" xml:space="preserve">
+    <value>De proceswachtrij van DNN-communityforums kan de {0} van het onderwerp niet verwerken omdat deze niet bestaat en waarschijnlijk is verwijderd voordat deze is verwerkt. Er zal geen verdere actie worden ondernomen voor dit antwoord. Als u dit bericht vaak ziet, ga dan naar de Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums) van de DNN-communityforums, waar u een probleem kunt melden of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
+  </data>
+  <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
+    <value>De proceswachtrij van DNN-communityforums kan het item {0} niet verwerken en staat al meer dan 7 dagen in de wachtrij. Er wordt geen verdere actie ondernomen voor dit object. Als u dit bericht vaak ziet, ga dan naar de Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums) van de DNN-communityforums, waar u een probleem kunt melden of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
+  </data>
   <data name="[RESX:Child].Text" xml:space="preserve">
     <value>Kind</value>
   </data>

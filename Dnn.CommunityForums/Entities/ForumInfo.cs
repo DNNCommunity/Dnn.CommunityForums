@@ -838,6 +838,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "grouplink":
                 case "forumgrouplink":
                     return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
+                            this.PortalSettings.PortalId,
                             this.PortalSettings.ActiveTab.TabID,
                             this.ModuleId,
                             this.ForumGroup.PrefixURL,
@@ -854,7 +855,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "forumlink":
                 case "forumurl":
                     return PropertyAccess.FormatString(
-                        new ControlUtils().BuildUrl(this.PortalSettings.ActiveTab.TabID,
+                        new ControlUtils().BuildUrl(
+                            this.PortalSettings.PortalId,
+                            this.PortalSettings.ActiveTab.TabID,
                             this.ModuleId,
                             this.ForumGroup.PrefixURL,
                             this.PrefixURL,
@@ -868,7 +871,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             this.SocialGroupId),
                         format);
                 case "parentforumlink":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.ActiveTab.TabID,
+                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
+                            this.PortalSettings.PortalId,
+                            this.PortalSettings.ActiveTab.TabID,
                             this.ModuleId,
                             this.ForumGroup.PrefixURL,
                             this.ParentForumUrlPrefix,
