@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Data;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Reflection;
     using System.Text;
 
@@ -46,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public string GetForumsHtmlOption(int portalId, int moduleId, User currentUser)
         {
             var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, currentUser.UserId);
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(moduleId, user);
+            return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(moduleId, user, includeHiddenForums: true);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save.")]

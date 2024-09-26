@@ -98,7 +98,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     fi.ForumName.Length > 30 ? $"{fi.ForumName.Substring(0, 27)}..." : fi.ForumName,
                     $"FORUMJUMP:{fi.ForumID}"));
                 index += 1;
-            });
+            },
+            includeHiddenForums: false);
 
             if (this.GetViewType != null)
             {
