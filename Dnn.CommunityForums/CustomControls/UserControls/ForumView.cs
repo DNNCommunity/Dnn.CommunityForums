@@ -153,7 +153,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 string sTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ForumView", 0);
 
+
                 StringBuilder stringBuilder = new StringBuilder(sTemplate);
+                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(stringBuilder);
+                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(stringBuilder, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale);
                 stringBuilder.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
                 stringBuilder.Replace("[STATISTICS]", "<am:Stats id=\"amStats\" MID=\"" + this.ModuleId + "\" PID=\"" + this.PortalId.ToString() + "\" runat=\"server\" />");
                 stringBuilder.Replace("[WHOSONLINE]", this.MainSettings.UsersOnlineEnabled ? "<asp:placeholder id=\"plhUsersOnline\" runat=\"server\" />" : string.Empty);
@@ -313,10 +316,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTemplate = sTemplate.Contains("[GROUPSECTION]") ? TemplateUtils.ReplaceSubSection(sTemplate, sGroupSection, "[GROUPSECTION]", "[/GROUPSECTION]") : sGroupSection;
                     sTemplate = TemplateUtils.ReplaceSubSection(sTemplate, string.Empty, "[FORUMS]", "[/FORUMS]");
                 }
-                StringBuilder templateStringBuilder = new StringBuilder(sTemplate);
-                templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(templateStringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId);
-                templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceUserTokens(templateStringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.ForumUser, this.ForumModuleId);
-                sTemplate = templateStringBuilder.ToString();
+                //StringBuilder templateStringBuilder = new StringBuilder(sTemplate);
+                //templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(templateStringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId);
+                //templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceUserTokens(templateStringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.ForumUser, this.ForumModuleId);
+                //sTemplate = templateStringBuilder.ToString();
                 return sTemplate;
             }
             catch (Exception ex)
@@ -400,7 +403,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             StringBuilder templateStringBuilder = new StringBuilder(template);
             templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
-            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(templateStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
 
             if (templateStringBuilder.ToString().Contains("[AF:CONTROL:TOGGLESUBSCRIBE]"))
             {

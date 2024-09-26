@@ -502,7 +502,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(this.ForumGroupId.ToString(), format);
                 case "grouplink":
                 case "forumgrouplink":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.ActiveTab.TabID,
+                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
+                            this.PortalSettings.PortalId,
+                            this.PortalSettings.ActiveTab.TabID,
                             this.ModuleId,
                             this.PrefixURL,
                             string.Empty,
@@ -519,6 +521,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "groupname":
                 case "name":
                     return PropertyAccess.FormatString(this.GroupName, format);
+                case "groupcollapse":
+                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{this.ForumGroupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")), format);
+
             }
 
             propertyNotFound = true;

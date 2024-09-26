@@ -6,4 +6,9 @@
     [FORUMPOST:ACTIONREPLYONCLICK|<li onclick="window.location.href='{0}';" title="[RESX:Reply]"><i class="fa fa-reply fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:Reply]</span></li>]
     [FORUMPOST:ACTIONALERTONCLICK|<li onclick="window.location.href='{0}';" title="[RESX:Alert]"><i class="fa fa-bell-o fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:Alert]</span></li>]
     [FORUMPOST:ACTIONBANONCLICK|<li onclick="window.location.href='{0}';" title="[RESX:Ban]"><i class="fa fa-ban fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:Ban]</span></li>]
+    [FORUMPOST:ACTIONMOVEONCLICK|<li onclick="{0}" title="[RESX:Move]"><i class="fa fa-exchange fa-rotate-90 fa-blue"></i><span class="dcf-link-text">[RESX:Move]</span></li>]
+    [FORUMPOST:ACTIONLOCKONCLICK|<li onclick="{0}" title="[RESX:LockTopic]" class="dcf-topic-lock-outer"><i class="fa fa-lock fa-fm fa-blue dcf-topic-lock-inner"></i><span class="dcf-topic-lock-text dcf-link-text">[RESX:Lock]</span></li>]
+    [FORUMPOST:ACTIONUNLOCKONCLICK|<li onclick="{0}" title="[RESX:UnLockTopic]" class="dcf-topic-lock-outer"><i class="fa fa-unlock fa-fm fa-blue dcf-topic-lock-inner"></i><span class="dcf-topic-lock-text dcf-link-text">[RESX:UnLock]</span></li>]
+    [FORUMPOST:ACTIONPINONCLICK|<li onclick="{0}" title="[RESX:PinTopic]" class="dcf-topic-pin-outer"><i class="fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-unpin dcf-topic-pin-inner"></i><span class="dcf-topic-pin-text dcf-link-text">[RESX:Pin]</span></li>]
+    [FORUMPOST:ACTIONUNPINONCLICK|<li onclick="{0}" title="[RESX:UnPinTopic]" class="dcf-topic-pin-outer"><i class="fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-unpin dcf-topic-pin-inner"></i><span class="dcf-topic-pin-text dcf-link-text">[RESX:UnPin]</span></li>]
 </ul>
