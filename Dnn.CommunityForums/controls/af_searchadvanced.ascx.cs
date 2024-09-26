@@ -455,8 +455,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 fi =>
                 {
                     this.lbForums.Items.Add(new ListItem($"--{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = forumsToSearch.Contains(fi.ForumID) || this.ForumId == fi.ForumID });
-                }
-                );
+                },
+                includeHiddenForums: false);
         }
 
         #endregion
