@@ -510,7 +510,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             if (template.ToString().Contains("[AF:CONTROL:ADDFAVORITE]"))
             {
-                string forumUrl = new ControlUtils().BuildUrl(tabId, forum.ModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, -1, -1, string.Empty, 1, -1, forum.SocialGroupId);
+                string forumUrl = new ControlUtils().BuildUrl(forum.PortalId, tabId, forum.ModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, -1, -1, string.Empty, 1, -1, forum.SocialGroupId);
                 template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + forum.ForumName + "','" + forumUrl + "');\"><img src=\"" + mainSettings.ThemeLocation + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>");
             }
 
@@ -765,7 +765,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 }
 
                 string sLastReplyURL = navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, string.Empty, @params.ToArray());
-                string sTopicURL = new ControlUtils().BuildUrl(portalSettings.ActiveTab.TabID, topic.Forum.ModuleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, topic.Forum.ForumID, topic.TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
+                string sTopicURL = new ControlUtils().BuildUrl(portalSettings.PortalId, portalSettings.ActiveTab.TabID, topic.Forum.ModuleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, topic.Forum.ForumID, topic.TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
                 if (!(string.IsNullOrEmpty(sTopicURL)))
                 {
                     if (sTopicURL.EndsWith("/"))

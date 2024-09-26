@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 ControlUtils ctlUtils = new ControlUtils();
-                string fullURL = ctlUtils.BuildUrl(this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, sTopicURL, -1, -1, string.Empty, 1, this.ReplyId, this.SocialGroupId);
+                string fullURL = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, sTopicURL, -1, -1, string.Empty, 1, this.ReplyId, this.SocialGroupId);
                 string subject = Utilities.GetSharedResource("AlertSubject");
                 subject = subject.Replace("[DisplayName]", authorName);
                 subject = subject.Replace("[Subject]", sSubject);

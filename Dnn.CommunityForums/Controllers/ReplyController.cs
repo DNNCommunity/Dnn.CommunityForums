@@ -186,7 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Subscriptions.SendSubscriptions(-1, portalId, moduleId, tabId, reply.Forum, topicId, replyId, authorId, new Uri(requestUrl));
 
                 ControlUtils ctlUtils = new ControlUtils();
-                string fullURL = ctlUtils.BuildUrl(tabId, moduleId, reply.Forum.ForumGroup.PrefixURL, reply.Forum.PrefixURL, reply.Forum.ForumGroupId, forumId, topicId, reply.Topic.TopicUrl, -1, -1, string.Empty, 1, replyId, reply.Forum.SocialGroupId);
+                string fullURL = ctlUtils.BuildUrl(portalId, tabId, moduleId, reply.Forum.ForumGroup.PrefixURL, reply.Forum.PrefixURL, reply.Forum.ForumGroupId, forumId, topicId, reply.Topic.TopicUrl, -1, -1, string.Empty, 1, replyId, reply.Forum.SocialGroupId);
 
                 if (fullURL.Contains("~/"))
                 {

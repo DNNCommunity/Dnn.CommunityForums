@@ -878,7 +878,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     ControlUtils ctlUtils = new ControlUtils();
-                    string sUrl = ctlUtils.BuildUrl(this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
+                    string sUrl = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
                     if (sUrl.Contains("~/"))
                     {
                         sUrl = Utilities.NavigateURL(this.ForumTabId, string.Empty, ParamKeys.TopicId + "=" + this.TopicId);
@@ -1033,7 +1033,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, this.fi.ForumGroupId, this.ForumId, this.TopicId, tmpReplyId, ri.Content.AuthorId);
                     }
 
-                    var fullURL = new ControlUtils().BuildUrl(this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, this.SocialGroupId);
+                    var fullURL = new ControlUtils().BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, this.SocialGroupId);
                     if (fullURL.Contains("~/"))
                     {
                         fullURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
