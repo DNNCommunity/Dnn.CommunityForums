@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string otherPrefix = id > 0
                 ? Utilities.CleanName(new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(id).TagName)
                 : string.Empty;
-            sb.Append(cUtils.BuildPager(this.TabId, this.ModuleId, groupPrefix, forumPrefix, this.ForumGroupId, this.ForumId, this.TagId, this.CategoryId, otherPrefix, this.PageIndex, pageCount));
+            sb.Append(cUtils.BuildPager(this.PortalId, this.TabId, this.ModuleId, groupPrefix, forumPrefix, this.ForumGroupId, this.ForumId, this.TagId, this.CategoryId, otherPrefix, this.PageIndex, pageCount));
             return sb.ToString();
         }
 

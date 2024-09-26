@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Services.Log.EventLog;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
@@ -322,9 +324,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             try
             {
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                if (topic == null)
+                {
+                    var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                    log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                    var message = string.Format(Utilities.GetSharedResource("[RESX:UnableToFindTopicToProcess]"), replyId);
+                    log.AddProperty("Message", message);
+                    DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                    return true;
+                }
+
                 Subscriptions.SendSubscriptions(-1, portalId, moduleId, tabId, topic.Forum, topicId, 0, topic.Content.AuthorId, new Uri(requestUrl));
 
-                string sUrl = new ControlUtils().BuildUrl(tabId, moduleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, forumId, topicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
+                string sUrl = new ControlUtils().BuildUrl(portalId, tabId, moduleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, forumId, topicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
 
                 Social amas = new Social();
                 amas.AddTopicToJournal(portalId, moduleId, tabId, forumId, topicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body, topic.Forum.Security.Read, topic.Forum.SocialGroupId);

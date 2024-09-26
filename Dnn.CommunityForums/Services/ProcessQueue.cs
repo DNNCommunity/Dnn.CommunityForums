@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Services.Log.EventLog;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
 {
     using System;
@@ -99,7 +101,20 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                     }
                     else
                     {
-                        intQueueCount = intQueueCount - 1;
+                        if (DateTime.UtcNow.Subtract(item.DateCreated).TotalDays > 7)
+                        {
+                            var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                            log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                            var message = string.Format(Utilities.GetSharedResource("[RESX:UnableToProcessItem]"), item.Id);
+                            log.AddProperty("Message", message);
+                            DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().DeleteById(item.Id);
+                        }
+                        else
+                        {
+                            intQueueCount = intQueueCount - 1;
+                        }
+
                     }
                 });
                 return intQueueCount;

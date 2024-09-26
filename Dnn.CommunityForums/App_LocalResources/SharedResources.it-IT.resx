@@ -1753,4 +1753,13 @@ Da
   <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
     <value>Template Token che inizia con: {0} è obsoleto e non ha sostituzione. Rimuovi dal/i modello/i.</value>
   </data>
+  <data name="[RESX:UnableToFindReplyToProcess].Text" xml:space="preserve">
+    <value>La coda di processo dei forum della community DNN non è stata in grado di elaborare {0} di risposta perché non esiste ed è stata probabilmente eliminata prima dell'elaborazione. Non verranno prese ulteriori misure per questa risposta. Se visualizzi spesso questo messaggio, visita il repository Github (https://github.com/DNNCommunity/Dnn.CommunityForums) dei forum della community DNN, dove puoi pubblicare un problema o rivedere il wiki per la procedura di risoluzione dei problemi.</value>
+  </data>
+  <data name="[RESX:UnableToFindTopicToProcess].Text" xml:space="preserve">
+    <value>La coda di processo dei forum della community DNN non è stata in grado di elaborare {0} argomento perché non esiste ed è stato probabilmente eliminato prima dell'elaborazione. Non verranno prese ulteriori misure per questa risposta. Se visualizzi spesso questo messaggio, visita il repository Github (https://github.com/DNNCommunity/Dnn.CommunityForums) dei forum della community DNN, dove puoi pubblicare un problema o rivedere il wiki per la procedura di risoluzione dei problemi.</value>
+  </data>
+  <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
+    <value>La coda di processo dei forum della community DNN non è stata in grado di elaborare {0} dell'elemento ed è rimasta in coda per più di 7 giorni. Non verranno eseguite ulteriori azioni per questo oggetto. Se visualizzi spesso questo messaggio, visita il repository Github (https://github.com/DNNCommunity/Dnn.CommunityForums) dei forum della community DNN, dove puoi pubblicare un problema o rivedere il wiki per la procedura di risoluzione dei problemi.</value>
+  </data>
 </root>

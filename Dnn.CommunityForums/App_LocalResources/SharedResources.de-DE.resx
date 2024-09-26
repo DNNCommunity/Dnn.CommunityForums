@@ -1755,4 +1755,13 @@ Von
   <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
     <value>Vorlagentoken, das beginnt mit: {0} ist veraltet und kann nicht ersetzt werden. Aus Vorlage(n) entfernen.</value>
   </data>
+  <data name="[RESX:UnableToFindReplyToProcess].Text" xml:space="preserve">
+    <value>Die Prozesswarteschlange der DNN-Community-Foren konnte Antwort-{0} nicht verarbeiten, da sie nicht vorhanden ist und wahrscheinlich vor der Verarbeitung gelöscht wurde. Für diese Antwort werden keine weiteren Maßnahmen ergriffen. Wenn Sie diese Meldung häufig sehen, besuchen Sie bitte das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki auf Schritte zur Fehlerbehebung überprüfen können.</value>
+  </data>
+  <data name="[RESX:UnableToFindTopicToProcess].Text" xml:space="preserve">
+    <value>Die Prozesswarteschlange der DNN-Community-Foren konnte die {0} des Themas nicht verarbeiten, da sie nicht vorhanden ist und wahrscheinlich vor der Verarbeitung gelöscht wurde. Für diese Antwort werden keine weiteren Maßnahmen ergriffen. Wenn Sie diese Meldung häufig sehen, besuchen Sie bitte das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki auf Schritte zur Fehlerbehebung überprüfen können.</value>
+  </data>
+  <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
+    <value>Die Prozesswarteschlange der DNN-Community-Foren konnte das Element {0} nicht verarbeiten und befindet sich seit mehr als 7 Tagen in der Warteschlange. Für diesen Artikel werden keine weiteren Aktionen ausgeführt. Wenn Sie diese Meldung häufig sehen, besuchen Sie bitte das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki auf Schritte zur Fehlerbehebung überprüfen können.</value>
+  </data>
 </root>

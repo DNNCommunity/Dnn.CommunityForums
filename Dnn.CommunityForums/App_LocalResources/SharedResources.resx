@@ -1755,4 +1755,13 @@ From,
   <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
     <value>Template Token starting with: {0} is obsolete and has no replacement. Remove from template(s).</value>
   </data>
+  <data name="[RESX:UnableToFindReplyToProcess].Text" xml:space="preserve">
+    <value>DNN Community Forums Process Queue could not process reply {0} because it does not exist, and was likely deleted prior to processing. No further action will occur for this item. If you see this message frequently, please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:UnableToFindTopicToProcess].Text" xml:space="preserve">
+    <value>DNN Community Forums Process Queue could not process topic {0} because it does not exist, and was likely deleted prior to processing. No further action will occur for this item. If you see this message frequently, please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
+    <value>DNN Community Forums Process Queue could not process item {0} and it has been in the queue for more than 7 days. No further action will occur for this item. If you see this message frequently, please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
 </root>
