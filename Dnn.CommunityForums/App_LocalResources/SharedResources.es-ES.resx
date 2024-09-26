@@ -1755,4 +1755,13 @@ De
   <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
     <value>El token de plantilla que comienza con: {0} está obsoleto y no tiene reemplazo. Eliminar de la(s) plantilla(s).</value>
   </data>
+  <data name="[RESX:UnableToFindReplyToProcess].Text" xml:space="preserve">
+    <value>La cola de procesos de los foros de la comunidad DNN no pudo procesar {0} de respuesta porque no existe y probablemente se eliminó antes del procesamiento. No se realizará ninguna otra acción para esta respuesta. Si ve este mensaje con frecuencia, visite el repositorio de Github (https://github.com/DNNCommunity/Dnn.CommunityForums) de los foros de la comunidad de DNN, donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
+  </data>
+  <data name="[RESX:UnableToFindTopicToProcess].Text" xml:space="preserve">
+    <value>La cola de procesos de los foros de la comunidad DNN no pudo procesar el tema {0} porque no existe y probablemente se eliminó antes del procesamiento. No se realizará ninguna otra acción para esta respuesta. Si ve este mensaje con frecuencia, visite el repositorio de Github (https://github.com/DNNCommunity/Dnn.CommunityForums) de los foros de la comunidad de DNN, donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
+  </data>
+  <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
+    <value>La cola de procesos de los foros de la comunidad DNN no pudo procesar el elemento {0} y ha estado en la cola durante más de 7 días. No se realizará ninguna otra acción para este artículo. Si ve este mensaje con frecuencia, visite el repositorio de Github (https://github.com/DNNCommunity/Dnn.CommunityForums) de los foros de la comunidad de DNN, donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
+  </data>
 </root>

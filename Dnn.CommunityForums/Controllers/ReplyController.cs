@@ -183,6 +183,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             try
             {
                 DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
+                if (reply == null)
+                {
+                    var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                    log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                    var message = string.Format(Utilities.GetSharedResource("[RESX:UnableToFindReplyToProcess]"), replyId);
+                    log.AddProperty("Message", message);
+                    DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                    return true;
+                }
+
                 Subscriptions.SendSubscriptions(-1, portalId, moduleId, tabId, reply.Forum, topicId, replyId, authorId, new Uri(requestUrl));
 
                 ControlUtils ctlUtils = new ControlUtils();
