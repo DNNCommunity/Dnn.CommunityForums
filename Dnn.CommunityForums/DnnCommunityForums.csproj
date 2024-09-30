@@ -223,7 +223,6 @@
       <Link>stylecop.json</Link>
     </AdditionalFiles>
     <None Include="app.config" />
-    <Content Include="config\LegacyTokenReplacement.json" />
     <None Include="DnnCommunityForums_Symbols.dnn">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

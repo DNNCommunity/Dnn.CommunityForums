@@ -790,6 +790,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
+            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Security.View, accessingUser.PortalID, this.ModuleId, accessingUser.UserID))
+            {
+                return string.Empty;
+            }
+
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
@@ -800,25 +805,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 format = tokenReplacer.ReplaceEmbeddedTokens(format);
             }
 
-            propertyName = propertyName.ToLowerInvariant();
-
-            if (propertyName.Contains("lastpostsubject:"))
+            int length = -1;
+            if (propertyName.Contains(":"))
             {
-                if (this.LastPostID > 0)
-                {
-                    int intLength = 0;
-                    if ((propertyName.ToString().IndexOf("[lastpostsubject:", 0) + 1) > 0)
-                    {
-                        int inStart = (propertyName.ToString().IndexOf("[lastpostsubject:", 0) + 1) + 17;
-                        int inEnd = (propertyName.ToString().IndexOf("]", inStart - 1) + 1);
-                        string sLength = propertyName.ToString().Substring(inStart - 1, inEnd - inStart);
-                        intLength = Convert.ToInt32(sLength);
-                    }
-
-                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(this.LastPost, intLength, this, this.PortalSettings.ActiveTab.TabID), format);
-                }
+                var splitPropertyName = propertyName.Split(':');
+                propertyName = splitPropertyName[0];
+                length = Utilities.SafeConvertInt(splitPropertyName[1], -1);
             }
 
+            propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {
                 case "forumid":
@@ -826,7 +821,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "themelocation":
                     return PropertyAccess.FormatString(this.ThemeLocation.ToString(), format);
                 case "forumdescription":
-                    return PropertyAccess.FormatString(this.ForumDesc, format);
+                    return PropertyAccess.FormatString(length > 0 && this.ForumDesc.Length > length ? this.ForumDesc.Substring(0, length) : this.ForumDesc, format);
                 case "forumname":
                     return PropertyAccess.FormatString(this.ForumName, format);
                 case "forumnamenolink":
@@ -910,7 +905,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "lastpostsubject":
                     return this.LastPostID < 1
                         ? string.Empty
-                        : PropertyAccess.FormatString(this.LastPostSubject, format);
+                        : PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(this.LastPost, length > 0 ? length : this.LastPostSubject.Length, this, this.PortalSettings.ActiveTab.TabID), format);
                 case "lastpostdate":
                     return this.LastPostID < 1
                         ? string.Empty
@@ -936,62 +931,48 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         ? string.Empty
                         : PropertyAccess.FormatString(this.LastPostLastName, format);
                 case "lastpostauthordisplaynamelink":
-                    return PropertyAccess.FormatString(
-                        this.LastPostID > 0 && this.LastPostUserID > 0
-                            ? Controllers.ForumUserController.CanLinkToProfile(
-                                this.PortalSettings,
-                                this.MainSettings,
-                                this.ModuleId,
-                                new Controllers.ForumUserController(this.ModuleId).GetByUserId(
-                                    accessingUser.PortalID,
-                                    accessingUser.UserID),
-                                new Controllers.ForumUserController(this.ModuleId).GetByUserId(
-                                    accessingUser.PortalID,
-                                    this.LastPostUserID))
-                                ? Utilities.NavigateURL(this.PortalSettings.UserTabId,
-                                    string.Empty,
-                                    new[] { $"userId={this.LastPostUserID}" })
-                                : string.Empty
-                            : string.Empty,
-                        format);
+                    return this.LastPostID > 0 && this.LastPostUserID > 0 && Controllers.ForumUserController.CanLinkToProfile(
+                            this.PortalSettings,
+                            this.MainSettings,
+                            this.ModuleId,
+                            new Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                accessingUser.PortalID,
+                                accessingUser.UserID),
+                            new Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                accessingUser.PortalID,
+                                this.LastPostUserID))
+                            ? PropertyAccess.FormatString(Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { $"userId={this.LastPostUserID}" }), format)
+                            : string.Empty;
                 case "lastpostdisplayname":
                 case "lastpostauthordisplayname":
                     var forumUserController = new Controllers.ForumUserController(this.ModuleId);
-                    return PropertyAccess.FormatString(
-                        this.LastPostID > 0 && this.LastPostUserID > 0
-                            ? Controllers.ForumUserController.GetDisplayName(
-                                    this.PortalSettings,
-                                    this.MainSettings,
-                                    forumUserController.GetByUserId(accessingUser.PortalID, accessingUser.UserID)
-                                        .GetIsMod(this.ModuleId),
-                                    forumUserController.GetUserIsAdmin(accessingUser.PortalID,
-                                        this.ModuleId,
-                                        accessingUser.UserID) ||
-                                    forumUserController.GetUserIsSuperUser(accessingUser.PortalID,
-                                        this.ModuleId,
-                                        accessingUser.UserID),
-                                    this.LastPostUserID,
-                                    this.LastPostUserName,
-                                    this.LastPostFirstName,
-                                    this.LastPostLastName,
-                                    this.LastPostDisplayName).Replace("&amp;#", "&#")
-                                .Replace("Anonymous", this.LastPostDisplayName)
-                            : string.Empty,
-                        format);
+                    return this.LastPostID > 0 && this.LastPostUserID > 0
+                            ? PropertyAccess.FormatString(Controllers.ForumUserController.GetDisplayName(
+                                        this.PortalSettings,
+                                        this.MainSettings,
+                                        forumUserController.GetByUserId(accessingUser.PortalID, accessingUser.UserID)
+                                            .GetIsMod(this.ModuleId),
+                                        forumUserController.GetUserIsAdmin(accessingUser.PortalID,
+                                            this.ModuleId,
+                                            accessingUser.UserID) ||
+                                        forumUserController.GetUserIsSuperUser(accessingUser.PortalID,
+                                            this.ModuleId,
+                                            accessingUser.UserID),
+                                        this.LastPostUserID,
+                                        this.LastPostUserName,
+                                        this.LastPostFirstName,
+                                        this.LastPostLastName,
+                                        this.LastPostDisplayName).Replace("&amp;#", "&#")
+                                    .Replace("Anonymous", this.LastPostDisplayName),
+                                format)
+                            : string.Empty;
 
                 case "statuscssclass":
                     return PropertyAccess.FormatString(
-                        this.GetForumStatusCss(new Controllers.ForumUserController(this.ModuleId).GetByUserId(
-                            accessingUser.PortalID,
-                            accessingUser.UserID)),
-                        format);
+                        this.GetForumStatusCss(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
                 case "forumicon":
                     return PropertyAccess.FormatString(
-                        this.GetForumFolderIcon(new Controllers.ForumUserController(this.ModuleId).GetByUserId(
-                                accessingUser.PortalID,
-                                accessingUser.UserID),
-                            this.MainSettings),
-                        format);
+                        this.GetForumFolderIcon(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this.MainSettings), format);
                 case "forumiconcss":
                     return PropertyAccess.FormatString(
                         this.GetForumFolderIconCss(new Controllers.ForumUserController(this.ModuleId).GetByUserId(
@@ -999,14 +980,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             accessingUser.UserID)),
                         format);
                 case "rsslink":
-                    if (this.AllowRSS && Controllers.PermissionController.HasPerm(this.Security.Read,
+                    return this.AllowRSS && Controllers.PermissionController.HasPerm(this.Security.Read,
                             new Controllers.ForumUserController(this.ModuleId)
-                                .GetByUserId(accessingUser.PortalID, accessingUser.UserID).UserRoles))
-                    {
-                        return PropertyAccess.FormatString(this.RssLink, format);
-                    }
-
-                    return string.Empty;
+                                .GetByUserId(accessingUser.PortalID, accessingUser.UserID).UserRoles) 
+                        ? PropertyAccess.FormatString(this.RssLink, format)
+                        : string.Empty;
             }
 
             propertyNotFound = true;

@@ -17,7 +17,7 @@
 
 			<div class="d-md-flex">
 				<div class="flex-grow-1">
-					<h1 class="dcf-title h2 mt-0 d-flex align-items-center">[AF:CONTROL:STATUSICON]<span class="dcf-topic">[SUBJECT]</span></h1>
+					<h1 class="dcf-title h2 mt-0 d-flex align-items-center">[AF:CONTROL:STATUSICON]<span class="dcf-topic">[FORUMTOPIC:SUBJECT]</span></h1>
 					<div class="dcf-topic-buttons">
 						<div class="dcf-button-reply">[ADDREPLY]</div>
 						<div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
@@ -77,7 +77,7 @@
 							<section class="dcf-topic-content-main py-4">
 							
 								<div class="dcf-post-body">
-									[BODY]
+									[FORUMPOST:BODY]
 								</div>
 								<div class="dcf-post-attachements">
 									[ATTACHMENTS]
@@ -112,7 +112,7 @@
 			[/TOPIC]
             [REPLIES]
 			<div class="dcf-topic-post dcf-topic-reply py-3 bg-light mb-4">
-				<a id="[POSTID]"></a>
+				<a id="[FORUMPOST:POSTID]"></a>
 				<div class="d-flex flex-wrap">
 
 						<div class="dcf-topic-info bg-light px-3 pb-2  mb-2 mb-md-0">
@@ -132,7 +132,7 @@
 									[AF:CONTROL:POLL]
 								</div>
 								<div class="dcf-post-body">
-									[BODY]
+									[FORUMPOST:BODY]
 								</div>
 								<div class="dcf-post-attachements">
 									[ATTACHMENTS]

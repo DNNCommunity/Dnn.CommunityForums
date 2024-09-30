@@ -254,7 +254,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn]
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
-        {
+        {            
+            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.Read, accessingUser.PortalID, this.Forum.ModuleId, accessingUser.UserID))
+            {
+                return string.Empty;
+            }
+
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
@@ -264,6 +269,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 };
                 format = tokenReplacer.ReplaceEmbeddedTokens(format);
             }
+
+            int length = -1;
+            if (propertyName.Contains(":"))
+            {
+                var splitPropertyName = propertyName.Split(':');
+                propertyName = splitPropertyName[0];
+                length = Utilities.SafeConvertInt(splitPropertyName[1], -1);
+            }
+
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {
@@ -278,11 +292,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "contentid":
                     return PropertyAccess.FormatString(this.ContentId.ToString(), format);
                 case "subject":
-                    return PropertyAccess.FormatString(this.Subject, format);
+                    return PropertyAccess.FormatString(length > 0 && this.Subject.Length > length ? string.Concat(this.Subject.Substring(0, length), "...") : this.Subject, format);
                 case "summary":
-                    return PropertyAccess.FormatString(this.Summary, format);
+                    return PropertyAccess.FormatString(length > 0 && this.Summary.Length > length ? this.Summary.Substring(0, length) : this.Summary, format);
                 case "body":
-                    return PropertyAccess.FormatString(this.Content.Body, format);
+                    return PropertyAccess.FormatString(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, format);
                 case "authorid":
                     return PropertyAccess.FormatString(this.Content.AuthorId.ToString(), format);
                 case "authorname":
@@ -323,6 +337,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     }
 
                     return string.Empty;
+                case "modipaddress":
+                    return this.Forum.GetIsMod(
+                        new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID))
+                        ? PropertyAccess.FormatString(this.Content.IPAddress, format)
+                        : string.Empty;
                 case "editdate":
                     return PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime(
                             (DateTime?)this.Content.DateUpdated,

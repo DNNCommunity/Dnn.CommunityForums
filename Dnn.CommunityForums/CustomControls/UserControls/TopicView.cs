@@ -45,10 +45,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicView runat=server></{0}:TopicView>")]
     public class TopicView : ForumBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Environment));
-
-        #region Private Members
-        
         private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic;
         private int topicTemplateId;
         private DataRow drForum;
@@ -57,15 +53,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private DataTable dtAttach;
         private bool bRead;
         private bool bTrust;
-        private bool bDelete;
         private bool bEdit;
         private bool bSubscribe;
         private bool bModerate;
         private bool bSplit;
-        private bool bMove;
-        private bool bBan;
-        private bool bLock;
-        private bool bPin;
         private int rowIndex;
         private int pageSize = 20;
         private int rowCount;
@@ -76,14 +67,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string tags = string.Empty;
         private bool useListActions;
 
-        
-        #region "not used?"
-        //private string topicDescription = string.Empty;
-        #endregion "not used?"
-
-
-        #endregion
-
         #region Public Properties
 
         public string TopicTemplate { get; set; } = string.Empty;
@@ -92,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string OptDefaultSort { get; set; }
 
-        public string MetaTemplate { get; set; } = "[META][TITLE][FORUMTOPIC:SUBJECT] - [PORTAL:PORTALNAME] - [PAGENAME] - [FORUMGROUP:GROUPNAME] - [FORUM:FORUMNAME][/TITLE][DESCRIPTION][BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
+        public string MetaTemplate { get; set; } = "[META][TITLE][FORUMTOPIC:SUBJECT] - [PORTAL:PORTALNAME] - [TAB:TITLE] - [FORUMGROUP:GROUPNAME] - [FORUM:FORUMNAME][/TITLE][DESCRIPTION][BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
 
         public string MetaTitle { get; set; } = string.Empty;
 
@@ -186,10 +169,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.Message, ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 if (ex.InnerException != null)
                 {
-                    Logger.Error(ex.InnerException.Message, ex.InnerException);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
 
                 this.RenderMessage("[RESX:Error:LoadingTopic]", ex.Message, ex);
@@ -278,7 +261,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanRead"].ToString(), this.ForumUser.UserRoles);
 
             if (!this.bRead)
-            { 
+            {
                 if (this.PortalSettings.LoginTabId > 0)
                 {
                     this.Response.Redirect(Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, "returnUrl=" + this.Request.RawUrl), true);
@@ -290,15 +273,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             this.bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanEdit"].ToString(), this.ForumUser.UserRoles);
-            this.bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanDelete"].ToString(), this.ForumUser.UserRoles);
-            this.bLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanLock"].ToString(), this.ForumUser.UserRoles);
             this.bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanSubscribe"].ToString(), this.ForumUser.UserRoles);
             this.bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanModerate"].ToString(), this.ForumUser.UserRoles);
             this.bSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanSplit"].ToString(), this.ForumUser.UserRoles);
             this.bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanTrust"].ToString(), this.ForumUser.UserRoles);
-            this.bMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanMove"].ToString(), this.ForumUser.UserRoles);
-            this.bPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanPin"].ToString(), this.ForumUser.UserRoles);
-            this.bBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanBan"].ToString(), this.ForumUser.UserRoles);
 
             this.isTrusted = Utilities.IsTrusted((int)this.ForumInfo.DefaultTrustValue, this.ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles));
 
@@ -325,7 +303,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.Content.AuthorId = Utilities.SafeConvertInt(this.drForum["AuthorId"]);
             this.topic.Content.AuthorName = this.drForum["TopicAuthor"].ToString();
             this.topic.Content.DateCreated = Utilities.SafeConvertDateTime(this.drForum["DateCreated"]);
-            
+
             this.topic.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, this.topic.Content.AuthorId);
             this.topic.Author.ForumUser.UserInfo.DisplayName = this.drForum["DisplayName"].ToString();
             this.topic.Author.ForumUser.UserInfo.FirstName = this.drForum["FirstName"].ToString();
@@ -333,7 +311,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.Author.ForumUser.UserInfo.Username = this.drForum["UserName"].ToString();
 
             this.topic.Forum = this.ForumInfo;
-            
+
             this.topic.LastReply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             this.topic.LastReply.TopicId = this.topic.TopicId;
             this.topic.LastReply.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
@@ -350,7 +328,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.tags = this.drForum["Tags"].ToString();
             this.allowLikes = Utilities.SafeConvertBool(this.drForum["AllowLikes"]);
             this.rowCount = Utilities.SafeConvertInt(this.drForum["ReplyCount"]) + 1;
-            this.isSubscribedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumInfo.ForumID, this.TopicId); 
+            this.isSubscribedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumInfo.ForumID, this.TopicId);
 
             if (this.Page.IsPostBack)
             {
@@ -444,15 +422,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(sOutput)).ToString();
             sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(new StringBuilder(sOutput), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
-            sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sOutput), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
-            sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(sOutput), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
 
             // Add Topic Scripts
             var ctlTopicScripts = (af_topicscripts)this.LoadControl("~/DesktopModules/ActiveForums/controls/af_topicscripts.ascx");
             ctlTopicScripts.ModuleConfiguration = this.ModuleConfiguration;
             this.Controls.Add(ctlTopicScripts);
 
-            #region Build Topic Properties
+            #region "Build Topic Properties"
 
             if (sOutput.Contains("[AF:PROPERTIES"))
             {
@@ -492,9 +468,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, sProps, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
             }
 
-            #endregion
+            #endregion "Build Topic Properties"
 
-            #region Populate Metadata
+            #region "Populate Metadata"
 
             // If the template contains a meta template, grab it then remove the token
             if (sOutput.Contains("[META]"))
@@ -505,15 +481,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Parse Meta Template
             if (!string.IsNullOrEmpty(this.MetaTemplate))
-            {                
-                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder( this.MetaTemplate)).ToString();
+            {
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(this.MetaTemplate)).ToString();
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(this.MetaTemplate), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request).ToString();
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
-//                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
-//                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
-
                 this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", this.tags);
 
                 this.MetaTitle = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[TITLE]", "[/TITLE]").Replace("[TITLE]", string.Empty).Replace("[/TITLE]", string.Empty);
@@ -523,9 +496,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.MetaKeywords = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[KEYWORDS]", "[/KEYWORDS]").Replace("[KEYWORDS]", string.Empty).Replace("[/KEYWORDS]", string.Empty);
             }
 
-            #endregion
+            #endregion "Populate Metadata"
 
-            #region Setup Breadcrumbs
+            #region "Setup Breadcrumbs"
 
             var breadCrumb = TemplateUtils.GetTemplateSection(sOutput, "[BREADCRUMB]", "[/BREADCRUMB]").Replace("[BREADCRUMB]", string.Empty).Replace("[/BREADCRUMB]", string.Empty);
 
@@ -536,7 +509,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var groupUrl = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, string.Empty, this.ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
                 var forumUrl = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
                 var topicUrl = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, this.topic.TopicUrl, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
-                
+
                 var sCrumb = "<a href=\"" + groupUrl + "\">" + this.ForumInfo.GroupName + "</a>|";
                 sCrumb += "<a href=\"" + forumUrl + "\">" + this.ForumInfo.ForumName + "</a>";
                 sCrumb += "|<a href=\"" + topicUrl + "\">" + this.topic.Subject + "</a>";
@@ -549,8 +522,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sOutput = TemplateUtils.ReplaceSubSection(sOutput, breadCrumb, "[BREADCRUMB]", "[/BREADCRUMB]");
 
-            #endregion
-
+            #endregion "Setup Breadcrumbs"
 
             // Parse Common Controls First
             sOutput = this.ParseControls(sOutput);
@@ -567,16 +539,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             topicControl = Utilities.LocalizeControl(topicControl);
-            
+
             // If a template was passed in, we don't need to do this.
             if (bFullTopic)
             {
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, "<asp:placeholder id=\"plhTopic\" runat=\"server\" />", "[AF:CONTROL:CALLBACK]", "[/AF:CONTROL:CALLBACK]");
-                
+                sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sOutput), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(sOutput), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request).ToString();
-//                sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(sOutput), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
-                //sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(new StringBuilder(sOutput), this.ForumInfo.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
-                //sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(new StringBuilder(sOutput), this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId).ToString();
 
                 sOutput = Utilities.LocalizeControl(sOutput);
                 sOutput = Utilities.StripTokens(sOutput);
@@ -654,7 +623,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Quick Reply -- note: always create quick reply control since topic can locked and unlocked from javascript
-            if (this.CanReply) 
+            if (this.CanReply)
             {
                 plh = this.FindControl("plhQuickReply") as PlaceHolder;
                 if (plh != null)
@@ -770,7 +739,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sbOutput.Replace("[TOPICSUBSCRIBE]", string.Empty);
             }
-            
+
             // Topic and post actions
             // for backward compatibility, this needs to map to post actions, not topic actions
             if (sbOutput.ToString().Contains("[AF:CONTROL:TOPICACTIONS]"))
@@ -794,7 +763,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.useListActions = true;
                 sbOutput.Replace("[DCF:TOOLBAR:POSTACTIONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "PostActions"));
             }
-            
+
             sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostActionTokenSynonyms(sbOutput, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale, this.useListActions);
 
             // Quick Reply
@@ -854,13 +823,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[SPLITBUTTONS]", string.Empty);
             }
 
-            // no longer using this
-            sbOutput.Replace("[SPLITBUTTONS2]", string.Empty);
-
             // Printer Friendly Link
             var sURL = "<a rel=\"nofollow\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, "mid=" + this.ModuleId, "dnnprintmode=true") + "?skinsrc=" + HttpUtility.UrlEncode("[G]" + SkinController.RootSkin + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Skin") + "&amp;containersrc=" + HttpUtility.UrlEncode("[G]" + SkinController.RootContainer + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Container") + "\" target=\"_blank\">";
 
-            // sURL += "<img src=\"" + _myThemePath + "/images/print16.png\" border=\"0\" alt=\"[RESX:PrinterFriendly]\" /></a>";
             sURL += "<i class=\"fa fa-print fa-fw fa-blue\"></i></a>";
             sbOutput.Replace("[AF:CONTROL:PRINTER]", sURL);
 
@@ -868,8 +833,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (this.Request.IsAuthenticated)
             {
                 sURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + "=sendto", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
-
-                // sbOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + sURL + "\" rel=\"nofollow\"><img src=\"" + _myThemePath + "/images/email16.png\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
                 sbOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + sURL + "\" rel=\"nofollow\"><i class=\"fa fa-envelope-o fa-fw fa-blue\"></i></a>");
             }
             else
@@ -899,7 +862,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Jump To
             sbOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
-
 
             // Topic Status
             if (((this.bRead && this.topic.Content.AuthorId == this.UserId) || (this.bModerate && this.bEdit)) & this.topic.StatusId >= 0)
@@ -968,6 +930,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Process topic and reply templates.
             var sTopicTemplate = TemplateUtils.GetTemplateSection(sOutput, "[TOPIC]", "[/TOPIC]");
             var sReplyTemplate = TemplateUtils.GetTemplateSection(sOutput, "[REPLIES]", "[/REPLIES]");
+            sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+            sReplyTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(sReplyTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+
             var sTemp = string.Empty;
             var i = 0;
 
@@ -1025,7 +990,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string ParseContent(DataRow dr, string template, int rowcount)
         {
             var sOutput = template;
-            
+
             // most topic values come in first result set and are set in LoadData(); however IP Address from the topic comes in this result set.
             this.topic.Content.IPAddress = dr.GetString("IPAddress");
 
@@ -1071,17 +1036,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var sbOutput = new StringBuilder(sOutput);
 
-            //sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostActionTokens(sbOutput,
-            //    reply.ReplyId > 0 ? (IPostInfo)reply : this.topic,
-            //    this.PortalSettings,
-            //    this.MainSettings,
-            //    new Services.URLNavigator().NavigationManager(),
-            //    this.ForumUser,
-            //    HttpContext.Current.Request,
-            //    this.TabId,
-            //    CanReply,
-            //    this.useListActions);
-
             #region "split checkbox"
 
             if (reply.ReplyId > 0 && this.bSplit && (this.bModerate || this.topic.Content.AuthorId == this.UserId))
@@ -1092,7 +1046,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", string.Empty);
             }
-            
+
             #endregion "split checkbox"
 
             // Row CSS Classes
@@ -1109,24 +1063,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[POSTREPLYCSS]", "afpostreply afpostreply2");
             }
 
-            #region "not used?"
-            ////// Description
-            ////if (reply.ReplyId == 0)
-            ////{
-            ////    this.topicDescription = Utilities.StripHTMLTag(this.topic.Content.Body).Trim();
-            ////    this.topicDescription = this.topicDescription.Replace(System.Environment.NewLine, string.Empty);
-            ////    if (this.topicDescription.Length > 255)
-            ////    {
-            ////        this.topicDescription = this.topicDescription.Substring(0, 255);
-            ////    }
-
-            ////}
-            #endregion "not used"
-
-
             #region "likes"
 
-            
             if (this.allowLikes)
             {
                 (int count, bool liked) likes = new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(this.UserId, (reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId));
@@ -1168,12 +1106,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-
-
-
             // Attachments
-            sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments( (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId), true, this.PortalId, this.ForumModuleId));
-            
+            sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments((reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId), true, this.PortalId, this.ForumModuleId));
+
             if (reply.ReplyId > 0)
             {
                 sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request);
@@ -1182,11 +1117,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request);
             }
-            
 
             sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceUserTokens(sbOutput, this.PortalSettings, this.MainSettings, author.ForumUser, this.ForumUser, this.ForumModuleId);
-
-            // Switch back from the string builder to a normal string before we perform the image/thumbnail replacements.
             sOutput = sbOutput.ToString();
 
             // Legacy attachment functionality, uses "attachid"
@@ -1211,7 +1143,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     return "<a href=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + this.PortalId + "&moduleid=" + this.ForumModuleId + "&attachid=" + parentId + "\" target=\"_blank\"><img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + this.PortalId + "&moduleid=" + this.ForumModuleId + "&attachid=" + thumbId + "\" border=\"0\" class=\"afimg\" /></a>";
                 });
             }
-            
+
             return sOutput;
         }
 
