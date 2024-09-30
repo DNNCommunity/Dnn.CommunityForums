@@ -160,7 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 stringBuilder.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
                 stringBuilder.Replace("[STATISTICS]", "<am:Stats id=\"amStats\" MID=\"" + this.ModuleId + "\" PID=\"" + this.PortalId.ToString() + "\" runat=\"server\" />");
                 stringBuilder.Replace("[WHOSONLINE]", this.MainSettings.UsersOnlineEnabled ? "<asp:placeholder id=\"plhUsersOnline\" runat=\"server\" />" : string.Empty);
-                
+
                 if (stringBuilder.ToString().Contains("[NOTOOLBAR]"))
                 {
                     if (HttpContext.Current.Items.Contains("ShowToolbar"))
@@ -275,7 +275,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                         //any replacements on the group
                                         StringBuilder sNewGroupStringBuilder = new StringBuilder("<div id=\"group" + fi.ForumGroupId + "\" class=\"afgroup\">" + sGroupTemplate + "</div>");
                                         sNewGroupStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sNewGroupStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
-                                        string sNewGroup = sNewGroupStringBuilder.ToString(); 
+                                        string sNewGroup = sNewGroupStringBuilder.ToString();
 
                                         sGroupSectionTemp = TemplateUtils.ReplaceSubSection(sGroupSectionTemp, sNewGroup, "[GROUP]", "[/GROUP]");
                                         sGroupSection += sGroupSectionTemp;
@@ -316,10 +316,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTemplate = sTemplate.Contains("[GROUPSECTION]") ? TemplateUtils.ReplaceSubSection(sTemplate, sGroupSection, "[GROUPSECTION]", "[/GROUPSECTION]") : sGroupSection;
                     sTemplate = TemplateUtils.ReplaceSubSection(sTemplate, string.Empty, "[FORUMS]", "[/FORUMS]");
                 }
-                //StringBuilder templateStringBuilder = new StringBuilder(sTemplate);
-                //templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceModuleTokens(templateStringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.TabId, this.ForumModuleId);
-                //templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceUserTokens(templateStringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser, this.ForumUser, this.ForumModuleId);
-                //sTemplate = templateStringBuilder.ToString();
+
                 return sTemplate;
             }
             catch (Exception ex)
@@ -343,23 +340,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     this.LinkControls(ctrl.Controls);
                 }
             }
-        }
-
-        private string ParseControls(string template)
-        {
-            string sOutput = template;
-            sOutput = sOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
-            if (sOutput.Contains("[STATISTICS]"))
-            {
-                sOutput = sOutput.Replace("[STATISTICS]", "<am:Stats id=\"amStats\" MID=\"" + this.ModuleId + "\" PID=\"" + this.PortalId.ToString() + "\" runat=\"server\" />");
-            }
-
-            if (sOutput.Contains("[WHOSONLINE]"))
-            {
-                sOutput = sOutput.Replace("[WHOSONLINE]", this.MainSettings.UsersOnlineEnabled ? "<asp:placeholder id=\"plhUsersOnline\" runat=\"server\" />" : string.Empty);
-            }
-
-            return sOutput;
         }
 
         private string ParseForumRow(string template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int currForumIndex, int totalForums)
@@ -413,7 +393,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     subControl.Checked = isSubscribed;
                     subControl.DisplayMode = 1;
                     subControl.UserId = this.CurrentUserId;
-                    subControl.ImageURL =  this.ThemePath + (isSubscribed ? "images/email_checked.png" : "images/email_unchecked.png");;
+                    subControl.ImageURL = this.ThemePath + (isSubscribed ? "images/email_checked.png" : "images/email_unchecked.png"); ;
                     subControl.Text = "[RESX:Subscribe]";
 
                     templateStringBuilder.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", subControl.Render());

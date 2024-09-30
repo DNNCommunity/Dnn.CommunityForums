@@ -15,7 +15,7 @@
 
 			<div class="dcf-cols">
 				<div class="dcf-col dcf-col-50-md">
-					<h1 class="dcf-title dcf-title-1">[AF:CONTROL:STATUSICON]<span class="dcf-topic">[SUBJECT]</span></h1>
+					<h1 class="dcf-title dcf-title-1">[AF:CONTROL:STATUSICON]<span class="dcf-topic">[FORUMTOPIC:SUBJECT]</span></h1>
 					<div class="dcf-topic-buttons">
                         <div class="dcf-button-reply">[ADDREPLY]</div>
 						<div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
@@ -57,7 +57,7 @@
 		
 			[TOPIC]
 			<div class="dcf-topic-post">
-				<a id="[POSTID]"></a>
+				<a id="[FORUMPOST:POSTID]"></a>
 				<div class="dcf-cols">
 					<div class="dcf-col-25">
 						<div class="dcf-topic-info">
@@ -83,7 +83,7 @@
 									[AF:CONTROL:POLL]
 								</div>
 								<div class="dcf-post-body">
-									[BODY]
+									[FORUMPOST:BODY]
 								</div>
 								<div class="dcf-post-attachements">
 									[ATTACHMENTS]
@@ -120,7 +120,7 @@
 			[/TOPIC]
             [REPLIES]
 			<div class="dcf-topic-post dcf-topic-reply">
-				<a id="[POSTID]"></a>
+				<a id="[FORUMPOST:POSTID]"></a>
 				<div class="dcf-cols">
 					<div class="dcf-col-25">
 						<div class="dcf-topic-info">
@@ -144,7 +144,7 @@
 							<section class="dcf-topic-content-main">
 							
 								<div class="dcf-post-body">
-									[BODY]
+									[FORUMPOST:BODY]
 								</div>
 								<div class="dcf-post-attachements">
 									[ATTACHMENTS]

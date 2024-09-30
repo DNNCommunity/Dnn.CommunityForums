@@ -3,14 +3,13 @@
 [BREADCRUMB]
 [GROUPSECTION]
 		<div class="dcf-forums">
-			<div class="dcf-group-title-wrap d-flex align-items-center py-2">
+			[GROUP]
+            <div class="dcf-group-title-wrap d-flex align-items-center py-2">
 				<h3 class="dcf-group-title h5 flex-grow-1">[RESX:Group]: [FORUMGROUP:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUMGROUP:GROUPNAME]</a>]</h3>
-				<a class="bs-collapse" data-toggle="collapse" href="#forum-group-[FORUMGROUPID]" role="button" data-bs-toggle="collapse">
+				<a class="bs-collapse" data-toggle="collapse" href="#forum-group-[FORUMGROUP:FORUMGROUPID]" role="button" data-bs-toggle="collapse">
 					<i class="fa fa-chevron-circle-down fa-lg"></i>
 				</a>
 			</div>
-		
-			[GROUP]
 			<div id="forum-group-[FORUMGROUPID]"  class="dcf-forums-group collapse show">
 				<table class="dcf-table dcf-table-100 table table-responsive-md">
 					<thead>
@@ -62,7 +61,7 @@
 							<td class="dcf-col dcf-col-replies">[FORUM:TOTALREPLIES]</td>
 							<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
 							<td class="dcf-col dcf-col-last-post">
-								<span class="dcf-lastpost-subject">[LASTPOSTSUBJECT:25]</span>
+								<span class="dcf-lastpost-subject">[FORUM:LASTPOSTSUBJECT:25]</span>
 								<span class="dcf-lastpost-author">
                                     [FORUM:LASTPOSTAUTHORDISPLAYNAMELINK|
                                     [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUM:LASTPOSTAUTHORDISPLAYNAME]</a>|
@@ -93,7 +92,7 @@
 							<td class="dcf-col dcf-col-replies">[FORUM:TOTALREPLIES]</td>
 							<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
 							<td class="dcf-col dcf-col-last-post">
-								<div class="af_lastpost" style="white-space:nowrap;">[LASTPOSTSUBJECT:25]
+								<div class="af_lastpost" style="white-space:nowrap;">[FORUM:LASTPOSTSUBJECT:25]
 									<br />
                                     [FORUM:LASTPOSTAUTHORDISPLAYNAMELINK|
                                     [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUM:LASTPOSTAUTHORDISPLAYNAME]</a>|

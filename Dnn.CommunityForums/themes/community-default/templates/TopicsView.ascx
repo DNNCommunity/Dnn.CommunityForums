@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="am" TagName="MarkForumRead" Src="~/DesktopModules/ActiveForums/controls/af_markallread.ascx"%>
 <%@ Register TagPrefix="am" TagName="MiniSearch" Src="~/DesktopModules/ActiveForums/controls/af_searchquick.ascx"%>
 <div class="dcf-topics-view">
-	<div class="dcf-breadcrumb"><i class="fa fa-home"></i>  [FORUM:FORUMMAINLINK|<a href="{0}" class="dcf-forums-link">[RESX:ForumMain]</a>] <i class="fa fa-chevron-right"></i> [FORUM:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUM:GROUPNAME]</a>]</div>
+	<div class="dcf-breadcrumb"><i class="fa fa-home"></i>  [FORUM:FORUMMAINLINK|<a href="{0}" class="dcf-forums-link">[RESX:ForumMain]</a>] <i class="fa fa-chevron-right"></i> [FORUMGROUP:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUMGROUP:GROUPNAME]</a>]</div>
 	<div class="dcf-actions dcf-actions-top dcf-cols">
 		
 		<div class="dcf-forum-title-wrap">
@@ -51,12 +51,12 @@
 						<tr class="dcf-table-body-row">
 							<td class="dcf-col dcf-col-icon">[FORUMTOPIC:POSTICON|<div><i class="{0}"></i></div>
                                 ]</td>
-							<td class="dcf-col dcf-col-subject" title="[BODYTITLE]">
+							<td class="dcf-col dcf-col-subject" title="[FORUMTOPIC:BODYTITLE]">
 								<div class="dcf-subject">
-										<h4 class="dcf-title dcf-title-4">[SUBJECTLINK][AF:ICONLINK:LASTREAD]</h4>
-										<div class="dcf-topic-started">[RESX:StartedHeader] <i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</div>
+										<h4 class="dcf-title dcf-title-4">[FORUMTOPIC:SUBJECTLINK][FORUMTOPIC:LASTREADURL|<a href="{0}" rel="nofollow"><img src="[FORUM:THEMELOCATION]/images/miniarrow_down.png" style="vertical-align: middle;" alt="[RESX:JumpToLastRead]" border="0" class="afminiarrow" /></a>]</h4>
+										<div class="dcf-topic-started">[RESX:StartedHeader] <i class="fa fa-user fa-blue"></i>&nbsp;[FORUMTOPIC:AUTHORDISPLAYNAMELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>|[FORUMTOPIC:AUTHORDISPLAYNAME]][AF:UI:MINIPAGER]</div>
 
-									<div class="dcf-forum-description">[BODYTITLE]</div>
+									<div class="dcf-forum-description">[FORUMTOPIC:BODYTITLE]</div>
 
 									<div class="dcf-topic-tools">
 										[DCF:TOOLBAR:TOPICACTIONS]
@@ -72,7 +72,11 @@
 							<td class="dcf-col dcf-col-replies">[FORUMTOPIC:REPLYCOUNT]</td>
 							<td class="dcf-col dcf-col-views">[FORUMTOPIC:VIEWCOUNT]</td>
 							<td class="dcf-col dcf-col-views">[FORUMTOPIC:SUBSCRIBERCOUNT]</td>
-							<td class="dcf-col dcf-col-last-post"><div class="dcf-_lastpost" style="white-space:nowrap;">[LASTPOST][RESX:BY] <i class="fa fa-user fa-blue"></i>&nbsp;[LASTPOSTDISPLAYNAME][AF:ICONLINK:LASTREPLY]<br />[LASTPOSTDATE][/LASTPOST]</div></td>
+							<td class="dcf-col dcf-col-last-post"><div class="dcf-_lastpost" style="white-space:nowrap;">
+                                [LASTPOST]
+                                    [RESX:BY] <i class="fa fa-user fa-blue"></i>&nbsp;[LASTPOSTDISPLAYNAME][FORUMTOPIC:LASTREPLYURL|<a href="{0}" rel="nofollow"><img src="[FORUM:THEMELOCATION]/images/miniarrow_right.png" style="vertical-align: middle;" alt="[RESX:JumpToLastReply]" border="0" class="afminiarrow" /></a>]<br />[FORUMTOPIC:LASTPOSTDATE]
+                                [/LASTPOST]
+                            </div></td>
 						</tr>
 					</tbody>
 					[/ANNOUNCEMENT]
@@ -124,13 +128,13 @@
                         ]
 					</td>
 					<td class="dcf-col dcf-col-subject">
-						<div class="dcf-subject" title="[BODYTITLE]">
+						<div class="dcf-subject" title="[FORUMTOPIC:BODYTITLE]">
 
-							<h4 class="dcf-title dcf-title-4">[SUBJECTLINK][AF:ICONLINK:LASTREAD][ICONPIN][ICONLOCK]</h4>
+							<h4 class="dcf-title dcf-title-4">[FORUMTOPIC:SUBJECTLINK][FORUMTOPIC:LASTREADURL|<a href="{0}" rel="nofollow"><img src="[FORUM:THEMELOCATION]/images/miniarrow_down.png" style="vertical-align: middle;" alt="[RESX:JumpToLastRead]" border="0" class="afminiarrow" /></a>][ICONPIN][ICONLOCK]</h4>
 
-							<div class="dcf-topic-started">[RESX:StartedHeader] <i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</div>
+							<div class="dcf-topic-started">[RESX:StartedHeader] <i class="fa fa-user fa-blue"></i>&nbsp;[FORUMTOPIC:AUTHORDISPLAYNAMELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>|[FORUMTOPIC:AUTHORDISPLAYNAME]][AF:UI:MINIPAGER]</div>
 
-							<div class="dcf-topic-description">[BODYTITLE]</div>
+							<div class="dcf-topic-description">[FORUMTOPIC:BODYTITLE]</div>
 
 							<div class="dcf-topic-tools">
                                 [DCF:TOOLBAR:TOPICACTIONS]
@@ -138,7 +142,7 @@
 
 							<div>
 								[AF:PROPERTIES]
-								[AF:PROPERTY:LABEL]:[AF:PROPERTY:VALUE]
+								    [AF:PROPERTY:LABEL]:[AF:PROPERTY:VALUE]
 								[/AF:PROPERTIES]
 							</div>
 						</div>
@@ -151,7 +155,11 @@
 					<td class="dcf-col dcf-col-status">[FORUMTOPIC:STATUS]</td>
 					<td class="dcf-col dcf-col-views">[FORUMTOPIC:VIEWCOUNT]</td>
 					<td class="dcf-col dcf-col-subscribers">[FORUMTOPIC:SUBSCRIBERCOUNT]</td>
-					<td class="dcf-col dcf-col-last-post"><div class="dcf-last-post">[LASTPOST][RESX:BY] <i class="fa fa-user fa-blue"></i>&nbsp;[LASTPOSTDISPLAYNAME][AF:ICONLINK:LASTREPLY]<br />[FORUMTOPIC:LASTPOSTDATE][/LASTPOST]</div></td>
+					<td class="dcf-col dcf-col-last-post"><div class="dcf-last-post">
+                        [LASTPOST]
+                            [RESX:BY] <i class="fa fa-user fa-blue"></i>&nbsp;[LASTPOSTDISPLAYNAME][FORUMTOPIC:LASTREPLYURL|<a href="{0}" rel="nofollow"><img src="[FORUM:THEMELOCATION]/images/miniarrow_right.png" style="vertical-align: middle;" alt="[RESX:JumpToLastReply]" border="0" class="afminiarrow" /></a>]<br />[FORUMTOPIC:LASTPOSTDATE]
+                        [/LASTPOST]
+                    </div></td>
 				</tr>
 			</tbody>
 			[/TOPICS]
@@ -161,7 +169,7 @@
 
 		<div class="dcf-actions dcf-actions-bottom">
 			<div class="dcf-buttons">[ADDTOPIC] [MARKFORUMREAD]</div>
-			<div class="dcf-topics-pager">[PAGER2]<br />[JUMPTO]<br />[RSSLINK]</div>
+			<div class="dcf-topics-pager">[PAGER2]<br />[JUMPTO]<br />[FORUM:RSSLINK]</div>
 		</div>
 	</div>
 
@@ -213,8 +221,8 @@
 								<td class="dcf-col dcf-col-replies">[FORUM:TOTALREPLIES]</td>
 								<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
 								<td class="dcf-col dcf-col-last-post">
-									<span class="dcf-lastpost-subject">[LASTPOSTSUBJECT:25]</span>
-									<span class="dcf-lastpost-author">[RESX:BY] <i class="fa fa-user fa-blue"></i>&nbsp;[DISPLAYNAME]</span>
+									<span class="dcf-lastpost-subject">[FORUM:LASTPOSTSUBJECT:25]</span>
+									<span class="dcf-lastpost-author">[FORUM:DISPLAYNAME| [RESX:BY] <i class="fa fa-user fa-blue"></i>&nbsp;{0}]</span>
 									<span class="dcf-lastpost-date">[FORUM:LASTPOSTDATE]</span>
 								</td>
 							</tr>

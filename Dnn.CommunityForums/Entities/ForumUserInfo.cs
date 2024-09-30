@@ -380,10 +380,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {
-                case "userid":
-                    return PropertyAccess.FormatString(this.UserId.ToString(), format);
-                case "username":
-                    return PropertyAccess.FormatString(HttpUtility.HtmlEncode(this.Username).Replace("&amp;#", "&#"), format);
                 case "avatar":
                     return PropertyAccess.FormatString(
                         !this.PrefBlockAvatars && !this.AvatarDisabled ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(
@@ -400,14 +396,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             portalId: accessingUser.PortalID,
                             userId: accessingUser.UserID).IsAdmin,
                         this.UserId, this.Username, this.FirstName, this.LastName, this.DisplayName), format);
-                case "email":
-                    return PropertyAccess.FormatString(this.Email, format);
-                case "fullname":
-                    return PropertyAccess.FormatString(this.FullName, format);
-                case "firstname":
-                    return PropertyAccess.FormatString(HttpUtility.HtmlEncode(this.FirstName).Replace("&amp;#", "&#"), format);
-                case "lastname":
-                    return PropertyAccess.FormatString(HttpUtility.HtmlEncode(this.LastName).Replace("&amp;#", "&#"), format);
                 case "datecreated":
                     return Utilities.GetUserFormattedDateTime((DateTime?)this.DateCreated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
                 case "dateupdated":
