@@ -5,10 +5,10 @@
 		<div class="dcf-prev-next border-bottom border-top py-2">
 			<div class="d-flex">
 				<div class="w-50">
-				<span class="fa-prev">[PREVTOPIC]</span>
+				<span class="fa-prev">[FORUMTOPIC:PREVIOUSTOPICLINK|<a href="{0}" rel="nofollow" title="[RESX:PrevTopic]"><i class="fa fa-chevron-left" aria-hidden="true"></i><span>[RESX:PrevTopic]</span></a>]</span>
 				</div>
 				<div class="w-50 text-right text-end">
-				<span class="fa-next">[NEXTTOPIC]</span>
+				<span class="fa-next">[FORUMTOPIC:NEXTTOPICLINK|<a href="{0}" rel="nofollow" title="[RESX:NextTopic]"><span>[RESX:NextTopic]</span><i class="fa fa-chevron-right" aria-hidden="true"></i></a>]</span>
 				</div>
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 				</div>
 				<div class="">
 					<div class="dcf-topic-controls text-right text-end">
-                        <div class="dcf-forum-subscribers"><i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[AF:LABEL:ReplyCount] [RESX:REPLIES]</div>
+                        <div class="dcf-forum-subscribers"><i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[FORUMTOPIC:REPLYCOUNT] [RESX:REPLIES]</div>
                         <div class="dcf-forum-subscribers"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;<span id="af-topicview-topicsubscribercount">[FORUMTOPIC:SUBSCRIBERCOUNT]</span> [RESX:TOPICSUBSCRIBERCOUNT]</div>
                         <div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUM:SUBSCRIBERCOUNT]&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
 

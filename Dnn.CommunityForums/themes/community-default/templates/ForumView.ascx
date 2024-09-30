@@ -37,7 +37,8 @@
 					<tr class="dcf-table-body-row dcf-main-forums">
 						<td class="dcf-col dcf-col-text">
 							<div class="dcf-col-text-inner">
-								[FORUMICONCSS]
+								[FORUM:FORUMICONCSS|<div class="dcf-forum-icon" style="height: 30px; margin-right: 10px;"><i class="fa {0} fa-2x"></i></div>
+                                ]
 
                                 <div class="dcf-forum-title-text">
 								    <h4 class="dcf-forum-title">
