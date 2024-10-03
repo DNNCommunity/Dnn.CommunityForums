@@ -537,14 +537,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(this.ForumId.ToString(), format);
                 case "subject":
                     {
-                        string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POSTICON]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
+                        string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
                         return PropertyAccess.FormatString(Utilities.StripHTMLTag(this.Content.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage, format);
                     }
 
                 case "subjectlink":
                     {
                         string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, this.Forum.PortalSettings.ActiveTab.TabID, this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.TopicUrl, -1, -1, string.Empty, 1, -1, this.Forum.SocialGroupId);
-                        string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POSTICON]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
+                        string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
                         string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
                         string sBodyTitle = GetTopicTitle(this.Content.Body);
                         string slink;

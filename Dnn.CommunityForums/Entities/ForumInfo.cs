@@ -823,7 +823,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "forumdescription":
                     return PropertyAccess.FormatString(length > 0 && this.ForumDesc.Length > length ? this.ForumDesc.Substring(0, length) : this.ForumDesc, format);
                 case "forumname":
-                    return PropertyAccess.FormatString(this.ForumName, format);
                 case "forumnamenolink":
                     return PropertyAccess.FormatString(this.ForumName, format);
                 case "forumgroupid":
