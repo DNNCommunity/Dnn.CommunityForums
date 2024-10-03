@@ -438,7 +438,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             var ctlUtils = new ControlUtils();
-            this.forumURL = ctlUtils.BuildUrl(this.TabId, this.ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, -1, string.Empty, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
+            this.forumURL = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, -1, string.Empty, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
 
             template = template.Replace("[FORUMNAME]", this.GetForumLink(fi.ForumName, fi.ForumID, this.TabId, canView, this.forumURL));
             template = template.Replace("[FORUMNAMENOLINK]", fi.ForumName);

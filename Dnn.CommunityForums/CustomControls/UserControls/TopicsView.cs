@@ -285,8 +285,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
                         ControlUtils ctlUtils = new ControlUtils();
-                        this.sGroupURL = ctlUtils.BuildUrl(this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, string.Empty, this.ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
-                        this.sForumURL = ctlUtils.BuildUrl(this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
+                        this.sGroupURL = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, string.Empty, this.ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
+                        this.sForumURL = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
                         if (this.bView)
                         {
                             this.forumName = this.drForum["ForumName"].ToString();
@@ -925,7 +925,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     string sTopicURL = string.Empty;
                     ControlUtils ctlUtils = new ControlUtils();
-                    sTopicURL = ctlUtils.BuildUrl(this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumGroupId, this.ForumId, topicId, topicURL, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
+                    sTopicURL = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumGroupId, this.ForumId, topicId, topicURL, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
 
                     var @params = new List<string> { ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + lastReplyId };
 
