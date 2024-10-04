@@ -137,12 +137,15 @@ namespace DotNetNuke.Modules.ActiveForums
         internal static string BuildToolbar(int portalId, int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType, string locale)
         {
             string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, currentUserType, locale);
-            string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey));
+            string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : String.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
                 sToolbar = TemplateCache.GetCachedTemplate(forumModuleId, "ToolBar", 0);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
-                DataCache.SettingsCacheStore(moduleId: moduleId, cacheKey: cacheKey, sToolbar);
+                if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
+                {
+                    DataCache.SettingsCacheStore(moduleId: moduleId, cacheKey: cacheKey, sToolbar);
+                }
             }
 
             return sToolbar;
