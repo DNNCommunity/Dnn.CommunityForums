@@ -184,7 +184,7 @@
 <div id="amModal" class="amModal" style="display:none;position:absolute;">
 <div class="amModalHeader">
 	<div class="amModalHeaderText" id="amModalHeaderText"></div>
-	<div class="amModalCloseImg" onclick="amaf_closeDialog();"><img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/close.gif")%>" alt="[RESX:Close]" /></div>
+	<div class="amModalCloseImg" onclick="amaf_closeDialog();"><img src="<%=Page.ResolveUrl("~/DesktopModules/ActiveForums/images/close.gif")%>" alt="[RESX:Close]" /></div>
 </div>
 <div class="amModalFrame" id="amModalFrameDiv">
 	<am:Callback ID="cbModal" runat="server" Debug="false">

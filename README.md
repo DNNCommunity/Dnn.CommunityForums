@@ -13,7 +13,7 @@ The Community Forums module enables you and your fellow community members to com
 
 There are no steps unique to this module to install it.  You're able to install this module the same way you'd install any other module in DNN.  
 
-### Gettting Started  
+### Getting Started  
 
 When using this module, it's important to know that it can be set-up in numerous ways.  To make your initial experience easier, there is a wizard that will pre-configure the module for you with the most common settings, as well as adding some starter modules for you to use (or not).  
 

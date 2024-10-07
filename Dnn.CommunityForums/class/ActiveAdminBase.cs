@@ -1,38 +1,39 @@
+// Copyright (c) 2013-2024 by DNN Community
 //
-// Community Forums
-// Copyright (c) 2013-2021
-// by DNN Community
+// DNN Community licenses this file to you under the MIT license.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Collections;
-using System.Web;
-using System.Web.UI.WebControls;
-using System.Web.UI;
-using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+
     public class ActiveAdminBase : DotNetNuke.Entities.Modules.PortalModuleBase
     {
-        private string _currentView = string.Empty;
-        private DateTime _CacheUpdatedTime;
+        private string currentView = string.Empty;
+        private DateTime cacheUpdatedTime;
         public const string RequiredImage = Globals.ModulePath + "images/error.gif";
-        
+
         #region Constants
         internal const string ViewKey = "afcpView";
         internal const string ParamKey = "afcpParams";
@@ -40,76 +41,87 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         public string Params { get; set; } = string.Empty;
+
         public bool IsCallBack { get; set; }
 
         public string HostURL
         {
             get
             {
-                object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.HostUrl, ModuleId));
+                object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId));
                 if (obj == null)
                 {
                     string sURL;
-                    if (Request.IsSecureConnection)
+                    if (this.Request.IsSecureConnection)
                     {
-                        sURL = string.Concat("https://", Common.Globals.GetDomainName(Request), "/");
+                        sURL = string.Concat("https://", Common.Globals.GetDomainName(this.Request), "/");
                     }
                     else
                     {
-                        sURL = string.Concat("http://", Common.Globals.GetDomainName(Request), "/");
+                        sURL = string.Concat("http://", Common.Globals.GetDomainName(this.Request), "/");
                     }
-                    DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.HostUrl, ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
+
+                    DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
                     return sURL;
                 }
+
                 return Convert.ToString(obj);
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
-        public string GetWarningImage(string ImageId, string WarningMessage)
+        public string GetWarningImage(string imageId, string warningMessage)
         {
-            return string.Concat("<img id=\"", ImageId, "\" onmouseover=\"showTip(this,'", WarningMessage, "');\" onmouseout=\"hideTip();\" alt=\"", WarningMessage, "\" height=\"16\" width=\"16\" src=\"", Page.ResolveUrl(string.Concat(Globals.ModulePath, "images/warning.gif")), "\" />");
+            return string.Concat("<img id=\"", imageId, "\" onmouseover=\"showTip(this,'", warningMessage, "');\" onmouseout=\"hideTip();\" alt=\"", warningMessage, "\" height=\"16\" width=\"16\" src=\"", this.Page.ResolveUrl(string.Concat(Globals.ModulePath, "images/warning.gif")), "\" />");
         }
+
         protected string GetSharedResource(string key)
         {
             return Utilities.GetSharedResource(key, true);
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public Hashtable ActiveSettings
         {
             get
             {
-                return MainSettings.MainSettings;
+                return this.MainSettings.MainSettings;
             }
         }
+
         public SettingsInfo MainSettings
         {
             get
             {
-                return new SettingsInfo { MainSettings = new ModuleController().GetModule(moduleID: ModuleId).ModuleSettings };
+                return new SettingsInfo { MainSettings = new ModuleController().GetModule(moduleID: this.ModuleId).ModuleSettings };
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public DateTime CacheUpdatedTime
         {
             get
             {
-                object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.CacheUpdate, ModuleId));
+                object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.CacheUpdate, this.ModuleId));
                 if (obj != null)
                 {
                     return Convert.ToDateTime(obj);
                 }
+
                 return DateTime.UtcNow;
             }
+
             set
-            { 
-                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.CacheUpdate, ModuleId), value);
-                _CacheUpdatedTime = value;
+            {
+                DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.CacheUpdate, this.ModuleId), value);
+                this.cacheUpdatedTime = value;
             }
         }
+
         protected override void OnInit(EventArgs e)
         {
- 	        base.OnInit(e);
-            LocalResourceFile = Globals.ControlPanelResourceFile;
+            base.OnInit(e);
+            this.LocalResourceFile = Globals.ControlPanelResourceFile;
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
@@ -119,10 +131,12 @@ namespace DotNetNuke.Modules.ActiveForums
             escape = escape.Replace("\"", "\\\"");
             return escape;
         }
+
         public string LocalizeControl(string controlText)
         {
             return Utilities.LocalizeControl(controlText, true);
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         protected override void Render(HtmlTextWriter writer)
         {
@@ -130,51 +144,59 @@ namespace DotNetNuke.Modules.ActiveForums
             var htmlWriter = new HtmlTextWriter(stringWriter);
             base.Render(htmlWriter);
             string html = stringWriter.ToString();
-            html = LocalizeControl(html);
+            html = this.LocalizeControl(html);
             writer.Write(html);
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public Controls.ClientTemplate GetLoadingTemplate()
         {
-            var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
-            template.Controls.Add(new LiteralControl(string.Concat("<div class=\"amloading\"><div class=\"amload\"><img src=\"", Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>")));
+            var template = new Controls.ClientTemplate { ID = "LoadingTemplate" };
+            template.Controls.Add(new LiteralControl(string.Concat("<div class=\"amloading\"><div class=\"amload\"><img src=\"", this.Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>")));
             return template;
         }
+
         public Controls.ClientTemplate GetLoadingTemplateSmall()
         {
-            var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
-            template.Controls.Add(new LiteralControl(string.Concat("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"", Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>")));
+            var template = new Controls.ClientTemplate { ID = "LoadingTemplate" };
+            template.Controls.Add(new LiteralControl(string.Concat("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"", this.Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>")));
             return template;
         }
-        public void BindTemplateDropDown(DropDownList drp, Templates.TemplateTypes TemplateType, string DefaultText, string DefaultValue)
+
+        public void BindTemplateDropDown(DropDownList drp, Templates.TemplateTypes templateType, string defaultText, string defaultValue)
         {
             var tc = new TemplateController();
             drp.DataTextField = "Title";
             drp.DataValueField = "TemplateID";
-            drp.DataSource = tc.Template_List(PortalId, ModuleId, TemplateType);
+            drp.DataSource = tc.Template_List(this.PortalId, this.ModuleId, templateType);
             drp.DataBind();
-            drp.Items.Insert(0, new ListItem(DefaultText, DefaultValue));
+            drp.Items.Insert(0, new ListItem(defaultText, defaultValue));
         }
+
         public string CurrentView
         {
             get
             {
-                if (Session[ViewKey] != null)
+                if (this.Session[ViewKey] != null)
                 {
-                    return Session[ViewKey].ToString();
+                    return this.Session[ViewKey].ToString();
                 }
-                if (_currentView != string.Empty)
+
+                if (this.currentView != string.Empty)
                 {
-                    return _currentView;
+                    return this.currentView;
                 }
+
                 return DefaultView;
             }
+
             set
             {
-                Session[ViewKey] = value;
-                _currentView = value;
+                this.Session[ViewKey] = value;
+                this.currentView = value;
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public string ProductEditon
         {
@@ -182,7 +204,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return string.Empty;
             }
-
         }
     }
 }

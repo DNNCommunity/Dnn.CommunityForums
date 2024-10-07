@@ -1,39 +1,40 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2021
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Text.RegularExpressions;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+    using System.Reflection;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:WhatsNewRSS runat=server></{0}:WhatsNewRSS>")]
     public class WhatsNewRSS : Control
     {
-
         #region Constants
 
         private const string ModuleIDRequestKey = "moduleid";
@@ -44,7 +45,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private const int DefaultPortalID = 0;
         private const int DefaultTabID = -1;
 
-
         private const string XmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
         private const string RSSHeader = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:cf=\"http://www.microsoft.com/schemas/rss/core/2005\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:slash=\"http://purl.org/rss/1.0/modules/slash/\">";
 
@@ -52,13 +52,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #region Private Variables
 
-        private int? _TabId;
-        private int? _ModuleId;
-        private int? _PortalId;
-        private WhatsNewModuleSettings _settings;
-        private string _authorizedForums;
-        private User _currentUser;
-        private string _cacheKey;
+        private int? tabId;
+        private int? moduleId;
+        private int? portalId;
+        private WhatsNewModuleSettings settings;
+        private string authorizedForums;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser;
+        private string cacheKey;
 
         #endregion
 
@@ -68,39 +68,41 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (!_TabId.HasValue)
+                if (!this.tabId.HasValue)
                 {
                     int parsedTabId;
-                    _TabId = int.TryParse(HttpContext.Current.Request.QueryString[TabIDRequestKey], out parsedTabId) ? parsedTabId : DefaultTabID;
+                    this.tabId = int.TryParse(HttpContext.Current.Request.QueryString[TabIDRequestKey], out parsedTabId) ? parsedTabId : DefaultTabID;
                 }
 
-                return _TabId.Value;
+                return this.tabId.Value;
             }
         }
+
         private int ModuleId
         {
             get
             {
-                if (!_ModuleId.HasValue)
+                if (!this.moduleId.HasValue)
                 {
                     int parsedModuleID;
-                    _ModuleId = int.TryParse(HttpContext.Current.Request.QueryString[ModuleIDRequestKey], out parsedModuleID) ? parsedModuleID : DefaultModuleID;
+                    this.moduleId = int.TryParse(HttpContext.Current.Request.QueryString[ModuleIDRequestKey], out parsedModuleID) ? parsedModuleID : DefaultModuleID;
                 }
 
-                return _ModuleId.Value;
+                return this.moduleId.Value;
             }
         }
+
         private int PortalId
         {
             get
             {
-                if (!_PortalId.HasValue)
+                if (!this.portalId.HasValue)
                 {
                     int parsedPortalID;
-                    _PortalId = int.TryParse(HttpContext.Current.Request.QueryString[PortalIDRequestKey], out parsedPortalID) ? parsedPortalID : DefaultPortalID;
+                    this.portalId = int.TryParse(HttpContext.Current.Request.QueryString[PortalIDRequestKey], out parsedPortalID) ? parsedPortalID : DefaultPortalID;
                 }
 
-                return _PortalId.Value;
+                return this.portalId.Value;
             }
         }
 
@@ -108,35 +110,36 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (_settings == null)
+                if (this.settings == null)
                 {
-                    var settingsCacheKey = string.Format(CacheKeys.WhatsNew, ModuleId);
+                    var settingsCacheKey = string.Format(CacheKeys.WhatsNew, this.ModuleId);
 
-                    var moduleSettings = DataCache.SettingsCacheRetrieve(ModuleId,settingsCacheKey) as Hashtable;
+                    var moduleSettings = DataCache.SettingsCacheRetrieve(this.ModuleId, settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
-                        moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
-                        DataCache.SettingsCacheStore(ModuleId,settingsCacheKey, moduleSettings);
+                        moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
+                        DataCache.SettingsCacheStore(this.ModuleId, settingsCacheKey, moduleSettings);
                     }
 
-                    _settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
+                    this.settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
                 }
-                return _settings;
+
+                return this.settings;
             }
         }
 
-        private User CurrentUser
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo CurrentUser
         {
-            get { return _currentUser ?? (_currentUser = new UserController().GetUser(PortalId, -1)); }
+            get { return this.currentUser ?? (this.currentUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetUserFromHttpContext(this.PortalId, -1)); }
         }
 
         private string AuthorizedForums
         {
             get
             {
-                return _authorizedForums ??
-                       (_authorizedForums =
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, Settings.Forums, CurrentUser.UserRoles));
+                return this.authorizedForums ??
+                       (this.authorizedForums =
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, this.Settings.Forums, this.CurrentUser.UserRoles));
             }
         }
 
@@ -144,10 +147,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _cacheKey ??
-                       (_cacheKey =
-                        string.Format(CacheKeys.RssTemplate, ModuleId,
-                                      Settings.RSSIgnoreSecurity ? Settings.Forums : AuthorizedForums));
+                return this.cacheKey ??
+                       (this.cacheKey =
+                        string.Format(CacheKeys.RssTemplate, this.ModuleId,
+                                      this.Settings.RSSIgnoreSecurity ? this.Settings.Forums : this.AuthorizedForums));
             }
         }
 
@@ -163,20 +166,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (TabId == DefaultTabID || ModuleId == DefaultModuleID || !Settings.RSSEnabled)
+            if (this.TabId == DefaultTabID || this.ModuleId == DefaultModuleID || !this.Settings.RSSEnabled)
             {
                 return;
             }
 
             // Attempt to load from cache if it's enabled
-            var rss = (Settings.RSSCacheTimeout > 0) ? DataCache.SettingsCacheRetrieve(ModuleId,CacheKey) as string : null;
+            var rss = (this.Settings.RSSCacheTimeout > 0) ? DataCache.SettingsCacheRetrieve(this.ModuleId, this.CacheKey) as string : null;
 
             // Build the RSS if needed
-            rss = rss ?? BuildRSS();
+            rss = rss ?? this.BuildRSS();
 
             // Save the rss to cache if it's enabled
-            if (Settings.RSSCacheTimeout > 0)
-                DataCache.SettingsCacheStore(ModuleId,CacheKey, rss);
+            if (this.Settings.RSSCacheTimeout > 0)
+            {
+                DataCache.SettingsCacheStore(this.ModuleId, this.CacheKey, rss);
+            }
 
             // Render the output
             writer.Write(rss);
@@ -217,8 +222,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             const int indent = 2;
 
-            var counter = 0;
-
             var sb = new StringBuilder(1024);
 
             // build header
@@ -228,7 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // build channel
             var ps = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 
-            var offSet = Convert.ToInt32(PortalSettings.Current.TimeZone.BaseUtcOffset.TotalMinutes);
+            var offSet = Convert.ToInt32(PortalSettings.Current.TimeZone.GetUtcOffset(DateTime.UtcNow).TotalMinutes);
 
             sb.Append(WriteElement("channel", indent));
             sb.Append(WriteElement("title", ps.PortalName, indent));
@@ -245,16 +248,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append(sLogo);
             }
 
-            sb.Append(WriteElement("copyright", ps.FooterText.Replace("[year]",DateTime.UtcNow.Year.ToString()), 2));
+            sb.Append(WriteElement("copyright", ps.FooterText.Replace("[year]", DateTime.UtcNow.Year.ToString()), 2));
             sb.Append(WriteElement("lastBuildDate", "[LASTBUILDDATE]", 2));
 
             var lastBuildDate = DateTime.MinValue;
 
             // build items
+            var forumids = this.Settings.RSSIgnoreSecurity ? this.Settings.Forums : this.AuthorizedForums;
 
-            var forumids = Settings.RSSIgnoreSecurity ? Settings.Forums : AuthorizedForums;
-
-            var dr = DataProvider.Instance().GetPosts(PortalId, forumids, true, false, Settings.Rows, Settings.Tags);
+            var dr = DataProvider.Instance().GetPosts(this.PortalId, forumids, true, false, this.Settings.Rows, this.Settings.Tags);
             var sHost = Utilities.GetHost();
 
             try
@@ -296,8 +298,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string url;
                     if (string.IsNullOrEmpty(sTopicUrl) || !Utilities.UseFriendlyURLs(topicModuleId))
                     {
-                        string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
-                        url = Utilities.NavigateURL(topicTabId, "", Params);
+                        string[] @params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
+                        url = Utilities.NavigateURL(topicTabId, string.Empty, @params);
                         if (url.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.CurrentCulture) == -1)
                         {
                             url = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
@@ -306,23 +308,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     else
                     {
                         var ctlUtils = new ControlUtils();
-                        sTopicUrl = ctlUtils.BuildUrl(topicTabId, topicModuleId, sGroupPrefixUrl, sForumUrl, groupId, forumId, topicId, sTopicUrl, -1, -1, string.Empty, 1, replyId, -1);
+                        sTopicUrl = ctlUtils.BuildUrl(this.PortalId, topicTabId, topicModuleId, sGroupPrefixUrl, sForumUrl, groupId, forumId, topicId, sTopicUrl, -1, -1, string.Empty, 1, replyId, -1);
                         if (sHost.EndsWith("/") && sTopicUrl.StartsWith("/"))
                         {
                             sHost = sHost.Substring(0, sHost.Length - 1);
                         }
+
                         url = sHost + sTopicUrl;
                     }
 
                     sb.Append(WriteElement("item", indent));
 
                     sb.Append(WriteElement("title", subject, indent + 1));
-                    if (Settings.RSSIncludeBody)
+                    if (this.Settings.RSSIncludeBody)
                     {
                         if (bodyHtml.IndexOf("<body>", StringComparison.CurrentCulture) > 0)
                         {
                             bodyHtml = TemplateUtils.GetTemplateSection(bodyHtml, "<body>", "</body>");
                         }
+
                         // Legacy Attachment functionality uses "attachid"
                         if (bodyHtml.Contains("&#91;IMAGE:"))
                         {
@@ -332,10 +336,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             var matches = regExp.Matches(bodyHtml);
                             foreach (Match match in matches)
                             {
-                                var sImage = "<img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + PortalId + "&moduleid=" + ModuleId + "&attachid=" + match.Groups[2].Value + "\" border=\"0\" />";
+                                var sImage = "<img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + this.PortalId + "&moduleid=" + this.ModuleId + "&attachid=" + match.Groups[2].Value + "\" border=\"0\" />";
                                 bodyHtml = bodyHtml.Replace(match.Value, sImage);
                             }
                         }
+
                         // Legacy Attachment functionality uses "attachid"
                         if (bodyHtml.Contains("&#91;THUMBNAIL:"))
                         {
@@ -347,10 +352,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             {
                                 var thumbId = match.Groups[2].Value.Split(':')[0];
                                 var parentId = match.Groups[2].Value.Split(':')[1];
-                                var sImage = "<a href=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + PortalId + "&moduleid=" + ModuleId + "&attachid=" + parentId + "\" target=\"_blank\"><img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + PortalId + "&moduleid=" + ModuleId + "&attachid=" + thumbId + "\" border=\"0\" /></a>";
+                                var sImage = "<a href=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + this.PortalId + "&moduleid=" + this.ModuleId + "&attachid=" + parentId + "\" target=\"_blank\"><img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + this.PortalId + "&moduleid=" + this.ModuleId + "&attachid=" + thumbId + "\" border=\"0\" /></a>";
                                 bodyHtml = bodyHtml.Replace(match.Value, sImage);
                             }
                         }
+
                         bodyHtml = bodyHtml.Replace("src=\"/Portals", "src=\"" + Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + "/Portals");
                         bodyHtml = Utilities.ManageImagePath(bodyHtml, new Uri(Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host)));
 
@@ -360,6 +366,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sb.Append(WriteElement("description", string.Empty, indent + 1));
                     }
+
                     sb.Append(WriteElement("link", url, indent + 1));
                     sb.Append(WriteElement("comments", url, indent + 1));
                     sb.Append(WriteElement("pubDate", Convert.ToDateTime(postDate).AddMinutes(offSet).ToString("r"), indent + 1));
@@ -367,10 +374,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sb.Append(WriteElement("guid", url, indent + 1));
                     sb.Append(WriteElement("slash:comments", replyCount, indent + 1));
                     sb.Append(WriteElement("/item", indent));
-
-
-
                 }
+
                 dr.Close();
                 sb.Append("<atom:link href=\"http://" + HttpContext.Current.Request.Url.Host + HttpUtility.HtmlEncode(HttpContext.Current.Request.RawUrl) + "\" rel=\"self\" type=\"application/rss+xml\" />");
                 sb.Append(WriteElement("/channel", 1));
@@ -382,9 +387,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return ex.ToString();
             }
-
-
         }
     }
-
 }

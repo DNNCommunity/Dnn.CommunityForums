@@ -1,7 +1,13 @@
 @import "_variables.scss";
 
+
+.dnn-community-forums{
+
+@import "parts/_bootstrap.scss";
+@import "parts/_fontawesome.scss";
 @import "parts/_action-bars.scss";
 @import "parts/_edit.scss";
+@import "parts/_icons.scss";
 @import "parts/_toolbar.scss";
 @import "parts/_topic-controls.scss";
 @import "parts/_all.scss";
@@ -9,3 +15,5 @@
 @import "parts/_forum-view.scss";
 @import "parts/_topics-view.scss";
 @import "parts/_topic-view.scss";
+
+}

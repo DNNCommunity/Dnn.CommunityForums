@@ -5,13 +5,16 @@
 	<div class="dcf-breadcrumb"><i class="fa fa-home"></i>  [FORUMMAINLINK] <i class="fa fa-chevron-right"></i> [FORUMGROUPLINK]</div>
 	<div class="dcf-actions dcf-actions-top dcf-cols">
 		
+		<div class="dcf-forum-title-wrap">
 		<h2 class="dcf-forum-title">[TRESX:Forum]: [FORUMLINK]</h2>
+		<div class="dcf-buttons">[ADDTOPIC]</div>
+		</div>
 		
 		
 		<div class="dcf-forum-search-subscribe">
 			<div class="dcf-forum-search">[MINISEARCH]</div>
-			<div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i> &nbsp;<span id="af-topicsview-forumsubscribercount">[FORUMSUBSCRIBERCOUNT]</span>&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
-			<div class="dcf-forum-subscribe">[FORUMSUBSCRIBE]</div>
+			<div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i><span id="af-topicsview-forumsubscribercount">[FORUMSUBSCRIBERCOUNT]</span>&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
+			<div class="dcf-subscribe-forum">[FORUMSUBSCRIBE]</div>
 		</div>
 		
 		
@@ -50,7 +53,7 @@
 							<td class="dcf-col dcf-col-subject" title="[BODYTITLE]">
 								<div class="dcf-subject">
 										<h4 class="dcf-title dcf-title-4">[SUBJECTLINK][AF:ICONLINK:LASTREAD]</h4>
-										<div class="dcf-topic-started">Started by <i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</div>
+										<div class="dcf-topic-started">[RESX:StartedHeader] <i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</div>
 
 									<div class="dcf-forum-description">[BODYTITLE]</div>
 
@@ -125,7 +128,7 @@
 
 							<h4 class="dcf-title dcf-title-4">[SUBJECTLINK][AF:ICONLINK:LASTREAD][ICONPIN][ICONLOCK]</h4>
 
-							<div class="dcf-topic-started">Started by <i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</div>
+							<div class="dcf-topic-started">[RESX:StartedHeader] <i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</div>
 
 							<div class="dcf-topic-description">[BODYTITLE]</div>
 

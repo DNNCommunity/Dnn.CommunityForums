@@ -214,13 +214,6 @@
                 <asp:Literal ID="ltrFullTextMessage" runat="server" />
             </span>
 		</div>
-		  <div class="dnnFormItem">
-			<dnn:label ID="lblMailQueue" runat="server" resourcekey="MailQueue" Suffix=":" />
-			<asp:RadioButtonList ID="rdMailQueue" RepeatDirection="Horizontal" runat="server">
-				<asp:ListItem Value="True" resourcekey="Yes" />
-				<asp:ListItem Value="False" resourcekey="No" />
-			</asp:RadioButtonList>
-		</div>  
 		<div class="dnnFormItem">
 			<dnn:label ID="lblCacheTemplates" runat="server" resourcekey="CacheTemplates" Suffix=":" />
 			<asp:RadioButtonList ID="rdCacheTemplates" RepeatDirection="Horizontal" runat="server">

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="[RESX:Email:Failed].Text" xml:space="preserve" lastModified="2024-05-16 19:42:21">
+    <value>Non siamo riusciti a inviare il tuo messaggio.  Si prega di riprovare più tardi.</value>
+  </data>
+  <data name="[RESX:Email:Sent].Text" xml:space="preserve" lastModified="2024-05-16 19:42:21">
+    <value>Il tuo messaggio è stato inviato.</value>
+  </data>
+  <data name="[RESX:Reply:Deleted].Text" xml:space="preserve" lastModified="2024-05-16 19:42:21">
+    <value>La risposta è stata cancellata.</value>
+  </data>
+  <data name="[RESX:Reply:Saved].Text" xml:space="preserve" lastModified="2024-05-16 19:42:21">
+    <value>La risposta è stata creata.</value>
+  </data>
+  <data name="[RESX:Topic:Alert].Text" xml:space="preserve" lastModified="2024-05-16 19:42:21">
+    <value>Grazie per il tuo messaggio.  I nostri moderatori sono stati avvisati ed esamineranno il tuo messaggio il prima possibile.</value>
+  </data>
+  <data name="[RESX:Topic:Deleted].Text" xml:space="preserve" lastModified="2024-05-16 19:42:21">
+    <value>L'argomento è stato eliminato.</value>
+  </data>
+  <data name="[RESX:Topic:Moved].Text" xml:space="preserve" lastModified="2024-05-16 19:42:21">
+    <value>L'argomento è stato spostato.</value>
+  </data>
+  <data name="[RESX:Topic:PendingMod].Text" xml:space="preserve" lastModified="2024-05-16 19:42:21">
+    <value>Hai postato in un forum moderato. &lt;br&gt; Il tuo messaggio non sarà disponibile fino a quando non sarà stato approvato. &lt;br&gt;&lt;br&gt;Un moderatore esaminerà il tuo post a breve.&lt;br&gt;&lt;br&gt;Grazie.</value>
+  </data>
+  <data name="[RESX:Topic:Saved].Text" xml:space="preserve" lastModified="2024-05-16 19:42:21">
+    <value>L'argomento è stato creato.</value>
+  </data>
+  <data name="[RESX:Topic:Submit].Text" xml:space="preserve" lastModified="2024-05-16 19:42:21">
+    <value>L'argomento è stato inviato.</value>
+  </data>
+  <data name="[RESX:User:Banned].Text" xml:space="preserve" lastModified="2024-05-16 19:42:21">
+    <value>Il contenuto dell'utente è stato rimosso e l'utente non è stato autorizzato.</value>
+  </data>
+</root>

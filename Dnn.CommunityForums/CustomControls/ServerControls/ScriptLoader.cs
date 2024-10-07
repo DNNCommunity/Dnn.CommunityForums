@@ -1,28 +1,29 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2021
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.ComponentModel;
-using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:ScriptLoader runat=server></{0}:ScriptLoader>")]
     public class ScriptLoader : Control
     {
@@ -42,42 +43,46 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public ScriptLoader()
         {
-            RequiredFieldValidator = false;
-            DatePicker = false;
-            Callback = false;
-            ActiveGrid = false;
-            TextSuggest = false;
+            this.RequiredFieldValidator = false;
+            this.DatePicker = false;
+            this.Callback = false;
+            this.ActiveGrid = false;
+            this.TextSuggest = false;
         }
 
         #region Subs/Functions
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             /*if (TextSuggest && !(Page.ClientScript.IsClientScriptIncludeRegistered("AMTextSuggest")))
             {
                 Page.ClientScript.RegisterClientScriptInclude("AMTextSuggest", Page.ClientScript.GetWebResourceUrl(Me.GetType, "TextSuggest.js"))
             }*/
-            if (ActiveGrid && !(Page.ClientScript.IsClientScriptIncludeRegistered("AMActiveGrid")))
+            if (this.ActiveGrid && !this.Page.ClientScript.IsClientScriptIncludeRegistered("AMActiveGrid"))
             {
-                Page.ClientScript.RegisterClientScriptInclude("AMActiveGrid", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.ActiveGrid.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AMActiveGrid", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.ActiveGrid.js"));
             }
-            if (Callback && !(Page.ClientScript.IsClientScriptIncludeRegistered("AMCallback")))
+
+            if (this.Callback && !this.Page.ClientScript.IsClientScriptIncludeRegistered("AMCallback"))
             {
-                Page.ClientScript.RegisterClientScriptInclude("AMCallback", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AMCallback", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js"));
             }
-            if (DatePicker && !(Page.ClientScript.IsClientScriptIncludeRegistered("AMDatePicker")))
+
+            if (this.DatePicker && !this.Page.ClientScript.IsClientScriptIncludeRegistered("AMDatePicker"))
             {
-                Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.DatePicker.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.DatePicker.js"));
             }
-            if (RequiredFieldValidator && !(Page.ClientScript.IsClientScriptIncludeRegistered("AMValidation")))
+
+            if (this.RequiredFieldValidator && !this.Page.ClientScript.IsClientScriptIncludeRegistered("AMValidation"))
             {
-                Page.ClientScript.RegisterClientScriptInclude("AMValidation", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.Validation.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AMValidation", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.Validation.js"));
             }
-            if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AMMenu")))
+
+            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMMenu"))
             {
-                Page.ClientScript.RegisterClientScriptInclude("AMMenu", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.MenuButton.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AMMenu", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.MenuButton.js"));
             }
         }
 

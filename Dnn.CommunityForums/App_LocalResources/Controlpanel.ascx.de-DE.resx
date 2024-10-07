@@ -1,0 +1,1534 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="[RESX:About].Text" xml:space="preserve">
+    <value>Über</value>
+  </data>
+  <data name="[RESX:Actions:Complete].Text" xml:space="preserve">
+    <value>Vollständig</value>
+  </data>
+  <data name="[RESX:Actions:DeleteComplete].Text" xml:space="preserve">
+    <value>Das Element wurde gelöscht.</value>
+  </data>
+  <data name="[RESX:Actions:DeleteConfirm].Text" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie dieses Element löschen möchten?</value>
+  </data>
+  <data name="[RESX:Actions:FinalConfirm].Text" xml:space="preserve">
+    <value>Nur um sicherzugehen, möchten Sie dieses Elemet und alle zugehörigen Daten wirklich löschen?</value>
+  </data>
+  <data name="[RESX:Actions:ForumDeleteConfirm].Text" xml:space="preserve">
+    <value>WARNUNG! - Wenn Sie dieses Element löschen, werden alle zugehörigen Inhalte dauerhaft gelöscht. Fahren Sie nicht fort, es sei denn, Sie haben eine aktuelle Sicherungskopie.\n Klicken Sie auf [OK], um alle zugehörigen Inhalte zu löschen.  Klicken Sie auf [Abbrechen], um den Vorgang zu beenden.</value>
+  </data>
+  <data name="[RESX:Actions:ForumDeleted].Text" xml:space="preserve">
+    <value>Das Element wurde gelöscht.</value>
+  </data>
+  <data name="[RESX:Actions:ForumSaved].Text" xml:space="preserve">
+    <value>Das Forum wurde erfolgreich gespeichert.</value>
+  </data>
+  <data name="[RESX:Actions:GenericSaved].Text" xml:space="preserve">
+    <value>Speichern abgeschlossen!</value>
+  </data>
+  <data name="[RESX:Actions:GroupDeleted].Text" xml:space="preserve">
+    <value>Die Gruppe und alle zugehörigen Inhalte wurden gelöscht.</value>
+  </data>
+  <data name="[RESX:Actions:GroupSaved].Text" xml:space="preserve">
+    <value>Die Gruppe wurde erfolgreich gespeichert.</value>
+  </data>
+  <data name="[RESX:Actions:MinMax].Text" xml:space="preserve">
+    <value>Die Mindestpunktzahl muss kleiner sein als die Höchstpunktzahl.</value>
+  </data>
+  <data name="[RESX:Actions:RequiredFields].Text" xml:space="preserve">
+    <value>Bitte geben Sie Werte für die erforderlichen Felder ein.</value>
+  </data>
+  <data name="[RESX:Actions:RestoreConfirm].Text" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie alle aktuellen Filter löschen und den Standardfiltersatz laden möchten?</value>
+  </data>
+  <data name="[RESX:Actions:SettingsSaved].Text" xml:space="preserve">
+    <value>Die Einstellungen wurden aktualisiert!</value>
+  </data>
+  <data name="[RESX:Actions:Warning].Text" xml:space="preserve">
+    <value>WARNUNG</value>
+  </data>
+  <data name="[RESX:Active].Text" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="[RESX:Activity].Text" xml:space="preserve">
+    <value>Aktivität</value>
+  </data>
+  <data name="[RESX:AddFilter].Text" xml:space="preserve">
+    <value>Filterelement hinzufügen</value>
+  </data>
+  <data name="[RESX:AddProperty].Text" xml:space="preserve">
+    <value>Neue Eigenschaft hinzufügen</value>
+  </data>
+  <data name="[RESX:AddRole].Text" xml:space="preserve">
+    <value>Rolle hinzufügen</value>
+  </data>
+  <data name="[RESX:AddTemplate].Text" xml:space="preserve">
+    <value>Vorlage hinzufügen</value>
+  </data>
+  <data name="[RESX:AddUserName].Text" xml:space="preserve">
+    <value>Benutzername hinzufügen</value>
+  </data>
+  <data name="[RESX:Administrators].Text" xml:space="preserve">
+    <value>Administratoren</value>
+  </data>
+  <data name="[RESX:AdminNotification].Text" xml:space="preserve">
+    <value>Admin-Benachrichtigung</value>
+  </data>
+  <data name="[RESX:All].Text" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="[RESX:AllowAttach].Text" xml:space="preserve">
+    <value>Anhänge</value>
+  </data>
+  <data name="[RESX:AllowBrowseSite].Text" xml:space="preserve">
+    <value>Website durchsuchen zulassen</value>
+  </data>
+  <data name="[RESX:AllowedTypes].Text" xml:space="preserve">
+    <value>Zulässige Typen</value>
+  </data>
+  <data name="[RESX:AllowHTML].Text" xml:space="preserve">
+    <value>HTML-Eingabe</value>
+  </data>
+  <data name="[RESX:AllowLikes].Text" xml:space="preserve">
+    <value>Likes zulassen</value>
+  </data>
+  <data name="[RESX:AllowPostIcon].Text" xml:space="preserve">
+    <value>Beitrags-Symbole</value>
+  </data>
+  <data name="[RESX:AllowRSS].Text" xml:space="preserve">
+    <value>RSS</value>
+  </data>
+  <data name="[RESX:AllowScripts].Text" xml:space="preserve">
+    <value>Skripte zulassen</value>
+  </data>
+  <data name="[RESX:AllUsers].Text" xml:space="preserve">
+    <value>Alle Benutzer</value>
+  </data>
+  <data name="[RESX:AlwaysApprove].Text" xml:space="preserve">
+    <value>Immer genehmigen</value>
+  </data>
+  <data name="[RESX:AlwaysModerate].Text" xml:space="preserve">
+    <value>Immer moderieren</value>
+  </data>
+  <data name="[RESX:AnswerPointValue].Text" xml:space="preserve">
+    <value>Antwortbeitrag bereitstellen</value>
+  </data>
+  <data name="[RESX:Approved].Text" xml:space="preserve">
+    <value>Genehmigt</value>
+  </data>
+  <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve">
+    <value>Einfügen von Dateien als Token</value>
+  </data>
+  <data name="[RESX:AuditLog].Text" xml:space="preserve">
+    <value>Protokollierung und Nachverfolgung</value>
+  </data>
+  <data name="[RESX:Author].Text" xml:space="preserve">
+    <value>Verfasser</value>
+  </data>
+  <data name="[RESX:AutoLink:Intro].Text" xml:space="preserve">
+    <value>Wählen Sie die Option "Ja" um in den Forenbeiträgen Website-Adressen automatisch in Hyperlinks umzuwandeln.</value>
+  </data>
+  <data name="[RESX:AutoLink].Text" xml:space="preserve">
+    <value>Automatische Hyperlinks</value>
+  </data>
+  <data name="[RESX:AutoResponse].Text" xml:space="preserve">
+    <value>Automatische Reaktion</value>
+  </data>
+  <data name="[RESX:AutoSubscribe].Text" xml:space="preserve">
+    <value>Automatische Abonnements</value>
+  </data>
+  <data name="[RESX:AutoTrustLevel].Text" xml:space="preserve">
+    <value>Automatische Vertrauensstufe</value>
+  </data>
+  <data name="[RESX:AvatarDefault].Text" xml:space="preserve">
+    <value>Standard-Avatar aktiviert</value>
+  </data>
+  <data name="[RESX:AvatarDimensions].Text" xml:space="preserve">
+    <value>Avatar-Abmessungen</value>
+  </data>
+  <data name="[RESX:AvatarOptions].Text" xml:space="preserve">
+    <value>Avatar-Optionen</value>
+  </data>
+  <data name="[RESX:Button:Cancel].Text" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="[RESX:Button:Delete].Text" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="[RESX:Button:Save].Text" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="[RESX:Captcha:Intro].Text" xml:space="preserve">
+    <value>Aktivieren Sie dieses Kontrollkästchen, um anonyme Benutzer aufzufordern, einen zufälligen Sicherheitscode einzugeben, um Spam-Inhalte zu verhindern.</value>
+  </data>
+  <data name="[RESX:Captcha].Text" xml:space="preserve">
+    <value>Sicherheitscode (Spam-Vermeidung)</value>
+  </data>
+  <data name="[RESX:Categories].Text" xml:space="preserve">
+    <value>Kategorien</value>
+  </data>
+  <data name="[RESX:CategoryName].Text" xml:space="preserve">
+    <value>Name der Kategorie</value>
+  </data>
+  <data name="[RESX:ClickToAdd].Text" xml:space="preserve">
+    <value>Klicken Sie hier um die Rolle hinzuzufügen.</value>
+  </data>
+  <data name="[RESX:Close].Text" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="[RESX:Community].Text" xml:space="preserve">
+    <value>Community</value>
+  </data>
+  <data name="[RESX:CommunityOptions:Intro].Text" xml:space="preserve">
+    <value>Mit den folgenden Einstellungen können Sie die Community-Funktionen in Ihren Foren steuern.</value>
+  </data>
+  <data name="[RESX:CommunityOptions].Text" xml:space="preserve">
+    <value>Community-Optionen</value>
+  </data>
+  <data name="[RESX:CommunitySettings].Text" xml:space="preserve">
+    <value>Community-Einstellungen</value>
+  </data>
+  <data name="[RESX:ConfigureProperties].Text" xml:space="preserve">
+    <value>Optionen konfigurieren</value>
+  </data>
+  <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve">
+    <value>Vorsicht: Die Installation oder Deinstallation des URL-Handlers für DNN-Communityforen erfordert eine Änderung an Ihrer web.config.  \n\nSind Sie sicher, dass Sie diese Änderung jetzt vornehmen möchten?</value>
+  </data>
+  <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve">
+    <value>Konvertieren Sie *.png in *.jpg</value>
+  </data>
+  <data name="[RESX:CreatePostCount].Text" xml:space="preserve">
+    <value>Beitragsanzahl erstellen</value>
+  </data>
+  <data name="[RESX:CreateUsers].Text" xml:space="preserve">
+    <value>Benutzer automatisch erstellen</value>
+  </data>
+  <data name="[RESX:CustomFields].Text" xml:space="preserve">
+    <value>Benutzerdefinierte Felder</value>
+  </data>
+  <data name="[RESX:Dashboard].Text" xml:space="preserve">
+    <value>Übersichtstafel</value>
+  </data>
+  <data name="[RESX:Database].Text" xml:space="preserve">
+    <value>Datenbank</value>
+  </data>
+  <data name="[RESX:DataType].Text" xml:space="preserve">
+    <value>Datentyp</value>
+  </data>
+  <data name="[RESX:Date].Text" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="[RESX:DateCreated].Text" xml:space="preserve">
+    <value>Erstellungsdatum</value>
+  </data>
+  <data name="[RESX:DateFormat].Text" xml:space="preserve">
+    <value>Datumsformat</value>
+  </data>
+  <data name="[RESX:DateTime].Text" xml:space="preserve">
+    <value>Datums- und Uhrzeiteinstellungen</value>
+  </data>
+  <data name="[RESX:DateUpdated].Text" xml:space="preserve">
+    <value>Datum aktualisiert</value>
+  </data>
+  <data name="[RESX:Default].Text" xml:space="preserve">
+    <value>Vorgabe</value>
+  </data>
+  <data name="[RESX:DefaultCache].Text" xml:space="preserve">
+    <value>Cache-Speicher</value>
+  </data>
+  <data name="[RESX:DefaultDisabled].Text" xml:space="preserve">
+    <value>--Deaktiviert--</value>
+  </data>
+  <data name="[RESX:DefaultPageSize].Text" xml:space="preserve">
+    <value>Standard-Seitengröße</value>
+  </data>
+  <data name="[RESX:DefaultTrust].Text" xml:space="preserve">
+    <value>Standard-Vertrauensstellung</value>
+  </data>
+  <data name="[RESX:Delete].Text" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="[RESX:DeleteAction:Intro].Text" xml:space="preserve">
+    <value>Wählen Sie aus, was mit Inhalten geschieht, wenn sie gelöscht werden. &lt;b&gt;Entfernen&lt;/b&gt; - Entfernt Inhalte aus der Datenbank.  &lt;b&gt;Recyceln&lt;/b&gt; - Der Inhalt wird als gelöscht markiert und verbleibt in der Datenbank.</value>
+  </data>
+  <data name="[RESX:DeleteAction].Text" xml:space="preserve">
+    <value>Löschverhalten</value>
+  </data>
+  <data name="[RESX:DeleteActionSelect].Text" xml:space="preserve">
+    <value>Aktion auswählen</value>
+  </data>
+  <data name="[RESX:Deleted].Text" xml:space="preserve">
+    <value>Gelöscht</value>
+  </data>
+  <data name="[RESX:DesignAndTemplates:Intro].Text" xml:space="preserve">
+    <value>Die folgenden Einstellungen helfen Ihnen, das Erscheinungsbild des Forums anzupassen.</value>
+  </data>
+  <data name="[RESX:DesignAndTemplates].Text" xml:space="preserve">
+    <value>Design und Layout</value>
+  </data>
+  <data name="[RESX:Details].Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="[RESX:Disabled].Text" xml:space="preserve">
+    <value>Aus</value>
+  </data>
+  <data name="[RESX:Display].Text" xml:space="preserve">
+    <value>Zeigen</value>
+  </data>
+  <data name="[RESX:DisplayName].Text" xml:space="preserve">
+    <value>Anzeigename</value>
+  </data>
+  <data name="[RESX:DropDownDefault].Text" xml:space="preserve">
+    <value>--AUSWÄHLEN--</value>
+  </data>
+  <data name="[RESX:DropDownDisabled].Text" xml:space="preserve">
+    <value>--DEAKTIVIERT--</value>
+  </data>
+  <data name="[RESX:EditControl:Intro].Text" xml:space="preserve">
+    <value>Ermöglicht es dem Benutzer, seinen Beitrag nur innerhalb einer bestimmten Anzahl von Minuten ab dem Zeitpunkt der Erstellung zu bearbeiten.  Der Benutzer muss auch über Bearbeitungsberechtigungen verfügen.  Legen Sie diesen Wert auf 0 fest, um diese Funktion zu deaktivieren.</value>
+  </data>
+  <data name="[RESX:EditControl].Text" xml:space="preserve">
+    <value>Kontrolle über die Bearbeitung von Inhalten</value>
+  </data>
+  <data name="[RESX:EditorHeight].Text" xml:space="preserve">
+    <value>Höhe</value>
+  </data>
+  <data name="[RESX:EditorMobile].Text" xml:space="preserve">
+    <value>Mobile Benutzer</value>
+  </data>
+  <data name="[RESX:EditorStyle].Text" xml:space="preserve">
+    <value>Stil</value>
+  </data>
+  <data name="[RESX:EditorToolBar].Text" xml:space="preserve">
+    <value>Symbolleiste</value>
+  </data>
+  <data name="[RESX:EditorType].Text" xml:space="preserve">
+    <value>Texteditor</value>
+  </data>
+  <data name="[RESX:EditorWidth].Text" xml:space="preserve">
+    <value>Breite</value>
+  </data>
+  <data name="[RESX:EditTimeLimit].Text" xml:space="preserve">
+    <value>Bearbeitungsintervall</value>
+  </data>
+  <data name="[RESX:Email].Text" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="[RESX:EmailAddress].Text" xml:space="preserve">
+    <value>E-Mail-Adresse</value>
+  </data>
+  <data name="[RESX:EmailTemplates].Text" xml:space="preserve">
+    <value>E-Mail-Vorlagen</value>
+  </data>
+  <data name="[RESX:Emoticon].Text" xml:space="preserve">
+    <value>Smiley</value>
+  </data>
+  <data name="[RESX:Emoticons].Text" xml:space="preserve">
+    <value>Smileys</value>
+  </data>
+  <data name="[RESX:EnableAutoLink].Text" xml:space="preserve">
+    <value>Automatische Links aktivieren</value>
+  </data>
+  <data name="[RESX:EnableAvatars].Text" xml:space="preserve">
+    <value>Benutzerbilder aktivieren</value>
+  </data>
+  <data name="[RESX:EnableAvatarsLinks].Text" xml:space="preserve">
+    <value>Benutzerbilder-Links</value>
+  </data>
+  <data name="[RESX:Enabled].Text" xml:space="preserve">
+    <value>Aktiviert</value>
+  </data>
+  <data name="[RESX:EnableFilter].Text" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="[RESX:EnableFullText].Text" xml:space="preserve">
+    <value>Volltext aktivieren</value>
+  </data>
+  <data name="[RESX:EnablePoints].Text" xml:space="preserve">
+    <value>Punktesystem</value>
+  </data>
+  <data name="[RESX:EnableProfiles].Text" xml:space="preserve">
+    <value>Aktiviert</value>
+  </data>
+  <data name="[RESX:EnableSubscriptions].Text" xml:space="preserve">
+    <value>Abonnements</value>
+  </data>
+  <data name="[RESX:EnableURLRewriter].Text" xml:space="preserve">
+    <value>Aktivieren von benutzerfreundlichen URLs</value>
+  </data>
+  <data name="[RESX:EOMALL].Text" xml:space="preserve">
+    <value>ALLE - Erforderlich</value>
+  </data>
+  <data name="[RESX:EOMOptional].Text" xml:space="preserve">
+    <value>Optional</value>
+  </data>
+  <data name="[RESX:EOMReplies].Text" xml:space="preserve">
+    <value>Antworten - Erforderlich</value>
+  </data>
+  <data name="[RESX:EOMTag].Text" xml:space="preserve">
+    <value>EOM-Tag ("End of Message" - "Ende der Nachricht")</value>
+  </data>
+  <data name="[RESX:Everyone].Text" xml:space="preserve">
+    <value>Jeder</value>
+  </data>
+  <data name="[RESX:Exit].Text" xml:space="preserve">
+    <value>Verlassen</value>
+  </data>
+  <data name="[RESX:Feature].Text" xml:space="preserve">
+    <value>Funktion</value>
+  </data>
+  <data name="[RESX:Features].Text" xml:space="preserve">
+    <value>Funktionen</value>
+  </data>
+  <data name="[RESX:FileStore].Text" xml:space="preserve">
+    <value>Dateispeicher</value>
+  </data>
+  <data name="[RESX:FileSystem].Text" xml:space="preserve">
+    <value>Dateisystem</value>
+  </data>
+  <data name="[RESX:Filters].Text" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="[RESX:FilterType].Text" xml:space="preserve">
+    <value>Filtertyp</value>
+  </data>
+  <data name="[RESX:Find].Text" xml:space="preserve">
+    <value>Gesuchter Text</value>
+  </data>
+  <data name="[RESX:FirstName].Text" xml:space="preserve">
+    <value>Vorname</value>
+  </data>
+  <data name="[RESX:FloodControl:Intro].Text" xml:space="preserve">
+    <value>Anzahl der Sekunden, die ein Benutzer zwischen Beiträgen warten muss.</value>
+  </data>
+  <data name="[RESX:FloodControl].Text" xml:space="preserve">
+    <value>Doppelte Beiträge und Missbrauchsprävention</value>
+  </data>
+  <data name="[RESX:FloodInterval].Text" xml:space="preserve">
+    <value>Wartezeit</value>
+  </data>
+  <data name="[RESX:Forum].Text" xml:space="preserve">
+    <value>Forum</value>
+  </data>
+  <data name="[RESX:ForumDesc].Text" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="[RESX:ForumGroup].Text" xml:space="preserve">
+    <value>Gruppe / Forum</value>
+  </data>
+  <data name="[RESX:ForumName].Text" xml:space="preserve">
+    <value>Name des Forums</value>
+  </data>
+  <data name="[RESX:ForumOwner].Text" xml:space="preserve">
+    <value>Forum-Besitzer</value>
+  </data>
+  <data name="[RESX:Forums].Text" xml:space="preserve">
+    <value>Foren</value>
+  </data>
+  <data name="[RESX:ForumsGroups].Text" xml:space="preserve">
+    <value>Forenliste</value>
+  </data>
+  <data name="[RESX:ForumStatSettings].Text" xml:space="preserve">
+    <value>Statistik-Einstellungen</value>
+  </data>
+  <data name="[RESX:ForumTemplate].Text" xml:space="preserve">
+    <value>Vorlage</value>
+  </data>
+  <data name="[RESX:ForumTheme].Text" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="[RESX:ForumView].Text" xml:space="preserve">
+    <value>Forum-Ansicht</value>
+  </data>
+  <data name="[RESX:FriendlyURLOptions].Text" xml:space="preserve">
+    <value>Freundliche URL-Optionen</value>
+  </data>
+  <data name="[RESX:FriendsOnly].Text" xml:space="preserve">
+    <value>Nur Freunde</value>
+  </data>
+  <data name="[RESX:Full].Text" xml:space="preserve">
+    <value>Voll</value>
+  </data>
+  <data name="[RESX:FullName].Text" xml:space="preserve">
+    <value>Vollständiger Name</value>
+  </data>
+  <data name="[RESX:FullTextSearch:Intro].Text" xml:space="preserve">
+    <value>Die Volltextsuche bietet eine bessere Leistung und genauere Ergebnisse.</value>
+  </data>
+  <data name="[RESX:FullTextSearch].Text" xml:space="preserve">
+    <value>Volltextsuche</value>
+  </data>
+  <data name="[RESX:GetSupport].Text" xml:space="preserve">
+    <value>Klicken Sie hier, um Support für DNN-Community-Foren zu erhalten.</value>
+  </data>
+  <data name="[RESX:GetUpdates].Text" xml:space="preserve">
+    <value>Suchen Sie nach Produktaktualisierungen.</value>
+  </data>
+  <data name="[RESX:GroupName].Text" xml:space="preserve">
+    <value>Foren-Gruppe</value>
+  </data>
+  <data name="[RESX:Groups].Text" xml:space="preserve">
+    <value>Gruppen</value>
+  </data>
+  <data name="[RESX:Hidden].Text" xml:space="preserve">
+    <value>Versteckt</value>
+  </data>
+  <data name="[RESX:HTML].Text" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="[RESX:IndexContent].Text" xml:space="preserve">
+    <value>Inhalt indizieren</value>
+  </data>
+  <data name="[RESX:InheritGroupFeatures].Text" xml:space="preserve">
+    <value>Gruppeneinstellungen erben</value>
+  </data>
+  <data name="[RESX:InheritGroupSecurity].Text" xml:space="preserve">
+    <value>Gruppensicherheit erben</value>
+  </data>
+  <data name="[RESX:IsHidden].Text" xml:space="preserve">
+    <value>Versteckt</value>
+  </data>
+  <data name="[RESX:IsReadOnly].Text" xml:space="preserve">
+    <value>Schreibgeschützt</value>
+  </data>
+  <data name="[RESX:IsRequired].Text" xml:space="preserve">
+    <value>Erforderlich</value>
+  </data>
+  <data name="[RESX:Label].Text" xml:space="preserve">
+    <value>Beschriftung</value>
+  </data>
+  <data name="[RESX:LastName].Text" xml:space="preserve">
+    <value>Nachname</value>
+  </data>
+  <data name="[RESX:List].Text" xml:space="preserve">
+    <value>Liste</value>
+  </data>
+  <data name="[RESX:ListCheckBoxes].Text" xml:space="preserve">
+    <value>Liste - Mehrfachauswahl </value>
+  </data>
+  <data name="[RESX:ListDropDown].Text" xml:space="preserve">
+    <value>Liste - Einzelauswahl</value>
+  </data>
+  <data name="[RESX:ListName].Text" xml:space="preserve">
+    <value>Liste auswählen</value>
+  </data>
+  <data name="[RESX:LoggingLevel].Text" xml:space="preserve">
+    <value>Protokollierungsebene</value>
+  </data>
+  <data name="[RESX:MainFeatures:Intro].Text" xml:space="preserve">
+    <value>Die folgenden Funktionen werden in allen Foren verwendet.  Sie können bestimmte Funktionen unten aktivieren oder deaktivieren.</value>
+  </data>
+  <data name="[RESX:MainFeatures].Text" xml:space="preserve">
+    <value>Haupteigenschaften</value>
+  </data>
+  <data name="[RESX:MainSettings:Intro].Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="[RESX:MainSettings].Text" xml:space="preserve">
+    <value>Haupteinstellungen</value>
+  </data>
+  <data name="[RESX:Maint:Days].Text" xml:space="preserve">
+    <value>Tag(e)</value>
+  </data>
+  <data name="[RESX:Maint:DryRunResults].Text" xml:space="preserve">
+    <value>{0} Thema/Themen werden entfernt.</value>
+  </data>
+  <data name="[RESX:Maint:Execute].Text" xml:space="preserve">
+    <value>Ausführen</value>
+  </data>
+  <data name="[RESX:Maint:NoActivityPast].Text" xml:space="preserve">
+    <value>Themen Letzte Aktivität vorbei</value>
+  </data>
+  <data name="[RESX:Maint:RequiredCriteria].Text" xml:space="preserve">
+    <value>Bitte überprüfen Sie Ihre ausgewählten Kriterien und versuchen Sie es erneut.</value>
+  </data>
+  <data name="[RESX:Maint:TestRun].Text" xml:space="preserve">
+    <value>Testlauf</value>
+  </data>
+  <data name="[RESX:Maint:TopicsByUser].Text" xml:space="preserve">
+    <value>Themen nach Benutzer</value>
+  </data>
+  <data name="[RESX:Maint:TopicsOlderThan].Text" xml:space="preserve">
+    <value>Themen, die älter sind als</value>
+  </data>
+  <data name="[RESX:Maint:WithoutReplies].Text" xml:space="preserve">
+    <value>Themen ohne Antworten</value>
+  </data>
+  <data name="[RESX:Maintenance].Text" xml:space="preserve">
+    <value>Wartung</value>
+  </data>
+  <data name="[RESX:MaintenanceInstruct].Text" xml:space="preserve">
+    <value>Geben Sie unten Kriterien an, um Inhalte aus Ihren Foren zu entfernen.  Klicken Sie auf die Schaltfläche "Testlauf", um die Anzahl der betroffenen Themen zu erhalten.  Klicken Sie auf die Schaltfläche "Ausführen", um mit der Wartung zu beginnen.  Dieser Vorgang kann einige Minuten dauern.  Bitte warten Sie, bis der Vorgang abgeschlossen ist, bevor Sie diese Seite schließen.</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Recycle:Desc].Text" xml:space="preserve">
+    <value>als gelöscht markiert</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Recycle].Text" xml:space="preserve">
+    <value>Wiederherstellen</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Remove:Desc].Text" xml:space="preserve">
+    <value>endgültig gelöscht</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Remove].Text" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning].Text" xml:space="preserve">
+    <value>Stellen Sie sicher, dass Sie eine Sicherungskopie Ihrer Datenbank erstellt haben, bevor Sie fortfahren.  Themen werden basierend auf der Entfernungsmethode gelöscht, die Sie auf der Registerkarte "Haupteinstellungen" angegeben haben.&lt;br /&gt;&lt;br /&gt;
+Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anhand der unten angegebenen Kriterien {1}.</value>
+  </data>
+  <data name="[RESX:ManageForums].Text" xml:space="preserve">
+    <value>Foren verwalten</value>
+  </data>
+  <data name="[RESX:ManageTags].Text" xml:space="preserve">
+    <value>Tags verwalten</value>
+  </data>
+  <data name="[RESX:MarkAnswerPointValue].Text" xml:space="preserve">
+    <value>Beitrag als Antwort markieren</value>
+  </data>
+  <data name="[RESX:MarkUp].Text" xml:space="preserve">
+    <value>Markup/Text</value>
+  </data>
+  <data name="[RESX:MaxAttach].Text" xml:space="preserve">
+    <value># der Dateien</value>
+  </data>
+  <data name="[RESX:MaxAttachHeight].Text" xml:space="preserve">
+    <value>Max. Höhe</value>
+  </data>
+  <data name="[RESX:MaxAttachWidth].Text" xml:space="preserve">
+    <value>Max. Breite</value>
+  </data>
+  <data name="[RESX:MaxFileSize].Text" xml:space="preserve">
+    <value>Max. Dateigröße (KB)</value>
+  </data>
+  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve">
+    <value>Max. Höhe</value>
+  </data>
+  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve">
+    <value>Max. Breite</value>
+  </data>
+  <data name="[RESX:MaxPoints].Text" xml:space="preserve">
+    <value>Maximale Punktezahl</value>
+  </data>
+  <data name="[RESX:MemberListMode].Text" xml:space="preserve">
+    <value>Mitgliederlisten-Modus</value>
+  </data>
+  <data name="[RESX:MemberListModeDisabledAll].Text" xml:space="preserve">
+    <value>Deaktiviert - Alle Benutzer</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledAll].Text" xml:space="preserve">
+    <value>Aktiviert - Alle Benutzer</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledMod].Text" xml:space="preserve">
+    <value>Aktiviert - Moderatoren</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledReg].Text" xml:space="preserve">
+    <value>Aktiviert - Registrierte Benutzer</value>
+  </data>
+  <data name="[RESX:Members:Intro].Text" xml:space="preserve">
+    <value>Mit den folgenden Einstellungen können Sie steuern, wie Mitglieder in Ihren Foren interagieren.</value>
+  </data>
+  <data name="[RESX:Members].Text" xml:space="preserve">
+    <value>Angehörige</value>
+  </data>
+  <data name="[RESX:MinPoints].Text" xml:space="preserve">
+    <value>Min. Punkte</value>
+  </data>
+  <data name="[RESX:Mod].Text" xml:space="preserve">
+    <value>Moderation</value>
+  </data>
+  <data name="[RESX:ModEmail].Text" xml:space="preserve">
+    <value>ModEmail</value>
+  </data>
+  <data name="[RESX:Moderate].Text" xml:space="preserve">
+    <value>Moderieren</value>
+  </data>
+  <data name="[RESX:Moderated].Text" xml:space="preserve">
+    <value>Moderiert</value>
+  </data>
+  <data name="[RESX:ModerateType].Text" xml:space="preserve">
+    <value>Moderiert</value>
+  </data>
+  <data name="[RESX:Moderators].Text" xml:space="preserve">
+    <value>Moderatoren</value>
+  </data>
+  <data name="[RESX:ModPointValue].Text" xml:space="preserve">
+    <value>Moderieren eines Beitrags</value>
+  </data>
+  <data name="[RESX:Moved].Text" xml:space="preserve">
+    <value>Verschoben</value>
+  </data>
+  <data name="[RESX:MoveDown].Text" xml:space="preserve">
+    <value>Nach unten verschieben</value>
+  </data>
+  <data name="[RESX:MoveUp].Text" xml:space="preserve">
+    <value>Nach oben verschieben</value>
+  </data>
+  <data name="[RESX:Name].Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="[RESX:NewForum].Text" xml:space="preserve">
+    <value>Neues Forum</value>
+  </data>
+  <data name="[RESX:NewForumGroup].Text" xml:space="preserve">
+    <value>Neue Forengruppe</value>
+  </data>
+  <data name="[RESX:NewTopicsOnly].Text" xml:space="preserve">
+    <value>Nur neue Themen</value>
+  </data>
+  <data name="[RESX:No].Text" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="[RESX:NoData].Text" xml:space="preserve">
+    <value>Keine Daten gefunden</value>
+  </data>
+  <data name="[RESX:NoForums].Text" xml:space="preserve">
+    <value>Keine Foren gefunden</value>
+  </data>
+  <data name="[RESX:NoMembers].Text" xml:space="preserve">
+    <value>Keine Mitglieder gefunden</value>
+  </data>
+  <data name="[RESX:None].Text" xml:space="preserve">
+    <value>Nichts</value>
+  </data>
+  <data name="[RESX:NoTopics].Text" xml:space="preserve">
+    <value>Keine Themen gefunden</value>
+  </data>
+  <data name="[RESX:NotTrusted].Text" xml:space="preserve">
+    <value>Nicht vertrauenswürdig</value>
+  </data>
+  <data name="[RESX:OtherOptions].Text" xml:space="preserve">
+    <value>Andere Optionen</value>
+  </data>
+  <data name="[RESX:Parent].Text" xml:space="preserve">
+    <value>Übergeordnet:</value>
+  </data>
+  <data name="[RESX:PermittedRoles].Text" xml:space="preserve">
+    <value>Zulässige Benutzer</value>
+  </data>
+  <data name="[RESX:PlainText].Text" xml:space="preserve">
+    <value>Klartext</value>
+  </data>
+  <data name="[RESX:PleaseWait].Text" xml:space="preserve">
+    <value>Laden...  Bitte warten.</value>
+  </data>
+  <data name="[RESX:PMPage].Text" xml:space="preserve">
+    <value>Seite "Private Nachrichten"</value>
+  </data>
+  <data name="[RESX:PointsOptions].Text" xml:space="preserve">
+    <value>Optionen für das Punktesystem</value>
+  </data>
+  <data name="[RESX:PointValue].Text" xml:space="preserve">
+    <value>Punkte</value>
+  </data>
+  <data name="[RESX:POP3Password].Text" xml:space="preserve">
+    <value>POP3-Passwort</value>
+  </data>
+  <data name="[RESX:POP3UserName].Text" xml:space="preserve">
+    <value>POP3-Benutzername</value>
+  </data>
+  <data name="[RESX:PostInfo].Text" xml:space="preserve">
+    <value>PostInfo</value>
+  </data>
+  <data name="[RESX:PostingOptions:Intro].Text" xml:space="preserve">
+    <value>Mit den folgenden Einstellungen können Sie verschiedene Aspekte der Inhaltserstellung in Ihren Foren steuern.</value>
+  </data>
+  <data name="[RESX:PostingOptions].Text" xml:space="preserve">
+    <value>Inhaltsoptionen</value>
+  </data>
+  <data name="[RESX:ProcessComplete].Text" xml:space="preserve">
+    <value>Prozess erfolgreich abgeschlossen!</value>
+  </data>
+  <data name="[RESX:Profile].Text" xml:space="preserve">
+    <value>Benutzerprofil</value>
+  </data>
+  <data name="[RESX:ProfileAdvanced].Text" xml:space="preserve">
+    <value>Erweitert</value>
+  </data>
+  <data name="[RESX:ProfileBasic].Text" xml:space="preserve">
+    <value>Grundeinstellungen</value>
+  </data>
+  <data name="[RESX:ProfileDisabled].Text" xml:space="preserve">
+    <value>Deaktiviert</value>
+  </data>
+  <data name="[RESX:ProfileTemplate].Text" xml:space="preserve">
+    <value>Profil-Vorlage</value>
+  </data>
+  <data name="[RESX:ProfileType].Text" xml:space="preserve">
+    <value>Profiltyp</value>
+  </data>
+  <data name="[RESX:Properties].Text" xml:space="preserve">
+    <value>Eigenschaften</value>
+  </data>
+  <data name="[RESX:PropertyName].Text" xml:space="preserve">
+    <value>Name der Immobilie</value>
+  </data>
+  <data name="[RESX:QuickLinks].Text" xml:space="preserve">
+    <value>Schnelle Links</value>
+  </data>
+  <data name="[RESX:QuickReplyForm].Text" xml:space="preserve">
+    <value>Schnellantwort-Formular</value>
+  </data>
+  <data name="[RESX:QuickStats].Text" xml:space="preserve">
+    <value>Schnelle Statistiken</value>
+  </data>
+  <data name="[RESX:RankName].Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="[RESX:Ranks].Text" xml:space="preserve">
+    <value>Reihen</value>
+  </data>
+  <data name="[RESX:RanksNew].Text" xml:space="preserve">
+    <value>Neue Rangstufe</value>
+  </data>
+  <data name="[RESX:RanksRecognition].Text" xml:space="preserve">
+    <value>Reihen</value>
+  </data>
+  <data name="[RESX:RecentMembers].Text" xml:space="preserve">
+    <value>Neueste Mitglieder</value>
+  </data>
+  <data name="[RESX:RecentTopics].Text" xml:space="preserve">
+    <value>Aktuelle Themen</value>
+  </data>
+  <data name="[RESX:Recycle].Text" xml:space="preserve">
+    <value>Wiederherstellen</value>
+  </data>
+  <data name="[RESX:RegEx].Text" xml:space="preserve">
+    <value>Regulärer Ausdruck</value>
+  </data>
+  <data name="[RESX:RegisteredUsers].Text" xml:space="preserve">
+    <value>Registrierte Benutzer</value>
+  </data>
+  <data name="[RESX:Rejected].Text" xml:space="preserve">
+    <value>Abgelehnt</value>
+  </data>
+  <data name="[RESX:RejectMessage].Text" xml:space="preserve">
+    <value>Ablehnungs-Benachrichtigung</value>
+  </data>
+  <data name="[RESX:Remove].Text" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="[RESX:RemoveHTML].Text" xml:space="preserve">
+    <value>HTML entfernen</value>
+  </data>
+  <data name="[RESX:Replace].Text" xml:space="preserve">
+    <value>Ersetzen</value>
+  </data>
+  <data name="[RESX:Replies].Text" xml:space="preserve">
+    <value>Antworten</value>
+  </data>
+  <data name="[RESX:ReplyForm].Text" xml:space="preserve">
+    <value>Antwortformular</value>
+  </data>
+  <data name="[RESX:ReplyPointValue].Text" xml:space="preserve">
+    <value>Antwort</value>
+  </data>
+  <data name="[RESX:ReplyPostCount].Text" xml:space="preserve">
+    <value>Anzahl der Antworten</value>
+  </data>
+  <data name="[RESX:RequireCaptcha].Text" xml:space="preserve">
+    <value>Captcha für anonyme Benutzer</value>
+  </data>
+  <data name="[RESX:RequireEOM].Text" xml:space="preserve">
+    <value>EOM-Tag ("End of Message" - "Ende der Nachricht") erforderlich</value>
+  </data>
+  <data name="[RESX:RestoreDefaults].Text" xml:space="preserve">
+    <value>Standardfilter laden</value>
+  </data>
+  <data name="[RESX:RestrictAlias].Text" xml:space="preserve">
+    <value>Einschränken nach E-Mail-Adresse</value>
+  </data>
+  <data name="[RESX:Roles].Text" xml:space="preserve">
+    <value>Rollen</value>
+  </data>
+  <data name="[RESX:Save].Text" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="[RESX:SecureObjects].Text" xml:space="preserve">
+    <value>Rollen/Benutzer</value>
+  </data>
+  <data name="[RESX:Security].Text" xml:space="preserve">
+    <value>Sicherheit</value>
+  </data>
+  <data name="[RESX:SecurityOption].Text" xml:space="preserve">
+    <value>Journal-Sicherheit</value>
+  </data>
+  <data name="[RESX:SelectRoles].Text" xml:space="preserve">
+    <value>Rollen auswählen</value>
+  </data>
+  <data name="[RESX:ServerTimeZone].Text" xml:space="preserve">
+    <value>Zeitzonen-Offset</value>
+  </data>
+  <data name="[RESX:Settings].Text" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="[RESX:SigDisable].Text" xml:space="preserve">
+    <value>Deaktiviert</value>
+  </data>
+  <data name="[RESX:SigHTML].Text" xml:space="preserve">
+    <value>HTML und Text zulassen</value>
+  </data>
+  <data name="[RESX:Signatures].Text" xml:space="preserve">
+    <value>Signaturen</value>
+  </data>
+  <data name="[RESX:SigPlainText].Text" xml:space="preserve">
+    <value>Nur Text zulassen</value>
+  </data>
+  <data name="[RESX:SiteAlias].Text" xml:space="preserve">
+    <value>Website-Adresse</value>
+  </data>
+  <data name="[RESX:Stats].Text" xml:space="preserve">
+    <value>Statistiken</value>
+  </data>
+  <data name="[RESX:StatsEnabled].Text" xml:space="preserve">
+    <value>Aktiviert</value>
+  </data>
+  <data name="[RESX:StatsInterval].Text" xml:space="preserve">
+    <value>Aktualisierungsintervall</value>
+  </data>
+  <data name="[RESX:StatsTemplate].Text" xml:space="preserve">
+    <value>Vorlage</value>
+  </data>
+  <data name="[RESX:Status].Text" xml:space="preserve">
+    <value>Aktivieren und/oder Deaktivieren von Funktionen</value>
+  </data>
+  <data name="[RESX:Subject].Text" xml:space="preserve">
+    <value>Betreff</value>
+  </data>
+  <data name="[RESX:SubscriberNotification].Text" xml:space="preserve">
+    <value>Abonnenten-Benachrichtigung</value>
+  </data>
+  <data name="[RESX:SubscriptionOptions].Text" xml:space="preserve">
+    <value>Abonnement-Optionen:</value>
+  </data>
+  <data name="[RESX:System].Text" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="[RESX:TagClicks].Text" xml:space="preserve">
+    <value>Klicks</value>
+  </data>
+  <data name="[RESX:TagItems].Text" xml:space="preserve">
+    <value>Elemente</value>
+  </data>
+  <data name="[RESX:TagName].Text" xml:space="preserve">
+    <value>Tag-Name</value>
+  </data>
+  <data name="[RESX:Tags].Text" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="[RESX:Template].Text" xml:space="preserve">
+    <value>Vorlage</value>
+  </data>
+  <data name="[RESX:Templates].Text" xml:space="preserve">
+    <value>Vorlagen</value>
+  </data>
+  <data name="[RESX:TemplateType].Text" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="[RESX:Text].Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="[RESX:Theme].Text" xml:space="preserve">
+    <value>Thema</value>
+  </data>
+  <data name="[RESX:TimeFormat].Text" xml:space="preserve">
+    <value>Zeitformat</value>
+  </data>
+  <data name="[RESX:Tips:Active].Text" xml:space="preserve">
+    <value>Aktivieren Sie dieses Kontrollkästchen, um ein Forum einfach ein- oder auszuschalten.</value>
+  </data>
+  <data name="[RESX:Tips:AddRoles].Text" xml:space="preserve">
+    <value>Wählen Sie die Rolle aus, die Sie dem Sicherheitsraster hinzufügen möchten, und klicken Sie dann auf das Plus-Symbol.  </value>
+  </data>
+  <data name="[RESX:Tips:AddUser].Text" xml:space="preserve">
+    <value>Geben Sie den Benutzernamen der Person ein, die Sie dem Sicherheitsraster hinzufügen möchten, und klicken Sie dann auf das Plus-Symbol.</value>
+  </data>
+  <data name="[RESX:Tips:AdminNotify].Text" xml:space="preserve">
+    <value>Dies ist eine optionale Vorlage, die an die Moderatoren dieses Forums gesendet wird, wenn ein Thema oder eine Antwort per E-Mail erstellt wird.  Diese Vorlage wird nur verwendet, wenn die Nachricht nicht moderiert wird.</value>
+  </data>
+  <data name="[RESX:Tips:AllowHTML].Text" xml:space="preserve">
+    <value>Erlauben Sie Benutzern, Beiträge mit HTML-Tags zu erstellen.  Klicken Sie auf das Eigenschaftensymbol, um weitere Informationen zu erhalten.</value>
+  </data>
+  <data name="[RESX:Tips:AnswerPointValue].Text" xml:space="preserve">
+    <value>Punkte, die einem Mitglied für die Antwort auf ein Thema verliehen werden.</value>
+  </data>
+  <data name="[RESX:Tips:Attachments].Text" xml:space="preserve">
+    <value>Erlauben Sie Benutzern, Anhänge mit ihren Beiträgen hochzuladen.   Klicken Sie auf das Eigenschaftensymbol, um weitere Informationen zu erhalten.</value>
+  </data>
+  <data name="[RESX:Tips:AutoCreateUsers].Text" xml:space="preserve">
+    <value>Aktivieren Sie diese Option, damit neue Benutzer automatisch erstellt werden, wenn das Benutzerkonto anhand ihrer E-Mail-Adresse nicht gefunden werden kann.</value>
+  </data>
+  <data name="[RESX:Tips:AutoRepsonse].Text" xml:space="preserve">
+    <value>Dies ist eine optionale Vorlage, die an den Benutzer gesendet werden kann, um ihn darüber zu informieren, dass seine E-Mail empfangen wurde.</value>
+  </data>
+  <data name="[RESX:Tips:AutoSubscribe].Text" xml:space="preserve">
+    <value>Wählen Sie Rollen aus, die automatisch abonniert werden, und erhalten Sie E-Mail-Benachrichtigungen für neue Inhalte, die in diesem Forum veröffentlicht werden.</value>
+  </data>
+  <data name="[RESX:Tips:AvatarDefault].Text" xml:space="preserve">
+    <value>Aktivieren Sie diese Option, um den Standard-Avatar aus dem Themenverzeichnis anzuzeigen, wenn ein Benutzer noch keinen Avatar angegeben hat.</value>
+  </data>
+  <data name="[RESX:Tips:AvatarDimensions].Text" xml:space="preserve">
+    <value> Wählen Sie die maximale Höhe und Breite für Avatare</value>
+  </data>
+  <data name="[RESX:Tips:CacheStore].Text" xml:space="preserve">
+    <value>Wählen Sie den Speicherort aus, an dem gecachte Elemente gespeichert werden sollen.  </value>
+  </data>
+  <data name="[RESX:Tips:CreatePostCount].Text" xml:space="preserve">
+    <value>Die Mindestanzahl von Beiträgen, die ein Benutzer haben muss, um ein neues Thema zu erstellen.</value>
+  </data>
+  <data name="[RESX:Tips:EmailAddress].Text" xml:space="preserve">
+    <value>Geben Sie die E-Mail-Adresse ein, die beim Senden von Benachrichtigungen als Absender-E-Mail-Adresse verwendet wird. </value>
+  </data>
+  <data name="[RESX:Tips:EMORequired].Text" xml:space="preserve">
+    <value>Aktivieren Sie diese Option, um Nachrichten abzulehnen, die nicht das oben angegebene EOM-Tag ("End of Message" - "Ende der Nachricht") enthalten.</value>
+  </data>
+  <data name="[RESX:Tips:Emoticons].Text" xml:space="preserve">
+    <value>Erlauben Sie Benutzern, Emoticons (Smileys) zu ihren Beiträgen hinzuzufügen.</value>
+  </data>
+  <data name="[RESX:Tips:EnableAvatarLinks].Text" xml:space="preserve">
+    <value>Erlauben Sie Ihren Benutzern, Links zu Avataren zu erstellen, die auf einem anderen Server gehostet werden.</value>
+  </data>
+  <data name="[RESX:Tips:EnableAvatars].Text" xml:space="preserve">
+    <value>Wählen Sie aus, ob Avatare aktiviert werden sollen oder nicht, und wählen Sie die entsprechenden Optionen aus.</value>
+  </data>
+  <data name="[RESX:Tips:EnablePoints].Text" xml:space="preserve">
+    <value>Aktivieren oder deaktivieren Sie die Punktesysteme und legen Sie entsprechende Punktwerte fest.</value>
+  </data>
+  <data name="[RESX:Tips:EnableProfiles].Text" xml:space="preserve">
+    <value>Wählen Sie aus, wie Profile angezeigt werden sollen&lt;br /&gt;Basic - das Standardprofil für DNN-Community-Foren&lt;br /&gt;Advanced - Zeigt das Profil aus dem DNN-Community-Profil an, falls installiert.&lt;br /&gt;Disabled - Profile werden deaktiviert.</value>
+  </data>
+  <data name="[RESX:Tips:EnableShortUrls].Text" xml:space="preserve">
+    <value>Aktivieren Sie diese Funktion um zu erreichen, dass die DNN-Community-Foren nur die erforderlichen Mindestparameter enthalten.</value>
+  </data>
+  <data name="[RESX:Tips:EOMTag].Text" xml:space="preserve">
+    <value>Das EOM-Tag ("End of Message" - "Ende der Nachricht") ist eine Methode, um neue Informationen nur dann einzuschließen, wenn ein Benutzer per E-Mail antwortet.  Der Benutzer sollte dieses Tag nach seiner Nachricht und vor dem Text der vorherigen Nachricht hinzufügen.</value>
+  </data>
+  <data name="[RESX:Tips:Filters].Text" xml:space="preserve">
+    <value>Verwenden Sie Filter, um Text aus einem Benutzerbeitrag zu ersetzen, wenn er gesendet wird.</value>
+  </data>
+  <data name="[RESX:Tips:ForumDesc].Text" xml:space="preserve">
+    <value>Geben Sie eine kurze Beschreibung des Forums ein.</value>
+  </data>
+  <data name="[RESX:Tips:ForumGroup].Text" xml:space="preserve">
+    <value>Wählen Sie die übergeordnete Gruppe für dieses Forum aus oder wählen Sie ein Forum aus, um ein Unterforum zu erstellen</value>
+  </data>
+  <data name="[RESX:Tips:ForumName].Text" xml:space="preserve">
+    <value>Geben Sie den Namen für dieses Forum ein.</value>
+  </data>
+  <data name="[RESX:Tips:ForumTemplate].Text" xml:space="preserve">
+    <value>Wählen Sie die Vorlage für die Seite aus, auf der alle Ihre Foren angezeigt werden.</value>
+  </data>
+  <data name="[RESX:Tips:ForumTheme].Text" xml:space="preserve">
+    <value>Wählen Sie das Layout für Ihr Forum aus.</value>
+  </data>
+  <data name="[RESX:Tips:Hidden].Text" xml:space="preserve">
+    <value>Aktivieren Sie dieses Kontrollkästchen, um dieses Forum aus der Liste der Foren für Benutzer auszublenden, die keinen Zugriff haben.</value>
+  </data>
+  <data name="[RESX:Tips:IndexContent].Text" xml:space="preserve">
+    <value>Ermöglicht das Einschließen von Inhalten aus diesem Forum in die DNN-Site-Suche.</value>
+  </data>
+  <data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve">
+    <value>Aktivieren Sie dieses Kontrollkästchen, um die Funktionseinstellungen der Gruppe zu übernehmen.</value>
+  </data>
+  <data name="[RESX:Tips:InheritGroupSecurity].Text" xml:space="preserve">
+    <value>Aktivieren Sie dieses Kontrollkästchen, um die Sicherheitseinstellungen der Gruppe zu erben.</value>
+  </data>
+  <data name="[RESX:Tips:LoggingLevel].Text" xml:space="preserve">
+    <value>Wählen Sie die Protokollierungsebene für Ihre Foren.&lt;br /&gt;Disabled - Es werden keine Aktivitäten protokolliert&lt;br /&gt;Moderat - Verschieben und Löschen werden protokolliert.&lt;br /&gt;Full - Alle Aktivitäten werden protokolliert.</value>
+  </data>
+  <data name="[RESX:Tips:MailConnector].Text" xml:space="preserve">
+    <value>Ermöglicht es Benutzern, auf Beiträge per E-Mail zu antworten.  Klicken Sie auf das Eigenschaftensymbol, um weitere Informationen zu erhalten.</value>
+  </data>
+  <data name="[RESX:Tips:MaintActivityOlderThan].Text" xml:space="preserve">
+    <value>Geben Sie die Anzahl der Tage ein.  Dies gilt für Themen, die innerhalb der von Ihnen angegebenen Anzahl von Tagen keine Antwort erhalten haben.</value>
+  </data>
+  <data name="[RESX:Tips:MaintOlderThan].Text" xml:space="preserve">
+    <value>Geben Sie die Anzahl der Tage ein. Dies gilt für Themen, die älter sind als die von Ihnen angegebene Anzahl von Tagen.</value>
+  </data>
+  <data name="[RESX:Tips:MaintTopicsByUser].Text" xml:space="preserve">
+    <value>Geben Sie die Benutzer-ID ein.  Dadurch wird der Prozess auf Themen beschränkt, die von der angegebenen Benutzer-ID erstellt wurden.</value>
+  </data>
+  <data name="[RESX:Tips:MaintWithOutReplies].Text" xml:space="preserve">
+    <value>Aktivieren Sie diese Option, um einfach alle Themen zu entfernen, auf die noch nie geantwortet wurde.</value>
+  </data>
+  <data name="[RESX:Tips:MarkAnswerPointValue].Text" xml:space="preserve">
+    <value>Punkte, die dem Autor des Themas verliehen werden, wenn er eine Antwort auswählt.</value>
+  </data>
+  <data name="[RESX:Tips:MemberListMode].Text" xml:space="preserve">
+    <value>Wählen Sie aus, wer auf die Mitgliederliste zugreifen können soll.</value>
+  </data>
+  <data name="[RESX:Tips:Moderated].Text" xml:space="preserve">
+    <value>Aktivieren Sie diese Funktion, wenn Sie Themen und Antworten genehmigen möchten, bevor sie im Forum angezeigt werden.</value>
+  </data>
+  <data name="[RESX:Tips:ModPointValue].Text" xml:space="preserve">
+    <value>Punkte, um einen Moderator für die Moderation eines Beitrags zu vergeben.</value>
+  </data>
+  <data name="[RESX:Tips:ModType].Text" xml:space="preserve">
+    <value>Ermöglicht es Ihnen, die Standardmoderationseinstellungen für das Forum zu überschreiben.</value>
+  </data>
+  <data name="[RESX:Tips:PageSize].Text" xml:space="preserve">
+    <value>Geben Sie die Standardanzahl der Elemente ein, die auf der Seite "Themen und Antworten" angezeigt werden sollen.</value>
+  </data>
+  <data name="[RESX:Tips:PMTabId].Text" xml:space="preserve">
+    <value>Wählen Sie die Seite aus, auf der Sie das Modul für private Nachrichten installiert haben.</value>
+  </data>
+  <data name="[RESX:Tips:POP3Address].Text" xml:space="preserve">
+    <value>Spezifische E-Mail-Adresse für dieses Forum.  Dadurch werden die E-Mail-Adresse der Website und die E-Mail-Adresse, die möglicherweise in den Foreneinstellungen eingegeben wurde, überschrieben.</value>
+  </data>
+  <data name="[RESX:Tips:POPMailServer].Text" xml:space="preserve">
+    <value>Geben Sie die Domäne oder IP-Adresse für Ihren POP3-Server ein, z.B. mail.mycompany.com</value>
+  </data>
+  <data name="[RESX:Tips:POPPassword].Text" xml:space="preserve">
+    <value>Geben Sie das Passwort für das oben angegebene Konto ein.</value>
+  </data>
+  <data name="[RESX:Tips:POPUserName].Text" xml:space="preserve">
+    <value>Geben Sie den Benutzernamen ein, der für die Verbindung mit dem POP3-Mailserver verwendet wird.</value>
+  </data>
+  <data name="[RESX:Tips:PostIcon].Text" xml:space="preserve">
+    <value>Erlauben Sie dem Benutzer, aus der Liste der Symbole auszuwählen, um seinen Beitrag zu identifizieren.</value>
+  </data>
+  <data name="[RESX:Tips:QuickReplyForm].Text" xml:space="preserve">
+    <value>Wählen Sie die Vorlage für die Anzeige des Schnellantwortformulars aus.</value>
+  </data>
+  <data name="[RESX:Tips:RejectNotify].Text" xml:space="preserve">
+    <value>Diese Vorlage wird an den Benutzer gesendet, wenn seine E-Mail-Nachricht abgelehnt wird.</value>
+  </data>
+  <data name="[RESX:Tips:ReplyForm].Text" xml:space="preserve">
+    <value>Wählen Sie die Vorlage für das Formular aus, das Benutzer beim Erstellen einer Antwort verwenden sollen.</value>
+  </data>
+  <data name="[RESX:Tips:ReplyPointValue].Text" xml:space="preserve">
+    <value>Punkte, die einem Mitglied für das Erstellen einer neuen Antwort gegeben werden.</value>
+  </data>
+  <data name="[RESX:Tips:ReplyPostCount].Text" xml:space="preserve">
+    <value>Die Mindestanzahl von Beiträgen, die ein Benutzer haben muss, um auf ein Thema antworten zu dürfen.</value>
+  </data>
+  <data name="[RESX:Tips:RestrictByAlias].Text" xml:space="preserve">
+    <value>Aktivieren Sie diese Option, um nur Nachrichten zu importieren, die direkt an die oben angegebene E-Mail-Adresse gesendet wurden.  Deaktivieren Sie diese Funktion, wenn Sie alle Nachrichten importieren möchten, die sich in der Mailbox für dieses Konto befinden.</value>
+  </data>
+  <data name="[RESX:Tips:RSS].Text" xml:space="preserve">
+    <value>Erlauben Sie Benutzern, dieses Forum mit RSS zu abonnieren.  Nur Sicherheitsrollen mit Lesezugriff können abonnieren.</value>
+  </data>
+  <data name="[RESX:Tips:Scripts].Text" xml:space="preserve">
+    <value>Erlauben Sie Benutzern, Javascript in ihre Beiträge einzufügen.  Nicht empfohlen.</value>
+  </data>
+  <data name="[RESX:Tips:ServerTimeZone].Text" xml:space="preserve">
+    <value>Das Zeitzonen-Offset ermöglicht es Ihnen, die Zeitberechnungen nach Bedarf anzupassen.  In den meisten Situationen belassen Sie diese Einstellung auf 0.</value>
+  </data>
+  <data name="[RESX:Tips:Signatures].Text" xml:space="preserve">
+    <value>Wählen Sie aus, ob Signaturen aktiviert werden sollen und wie sie angezeigt werden.</value>
+  </data>
+  <data name="[RESX:Tips:SiteURL].Text" xml:space="preserve">
+    <value>Dies sollte die Standard-Website-Adresse für Ihr Portal sein.</value>
+  </data>
+  <data name="[RESX:Tips:StripHTML].Text" xml:space="preserve">
+    <value>Wählen Sie diese Option aus, um HTML aus E-Mail-Nachrichten zu entfernen.</value>
+  </data>
+  <data name="[RESX:Tips:SubNotify].Text" xml:space="preserve">
+    <value>Auf diese Weise können Sie eine andere Vorlage als die Standard-E-Mail-Abonnementvorlage auswählen, die per E-Mail an Benutzer gesendet werden soll.</value>
+  </data>
+  <data name="[RESX:Tips:SubscriptionOptions].Text" xml:space="preserve">
+    <value>Wählen Sie aus, welche Abonnementmethoden Ihren Benutzern zur Verfügung stehen sollen.</value>
+  </data>
+  <data name="[RESX:Tips:Subscriptions].Text" xml:space="preserve">
+    <value>Wählen Sie aus, ob Benutzer Foren abonnieren können und welche Arten von Abonnements zulässig sind.</value>
+  </data>
+  <data name="[RESX:Tips:Tags].Text" xml:space="preserve">
+    <value>Erlauben Sie Autoren, beim Erstellen von Beiträgen Tags einzugeben.</value>
+  </data>
+  <data name="[RESX:Tips:TopicForm].Text" xml:space="preserve">
+    <value>Wählen Sie die Vorlage für das Formular aus, das Benutzer beim Erstellen eines neuen Themas verwenden möchten.</value>
+  </data>
+  <data name="[RESX:Tips:TopicPointValue].Text" xml:space="preserve">
+    <value>Punkte, die einem Mitglied für das Erstellen eines neuen Themas gegeben werden.</value>
+  </data>
+  <data name="[RESX:Tips:TopicPriority].Text" xml:space="preserve">
+    <value>Mit der Themenpriorität können Themen in der Liste weiter oben angezeigt werden, anstatt nach Datum sortiert zu werden.  Die Standardpriorität für alle Themen ist 0.  Je höher die Priorität, desto weiter vorne erscheint ein Thema in der Liste.</value>
+  </data>
+  <data name="[RESX:Tips:TopicsTemplate].Text" xml:space="preserve">
+    <value>Wählen Sie die Vorlage für die Anzeige der Themenliste aus.</value>
+  </data>
+  <data name="[RESX:Tips:TopicTemplate].Text" xml:space="preserve">
+    <value>Wählen Sie die Vorlage für die Anzeige des Themas und der Antworten aus.</value>
+  </data>
+  <data name="[RESX:Tips:UserDisplayMode].Text" xml:space="preserve">
+    <value>Wählen Sie aus, wie der Name des Mitglieds angezeigt werden soll.</value>
+  </data>
+  <data name="[RESX:Tips:UserProfileTemplate].Text" xml:space="preserve">
+    <value>Wählen Sie die Vorlage für die Anzeige der Autoreninformationen für ein Thema oder eine Antwort aus.</value>
+  </data>
+  <data name="[RESX:Tips:UsersOnlineEnabled].Text" xml:space="preserve">
+    <value>Aktivieren Sie diese Funktion, um anzuzeigen, wann der Benutzer online ist und die Foren besucht.</value>
+  </data>
+  <data name="[RESX:Tips:UseSkinBreadcrumb].Text" xml:space="preserve">
+    <value>Aktivieren Sie diese Funktion und DNN-Community-Foren aktualisieren das Breadcrumb-Navigationselement in Ihrem Layout (Theme/Skin).  Dies wird nur mit dem DNN Breadcrumb-Skinobjekt unterstützt.</value>
+  </data>
+  <data name="[RESX:Tips:VanityName].Text" xml:space="preserve">
+    <value>Geben Sie den Namen ein, den Sie in der URL verwenden möchten, wenn Sie auf dieses Forum zugreifen.  </value>
+  </data>
+  <data name="[RESX:Title].Text" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="[RESX:TopForums].Text" xml:space="preserve">
+    <value>Top-Foren</value>
+  </data>
+  <data name="[RESX:Topic].Text" xml:space="preserve">
+    <value>Thema</value>
+  </data>
+  <data name="[RESX:TopicForm].Text" xml:space="preserve">
+    <value>Themenformular</value>
+  </data>
+  <data name="[RESX:TopicPointValue].Text" xml:space="preserve">
+    <value>Neues Thema</value>
+  </data>
+  <data name="[RESX:TopicPriority].Text" xml:space="preserve">
+    <value>Themenpriorität zulassen</value>
+  </data>
+  <data name="[RESX:TopicProperties:Intro].Text" xml:space="preserve">
+    <value>Weitere Informationen zu Themeneigenschaften</value>
+  </data>
+  <data name="[RESX:TopicProperties].Text" xml:space="preserve">
+    <value>Themen-Eigenschaften</value>
+  </data>
+  <data name="[RESX:Topics].Text" xml:space="preserve">
+    <value>Themen</value>
+  </data>
+  <data name="[RESX:TopicsTemplate].Text" xml:space="preserve">
+    <value>Themenanzeige</value>
+  </data>
+  <data name="[RESX:TopicsView].Text" xml:space="preserve">
+    <value>Themenansicht</value>
+  </data>
+  <data name="[RESX:TopicTemplate].Text" xml:space="preserve">
+    <value>Themenvorlage</value>
+  </data>
+  <data name="[RESX:TopicView].Text" xml:space="preserve">
+    <value>Themenansicht</value>
+  </data>
+  <data name="[RESX:TopMembers].Text" xml:space="preserve">
+    <value>Top-Mitglieder</value>
+  </data>
+  <data name="[RESX:TotalActiveMembers].Text" xml:space="preserve">
+    <value>Aktive Mitglieder insgesamt</value>
+  </data>
+  <data name="[RESX:TotalForums].Text" xml:space="preserve">
+    <value>Foren insgesamt</value>
+  </data>
+  <data name="[RESX:TotalMembers].Text" xml:space="preserve">
+    <value>Mitglieder insgesamt</value>
+  </data>
+  <data name="[RESX:TotalReplies].Text" xml:space="preserve">
+    <value>Antworten insgesamt</value>
+  </data>
+  <data name="[RESX:TotalTopics].Text" xml:space="preserve">
+    <value>Themen insgesamt</value>
+  </data>
+  <data name="[RESX:Trusted].Text" xml:space="preserve">
+    <value>Vertrauenswürdig</value>
+  </data>
+  <data name="[RESX:TrustedUsers].Text" xml:space="preserve">
+    <value>Vertrauenswürdige Benutzer</value>
+  </data>
+  <data name="[RESX:UniqueFileNames].Text" xml:space="preserve">
+    <value>Eindeutige Dateinamen</value>
+  </data>
+  <data name="[RESX:URLPrefixBase].Text" xml:space="preserve">
+    <value>Basispfad</value>
+  </data>
+  <data name="[RESX:URLPrefixCategory].Text" xml:space="preserve">
+    <value>Kategorie-Pfad</value>
+  </data>
+  <data name="[RESX:URLPrefixOther].Text" xml:space="preserve">
+    <value>Pfad "Ansichten"</value>
+  </data>
+  <data name="[RESX:URLPrefixTag].Text" xml:space="preserve">
+    <value>Tag-Pfad</value>
+  </data>
+  <data name="[RESX:UserDisplayMode].Text" xml:space="preserve">
+    <value>Benutzer-Anzeigemodus</value>
+  </data>
+  <data name="[RESX:UserName].Text" xml:space="preserve">
+    <value>Benutzername</value>
+  </data>
+  <data name="[RESX:UserNameNotFound].Text" xml:space="preserve">
+    <value>Der von Ihnen eingegebene Benutzername wurde nicht gefunden.</value>
+  </data>
+  <data name="[RESX:UserProfiles].Text" xml:space="preserve">
+    <value>Benutzerprofil-Einstellungen</value>
+  </data>
+  <data name="[RESX:UserProfileTemplate].Text" xml:space="preserve">
+    <value>Profil-Anzeige</value>
+  </data>
+  <data name="[RESX:UsersOnlineEnabled].Text" xml:space="preserve">
+    <value>Benutzer online anzeigen</value>
+  </data>
+  <data name="[RESX:UseSkinBreadcrumb].Text" xml:space="preserve">
+    <value>Layout-Breadcrumb aktualisieren</value>
+  </data>
+  <data name="[RESX:ValidationExpression].Text" xml:space="preserve">
+    <value>Eingabe-Validierung</value>
+  </data>
+  <data name="[RESX:VanityName].Text" xml:space="preserve">
+    <value>Vanity-Name</value>
+  </data>
+  <data name="[RESX:ViewRoles].Text" xml:space="preserve">
+    <value>Kann Rolle lesen</value>
+  </data>
+  <data name="[RESX:Visibility].Text" xml:space="preserve">
+    <value>Sichtbarkeit</value>
+  </data>
+  <data name="[RESX:WARN:DeleteProperty].Text" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie diese Eigenschaft löschen möchten?</value>
+  </data>
+  <data name="[RESX:Warning:Maint].Text" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie diesen Prozess ausführen möchten?</value>
+  </data>
+  <data name="[RESX:Yes].Text" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="[RESX:YesNo].Text" xml:space="preserve">
+    <value>Ja/Nein</value>
+  </data>
+  <data name="ControlTitle_edit.Text" xml:space="preserve">
+    <value>Übersichtstafel</value>
+  </data>
+  <data name="[RESX:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Stecknadel</value>
+  </data>
+  <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Anhängen</value>
+  </data>
+  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
+    <value>Sperre</value>
+  </data>
+  <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
+    <value>Erzeugen</value>
+  </data>
+  <data name="[RESX:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="[RESX:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="[RESX:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Sperre</value>
+  </data>
+  <data name="[RESX:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Moderieren</value>
+  </data>
+  <data name="[RESX:SecGrid:Move].Text" xml:space="preserve">
+    <value>Verschieben</value>
+  </data>
+  <data name="[RESX:SecGrid:Read].Text" xml:space="preserve">
+    <value>Lesen</value>
+  </data>
+  <data name="[RESX:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Antwort</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe]Text" xml:space="preserve">
+    <value>Abonnieren</value>
+  </data>
+  <data name="[RESX:SecGrid:View].Text" xml:space="preserve">
+    <value>Ansehen</value>
+  </data>
+  <data name="[RESX:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Ankündigung</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Abonnieren</value>
+  </data>
+  <data name="[RESX:SecGrid:Trust].Text" xml:space="preserve">
+    <value>Vertrauensstellung</value>
+  </data>
+  <data name="[RESX:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="[RESX:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Priorisieren</value>
+  </data>
+  <data name="[RESX:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Kategorisieren</value>
+  </data>
+  <data name="[RESX:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Umfrage</value>
+  </data>
+  <data name="[RESX:SecGrid:Split].Text" xml:space="preserve">
+    <value>Trennen</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Sie können ihre eigenen Themen als Ankündigungen kennzeichnen. Ankündigungen werden über der normalen Themenliste angezeigt.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Kann Dateien hochladen und an neue Themen und Antworten anhängen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
+    <value>Kann einen nicht autorisierten Benutzer verbannen, indem er alle Inhalte für den Benutzer löscht und sein DNN-Benutzerkonto deaktiviert. Kann nicht für Superuser oder Administratoren verwendet werden. Sollte nur vertrauenswürdigen Moderatoren oder Administratorrollen gewährt werden.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Kann angeben, zu welchen Kategorien ein neues Thema gehört.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Create].Text" xml:space="preserve">
+    <value>Kann die Schaltfläche Neues Thema sehen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Sie können ihre eigenen Beiträge löschen. Benutzer mit Moderat + Löschen können jedes Thema oder jede Antwort im Forum löschen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Sie können ihre eigenen Beiträge bearbeiten. Hierfür kann es eine zeitliche Begrenzung geben, muss es aber auch nicht. Benutzer mit Moderat + Bearbeiten können jedes Thema oder jede Antwort bearbeiten.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Kann Themen sperren, die sie erstellt haben. Benutzer mit Moderat + Sperre können jedes Thema in einem Forum sperren.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Ermöglicht den Zugriff auf die Moderationsschnittstelle. Kann moderierte Themen und Antworten genehmigen, ablehnen oder löschen. Kann auch mit "Bearbeiten", "Löschen", "Sperren", "Anheften" und "Teilen" kombiniert werden, um diese Aktionen für ein beliebiges Thema in einem Forum auszuführen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Move].Text" xml:space="preserve">
+    <value>Benutzer können ihr eigenes Thema in ein anderes Forum verschieben. Benutzer mit Moderat + Verschieben können jedes Thema in ein anderes Forum verschieben.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Kann Themen anheften, die sie erstellt haben. Wenn Sie ein Thema anheften, bleibt es oben in der Themenliste. Benutzer mit Moderat + Anheften können jedes Thema anheften.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Kann eine Umfrage zu neuen Themen hinzufügen, die sie erstellen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Kann die Prioritätsnummer für ein Thema festlegen. Die Prioritätsnummer bestimmt, wo in der Themenliste das Thema angezeigt wird. Es ähnelt dem Anheften eines Themas, ermöglicht jedoch eine feinere Spezifikation.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Read].Text" xml:space="preserve">
+    <value>Sie können das Thementhema sehen und darauf klicken, um den Inhalt anzuzeigen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Split].Text" xml:space="preserve">
+    <value>Der Benutzer kann sein eigenes Thema und seine Antworten in verschiedene Themen aufteilen. Benutzer mit Moderat + Split können jedes Thema und seine Antworten in verschiedene Themen aufteilen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Sie können sich anmelden, um E-Mail-Benachrichtigungen über neue Themen und Antworten zu erhalten.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Kann Tags zu Themen und Antworten hinzufügen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Trust].Text" xml:space="preserve">
+    <value>Benutzer mit vertrauenswürdiger Sicherheit umgehen die Moderation automatisch, wenn sie für ein Forum konfiguriert sind.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:View].Text" xml:space="preserve">
+    <value>Kann das Thema in der Liste sehen, aber nicht öffnen.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Kann auf ein zuvor erstelltes Thema antworten.</value>
+  </data>
+</root>

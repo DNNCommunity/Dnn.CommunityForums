@@ -2,22 +2,26 @@
 	<%@ Register TagPrefix="am" TagName="MarkForumRead" Src="~/DesktopModules/ActiveForums/controls/af_markallread.ascx"%>
 		<%@ Register TagPrefix="am" TagName="MiniSearch" Src="~/DesktopModules/ActiveForums/controls/af_searchquick.ascx"%>
 			<div class="dcf-topics-view">
+				<div class="dcf-breadcrumb py-2 border-bottom border-top">
+					<i class="fa fa-home"></i>  [FORUMMAINLINK]
+					<i class="fa fa-chevron-right"></i> [FORUMGROUPLINK]
+				</div>
+				
 				<div class="d-flex">
+
 					<div class="flex-grow-1">
-						<div class="dcf-breadcrumb py-2">
-							<i class="fa fa-home"></i>  [FORUMMAINLINK]
-							<i class="fa fa-chevron-right"></i> [FORUMGROUPLINK]
-						</div>
-						<h2 class="dcf-forum-title h4 mb-0">[TRESX:Forum]: [FORUMLINK]</h2>
+						
+						<h2 class="dcf-forum-title h4 mb-0 mt-2">[TRESX:Forum]: [FORUMLINK]</h2>
+						<div class="dcf-buttons mt-4">[ADDTOPIC]</div>
 					</div>
 					<div class="text-right text-end">
 						<div class="dcf-actions dcf-actions-top">
 							<div class="dcf-forum-search-subscribe">
 								<div class="dcf-forum-search">[MINISEARCH]</div>
 								<div class="dcf-forum-subscribers">
-									<i class="fa fa-envelope fa-fw fa-grey"></i> [FORUMSUBSCRIBERCOUNT] [RESX:FORUMSUBSCRIBERCOUNT]
+									<i class="fa fa-envelope fa-fw fa-grey"></i> <span id="af-topicsview-forumsubscribercount">[FORUMSUBSCRIBERCOUNT]</span> [RESX:FORUMSUBSCRIBERCOUNT]
 								</div>
-								<div class="dcf-forum-subscribe">[FORUMSUBSCRIBE]</div>
+								<div class="dcf-subscribe-forum">[FORUMSUBSCRIBE]</div>
 							</div>
 						</div>
 					</div>
@@ -65,7 +69,7 @@
 								<td class="dcf-col dcf-col-subject w-100" title="[BODYTITLE]">
 									<div class="dcf-subject">
 										<h4 class="dcf-title h5 mt-0 mb-2">[SUBJECTLINK][AF:ICONLINK:LASTREAD]</h4>
-										<div class="dcf-topic-started">Started by
+										<div class="dcf-topic-started">[RESX:StartedHeader]
 											<i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]
 										</div>
 										<div class="dcf-forum-description">[BODYTITLE]</div>
@@ -155,10 +159,10 @@
 								<td class="dcf-col dcf-col-subject">
 									<div class="dcf-subject" title="[BODYTITLE]">
 										<h4 class="dcf-title h5 mt-0 mb-2">[SUBJECTLINK][AF:ICONLINK:LASTREAD][ICONPIN][ICONLOCK]</h4>
-										<div class="dcf-topic-started">Started by
+										<div class="dcf-topic-started">[RESX:StartedHeader]
 											<i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]
 										</div>
-										<div class="dcf-topic-description">[BODYTITLE]</div>
+										<div class="dcf-topic-description text-break">[BODYTITLE]</div>
 										<div class="dcf-topic-tools">
 								[AF:QUICKEDITLINK]
 								[ACTIONS:DELETE]

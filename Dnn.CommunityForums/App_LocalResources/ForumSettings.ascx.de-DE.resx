@@ -1,0 +1,435 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Admins.Text" xml:space="preserve">
+    <value>Administratoren</value>
+  </data>
+  <data name="AdvancedOptions.Text" xml:space="preserve">
+    <value>Erweiterte Optionen</value>
+  </data>
+  <data name="Anon.Text" xml:space="preserve">
+    <value>Anonymer Benutzer</value>
+  </data>
+  <data name="AnswerPointValue.Text" xml:space="preserve">
+    <value>Antwort geben</value>
+  </data>
+  <data name="ApplicationRestart.Text" xml:space="preserve">
+    <value>Anwendung nach Änderung der Moduleinstellungen neu starten</value>
+  </data>
+  <data name="AuthenticatedUsers.Text" xml:space="preserve">
+    <value>Authentifizierte Benutzer</value>
+  </data>
+  <data name="AutoLink.Help" xml:space="preserve">
+    <value>Aktivieren Sie diese Option für DNN-Community-Foren, um Website-Adressen automatisch in Hyperlinks umzuwandeln.</value>
+  </data>
+  <data name="AutoLink.Text" xml:space="preserve">
+    <value>Automatische Hyperlinks</value>
+  </data>
+  <data name="AvatarSize.Help" xml:space="preserve">
+    <value>Geben Sie die maximale Höhe und Breite für einen Avatar ein.</value>
+  </data>
+  <data name="AvatarSize.Text" xml:space="preserve">
+    <value>Avatar-Größe</value>
+  </data>
+  <data name="CacheTemplates.Help" xml:space="preserve">
+    <value>Sollte normalerweise aktiviert sein. Deaktivieren Sie diese Option, wenn Sie Vorlagen bearbeiten und sofortige Ergebnisse sehen möchten.</value>
+  </data>
+  <data name="CacheTemplates.Text" xml:space="preserve">
+    <value>Aktivieren des Vorlagen-Caching</value>
+  </data>
+  <data name="CommunityOptions.Text" xml:space="preserve">
+    <value>Community-Optionen</value>
+  </data>
+  <data name="ContentOptions.Text" xml:space="preserve">
+    <value>Inhaltsoptionen</value>
+  </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Einstellungen für DNN-Community-Foren</value>
+  </data>
+  <data name="DateFormat.Help" xml:space="preserve">
+    <value>Formatzeichenfolge, die zum Anzeigen von Datumswerten verwendet wird.</value>
+  </data>
+  <data name="DateFormat.Text" xml:space="preserve">
+    <value>Datumsformat</value>
+  </data>
+  <data name="Default.Text" xml:space="preserve">
+    <value>Vorgabe</value>
+  </data>
+  <data name="DefaultDisabled.Text" xml:space="preserve">
+    <value>--Deaktiviert--</value>
+  </data>
+  <data name="DefaultPageSize.Help" xml:space="preserve">
+    <value>Geben Sie die Standardanzahl der Elemente ein, die auf der Seite "Themen und Antworten" angezeigt werden sollen.</value>
+  </data>
+  <data name="DefaultPageSize.Text" xml:space="preserve">
+    <value>Standard-Seitengröße</value>
+  </data>
+  <data name="DefaultProfile.Text" xml:space="preserve">
+    <value>Standard-Profil</value>
+  </data>
+  <data name="DeleteBehavior.Help" xml:space="preserve">
+    <value>Wählen Sie aus, was mit Inhalten geschieht, wenn sie gelöscht werden. &lt;b&gt;Entfernen&lt;/b&gt; - Entfernt Inhalte aus der Datenbank.  &lt;b&gt;Recyceln&lt;/b&gt; - Der Inhalt wird als gelöscht markiert und verbleibt in der Datenbank. Wählen Sie diese Option aus, wenn Sie die inkrementelle DNN-Suche nutzen möchten.</value>
+  </data>
+  <data name="DeleteBehavior.Text" xml:space="preserve">
+    <value>Löschverhalten</value>
+  </data>
+  <data name="Disabled.Text" xml:space="preserve">
+    <value>Deaktiviert</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve">
+    <value>Anzeigename</value>
+  </data>
+  <data name="DisplaySettings.Text" xml:space="preserve">
+    <value>Anzeige-Einstellungen</value>
+  </data>
+  <data name="EditInterval.Help" xml:space="preserve">
+    <value>Ermöglicht es dem Benutzer, seinen Beitrag nur innerhalb einer bestimmten Anzahl von Minuten ab dem Zeitpunkt der Erstellung zu bearbeiten.  Der Benutzer muss auch über Bearbeitungsberechtigungen verfügen.  Legen Sie diesen Wert auf 0 fest, um diese Funktion zu deaktivieren.</value>
+  </data>
+  <data name="EditInterval.Text" xml:space="preserve">
+    <value>Bearbeitungsintervall</value>
+  </data>
+  <data name="EnablePoints.Help" xml:space="preserve">
+    <value>Das Punktesystem ermöglicht es Benutzern, Punkte für bestimmte Aktionen innerhalb des Forums zu erhalten, um ihren Rang zu erhöhen.</value>
+  </data>
+  <data name="EnablePoints.Text" xml:space="preserve">
+    <value>Punktesystem</value>
+  </data>
+  <data name="EnableURLRewriter.Help" xml:space="preserve">
+    <value>Wählen Sie diese Option, wenn Sie den benutzerfreundlichen URL-Rewriter für dieses Modul aktivieren möchten.  </value>
+  </data>
+  <data name="EnableURLRewriter.Text" xml:space="preserve">
+    <value>Aktivieren von benutzerfreundlichen URLs</value>
+  </data>
+  <data name="Everyone.Text" xml:space="preserve">
+    <value>Jeder</value>
+  </data>
+  <data name="FirstName.Text" xml:space="preserve">
+    <value>Vorname</value>
+  </data>
+  <data name="FloodInterval.Help" xml:space="preserve">
+    <value>Anzahl der Sekunden, die ein Benutzer zwischen dem Verfassen von zwei Beiträgen warten muss.</value>
+  </data>
+  <data name="FloodInterval.Text" xml:space="preserve">
+    <value>Wartezeit</value>
+  </data>
+  <data name="ForumGroupTemplate.Help" xml:space="preserve">
+    <value>Wählen Sie die Forengruppe aus, die für neue Foren verwendet werden soll.  Dies gilt nur für Foren, die automatisch für soziale Gruppen erstellt werden.</value>
+  </data>
+  <data name="ForumGroupTemplate.Text" xml:space="preserve">
+    <value>Forumsgruppe für neue Foren</value>
+  </data>
+  <data name="ForumTemplate.Help" xml:space="preserve">
+    <value>Wählen Sie die Vorlage für die Seite aus, auf der alle Ihre Foren angezeigt werden.</value>
+  </data>
+  <data name="ForumTemplate.Text" xml:space="preserve">
+    <value>Vorlage</value>
+  </data>
+  <data name="ForumTheme.Help" xml:space="preserve">
+    <value>Wählen Sie das Layout für Ihr Forum aus.</value>
+  </data>
+  <data name="ForumTheme.Text" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="FullName.Text" xml:space="preserve">
+    <value>Vollständiger Name</value>
+  </data>
+  <data name="FullTextAzure.Text" xml:space="preserve">
+    <value>Die Volltextsuche wird in SQL Azure nicht unterstützt.</value>
+  </data>
+  <data name="FullTextNotInstalled.Text" xml:space="preserve">
+    <value>Die Volltextsuche ist auf dem SQL Server nicht installiert.</value>
+  </data>
+  <data name="FullTextSearch.Help" xml:space="preserve">
+    <value>Die Volltextsuche bietet eine bessere Leistung und genauere Ergebnisse.  Wenden Sie sich an Ihren Hostinganbieter, um sicherzustellen, dass die Volltextsuche für Ihre Datenbank aktiviert ist.</value>
+  </data>
+  <data name="FullTextSearch.Text" xml:space="preserve">
+    <value>Volltextsuche aktivieren</value>
+  </data>
+  <data name="GroupAdmin.Text" xml:space="preserve">
+    <value>Gruppenbesitzer</value>
+  </data>
+  <data name="GroupMember.Text" xml:space="preserve">
+    <value>Gruppenmitglieder</value>
+  </data>
+  <data name="Height.Text" xml:space="preserve">
+    <value>Höhe</value>
+  </data>
+  <data name="LastName.Text" xml:space="preserve">
+    <value>Nachname</value>
+  </data>
+  <data name="MainFeatures.Text" xml:space="preserve">
+    <value>Haupteigenschaften</value>
+  </data>
+  <data name="MarkAnswerPointValue.Text" xml:space="preserve">
+    <value>Antwort markieren</value>
+  </data>
+  <data name="MessagingCore.Text" xml:space="preserve">
+    <value>Standard-Messaging</value>
+  </data>
+  <data name="MessagingDisabled.Text" xml:space="preserve">
+    <value>Deaktiviert</value>
+  </data>
+  <data name="MessagingTab.Help" xml:space="preserve">
+    <value>Wählen Sie die Registerkarte aus, die das Modul für private Nachrichten enthält</value>
+  </data>
+  <data name="MessagingTab.Text" xml:space="preserve">
+    <value>Registerkarte "Messaging"</value>
+  </data>
+  <data name="MessagingType.Help" xml:space="preserve">
+    <value>Wählen Sie ein privates Nachrichtensystem aus.</value>
+  </data>
+  <data name="MessagingType.Text" xml:space="preserve">
+    <value>Messaging-Typ</value>
+  </data>
+  <data name="MessagingVentrian.Text" xml:space="preserve">
+    <value>Ventrian Messages</value>
+  </data>
+  <data name="Mode.Help" xml:space="preserve">
+    <value>Verwenden Sie immer den Standardmodus, es sei denn, Sie verwenden das Modul auf einer Seite für soziale Gruppen.  Der Modus "Soziale Gruppe" sollte nur verwendet werden, wenn Sie wissen, dass eine GroupId immer in der URL vorhanden ist.</value>
+  </data>
+  <data name="Mode.Text" xml:space="preserve">
+    <value>Forums-Modus</value>
+  </data>
+  <data name="ModeratorPermissions.Text" xml:space="preserve">
+    <value>Moderator-Berechtigungen</value>
+  </data>
+  <data name="Moderators.Text" xml:space="preserve">
+    <value>Moderatoren</value>
+  </data>
+  <data name="ModPointValue.Text" xml:space="preserve">
+    <value>Moderieren als Beitrag</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="ProfileDisabled.Text" xml:space="preserve">
+    <value>Profillinks deaktiviert</value>
+  </data>
+  <data name="ProfileType.Help" xml:space="preserve">
+    <value>Wählen Sie die Art des Profils, das Sie verwenden möchten. Das Standardprofil entspricht dem Standardprofil des Portals.</value>
+  </data>
+  <data name="ProfileType.Text" xml:space="preserve">
+    <value>Profiltyp</value>
+  </data>
+  <data name="ProfileVisibility.Help" xml:space="preserve">
+    <value>Legt fest, welche Benutzer berechtigt sind ein Benutzerprofil durch Klicken anzuzeigen.</value>
+  </data>
+  <data name="ProfileVisibility.Text" xml:space="preserve">
+    <value>Sichtbarkeit des Profils</value>
+  </data>
+  <data name="Recycle.Text" xml:space="preserve">
+    <value>Als gelöscht markieren</value>
+  </data>
+  <data name="RegisteredUser.Text" xml:space="preserve">
+    <value>Registrierter Benutzer</value>
+  </data>
+  <data name="Remove.Text" xml:space="preserve">
+    <value>Inhalte sofort entfernen</value>
+  </data>
+  <data name="ReplyPointValue.Text" xml:space="preserve">
+    <value>Antwort</value>
+  </data>
+  <data name="SignatureDisabled.Text" xml:space="preserve">
+    <value>Deaktiviert</value>
+  </data>
+  <data name="SignatureHTML.Text" xml:space="preserve">
+    <value>Text und HTML zulassen</value>
+  </data>
+  <data name="SignaturePlainText.Text" xml:space="preserve">
+    <value>Nur Text zulassen</value>
+  </data>
+  <data name="SocialGroups.Text" xml:space="preserve">
+    <value>Soziale Gruppen</value>
+  </data>
+  <data name="Standard.Text" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="TimeFormat.Help" xml:space="preserve">
+    <value>Formatzeichenfolge, die zum Anzeigen von Zeitwerten verwendet wird.</value>
+  </data>
+  <data name="TimeFormat.Text" xml:space="preserve">
+    <value>Zeitformat</value>
+  </data>
+  <data name="TopicPointValue.Text" xml:space="preserve">
+    <value>Neues Thema</value>
+  </data>
+  <data name="URLPrefixBase.Help" xml:space="preserve">
+    <value>Dies ist der Text, der als erster Teil aller Foren-URLs verwendet wird.  In den meisten Fällen werden Sie nur "Forum" eingeben wollen.</value>
+  </data>
+  <data name="URLPrefixBase.Text" xml:space="preserve">
+    <value>Basispfad</value>
+  </data>
+  <data name="URLPrefixCategory.Help" xml:space="preserve">
+    <value>Dies ist der Text, der als Teil der URL verwendet wird, um Forenkategorien zu identifizieren.</value>
+  </data>
+  <data name="URLPrefixCategory.Text" xml:space="preserve">
+    <value>Kategorie-Pfad</value>
+  </data>
+  <data name="URLPrefixOther.Help" xml:space="preserve">
+    <value>Dies ist der Text, der als Teil der URL in anderen Forenansichten verwendet wird.  </value>
+  </data>
+  <data name="URLPrefixOther.Text" xml:space="preserve">
+    <value>Pfad "Ansichten"</value>
+  </data>
+  <data name="URLPrefixTag.Help" xml:space="preserve">
+    <value>Dies ist der Text, der als Teil der URL verwendet wird, um Foren-Tags zu identifizieren.</value>
+  </data>
+  <data name="URLPrefixTag.Text" xml:space="preserve">
+    <value>Tag-Pfad</value>
+  </data>
+  <data name="UserDisplayMode.Help" xml:space="preserve">
+    <value>Wählen Sie das Format aus, das Sie für die Anzeige von Mitgliedernamen in den Foren verwenden möchten.</value>
+  </data>
+  <data name="UserDisplayMode.Text" xml:space="preserve">
+    <value>Anzeigeformat für Mitgliedsnamen</value>
+  </data>
+  <data name="UserName.Text" xml:space="preserve">
+    <value>Nutzername</value>
+  </data>
+  <data name="UserPermissions.Text" xml:space="preserve">
+    <value>Benutzerberechtigungen</value>
+  </data>
+  <data name="UserSignatures.Help" xml:space="preserve">
+    <value>Wählen Sie aus, ob Signaturen zusammen mit dem zu verwendenden Format aktiviert werden sollen.</value>
+  </data>
+  <data name="UserSignatures.Text" xml:space="preserve">
+    <value>Benutzer-Signaturen</value>
+  </data>
+  <data name="UsersOnline.Help" xml:space="preserve">
+    <value>Aktivieren oder deaktivieren Sie die Anzeige von Benutzern, die derzeit das Forum-Modul verwenden.</value>
+  </data>
+  <data name="UsersOnline.Text" xml:space="preserve">
+    <value>Online-Anzeige für Benutzer aktivieren</value>
+  </data>
+  <data name="UseSkinBreadCrumb.Help" xml:space="preserve">
+    <value>Verwenden Sie den Skinobjekt-Breadcrumb Ihres Seitenlayouts für die obere Breadcrumb-Anzeige anstelle des (oberen) integrierten Breadcrumbs.  Beachten Sie, dass sich diese Einstellung nicht auf den unteren integrierten Breadcrumb auswirkt.</value>
+  </data>
+  <data name="UseSkinBreadCrumb.Text" xml:space="preserve">
+    <value>Skinobjekt-Breadcrumb verwenden</value>
+  </data>
+  <data name="Width.Text" xml:space="preserve">
+    <value>Breite</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="[RESX:Ban].Text" xml:space="preserve">
+    <value>Sperre</value>
+  </data>
+</root>

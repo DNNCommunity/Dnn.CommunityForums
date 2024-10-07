@@ -1,227 +1,252 @@
+// Copyright (c) 2013-2024 by DNN Community
 //
-// Community Forums
-// Copyright (c) 2013-2021
-// by DNN Community
+// DNN Community licenses this file to you under the MIT license.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     [ParseChildren(true), PersistChildren(true), ToolboxData("<{0}:ActiveTabs runat=server></{0}:ActiveTabs>")]
     public class ActiveTabs : System.Web.UI.WebControls.CompositeControl
     {
+        // Private _tabs As TabCollection = Nothing
+        private List<Tab> tabs;
+        private string imagesPath;
+        private string targetDiv = string.Empty;
+        private string contentHeight;
+        private string tabDisplayCSS = "amTabDisplay";
+        private string tabStripCSS = "amTabStrip";
+        private string tabTextCSS = "amTabText";
+        private string tabTextOverCSS = "amTabTextOver";
+        private string tabTextSelCSS = "amTabTextSel";
+        private string contentBackGround = "FFFFFF";
+        private LoadTypes loadType = LoadTypes.Window;
 
-        //Private _tabs As TabCollection = Nothing
-        private List<Tab> _tabs;
-        private string _imagesPath;
-        private string _targetDiv = string.Empty;
-        private int _selectedIndex = 0;
-        private string _contentHeight;
-        private string _tabDisplayCSS = "amTabDisplay";
-        private string _tabStripCSS = "amTabStrip";
-        private string _tabTextCSS = "amTabText";
-        private string _tabTextOverCSS = "amTabTextOver";
-        private string _tabTextSelCSS = "amTabTextSel";
-        private string _contentBackGround = "FFFFFF";
-        private LoadTypes _loadType = LoadTypes.Window;
         public enum LoadTypes : int
         {
             Window,
-            Shell
+            Shell,
         }
+
         #region  Constructor
         public ActiveTabs()
         {
-            _tabs = new List<Tab>();
+            this.tabs = new List<Tab>();
         }
+
         #endregion
         [Description("Tabs to render."), NotifyParentProperty(true), MergableProperty(false), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<Tab> Tabs // TabCollection
         {
             get
             {
-                if (_tabs == null)
+                if (this.tabs == null)
                 {
-                    _tabs = new List<Tab>();
+                    this.tabs = new List<Tab>();
                 }
-                return _tabs;
+
+                return this.tabs;
             }
+
             set
             {
-                _tabs = value;
+                this.tabs = value;
             }
         }
+
         public string ImagesPath
         {
             get
             {
-                return _imagesPath;
+                return this.imagesPath;
             }
+
             set
             {
-                _imagesPath = value;
+                this.imagesPath = value;
             }
         }
+
         public string TargetDiv
         {
             get
             {
-                return _targetDiv;
+                return this.targetDiv;
             }
+
             set
             {
-                _targetDiv = value;
+                this.targetDiv = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string TabDisplayCSS
         {
             get
             {
-                return _tabDisplayCSS;
+                return this.tabDisplayCSS;
             }
+
             set
             {
-                _tabDisplayCSS = value;
+                this.tabDisplayCSS = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string TabStripCSS
         {
             get
             {
-                return _tabStripCSS;
+                return this.tabStripCSS;
             }
+
             set
             {
-                _tabStripCSS = value;
+                this.tabStripCSS = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string TabTextCSS
         {
             get
             {
-                return _tabTextCSS;
+                return this.tabTextCSS;
             }
+
             set
             {
-                _tabTextCSS = value;
+                this.tabTextCSS = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string TabTextOverCSS
         {
             get
             {
-                return _tabTextOverCSS;
+                return this.tabTextOverCSS;
             }
+
             set
             {
-                _tabTextOverCSS = value;
+                this.tabTextOverCSS = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string TabTextSelCSS
         {
             get
             {
-                return _tabTextSelCSS;
+                return this.tabTextSelCSS;
             }
+
             set
             {
-                _tabTextSelCSS = value;
+                this.tabTextSelCSS = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string ContentBackGround
         {
             get
             {
-                return _contentBackGround;
+                return this.contentBackGround;
             }
+
             set
             {
-                _contentBackGround = value;
+                this.contentBackGround = value;
             }
         }
+
         public int SelectedIndex
         {
             get
             {
-                return Convert.ToInt32(((this.ViewState["tabIndex"] == null) ? 0 : this.ViewState["tabIndex"]));
+                return Convert.ToInt32((this.ViewState["tabIndex"] == null) ? 0 : this.ViewState["tabIndex"]);
             }
+
             set
             {
                 this.ViewState["tabIndex"] = value;
             }
         }
+
         public string ContentHeight
         {
             get
             {
-                return _contentHeight;
+                return this.contentHeight;
             }
+
             set
             {
-                _contentHeight = value;
+                this.contentHeight = value;
             }
         }
+
         public LoadTypes LoadType
         {
             get
             {
-                return _loadType;
+                return this.loadType;
             }
+
             set
             {
-                _loadType = value;
+                this.loadType = value;
             }
         }
+
         public override System.Web.UI.ControlCollection Controls
         {
             get
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 return base.Controls;
             }
         }
+
         protected override void Render(System.Web.UI.HtmlTextWriter writer)
         {
-            if (Tabs != null && Visible == true)
+            if (this.Tabs != null && this.Visible == true)
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
                 int i = 0;
-                string controlToLoad = "";
                 writer = new HtmlTextWriter(writer, string.Empty);
-                AddAttributesToRender(writer);
-                foreach (Tab tab in Tabs)
+                this.AddAttributesToRender(writer);
+                foreach (Tab tab in this.Tabs)
                 {
-
                     writer.AddAttribute(HtmlTextWriterAttribute.Id, "div" + tab.ControlKey);
                     writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "am_toggleTab(this);");
                     if (i == 0)
@@ -243,6 +268,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         writer.AddAttribute(HtmlTextWriterAttribute.Class, "amtabtext");
                     }
+
                     writer.AddAttribute(HtmlTextWriterAttribute.Class, "amtabtext");
                     writer.RenderBeginTag(HtmlTextWriterTag.Div);
                     writer.Write(tab.Text);
@@ -250,11 +276,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     writer.RenderEndTag();
                     i += 1;
                 }
+
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, "amtabcontent");
                 writer.AddAttribute(HtmlTextWriterAttribute.Id, "amtabcontent");
                 writer.RenderBeginTag(HtmlTextWriterTag.Div);
                 i = 0;
-                foreach (Tab tab in Tabs)
+                foreach (Tab tab in this.Tabs)
                 {
                     writer.AddAttribute(HtmlTextWriterAttribute.Id, "div" + tab.ControlKey + "_amcnt");
                     writer.AddAttribute(HtmlTextWriterAttribute.Class, "amtabdisplay");
@@ -271,58 +298,54 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     writer.RenderBeginTag(HtmlTextWriterTag.Div);
                     if (tab.Content != null)
                     {
-                        //For Each ctl As Control In tab.Content.Controls
+                        // For Each ctl As Control In tab.Content.Controls
                         //    ctl.RenderControl(writer)
                         //    'tab.Content.RenderControl(writer)
-                        //Next
+                        // Next
                         tab.Content.RenderControl(writer);
-
                     }
+
                     writer.RenderEndTag();
                     i += 1;
                 }
+
                 writer.RenderEndTag();
             }
-
-
         }
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
-            if (Context == null || Page == null)
+            if (this.Context == null || this.Page == null)
             {
                 return;
             }
-            if (Tabs != null)
+
+            if (this.Tabs != null)
             {
-                foreach (var _Tab in Tabs)
+                foreach (var _Tab in this.Tabs)
                 {
                     if (_Tab.Content != null)
                     {
                         this.Controls.Add(_Tab.Content);
                     }
-
                 }
-                //Try
 
-                //Catch ex As Exception
+                // Try
 
-                //End Try
+                // Catch ex As Exception
 
+                // End Try
             }
         }
 
-
-
         protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
+        {
+            base.OnPreRender(e);
 
-            if (Visible == true)
+            if (this.Visible == true)
             {
-
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 sb.Append("var am_selectedTab;");
                 sb.Append("function am_getSelectedTab() {");
@@ -353,9 +376,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("};");
                 sb.Append("};");
 
-
-
-                Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "TabScripts", sb.ToString(), true);
+                this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "TabScripts", sb.ToString(), true);
             }
         }
     }

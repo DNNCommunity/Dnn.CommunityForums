@@ -7,7 +7,7 @@
 				<div class="w-50">
 				<span class="fa-prev">[PREVTOPIC]</span>
 				</div>
-				<div class="w-50 text-right">
+				<div class="w-50 text-right text-end">
 				<span class="fa-next">[NEXTTOPIC]</span>
 				</div>
 			</div>
@@ -18,13 +18,20 @@
 			<div class="d-md-flex">
 				<div class="flex-grow-1">
 					<h1 class="dcf-title h2 mt-0 d-flex align-items-center">[AF:CONTROL:STATUSICON]<span class="dcf-topic">[SUBJECT]</span></h1>
+					<div class="dcf-topic-buttons">
+						<div class="dcf-button-reply">[ADDREPLY]</div>
+						<div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
+					</div>
 				</div>
 				<div class="">
 					<div class="dcf-topic-controls text-right text-end">
-						<span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
-						<div class="dcf-subscribe">[TOPICSUBSCRIBE]</div>
-						<div class="dcf-button-reply">[ADDREPLY]</div>
-						
+                        <div class="dcf-forum-subscribers"><i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[AF:LABEL:ReplyCount] [RESX:REPLIES]</div>
+                        <div class="dcf-forum-subscribers"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;<span id="af-topicview-topicsubscribercount">[TOPICSUBSCRIBERCOUNT]</span> [RESX:TOPICSUBSCRIBERCOUNT]</div>
+                        <div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUMSUBSCRIBERCOUNT]&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
+
+						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
+                        <span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
+					
 					</div>
 				</div>
 			</div>
@@ -69,9 +76,6 @@
 							</header>
 							<section class="dcf-topic-content-main py-4">
 							
-								<div class="dcf-post-poll">
-									[AF:CONTROL:POLL]
-								</div>
 								<div class="dcf-post-body">
 									[BODY]
 								</div>
@@ -92,7 +96,7 @@
 									<div class="dcf-col-50">
 										[MODEDITDATE]
 									</div>
-									<div class="dcf-col-50 text-right dcf-post-likes">
+									<div class="dcf-col-50 text-right text-end dcf-post-likes">
 										[LIKESx2]
 									</div>
 								</div>
@@ -115,7 +119,7 @@
 							<header class="dcf-topic-content-top ">
 								<div class="d-flex flex-wrap pb-2">
 									<div class="dcf-postdate">[POSTDATE] </div>
-									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[AF:CONTROL:TOPICACTIONS]</div>
+									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[AF:CONTROL:TOPICACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
 								</div>
 							</header>
 							<section class="dcf-topic-content-main py-4">
@@ -143,7 +147,7 @@
 									<div class="dcf-col-50">
 										[MODEDITDATE]
 									</div>
-									<div class="dcf-col-50 text-right dcf-post-likes">
+									<div class="dcf-col-50 text-right text-end dcf-post-likes">
 										[LIKESx2]
 									</div>
 								</div>

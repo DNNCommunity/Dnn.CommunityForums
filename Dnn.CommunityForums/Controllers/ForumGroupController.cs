@@ -1,7 +1,8 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2021
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
+//
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,9 +18,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Collections;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System.Collections;
+
     internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>
     {
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetById(int forumGroupId, int moduleId)
@@ -34,24 +36,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumGroup.LoadSecurity();
                     forumGroup.LoadSettings();
                 }
+
                 DataCache.SettingsCacheStore(moduleId, cachekey, forumGroup);
             }
+
             return forumGroup;
         }
+
         public int Groups_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo, bool isNew)
         {
             if (forumGroupInfo.PermissionsId == -1)
             {
-                forumGroupInfo.PermissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
+                forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), forumGroupInfo.ModuleId).PermissionsId;
             }
 
-            //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
+            // TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
             forumGroupInfo.ForumGroupId = DataProvider.Instance().Groups_Save(portalId, forumGroupInfo.ModuleId, forumGroupInfo.ForumGroupId, forumGroupInfo.GroupName, forumGroupInfo.SortOrder, forumGroupInfo.Active, forumGroupInfo.Hidden, forumGroupInfo.PermissionsId, forumGroupInfo.PrefixURL);
 
             if (isNew)
             {
                 forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, forumGroupInfo.PermissionsId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, forumGroupInfo.ModuleId, forumGroupInfo.PermissionsId);
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicsTemplateId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicTemplateId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicFormId, "0");
@@ -59,12 +64,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.QuickReplyFormId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.AllowRSS, "false");
             }
+
             DataCache.ClearSettingsCache(forumGroupInfo.ModuleId);
             return forumGroupInfo.ForumGroupId;
         }
+
         public void Groups_Delete(int forumGroupId, int moduleId)
         {
-            //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
+            // TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
             DataProvider.Instance().Groups_Delete(moduleId, forumGroupId);
         }
     }

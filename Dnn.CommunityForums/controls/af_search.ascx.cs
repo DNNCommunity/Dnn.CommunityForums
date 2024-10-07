@@ -1,35 +1,38 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2021
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Xml.Linq;
-using DotNetNuke.Modules.ActiveForums.Controls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Xml.Linq;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Modules.ActiveForums.Controls;
+
     public partial class af_search : ForumBase
     {
         protected System.Web.UI.WebControls.PlaceHolder plhMessage = new PlaceHolder();
@@ -38,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.WebControls.PlaceHolder phUsername = new PlaceHolder();
         protected System.Web.UI.WebControls.Repeater rptTopics = new Repeater();
         protected System.Web.UI.WebControls.Repeater rptPosts = new Repeater();
-        protected System.Web.UI.WebControls.Repeater rptKeywords = new Repeater(); 
+        protected System.Web.UI.WebControls.Repeater rptKeywords = new Repeater();
         protected System.Web.UI.WebControls.Panel pnlMessage = new Panel();
         protected System.Web.UI.WebControls.Literal litTag = new Literal();
         protected System.Web.UI.WebControls.Literal litUserName = new Literal();
@@ -60,29 +63,29 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Private Members
 
-        private string _searchText;
-        private string _tags;
-        private int? _searchType;
-        private int? _authorUserId;
-        private string _authorUsername;
-        private int? _searchColumns;
-        private string _forums;
-        private int? _searchDays;
-        private int? _resultType;
-        private int? _searchId;
-        private int? _sort;
+        private string searchText;
+        private string tags;
+        private int? searchType;
+        private int? authorUserId;
+        private string authorUsername;
+        private int? searchColumns;
+        private string forums;
+        private int? searchDays;
+        private int? resultType;
+        private int? searchId;
+        private int? sort;
 
-        private List<string> _parameters; 
+        private List<string> parameters;
 
-        private int _rowCount;
+        private int rowCount;
 
-        private int _pageSize = 20;
-        private int _rowIndex;
+        private int pageSize = 20;
+        private int rowIndex;
 
-        private int? _searchAge;
-        private int? _searchDuration;
+        private int? searchAge;
+        private int? searchDuration;
 
-        private DataRow _currentRow;
+        private DataRow currentRow;
 
         #endregion
 
@@ -90,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            string template = TemplateCache.GetCachedTemplate(ForumModuleId, "SearchResults", -1);
+            string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "SearchResults", -1);
 
             try
             {
@@ -101,100 +104,95 @@ namespace DotNetNuke.Modules.ActiveForums
                 //}
                 template = Utilities.LocalizeControl(template);
                 Control ctl = this.ParseControl(template);
-                LinkControls(ctl.Controls);
-                Search.Controls.Add(ctl);
+                this.LinkControls(ctl.Controls);
+                this.Search.Controls.Add(ctl);
             }
             catch (Exception)
             {
-
                 throw;
             }
-
-
 
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            rptPosts.ItemCreated += PostRepeaterOnItemCreated;
-            rptTopics.ItemCreated += TopicRepeaterOnItemCreated;
+            this.rptPosts.ItemCreated += this.PostRepeaterOnItemCreated;
+            this.rptTopics.ItemCreated += this.TopicRepeaterOnItemCreated;
 
             try
             {
-
-                if (Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.GroupId]))
+                if (this.Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                 {
-                    SocialGroupId = Convert.ToInt32(Request.QueryString[Literals.GroupId]);
+                    this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
                 }
-
 
                 List<string> keywords;
 
                 // Note: Filter out any keywords that are not at least 3 characters in length
-
-                if (SearchType == 2 && !string.IsNullOrWhiteSpace(SearchText) && SearchText.Trim().Length >= 3) //Exact Match
-                    keywords = new List<string> { SearchText.Trim() };
+                if (this.SearchType == 2 && !string.IsNullOrWhiteSpace(this.SearchText) && this.SearchText.Trim().Length >= 3) //Exact Match
+                    keywords = new List<string> { this.SearchText.Trim() };
                 else
-                    keywords = SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).ToList();
+                    keywords = this.SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).ToList();
 
                 if (keywords.Count > 0)
                 {
-                    phKeywords.Visible = true;
-                    rptKeywords.DataSource = keywords;
-                    rptKeywords.DataBind();
+                    this.phKeywords.Visible = true;
+                    this.rptKeywords.DataSource = keywords;
+                    this.rptKeywords.DataBind();
                 }
 
-                if (!string.IsNullOrWhiteSpace(AuthorUsername))
+                if (!string.IsNullOrWhiteSpace(this.AuthorUsername))
                 {
-                    phUsername.Visible = true;
-                    litUserName.Text = Server.HtmlEncode(AuthorUsername);
+                    this.phUsername.Visible = true;
+                    this.litUserName.Text = this.Server.HtmlEncode(this.AuthorUsername);
                 }
 
-                if (!string.IsNullOrWhiteSpace(Tags))
+                if (!string.IsNullOrWhiteSpace(this.Tags))
                 {
-                    phTag.Visible = true;
-                    litTag.Text = Server.HtmlEncode(Tags);
+                    this.phTag.Visible = true;
+                    this.litTag.Text = this.Server.HtmlEncode(this.Tags);
                 }
 
-                BindPosts();
+                this.BindPosts();
 
                 // Update Meta Data
-                var tempVar = BasePage;
-                Environment.UpdateMeta(ref tempVar, "[VALUE] - " + GetSharedResource("[RESX:Search]") + " - " + SearchText, "[VALUE]", "[VALUE]");
+                var tempVar = this.BasePage;
+                Environment.UpdateMeta(ref tempVar, "[VALUE] - " + this.GetSharedResource("[RESX:Search]") + " - " + this.SearchText, "[VALUE]", "[VALUE]");
             }
             catch (Exception ex)
             {
-                Controls.Clear();
-                RenderMessage("[RESX:ERROR]", "[RESX:ERROR:Search]", ex.Message, ex);
+                this.Controls.Clear();
+                this.RenderMessage("[RESX:ERROR]", "[RESX:ERROR:Search]", ex.Message, ex);
             }
         }
-
 
         private void PostRepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
         {
-            RepeaterOnItemCreated(sender, repeaterItemEventArgs);
-            if (_currentRow != null)
+            this.RepeaterOnItemCreated(sender, repeaterItemEventArgs);
+            if (this.currentRow != null)
             {
-                rptPostsForumUrl.Href = GetForumUrl();
-                rptPostsTopicUrl.Href = GetThreadUrl();
-                rptPostsContentUrl.Href = GetPostUrl();
+                this.rptPostsForumUrl.Href = this.GetForumUrl();
+                this.rptPostsTopicUrl.Href = this.GetThreadUrl();
+                this.rptPostsContentUrl.Href = this.GetPostUrl();
             }
         }
+
         private void TopicRepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
         {
-            RepeaterOnItemCreated(sender, repeaterItemEventArgs);
-            if (_currentRow != null)
+            this.RepeaterOnItemCreated(sender, repeaterItemEventArgs);
+            if (this.currentRow != null)
             {
-                rptTopicsForumUrl.Href = GetForumUrl();
-                rptTopicsTopicUrl1.Href = GetThreadUrl();
-                rptTopicsTopicUrl2.Href = GetThreadUrl();
-                rptTopicsTopicIconImage.ImageUrl = GetIcon();
+                this.rptTopicsForumUrl.Href = this.GetForumUrl();
+                this.rptTopicsTopicUrl1.Href = this.GetThreadUrl();
+                this.rptTopicsTopicUrl2.Href = this.GetThreadUrl();
+                this.rptTopicsTopicIconImage.ImageUrl = this.GetIcon();
             }
         }
+
         private void RepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
         {
-            _currentRow = repeaterItemEventArgs.Item.DataItem is DataRowView dataRowView ? dataRowView.Row : null;
+            this.currentRow = repeaterItemEventArgs.Item.DataItem is DataRowView dataRowView ? dataRowView.Row : null;
         }
         #endregion
         #region Properties
@@ -203,17 +201,17 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if(_searchText == null)
+                if (this.searchText == null)
                 {
-                    _searchText = Request.Params[SearchParamKeys.Query] + string.Empty;
-                    _searchText = Utilities.XSSFilter(_searchText);
-                    _searchText = Utilities.StripHTMLTag(_searchText);
-                    _searchText = Utilities.CheckSqlString(_searchText);
-                    _searchText = SearchText.Replace("\"", string.Empty);
-                    _searchText = _searchText.Trim();
+                    this.searchText = this.Request.Params[SearchParamKeys.Query] + string.Empty;
+                    this.searchText = Utilities.XSSFilter(this.searchText);
+                    this.searchText = Utilities.StripHTMLTag(this.searchText);
+                    this.searchText = Utilities.CheckSqlString(this.searchText);
+                    this.searchText = this.SearchText.Replace("\"", string.Empty);
+                    this.searchText = this.searchText.Trim();
                 }
 
-                return _searchText;
+                return this.searchText;
             }
         }
 
@@ -221,21 +219,23 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (_tags == null)
+                if (this.tags == null)
                 {
-                    _tags = Request.Params[SearchParamKeys.Tag] + string.Empty;
+                    this.tags = this.Request.Params[SearchParamKeys.Tag] + string.Empty;
 
                     // The tag links are generated with "aftg"
-                    if (_tags == string.Empty)
-                        _tags = Request.Params[ParamKeys.Tags] + string.Empty;
+                    if (this.tags == string.Empty)
+                    {
+                        this.tags = this.Request.Params[ParamKeys.Tags] + string.Empty;
+                    }
 
-                    _tags = Utilities.XSSFilter(_tags);
-                    _tags = Utilities.StripHTMLTag(_tags);
-                    _tags = Utilities.CheckSqlString(_tags);
-                    _tags = _tags.Trim();
+                    this.tags = Utilities.XSSFilter(this.tags);
+                    this.tags = Utilities.StripHTMLTag(this.tags);
+                    this.tags = Utilities.CheckSqlString(this.tags);
+                    this.tags = this.tags.Trim();
                 }
 
-                return _tags;
+                return this.tags;
             }
         }
 
@@ -243,13 +243,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if(!_searchType.HasValue)
+                if (!this.searchType.HasValue)
                 {
                     int parsedSearchType;
-                    _searchType = int.TryParse(Request.Params[SearchParamKeys.SearchType], out parsedSearchType) ? parsedSearchType : 0;
+                    this.searchType = int.TryParse(this.Request.Params[SearchParamKeys.SearchType], out parsedSearchType) ? parsedSearchType : 0;
                 }
 
-                return _searchType.Value;
+                return this.searchType.Value;
             }
         }
 
@@ -257,16 +257,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (_authorUsername == null)
+                if (this.authorUsername == null)
                 {
-                    _authorUsername = Request.Params[SearchParamKeys.Author] + string.Empty;
-                    _authorUsername = Utilities.XSSFilter(_authorUsername);
-                    _authorUsername = Utilities.StripHTMLTag(_authorUsername);
-                    _authorUsername = Utilities.CheckSqlString(_authorUsername);
-                    _authorUsername = _authorUsername.Trim();
+                    this.authorUsername = this.Request.Params[SearchParamKeys.Author] + string.Empty;
+                    this.authorUsername = Utilities.XSSFilter(this.authorUsername);
+                    this.authorUsername = Utilities.StripHTMLTag(this.authorUsername);
+                    this.authorUsername = Utilities.CheckSqlString(this.authorUsername);
+                    this.authorUsername = this.authorUsername.Trim();
                 }
 
-                return _authorUsername;
+                return this.authorUsername;
             }
         }
 
@@ -274,13 +274,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!_authorUserId.HasValue)
+                if (!this.authorUserId.HasValue)
                 {
                     int parsedValue;
-                    _authorUserId = int.TryParse(Request.Params[SearchParamKeys.User], out parsedValue) ? parsedValue : 0;
+                    this.authorUserId = int.TryParse(this.Request.Params[SearchParamKeys.User], out parsedValue) ? parsedValue : 0;
                 }
 
-                return _authorUserId.Value;
+                return this.authorUserId.Value;
             }
         }
 
@@ -288,13 +288,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!_searchColumns.HasValue)
+                if (!this.searchColumns.HasValue)
                 {
                     int parsedSearchColumns;
-                    _searchColumns = int.TryParse(Request.Params[SearchParamKeys.Columns], out parsedSearchColumns) ? parsedSearchColumns : 0;
+                    this.searchColumns = int.TryParse(this.Request.Params[SearchParamKeys.Columns], out parsedSearchColumns) ? parsedSearchColumns : 0;
                 }
 
-                return _searchColumns.Value;
+                return this.searchColumns.Value;
             }
         }
 
@@ -302,16 +302,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (_forums == null)
+                if (this.forums == null)
                 {
-                    _forums = Request.Params[SearchParamKeys.Forums] + string.Empty;
-                    _forums = Utilities.XSSFilter(_forums);
-                    _forums = Utilities.StripHTMLTag(_forums);
-                    _forums = Utilities.CheckSqlString(_forums);
-                    _forums = _forums.Trim();
+                    this.forums = this.Request.Params[SearchParamKeys.Forums] + string.Empty;
+                    this.forums = Utilities.XSSFilter(this.forums);
+                    this.forums = Utilities.StripHTMLTag(this.forums);
+                    this.forums = Utilities.CheckSqlString(this.forums);
+                    this.forums = this.forums.Trim();
                 }
 
-                return _forums;
+                return this.forums;
             }
         }
 
@@ -319,13 +319,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!_searchDays.HasValue)
+                if (!this.searchDays.HasValue)
                 {
                     int parsedValue;
-                    _searchDays = int.TryParse(Request.Params[SearchParamKeys.TimeSpan], out parsedValue) ? parsedValue : 0;
+                    this.searchDays = int.TryParse(this.Request.Params[SearchParamKeys.TimeSpan], out parsedValue) ? parsedValue : 0;
                 }
 
-                return _searchDays.Value;
+                return this.searchDays.Value;
             }
         }
 
@@ -333,13 +333,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!_resultType.HasValue)
+                if (!this.resultType.HasValue)
                 {
                     int parsedValue;
-                    _resultType = int.TryParse(Request.Params[SearchParamKeys.ResultType], out parsedValue) ? parsedValue : 0;
+                    this.resultType = int.TryParse(this.Request.Params[SearchParamKeys.ResultType], out parsedValue) ? parsedValue : 0;
                 }
 
-                return _resultType.Value;
+                return this.resultType.Value;
             }
         }
 
@@ -347,13 +347,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!_searchId.HasValue)
+                if (!this.searchId.HasValue)
                 {
                     int parsedValue;
-                    _searchId = int.TryParse(Request.Params[SearchParamKeys.Search], out parsedValue) ? parsedValue : 0;
+                    this.searchId = int.TryParse(this.Request.Params[SearchParamKeys.Search], out parsedValue) ? parsedValue : 0;
                 }
 
-                return _searchId.Value;
+                return this.searchId.Value;
             }
         }
 
@@ -361,13 +361,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!_sort.HasValue)
+                if (!this.sort.HasValue)
                 {
                     int parsedValue;
-                    _sort = int.TryParse(Request.Params[SearchParamKeys.Sort], out parsedValue) ? parsedValue : 0;
+                    this.sort = int.TryParse(this.Request.Params[SearchParamKeys.Sort], out parsedValue) ? parsedValue : 0;
                 }
 
-                return _sort.Value;
+                return this.sort.Value;
             }
         }
 
@@ -375,133 +375,162 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if(_parameters == null)
+                if (this.parameters == null)
                 {
-                    _parameters = new List<string>();
+                    this.parameters = new List<string>();
 
-                    if (!string.IsNullOrWhiteSpace(SearchText))
-                        _parameters.Add($"{SearchParamKeys.Query}=" + System.Web.HttpUtility.UrlEncode(SearchText));
+                    if (!string.IsNullOrWhiteSpace(this.SearchText))
+                    {
+                        this.parameters.Add($"{SearchParamKeys.Query}=" + System.Web.HttpUtility.UrlEncode(this.SearchText));
+                    }
 
-                    if (!string.IsNullOrWhiteSpace(Tags))
-                        _parameters.Add($"{SearchParamKeys.Tag}=" + System.Web.HttpUtility.UrlEncode(Tags));
+                    if (!string.IsNullOrWhiteSpace(this.Tags))
+                    {
+                        this.parameters.Add($"{SearchParamKeys.Tag}=" + System.Web.HttpUtility.UrlEncode(this.Tags));
+                    }
 
-                    if (SearchId > 0)
-                        _parameters.Add($"{SearchParamKeys.Search}=" + SearchId);
+                    if (this.SearchId > 0)
+                    {
+                        this.parameters.Add($"{SearchParamKeys.Search}=" + this.SearchId);
+                    }
 
-                    if (SearchType > 0)
-                        _parameters.Add($"{SearchParamKeys.SearchType}=" + SearchType);
+                    if (this.SearchType > 0)
+                    {
+                        this.parameters.Add($"{SearchParamKeys.SearchType}=" + this.SearchType);
+                    }
 
-                    if (ResultType > 0)
-                        _parameters.Add($"{SearchParamKeys.ResultType}=" + ResultType);
+                    if (this.ResultType > 0)
+                    {
+                        this.parameters.Add($"{SearchParamKeys.ResultType}=" + this.ResultType);
+                    }
 
-                    if (SearchColumns > 0)
-                        _parameters.Add($"{SearchParamKeys.Columns}=" + SearchColumns);
+                    if (this.SearchColumns > 0)
+                    {
+                        this.parameters.Add($"{SearchParamKeys.Columns}=" + this.SearchColumns);
+                    }
 
-                    if (SearchDays > 0)
-                        _parameters.Add($"{SearchParamKeys.TimeSpan}=" + SearchDays);
+                    if (this.SearchDays > 0)
+                    {
+                        this.parameters.Add($"{SearchParamKeys.TimeSpan}=" + this.SearchDays);
+                    }
 
-                    if (AuthorUserId > 0)
-                        _parameters.Add($"{SearchParamKeys.User}=" + AuthorUserId);
+                    if (this.AuthorUserId > 0)
+                    {
+                        this.parameters.Add($"{SearchParamKeys.User}=" + this.AuthorUserId);
+                    }
 
-                    if (Sort > 0)
-                        _parameters.Add($"{SearchParamKeys.Sort}=" + Sort);
+                    if (this.Sort > 0)
+                    {
+                        this.parameters.Add($"{SearchParamKeys.Sort}=" + this.Sort);
+                    }
 
-                    if (!string.IsNullOrWhiteSpace(AuthorUsername))
-                        _parameters.Add($"{SearchParamKeys.Author}=" + System.Web.HttpUtility.UrlEncode(AuthorUsername));
+                    if (!string.IsNullOrWhiteSpace(this.AuthorUsername))
+                    {
+                        this.parameters.Add($"{SearchParamKeys.Author}=" + System.Web.HttpUtility.UrlEncode(this.AuthorUsername));
+                    }
 
-                    if (!string.IsNullOrWhiteSpace(Forums))
-                        _parameters.Add($"{SearchParamKeys.Forums}=" + System.Web.HttpUtility.UrlEncode(Forums));
+                    if (!string.IsNullOrWhiteSpace(this.Forums))
+                    {
+                        this.parameters.Add($"{SearchParamKeys.Forums}=" + System.Web.HttpUtility.UrlEncode(this.Forums));
+                    }
                 }
 
-                return _parameters;
+                return this.parameters;
             }
         }
 
         #endregion
 
-
         #region Private Methods
 
         private void BindPosts()
         {
-            _pageSize = (UserId > 0) ? UserDefaultPageSize : MainSettings.PageSize;
+            this.pageSize = (this.UserId > 0) ? this.UserDefaultPageSize : this.MainSettings.PageSize;
 
-            if (_pageSize < 5)
-                _pageSize = 10;
+            if (this.pageSize < 5)
+            {
+                this.pageSize = 10;
+            }
 
-            _rowIndex = (PageId - 1) * _pageSize;
-        
+            this.rowIndex = (this.PageId - 1) * this.pageSize;
+
             // If we don't have a search string, tag or user id, there is nothing we can do so exit
-            if (SearchText == string.Empty && Tags == string.Empty && AuthorUsername == String.Empty && AuthorUserId <= 0) 
+            if (this.SearchText == string.Empty && this.Tags == string.Empty && this.AuthorUsername == String.Empty && this.AuthorUserId <= 0)
+            {
                 return;
+            }
 
             // Build the list of forums to search
             // An intersection of the forums allows vs forums requested.
-
             var parseId = 0;
 
-            var sForumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanRead", true); // Make sure and pass strict = true here
-            var forumsAllowed = sForumsAllowed.Split(new [] {':',';'}).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
-            var forumsRequested = Forums.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
+            var sForumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ModuleId, "CanRead", true); // Make sure and pass strict = true here
+            var forumsAllowed = sForumsAllowed.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
+            var forumsRequested = this.Forums.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
 
             var forumsToSearch = string.Empty;
-            
+
             // If forums requested is empty or contains and entry less than or equal to zero, return all available forums
-            if(!forumsRequested.Any() || forumsRequested.Any(o => o <= 0))
-                forumsToSearch = forumsAllowed.Aggregate(forumsToSearch, (current, f) => current + ((current.Length == 0 ? string.Empty : ":") + f));
+            if (!forumsRequested.Any() || forumsRequested.Any(o => o <= 0))
+            {
+                forumsToSearch = forumsAllowed.Aggregate(forumsToSearch, (current, f) => current + (current.Length == 0 ? string.Empty : ":") + f);
+            }
             else
-                forumsToSearch = forumsRequested.Where(forumsAllowed.Contains).Aggregate(forumsToSearch, (current, f) => current + ((current.Length == 0 ? String.Empty : ":") + f));
+            {
+                forumsToSearch = forumsRequested.Where(forumsAllowed.Contains).Aggregate(forumsToSearch, (current, f) => current + (current.Length == 0 ? String.Empty : ":") + f);
+            }
 
             const int maxCacheHours = 1;
 
-            var ds = DataProvider.Instance().Search(PortalId, ModuleId, UserId, SearchId, _rowIndex, _pageSize, SearchText, SearchType, SearchColumns, SearchDays, AuthorUserId, AuthorUsername, forumsToSearch, Tags, ResultType, Sort, maxCacheHours, MainSettings.FullText);
+            var ds = DataProvider.Instance().Search(this.PortalId, this.ModuleId, this.UserId, this.SearchId, this.rowIndex, this.pageSize, this.SearchText, this.SearchType, this.SearchColumns, this.SearchDays, this.AuthorUserId, this.AuthorUsername, forumsToSearch, this.Tags, this.ResultType, this.Sort, maxCacheHours, this.MainSettings.FullText);
 
             var dtSummary = (ds != null) ? ds.Tables[0] : null;
 
-            _searchId = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][0]) : 0;
-            _rowCount = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][1]) : 0;
-            _searchDuration = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][2]) : 0;
-            _searchAge = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][3]) : 0;
+            this.searchId = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][0]) : 0;
+            this.rowCount = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][1]) : 0;
+            this.searchDuration = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][2]) : 0;
+            this.searchAge = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][3]) : 0;
 
-            var totalSeconds = new TimeSpan(0, 0, 0, 0, _searchDuration.Value).TotalSeconds;
-            var ageInMinutes = new TimeSpan(0, 0, 0, 0, _searchAge.Value).TotalMinutes;
+            var totalSeconds = new TimeSpan(0, 0, 0, 0, this.searchDuration.Value).TotalSeconds;
+            var ageInMinutes = new TimeSpan(0, 0, 0, 0, this.searchAge.Value).TotalMinutes;
 
-            litSearchDuration.Text = string.Format(GetSharedResource("[RESX:SearchDuration]"), totalSeconds); 
+            this.litSearchDuration.Text = string.Format(this.GetSharedResource("[RESX:SearchDuration]"), totalSeconds);
 
-            if(ageInMinutes > 0.25)
-                litSearchAge.Text = string.Format(GetSharedResource("[RESX:SearchAge]"), ageInMinutes); 
+            if (ageInMinutes > 0.25)
+            {
+                this.litSearchAge.Text = string.Format(this.GetSharedResource("[RESX:SearchAge]"), ageInMinutes);
+            }
 
-
-            _parameters = null; // We reset this so we make sure to get an updated version
+            this.parameters = null; // We reset this so we make sure to get an updated version
 
             var dtResults = (ds != null) ? ds.Tables[1] : null;
             if (dtResults != null && dtResults.Rows.Count > 0)
             {
-                litRecordCount.Text = string.Format(GetSharedResource("[RESX:SearchRecords]"), _rowIndex + 1, _rowIndex + dtResults.Rows.Count, _rowCount);
+                this.litRecordCount.Text = string.Format(this.GetSharedResource("[RESX:SearchRecords]"), this.rowIndex + 1, this.rowIndex + dtResults.Rows.Count, this.rowCount);
 
-                var rptResults = ResultType == 0 ? rptTopics : rptPosts;
+                var rptResults = this.ResultType == 0 ? this.rptTopics : this.rptPosts;
 
-                pnlMessage.Visible = false;
-                
+                this.pnlMessage.Visible = false;
+
                 try
                 {
                     rptResults.Visible = true;
                     rptResults.DataSource = dtResults;
                     rptResults.DataBind();
-                    BuildPager(PagerTop);
-                    BuildPager(PagerBottom);
+                    this.BuildPager(this.PagerTop);
+                    this.BuildPager(this.PagerBottom);
                 }
                 catch (Exception ex)
                 {
-                    litMessage.Text = ex.Message;
-                    pnlMessage.Visible = true;
+                    this.litMessage.Text = ex.Message;
+                    this.pnlMessage.Visible = true;
                     rptResults.Visible = false;
                 }
             }
             else
             {
-                litMessage.Text = GetSharedResource("[RESX:SearchNoResults]");
-                pnlMessage.Visible = true;
+                this.litMessage.Text = this.GetSharedResource("[RESX:SearchNoResults]");
+                this.pnlMessage.Visible = true;
             }
         }
 
@@ -512,96 +541,97 @@ namespace DotNetNuke.Modules.ActiveForums
                 switch (ctrl.ID)
                 {
                     case "litTag":
-                        litTag = (Literal)ctrl;
+                        this.litTag = (Literal)ctrl;
                         break;
                     case "litUserName":
-                        litUserName = (Literal)ctrl;
+                        this.litUserName = (Literal)ctrl;
                         break;
                     case "litMessage":
-                        litMessage = (Literal)ctrl;
+                        this.litMessage = (Literal)ctrl;
                         break;
                     case "litSearchDuration":
-                        litSearchDuration = (Literal)ctrl;
+                        this.litSearchDuration = (Literal)ctrl;
                         break;
                     case "litSearchAge":
-                        litSearchAge = (Literal)ctrl;
+                        this.litSearchAge = (Literal)ctrl;
                         break;
                     case "litRecordCount":
-                        litRecordCount = (Literal)ctrl;
+                        this.litRecordCount = (Literal)ctrl;
                         break;
                     case "rptTopics":
-                        rptTopics = (Repeater)ctrl;
+                        this.rptTopics = (Repeater)ctrl;
                         break;
                     case "rptPosts":
-                        rptPosts = (Repeater)ctrl;
+                        this.rptPosts = (Repeater)ctrl;
                         break;
                     case "rptKeywords":
-                        rptKeywords = (Repeater)ctrl;
+                        this.rptKeywords = (Repeater)ctrl;
                         break;
                     case "phKeywords":
-                        phKeywords = (PlaceHolder)ctrl;
+                        this.phKeywords = (PlaceHolder)ctrl;
                         break;
                     case "phTag":
-                        phKeywords = (PlaceHolder)ctrl;
+                        this.phKeywords = (PlaceHolder)ctrl;
                         break;
                     case "phUsername":
-                        phKeywords = (PlaceHolder)ctrl;
+                        this.phKeywords = (PlaceHolder)ctrl;
                         break;
                     case "plhMessage":
-                        plhMessage = (PlaceHolder)ctrl;
+                        this.plhMessage = (PlaceHolder)ctrl;
                         break;
                     case "PagerTop":
-                        PagerTop = (PagerNav)ctrl;
+                        this.PagerTop = (PagerNav)ctrl;
                         break;
                     case "PagerBottom":
-                        PagerBottom = (PagerNav)ctrl;
+                        this.PagerBottom = (PagerNav)ctrl;
                         break;
                     case "rptPostsForumUrl":
-                        rptPostsForumUrl = (HtmlLink)ctrl;
+                        this.rptPostsForumUrl = (HtmlLink)ctrl;
                         break;
                     case "rptPostsTopicUrl":
-                        rptPostsTopicUrl = (HtmlLink)ctrl;
+                        this.rptPostsTopicUrl = (HtmlLink)ctrl;
                         break;
                     case "rptPostsContentUrl":
-                        rptPostsContentUrl = (HtmlLink)ctrl;
+                        this.rptPostsContentUrl = (HtmlLink)ctrl;
                         break;
                     case "rptTopicsForumUrl":
-                        rptTopicsForumUrl = (HtmlLink)ctrl;
+                        this.rptTopicsForumUrl = (HtmlLink)ctrl;
                         break;
                     case "rptTopicsTopicUrl1":
-                        rptTopicsTopicUrl1 = (HtmlLink)ctrl;
+                        this.rptTopicsTopicUrl1 = (HtmlLink)ctrl;
                         break;
                     case "rptTopicsTopicUrl2":
-                        rptPostsContentUrl = (HtmlLink)ctrl;
+                        this.rptPostsContentUrl = (HtmlLink)ctrl;
                         break;
                     case "rptTopicsTopicIconImage":
-                        rptTopicsTopicIconImage = (Image)ctrl;
+                        this.rptTopicsTopicIconImage = (Image)ctrl;
                         break;
-    }
+                }
                 if (ctrl is Controls.ControlsBase)
                 {
                     ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
                 }
                 if (ctrl.Controls.Count > 0)
                 {
-                    LinkControls(ctrl.Controls);
+                    this.LinkControls(ctrl.Controls);
                 }
             }
         }
+
         private void BuildPager(PagerNav pager)
         {
-            var intPages = Convert.ToInt32(Math.Ceiling(_rowCount / (double)_pageSize));
+            var intPages = Convert.ToInt32(Math.Ceiling(this.rowCount / (double)this.pageSize));
 
             pager.PageCount = intPages;
-            pager.CurrentPage = PageId;
-            pager.TabID = TabId;
-            pager.ForumID = ForumId;
+            pager.CurrentPage = this.PageId;
+            pager.TabID = this.TabId;
+            pager.ForumID = this.ForumId;
             pager.PageText = Utilities.GetSharedResource("[RESX:Page]");
             pager.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
             pager.View = "search";
             pager.PageMode = PagerNav.Mode.Links;
 
-            pager.Params = Parameters.ToArray();
+            pager.Params = this.Parameters.ToArray();
         }
 
         #endregion
@@ -611,155 +641,155 @@ namespace DotNetNuke.Modules.ActiveForums
         public string GetSearchUrl()
         {
             var @params = new List<string> { ParamKeys.ViewType + "=searchadvanced" };
-            @params.AddRange(Parameters);
+            @params.AddRange(this.Parameters);
 
-            if (SocialGroupId > 0)
-                @params.Add("GroupId=" + SocialGroupId.ToString());
+            if (this.SocialGroupId > 0)
+            {
+                @params.Add("GroupId=" + this.SocialGroupId.ToString());
+            }
 
-            return NavigateUrl(TabId, string.Empty, @params.ToArray());
+            return this.NavigateUrl(this.TabId, string.Empty, @params.ToArray());
         }
 
         public string GetForumUrl()
         {
-            if (_currentRow == null)
+            if (this.currentRow == null)
+            {
                 return null;
+            }
 
-            var forumId = _currentRow["ForumID"].ToString();
+            var forumId = this.currentRow["ForumID"].ToString();
 
             var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topics };
-            
 
-            if (SocialGroupId > 0)
-                @params.Add("GroupId=" + SocialGroupId.ToString());
+            if (this.SocialGroupId > 0)
+            {
+                @params.Add("GroupId=" + this.SocialGroupId.ToString());
+            }
 
-            return NavigateUrl(TabId, string.Empty, @params.ToArray()); 
+            return this.NavigateUrl(this.TabId, string.Empty, @params.ToArray());
         }
 
         public string GetThreadUrl()
         {
-            if (_currentRow == null)
+            if (this.currentRow == null)
+            {
                 return null;
+            }
 
-            var forumId = _currentRow["ForumID"].ToString();
-            var topicId = _currentRow["TopicId"].ToString();
+            var forumId = this.currentRow["ForumID"].ToString();
+            var topicId = this.currentRow["TopicId"].ToString();
 
             var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId };
-            
 
-            if (SocialGroupId > 0)
+            if (this.SocialGroupId > 0)
+            {
                 @params = new List<string> { ParamKeys.TopicId + "=" + topicId };
-                @params.Add("GroupId=" + SocialGroupId.ToString());
+            }
 
-            return NavigateUrl(TabId, string.Empty, @params.ToArray());
+            @params.Add("GroupId=" + this.SocialGroupId.ToString());
+
+            return this.NavigateUrl(this.TabId, string.Empty, @params.ToArray());
         }
 
         // Jumps to post for post view, or last reply for topics view
-        public string GetPostUrl() 
+        public string GetPostUrl()
         {
-            if (_currentRow == null)
+            if (this.currentRow == null)
+            {
                 return null;
+            }
 
-            var forumId = _currentRow["ForumID"].ToString();
-            var topicId = _currentRow["TopicId"].ToString();
-            var contentId = _currentRow["ContentId"].ToString();
+            var forumId = this.currentRow["ForumID"].ToString();
+            var topicId = this.currentRow["TopicId"].ToString();
+            var contentId = this.currentRow["ContentId"].ToString();
 
             var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + contentId };
-           
 
-            if (SocialGroupId > 0)
-                @params.Add("GroupId=" + SocialGroupId.ToString());
+            if (this.SocialGroupId > 0)
+            {
+                @params.Add("GroupId=" + this.SocialGroupId.ToString());
+            }
 
-            return NavigateUrl(TabId, string.Empty, @params.ToArray());
-        }
-
-        public string GetPostTime()
-        {
-            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["DateCreated"]), ForumModuleId, UserInfo);
-        }
-        public string GetAuthor()
-        {
-            if (_currentRow == null)
-                return null;
-
-            var userId = Convert.ToInt32(_currentRow["AuthorId"]);
-            var userName = _currentRow["AuthorUserName"].ToString();
-            var firstName = _currentRow["AuthorFirstName"].ToString();
-            var lastName = _currentRow["AuthorLastName"].ToString();
-            var displayName = _currentRow["AuthorDisplayName"].ToString();
-
-            return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
-        }
-        public string GetLastPostAuthor()
-        {
-            if (_currentRow == null)
-                return null;
-
-            var userId = Convert.ToInt32(_currentRow["LastReplyAuthorId"]);
-            var userName = _currentRow["LastReplyUserName"].ToString();
-            var firstName = _currentRow["LastReplyFirstName"].ToString();
-            var lastName = _currentRow["LastReplyLastName"].ToString();
-            var displayName = _currentRow["LastReplyDisplayName"].ToString();
-
-            return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
-        }
-
-        public string GetLastPostTime()
-        {
-            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["LastReplyDate"]), ForumModuleId, UserInfo);
-        }
-
-        public string GetPostSnippet()
-        {
-            var post = _currentRow["Body"].ToString();
-            post = Utilities.StripHTMLTag(post);
-            post = post.Replace(System.Environment.NewLine, " ");
-
-            if (post.Length > 255)
-                post = post.Substring(0, 255).Trim() + "...";
-
-            return post;
+            return this.NavigateUrl(this.TabId, string.Empty, @params.ToArray());
         }
 
         public string GetIcon()
         {
-            // Unread has to be calculated based on a few fields
-            var topicId = Convert.ToInt32(_currentRow["TopicId"]);
-            var replyCount = Convert.ToInt32(_currentRow["replyCount"]);
-            var lastReplyId = Convert.ToInt32(_currentRow["LastReplyId"]);
-            var userLastTopicRead = Convert.ToInt32(_currentRow["UserLastTopicRead"]);
-            var userLastReplyRead = Convert.ToInt32(_currentRow["UserLastReplyRead"]);
-            var unread = (replyCount <= 0 && topicId > userLastTopicRead) || (lastReplyId > userLastReplyRead);
-
             return DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicIcon(
-                Utilities.SafeConvertInt(_currentRow["TopicId"].ToString()),
-                !unread,
-                ThemePath,
-                Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"]),
-                Utilities.SafeConvertInt(_currentRow["UserLastReplyRead"]));
+                Utilities.SafeConvertInt(this.currentRow["TopicId"].ToString()),
+                this.ThemePath,
+                Utilities.SafeConvertInt(this.currentRow["UserLastTopicRead"]),
+                Utilities.SafeConvertInt(this.currentRow["UserLastReplyRead"]));
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public DataRow Get_currentRow() => _currentRow;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int GetSocialGroupId() => SocialGroupId;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetMiniPager() => MiniPager.GetMiniPager(_currentRow, TabId, SocialGroupId, _pageSize);
-
         #endregion
+
         #region "Deprecated"
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public DataRow Get_currentRow() => this.currentRow;
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public int GetSocialGroupId() => this.SocialGroupId;
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public string GetMiniPager() => MiniPager.GetMiniPager(this.currentRow, this.TabId, this.SocialGroupId, this.pageSize);
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Replaced with List<string>")]
         public class Keyword
         {
-            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Replaced with List<string>")]
             public string Value { get; set; }
-            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Replaced with List<string>")]
+
             public string HtmlEncodedValue
             {
-                get { return string.IsNullOrWhiteSpace(Value) ? Value : HttpUtility.HtmlEncode(Value); }
+                get { return string.IsNullOrWhiteSpace(this.Value) ? this.Value : HttpUtility.HtmlEncode(this.Value); }
             }
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public string GetPostTime()
+        {
+            return (this.currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(this.currentRow["DateCreated"]), this.ForumModuleId, this.UserInfo);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public string GetAuthor()
+        {
+            if (this.currentRow == null)
+            {
+                return null;
+            }
+
+            var userId = Convert.ToInt32(this.currentRow["AuthorId"]);
+            var userName = this.currentRow["AuthorUserName"].ToString();
+            var firstName = this.currentRow["AuthorFirstName"].ToString();
+            var lastName = this.currentRow["AuthorLastName"].ToString();
+            var displayName = this.currentRow["AuthorDisplayName"].ToString();
+
+            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public string GetLastPostAuthor()
+        {
+            if (this.currentRow == null)
+            {
+                return null;
+            }
+
+            var userId = Convert.ToInt32(this.currentRow["LastReplyAuthorId"]);
+            var userName = this.currentRow["LastReplyUserName"].ToString();
+            var firstName = this.currentRow["LastReplyFirstName"].ToString();
+            var lastName = this.currentRow["LastReplyLastName"].ToString();
+            var displayName = this.currentRow["LastReplyDisplayName"].ToString();
+
+            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public string GetLastPostTime()
+        {
+            return (this.currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(this.currentRow["LastReplyDate"]), this.ForumModuleId, this.UserInfo);
+        }
+
         #endregion
     }
 }

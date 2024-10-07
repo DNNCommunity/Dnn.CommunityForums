@@ -147,7 +147,7 @@
   <data name="[RESX:Views].Text" xml:space="preserve">
     <value>Views</value>
   </data>
-  <data name="StartedHeader.Text" xml:space="preserve">
+  <data name="[RESX:StartedHeader].Text" xml:space="preserve">
     <value>Started By</value>
   </data>
   <data name="[RESX:SubPages].Text" xml:space="preserve">
@@ -168,6 +168,9 @@
   <data name="[RESX:NotAuthorized].Text" xml:space="preserve">
     <value>You must be logged in to post a reply.</value>
   </data>
+  <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve">
+    <value>Please &lt;a href="{0}"{1}&gt;login&lt;/a&gt; to post a reply.</value>
+  </data>
   <data name="PostedDate.Text" xml:space="preserve">
     <value>Posted:</value>
   </data>
@@ -178,7 +181,7 @@
     <value>Pin</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve">
-    <value>Un-Pin</value>
+    <value>Unpin</value>
   </data>
   <data name="[RESX:Alert].Text" xml:space="preserve">
     <value>Alert</value>
@@ -280,7 +283,7 @@
     <value>Statistics Last Created</value>
   </data>
   <data name="[RESX:WhosOnline].Text" xml:space="preserve">
-    <value>Who is online:</value>
+    <value>Who's Online</value>
   </data>
   <data name="[RESX:GuestsOnline].Text" xml:space="preserve">
     <value>There are currently [GUESTCOUNT] guests(s) online.</value>
@@ -345,29 +348,8 @@
   <data name="[RESX:Website].Text" xml:space="preserve">
     <value>Website</value>
   </data>
-  <data name="[RESX:Occupation].Text" xml:space="preserve">
-    <value>Occupation</value>
-  </data>
-  <data name="[RESX:Location].Text" xml:space="preserve">
-    <value>Location</value>
-  </data>
-  <data name="[RESX:Interests].Text" xml:space="preserve">
-    <value>Interests</value>
-  </data>
   <data name="[RESX:SendMessage].Text" xml:space="preserve">
     <value>Contact</value>
-  </data>
-  <data name="[RESX:Yahoo].Text" xml:space="preserve">
-    <value>Yahoo</value>
-  </data>
-  <data name="[RESX:MSN].Text" xml:space="preserve">
-    <value>MSN</value>
-  </data>
-  <data name="[RESX:ICQ].Text" xml:space="preserve">
-    <value>ICQ</value>
-  </data>
-  <data name="[RESX:AOL].Text" xml:space="preserve">
-    <value>AOL</value>
   </data>
   <data name="EditProfile.Text" xml:space="preserve">
     <value>Edit Profile</value>
@@ -930,9 +912,6 @@
   <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
     <value>Subscribe to Topics</value>
   </data>
-  <data name="[RESX:PrefUseAjax].Text" xml:space="preserve">
-    <value>Use Ajax</value>
-  </data>
   <data name="[RESX:Actions:ProfileUpdated].Text" xml:space="preserve">
     <value>Your profile has been updated.</value>
   </data>
@@ -1066,6 +1045,9 @@ From,
   <data name="[RESX:PinTopic].Text" xml:space="preserve">
     <value>Click to pin this topic</value>
   </data>
+  <data name="[RESX:UnLock].Text" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
   <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
     <value>Click to unlock this topic</value>
   </data>
@@ -1125,9 +1107,6 @@ From,
   </data>
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>This will be your default setting when you are creating a topic or adding a reply.  This does not affect forum level subscriptions.</value>
-  </data>
-  <data name="[RESX:Tips:PrefUseAjax].Text" xml:space="preserve">
-    <value>AJAX is programming method to improve the way you interact with the forums.  You can choose whether or not you wish to use this capability.</value>
   </data>
   <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
     <value>This forum only allows you to edit your post within {0} minutes from the time you created your post.</value>
@@ -1466,16 +1445,18 @@ From,
     <value>A post by [DisplayName] has been flagged for review by [FlaggedBy]</value>
   </data>
   <data name="NotificationBodyReply.Text" xml:space="preserve">
-    <value>[Post]</value>
+    <value>&lt;p&gt;[DisplayName] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
+&lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
   </data>
   <data name="NotificationSubjectReply.Text" xml:space="preserve">
-    <value>[DisplayName] has posted a reply to [TopicSubject]</value>
+    <value>[DisplayName] has posted content requiring moderation</value>
   </data>
   <data name="NotificationBodyTopic.Text" xml:space="preserve">
-    <value>[Post]</value>
+    <value>&lt;p&gt;[DisplayName] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
+&lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
   </data>
   <data name="NotificationSubjectTopic.Text" xml:space="preserve">
-    <value>[DisplayName] has created a new topic: [TopicSubject]</value>
+    <value>[DisplayName] has posted content requiring moderation</value>
   </data>
   <data name="ForumEditor.Text" xml:space="preserve">
     <value>Forum Editor</value>
@@ -1685,7 +1666,7 @@ From,
     <value>Reply To Topic</value>
   </data>
   <data name="[RESX:BanAlertBody].Text" xml:space="preserve">
-    <value>&lt;div&gt;[Subject] &lt;br /&gt;&lt;br /&gt;[Post] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;Posted removed:&lt;br /&gt;&lt;br /&gt;[PostsRemoved] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
+    <value>&lt;div&gt;[Subject]&lt;/div&gt;&lt;div&gt;Posted removed:&lt;br /&gt;&lt;br /&gt;[PostsRemoved] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
   </data>
   <data name="[RESX:BanAlertSubject].Text" xml:space="preserve">
     <value>User [Username] has been banned by [BannedBy]</value>
@@ -1707,6 +1688,72 @@ From,
   </data>
   <data name="ThreadsTracked.Text" xml:space="preserve">
     <value>Threads you are tracking:</value>
+  </data>
+  <data name="[RESX:Unresolved].Text" xml:space="preserve">
+    <value>Unresolved</value>
+  </data>
+  <data name="[RESX:FilteredTopics].Text" xml:space="preserve">
+    <value>Filtered Topics</value>
+  </data>
+  <data name="[RESX:Tips:BanUser].Text" xml:space="preserve">
+    <value>Deletes all posts for this user and unauthorizes the user.</value>
+  </data>
+  <data name="[RESX:SearchFor].Text" xml:space="preserve">
+    <value>Search for...</value>
+  </data>
+  <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
+    <value>Enter a summary to enhance Search Engine Optimization (SEO)</value>
+  </data>
+  <data name="[RESX:Anonymous].Text" xml:space="preserve">
+    <value>Anonymous</value>
+  </data>
+  <data name="[RESX:DeletedUser].Text" xml:space="preserve">
+    <value>Deleted User</value>
+  </data>
+  <data name="[RESX:ForumGroupMissingForForum].Text" xml:space="preserve">
+    <value>The Forum Group {0} for Forum {1} is not found in the database; you will need to repair this in the database, or delete the forum and re-create it. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:PermissionsMissingForForumGroup].Text" xml:space="preserve">
+    <value>The Permissions {0} for Forum Group {1} are not found in the database; you will need to repair this in the database, or delete the forum group and re-create it. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
+    <value>The Permissions {0} for Forum {1} are not found in the database; you will need to repair this in the database, or delete the forum and re-create it. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
+    <value>Please &lt;a href="{0}"{1}&gt;login&lt;/a&gt; to add a topic.</value>
+  </data>
+  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
+    <value>No Pending Content</value>
+  </data>
+  <data name="[RESX:ForumMissingForForumTrackingId]" xml:space="preserve">
+    <value>The Forum {0} for Forum Tracking Id {1} is not found in the database; you will need to repair this in the database, or delete the forum tracking record. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
+    <value>The Topic {0} for Topic Tracking Id {1} is not found in the database; you will need to repair this in the database, or delete the invalid data.. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Child</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
+    <value>Template Token: {0} is obsolete. Replace with {1}.</value>
+  </data>
+  <data name="[RESX:RemoveObsoleteToken].Text" xml:space="preserve">
+    <value>Template Token: {0} is obsolete and has no replacement. Remove from template(s).</value>
+  </data>
+  <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
+    <value>Template Token starting with: {0} is obsolete and has no replacement. Remove from template(s).</value>
+  </data>
+  <data name="[RESX:UnableToFindReplyToProcess].Text" xml:space="preserve">
+    <value>DNN Community Forums Process Queue could not process reply {0} because it does not exist, and was likely deleted prior to processing. No further action will occur for this item. If you see this message frequently, please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:UnableToFindTopicToProcess].Text" xml:space="preserve">
+    <value>DNN Community Forums Process Queue could not process topic {0} because it does not exist, and was likely deleted prior to processing. No further action will occur for this item. If you see this message frequently, please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
+    <value>DNN Community Forums Process Queue could not process item {0} and it has been in the queue for more than 7 days. No further action will occur for this item. If you see this message frequently, please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
   </data>
   <data name="SearchBy.Text" xml:space="preserve">
     <value>By:</value>

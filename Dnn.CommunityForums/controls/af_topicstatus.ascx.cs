@@ -1,55 +1,59 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2021
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Web.UI.WebControls;
+
     public partial class af_topicstatus : ForumBase
     {
-        private int _status = -1;
-        private bool _autoPostBack = true;
+        private int status = -1;
+        private bool autoPostBack = true;
+
         public int Status
         {
             get
             {
-                return _status;
+                return this.status;
             }
+
             set
             {
-                _status = value;
+                this.status = value;
             }
         }
+
         public bool AutoPostBack
         {
             get
             {
-                return _autoPostBack;
+                return this.autoPostBack;
             }
+
             set
             {
-                _autoPostBack = value;
+                this.autoPostBack = value;
             }
         }
 
@@ -57,38 +61,38 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            drpStatus.SelectedIndexChanged += new System.EventHandler(drpStatus_SelectedIndexChanged);
+            this.drpStatus.SelectedIndexChanged += new System.EventHandler(this.drpStatus_SelectedIndexChanged);
         }
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
-
-            drpStatus.AutoPostBack = AutoPostBack;
-            foreach (ListItem li in drpStatus.Items)
+            this.drpStatus.AutoPostBack = this.AutoPostBack;
+            foreach (ListItem li in this.drpStatus.Items)
             {
                 li.Text = Utilities.GetSharedResource(li.Text);
             }
-            if (!Page.IsPostBack)
+
+            if (!this.Page.IsPostBack)
             {
-                drpStatus.SelectedIndex = drpStatus.Items.IndexOf(drpStatus.Items.FindByValue(Status.ToString()));
+                this.drpStatus.SelectedIndex = this.drpStatus.Items.IndexOf(this.drpStatus.Items.FindByValue(this.Status.ToString()));
             }
         }
 
         private void drpStatus_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if (AutoPostBack == true)
+            if (this.AutoPostBack == true)
             {
                 int intStatus = 0;
-                intStatus = Convert.ToInt32(drpStatus.SelectedItem.Value);
+                intStatus = Convert.ToInt32(this.drpStatus.SelectedItem.Value);
                 if (intStatus >= -1 && intStatus <= 3)
                 {
-                    DataProvider.Instance().Topics_UpdateStatus(PortalId, ModuleId, TopicId, -1, intStatus, -1, this.UserId);
+                    DataProvider.Instance().Topics_UpdateStatus(this.PortalId, this.ModuleId, this.TopicId, -1, intStatus, -1, this.UserId);
                 }
-                Response.Redirect(Request.RawUrl);
-            }
 
+                this.Response.Redirect(this.Request.RawUrl);
+            }
         }
     }
 }
