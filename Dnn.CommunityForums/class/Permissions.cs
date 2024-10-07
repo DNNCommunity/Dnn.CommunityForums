@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public class Permissions
     {
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
-        public static bool HasPerm(string authorizedRoles, int userId, int portalId) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(authorizedRoles, userId, portalId);
+        public static bool HasPerm(string authorizedRoles, int userId, int portalId) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(authorizedRoles, portalId, -1, userId);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
         public static bool HasPerm(string authorizedRoles, string userPermSet) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(authorizedRoles, userPermSet);

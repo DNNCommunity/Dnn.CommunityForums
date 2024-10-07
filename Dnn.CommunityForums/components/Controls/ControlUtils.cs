@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Text;
+    using DotNetNuke.Modules.ActiveForums.Queue;
 
     public class ControlUtils
     {
@@ -211,6 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Utilities.NavigateURL(tabId);
             }
 
+            //return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL() + sURL + "/";
             return sURL + "/";
         }
 

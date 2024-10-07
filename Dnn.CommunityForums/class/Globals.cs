@@ -385,6 +385,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string MySubscriptions = "afsubscriptions";
         public const string ModerateTopics = "modtopics";
         public const string ModerateBan = "modban";
+        public const string ModerateReport = "modreport";
     }
 
     internal static class GridTypes
@@ -452,13 +453,19 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ForumGroupSettings = "AF-{0}-fgs-{1}";
         public const string PermissionsInfo = "AF-{0}-perms-{1}";
 
+        
+        public const string ContentInfo = "AF-{0}-ci-{1}";
+        public const string TopicTrackingInfo = "AF-{0}-tti-{1}-{2}";
+        public const string ForumTrackingInfo = "AF-{0}-fti-{1}-{2}";
+        public const string TopicReadCount = "AF-{0}-trc-{1}-{2}";
+
         public const string RoleNames = "AF-rn-{0}";
         public const string RoleIDs = "AF-rids-{0}";
         public const string Roles = "AF-roles-{0}";
         public const string UserRoles = "AF-userroles-{0}";
         public const string CultureInfoForUser = "AF-usercultureinfo-{0}";
         public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
-
+        
         // public const string ForumView = "AF-{0}-FV-{1}";
         // public const string AllSettings = "AF-afset{0}";
         // public const string GroupInfo = "AF-gi{0}";

@@ -1560,9 +1560,6 @@ Von
   <data name="SearchCaption.Text" xml:space="preserve">
     <value>Durchsuchen Sie dieses Forum:</value>
   </data>
-  <data name="SearchForum.Text" xml:space="preserve">
-    <value>Forum:</value>
-  </data>
   <data name="SearchFrom.Text" xml:space="preserve">
     <value>Von:</value>
   </data>
@@ -1571,9 +1568,6 @@ Von
   </data>
   <data name="SearchLastPost.Text" xml:space="preserve">
     <value>Letzter Beitrag:</value>
-  </data>
-  <data name="SearchModify.Text" xml:space="preserve">
-    <value>Suche ändern</value>
   </data>
   <data name="SearchPosted.Text" xml:space="preserve">
     <value>Verschickt:</value>
@@ -1595,9 +1589,6 @@ Von
   </data>
   <data name="SearchReplies.Text" xml:space="preserve">
     <value>Antworten:</value>
-  </data>
-  <data name="SearchTopic.Text" xml:space="preserve">
-    <value>Thema:</value>
   </data>
   <data name="SearchType.Text" xml:space="preserve">
     <value>Suchtyp</value>
@@ -1737,12 +1728,6 @@ Von
   <data name="[RESX:ForumMissingForForumTrackingId]" xml:space="preserve">
     <value>Die Forum-{0} für die {1} der Forum-Tracking-ID wird in der Datenbank nicht gefunden. Sie müssen dies in der Datenbank reparieren oder den Foren-Tracking-Datensatz löschen. Bitte besuchen Sie das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki für Schritte zur Fehlerbehebung überprüfen können.</value>
   </data>
-  <data name="[RESX:Child].Text" xml:space="preserve">
-    <value>Kind</value>
-  </data>
-  <data name="[RESX:of].Text" xml:space="preserve">
-    <value>von</value>
-  </data>
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>Der {0} für die {1} der Themenverfolgungs-ID wird in der Datenbank nicht gefunden. Sie müssen dies in der Datenbank reparieren oder die ungültigen Daten löschen. Bitte besuchen Sie das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki für Schritte zur Fehlerbehebung überprüfen können.</value>
   </data>
@@ -1763,5 +1748,38 @@ Von
   </data>
   <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
     <value>Die Prozesswarteschlange der DNN-Community-Foren konnte das Element {0} nicht verarbeiten und befindet sich seit mehr als 7 Tagen in der Warteschlange. Für diesen Artikel werden keine weiteren Aktionen ausgeführt. Wenn Sie diese Meldung häufig sehen, besuchen Sie bitte das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki auf Schritte zur Fehlerbehebung überprüfen können.</value>
+  </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Kind</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>von</value>
+  </data>
+  <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
+    <value>Löscht alle Beiträge für diesen Benutzer und entzieht dem Benutzer die Berechtigung.</value>
+  </data>
+  <data name="[RESX:SearchModify].Text" xml:space="preserve">
+    <value>Suche ändern</value>
+  </data>
+  <data name="[RESX:SearchBy].Text" xml:space="preserve">
+    <value>Bis:</value>
+  </data>
+  <data name="[RESX:SearchForum].Text" xml:space="preserve">
+    <value>Forum:</value>
+  </data>
+  <data name="[RESX:SearchReplies].Text" xml:space="preserve">
+    <value>Antworten:</value>
+  </data>
+  <data name="[RESX:SearchTopic].Text" xml:space="preserve">
+    <value>Thema:</value>
+  </data>
+  <data name="[RESX:SearchViews].Text" xml:space="preserve">
+    <value>Ansichten:</value>
+  </data>
+  <data name="[RESX:SearchPosted].Text" xml:space="preserve">
+    <value>Verschickt:</value>
+  </data>
+  <data name="[RESX:Started].Text" xml:space="preserve">
+    <value>Gestartet</value>
   </data>
 </root>

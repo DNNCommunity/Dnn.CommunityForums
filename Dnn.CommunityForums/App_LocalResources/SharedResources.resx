@@ -1731,12 +1731,6 @@ From,
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>The Topic {0} for Topic Tracking Id {1} is not found in the database; you will need to repair this in the database, or delete the invalid data.. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
   </data>
-  <data name="[RESX:Child].Text" xml:space="preserve">
-    <value>Child</value>
-  </data>
-  <data name="[RESX:of].Text" xml:space="preserve">
-    <value>of</value>
-  </data>
   <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
     <value>Template Token: {0} is obsolete. Replace with {1}.</value>
   </data>
@@ -1758,17 +1752,11 @@ From,
   <data name="SearchBy.Text" xml:space="preserve">
     <value>By:</value>
   </data>
-  <data name="SearchForum]Text" xml:space="preserve">
-    <value>Forum:</value>
-  </data>
   <data name="SearchPosted.Text" xml:space="preserve">
     <value>Posted:</value>
   </data>
   <data name="SearchReplies.Text" xml:space="preserve">
     <value>Replies:</value>
-  </data>
-  <data name="SearchTopicText" xml:space="preserve">
-    <value>Topic:</value>
   </data>
   <data name="SearchViews.Text" xml:space="preserve">
     <value>Views:</value>
@@ -1781,5 +1769,14 @@ From,
   </data>
   <data name="[RESX:Started].Text" xml:space="preserve">
     <value>Started</value>
+  </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Child</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
+    <value>Deletes all posts for this user and unauthorizes the user.</value>
   </data>
 </root>

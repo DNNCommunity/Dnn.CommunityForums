@@ -238,6 +238,8 @@
     </Content>
     <Content Include="config\templates\SearchResults.ascx" />
     <Content Include="config\templates\ToolbarSearchPopup.ascx" />
+    <Content Include="config\templates\PostActions.ascx" />
+    <Content Include="config\templates\TopicActions.ascx" />
     <Content Include="config\templates\TopicSplitButtons.ascx" />
     <Content Include="config\templates\TopicsView.ascx" />
     <Content Include="config\templates\DailyDigest.ascx" />
@@ -298,6 +300,9 @@
     <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\ForumSettings.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\Messages.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\LegacyTokenResources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\SharedResources.nl-NL.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1394,6 +1399,9 @@
     <Compile Include="Entities\ForumCollection.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
     <Compile Include="Entities\ForumInfo.cs" />
+    <Compile Include="Enums\ReplyStatus.cs" />
+    <Compile Include="Enums\TopicStatus.cs" />
+    <Compile Include="Enums\ForumStatus.cs" />
     <Compile Include="Entities\ForumTopicInfo.cs" />
     <Compile Include="Entities\ForumTrackingInfo.cs" />
     <Compile Include="Entities\ForumUserInfo.cs" />

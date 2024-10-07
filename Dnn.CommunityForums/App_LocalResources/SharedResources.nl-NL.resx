@@ -977,7 +977,7 @@ Van,
     <value>Onderwerpen</value>
   </data>
   <data name="[RESX:SearchByUser].Text" xml:space="preserve">
-    <value>Zoek op gebruiker</value>
+    <value>Zoek op gebruiker:</value>
   </data>
   <data name="[RESX:SearchDuration].Text" xml:space="preserve">
     <value>De zoekopdracht duurde {0: 0.00} seconden</value>
@@ -985,11 +985,8 @@ Van,
   <data name="[RESX:SearchForumsAll].Text" xml:space="preserve">
     <value>Inclusief forums: ALLE</value>
   </data>
-  <data name="[RESX:SearchForumsFilter].Text" xml:space="preserve">
-    <value>Inclusief Forums: gefilterd</value>
-  </data>
   <data name="[RESX:SearchInForums].Text" xml:space="preserve">
-    <value>Zoek in forum(s)</value>
+    <value>Zoek in forum(s):</value>
   </data>
   <data name="[RESX:SearchInputError].Text" xml:space="preserve">
     <value>Voer een trefwoord, gebruikersnaam of tag in.</value>
@@ -1022,7 +1019,7 @@ Van,
     <value>Sorteer resultaten op:</value>
   </data>
   <data name="[RESX:SearchTimeFrame].Text" xml:space="preserve">
-    <value>Zoek berichten van</value>
+    <value>Zoek berichten van:</value>
   </data>
   <data name="[RESX:SearchTitle].Text" xml:space="preserve">
     <value>Zoekresultaten</value>
@@ -1600,9 +1597,6 @@ Van,
   <data name="SearchCaption.Text" xml:space="preserve">
     <value>Doorzoek dit forum:</value>
   </data>
-  <data name="SearchForum.Text" xml:space="preserve">
-    <value>Forum:</value>
-  </data>
   <data name="SearchFrom.Text" xml:space="preserve">
     <value>Van:</value>
   </data>
@@ -1611,9 +1605,6 @@ Van,
   </data>
   <data name="SearchLastPost.Text" xml:space="preserve">
     <value>Laatste bericht:</value>
-  </data>
-  <data name="SearchModify.Text" xml:space="preserve">
-    <value>Wijzig zoekopdracht</value>
   </data>
   <data name="SearchPosted.Text" xml:space="preserve">
     <value>Geplaatst:</value>
@@ -1635,9 +1626,6 @@ Van,
   </data>
   <data name="SearchReplies.Text" xml:space="preserve">
     <value>Reacties:</value>
-  </data>
-  <data name="SearchTopic.Text" xml:space="preserve">
-    <value>Onderwerp:</value>
   </data>
   <data name="SearchType.Text" xml:space="preserve">
     <value>Zoek type</value>
@@ -1780,12 +1768,6 @@ Van,
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>De Topic {0} voor Topic Tracking Id {1} is niet te vinden in de database. U moet dit in de database herstellen of de ongeldige gegevens verwijderen. Ga naar de Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums) van de DNN Community Forums, waar u een probleem kunt melden of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
   </data>
-  <data name="[RESX:Child].Text" xml:space="preserve">
-    <value>Kind</value>
-  </data>
-  <data name="[RESX:of].Text" xml:space="preserve">
-    <value>van</value>
-  </data>
   <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
     <value>Template Token: {0} is verouderd. Vervang door {1}.</value>
   </data>
@@ -1803,5 +1785,38 @@ Van,
   </data>
   <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
     <value>De proceswachtrij van DNN-communityforums kan het item {0} niet verwerken en staat al meer dan 7 dagen in de wachtrij. Er wordt geen verdere actie ondernomen voor dit object. Als u dit bericht vaak ziet, ga dan naar de Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums) van de DNN-communityforums, waar u een probleem kunt melden of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
+  </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Kind</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>van</value>
+  </data>
+  <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
+    <value>Hiermee verwijdert u alle berichten voor deze gebruiker en maakt u de autorisatie van de gebruiker ongedaan.</value>
+  </data>
+  <data name="[RESX:SearchModify].Text" xml:space="preserve">
+    <value>Wijzig zoekopdracht</value>
+  </data>
+  <data name="[RESX:SearchBy].Text" xml:space="preserve">
+    <value>Door:</value>
+  </data>
+  <data name="[RESX:SearchForum].Text" xml:space="preserve">
+    <value>Forum:</value>
+  </data>
+  <data name="[RESX:SearchReplies].Text" xml:space="preserve">
+    <value>Reacties:</value>
+  </data>
+  <data name="[RESX:SearchTopic].Text" xml:space="preserve">
+    <value>Onderwerp:</value>
+  </data>
+  <data name="[RESX:SearchViews].Text" xml:space="preserve">
+    <value>Keer bekeken:</value>
+  </data>
+  <data name="[RESX:SearchPosted].Text" xml:space="preserve">
+    <value>Verzonden:</value>
+  </data>
+  <data name="[RESX:Started].Text" xml:space="preserve">
+    <value>Begonnen</value>
   </data>
 </root>

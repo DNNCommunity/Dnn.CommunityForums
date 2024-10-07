@@ -722,6 +722,49 @@ namespace DotNetNuke.Modules.ActiveForums
                 Utilities.SafeConvertInt(this.currentRow["UserLastTopicRead"]),
                 Utilities.SafeConvertInt(this.currentRow["UserLastReplyRead"]));
         }
+
+        public string GetPostTime()
+        {
+            return (this.currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(this.currentRow["DateCreated"]), this.ForumModuleId, this.UserInfo);
+        }
+
+        public string GetAuthor()
+        {
+            if (this.currentRow == null)
+            {
+                return null;
+            }
+
+            var userId = Convert.ToInt32(this.currentRow["AuthorId"]);
+            var userName = this.currentRow["AuthorUserName"].ToString();
+            var firstName = this.currentRow["AuthorFirstName"].ToString();
+            var lastName = this.currentRow["AuthorLastName"].ToString();
+            var displayName = this.currentRow["AuthorDisplayName"].ToString();
+
+            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+        }
+
+        public string GetLastPostAuthor()
+        {
+            if (this.currentRow == null)
+            {
+                return null;
+            }
+
+            var userId = Convert.ToInt32(this.currentRow["LastReplyAuthorId"]);
+            var userName = this.currentRow["LastReplyUserName"].ToString();
+            var firstName = this.currentRow["LastReplyFirstName"].ToString();
+            var lastName = this.currentRow["LastReplyLastName"].ToString();
+            var displayName = this.currentRow["LastReplyDisplayName"].ToString();
+
+            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+        }
+
+        public string GetLastPostTime()
+        {
+            return (this.currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(this.currentRow["LastReplyDate"]), this.ForumModuleId, this.UserInfo);
+        }
+
         #endregion
 
         #region "Deprecated"
@@ -743,51 +786,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 get { return string.IsNullOrWhiteSpace(this.Value) ? this.Value : HttpUtility.HtmlEncode(this.Value); }
             }
-        }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetPostTime()
-        {
-            return (this.currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(this.currentRow["DateCreated"]), this.ForumModuleId, this.UserInfo);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetAuthor()
-        {
-            if (this.currentRow == null)
-            {
-                return null;
-            }
-
-            var userId = Convert.ToInt32(this.currentRow["AuthorId"]);
-            var userName = this.currentRow["AuthorUserName"].ToString();
-            var firstName = this.currentRow["AuthorFirstName"].ToString();
-            var lastName = this.currentRow["AuthorLastName"].ToString();
-            var displayName = this.currentRow["AuthorDisplayName"].ToString();
-
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetLastPostAuthor()
-        {
-            if (this.currentRow == null)
-            {
-                return null;
-            }
-
-            var userId = Convert.ToInt32(this.currentRow["LastReplyAuthorId"]);
-            var userName = this.currentRow["LastReplyUserName"].ToString();
-            var firstName = this.currentRow["LastReplyFirstName"].ToString();
-            var lastName = this.currentRow["LastReplyLastName"].ToString();
-            var displayName = this.currentRow["LastReplyDisplayName"].ToString();
-
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetLastPostTime()
-        {
-            return (this.currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(this.currentRow["LastReplyDate"]), this.ForumModuleId, this.UserInfo);
         }
 
         #endregion

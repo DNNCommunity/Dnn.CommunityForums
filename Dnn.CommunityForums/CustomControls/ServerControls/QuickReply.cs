@@ -29,6 +29,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+    using DotNetNuke.Modules.ActiveForums.API;
+    using DotNetNuke.Modules.ActiveForums.Data;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:QuickReply runat=server></{0}:QuickReply>")]
     public class QuickReply : ControlsBase

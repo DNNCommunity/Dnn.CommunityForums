@@ -18,7 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -41,6 +40,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Modules.ActiveForums.Enums;
 
     internal class TopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
     {
@@ -215,8 +216,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 // TODO: put this in a better place and make it consistent with reply counter
                 DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
-            }
-
+            } 
+            
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(ti.Forum.PortalId, ti.Content.AuthorId);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
             DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
@@ -359,6 +360,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static bool ProcessUnapprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int authorId, string requestUrl)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(portalId, tabId, moduleId, forumGroupId, forumId, topicId, replyId, authorId, requestUrl);
-        }
+        } 
     }
 }

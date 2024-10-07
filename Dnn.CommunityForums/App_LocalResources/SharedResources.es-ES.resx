@@ -1563,9 +1563,6 @@ De
   <data name="SearchCaption.Text" xml:space="preserve">
     <value>Buscar en este foro:</value>
   </data>
-  <data name="SearchForum.Text" xml:space="preserve">
-    <value>Foro:</value>
-  </data>
   <data name="SearchFrom.Text" xml:space="preserve">
     <value>De:</value>
   </data>
@@ -1574,9 +1571,6 @@ De
   </data>
   <data name="SearchLastPost.Text" xml:space="preserve">
     <value>Último mensaje:</value>
-  </data>
-  <data name="SearchModify.Text" xml:space="preserve">
-    <value>Modificar búsqueda</value>
   </data>
   <data name="SearchPosted.Text" xml:space="preserve">
     <value>Publicada:</value>
@@ -1598,9 +1592,6 @@ De
   </data>
   <data name="SearchReplies.Text" xml:space="preserve">
     <value>Respuestas:</value>
-  </data>
-  <data name="SearchTopic.Text" xml:space="preserve">
-    <value>Tema:</value>
   </data>
   <data name="SearchType.Text" xml:space="preserve">
     <value>Tipo de búsqueda</value>
@@ -1740,12 +1731,6 @@ De
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>El {0} de tema para el {1} de ID de seguimiento de temas no se encuentra en la base de datos; Deberá reparar esto en la base de datos o eliminar los datos no válidos. Visite el repositorio de Github (https://github.com/DNNCommunity/Dnn.CommunityForums) de los foros de la comunidad DNN, donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
   </data>
-  <data name="[RESX:Child].Text" xml:space="preserve">
-    <value>Niño</value>
-  </data>
-  <data name="[RESX:of].Text" xml:space="preserve">
-    <value>de</value>
-  </data>
   <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
     <value>Token de plantilla: {0} está obsoleto. Reemplace con {1}.</value>
   </data>
@@ -1763,5 +1748,38 @@ De
   </data>
   <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
     <value>La cola de procesos de los foros de la comunidad DNN no pudo procesar el elemento {0} y ha estado en la cola durante más de 7 días. No se realizará ninguna otra acción para este artículo. Si ve este mensaje con frecuencia, visite el repositorio de Github (https://github.com/DNNCommunity/Dnn.CommunityForums) de los foros de la comunidad de DNN, donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
+  </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Niño</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
+    <value>Elimina todas las entradas del usuario y desautoriza al usuario.</value>
+  </data>
+  <data name="[RESX:SearchModify].Text" xml:space="preserve">
+    <value>Modificar búsqueda</value>
+  </data>
+  <data name="[RESX:SearchBy].Text" xml:space="preserve">
+    <value>Por:</value>
+  </data>
+  <data name="[RESX:SearchForum].Text" xml:space="preserve">
+    <value>Foro:</value>
+  </data>
+  <data name="[RESX:SearchReplies].Text" xml:space="preserve">
+    <value>Respuestas:</value>
+  </data>
+  <data name="[RESX:SearchTopic].Text" xml:space="preserve">
+    <value>Tema:</value>
+  </data>
+  <data name="[RESX:SearchViews].Text" xml:space="preserve">
+    <value>Vistas:</value>
+  </data>
+  <data name="[RESX:SearchPosted].Text" xml:space="preserve">
+    <value>Publicada:</value>
+  </data>
+  <data name="[RESX:Started].Text" xml:space="preserve">
+    <value>Comenzó</value>
   </data>
 </root>

@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return ri;
         }
-
+        
         public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, int delBehavior)
         {
             var ri = this.GetById(replyId);
@@ -233,5 +233,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(portalId, tabId, moduleId, forumGroupId, forumId, topicId, replyId, authorId, requestUrl);
         }
+
     }
 }

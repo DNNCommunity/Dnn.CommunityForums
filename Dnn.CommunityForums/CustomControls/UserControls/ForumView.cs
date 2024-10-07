@@ -24,22 +24,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
-    using System.IO;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
-    using System.Web.Http.Results;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:ForumView runat=server></{0}:ForumView>")]
     public class ForumView : ForumBase
     {
-        private string forumURL = string.Empty;
-        private string forumPageTitle = string.Empty;
-
         public bool SubsOnly { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forums property.")]
@@ -158,17 +152,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             try
             {
                 string sTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ForumView", 0);
-                try
-                {
-                    sTemplate = this.ParseControls(sTemplate);
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
-                    sTemplate = ex.Message;
-                }
 
-                if (sTemplate.Contains("[NOTOOLBAR]"))
+
+                StringBuilder stringBuilder = new StringBuilder(sTemplate);
+                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(stringBuilder);
+                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(stringBuilder, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale);
+                stringBuilder.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
+                stringBuilder.Replace("[STATISTICS]", "<am:Stats id=\"amStats\" MID=\"" + this.ModuleId + "\" PID=\"" + this.PortalId.ToString() + "\" runat=\"server\" />");
+                stringBuilder.Replace("[WHOSONLINE]", this.MainSettings.UsersOnlineEnabled ? "<asp:placeholder id=\"plhUsersOnline\" runat=\"server\" />" : string.Empty);
+
+                if (stringBuilder.ToString().Contains("[NOTOOLBAR]"))
                 {
                     if (HttpContext.Current.Items.Contains("ShowToolbar"))
                     {
@@ -178,15 +171,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         HttpContext.Current.Items.Add("ShowToolbar", false);
                     }
-
-                    sTemplate = sTemplate.Replace("[NOTOOLBAR]", string.Empty);
+                    stringBuilder.Replace("[NOTOOLBAR]", string.Empty);
                 }
+                sTemplate = stringBuilder.ToString();
 
                 if (sTemplate.Contains("[FORUMS]"))
                 {
                     string sGroupSection = string.Empty;
                     string sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
-                    string sGroup = TemplateUtils.GetTemplateSection(sTemplate, "[GROUP]", "[/GROUP]");
+                    string sGroupTemplate = TemplateUtils.GetTemplateSection(sTemplate, "[GROUP]", "[/GROUP]");
                     string sForums = string.Empty;
                     string sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
                     string tmpGroup = string.Empty;
@@ -256,6 +249,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         foreach (var fi in this.Forums.Where(f => !this.SubsOnly || f.ParentForumId > 0).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).Take(Globals.ForumCount))
                         {
+                            fi.PortalSettings = this.PortalSettings;
+                            fi.MainSettings = this.MainSettings;
                             bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security?.View, this.ForumUser.UserRoles);
                             if (this.UserInfo.IsSuperUser || canView || (!fi.ForumGroup.Hidden))
                             {
@@ -272,14 +267,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                                         int groupId = fi.ForumGroupId;
                                         sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
-                                        sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPNAME]", fi.GroupName);
-                                        sGroupSectionTemp = sGroupSectionTemp.Replace("[FORUMGROUPID]", fi.ForumGroupId.ToString());
-                                        sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{groupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")));
 
-                                        // any replacements on the group
-                                        string sNewGroup = "<div id=\"group" + groupId + "\" class=\"afgroup\">" + sGroup + "</div>";
-                                        sNewGroup = sNewGroup.Replace("[FORUMGROUPID]", fi.ForumGroupId.ToString());
-                                        sNewGroup = sNewGroup.Replace("[GROUPNAME]", fi.GroupName);
+                                        StringBuilder sGroupSectionTempStringBuilder = new StringBuilder(sGroupSectionTemp);
+                                        sGroupSectionTempStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sGroupSectionTempStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
+                                        sGroupSectionTemp = sGroupSectionTempStringBuilder.ToString();
+
+                                        //any replacements on the group
+                                        StringBuilder sNewGroupStringBuilder = new StringBuilder("<div id=\"group" + fi.ForumGroupId + "\" class=\"afgroup\">" + sGroupTemplate + "</div>");
+                                        sNewGroupStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sNewGroupStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
+                                        string sNewGroup = sNewGroupStringBuilder.ToString();
+
                                         sGroupSectionTemp = TemplateUtils.ReplaceSubSection(sGroupSectionTemp, sNewGroup, "[GROUP]", "[/GROUP]");
                                         sGroupSection += sGroupSectionTemp;
                                         tmpGroup = fi.GroupName;
@@ -345,36 +342,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private string ParseControls(string template)
-        {
-            string sOutput = template;
-            sOutput = sOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
-            if (sOutput.Contains("[STATISTICS]"))
-            {
-                sOutput = sOutput.Replace("[STATISTICS]", "<am:Stats id=\"amStats\" MID=\"" + this.ModuleId + "\" PID=\"" + this.PortalId.ToString() + "\" runat=\"server\" />");
-            }
-
-            if (sOutput.Contains("[WHOSONLINE]"))
-            {
-                sOutput = sOutput.Replace("[WHOSONLINE]", this.MainSettings.UsersOnlineEnabled ? "<asp:placeholder id=\"plhUsersOnline\" runat=\"server\" />" : string.Empty);
-            }
-
-            sOutput = sOutput.Replace("[PORTALID]", this.PortalId.ToString());
-            sOutput = sOutput.Replace("[MODULEID]", this.ModuleId.ToString());
-            sOutput = sOutput.Replace("[TABID]", this.TabId.ToString());
-            sOutput = sOutput.Replace("[USERID]", this.CurrentUserId.ToString());
-            return sOutput;
-        }
-
         private string ParseForumRow(string template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int currForumIndex, int totalForums)
         {
             if (template.Contains("[SUBFORUMS]") && template.Contains("[/SUBFORUMS]"))
             {
-                template = this.GetSubForums(template, fi.ForumID, this.TabId, this.ThemePath);
+                template = this.GetSubForums(template, fi.ForumID, fi.TabId);
             }
             else
             {
-                template = template.Replace("[SUBFORUMS]", this.GetSubForums(template: string.Empty, forumId: fi.ForumID, tabId: this.TabId, themePath: string.Empty));
+                template = template.Replace("[SUBFORUMS]", this.GetSubForums(template: string.Empty, forumId: fi.ForumID, tabId: fi.TabId));
             }
 
             string[] css = null;
@@ -405,216 +381,39 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, this.ForumUser.UserRoles);
-            bool canSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, this.ForumUser.UserRoles);
-            bool canRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Read, this.ForumUser.UserRoles);
-            string sIcon = TemplateUtils.ShowIcon(canView, fi.ForumID, this.CurrentUserId, fi.LastPostDateTime, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetLastReadTopicByUser(fi.ForumID, this.CurrentUserId), fi.LastPostID);
-            string sIconImage = "<img alt=\"" + fi.ForumName + "\" src=\"" + this.ThemePath + "images/" + sIcon + "\" />";
+            StringBuilder templateStringBuilder = new StringBuilder(template);
+            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
 
-            if (template.Contains("[FORUMICON]"))
+            if (templateStringBuilder.ToString().Contains("[AF:CONTROL:TOGGLESUBSCRIBE]"))
             {
-                template = template.Replace("[FORUMICON]", sIconImage);
-            }
-            else if (template.Contains("[FORUMICONCSS]"))
-            {
-                string sFolderCSS = "fa-folder fa-blue";
-                switch (sIcon.ToLower())
-                {
-                    case "folder.png":
-                        sFolderCSS = "fa-folder fa-blue";
-                        break;
-                    case "folder_new.png":
-                        sFolderCSS = "fa-folder fa-red";
-                        break;
-                    case "folder_forbidden.png":
-                        sFolderCSS = "fa-folder fa-grey";
-                        break;
-                    case "folder_closed.png":
-                        sFolderCSS = "fa-folder-o fa-grey";
-                        break;
-                }
-
-                template = template.Replace("[FORUMICONCSS]", "<div style=\"height:30px;margin-right:10px;\"><i class=\"fa " + sFolderCSS + " fa-2x\"></i></div>");
-            }
-
-            var ctlUtils = new ControlUtils();
-            this.forumURL = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, -1, string.Empty, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
-
-            template = template.Replace("[FORUMNAME]", this.GetForumLink(fi.ForumName, fi.ForumID, this.TabId, canView, this.forumURL));
-            template = template.Replace("[FORUMNAMENOLINK]", fi.ForumName);
-            template = template.Replace("[FORUMID]", fi.ForumID.ToString());
-            if (template.Contains("[RSSLINK]"))
-            {
-                if (fi.AllowRSS && canRead)
-                {
-                    string url;
-                    url = Common.Globals.AddHTTP(Common.Globals.GetDomainName(this.Request)) + "/DesktopModules/ActiveForums/feeds.aspx?portalid=" + this.PortalId + "&forumid=" + fi.ForumID + "&tabid=" + this.TabId + "&moduleid=" + this.ModuleId;
-                    template = template.Replace("[RSSLINK]", "<a href=\"" + url + "\" target=\"_blank\"><img src=\"" + this.ThemePath + "images/rss.png\" border=\"0\" alt=\"[RESX:RSS]\" /></a>");
-                }
-                else
-                {
-                    template = template.Replace("[RSSLINK]", "<img src=\"" + this.ThemePath + "images/rss_disabled.png\" border=\"0\" alt=\"[RESX:RSSDisabled]\" />");
-                }
-            }
-
-            if (template.Contains("[AF:CONTROL:TOGGLESUBSCRIBE]"))
-            {
-                if (canSubscribe)
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, this.ForumUser.UserRoles))
                 {
                     bool isSubscribed = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId);
-                    string sAlt = "[RESX:Subscribe]";
-                    string sImg = this.ThemePath + "images/email_unchecked.png";
-                    if (isSubscribed)
-                    {
-                        sImg = this.ThemePath + "images/email_checked.png";
-                    }
-
                     var subControl = new ToggleSubscribe(this.ForumModuleId, fi.ForumID, -1, 0);
                     subControl.Checked = isSubscribed;
                     subControl.DisplayMode = 1;
                     subControl.UserId = this.CurrentUserId;
-                    subControl.ImageURL = sImg;
+                    subControl.ImageURL = this.ThemePath + (isSubscribed ? "images/email_checked.png" : "images/email_unchecked.png"); ;
                     subControl.Text = "[RESX:Subscribe]";
 
-                    template = template.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", subControl.Render());
+                    templateStringBuilder.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", subControl.Render());
                 }
                 else
                 {
-                    template = template.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", "<img src=\"" + this.ThemePath + "email_disabled.png\" border=\"0\" alt=\"[RESX:ForumSubscribe:Disabled]\" />");
+                    templateStringBuilder.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", "<img src=\"" + this.ThemePath + "email_disabled.png\" border=\"0\" alt=\"[RESX:ForumSubscribe:Disabled]\" />");
                 }
             }
-
-            template = canRead ? template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + fi.ForumName + "','" + this.forumURL + "');\"><img src=\"" + this.ThemePath + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>") : template.Replace("[AF:CONTROL:ADDFAVORITE]", string.Empty);
-            if (template.Contains("[AF:CONTROL:ADDTHIS"))
-            {
-                int inStart = template.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1 + 19;
-                int inEnd = template.IndexOf("]", inStart - 1) + 1;
-                template.Remove(inStart, inEnd - inStart + 1);
-            }
-
-            if (fi.ForumDesc != string.Empty)
-            {
-                template = template.Replace("[FORUMDESCRIPTION]", "<i class=\"fa fa-file-o fa-grey\"></i>&nbsp;" + fi.ForumDesc);
-            }
-            else
-            {
-                template = template.Replace("[FORUMDESCRIPTION]", string.Empty);
-            }
-
-            template = template.Replace("[TOTALTOPICS]", fi.TotalTopics.ToString());
-            template = template.Replace("[TOTALREPLIES]", fi.TotalReplies.ToString());
-            template = template.Replace("[FORUMSUBSCRIBERCOUNT]", fi.SubscriberCount.ToString());
-
-            // Last Post Section
-            int intLength = 0;
-            if ((template.IndexOf("[LASTPOSTSUBJECT:", 0) + 1) > 0)
-            {
-                int inStart = template.IndexOf("[LASTPOSTSUBJECT:", 0) + 1 + 17;
-                int inEnd = template.IndexOf("]", inStart - 1) + 1;
-                string sLength = template.Substring(inStart - 1, inEnd - inStart);
-                intLength = Convert.ToInt32(sLength);
-            }
-
-            string replaceTag = "[LASTPOSTSUBJECT:" + intLength.ToString() + "]";
-            if (fi.LastPostID == 0)
-            {
-                template = template.Replace("[RESX:BY]", string.Empty);
-                template = template.Replace("[DISPLAYNAME]", string.Empty);
-                template = template.Replace("[LASTPOSTDATE]", string.Empty);
-                template = template.Replace(replaceTag, string.Empty);
-            }
-            else
-            {
-                if (canView)
-                {
-                    if (fi.LastPostUserID <= 0)
-                    {
-                        template = template.Replace("[DISPLAYNAME]", "<i class=\"fa fa-user fa-fw fa-blue\"></i>&nbsp;" + fi.LastPostDisplayName);
-                    }
-                    else
-                    {
-                        bool isMod = this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.ForumMod || this.CurrentUserType == CurrentUserTypes.SuperUser;
-                        bool isAdmin = this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser;
-                        template = template.Replace("[DISPLAYNAME]", "<i class=\"fa fa-user fa-fw fa-blue\"></i>&nbsp;" + DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, isMod, isAdmin, fi.LastPostUserID, fi.LastPostUserName, fi.LastPostFirstName, fi.LastPostLastName, fi.LastPostDisplayName));
-                    }
-
-                    DateTime dtLastPostDate = fi.LastPostDateTime;
-                    template = template.Replace("[LASTPOSTDATE]", Utilities.GetUserFormattedDateTime(dtLastPostDate, this.PortalId, this.CurrentUserId));
-                    string subject = HttpUtility.HtmlDecode(fi.LastPostSubject);
-                    if (subject != string.Empty)
-                    {
-                        template = template.Replace(replaceTag, this.GetLastPostSubject(fi.LastPostID, fi.LastTopicId, fi.ForumID, this.TabId, subject, intLength, this.MainSettings.PageSize, fi));
-                    }
-                    else
-                    {
-                        template = template.Replace("[RESX:BY]", string.Empty);
-                        template = template.Replace(replaceTag, string.Empty);
-                    }
-                }
-                else
-                {
-                    template = template.Replace("[DISPLAYNAME]", string.Empty);
-                    template = template.Replace("[LASTPOSTDATE]", string.Empty);
-                    template = template.Replace("[RESX:BY]", string.Empty);
-                    template = template.Replace(replaceTag, string.Empty);
-                }
-            }
+            template = templateStringBuilder.ToString();
 
             return template;
+
         }
 
         #endregion
         #region Private Methods - Helpers
-        private string GetForumLink(string name, int forumId, int tabId, bool canView, string url)
-        {
-            string sOut;
-            sOut = name;
 
-            if (canView && name != string.Empty)
-            {
-                sOut = "<a href=\"" + url + "\">" + name + "</a>";
-            }
-            else if (canView && name == string.Empty)
-            {
-                return url;
-            }
-            else
-            {
-                sOut = name;
-            }
+        private string GetSubForums(string template, int forumId, int tabId)
 
-            return sOut;
-        }
-
-        private string GetLastPostSubject(int lastPostID, int parentPostID, int forumID, int tabID, string subject, int length, int pageSize, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
-        {
-            var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(parentPostID);
-            var sb = new StringBuilder();
-            subject = HttpUtility.HtmlDecode(subject);
-            subject = Utilities.StripHTMLTag(subject);
-            subject = subject.Replace("[", "&#91");
-            subject = subject.Replace("]", "&#93");
-            if (subject.Length > length & length > 0)
-            {
-                subject = subject.Substring(0, length) + "...";
-            }
-
-            string sURL = new ControlUtils().TopicURL(this.TabId, this.ForumModuleId, parentPostID, fi.ForumGroup.PrefixURL, fi.PrefixURL, ti.TopicUrl);
-            if (sURL.Contains("~/"))
-            {
-                sURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.TopicId + "=" + parentPostID, ParamKeys.ContentJumpId + "=" + lastPostID });
-            }
-
-            if (sURL.EndsWith("/") && lastPostID != parentPostID)
-            {
-                sURL += Utilities.UseFriendlyURLs(this.ForumModuleId) ? String.Concat("#", lastPostID) : String.Concat("?", ParamKeys.ContentJumpId, "=", lastPostID);
-            }
-
-            sb.Append("<a href=\"" + sURL + "\">" + HttpUtility.HtmlEncode(subject) + "</a>");
-            return sb.ToString();
-        }
-
-        private string GetSubForums(string template, int forumId, int tabId, string themePath)
         {
             int i = 0;
             var subforums = this.Forums.Where(f => f.ParentForumId == forumId).ToList();
@@ -624,8 +423,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string subForum;
                 foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in subforums)
                 {
-                    bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, this.ForumUser.UserRoles);
-                    subForum = this.GetForumName(canView, fi.Hidden, tabId, fi.ForumID, fi.ForumName, this.MainSettings.UseShortUrls);
+                    subForum = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder("[FORUMLINK]"), fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
                     if (subForum != string.Empty)
                     {
                         sb.Append(subForum);
@@ -659,32 +457,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     i += 1;
                     string tmpSubs = TemplateUtils.GetTemplateSection(template, "[SUBFORUMS]", "[/SUBFORUMS]");
+
                     bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, this.ForumUser.UserRoles);
                     if (canView || (!fi.Hidden) | this.UserInfo.IsSuperUser)
                     {
-                        string sIcon = TemplateUtils.ShowIcon(canView, fi.ForumID, this.CurrentUserId, fi.LastPostDateTime, fi.LastRead, fi.LastPostID);
-
-                        string sFolderCSS = "fa-folder fa-blue";
-                        switch (sIcon.ToLower())
-                        {
-                            case "folder.png":
-                                sFolderCSS = "fa-folder fa-blue";
-                                break;
-                            case "folder_new.png":
-                                sFolderCSS = "fa-folder fa-red";
-                                break;
-                            case "folder_forbidden.png":
-                                sFolderCSS = "fa-folder fa-grey";
-                                break;
-                            case "folder_closed.png":
-                                sFolderCSS = "fa-folder-o fa-grey";
-                                break;
-                        }
-
-                        tmpSubs = tmpSubs.Replace("[FORUMICONSM]", "<i class=\"fa " + sFolderCSS + " fa-fw\"></i>&nbsp;&nbsp;");
-
-                        // tmpSubs = tmpSubs.Replace("[FORUMICONSM]", "<i class=\"fa fa-folder fa-fw fa-blue\"></i>&nbsp;&nbsp;");
                         tmpSubs = this.ParseForumRow(tmpSubs, fi, i, subforums.Count());
+
                     }
                     else
                     {
@@ -699,30 +477,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private string GetForumName(bool canView, bool hidden, int tabID, int forumID, string name, bool useShortUrls)
-        {
-            string sOut;
-            string[] @params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumID };
-            if (useShortUrls)
-            {
-                @params = new[] { ParamKeys.ForumId + "=" + forumID };
-            }
-
-            if (canView)
-            {
-                sOut = "<a href=\"" + Utilities.NavigateURL(tabID, string.Empty, @params) + "\">" + name + "</a>";
-            }
-            else if (hidden)
-            {
-                sOut = string.Empty;
-            }
-            else
-            {
-                sOut = name;
-            }
-
-            return sOut;
-        }
         #endregion
     }
 }

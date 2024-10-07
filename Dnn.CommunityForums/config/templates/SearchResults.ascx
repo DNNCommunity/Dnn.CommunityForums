@@ -9,6 +9,37 @@
     });
 
 </script>
+<style>
+    .divTable{
+        display: table;
+        width: 100%;
+    }
+    .divTableRow {
+        display: table-row;
+    }
+    .divTableHeading {
+        background-color: #EEE;
+        display: table-header-group;
+    }
+    .divTableCell, .divTableHead {
+        border: 1px solid #999999;
+        display: table-cell;
+        padding: 3px 10px;
+    }
+    .divTableHeading {
+        background-color: #EEE;
+        display: table-header-group;
+        font-weight: bold;
+    }
+    .divTableFoot {
+        background-color: #EEE;
+        display: table-footer-group;
+        font-weight: bold;
+    }
+    .divTableBody {
+        display: table-row-group;
+    }
+</style>
 <div class="dcf-search-results-wrap">
     <div class="af-search-header">
 
@@ -53,7 +84,8 @@
 
         <!-- Post View -->
         <asp:repeater runat="server" id="rptPosts" visible="False">
-            <itemtemplate>
+            <HeaderTemplate></HeaderTemplate>
+            <ItemTemplate>
                 <div class="af-post">
                     <div class="af-post-header">
                         <div class="af-stats">
@@ -62,61 +94,71 @@
                         </div>
                         <div class="af-forum">
                             <label>[RESX:SearchForum]</label>
-                            <a class="af-forum-url" id="rptPostsForumUrl"><%# Eval("ForumName") %></a></div>
+                            <a class="af-forum-url" id="rptPostsForumUrl"><%# Eval("ForumName") %></a>
+                        </div>
                         <div class="af-thread">
                             <label>[RESX:SearchTopic]</label>
-                            <a class="af-thread-url" id="rptPostsTopicUrl"><%# Eval("Subject") %></a></div>
+                            <a class="af-thread-url" id="rptPostsTopicUrl"><%# Eval("Subject") %></a>
+                        </div>
                         <div class="af-postinfo">
-                            <label>[RESX:SearchPosted]</label><%# GetPostTime() %> [RESX:BY] <%# GetAuthor() %></div>
+                            <label>[RESX:SearchPosted]</label><%# GetPostTime() %> [RESX:BY] <%# GetAuthor() %>
+                        </div>
                     </div>
                     <div class="af-post-content">
                         <a class="af-post-url" id="rptPostsContentUrl"><%# Eval("PostSubject") %></a>
                         <div><%# GetPostSnippet() %></div>
                     </div>
                 </div>
-            </itemtemplate>
+            </ItemTemplate>
+            <FooterTemplate></FooterTemplate>
         </asp:repeater>
-
+        
         <!-- Topic View -->
         <asp:repeater id="rptTopics" runat="server" visible="False">
-            <headertemplate>
-                <table class="afgrid" cellspacing="0" cellpadding="0" width="100%">
-            </headertemplate>
-            <itemtemplate>
-                <tr>
-                    <td colspan="0">
-                        <table class="afgrid" cellspacing="0" cellpadding="0" width="100%">
-                            <tr>
-                                <td class="aftopicrow _hide" width="20"><a id="rptTopicsTopicUrl1">
-                                    <asp:image runat="server" id="rptTopicsTopicIconImage" />
-                                </a></td>
-                                <%--<td class="aftopicrow af-content">
-                                    <table>
-                                        <tr>
-                                            <td rowspan="2" class="afsubject">
-
-                                                <span class="afhiddenstats"><%# Eval("ReplyCount") %> replies and <%# Eval("ViewCount") %> views</span>
-                                                <span class="aftopictitle"><a class="af-thread-link" id="rptTopicsTopicUrl2"><%# Eval("Subject") %></a></span>
-                                                <span class="aftopicsubtitle">[RESX:Started] <%# GetPostTime() %> [RESX:By] <%# GetAuthor() %></span>
-                                        </tr>
-                                    </table>
-                                </td>--%>
-                                <%--<td class="aftopicrow af-colstats af-colstats-replies"><%# Eval("ReplyCount") %></td>
-                                <td class="aftopicrow af-colstats af-colstats-views"><%# Eval("ViewCount") %></td>
-                                <td class="aftopicrow af-lastpost">
-                                    <div class="af_lastpost" style="white-space: nowrap;">In: <a class="af-forum-url" id="rptTopicsForumUrl"><%# Eval("ForumName") %></a>
-                                        <br />
-                                        [RESX:SearchBy] <%# GetLastPostAuthor() %><br />
-                                        <%# GetLastPostTime() %>
+            <HeaderTemplate></HeaderTemplate>
+            <ItemTemplate>
+                <div class="divTable">
+                    <div class="divTableBody">
+                        <div class="divTableRow">
+                            <div class="divTableCell">
+                                <div class="divTable">
+                                    <div class="divTableBody">
+                                        <div class="divTableRow">
+                                            <div class="divTableCell">&nbsp;</div>
+                                            <div class="divTableCell">
+                                                <div class="divTable">
+                                                    <div class="divTableBody">
+                                                        <div class="divTableRow">
+                                                            <div class="divTableCell">
+                                                                <span class="afhiddenstats">&lt;%# Eval("ReplyCount") %&gt; replies and &lt;%# Eval("ViewCount") %&gt; views</span> 
+                                                                <span class="aftopictitle">
+                                                                    <a id="rptTopicsTopicUrl2" class="af-thread-link"></a>&lt;%# Eval("Subject") %&gt;
+                                                                </span> 
+                                                                <span class="aftopicsubtitle">[RESX:Started] &lt;%# GetPostTime() %&gt; [RESX:By] &lt;%# GetAuthor() %&gt;</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="divTableCell">&lt;%# Eval("ReplyCount") %&gt;</div>
+                                            <div class="divTableCell">&lt;%# Eval("ViewCount") %&gt;</div>
+                                            <div class="divTableCell">
+                                                <div class="af_lastpost" style="white-space: nowrap;">
+                                                    In: <a id="rptTopicsForumUrl" class="af-forum-url"></a>&lt;%# Eval("ForumName") %&gt;
+                                                    <br />
+                                                    [RESX:SearchBy] &lt;%# GetLastPostAuthor() %&gt;<br />
+                                                    &lt;%# GetLastPostTime() %&gt;
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </td>--%>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-				
-            </itemtemplate>
-            <footertemplate></table></footertemplate>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ItemTemplate>
+            <FooterTemplate></FooterTemplate>
         </asp:repeater>
 
     </div>

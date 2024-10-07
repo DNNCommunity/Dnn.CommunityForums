@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -23,11 +23,13 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
+    using System.Web;
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Tokens;
-    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.UI.UserControls;
 
     [TableName("activeforums_UserProfiles")]
     [PrimaryKey("ProfileId", AutoIncrement = true)]
@@ -115,22 +117,24 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int PrefPageSize { get; set; } = 20;
 
         [IgnoreColumn]
-        public string[] Roles => this.UserInfo.Roles;
+        public string[] Roles => this.UserInfo?.Roles;
+
+        [IgnoreColumn] public string FirstName => this.UserInfo?.FirstName;
 
         [IgnoreColumn]
-        public string FirstName => this.UserInfo.FirstName;
+        public string LastName => string.IsNullOrEmpty(this.UserInfo?.LastName) ? string.Empty : this.UserInfo?.LastName;
 
         [IgnoreColumn]
-        public string LastName => this.UserInfo.LastName;
+        public string FullName => string.Concat(this.UserInfo?.FirstName, " ", this.UserInfo?.LastName);
 
         [IgnoreColumn]
-        public string DisplayName => this.UserInfo.DisplayName;
+        public string DisplayName => string.IsNullOrEmpty(this.UserInfo?.DisplayName) == null ? string.Empty : this.UserInfo?.DisplayName;
 
         [IgnoreColumn]
-        public string Username => this.UserInfo.Username;
+        public string Username => this.UserInfo?.Username;
 
         [IgnoreColumn]
-        public string Email => this.UserInfo.Email;
+        public string Email => string.IsNullOrEmpty(this.UserInfo?.Email) ? string.Empty : this.UserInfo?.Email;
 
         [IgnoreColumn]
         public bool GetIsMod(int ModuleId)
@@ -139,10 +143,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        public bool IsSuperUser => this.UserInfo.IsSuperUser;
+        public bool IsSuperUser => this.UserInfo != null && this.UserInfo.IsSuperUser;
 
         [IgnoreColumn]
-        public bool IsAdmin => this.UserInfo.IsAdmin;
+        public bool IsAdmin => this.UserInfo != null && this.UserInfo.IsAdmin;
 
         [IgnoreColumn]
         public bool IsAnonymous => this.UserId == -1;
@@ -164,7 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int PostCount => this.TopicCount + this.ReplyCount;
 
         [IgnoreColumn]
-        public DotNetNuke.Entities.Profile.ProfilePropertyDefinitionCollection Properties => this.UserInfo.Profile.ProfileProperties;
+        public DotNetNuke.Entities.Profile.ProfilePropertyDefinitionCollection Properties => this.UserInfo?.Profile?.ProfileProperties;
 
         [IgnoreColumn]
         TimeSpan TimeZoneOffsetForUser => Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
@@ -213,12 +217,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     ids = Globals.DefaultAnonRoles + "|-1;||";
                 }
+
                 if (this.IsSuperUser)
                 {
                     ids += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
                 }
+
                 ids += "|" + this.UserId + "|" + string.Empty + "|";
                 this.userRoles = ids;
+
                 return this.userRoles;
             }
 
@@ -228,7 +235,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn]
         private string GetRoleIds(UserInfo u, int PortalId)
         {
             string RoleIds = string.Empty;
@@ -255,11 +261,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return RoleIds;
         }
-        [IgnoreColumn]
+
         internal int GetLastReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
-            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
-            var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.UserId, ti.ForumId);
+            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
+            var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.ModuleId, this.UserId, ti.ForumId);
             if (forumTrak?.MaxReplyRead > topicTrak?.LastReplyId || topicTrak == null)
             {
                 if (forumTrak != null)
@@ -278,11 +284,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             // CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
         }
 
-        [IgnoreColumn]
         internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
-            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
-            var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.UserId, ti.ForumId);
+            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
+            var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.ModuleId, this.UserId, ti.ForumId);
             if (forumTrak?.MaxTopicRead > topicTrak?.TopicId || topicTrak == null)
             {
                 if (forumTrak != null)
@@ -301,10 +306,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             // CASE WHEN FT.MaxTopicRead > TT.TopicId OR TT.TopicId IS NULL THEN ISNULL(FT.MaxTopicRead,0) ELSE TT.TopicId END AS UserLastTopicRead,
         }
 
-        [IgnoreColumn]
         internal bool GetIsTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
-            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
+            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
             if (topicTrak?.LastReplyId >= ti.LastReplyId)
             {
                 return true;
@@ -313,10 +317,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return false;
         }
 
-        [IgnoreColumn]
         internal bool GetIsReplyRead(DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri)
         {
-            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ri.TopicId);
+            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.ModuleId, this.UserId, ri.TopicId);
             if (topicTrak?.LastReplyId >= ri.ReplyId)
             {
                 return true;
@@ -325,10 +328,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return false;
         }
 
-        [IgnoreColumn]
         internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
         {
-            var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.UserId, fi.ForumID);
+            var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.ModuleId, this.UserId, fi.ForumID);
             if (forumTrak != null)
             {
                 return forumTrak.MaxTopicRead;
@@ -337,16 +339,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return 0;
         }
 
-        [IgnoreColumn]
         internal int GetTopicReadCount(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountForUserForum(this.UserId, fi.ForumID);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountForUserForum(this.ModuleId, this.UserId, fi.ForumID);
         }
 
-        [IgnoreColumn]
         internal int GetLastTopicReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
-            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.UserId, ti.TopicId);
+            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
             if (topicTrak != null)
             {
                 return topicTrak.LastReplyId;
@@ -354,7 +354,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return 0;
         }
-
 
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
@@ -377,25 +376,26 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 };
                 format = tokenReplacer.ReplaceEmbeddedTokens(format);
             }
+
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {
-                case "userid":
-                    return PropertyAccess.FormatString(this.UserId.ToString(), format);
-                case "username":
-                    return PropertyAccess.FormatString(this.Username, format);
                 case "avatar":
-                    return PropertyAccess.FormatString(this.Avatar, format);
+                    return PropertyAccess.FormatString(
+                        !this.PrefBlockAvatars && !this.AvatarDisabled ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(
+                            this.UserId, this.MainSettings.AvatarWidth, this.MainSettings.AvatarHeight) : string.Empty, format);
                 case "usercaption":
                     return PropertyAccess.FormatString(this.UserCaption, format);
                 case "displayname":
-                    return PropertyAccess.FormatString(this.DisplayName, format);
-                case "email":
-                    return PropertyAccess.FormatString(this.Email, format);
-                case "firstname":
-                    return PropertyAccess.FormatString(this.FirstName, format);
-                case "lastname":
-                    return PropertyAccess.FormatString(this.LastName, format);
+                    return PropertyAccess.FormatString(
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings,
+                        isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                            portalId: accessingUser.PortalID,
+                            userId: accessingUser.UserID).GetIsMod(this.ModuleId),
+                        isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                            portalId: accessingUser.PortalID,
+                            userId: accessingUser.UserID).IsAdmin,
+                        this.UserId, this.Username, this.FirstName, this.LastName, this.DisplayName), format);
                 case "datecreated":
                     return Utilities.GetUserFormattedDateTime((DateTime?)this.DateCreated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
                 case "dateupdated":
@@ -410,12 +410,38 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(this.PostCount.ToString(), format);
                 case "replycount":
                     return PropertyAccess.FormatString(this.ReplyCount.ToString(), format);
+                case "viewcount":
+                    return PropertyAccess.FormatString(this.ViewCount.ToString(), format);
                 case "topiccount":
                     return PropertyAccess.FormatString(this.TopicCount.ToString(), format);
                 case "answercount":
-                    return PropertyAccess.FormatString(this.AnswerCount.ToString(), format);
+                    return PropertyAccess.FormatString(this.MainSettings.EnablePoints && this.UserId > 0 ? this.AnswerCount.ToString() : string.Empty, format);
                 case "rewardpoints":
-                    return PropertyAccess.FormatString(this.RewardPoints.ToString(), format);
+                    return PropertyAccess.FormatString(this.MainSettings.EnablePoints && this.UserId > 0 ? this.RewardPoints.ToString() : string.Empty, format);
+                case "totalpoints":
+                    return PropertyAccess.FormatString(
+                        this.MainSettings.EnablePoints && this.UserId > 0 ?
+                       ((this.TopicCount * this.MainSettings.TopicPointValue) +
+                        (this.ReplyCount * this.MainSettings.ReplyPointValue) +
+                        (this.AnswerCount * this.MainSettings.AnswerPointValue) + this.RewardPoints).ToString() : string.Empty, format);
+                case "rankdisplay":
+                    return PropertyAccess.FormatString(
+                        this.UserId > 0
+                            ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(
+                                this.ModuleId,
+                                this,
+                                0)
+                            : string.Empty,
+                        format);
+                case "rankname":
+                    return PropertyAccess.FormatString(
+                        this.UserId > 0
+                            ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(
+                                this.ModuleId,
+                                this,
+                                1)
+                            : string.Empty,
+                        format);
                 case "userprofilelink":
                     return PropertyAccess.FormatString(
                         DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.CanLinkToProfile(
@@ -426,21 +452,22 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 accessingUser.PortalID,
                                 accessingUser.UserID),
                             this)
-                            ? Utilities.NavigateURL(this.portalSettings.UserTabId,
+                            ? Utilities.NavigateURL(
+                                this.PortalSettings.UserTabId,
                                 string.Empty,
                                 new[] { $"userId={this.UserId}" })
                             : string.Empty,
                         format);
                 case "signature":
                     var sSignature = string.Empty;
-                    if (mainSettings.AllowSignatures != 0 && !this.PrefBlockSignatures && !this.SignatureDisabled)
+                    if (this.MainSettings.AllowSignatures != 0 && !this.PrefBlockSignatures && !this.SignatureDisabled)
                     {
                         sSignature = this?.Signature ?? string.Empty;
                         if (!string.IsNullOrEmpty(sSignature))
                         {
                             sSignature = Utilities.ManageImagePath(sSignature);
 
-                            switch (mainSettings.AllowSignatures)
+                            switch (this.MainSettings.AllowSignatures)
                             {
                                 case 1:
                                     sSignature = System.Web.HttpUtility.HtmlEncode(sSignature);
@@ -454,11 +481,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     }
 
                     return PropertyAccess.FormatString(sSignature, format);
+                case "userstatus":
+                    return PropertyAccess.FormatString(this.MainSettings.UsersOnlineEnabled && this.UserId > 0 ?
+                        DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString(this.IsUserOnline ? "[FORUMUSER-USERONLINE]" :
+                            "[FORUMUSER-USEROFFLINE]", this.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty, format);
+                case "userstatuscss":
+                    return PropertyAccess.FormatString(this.MainSettings.UsersOnlineEnabled && this.UserId > 0 ?
+                            DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString(this.IsUserOnline ? "[FORUMUSER-USERONLINECSS]" : "[FORUMUSER-USEROFFLINECSS]", this.PortalSettings, accessingUser.Profile.PreferredLocale) :
+                            string.Empty, format);
             }
 
             propertyNotFound = true;
             return string.Empty;
         }
-
     }
 }
