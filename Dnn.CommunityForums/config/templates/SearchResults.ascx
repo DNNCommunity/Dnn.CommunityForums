@@ -1,30 +1,91 @@
-
 <style>
-    .divTable{
-        display: table;
+    div.afgrid {
         width: 100%;
+        display: table;
+        font-size: 14px;
+        font-weight: 300;
+        color: #333;
     }
-    .divTableRow {
+    div.aftopicrow {
+        width: 100%;
         display: table-row;
     }
-    .divTableHeading {
-        display: table-header-group;
-    }
-    .divTableCell, .divTableHead {
+    div.aftopicrow  div.afsubject {
+        width: 60%;
         display: table-cell;
-        padding: 3px 10px;
     }
-    .divTableHeading {
-        display: table-header-group;
-        font-weight: bold;
+    div.af-colstats {
+        display: table-cell;
+        width: 10%;
     }
-    .divTableFoot {
-        display: table-footer-group;
-        font-weight: bold;
+    div.af-lastpost {
+        display: table-cell;
+        width: 20%;
+        white-space: nowrap;
+        font-weight: 400;
+        color: #888;
     }
-    .divTableBody {
-        display: table-row-group;
+
+    div.af-lastpost div {
+        text-align: left;
+        overflow: hidden;
+        white-space: normal !important;
     }
+
+    div.af-lastpost div a:link,
+    div.af-lastpost div a:visited {
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        color: #333;
+        word-break: break-word;
+    }
+
+    .aftopictitle,
+    .aftopictitle a  {
+        font-size: 15px;
+        /*display: block;*/
+        font-weight: 700;
+        color: #333 !important;
+        letter-spacing: -0.5px;
+        line-height: 1.25;
+    }
+
+    div.af-content div.afsubject {
+        vertical-align: top;
+        padding-right: 10px;
+    }
+
+    div.af-content div.afsubject > a {
+        color: #333;
+        font-weight: 700;
+        font-size: 13px;
+    }
+
+    div.af-content div.afsubject .aftopicstarted a {
+        color: #333;
+        font-weight: 700;
+        font-size: 14px;
+        display: inline-block;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+
+    .aftopicstarted {
+        display: block !important;
+        color: #888;
+        font-size: 14px;
+    }
+    .aftopicsubtitle {
+        display: inline-block;
+        font-size: 15px;
+        font-weight: 400;
+        display: block;
+        color: #888;
+        word-break: break-word;
+        overflow: hidden;
+    }
+
 </style>
 <div class="dcf-search-results-wrap">
     <div class="af-search-header">
@@ -32,24 +93,23 @@
         <am:pagernav id="PagerTop" runat="server" />
         <h1 class="af-search-title">[RESX:Search]</h1>
         <br />
-        <button class="af-search-modify">[RESX:SearchModify]</button><br />
-        <asp:placeholder runat="server" id="phKeywords" visible="False">
-            <span class="af-search-criteria">[RESX:SearchKeywords]
-                <asp:repeater runat="server" id="rptKeywords">
-                    <itemtemplate><b><%--<%# Eval("value") %><--%>/b></itemtemplate>
-                    <separatortemplate>, </separatortemplate>
-                </asp:repeater>
+        <button class="af-search-modify">[RESX:SearchModify]</button>
+        <br />
+        <asp:PlaceHolder runat="server" ID="phKeywords">
+            <span class="af-search-criteria">[RESX:SearchKeywords]<b>
+                    <asp:Literal runat="server" ID="litKeywords"></asp:Literal>
+                </b>
             </span>
         </asp:placeholder>
-        <asp:placeholder runat="server" id="phUsername" visible="False">
+        <asp:placeholder runat="server" id="phUsername">
             <span class="af-search-criteria">[RESX:SearchByUser]<b>
                     <asp:literal runat="server" id="litUserName"></asp:literal>
                 </b>
             </span>
         </asp:placeholder>
-        <asp:placeholder runat="server" id="phTag" visible="False">
+        <asp:PlaceHolder runat="server" ID="phTag">
             <span class="af-search-criteria">[RESX:SearchByTag]<b>
-                    <asp:literal runat="server" id="litTag"></asp:literal>
+                    <asp:Literal runat="server" ID="litTag"></asp:literal>
                 </b>
             </span>
         </asp:placeholder>
@@ -76,7 +136,7 @@
                     <div class="af-post-header">
                         <div class="af-stats">
                             <label>[RESX:SearchReplies]</label><span id="ReplyCount" runat="server">[FORUMTOPIC:REPLYCOUNT]</span><br />
-                            <label>[RESX:SearchViews]</label><span>[FORUMTOPIC:VIEWCOUNT]/span>
+                            <label>[RESX:SearchViews]</label><span>[FORUMTOPIC:VIEWCOUNT]</span>
                         </div>
                         <div class="af-forum">
                             <label>[RESX:SearchForum]</label>
@@ -87,12 +147,12 @@
                             [FORUMTOPIC:SUBJECTLINK|<a class="dcf-title dcf-title-4">{0}</a>]
                         </div>
                         <div class="af-postinfo">
-                            <label>[RESX:SearchPosted]</label>[FORUMPOST:DATECREATED] [RESX:BY] [FORUMPOST:AUTHORDISPLAYNAMELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMPOST:AUTHORDISPLAYNAME]</a>]
+                            <label>[RESX:SearchPosted]</label>[FORUMPOST:DATECREATED] [FORUMPOST:AUTHORDISPLAYNAMELINK|[RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMPOST:AUTHORDISPLAYNAME]</a>]
                         </div>
                     </div>
                     <div class="af-post-content">
                         <a class="af-post-url" id="rptPostsContentUrl">[FORUMPOST:LINK|<a class="dcf-title dcf-title-4">{0}</a>]
-                        <div><%# GetPostSnippet() %></div>
+                        <div>[FORUMPOST:BODY:255]</div>
                     </div>
                 </div>
             </ItemTemplate>
@@ -101,41 +161,39 @@
         
         <!-- Topic View -->
         <asp:repeater id="rptTopics" runat="server" visible="False">
-            <HeaderTemplate></HeaderTemplate>
+            <HeaderTemplate>
+                <div class="afgrid">
+                    <div class="aftopicrow af-content">
+                        <div class="aftopicrow afsubject">[RESX:Subject]</div>
+                        <div class="aftopicrow af-colstats af-colstats-replies">[RESX:REPLIESHEADER]</div>
+                        <div class="aftopicrow af-colstats af-colstats-views">[RESX:Views]</div>
+                        <div class="aftopicrow af-lastpost">[RESX:LASTPOSTHEADER]</div>
+                    </div>
+            </HeaderTemplate>
             <ItemTemplate>
-                <div class="divTable">
-                    <div class="divTableBody">
-                        <div class="divTableRow">
-                            <div class="divTableCell">
-                                <div class="divTable">
-                                    <div class="afgrid">
-                                        <div class="aftopicrow af-content">
-                                            <div class="afsubject">
-                                                <span class="aftopictitle">
-                                                    [FORUMTOPIC:SUBJECTLINK|<a class="dcf-title dcf-title-4">{0}</a>]
-                                                </span> 
-                                                <span class="aftopicsubtitle">[RESX:Started] [FORUMTOPIC:DATECREATED] [RESX:By] [FORUMTOPIC:AUTHORDISPLAYNAMELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="aftopicrow af-colstats af-colstats-replies">[FORUMTOPIC:REPLYCOUNT]</div>
-                            <div class="aftopicrow af-colstats af-colstats-views">[FORUMTOPIC:VIEWCOUNT]</div>
-                            <div class="aftopicrow af-lastpost">
-                                <div class="af_lastpost" style="white-space: nowrap;">
-                                    [FORUM:FORUMLINK|In: <a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]
-                                    [FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAMELINK|<br /> [RESX:SearchBy] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]</a>
-                                    <br />
-                                    ]
-                                    [FORUMTOPIC:LASTPOSTDATE]
-                                </div>
-                            </div>
+                <div class="aftopicrow af-content">
+                    <div class="aftopicrow afsubject">
+                        <span class="aftopictitle">
+                            [FORUMTOPIC:SUBJECTLINK|<a class="dcf-title dcf-title-4">{0}</a>]
+                        </span> 
+                        <span class="aftopicsubtitle">[RESX:Started] [FORUMTOPIC:DATECREATED] [FORUMTOPIC:AUTHORDISPLAYNAMELINK|[RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>]</span>
+                    </div>
+                    <div class="aftopicrow af-colstats af-colstats-replies">[FORUMTOPIC:REPLYCOUNT]</div>
+                    <div class="aftopicrow af-colstats af-colstats-views">[FORUMTOPIC:VIEWCOUNT]</div>
+                    <div class="aftopicrow af-lastpost">
+                        <div class="af_lastpost" style="white-space: nowrap;">
+                            [FORUM:FORUMLINK|In: <a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]
+                            [FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAMELINK|<br /> [RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]</a>
+                            <br />
+                            ]
+                            [FORUMTOPIC:LASTPOSTDATE]
                         </div>
                     </div>
                 </div>
             </ItemTemplate>
-            <FooterTemplate></FooterTemplate>
+            <FooterTemplate>
+                </div>
+            </FooterTemplate>
         </asp:repeater>
 
     </div>

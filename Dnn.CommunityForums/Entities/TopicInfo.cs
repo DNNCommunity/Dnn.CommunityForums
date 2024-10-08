@@ -538,7 +538,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "subject":
                     {
                         string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
-                        return PropertyAccess.FormatString(Utilities.StripHTMLTag(this.Content.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage, format);
+                        return PropertyAccess.FormatString(length > 0 && this.Subject.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93"), "...") : Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage, format);
                     }
 
                 case "subjectlink":

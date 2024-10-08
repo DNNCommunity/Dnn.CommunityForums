@@ -18,21 +18,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Text;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-    using System.Xml.Linq;
-    using System.Web;
+    using System.Text;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Controls;
 
     public partial class af_search : ForumBase
@@ -43,7 +38,6 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.WebControls.PlaceHolder phUsername = new PlaceHolder();
         protected System.Web.UI.WebControls.Repeater rptTopics = new Repeater();
         protected System.Web.UI.WebControls.Repeater rptPosts = new Repeater();
-        protected System.Web.UI.WebControls.Repeater rptKeywords = new Repeater();
         protected System.Web.UI.WebControls.Panel pnlMessage = new Panel();
         protected System.Web.UI.WebControls.Literal litTag = new Literal();
         protected System.Web.UI.WebControls.Literal litUserName = new Literal();
@@ -51,6 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.WebControls.Literal litSearchDuration = new Literal();
         protected System.Web.UI.WebControls.Literal litSearchAge = new Literal();
         protected System.Web.UI.WebControls.Literal litRecordCount = new Literal();
+        protected System.Web.UI.WebControls.Literal litKeywords = new Literal();
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerTop = new PagerNav();
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerBottom = new PagerNav();
 
@@ -78,6 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int? searchAge;
         private int? searchDuration;
 
+        private Control ctl;
         private DataRow currentRow;
 
         #endregion
@@ -92,16 +88,13 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 template = Globals.ForumsControlsRegisterAMTag + template;
                 template = Utilities.LocalizeControl(template);
-                Control ctl = this.ParseControl(template);
-                this.LinkControls(ctl.Controls);
-                this.Search.Controls.Add(ctl);
-
+                this.ctl = this.ParseControl(template);
+                this.LinkControls(this.ctl.Controls);
             }
             catch (Exception)
             {
                 throw;
             }
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -119,34 +112,54 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
                 }
 
-                List<string> keywords;
+                string keywords;
 
                 // Note: Filter out any keywords that are not at least 3 characters in length
                 if (this.SearchType == 2 && !string.IsNullOrWhiteSpace(this.SearchText) && this.SearchText.Trim().Length >= 3) //Exact Match
-                    keywords = new List<string> { this.SearchText.Trim() };
+                {
+                    keywords = this.SearchText.Trim();
+                }
                 else
-                    keywords = this.SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).ToList();
+                {
+                    keywords = string.Join(" ", this.SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).ToArray()).Trim();
+                }
 
-                if (keywords.Count > 0)
+                if (!string.IsNullOrEmpty(keywords))
                 {
                     this.phKeywords.Visible = true;
-                    this.rptKeywords.DataSource = keywords;
-                    this.rptKeywords.DataBind();
+                    this.litKeywords.Visible = true;
+                    this.litKeywords.Text = keywords;
+                }
+                else
+                {
+                    this.ctl.Controls.Remove(this.phKeywords);
                 }
 
                 if (!string.IsNullOrWhiteSpace(this.AuthorUsername))
                 {
                     this.phUsername.Visible = true;
+                    this.litUserName.Visible = true;
                     this.litUserName.Text = this.Server.HtmlEncode(this.AuthorUsername);
+                }
+                else
+                {
+                    this.ctl.Controls.Remove(this.phUsername);
                 }
 
                 if (!string.IsNullOrWhiteSpace(this.Tags))
                 {
                     this.phTag.Visible = true;
+                    this.litTag.Visible = true;
                     this.litTag.Text = this.Server.HtmlEncode(this.Tags);
+                }
+                else
+                {
+                    this.ctl.Controls.Remove(this.phTag);
                 }
 
                 this.BindPosts();
+                this.Search.Controls.Clear();
+                this.Search.Controls.Add(this.ctl);
 
                 // Update Meta Data
                 var tempVar = this.BasePage;
@@ -178,7 +191,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     Exceptions.LogException(ex);
                 }
-
             }
         }
 
@@ -189,7 +201,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 try
                 {
                     DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post = null;
-                    string itemTemplate = ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text;
                     int topicId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["TopicId"].ToString(), 1);
                     int contentId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["ContentId"].ToString(), 1);
                     var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Find("WHERE ContentId = @0", contentId).FirstOrDefault();
@@ -206,18 +217,50 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
 
-                    if (post != null)
+                    foreach (Control control in repeaterItemEventArgs.Item.Controls)
                     {
-                        itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request).ToString();
-                        ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text = itemTemplate;
+                        string itemTemplate = string.Empty;
+                        try
+                        {
+                            if (control.GetType().FullName == "System.Web.UI.LiteralControl")
+                            {
+                                itemTemplate = ((System.Web.UI.LiteralControl)control).Text;
+                            }
+                            else if (control.GetType().FullName == "System.Web.UI.HtmlControls.HtmlGenericControl")
+                            {
+                                itemTemplate = ((System.Web.UI.HtmlControls.HtmlGenericControl)control).InnerText;
+                            }
+                            else
+                            {
+                                Exceptions.LogException(new KeyNotFoundException($"Unexpected control type: {control.GetType().FullName}"));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Exceptions.LogException(ex);
+                        }
 
+                        if (!string.IsNullOrEmpty(itemTemplate) && itemTemplate.Contains("["))
+                        {
+                            if (post != null)
+                            {
+                                itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request).ToString();
+                                if (control.GetType().FullName == "System.Web.UI.LiteralControl")
+                                {
+                                    ((System.Web.UI.LiteralControl)control).Text = itemTemplate;
+                                }
+                                else if (control.GetType().FullName == "System.Web.UI.HtmlControls.HtmlGenericControl")
+                                {
+                                    ((System.Web.UI.HtmlControls.HtmlGenericControl)control).InnerText = itemTemplate;
+                                }
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
                     Exceptions.LogException(ex);
                 }
-
             }
         }
 
@@ -581,6 +624,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 switch (ctrl.ID)
                 {
+                    case "litKeywords":
+                        this.litKeywords = (Literal)ctrl;
+                        break;
                     case "litTag":
                         this.litTag = (Literal)ctrl;
                         break;
@@ -605,17 +651,14 @@ namespace DotNetNuke.Modules.ActiveForums
                     case "rptPosts":
                         this.rptPosts = (Repeater)ctrl;
                         break;
-                    case "rptKeywords":
-                        this.rptKeywords = (Repeater)ctrl;
-                        break;
                     case "phKeywords":
                         this.phKeywords = (PlaceHolder)ctrl;
                         break;
                     case "phTag":
-                        this.phKeywords = (PlaceHolder)ctrl;
+                        this.phTag = (PlaceHolder)ctrl;
                         break;
                     case "phUsername":
-                        this.phKeywords = (PlaceHolder)ctrl;
+                        this.phUsername = (PlaceHolder)ctrl;
                         break;
                     case "plhMessage":
                         this.plhMessage = (PlaceHolder)ctrl;
@@ -625,11 +668,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                     case "PagerBottom":
                         this.PagerBottom = (PagerNav)ctrl;
+                        break;
                 }
+
                 if (ctrl is Controls.ControlsBase)
                 {
                     ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
                 }
+
                 if (ctrl.Controls.Count > 0)
                 {
                     this.LinkControls(ctrl.Controls);
@@ -675,6 +721,9 @@ namespace DotNetNuke.Modules.ActiveForums
         #region "Deprecated"
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
 
+        public string GetPostSnippet() => throw new NotImplementedException();
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string GetForumUrl() => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
