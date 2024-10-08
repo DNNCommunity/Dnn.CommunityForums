@@ -2096,3 +2096,22 @@ END
 
 
 /* --------------------- */
+
+/* issue 1100 - Begin - additional indexes */
+
+CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_Replies_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Replies
+(
+	[ContentId] ASC,
+    [ReplyId] ASC
+)WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_Topics_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Topics 
+(
+	[ContentId] ASC,
+	[TopicId] ASC
+)WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+/* issue 1100 - End - additional indexes */
+
+
+/* --------------------- */
