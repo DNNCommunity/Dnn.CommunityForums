@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Text;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -51,15 +53,6 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.WebControls.Literal litRecordCount = new Literal();
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerTop = new PagerNav();
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerBottom = new PagerNav();
-
-        protected System.Web.UI.HtmlControls.HtmlLink rptPostsForumUrl = new HtmlLink();
-        protected System.Web.UI.HtmlControls.HtmlLink rptPostsTopicUrl = new HtmlLink();
-        protected System.Web.UI.HtmlControls.HtmlLink rptPostsContentUrl = new HtmlLink();
-
-        protected System.Web.UI.HtmlControls.HtmlLink rptTopicsForumUrl = new HtmlLink();
-        protected System.Web.UI.HtmlControls.HtmlLink rptTopicsTopicUrl1 = new HtmlLink();
-        protected System.Web.UI.HtmlControls.HtmlLink rptTopicsTopicUrl2 = new HtmlLink();
-        protected System.Web.UI.WebControls.Image rptTopicsTopicIconImage = new Image();
 
         #region Private Members
 
@@ -98,14 +91,11 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 template = Globals.ForumsControlsRegisterAMTag + template;
-                //if (template.Contains("[SUBJECT]"))
-                //{
-                //    template = template.Replace("[SUBJECT]", Subject);
-                //}
                 template = Utilities.LocalizeControl(template);
                 Control ctl = this.ParseControl(template);
                 this.LinkControls(ctl.Controls);
                 this.Search.Controls.Add(ctl);
+
             }
             catch (Exception)
             {
@@ -118,7 +108,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
             this.rptPosts.ItemCreated += this.PostRepeaterOnItemCreated;
+            this.rptPosts.ItemDataBound += this.PostRepeaterOnItemDataBound;
             this.rptTopics.ItemCreated += this.TopicRepeaterOnItemCreated;
+            this.rptTopics.ItemDataBound += this.TopicRepeaterOnItemDataBound;
 
             try
             {
@@ -167,27 +159,76 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        private void TopicRepeaterOnItemDataBound(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
+        {
+            if (repeaterItemEventArgs.Item.ItemType == ListItemType.Item || repeaterItemEventArgs.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                try
+                {
+                    string itemTemplate = ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text;
+                    int topicId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["TopicId"].ToString(), 1);
+                    var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                    if (topic != null)
+                    {
+                        itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request).ToString();
+                        ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text = itemTemplate;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Exceptions.LogException(ex);
+                }
+
+            }
+        }
+
+        private void PostRepeaterOnItemDataBound(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
+        {
+            if (repeaterItemEventArgs.Item.ItemType == ListItemType.Item || repeaterItemEventArgs.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                try
+                {
+                    DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post = null;
+                    string itemTemplate = ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text;
+                    int topicId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["TopicId"].ToString(), 1);
+                    int contentId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["ContentId"].ToString(), 1);
+                    var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Find("WHERE ContentId = @0", contentId).FirstOrDefault();
+                    if (reply != null)
+                    {
+                        post = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)reply;
+                    }
+                    else
+                    {
+                        var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                        if (topic != null)
+                        {
+                            post = topic;
+                        }
+                    }
+
+                    if (post != null)
+                    {
+                        itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request).ToString();
+                        ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text = itemTemplate;
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Exceptions.LogException(ex);
+                }
+
+            }
+        }
+
         private void PostRepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
         {
             this.RepeaterOnItemCreated(sender, repeaterItemEventArgs);
-            if (this.currentRow != null)
-            {
-                this.rptPostsForumUrl.Href = this.GetForumUrl();
-                this.rptPostsTopicUrl.Href = this.GetThreadUrl();
-                this.rptPostsContentUrl.Href = this.GetPostUrl();
-            }
         }
 
         private void TopicRepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
         {
             this.RepeaterOnItemCreated(sender, repeaterItemEventArgs);
-            if (this.currentRow != null)
-            {
-                this.rptTopicsForumUrl.Href = this.GetForumUrl();
-                this.rptTopicsTopicUrl1.Href = this.GetThreadUrl();
-                this.rptTopicsTopicUrl2.Href = this.GetThreadUrl();
-                this.rptTopicsTopicIconImage.ImageUrl = this.GetIcon();
-            }
         }
 
         private void RepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
@@ -584,28 +625,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                     case "PagerBottom":
                         this.PagerBottom = (PagerNav)ctrl;
-                        break;
-                    case "rptPostsForumUrl":
-                        this.rptPostsForumUrl = (HtmlLink)ctrl;
-                        break;
-                    case "rptPostsTopicUrl":
-                        this.rptPostsTopicUrl = (HtmlLink)ctrl;
-                        break;
-                    case "rptPostsContentUrl":
-                        this.rptPostsContentUrl = (HtmlLink)ctrl;
-                        break;
-                    case "rptTopicsForumUrl":
-                        this.rptTopicsForumUrl = (HtmlLink)ctrl;
-                        break;
-                    case "rptTopicsTopicUrl1":
-                        this.rptTopicsTopicUrl1 = (HtmlLink)ctrl;
-                        break;
-                    case "rptTopicsTopicUrl2":
-                        this.rptPostsContentUrl = (HtmlLink)ctrl;
-                        break;
-                    case "rptTopicsTopicIconImage":
-                        this.rptTopicsTopicIconImage = (Image)ctrl;
-                        break;
                 }
                 if (ctrl is Controls.ControlsBase)
                 {
@@ -651,123 +670,33 @@ namespace DotNetNuke.Modules.ActiveForums
             return this.NavigateUrl(this.TabId, string.Empty, @params.ToArray());
         }
 
-        public string GetForumUrl()
-        {
-            if (this.currentRow == null)
-            {
-                return null;
-            }
-
-            var forumId = this.currentRow["ForumID"].ToString();
-
-            var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topics };
-
-            if (this.SocialGroupId > 0)
-            {
-                @params.Add("GroupId=" + this.SocialGroupId.ToString());
-            }
-
-            return this.NavigateUrl(this.TabId, string.Empty, @params.ToArray());
-        }
-
-        public string GetThreadUrl()
-        {
-            if (this.currentRow == null)
-            {
-                return null;
-            }
-
-            var forumId = this.currentRow["ForumID"].ToString();
-            var topicId = this.currentRow["TopicId"].ToString();
-
-            var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId };
-
-            if (this.SocialGroupId > 0)
-            {
-                @params = new List<string> { ParamKeys.TopicId + "=" + topicId };
-            }
-
-            @params.Add("GroupId=" + this.SocialGroupId.ToString());
-
-            return this.NavigateUrl(this.TabId, string.Empty, @params.ToArray());
-        }
-
-        // Jumps to post for post view, or last reply for topics view
-        public string GetPostUrl()
-        {
-            if (this.currentRow == null)
-            {
-                return null;
-            }
-
-            var forumId = this.currentRow["ForumID"].ToString();
-            var topicId = this.currentRow["TopicId"].ToString();
-            var contentId = this.currentRow["ContentId"].ToString();
-
-            var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + contentId };
-
-            if (this.SocialGroupId > 0)
-            {
-                @params.Add("GroupId=" + this.SocialGroupId.ToString());
-            }
-
-            return this.NavigateUrl(this.TabId, string.Empty, @params.ToArray());
-        }
-
-        public string GetIcon()
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicIcon(
-                Utilities.SafeConvertInt(this.currentRow["TopicId"].ToString()),
-                this.ThemePath,
-                Utilities.SafeConvertInt(this.currentRow["UserLastTopicRead"]),
-                Utilities.SafeConvertInt(this.currentRow["UserLastReplyRead"]));
-        }
-
-        public string GetPostTime()
-        {
-            return (this.currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(this.currentRow["DateCreated"]), this.ForumModuleId, this.UserInfo);
-        }
-
-        public string GetAuthor()
-        {
-            if (this.currentRow == null)
-            {
-                return null;
-            }
-
-            var userId = Convert.ToInt32(this.currentRow["AuthorId"]);
-            var userName = this.currentRow["AuthorUserName"].ToString();
-            var firstName = this.currentRow["AuthorFirstName"].ToString();
-            var lastName = this.currentRow["AuthorLastName"].ToString();
-            var displayName = this.currentRow["AuthorDisplayName"].ToString();
-
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
-        }
-
-        public string GetLastPostAuthor()
-        {
-            if (this.currentRow == null)
-            {
-                return null;
-            }
-
-            var userId = Convert.ToInt32(this.currentRow["LastReplyAuthorId"]);
-            var userName = this.currentRow["LastReplyUserName"].ToString();
-            var firstName = this.currentRow["LastReplyFirstName"].ToString();
-            var lastName = this.currentRow["LastReplyLastName"].ToString();
-            var displayName = this.currentRow["LastReplyDisplayName"].ToString();
-
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
-        }
-
-        public string GetLastPostTime()
-        {
-            return (this.currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(this.currentRow["LastReplyDate"]), this.ForumModuleId, this.UserInfo);
-        }
-
         #endregion
 
         #region "Deprecated"
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+
+        public string GetForumUrl() => throw new NotImplementedException();
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+
+        public string GetThreadUrl() => throw new NotImplementedException();
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+
+        public string GetPostUrl() => throw new NotImplementedException();
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+
+        public string GetIcon() => throw new NotImplementedException();
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+
+        public string GetLastPostAuthor() => throw new NotImplementedException();
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+
+        public string GetLastPostTime() => throw new NotImplementedException();
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public DataRow Get_currentRow() => this.currentRow;
 
@@ -775,17 +704,16 @@ namespace DotNetNuke.Modules.ActiveForums
         public int GetSocialGroupId() => this.SocialGroupId;
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetMiniPager() => MiniPager.GetMiniPager(this.currentRow, this.TabId, this.SocialGroupId, this.pageSize);
+        public string GetMiniPager() => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Replaced with List<string>")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public class Keyword
         {
-            public string Value { get; set; }
+            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+            public string Value { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-            public string HtmlEncodedValue
-            {
-                get { return string.IsNullOrWhiteSpace(this.Value) ? this.Value : HttpUtility.HtmlEncode(this.Value); }
-            }
+            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+            public string HtmlEncodedValue => throw new NotImplementedException();
         }
 
         #endregion

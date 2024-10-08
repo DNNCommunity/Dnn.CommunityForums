@@ -1,14 +1,4 @@
-<script type="text/javascript">
 
-    $(document).ready(function() {
-
-        $('.af-search-modify').button({ "icons": { "primary": "ui-icon-wrench" } }).click(function () {
-            document.location.href = '<%=GetSearchUrl()%>';
-            return false;
-        });
-    });
-
-</script>
 <style>
     .divTable{
         display: table;
@@ -18,21 +8,17 @@
         display: table-row;
     }
     .divTableHeading {
-        background-color: #EEE;
         display: table-header-group;
     }
     .divTableCell, .divTableHead {
-        border: 1px solid #999999;
         display: table-cell;
         padding: 3px 10px;
     }
     .divTableHeading {
-        background-color: #EEE;
         display: table-header-group;
         font-weight: bold;
     }
     .divTableFoot {
-        background-color: #EEE;
         display: table-footer-group;
         font-weight: bold;
     }
@@ -50,7 +36,7 @@
         <asp:placeholder runat="server" id="phKeywords" visible="False">
             <span class="af-search-criteria">[RESX:SearchKeywords]
                 <asp:repeater runat="server" id="rptKeywords">
-                    <itemtemplate><b><%--<%# Eval("Value") %>--%></b></itemtemplate>
+                    <itemtemplate><b><%--<%# Eval("value") %><--%>/b></itemtemplate>
                     <separatortemplate>, </separatortemplate>
                 </asp:repeater>
             </span>
@@ -89,23 +75,23 @@
                 <div class="af-post">
                     <div class="af-post-header">
                         <div class="af-stats">
-                            <label>[RESX:SearchReplies]</label><span id="ReplyCount" runat="server"><%# Eval("ReplyCount") %></span><br />
-                            <label>[RESX:SearchViews]</label><span><%# Eval("ViewCount") %></span>
+                            <label>[RESX:SearchReplies]</label><span id="ReplyCount" runat="server">[FORUMTOPIC:REPLYCOUNT]</span><br />
+                            <label>[RESX:SearchViews]</label><span>[FORUMTOPIC:VIEWCOUNT]/span>
                         </div>
                         <div class="af-forum">
                             <label>[RESX:SearchForum]</label>
-                            <a class="af-forum-url" id="rptPostsForumUrl"><%# Eval("ForumName") %></a>
+                            [FORUM:FORUMLINK|<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]
                         </div>
                         <div class="af-thread">
                             <label>[RESX:SearchTopic]</label>
-                            <a class="af-thread-url" id="rptPostsTopicUrl"><%# Eval("Subject") %></a>
+                            [FORUMTOPIC:SUBJECTLINK|<a class="dcf-title dcf-title-4">{0}</a>]
                         </div>
                         <div class="af-postinfo">
-                            <label>[RESX:SearchPosted]</label><%# GetPostTime() %> [RESX:BY] <%# GetAuthor() %>
+                            <label>[RESX:SearchPosted]</label>[FORUMPOST:DATECREATED] [RESX:BY] [FORUMPOST:AUTHORDISPLAYNAMELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMPOST:AUTHORDISPLAYNAME]</a>]
                         </div>
                     </div>
                     <div class="af-post-content">
-                        <a class="af-post-url" id="rptPostsContentUrl"><%# Eval("PostSubject") %></a>
+                        <a class="af-post-url" id="rptPostsContentUrl">[FORUMPOST:LINK|<a class="dcf-title dcf-title-4">{0}</a>]
                         <div><%# GetPostSnippet() %></div>
                     </div>
                 </div>
@@ -122,36 +108,27 @@
                         <div class="divTableRow">
                             <div class="divTableCell">
                                 <div class="divTable">
-                                    <div class="divTableBody">
-                                        <div class="divTableRow">
-                                            <div class="divTableCell">&nbsp;</div>
-                                            <div class="divTableCell">
-                                                <div class="divTable">
-                                                    <div class="divTableBody">
-                                                        <div class="divTableRow">
-                                                            <div class="divTableCell">
-                                                                <span class="afhiddenstats">&lt;%# Eval("ReplyCount") %&gt; replies and &lt;%# Eval("ViewCount") %&gt; views</span> 
-                                                                <span class="aftopictitle">
-                                                                    <a id="rptTopicsTopicUrl2" class="af-thread-link"></a>&lt;%# Eval("Subject") %&gt;
-                                                                </span> 
-                                                                <span class="aftopicsubtitle">[RESX:Started] &lt;%# GetPostTime() %&gt; [RESX:By] &lt;%# GetAuthor() %&gt;</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="divTableCell">&lt;%# Eval("ReplyCount") %&gt;</div>
-                                            <div class="divTableCell">&lt;%# Eval("ViewCount") %&gt;</div>
-                                            <div class="divTableCell">
-                                                <div class="af_lastpost" style="white-space: nowrap;">
-                                                    In: <a id="rptTopicsForumUrl" class="af-forum-url"></a>&lt;%# Eval("ForumName") %&gt;
-                                                    <br />
-                                                    [RESX:SearchBy] &lt;%# GetLastPostAuthor() %&gt;<br />
-                                                    &lt;%# GetLastPostTime() %&gt;
-                                                </div>
+                                    <div class="afgrid">
+                                        <div class="aftopicrow af-content">
+                                            <div class="afsubject">
+                                                <span class="aftopictitle">
+                                                    [FORUMTOPIC:SUBJECTLINK|<a class="dcf-title dcf-title-4">{0}</a>]
+                                                </span> 
+                                                <span class="aftopicsubtitle">[RESX:Started] [FORUMTOPIC:DATECREATED] [RESX:By] [FORUMTOPIC:AUTHORDISPLAYNAMELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>]</span>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="aftopicrow af-colstats af-colstats-replies">[FORUMTOPIC:REPLYCOUNT]</div>
+                            <div class="aftopicrow af-colstats af-colstats-views">[FORUMTOPIC:VIEWCOUNT]</div>
+                            <div class="aftopicrow af-lastpost">
+                                <div class="af_lastpost" style="white-space: nowrap;">
+                                    [FORUM:FORUMLINK|In: <a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]
+                                    [FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAMELINK|<br /> [RESX:SearchBy] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]</a>
+                                    <br />
+                                    ]
+                                    [FORUMTOPIC:LASTPOSTDATE]
                                 </div>
                             </div>
                         </div>

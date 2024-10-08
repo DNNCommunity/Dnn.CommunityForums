@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Collections;
+using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -291,6 +292,45 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(this.TopicId.ToString(), format);
                 case "contentid":
                     return PropertyAccess.FormatString(this.ContentId.ToString(), format);
+                case "link":
+                {
+                    string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, this.Forum.PortalSettings.ActiveTab.TabID, this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
+                    string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
+                    string sBodyTitle = GetTopicTitle(this.Content.Body);
+                    string slink;
+                    var @params = new List<string>
+                    {
+                        $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ContentJumpId}={this.ReplyId}",
+                    };
+
+                    if (this.Forum.SocialGroupId > 0)
+                    {
+                        @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+                    }
+
+                    if (sTopicURL == string.Empty)
+                    {
+                        @params = new List<string>
+                        {
+                            $"{ParamKeys.ForumId}={this.ForumId}",
+                            $"{ParamKeys.TopicId}={this.TopicId}",
+                            $"{ParamKeys.ReplyId}={this.ReplyId}",
+                            $"{ParamKeys.ViewType}={Views.Post}",
+                        };
+                        if (this.Forum.MainSettings.UseShortUrls)
+                        {
+                            @params.Add($"{ParamKeys.ContentJumpId}={this.ReplyId}");
+                        }
+
+                        slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
+                    }
+                    else
+                    {
+                        slink = "<a title=\"" + sBodyTitle + "\" href=\"" + sTopicURL + "\">" + subject + "</a>";
+                    }
+
+                    return PropertyAccess.FormatString(slink, format);
+                }
                 case "subject":
                     return PropertyAccess.FormatString(length > 0 && this.Subject.Length > length ? string.Concat(this.Subject.Substring(0, length), "...") : this.Subject, format);
                 case "summary":
@@ -387,8 +427,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, editParams.ToArray()),
                                 format);
                         }
+
                         return string.Empty;
                     }
+
                 case "actionreplyonclick":
                     {
                         var bReply = Controllers.PermissionController.HasPerm(this.Forum.Security.Reply,
@@ -579,6 +621,27 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             propertyNotFound = true;
             return string.Empty;
-}
+        }
+        
+        private static string GetTopicTitle(string body)
+        {
+            if (!string.IsNullOrEmpty(body))
+            {
+
+                body = HttpUtility.HtmlDecode(body);
+                body = body.Replace("<br>", System.Environment.NewLine);
+                body = Utilities.StripHTMLTag(body);
+                body = body.Length > 500 ? body.Substring(0, 500) + "..." : body;
+                body = body.Replace("\"", "'");
+                body = body.Replace("?", string.Empty);
+                body = body.Replace("+", string.Empty);
+                body = body.Replace("%", string.Empty);
+                body = body.Replace("#", string.Empty);
+                body = body.Replace("@", string.Empty);
+                return body.Trim();
+            }
+
+            return string.Empty;
+        }
     }
 }
