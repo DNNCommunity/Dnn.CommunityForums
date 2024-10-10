@@ -67,8 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ri.ModuleId));
             DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ri.ModuleId));
 
-            var objectKey = string.Format("{0}:{1}:{2}", forumId, topicId, replyId);
-            JournalController.Instance.DeleteJournalItemByKey(portalId, objectKey);
+            new Social().DeleteJournalItemForPost(portalId, forumId, topicId, replyId);
 
             Utilities.UpdateModuleLastContentModifiedOnDate(ri.ModuleId);
             if (delBehavior != 0)
@@ -138,6 +137,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ri.ModuleId));
             DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ri.ModuleId));
             DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ri.ModuleId));
+
+            // if existing topic, update associated journal item
+            if (ri.ReplyId > 0)
+            {
+                string fullURL = new ControlUtils().BuildUrl(portalId, ri.Forum.TabId, moduleId, ri.Forum.ForumGroup.PrefixURL, ri.Forum.PrefixURL, ri.Forum.ForumGroupId, ri.ForumId, ri.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, ri.ReplyId, ri.Forum.SocialGroupId);
+
+                if (fullURL.Contains("~/"))
+                {
+                    fullURL = Utilities.NavigateURL(ri.Forum.TabId, string.Empty, new string[] { $"{ParamKeys.TopicId}={ri.TopicId}", $"{ParamKeys.ContentJumpId}={ri.ReplyId}", });
+                }
+
+                if (fullURL.EndsWith("/"))
+                {
+                    fullURL += Utilities.UseFriendlyURLs(moduleId) ? $"#{ri.ReplyId}" : $"{ParamKeys.ContentJumpId}={ri.ReplyId}";
+                }
+
+                new Social().UpdateJournalItemForPost(ri.PortalId, ri.ModuleId, ri.Forum.TabId, ri.ForumId, ri.TopicId, ri.ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, ri.Content.Body);
+            }
+
             int replyId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Save(portalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, ri.ForumId, ri.TopicId, replyId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(ri.ForumId);
@@ -200,16 +218,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 if (fullURL.Contains("~/"))
                 {
-                    fullURL = Utilities.NavigateURL(tabId, string.Empty, new string[] { ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId });
+                    fullURL = Utilities.NavigateURL(tabId, string.Empty, new string[] { $"{ParamKeys.TopicId}={replyId}", $"{ParamKeys.ContentJumpId}={replyId}", });
                 }
 
                 if (fullURL.EndsWith("/"))
                 {
-                    fullURL += Utilities.UseFriendlyURLs(moduleId) ? String.Concat("#", replyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", replyId);
+                    fullURL += Utilities.UseFriendlyURLs(moduleId) ? $"#{replyId}" : $"{ParamKeys.ContentJumpId}={replyId}";
+
                 }
 
-                Social amas = new Social();
-                amas.AddReplyToJournal(portalId, moduleId, tabId, forumId, topicId, replyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, reply.Forum.Security.Read, reply.Forum.SocialGroupId);
+                new Social().AddReplyToJournal(portalId, moduleId, tabId, forumId, topicId, replyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, reply.Forum.Security.Read, reply.Forum.SocialGroupId);
 
                 DataCache.ContentCacheClear(reply.ModuleId, string.Format(CacheKeys.ForumInfo, reply.ModuleId, reply.ForumId));
                 DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.ForumViewPrefix, reply.ModuleId));

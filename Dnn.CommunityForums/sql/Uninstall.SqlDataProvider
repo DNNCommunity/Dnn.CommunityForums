@@ -474,6 +474,9 @@ GO
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics') AND name = N'idx_{objectQualifier}activeforums_Topics_Opt2')
 DROP INDEX [idx_{objectQualifier}activeforums_Topics_Opt2] ON {databaseOwner}{objectQualifier}activeforums_Topics 
 GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics') AND name = N'idx_{objectQualifier}activeforums_Topics_Opt3')
+DROP INDEX [idx_{objectQualifier}activeforums_Topics_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Topics 
+GO
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tracking') AND name = N'idx_{objectQualifier}activeforums_Topics_Tracking_Opt1')
 DROP INDEX [idx_{objectQualifier}activeforums_Topics_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Topics_Tracking 
 GO
@@ -482,6 +485,9 @@ DROP INDEX [idx_{objectQualifier}activeforums_Replies_Opt1] ON {databaseOwner}{o
 GO
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Replies') AND name = N'idx_{objectQualifier}activeforums_Replies_Opt2')
 DROP INDEX [idx_{objectQualifier}activeforums_Replies_Opt2] ON {databaseOwner}{objectQualifier}activeforums_Replies 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Replies') AND name = N'idx_{objectQualifier}activeforums_Replies_Opt3')
+DROP INDEX [idx_{objectQualifier}activeforums_Replies_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Replies 
 GO
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{objectQualifier}activeforums_ForumTopics_Opt1')
 DROP INDEX [idx_{objectQualifier}activeforums_ForumTopics_Opt1] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
