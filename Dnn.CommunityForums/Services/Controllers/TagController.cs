@@ -21,15 +21,9 @@
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Http;
 
     using DotNetNuke.Web.Api;
@@ -75,17 +69,21 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
         private HttpResponseMessage Match(string matchString)
         {
-            if (!string.IsNullOrEmpty(matchString))
+            try
             {
-                var matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Find("WHERE IsCategory=0 AND PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName", this.ActiveModule.PortalID, this.ForumModuleId, matchString).Select(t => new { id = t.TagId, name = t.TagName, type = 0 }).ToList();
-                if (matchingTags.Count > 0)
+                if (!string.IsNullOrEmpty(matchString))
                 {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, matchingTags);
-                }
-                else
-                {
+                    var matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Find("WHERE IsCategory=0 AND PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName", this.ActiveModule.PortalID, this.ForumModuleId, matchString).Select(t => new { id = t.TagId, name = t.TagName, type = 0 }).ToList();
+                    if (matchingTags.Count > 0)
+                    {
+                        return this.Request.CreateResponse(HttpStatusCode.OK, matchingTags);
+                    }
                     return this.Request.CreateResponse(HttpStatusCode.NoContent);
                 }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);

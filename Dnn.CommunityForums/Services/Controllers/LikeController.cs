@@ -18,22 +18,15 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
     using System.Net;
     using System.Net.Http;
-    using System.Reflection;
     using System.Web.Http;
 
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.UI.UserControls;
     using DotNetNuke.Web.Api;
-
-    using static DotNetNuke.Modules.ActiveForums.Handlers.HandlerBase;
 
     /// <summary>
     /// <inheritdoc/>
@@ -58,15 +51,20 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Reply)]
         public HttpResponseMessage Like(LikeDto dto)
         {
-            if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.ForumId, this.ForumModuleId).AllowLikes &&
-                ServicesHelper.IsAuthorized(this.PortalSettings.PortalId, this.ForumModuleId, dto.ForumId, SecureActions.Reply, this.UserInfo))
+            try
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Like(dto.ContentId, this.UserInfo.UserID));
+                if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.ForumId, this.ForumModuleId).AllowLikes &&
+                    ServicesHelper.IsAuthorized(this.PortalSettings.PortalId, this.ForumModuleId, dto.ForumId, SecureActions.Reply, this.UserInfo))
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Like(dto.ContentId, this.UserInfo.UserID));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         /// <summary>
@@ -80,14 +78,19 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [DnnAuthorize]
         public HttpResponseMessage Get(int forumId, int contentId)
         {
-            if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, this.ForumModuleId).AllowLikes)
+            try
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, value: new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(this.UserInfo.UserID, contentId));
+                if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, this.ForumModuleId).AllowLikes)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.OK, value: new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(this.UserInfo.UserID, contentId));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
     }
 }

@@ -21,24 +21,14 @@
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
     using System;
-    using System.Data;
-    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Reflection;
     using System.Text;
     using System.Web;
-    using System.Web.Helpers;
     using System.Web.Http;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Web.Api;
-    using DotNetNuke.Web.UI.WebControls;
 
     /// <summary>
     /// <inheritdoc/>
@@ -70,12 +60,18 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Subscribe)]
         public HttpResponseMessage Subscribe(TopicDto1 dto)
         {
-            if (dto.TopicId > 0 && dto.ForumId > 0)
+            try
             {
-                string userRoles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID).UserRoles;
-                int subscribed = new SubscriptionController().Subscription_Update(this.ActiveModule.PortalID,
-                    this.ForumModuleId, dto.ForumId, dto.TopicId, 1, this.UserInfo.UserID, userRoles);
-                return this.Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
+                if (dto.TopicId > 0 && dto.ForumId > 0)
+                {
+                    string userRoles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID).UserRoles;
+                    int subscribed = new SubscriptionController().Subscription_Update(this.ActiveModule.PortalID, this.ForumModuleId, dto.ForumId, dto.TopicId, 1, this.UserInfo.UserID, userRoles);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -93,12 +89,18 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [HttpGet]
         [DnnAuthorize]
         public HttpResponseMessage SubscriberCount(int forumId, int topicId)
-        {
-            if (forumId > 0 && topicId > 0)
+        {try
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK,
-                    new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(
-                        this.ActiveModule.PortalID, this.ForumModuleId, forumId, topicId));
+                if (forumId > 0 && topicId > 0)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.OK,
+                        new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(
+                            this.ActiveModule.PortalID, this.ForumModuleId, forumId, topicId));
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -117,10 +119,17 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [DnnAuthorize]
         public HttpResponseMessage SubscriberCountString(int forumId, int topicId)
         {
-            if (forumId > 0)
+            try
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK,
-                    $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(this.ActiveModule.PortalID, this.ForumModuleId, forumId, topicId)} {Utilities.GetSharedResource("[RESX:TOPICSUBSCRIBERCOUNT]", false)}");
+                if (forumId > 0)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.OK,
+                        $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(this.ActiveModule.PortalID, this.ForumModuleId, forumId, topicId)} {Utilities.GetSharedResource("[RESX:TOPICSUBSCRIBERCOUNT]", false)}");
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -137,34 +146,43 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Pin)]
         public HttpResponseMessage Pin(TopicDto1 dto)
         {
-            int topicId = dto.TopicId;
-            if (topicId > 0)
+            try
             {
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
-                if (ti != null)
+                int topicId = dto.TopicId;
+                if (topicId > 0)
                 {
-                    if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                            ti.Forum.Security.Pin, string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
-                                    this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
-                    this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin || this.UserInfo.IsSuperUser || 
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                            ti.Forum.Security.Moderate, string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
-                                    this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                    if (ti != null)
                     {
-                        ti.IsPinned = !ti.IsPinned;
-                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
-                        return this.Request.CreateResponse(HttpStatusCode.OK, value: ti.IsPinned);
+                        if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
+                                ti.Forum.Security.Pin, string.Join(";",
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                        this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
+                            this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin || this.UserInfo.IsSuperUser || 
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
+                                ti.Forum.Security.Moderate, string.Join(";",
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                        this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                        {
+                            ti.IsPinned = !ti.IsPinned;
+                            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
+                            return this.Request.CreateResponse(HttpStatusCode.OK, value: ti.IsPinned);
+                        }
+
+                        return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                     }
 
-                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         /// <summary>
@@ -178,38 +196,47 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Lock)]
         public HttpResponseMessage Lock(TopicDto1 dto)
         {
-            int topicId = dto.TopicId;
-            if (topicId > 0)
+            try
             {
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti =
-                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
-                if (ti != null)
+                int topicId = dto.TopicId;
+                if (topicId > 0)
                 {
-                    if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                            ti.Forum.Security.Lock, string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
-                                    this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
-                        this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin ||
-                        this.UserInfo.IsSuperUser ||
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                            ti.Forum.Security.Moderate,
-                            string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
-                                    this.ActiveModule.PortalID,
-                                    this.UserInfo.Roles))))
+                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti =
+                        new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                    if (ti != null)
                     {
-                        ti.IsLocked = !ti.IsLocked;
-                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
-                        return this.Request.CreateResponse(HttpStatusCode.OK, ti.IsLocked);
+                        if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
+                                ti.Forum.Security.Lock, string.Join(";",
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                        this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
+                            this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin ||
+                            this.UserInfo.IsSuperUser ||
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
+                                ti.Forum.Security.Moderate,
+                                string.Join(";",
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                        this.ActiveModule.PortalID,
+                                        this.UserInfo.Roles))))
+                        {
+                            ti.IsLocked = !ti.IsLocked;
+                            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
+                            return this.Request.CreateResponse(HttpStatusCode.OK, ti.IsLocked);
+                        }
+
+                        return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                     }
 
-                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         /// <summary>
@@ -223,36 +250,45 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Move)]
         public HttpResponseMessage Move(TopicDto1 dto)
         {
-            int topicId = dto.TopicId;
-            int forumId = dto.ForumId;
-            if (topicId > 0 && forumId > 0)
+            try
             {
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
-                if (ti != null)
+                int topicId = dto.TopicId;
+                int forumId = dto.ForumId;
+                if (topicId > 0 && forumId > 0)
                 {
-                    if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                            ti.Forum.Security.Move, string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
-                                    this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
-                        this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin || 
-                        this.UserInfo.IsSuperUser || 
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                            ti.Forum.Security.Moderate, string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
-                                    this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                    if (ti != null)
                     {
-                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(topicId, forumId);
-                        DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.CacheModulePrefix, this.ForumModuleId));
-                        return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                        if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
+                                ti.Forum.Security.Move, string.Join(";",
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                        this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
+                            this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin || 
+                            this.UserInfo.IsSuperUser || 
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
+                                ti.Forum.Security.Moderate, string.Join(";",
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                        this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                        {
+                            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(topicId, forumId);
+                            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.CacheModulePrefix, this.ForumModuleId));
+                            return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                        }
+
+                        return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                     }
 
-                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
-
-            return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+            
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 #pragma warning disable CS1570
         /// <summary>
@@ -267,25 +303,32 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Read)]
         public HttpResponseMessage Load(int forumId, int topicId)
         {
-            if (topicId > 0 && forumId > 0)
+            try
             {
-                if (ServicesHelper.IsAuthorized(this.PortalSettings.PortalId, this.ForumModuleId, forumId, SecureActions.Read, this.UserInfo))
+                if (topicId > 0 && forumId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
-                    if (t != null)
+                    if (ServicesHelper.IsAuthorized(this.PortalSettings.PortalId, this.ForumModuleId, forumId, SecureActions.Read, this.UserInfo))
                     {
-                        var topic = new DotNetNuke.Modules.ActiveForums.ViewModels.Topic(t);
-                        return this.Request.CreateResponse(HttpStatusCode.OK, topic);
+                        DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                        if (t != null)
+                        {
+                            var topic = new DotNetNuke.Modules.ActiveForums.ViewModels.Topic(t);
+                            return this.Request.CreateResponse(HttpStatusCode.OK, topic);
+                        }
+                        else
+                        {
+                            this.Request.CreateResponse(HttpStatusCode.NotFound);
+                        }
                     }
                     else
                     {
-                        this.Request.CreateResponse(HttpStatusCode.NotFound);
+                        this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                     }
                 }
-                else
-                {
-                    this.Request.CreateResponse(HttpStatusCode.Unauthorized);
-                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -304,31 +347,38 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Delete)]
         public HttpResponseMessage Delete(int forumId, int topicId)
         {
-            if (forumId > 0 && topicId > 0)
+            try
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.TopicController tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.GetById(topicId);
-                if (ti != null)
+                if (forumId > 0 && topicId > 0)
                 {
-                    if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                            ti.Forum.Security.Delete, string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
-                                    this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
-                        this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin || 
-                        this.UserInfo.IsSuperUser || 
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                            ti.Forum.Security.Moderate, string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
-                                    this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController();
+                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.GetById(topicId);
+                    if (ti != null)
                     {
-                        tc.DeleteById(topicId);
-                        return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                        if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
+                                ti.Forum.Security.Delete, string.Join(";",
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                        this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
+                            this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin || 
+                            this.UserInfo.IsSuperUser || 
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
+                                ti.Forum.Security.Moderate, string.Join(";",
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                        this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                        {
+                            tc.DeleteById(topicId);
+                            return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                        }
+
+                        return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                     }
 
-                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    return this.Request.CreateResponse(HttpStatusCode.NotFound);
                 }
-
-                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -346,9 +396,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Edit)]
         public HttpResponseMessage Rate(TopicDto1 dto, int rating)
         {
-            if (dto.TopicId > 0 && rating >= 1 && rating <= 5)
+            try
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(this.UserInfo.UserID, dto.TopicId, rating, HttpContext.Current.Request.UserHostAddress ?? string.Empty));
+                if (dto.TopicId > 0 && rating >= 1 && rating <= 5)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(this.UserInfo.UserID, dto.TopicId, rating, HttpContext.Current.Request.UserHostAddress ?? string.Empty));
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -365,7 +422,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Edit)]
         public HttpResponseMessage Update(TopicDto2 dto)
         {
-            int forumId = dto.ForumId;
+            try
+            {
+                int forumId = dto.ForumId;
             int topicId = dto.Topic.TopicId;
 
             if (topicId > 0 && forumId > 0)
@@ -484,6 +543,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.NotFound, dto.Topic);
+            }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
