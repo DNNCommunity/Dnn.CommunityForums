@@ -49,8 +49,6 @@ namespace DotNetNuke.Modules.ActiveForums
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerTop = new PagerNav();
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerBottom = new PagerNav();
 
-        #region Private Members
-
         private string searchText;
         private string tags;
         private int? searchType;
@@ -76,8 +74,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private Control ctl;
         private DataRow currentRow;
 
-        #endregion
-
         #region Event Handlers
         protected override void OnInit(EventArgs e)
         {
@@ -91,8 +87,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ctl = this.ParseControl(template);
                 this.LinkControls(this.ctl.Controls);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Exceptions.LogException(ex);
                 throw;
             }
         }
@@ -132,16 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    // NOTE: .Remove() not working so using RemoveAt()
-                    // this.ctl.Controls.Remove(this.phKeywords);
-                    for (int i = 0; i < this.ctl.Controls.Count; i++)
-                    {
-                        if (this.ctl.Controls[i].ID == this.phKeywords.ID)
-                        {
-                            this.ctl.Controls.RemoveAt(i);
-                            break;
-                        }
-                    }
+                    this.ctl.Controls.Remove(this.phKeywords);
                 }
 
                 if (!string.IsNullOrWhiteSpace(this.AuthorUsername))
@@ -152,16 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    // NOTE: .Remove() not working so using RemoveAt()
-                    // this.ctl.Controls.Remove(this.phUsername);
-                    for (int i = 0; i < this.ctl.Controls.Count; i++)
-                    {
-                        if (this.ctl.Controls[i].ID == this.phUsername.ID)
-                        {
-                            this.ctl.Controls.RemoveAt(i);
-                            break;
-                        }
-                    }
+                    this.ctl.Controls.Remove(this.phUsername);
                 }
 
                 if (!string.IsNullOrWhiteSpace(this.Tags))
@@ -172,16 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    // NOTE: .Remove() not working so using RemoveAt()
-                    // this.ctl.Controls.Remove(this.phTag);
-                    for (int i = 0; i < this.ctl.Controls.Count; i++)
-                    {
-                        if (this.ctl.Controls[i].ID == this.phTag.ID)
-                        {
-                            this.ctl.Controls.RemoveAt(i);
-                            break;
-                        }
-                    }
+                    this.ctl.Controls.Remove(this.phTag);
                 }
 
                 this.BindPosts();

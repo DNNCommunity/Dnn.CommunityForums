@@ -236,6 +236,7 @@
     <Content Include="config\defaultgroupforums.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="config\templates\TopicResults.ascx" />
     <Content Include="config\templates\SearchResults.ascx" />
     <Content Include="config\templates\ToolbarSearchPopup.ascx" />
     <Content Include="config\templates\PostActions.ascx" />
