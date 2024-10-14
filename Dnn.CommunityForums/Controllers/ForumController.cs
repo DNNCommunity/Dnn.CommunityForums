@@ -20,18 +20,14 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using DotNetNuke.Data;
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using System;
-    using System.Data;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using System.Web;
     using System.Xml;
-
-    using DotNetNuke.Data;
-    using DotNetNuke.Modules.ActiveForums.API;
-    using DotNetNuke.Modules.ActiveForums.Data;
-    using Microsoft.ApplicationBlocks.Data;
+    using System.Web;
 
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
     {
@@ -568,29 +564,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static string GetLastPostSubjectLinkTag(int lastPostID, int parentPostID, string subject, int length, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int tabId)
+        internal static string GetLastPostSubjectLinkTag(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo lastPost, int length, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int tabId)
         {
-            var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(parentPostID);
-            var sb = new StringBuilder();
-            subject = System.Web.HttpUtility.HtmlDecode(subject);
-            subject = Utilities.StripHTMLTag(subject);
-            subject = subject.Replace("[", "&#91");
-            subject = subject.Replace("]", "&#93");
+            string subject = Utilities.StripHTMLTag(System.Web.HttpUtility.HtmlDecode(lastPost.Topic.Subject)).Replace("[", "&#91").Replace("]", "&#93");
             if (subject.Length > length & length > 0)
             {
                 subject = subject.Substring(0, length) + "...";
             }
-            string sURL = new ControlUtils().TopicURL(tabId, fi.ModuleId, parentPostID, fi.ForumGroup.PrefixURL, fi.PrefixURL, ti?.TopicUrl);
+
+            string sURL = new ControlUtils().TopicURL(tabId, fi.ModuleId, lastPost.TopicId, fi.ForumGroup.PrefixURL, fi.PrefixURL, lastPost.Topic.TopicUrl);
             if (sURL.Contains("~/"))
             {
-                sURL = Utilities.NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.TopicId}={parentPostID}",  $"{ParamKeys.ContentJumpId}={lastPostID}" });
+                sURL = Utilities.NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.TopicId}={lastPost.TopicId}", lastPost.IsReply ? $"{ParamKeys.ContentJumpId}={lastPost.PostId}" : string.Empty });
             }
-            if (sURL.EndsWith("/") && lastPostID != parentPostID)
+            if (sURL.EndsWith("/") && lastPost.IsReply)
             {
-                sURL += Utilities.UseFriendlyURLs(fi.ModuleId) ? $"#{lastPostID}" : $"?{ParamKeys.ContentJumpId}={lastPostID}";
+                sURL += Utilities.UseFriendlyURLs(fi.ModuleId) ? $"#{lastPost.PostId}" : $"?{ParamKeys.ContentJumpId}={lastPost.PostId}";
             }
-            sb.Append("<a href=\"" + sURL + "\">" + System.Web.HttpUtility.HtmlEncode(subject) + "</a>");
-            return sb.ToString();
+
+            return $"<a href=\"{sURL}\">{System.Web.HttpUtility.HtmlEncode(subject)}</a>";
         }
     }
 }

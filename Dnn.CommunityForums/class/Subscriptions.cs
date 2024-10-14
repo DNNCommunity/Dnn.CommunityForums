@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!sl.Contains(si))
                     {
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(canSubscribe, si.UserId, portalId))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(canSubscribe, portalId, si.ModuleId, si.UserId))
                         {
                             sl.Add(si);
                         }
@@ -138,7 +138,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (subs.Count > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleId, tabId, string.Empty, authorId, fi, subs, requestUrl);
+                var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, moduleId, authorId);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleId, tabId, string.Empty, author, fi, subs, requestUrl);
             }
         }
 

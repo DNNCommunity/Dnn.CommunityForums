@@ -18,37 +18,50 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Reflection;
-using System.Web;
-using System.Web.Hosting;
-
-using DotNetNuke.Modules.ActiveForums.Entities;
+using System.Runtime.CompilerServices;
+using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    [Obsolete("Deprecated in Community Forums. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
-    public class TokensController { TokensController() { throw new NotImplementedException(); } }
+    using System;
+
+    [Obsolete("Deprecated in Community Forums. Remove in 10.00.00. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
+
+#pragma warning disable SA1402 // File may only contain a single type
+#pragma warning disable SA1649 // File name should match first type name
+    public class TokensController { private TokensController() => throw new NotImplementedException(); }
+#pragma warning restore SA1649 // File name should match first type name
+#pragma warning restore SA1402 // File may only contain a single type
 }
 
+#pragma warning disable SA1403 // File may only contain a single namespace
 namespace DotNetNuke.Modules.ActiveForums.Controllers
+#pragma warning restore SA1403 // File may only contain a single namespace
 {
-    public class TokenController
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+
+#pragma warning disable SA1402 // File may only contain a single type
+    internal class TokenController
+#pragma warning restore SA1402 // File may only contain a single type
     {
+
         internal static List<Token> TokensList(int moduleId, string group)
         {
             try
             {
-                List<Token> li = (List<Token>)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.Tokens, moduleId, group));
+                List<Token> li =
+                    (List<Token>)DataCache.SettingsCacheRetrieve(moduleId,
+                        string.Format(CacheKeys.Tokens, moduleId, group));
                 if (li == null)
                 {
                     li = new List<Token>();
                     Token tk = null;
                     System.Xml.XmlDocument xDoc = new System.Xml.XmlDocument();
-                    string sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.ModulePath + "config/tokens.config");
+                    string sPath =
+                        DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.ModulePath + "config/tokens.config");
                     xDoc.Load(sPath);
                     if (xDoc != null)
                     {
@@ -65,9 +78,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             int i = 0;
                             for (i = 0; i < xNodeList.Count; i++)
                             {
-                                tk = new Token();
-                                tk.Group = xNodeList[i].Attributes["group"].Value;
-                                tk.TokenTag = xNodeList[i].Attributes["name"].Value;
+                                tk = new Token
+                                {
+                                    Group = xNodeList[i].Attributes["group"].Value,
+                                    TokenTag = xNodeList[i].Attributes["name"].Value
+                                };
                                 if (xNodeList[i].Attributes["value"] != null)
                                 {
                                     tk.TokenReplace = HttpUtility.HtmlDecode(xNodeList[i].Attributes["value"].Value);
@@ -109,5 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return sOut;
         }
+
+
     }
 }

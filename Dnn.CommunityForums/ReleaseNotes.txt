@@ -14,6 +14,31 @@
 	<hr />
 
 	<div class="dnnClear">
+
+    
+		<h2 class="muy-importante">IMPORTANT: Upgrade 8.2 Notes</h2>
+		<p>
+			The release notes will follow, below these <b>important</b> notes.
+		</p>
+
+		<h3>New <strong>"Legacy" Token Replacement</strong></h3>
+		<p>
+        Tokens are used in various templates to insert content from a forum, topic, reply, etc. into a page. 
+        However, in previous versions, HTML was injected from code for certain tokens, which made it impossible for a designer to tailor the HTML markup without customizing the code.
+        DNN Community Forums 08.02.00 introduces new token replacement features that inject only the data associated with the token, allowing the designer to create whatever HTML markup is desired.
+        The community-default and community-bootstrap themes and templates have been updated to include the markup that used to be generated in the module's code.
+        However, for installed sites that have other themes and templates, DNN Community Forums 08.02.00 will replace a legacy token--on-the-fly--with its modern replacement, including the previously-injected markup.
+        <br />
+        <br />
+        For example, [GROUPNAME] will now be replaced by [FORUMGROUP:FORUMGROUPLINK|&lt;a href="{0}" class="dcf-forumgroup-link"&gt;[FORUMGROUP:GROUPNAME]&lt;/a&gt;]
+        <br />
+        <br />
+        <b>The legacy token replacement feature will be supported through version 10.00.00, and will then be removed.<b> 
+        <br /><br />
+        If you use your own themes and templates, please visit <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/new/choose" target="_blank">our wiki</a> to read more and see which legacy tokens are replaced by which updated tokens.
+
+		</p>
+
 		<h2 class="muy-importante">IMPORTANT: Upgrade Notes</h2>
 		<p>
 			The release notes will follow, below these <b>important</b> notes.

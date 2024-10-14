@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     [TableName("activeforums_Content")]
     [PrimaryKey("ContentId", AutoIncrement = true)]
+    [Scope("ModuleId")]
     public class ContentInfo
     {
         public int ContentId { get; set; }

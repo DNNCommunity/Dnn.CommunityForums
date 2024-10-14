@@ -75,11 +75,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs, Uri requestUrl)")]
         public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<DotNetNuke.Modules.ActiveForums.SubscriptionInfo> subs) => throw new NotImplementedException();
-       
-        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs, Uri requestUrl)
+
+        internal static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs, Uri requestUrl)
         {
-            var uc = new DotNetNuke.Entities.Users.UserController();
-            var usr = uc.GetUser(portalId, userId);
             var navigationManager = (INavigationManager)new Services.URLNavigator().NavigationManager();
             DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = Utilities.GetPortalSettings(portalId);
             TemplateController tc = new TemplateController();
@@ -104,8 +102,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             PortalId = portalId,
                             ModuleId = moduleID,
                             Recipients = recipients,
-                            Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: usr, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl),
-                            Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl),
+                            Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: string.Empty, author: author, userId: author.AuthorId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl),
+                            Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, author: author, userId: author.AuthorId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl),
                         });
                     }
 
@@ -118,8 +116,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             ModuleId = moduleID,
                             PortalId = portalId,
                             Recipients = recipients,
-                            Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: usr, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl),
-                            Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl),
+                            Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: string.Empty, author: author, userId: author.AuthorId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl),
+                            Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, author: author, userId: author.AuthorId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl),
                         });
                     }
                 }
@@ -129,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 9.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body).")]
         public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => throw new NotImplementedException();
 
-        public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body)
+        internal static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body)
         {
             // USE DNN API for this to ensure proper delivery & adherence to portal settings
             // Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
@@ -155,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                     smtpEnableSSL: EnableSMTPSSL(portalId));
         }
 
-        public static void Send(DotNetNuke.Modules.ActiveForums.Entities.EmailInfo message)
+        internal static void Send(DotNetNuke.Modules.ActiveForums.Entities.EmailInfo message)
         {
             try
             {
