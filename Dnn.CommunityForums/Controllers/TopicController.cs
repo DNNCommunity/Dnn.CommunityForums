@@ -37,6 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Modules.ActiveForums.API;
     using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Social.Notifications;
@@ -225,6 +226,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
 
+            // if existing topic, update associated journal item
+            if (ti.TopicId > 0)
+            {
+                string sUrl = new ControlUtils().BuildUrl(ti.PortalId, ti.Forum.TabId, ti.ModuleId, ti.Forum.ForumGroup.PrefixURL, ti.Forum.PrefixURL, ti.Forum.ForumGroupId, ti.ForumId, ti.TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, ti.Forum.SocialGroupId);
+                new Social().UpdateJournalItemForPost(ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, ti.TopicId, 0, ti.Author.AuthorId, sUrl, ti.Content.Subject, string.Empty, ti.Content.Body);
+            }
+
             // TODO: convert to use DAL2?
             return Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Save(ti.Forum.PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart, ti.AnnounceEnd, ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
         }
@@ -234,15 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = base.GetById(topicId);
             if (ti != null)
             {
-                try
-                {
-                    var objectKey = string.Format("{0}:{1}", ti.ForumId, topicId);
-                    JournalController.Instance.DeleteJournalItemByKey(ti.PortalId, objectKey);
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                }
+                new Social().DeleteJournalItemForPost(ti.PortalId, ti.ForumId, topicId, 0);
 
                 DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
