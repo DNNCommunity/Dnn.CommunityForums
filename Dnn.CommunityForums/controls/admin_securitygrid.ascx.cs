@@ -32,10 +32,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using DotNetNuke.Security.Roles;
 
     public partial class admin_securitygrid : ActiveAdminBase
-	{
-        private const int permCount = 21;
-		public string imgOn;
-		public string imgOff;
+    {
+        public string imgOn;
+        public string imgOff;
         public bool ReadOnly { get; set; } = false;
 
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Perms { get; set; }
@@ -173,129 +172,139 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                 }
             }
-            
-            // NOTE: These need to be presented in same order as they are in "SecureActions" enum.
-            // TODO: Use the enum to populate rather than hard-code 
-            string[,] grid = new string[pl.Count + 1, permCount+3];
-            i = 0;
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi in pl)
-            {
-                grid[i, 0] = pi.ObjectId;
-                grid[i, 1] = pi.ObjectName;
-                grid[i, 2] = Convert.ToInt16(pi.Type).ToString();
-                grid[i, 3] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.View));
-                grid[i, 4] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Read));
-                grid[i, 5] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Create));
-                grid[i, 6] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Reply));
-                grid[i, 7] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Edit));
-                grid[i, 8] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Delete));
-                grid[i, 9] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Move));
-                grid[i, 10] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Lock));
-                grid[i, 11] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Pin));
-                grid[i, 12] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Split));
-                grid[i, 13] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Attach));
-                grid[i, 14] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Poll));
-                grid[i, 15] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Block));
-                grid[i, 16] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Trust));
-                grid[i, 17] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Subscribe));
-                grid[i, 18] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Announce));
-                grid[i, 19] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Tag));
-                grid[i, 20] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Categorize));
-                grid[i, 21] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Prioritize));
 
-                grid[i, 22] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Moderate));
-                grid[i, 23] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Ban));
-                i += 1;
-            }
+            var gridSecurityActions = new string[][,]
+                {
+                    new string[,]
+                    {
+                        { Enum.GetName(typeof(SecureActions), SecureActions.View), security.View, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Read), security.Read, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Create), security.Create, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Reply), security.Reply, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Edit), security.Edit, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Delete), security.Delete, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Subscribe), security.Subscribe, },
+                    },
+                    new string[,]
+                    {
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Attach), security.Attach, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Poll), security.Poll, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Announce), security.Announce, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Categorize), security.Categorize, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Prioritize), security.Prioritize, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Tag), security.Tag, },
+                    },
+                    new string[,]
+                    {
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Moderate), security.Moderate, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Ban), security.Ban, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Move), security.Move, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Lock), security.Lock, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Pin), security.Pin, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Split), security.Split, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Trust), security.Trust, },
+                    },
+                };
 
-            System.Type enumType = typeof(SecureActions);
-            Array values = Enum.GetValues(enumType);
             StringBuilder sb = new StringBuilder();
-            sb.Append("<table cellpadding=\"0\" cellspacing=\"0\"><tr><td valign=\"top\"><div class=\"afsecobjects\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">");
-            sb.Append("<tr><td class=\"afsecobjecthd\" colspan=\"2\">" + Utilities.GetSharedResource("[RESX:SecureObjects]", true) + "</td></tr>");
-            string tmpObjectName = string.Empty;
-            for (int x = 0; x < pl.Count; x++)
+
+            for (int gridIndex = 0; gridIndex < 3; gridIndex++)
             {
-                sb.Append("<tr><td style=\"width:16px;\"></td><td class=\"afsecobject\" style=\"white-space:nowrap;\"><div class=\"afsecobjecttxt\" title=\"" + grid[x, 1] + "\" onmouseover=\"this.firstChild.style.display='';\" onmouseout=\"this.firstChild.style.display='none';\"><span style=\"width:16px;height:16px;float:right;display:none;\">");
-                if ((Convert.ToInt32(grid[x, 2]) == 0 && Convert.ToInt32(grid[x, 0]) > 0) | Convert.ToInt32(grid[x, 2]) > 0)
+                string gridHeader = string.Empty;
+                switch (gridIndex)
                 {
-                    if (!this.ReadOnly)
-                    {
-                        sb.Append("<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/mini_del.gif") + "\" alt=\"Remove Object\" style=\"cursor:pointer;z-index:10;\" class=\"afminidel\" onclick=\"securityDelObject(this,'" + grid[x, 0] + "'," + grid[x, 2] + "," + permissionsId + ");\" />");
-                    }
+                    case 0:
+                        gridHeader = Utilities.GetSharedResource("[RESX:SecurityGrid:Basics]", isAdmin: true);
+                        break;
+                    case 1:
+                        gridHeader = Utilities.GetSharedResource("[RESX:SecurityGrid:Advanced]", isAdmin: true);
+                        break;
+                    case 2:
+                        gridHeader = Utilities.GetSharedResource("[RESX:SecurityGrid:SuperUser]", isAdmin: true);
+                        break;
                 }
 
-                sb.Append("</span>" + grid[x, 1]);
-                sb.Append("</div></td></tr>");
-            }
+                i = 0;
+                string[,] grid = new string[pl.Count + 1, 3 + gridSecurityActions[gridIndex].GetUpperBound(0) + 1];
 
-            sb.Append("</table></div></td><td valign=\"top\" width=\"94%\"><div class=\"afsecactions\" style=\"overflow-x:auto;overflow-y:hidden;\">");
+                sb.Append($"<h6>{gridHeader}</h6>");
+                sb.Append("<table cellpadding=\"0\" cellspacing=\"0\"><tr><td valign=\"top\"><div class=\"afsecobjects\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">");
+                sb.Append("<tr><td class=\"afsecobjecthd\" colspan=\"2\">" + Utilities.GetSharedResource("[RESX:SecureObjects]", true) + "</td></tr>");
 
-            // litNewObjects.Text = sb.ToString
-            // sb = New StringBuilder
-            sb.Append("<table cellpadding=0 cellspacing=0 border=0 width=\"100%\" id=\"tblSecGrid\">");
-            sb.Append("<tr>");
-            string keyText = string.Empty;
-            for (int td = 3; td <= permCount+2; td++)
-            {
-                keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(td - 3).ToString()));
-                if (keyText.ToLowerInvariant() == "block")
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi in pl)
                 {
-                    sb.Append("<td class=\"afsecactionhd\" style=\"display:none;\">");
+                    grid[i, 0] = pi.ObjectId;
+                    grid[i, 1] = pi.ObjectName;
+                    grid[i, 2] = Convert.ToInt16(pi.Type).ToString();
+                    for (int j = gridSecurityActions[gridIndex].GetLowerBound(0); j <= gridSecurityActions[gridIndex].GetUpperBound(0); j++)
+                    {
+                        grid[i, j + 3] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, gridSecurityActions[gridIndex][j, 1]));
+                    }
+
+                    sb.Append("<tr><td style=\"width:16px;\"></td><td class=\"afsecobject\" style=\"white-space:nowrap;\"><div class=\"afsecobjecttxt\" title=\"" + grid[i, 1] + "\" onmouseover=\"this.firstChild.style.display='';\" onmouseout=\"this.firstChild.style.display='none';\"><span style=\"width:16px;height:16px;float:right;display:none;\">");
+                    if ((Convert.ToInt32(grid[i, 2]) == 0 && Convert.ToInt32(grid[i, 0]) > 0) | Convert.ToInt32(grid[i, 2]) > 0)
+                    {
+                        if (!this.ReadOnly)
+                        {
+                            sb.Append("<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/mini_del.gif") + "\" alt=\"Remove Object\" style=\"cursor:pointer;z-index:10;\" class=\"afminidel\" onclick=\"securityDelObject(this,'" + grid[i, 0] + "'," + grid[i, 2] + "," + permissionsId + ");\" />");
+                        }
+                    }
+
+                    sb.Append("</span>" + grid[i, 1]);
+                    sb.Append("</div></td></tr>");
+                    i += 1;
                 }
-                else
+
+                sb.Append("</table></div></td><td valign=\"top\" width=\"94%\"><div class=\"afsecactions\" style=\"overflow-x:auto;overflow-y:hidden;\">");
+                sb.Append("<table cellpadding=0 cellspacing=0 border=0 width=\"100%\" id=\"tblSecGrid" + gridIndex + "\">");
+                sb.Append("<tr>");
+                string keyText;
+                for (int td = gridSecurityActions[gridIndex].GetLowerBound(0); td <= gridSecurityActions[gridIndex].GetUpperBound(0); td++)
                 {
-                    sb.Append("<td class=\"afsecactionhd\">");
-                }
-
-                //sb.Append($"<img src=\"{this.Page.ResolveUrl(Globals.ModulePath + "images/tooltip.png")}\" runat=\"server\" onmouseover=\"amShowTip(this, '[RESX:Tips:SecGrid:{keyText}]');\" onmouseout=\"amHideTip(this);\" />");
-
-                sb.Append($"<a href=\"#\" class=\"dcf-controlpanel-tooltip\" data-tooltip=\"[RESX:Tips:SecGrid:{keyText}]\">");
-                sb.Append(Utilities.LocalizeControl($"[RESX:SecGrid:{keyText}]", isAdmin: true));
-                sb.Append("</a>");
-                sb.Append("</td>");
-            }
-
-            sb.Append("</tr>");
-            for (int x = 0; x < pl.Count; x++)
-            {
-                sb.Append("<tr onmouseover=\"this.className='afgridrowover'\" onmouseout=\"this.className='afgridrow'\">");
-                for (int r = 3; r <= permCount+2; r++)
-                {
-                    keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(r - 3).ToString()));
-                    bool bState = Convert.ToBoolean(grid[x, r]); // DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
-                    string sState = "<img src=\"" + this.imgOff + "\" alt=\"Disabled\" />";
-                    if (bState)
+                    keyText = gridSecurityActions[gridIndex][td, 0];
+                    if (!string.IsNullOrEmpty(keyText))
                     {
-                        sState = "<img src=\"" + this.imgOn + "\" alt=\"Enabled\" />";
-                    }
+                        if (keyText.ToLowerInvariant() == "block")
+                        {
+                            sb.Append("<td class=\"afsecactionhd\" style=\"display:none;\">");
+                        }
+                        else
+                        {
+                            sb.Append("<td class=\"afsecactionhd\" style=\"text-align:center;\">");
+                        }
 
-                    if (keyText.ToLowerInvariant() == "block")
-                    {
-                        sb.Append("<td class=\"afsecactionelem\" style=\"text-align:center;display:none;\">");
+                        sb.Append($"<a href=\"#\" class=\"dcf-controlpanel-tooltip\" data-tooltip=\"[RESX:Tips:SecGrid:{keyText}]\">");
+                        sb.Append(Utilities.LocalizeControl($"[RESX:SecGrid:{keyText}]", isAdmin: true));
+                        sb.Append("</a>");
+                        sb.Append("</td>");
                     }
-                    else
-                    {
-                        sb.Append("<td class=\"afsecactionelem\" style=\"text-align:center;\">");
-                    }
-
-                    sb.Append("<div class=\"afsectoggle\" id=\"" + grid[x, 0] + grid[x, 2] + keyText + "\" ");
-                    if (!this.ReadOnly)
-                    {
-                        sb.Append("onclick=\"securityToggle(this," + permissionsId + ",'" + grid[x, 0] + "','" + grid[x, 1] + "'," + grid[x, 2] + ",'" + keyText + "');\"");
-                    }
-
-                    sb.Append(">" + sState + "</div></td>");
                 }
 
                 sb.Append("</tr>");
+                for (int x = 0; x < pl.Count; x++)
+                {
+                    sb.Append("<tr onmouseover=\"this.className='afgridrowover'\" onmouseout=\"this.className='afgridrow'\">");
+                    for (int r = gridSecurityActions[gridIndex].GetLowerBound(0) + 3; r <= gridSecurityActions[gridIndex].GetUpperBound(0) + 3; r++)
+                    {
+                        keyText = gridSecurityActions[gridIndex][r - 3, 0];
+                        sb.Append("<td class=\"afsecactionelem\" style=\"text-align:center;\">");
+                        sb.Append($"<div class=\"afsectoggle\" id=\"{grid[x, 0]}{grid[x, 2]}{keyText}\"");
+                        if (!this.ReadOnly)
+                        {
+                            sb.Append($"onclick=\"securityToggle(this,{permissionsId},'{grid[x, 0]}','{grid[x, 1]}', {grid[x, 2]},'{keyText}');\"");
+                        }
+
+                        sb.Append(">" + (Convert.ToBoolean(grid[x, r]) ? $"<img src=\"{this.imgOn}\" alt=\"Enabled\" />" : $"<img src=\"{this.imgOff}\" alt=\"Disabled\" />") + "</div></td>");
+                    }
+
+                    sb.Append("</tr>");
+                }
+
+                sb.Append("</table></div></td></tr></table>");
+                this.litSecGrid.Text = sb.ToString();
             }
 
-            sb.Append("</table></div></td></tr></table>");
             this.litSecGrid.Text = sb.ToString();
-
-            // litNewSecurity.Text = sb.ToString
-            // litNewGrid.Text = sb.ToString
         }
 
         private bool PermValue(int objectType, string objectId, string permSet)

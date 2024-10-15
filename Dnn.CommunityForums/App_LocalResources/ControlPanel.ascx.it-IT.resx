@@ -1426,4 +1426,13 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:Tips:SecGrid:Reply].Text" xml:space="preserve">
     <value>Può rispondere a un argomento creato in precedenza.</value>
   </data>
+  <data name="[RESX:SecurityGrid:Basics].Text" xml:space="preserve">
+    <value>Informazioni di base</value>
+  </data>
+  <data name="[RESX:SecurityGrid:Advanced].Text" xml:space="preserve">
+    <value>Avanzato</value>
+  </data>
+  <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
+    <value>Amministratori/Moderatori</value>
+  </data>
 </root>

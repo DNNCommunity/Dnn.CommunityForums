@@ -1531,4 +1531,13 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:Tips:SecGrid:Reply].Text" xml:space="preserve">
     <value>Kann auf ein zuvor erstelltes Thema antworten.</value>
   </data>
+  <data name="[RESX:SecurityGrid:Basics].Text" xml:space="preserve">
+    <value>Grundlagen</value>
+  </data>
+  <data name="[RESX:SecurityGrid:Advanced].Text" xml:space="preserve">
+    <value>Erweitert</value>
+  </data>
+  <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
+    <value>Administratoren/Moderatoren</value>
+  </data>
 </root>
