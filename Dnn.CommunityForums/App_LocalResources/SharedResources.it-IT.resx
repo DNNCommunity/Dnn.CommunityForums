@@ -1738,12 +1738,6 @@ Da
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>Il {0} dell'argomento per l'ID di monitoraggio dell'argomento {1} non viene trovato nel database; Sarà necessario riparare questo nel database o eliminare i dati non validi. Visita il repository Github (https://github.com/DNNCommunity/Dnn.CommunityForums) dei forum della community DNN, dove puoi pubblicare un problema o rivedere il wiki per i passaggi per la risoluzione dei problemi.</value>
   </data>
-  <data name="[RESX:Child].Text" xml:space="preserve">
-    <value>Bambino</value>
-  </data>
-  <data name="[RESX:of].Text" xml:space="preserve">
-    <value>di</value>
-  </data>
   <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
     <value>Token modello: {0} è obsoleto. Sostituire con {1}.</value>
   </data>
@@ -1761,5 +1755,14 @@ Da
   </data>
   <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
     <value>La coda di processo dei forum della community DNN non è stata in grado di elaborare {0} dell'elemento ed è rimasta in coda per più di 7 giorni. Non verranno eseguite ulteriori azioni per questo oggetto. Se visualizzi spesso questo messaggio, visita il repository Github (https://github.com/DNNCommunity/Dnn.CommunityForums) dei forum della community DNN, dove puoi pubblicare un problema o rivedere il wiki per la procedura di risoluzione dei problemi.</value>
+  </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Bambino</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>di</value>
+  </data>
+  <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
+    <value>Elimina tutti i post per questo utente e annulla l'autorizzazione dell'utente.</value>
   </data>
 </root>

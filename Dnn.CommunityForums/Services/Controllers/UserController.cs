@@ -101,7 +101,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
-        }
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
     }
 }

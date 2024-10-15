@@ -1755,12 +1755,6 @@ De,
   <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
     <value>Le {0} de rubrique pour l’ID de suivi de {1} est introuvable dans la base de données ; Vous devrez réparer cela dans la base de données ou supprimer les données invalides. Veuillez visiter le dépôt Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour les étapes de dépannage.</value>
   </data>
-  <data name="[RESX:Child].Text" xml:space="preserve">
-    <value>Enfant</value>
-  </data>
-  <data name="[RESX:of].Text" xml:space="preserve">
-    <value>de</value>
-  </data>
   <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
     <value>Template Token : {0} est obsolète. Remplacez par {1}.</value>
   </data>
@@ -1778,5 +1772,14 @@ De,
   </data>
   <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
     <value>La file d’attente de traitement des forums de la communauté DNN n’a pas pu traiter les éléments {0} et ils sont dans la file d’attente depuis plus de 7 jours. Aucune autre mesure ne sera prise à l’égard de cet article. Si vous voyez ce message fréquemment, veuillez visiter le référentiel Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour connaître les étapes de dépannage.</value>
+  </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Enfant</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
+    <value>Supprime toutes les publications de l'utilisateur et le désauthorise</value>
   </data>
 </root>

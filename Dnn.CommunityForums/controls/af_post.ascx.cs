@@ -604,6 +604,22 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             userDisplay = "none";
                         }
+                        
+                        DotNetNuke.Modules.ActiveForums.Entities.ContentInfo ci;
+                        if (postId == TopicId)
+                        {
+                            ci = ti.Content;
+                        }
+                        else
+                        {
+                            var ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(postId);
+                            ci = ri.Content;
+                        }
+
+                        if (ci != null)
+                        {
+                            body = ci.Body;
+                        }
 
                         var post = postId == this.TopicId ? ti : (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(postId);
                         sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, post.Author.AuthorId, post.Author.Username, post.Author.FirstName, post.Author.LastName, post.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(post.Content.DateCreated, this.PortalId, this.UserId));

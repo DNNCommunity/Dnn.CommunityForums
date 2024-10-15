@@ -69,6 +69,5 @@ namespace DotNetNuke.Modules.ActiveForums
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use  DotNetNuke.Modules.ActiveForums.Controller.EmailController.Send().")]
         public void Send() => throw new NotImplementedException();
-
     }
 }

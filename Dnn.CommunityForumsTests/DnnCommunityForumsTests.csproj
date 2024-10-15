@@ -58,6 +58,9 @@
     <Reference Include="DotNetNuke">
       <HintPath>..\packages\DotNetNuke.Core.9.9.0\lib\net45\DotNetNuke.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.Abstractions, Version=9.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Abstractions.9.9.0\lib\netstandard2.0\DotNetNuke.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.CodeCoverage.Shim, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeCoverage.17.9.0\lib\net462\Microsoft.VisualStudio.CodeCoverage.Shim.dll</HintPath>
     </Reference>
@@ -90,6 +93,7 @@
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -103,9 +107,14 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Services\Tokens\TokenReplacerTests.cs" />
     <Compile Include="class\UtilitiesTests.cs" />
     <Compile Include="Controllers\PermissionControllerTests.cs" />
     <Compile Include="Controllers\TopicPropertyControllerTests.cs" />
+    <Compile Include="Entities\ForumInfoTests.cs" />
+    <Compile Include="Entities\ReplyItemTests.cs" />
+    <Compile Include="Entities\TopicItemTests.cs" />
+    <Compile Include="NavigationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +138,7 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
