@@ -240,6 +240,29 @@ namespace DotNetNuke.Modules.ActiveForums
                             Exceptions.LogException(ex);
                         }
 
+                    foreach (Control control in repeaterItemEventArgs.Item.Controls)
+                    {
+                        string itemTemplate = string.Empty;
+                        try
+                        {
+                            if (control.GetType().FullName == "System.Web.UI.LiteralControl")
+                            {
+                                itemTemplate = ((System.Web.UI.LiteralControl)control).Text;
+                            }
+                            else if (control.GetType().FullName == "System.Web.UI.HtmlControls.HtmlGenericControl")
+                            {
+                                itemTemplate = ((System.Web.UI.HtmlControls.HtmlGenericControl)control).InnerText;
+                            }
+                            else
+                            {
+                                Exceptions.LogException(new KeyNotFoundException($"Unexpected control type: {control.GetType().FullName}"));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Exceptions.LogException(ex);
+                        }
+
                         if (!string.IsNullOrEmpty(itemTemplate) && itemTemplate.Contains("["))
                         {
                             if (post != null)
