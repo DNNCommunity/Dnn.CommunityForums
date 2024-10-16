@@ -24,15 +24,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     using System.Data;
     using System.Net;
     using System.Net.Http;
-    using System.Reflection;
     using System.Web.Http;
 
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.UI.UserControls;
     using DotNetNuke.Web.Api;
-
-    using static DotNetNuke.Modules.ActiveForums.Handlers.HandlerBase;
 
     /// <summary>
     /// <inheritdoc/>
@@ -74,6 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [AllowAnonymous]
         public HttpResponseMessage GetUsersOnline()
         {
+            try
             {
                 // if running from Forums Viewer module, need to get the module for the Forums instance
                 int moduleId = this.ActiveModule.ModuleID;
@@ -81,6 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 {
                     moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ActiveModule.ModuleID, this.ActiveModule.TabID, false).ModuleSettings["AFForumModuleID"]);
                 }
+
                 var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
                 string sOnlineList = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetUsersOnline(this.PortalSettings, SettingsBase.GetModuleSettings(this.ForumModuleId), this.ForumModuleId, user);
                 IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalSettings.PortalId, this.ForumModuleId, 2);
@@ -101,6 +97,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 sUsersOnline = sUsersOnline.Replace("[TOTALMEMBERCOUNT]", memTotal.ToString());
                 return this.Request.CreateResponse(HttpStatusCode.OK, sUsersOnline + " " + sOnlineList);
             }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
     }
 }

@@ -63,57 +63,64 @@ namespace DotNetNuke.Modules.ActiveForums.Services
         /// <remarks>System.InvalidOperationException is thrown if you specify this attribute on an API method that does not include forumId</remarks>
         public override bool IsAuthorized(AuthFilterContext context)
         {
-            Requires.NotNull("context", context);
-            IIdentity identity = Thread.CurrentPrincipal.Identity;
-            if (identity.IsAuthenticated)
+            try
             {
-                int forumId = -1;
-                if (forumId <= 0)
+                Requires.NotNull("context", context);
+                IIdentity identity = Thread.CurrentPrincipal.Identity;
+                if (identity.IsAuthenticated)
                 {
-                    if (context.ActionContext.Request.GetRouteData().Route.DataTokens.ContainsKey(Literals.ForumId))
+                    int forumId = -1;
+                    if (forumId <= 0)
                     {
-                        forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetRouteData().Route
-                                                                                        .DataTokens[Literals.ForumId]
-                                                                                        .ToString());
+                        if (context.ActionContext.Request.GetRouteData().Route.DataTokens.ContainsKey(Literals.ForumId))
+                        {
+                            forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetRouteData().Route
+                                .DataTokens[Literals.ForumId]
+                                .ToString());
+                        }
                     }
-                }
 
-                if (forumId <= 0)
-                {
-                    try
+                    if (forumId <= 0)
                     {
-                        forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetQueryNameValuePairs()
-                                                                                        .Where(q => q.Key.ToLowerInvariant() == Literals.ForumId.ToLowerInvariant())
-                                                                                        .FirstOrDefault().Value);
+                        try
+                        {
+                            forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetQueryNameValuePairs()
+                                .Where(q => q.Key.ToLowerInvariant() == Literals.ForumId.ToLowerInvariant())
+                                .FirstOrDefault().Value);
+                        }
+                        catch
+                        {
+                        }
                     }
-                    catch
-                    {
-                    }
-                }
 
-                if (forumId <= 0)
-                {
-                    try
+                    if (forumId <= 0)
                     {
-                        var postData = context.ActionContext.Request.Content.ReadAsStringAsync().Result;
-                        forumId = Utilities.SafeConvertInt(System.Web.Helpers.Json.Decode(postData).ForumId);
+                        try
+                        {
+                            var postData = context.ActionContext.Request.Content.ReadAsStringAsync().Result;
+                            forumId = Utilities.SafeConvertInt(System.Web.Helpers.Json.Decode(postData).ForumId);
+                        }
+                        catch
+                        {
+                        }
                     }
-                    catch
-                    {
-                    }
-                }
 
-                if (forumId <= 0)
-                {
-                    throw new System.InvalidOperationException();
+                    if (forumId <= 0)
+                    {
+                        throw new System.InvalidOperationException();
+                    }
+                    else
+                    {
+                        ModuleInfo moduleInfo = context.ActionContext.Request.FindModuleInfo();
+                        UserInfo userInfo = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().UserInfo;
+                        int moduleId = DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(moduleInfo.ModuleID, moduleInfo.TabID);
+                        return ServicesHelper.IsAuthorized(moduleInfo.PortalID, moduleId, forumId, this.PermissionNeeded, userInfo);
+                    }
                 }
-                else
-                {
-                    ModuleInfo moduleInfo = context.ActionContext.Request.FindModuleInfo();
-                    UserInfo userInfo = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().UserInfo;
-                    int moduleId = DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(moduleInfo.ModuleID, moduleInfo.TabID);
-                    return ServicesHelper.IsAuthorized(moduleInfo.PortalID, moduleId, forumId, this.PermissionNeeded, userInfo);
-                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return false;

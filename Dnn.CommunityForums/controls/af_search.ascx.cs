@@ -652,10 +652,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.phKeywords = (PlaceHolder)ctrl;
                         break;
                     case "phTag":
-                        this.phKeywords = (PlaceHolder)ctrl;
+                        this.phTag = (PlaceHolder)ctrl;
                         break;
                     case "phUsername":
-                        this.phKeywords = (PlaceHolder)ctrl;
+                        this.phUsername = (PlaceHolder)ctrl;
                         break;
                     case "plhMessage":
                         this.plhMessage = (PlaceHolder)ctrl;

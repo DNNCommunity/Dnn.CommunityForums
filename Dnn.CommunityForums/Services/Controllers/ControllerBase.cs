@@ -20,11 +20,11 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
+    using System;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
 
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.Api;
 
@@ -44,8 +44,17 @@ namespace DotNetNuke.Modules.ActiveForums.Services
         [HttpGet]
         public HttpResponseMessage HelloWorld()
         {
-            Logger.Info("Hello World!");
-            return this.Request.CreateResponse(HttpStatusCode.OK, "Hello World!");
+            try
+            {
+                Logger.Info("Hello World!");
+                return this.Request.CreateResponse(HttpStatusCode.OK, "Hello World!");
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         internal int ForumModuleId => DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ActiveModule.ModuleID, this.ActiveModule.TabID);

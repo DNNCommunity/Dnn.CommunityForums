@@ -1429,4 +1429,13 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:SecGrid:Reply].Text" xml:space="preserve">
     <value>Peut répondre à un sujet précédemment créé.</value>
   </data>
+  <data name="[RESX:SecurityGrid:Basics].Text" xml:space="preserve">
+    <value>Notions de base</value>
+  </data>
+  <data name="[RESX:SecurityGrid:Advanced].Text" xml:space="preserve">
+    <value>Avancé</value>
+  </data>
+  <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
+    <value>Administrateurs/modérateurs</value>
+  </data>
 </root>

@@ -1426,4 +1426,13 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:Tips:SecGrid:Reply].Text" xml:space="preserve">
     <value>Puede responder a un tema creado previamente.</value>
   </data>
+  <data name="[RESX:SecurityGrid:Basics].Text" xml:space="preserve">
+    <value>Básico</value>
+  </data>
+  <data name="[RESX:SecurityGrid:Advanced].Text" xml:space="preserve">
+    <value>Avanzado</value>
+  </data>
+  <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
+    <value>Administradores/Moderadores</value>
+  </data>
 </root>
