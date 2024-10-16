@@ -1576,4 +1576,13 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:Tips:SecGrid:Reply].Text" xml:space="preserve">
     <value>Kan reageren op een eerder aangemaakt onderwerp.</value>
   </data>
+  <data name="[RESX:SecurityGrid:Basics].Text" xml:space="preserve">
+    <value>Algemeen</value>
+  </data>
+  <data name="[RESX:SecurityGrid:Advanced].Text" xml:space="preserve">
+    <value>Geavanceerd</value>
+  </data>
+  <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
+    <value>Beheerders/moderators</value>
+  </data>
 </root>

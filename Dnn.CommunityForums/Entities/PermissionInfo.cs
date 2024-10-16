@@ -35,49 +35,80 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int ModuleId { get; set; }
 
-        [ColumnName("CanView")] public string View { get; set; }
+        [ColumnName("CanView")]
+        public string View { get; set; }
 
-        [ColumnName("CanRead")] public string Read { get; set; }
+        [ColumnName("CanRead")]
+        public string Read { get; set; }
 
-        [ColumnName("CanCreate")] public string Create { get; set; }
+        [ColumnName("CanCreate")]
+        public string Create { get; set; }
 
-        [ColumnName("CanReply")] public string Reply { get; set; }
+        [ColumnName("CanReply")]
+        public string Reply { get; set; }
 
-        [ColumnName("CanEdit")] public string Edit { get; set; }
+        [ColumnName("CanEdit")]
+        public string Edit { get; set; }
 
-        [ColumnName("CanDelete")] public string Delete { get; set; }
+        [ColumnName("CanDelete")]
+        public string Delete { get; set; }
 
-        [ColumnName("CanLock")] public string Lock { get; set; }
+        [ColumnName("CanLock")]
+        public string Lock { get; set; }
 
-        [ColumnName("CanPin")] public string Pin { get; set; }
+        [ColumnName("CanPin")]
+        public string Pin { get; set; }
 
-        [ColumnName("CanAttach")] public string Attach { get; set; }
+        [ColumnName("CanAttach")]
+        public string Attach { get; set; }
 
-        [ColumnName("CanPoll")] public string Poll { get; set; }
+        [ColumnName("CanPoll")]
+        public string Poll { get; set; }
 
-        [ColumnName("CanBlock")] public string Block { get; set; }
+        [ColumnName("CanBlock")]
+        public string Block { get; set; }
 
-        [ColumnName("CanTrust")] public string Trust { get; set; }
+        [ColumnName("CanTrust")]
+        public string Trust { get; set; }
 
-        [ColumnName("CanSubscribe")] public string Subscribe { get; set; }
+        [ColumnName("CanSubscribe")]
+        public string Subscribe { get; set; }
 
-        [ColumnName("CanAnnounce")] public string Announce { get; set; }
+        [ColumnName("CanAnnounce")]
+        public string Announce { get; set; }
 
-        [ColumnName("CanTag")] public string Tag { get; set; }
+        [ColumnName("CanTag")]
+        public string Tag { get; set; }
 
-        [ColumnName("CanCategorize")] public string Categorize { get; set; }
+        [ColumnName("CanCategorize")]
+        public string Categorize { get; set; }
 
-        [ColumnName("CanPrioritize")] public string Prioritize { get; set; }
-        [ColumnName("CanModerate")] public string Moderate { get; set; }
-        [ColumnName("CanMove")] public string Move { get; set; }
-        [ColumnName("CanSplit")] public string Split { get; set; }
-        [ColumnName("CanBan")] public string Ban { get; set; }
-        [IgnoreColumn()] public ObjectType Type { get; set; }
+        [ColumnName("CanPrioritize")]
+        public string Prioritize { get; set; }
 
-        [IgnoreColumn()] public string ObjectId { get; set; }
+        [ColumnName("CanModerate")]
+        public string Moderate { get; set; }
 
-        [IgnoreColumn()] public string ObjectName { get; set; }
+        [ColumnName("CanMove")]
+        public string Move { get; set; }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")][IgnoreColumn()] public int UserTrustLevel { get; set; }
+        [ColumnName("CanSplit")]
+        public string Split { get; set; }
+
+        [ColumnName("CanBan")]
+        public string Ban { get; set; }
+
+        [IgnoreColumn]
+        public ObjectType Type { get; set; }
+
+        [IgnoreColumn]
+        public string ObjectId { get; set; }
+
+        [IgnoreColumn]
+        public string ObjectName { get; set; }
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn]
+        public int UserTrustLevel { get; set; }
     }
 }

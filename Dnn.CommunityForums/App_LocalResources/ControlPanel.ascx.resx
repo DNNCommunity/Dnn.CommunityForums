@@ -1531,4 +1531,13 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:Tips:SecGrid:View].Text" xml:space="preserve">
     <value>Can see the topic in the list, but cannot open it.</value>
   </data>
+  <data name="[RESX:SecurityGrid:Basics].Text" xml:space="preserve">
+    <value>Basics</value>
+  </data>
+  <data name="[RESX:SecurityGrid:Advanced].Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
+    <value>Administrators/Moderators</value>
+  </data>
 </root>

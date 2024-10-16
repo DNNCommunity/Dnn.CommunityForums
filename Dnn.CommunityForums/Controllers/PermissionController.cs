@@ -63,7 +63,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Update(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
         {
+            var cachekey = string.Format(CacheKeys.PermissionsInfo, permissionInfo.ModuleId, permissionInfo.PermissionsId);
             base.Update(permissionInfo);
+            DataCache.SettingsCacheClear(permissionInfo.ModuleId, cachekey);
             return this.GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
         }
 
