@@ -1563,9 +1563,6 @@ De
   <data name="SearchCaption.Text" xml:space="preserve">
     <value>Buscar en este foro:</value>
   </data>
-  <data name="SearchForum.Text" xml:space="preserve">
-    <value>Foro:</value>
-  </data>
   <data name="SearchFrom.Text" xml:space="preserve">
     <value>De:</value>
   </data>
@@ -1574,9 +1571,6 @@ De
   </data>
   <data name="SearchLastPost.Text" xml:space="preserve">
     <value>Último mensaje:</value>
-  </data>
-  <data name="SearchModify.Text" xml:space="preserve">
-    <value>Modificar búsqueda</value>
   </data>
   <data name="SearchPosted.Text" xml:space="preserve">
     <value>Publicada:</value>
@@ -1598,9 +1592,6 @@ De
   </data>
   <data name="SearchReplies.Text" xml:space="preserve">
     <value>Respuestas:</value>
-  </data>
-  <data name="SearchTopic.Text" xml:space="preserve">
-    <value>Tema:</value>
   </data>
   <data name="SearchType.Text" xml:space="preserve">
     <value>Tipo de búsqueda</value>
@@ -1766,5 +1757,29 @@ De
   </data>
   <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
     <value>Elimina todas las entradas del usuario y desautoriza al usuario.</value>
+  </data>
+  <data name="[RESX:SearchModify].Text" xml:space="preserve">
+    <value>Modificar búsqueda</value>
+  </data>
+  <data name="[RESX:SearchBy].Text" xml:space="preserve">
+    <value>Por:</value>
+  </data>
+  <data name="[RESX:SearchForum].Text" xml:space="preserve">
+    <value>Foro:</value>
+  </data>
+  <data name="[RESX:SearchReplies].Text" xml:space="preserve">
+    <value>Respuestas:</value>
+  </data>
+  <data name="[RESX:SearchTopic].Text" xml:space="preserve">
+    <value>Tema:</value>
+  </data>
+  <data name="[RESX:SearchViews].Text" xml:space="preserve">
+    <value>Vistas:</value>
+  </data>
+  <data name="[RESX:SearchPosted].Text" xml:space="preserve">
+    <value>Publicada:</value>
+  </data>
+  <data name="[RESX:Started].Text" xml:space="preserve">
+    <value>Comenzó</value>
   </data>
 </root>

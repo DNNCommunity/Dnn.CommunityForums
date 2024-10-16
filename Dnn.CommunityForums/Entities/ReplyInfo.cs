@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Collections;
+using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -254,7 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn]
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
-        {            
+        {
             if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.Read, accessingUser.PortalID, this.Forum.ModuleId, accessingUser.UserID))
             {
                 return string.Empty;
@@ -291,16 +292,120 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(this.TopicId.ToString(), format);
                 case "contentid":
                     return PropertyAccess.FormatString(this.ContentId.ToString(), format);
+                case "forumid":
+                    return PropertyAccess.FormatString(this.ForumId.ToString(), format);
                 case "subject":
-                    return PropertyAccess.FormatString(length > 0 && this.Subject.Length > length ? string.Concat(this.Subject.Substring(0, length), "...") : this.Subject, format);
+                {
+                        string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
+                        return PropertyAccess.FormatString(length > 0 && this.Subject.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93"), "...") : Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage, format);
+                }
+
+                case "subjectlink":
+                {
+                        string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, this.Forum.PortalSettings.ActiveTab.TabID, this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1,this.ContentId, this.Forum.SocialGroupId);
+                        string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
+                        string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
+                        string sBodyTitle = GetTopicTitle(this.Content.Body);
+                        string slink;
+                        var @params = new List<string>
+                        {
+                            $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ContentJumpId}={this.Topic.LastReplyId}",
+                        };
+
+                        if (this.Forum.SocialGroupId > 0)
+                        {
+                            @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+                        }
+
+                        if (sTopicURL == string.Empty)
+                        {
+                            @params = new List<string>
+                            {
+                                $"{ParamKeys.ForumId}={this.ForumId}",
+                                $"{ParamKeys.TopicId}={this.TopicId}",
+                                $"{ParamKeys.ViewType}={Views.Topic}",
+                            };
+                            if (this.Forum.MainSettings.UseShortUrls)
+                            {
+                                @params.Add($"{ParamKeys.TopicId}={this.TopicId}");
+                            }
+
+                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
+                        }
+                        else
+                        {
+                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + sTopicURL + "\">" + subject + "</a>";
+                        }
+
+                        return PropertyAccess.FormatString(slink + sPollImage, format);
+                }
+
                 case "summary":
                     return PropertyAccess.FormatString(length > 0 && this.Summary.Length > length ? this.Summary.Substring(0, length) : this.Summary, format);
                 case "body":
                     return PropertyAccess.FormatString(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, format);
+                case "link":
+                {
+                    string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, this.Forum.PortalSettings.ActiveTab.TabID, this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
+                    string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
+                    string sBodyTitle = GetTopicTitle(this.Content.Body);
+                    string slink;
+                    var @params = new List<string>
+                    {
+                        $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ContentJumpId}={this.ReplyId}",
+                    };
+
+                    if (this.Forum.SocialGroupId > 0)
+                    {
+                        @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+                    }
+
+                    if (sTopicURL == string.Empty)
+                    {
+                        @params = new List<string>
+                        {
+                            $"{ParamKeys.ForumId}={this.ForumId}",
+                            $"{ParamKeys.TopicId}={this.TopicId}",
+                            $"{ParamKeys.ReplyId}={this.ReplyId}",
+                            $"{ParamKeys.ViewType}={Views.Post}",
+                        };
+                        if (this.Forum.MainSettings.UseShortUrls)
+                        {
+                            @params.Add($"{ParamKeys.ContentJumpId}={this.ReplyId}");
+                        }
+
+                        slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
+                    }
+                    else
+                    {
+                        slink = "<a title=\"" + sBodyTitle + "\" href=\"" + sTopicURL + "\">" + subject + "</a>";
+                    }
+
+                    return PropertyAccess.FormatString(slink, format);
+                }
+
                 case "authorid":
                     return PropertyAccess.FormatString(this.Content.AuthorId.ToString(), format);
                 case "authorname":
                     return PropertyAccess.FormatString(this.Content.AuthorName.ToString(), format);
+                case "authordisplaynamelink":
+                {
+                        return PropertyAccess.FormatString(
+                            Controllers.ForumUserController.CanLinkToProfile(
+                                this.Forum.PortalSettings,
+                                this.Forum.MainSettings,
+                                this.ModuleId,
+                                new Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                    accessingUser.PortalID,
+                                    accessingUser.UserID),
+                                this.Author.ForumUser)
+                                ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
+                                    string.Empty,
+                                    $"userId={this.Content.AuthorId}")
+                                : string.Empty,
+                            format);
+                }
+
                 case "authordisplayname":
                     return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName :
                         DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
@@ -359,7 +464,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return string.Empty;
 
                 case "actioneditonclick":
-                    {
+                {
                         var bEdit = Controllers.PermissionController.HasPerm(this.Forum.Security.Edit,
                             accessingUser.PortalID,
                             this.Forum.ModuleId, accessingUser.UserID);
@@ -387,8 +492,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, editParams.ToArray()),
                                 format);
                         }
+
                         return string.Empty;
-                    }
+                }
+
                 case "actionreplyonclick":
                     {
                         var bReply = Controllers.PermissionController.HasPerm(this.Forum.Security.Reply,
@@ -537,7 +644,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                     return string.Empty;
                 case "actionmarkansweronclick":
-                    {
+                {
                         if (this.IsReply && this.Topic.StatusId > 0 && this.Topic.StatusId != 3 && this.StatusId != 1)
                         {
                             var bEdit = Controllers.PermissionController.HasPerm(this.Forum.Security.Edit,
@@ -555,7 +662,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                         return string.Empty;
-                    }
+                }
 
                 case "actionmoveonclick": /* only valid for topic not for reply */
                     return string.Empty;
@@ -579,6 +686,27 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             propertyNotFound = true;
             return string.Empty;
-}
+        }
+        
+        private static string GetTopicTitle(string body)
+        {
+            if (!string.IsNullOrEmpty(body))
+            {
+
+                body = HttpUtility.HtmlDecode(body);
+                body = body.Replace("<br>", System.Environment.NewLine);
+                body = Utilities.StripHTMLTag(body);
+                body = body.Length > 500 ? body.Substring(0, 500) + "..." : body;
+                body = body.Replace("\"", "'");
+                body = body.Replace("?", string.Empty);
+                body = body.Replace("+", string.Empty);
+                body = body.Replace("%", string.Empty);
+                body = body.Replace("#", string.Empty);
+                body = body.Replace("@", string.Empty);
+                return body.Trim();
+            }
+
+            return string.Empty;
+        }
     }
 }

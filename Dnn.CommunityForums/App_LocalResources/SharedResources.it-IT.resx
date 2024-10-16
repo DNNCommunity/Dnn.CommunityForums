@@ -1558,9 +1558,6 @@ Da
   <data name="SearchCaption.Text" xml:space="preserve">
     <value>Cerca in questo forum:</value>
   </data>
-  <data name="SearchForum.Text" xml:space="preserve">
-    <value>Forum:</value>
-  </data>
   <data name="SearchFrom.Text" xml:space="preserve">
     <value>Da:</value>
   </data>
@@ -1569,9 +1566,6 @@ Da
   </data>
   <data name="SearchLastPost.Text" xml:space="preserve">
     <value>Ultimo Post:</value>
-  </data>
-  <data name="SearchModify.Text" xml:space="preserve">
-    <value>Modifica ricerca</value>
   </data>
   <data name="SearchPosted.Text" xml:space="preserve">
     <value>Pubblicato:</value>
@@ -1593,9 +1587,6 @@ Da
   </data>
   <data name="SearchReplies.Text" xml:space="preserve">
     <value>Risposte:</value>
-  </data>
-  <data name="SearchTopic.Text" xml:space="preserve">
-    <value>Argomento:</value>
   </data>
   <data name="SearchType.Text" xml:space="preserve">
     <value>Tipo di ricerca</value>
@@ -1764,5 +1755,29 @@ Da
   </data>
   <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
     <value>Elimina tutti i post per questo utente e annulla l'autorizzazione dell'utente.</value>
+  </data>
+  <data name="[RESX:SearchModify].Text" xml:space="preserve">
+    <value>Modifica ricerca</value>
+  </data>
+  <data name="[RESX:SearchBy].Text" xml:space="preserve">
+    <value>Presso:</value>
+  </data>
+  <data name="[RESX:SearchForum].Text" xml:space="preserve">
+    <value>Forum:</value>
+  </data>
+  <data name="[RESX:SearchReplies].Text" xml:space="preserve">
+    <value>Risposte:</value>
+  </data>
+  <data name="[RESX:SearchTopic].Text" xml:space="preserve">
+    <value>Argomento:</value>
+  </data>
+  <data name="[RESX:SearchViews].Text" xml:space="preserve">
+    <value>Visualizzazioni:</value>
+  </data>
+  <data name="[RESX:SearchPosted].Text" xml:space="preserve">
+    <value>Pubblicato:</value>
+  </data>
+  <data name="[RESX:Started].Text" xml:space="preserve">
+    <value>Avviato</value>
   </data>
 </root>

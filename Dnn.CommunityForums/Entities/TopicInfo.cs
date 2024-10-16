@@ -538,7 +538,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "subject":
                     {
                         string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
-                        return PropertyAccess.FormatString(Utilities.StripHTMLTag(this.Content.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage, format);
+                        return PropertyAccess.FormatString(length > 0 && this.Subject.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93"), "...") : Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage, format);
                     }
 
                 case "subjectlink":
@@ -767,7 +767,44 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "forumurl":
                     return PropertyAccess.FormatString(this.ForumURL, format);
                 case "link":
-                    return PropertyAccess.FormatString(this.URL, format);
+                    {
+                        string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, this.Forum.PortalSettings.ActiveTab.TabID, this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.TopicUrl, -1, -1, string.Empty, 1, -1, this.Forum.SocialGroupId);
+                        string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
+                        string sBodyTitle = GetTopicTitle(this.Content.Body);
+                        string slink;
+                        var @params = new List<string>
+                        {
+                            $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ContentJumpId}={this.LastReplyId}",
+                        };
+
+                        if (this.Forum.SocialGroupId > 0)
+                        {
+                            @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+                        }
+
+                        if (sTopicURL == string.Empty)
+                        {
+                            @params = new List<string>
+                            {
+                                $"{ParamKeys.ForumId}={this.ForumId}",
+                                $"{ParamKeys.TopicId}={this.TopicId}",
+                                $"{ParamKeys.ViewType}={Views.Topic}",
+                            };
+                            if (this.Forum.MainSettings.UseShortUrls)
+                            {
+                                @params.Add($"{ParamKeys.TopicId}={this.TopicId}");
+                            }
+
+                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
+                        }
+                        else
+                        {
+                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + sTopicURL + "\">" + subject + "</a>";
+                        }
+
+                        return PropertyAccess.FormatString(slink, format);
+                    }
+
                 case "url":
                     return PropertyAccess.FormatString(this.URL, format);
                 case "lastreplydisplayname":
