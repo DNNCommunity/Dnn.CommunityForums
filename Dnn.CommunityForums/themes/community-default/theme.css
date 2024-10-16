@@ -674,6 +674,10 @@
 .dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-topic-content-main .dcf-post-body {
   padding-bottom: 1.5rem;
 }
+.dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-topic-content-main .dcf-post-body img {
+  max-width: 100% !important;
+  height: auto !important;
+}
 .dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-post-footer {
   border-top: solid 1px #ccc;
 }
