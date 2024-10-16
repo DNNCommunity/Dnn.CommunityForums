@@ -49,8 +49,6 @@ namespace DotNetNuke.Modules.ActiveForums
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerTop = new PagerNav();
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerBottom = new PagerNav();
 
-        #region Private Members
-
         private string searchText;
         private string tags;
         private int? searchType;
@@ -76,8 +74,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private Control ctl;
         private DataRow currentRow;
 
-        #endregion
-
         #region Event Handlers
         protected override void OnInit(EventArgs e)
         {
@@ -91,8 +87,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ctl = this.ParseControl(template);
                 this.LinkControls(this.ctl.Controls);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Exceptions.LogException(ex);
                 throw;
             }
         }
@@ -216,29 +213,6 @@ namespace DotNetNuke.Modules.ActiveForums
                             post = topic;
                         }
                     }
-
-                    foreach (Control control in repeaterItemEventArgs.Item.Controls)
-                    {
-                        string itemTemplate = string.Empty;
-                        try
-                        {
-                            if (control.GetType().FullName == "System.Web.UI.LiteralControl")
-                            {
-                                itemTemplate = ((System.Web.UI.LiteralControl)control).Text;
-                            }
-                            else if (control.GetType().FullName == "System.Web.UI.HtmlControls.HtmlGenericControl")
-                            {
-                                itemTemplate = ((System.Web.UI.HtmlControls.HtmlGenericControl)control).InnerText;
-                            }
-                            else
-                            {
-                                Exceptions.LogException(new KeyNotFoundException($"Unexpected control type: {control.GetType().FullName}"));
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Exceptions.LogException(ex);
-                        }
 
                     foreach (Control control in repeaterItemEventArgs.Item.Controls)
                     {
