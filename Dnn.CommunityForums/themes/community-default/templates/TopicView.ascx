@@ -73,7 +73,7 @@
 										
 									</div>
 									<div class="dcf-col-75">
-										<div class="dcf-toolbar dcf-topic-actions">[DCF:TOOLBAR:POSTACTIONS]</div>
+										<div class="dcf-toolbar dcf-topic-actions">[DCF:TEMPLATE-POSTACTIONS]</div>
 									</div>
 								</div>
 							</header>
@@ -136,7 +136,7 @@
 										
 									</div>
 									<div class="dcf-col-75">
-										<div class="dcf-toolbar dcf-topic-actions">[DCF:TOOLBAR:POSTACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
+										<div class="dcf-toolbar dcf-topic-actions">[DCF:TEMPLATE-POSTACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
                                         
 									</div>
 								</div>

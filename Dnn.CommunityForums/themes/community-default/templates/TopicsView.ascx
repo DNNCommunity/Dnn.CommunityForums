@@ -59,7 +59,7 @@
 									<div class="dcf-forum-description">[FORUMTOPIC:BODYTITLE]</div>
 
 									<div class="dcf-topic-tools">
-										[DCF:TOOLBAR:TOPICACTIONS]
+										[DCF:TEMPLATE-TOPICACTIONS]
 									</div>
 
 									</div>
@@ -137,7 +137,7 @@
 							<div class="dcf-topic-description">[FORUMTOPIC:BODYTITLE]</div>
 
 							<div class="dcf-topic-tools">
-                                [DCF:TOOLBAR:TOPICACTIONS]
+                                [DCF:TEMPLATE-TOPICACTIONS]
                             </div>
 
 							<div>
