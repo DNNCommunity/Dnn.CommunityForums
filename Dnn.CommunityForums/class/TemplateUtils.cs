@@ -521,6 +521,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 
                 // IP Address
                 result.Replace("[MODIPADDRESS]", accessingUser.IsAdmin || accessingUser.IsSuperUser || accessingUser.GetIsMod(moduleId) ? ipAddress : string.Empty);
+                result.Replace("[FORUMPOST:MODIPADDRESS]", accessingUser.IsAdmin || accessingUser.IsSuperUser || accessingUser.GetIsMod(moduleId) ? ipAddress : string.Empty);
 
                 // User Edit
                 result.Replace("[AF:BUTTON:EDITUSER]", (accessingUser.IsAdmin || accessingUser.IsSuperUser) && author.ForumUser.UserId > 0 ? string.Format("<button class='af-button af-button-edituser' data-id='{0}' data-name='{1}'>[RESX:Edit]</button>", author.ForumUser.UserId, Utilities.JSON.EscapeJsonString(author.DisplayName)) : string.Empty);

@@ -1,31 +1,31 @@
 <div class="dcf-post-user">
     <div class="dcf-user">
-        [AF:PROFILE:USERSTATUS] [AF:PROFILE:DISPLAYNAME]
+        [FORUMUSER:USERSTATUS] [FORUMUSER:USERPROFILELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMUSER:DISPLAYNAME]</a>|[FORUMUSER:DISPLAYNAME]]
     </div>
     <div class="dcf-avatar">
         <div class="dcf-avatar-img-wrap">
             <div class="dcf-avatar-img">
-            [AF:PROFILE:AVATAR]
+            [FORUMUSER:AVATAR]
             </div>
         </div>
     </div>
 </div>
 <div class="dcf-post-user-data">
     <div class="dcf-post-user">
-    [AF:PROFILE:USERCAPTION]
-    [AF:PROFILE:RANKNAME]
+    [FORUMUSER:USERCAPTION]
+    [FORUMUSER:RANKNAME]
     [AF:PROFILE:PMLINK]
     [AF:BUTTON:EDITUSER]
     </div>
     <div class="dcf-post-user-rank">
         <div class="dcf-user-posts">
-            [RESX:Posts]: [AF:PROFILE:POSTCOUNT]
+            [RESX:Posts]: [FORUMUSER:POSTCOUNT]
         </div>
         <div class="dcf-user-ipaddress">
-            [MODIPADDRESS]
+            [FORUMPOST:MODIPADDRESS]
         </div>
         <div class="dcf-user-rank">
-            [AF:PROFILE:RANKDISPLAY]
+            [FORUMUSER:RANKDISPLAY]
         </div>
     </div>
 </div>

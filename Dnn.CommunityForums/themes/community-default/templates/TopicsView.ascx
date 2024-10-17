@@ -157,7 +157,9 @@
 					<td class="dcf-col dcf-col-subscribers">[FORUMTOPIC:SUBSCRIBERCOUNT]</td>
 					<td class="dcf-col dcf-col-last-post"><div class="dcf-last-post">
                         [LASTPOST]
-                            [RESX:BY] <i class="fa fa-user fa-blue"></i>&nbsp;[LASTPOSTDISPLAYNAME][FORUMTOPIC:LASTREPLYURL|<a href="{0}" rel="nofollow"><img src="[FORUM:THEMELOCATION]/images/miniarrow_right.png" style="vertical-align: middle;" alt="[RESX:JumpToLastReply]" border="0" class="afminiarrow" /></a>]<br />[FORUMTOPIC:LASTPOSTDATE]
+                            <%--[LASTPOSTDISPLAYNAME]--%>
+                        [FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAMELINK|[RESX:BY]<i class="fa fa-user fa-blue"></i><a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]</a>|[RESX:BY][FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]]
+                            [FORUMTOPIC:LASTREPLYURL|<a href="{0}" rel="nofollow"><img src="[FORUM:THEMELOCATION]/images/miniarrow_right.png" style="vertical-align: middle;" alt="[RESX:JumpToLastReply]" border="0" class="afminiarrow" /></a>]<br />[FORUMTOPIC:LASTPOSTDATE]
                         [/LASTPOST]
                     </div></td>
 				</tr>

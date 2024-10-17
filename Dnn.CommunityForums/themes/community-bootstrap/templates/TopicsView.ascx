@@ -4,7 +4,7 @@
 			<div class="dcf-topics-view">
 				<div class="dcf-breadcrumb py-2 border-bottom border-top">
 					<i class="fa fa-home"></i>  [FORUM:FORUMMAINLINK|<a href="{0}" class="dcf-forums-link">[RESX:ForumMain]</a>]
-					<i class="fa fa-chevron-right"></i> [FORUMGROUP:FORUMGROUPLINK]
+					<i class="fa fa-chevron-right"></i> [FORUMGROUP:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUMGROUP:GROUPNAME]</a>]
 				</div>
 				
 				<div class="d-flex">
@@ -88,9 +88,12 @@
 								<td class="dcf-col dcf-col-views">[FORUMTOPIC:VIEWCOUNT]</td>
 								<td class="dcf-col dcf-col-views">[FORUMTOPIC:SUBSCRIBERCOUNT]</td>
 								<td class="dcf-col dcf-col-last-post">
-									<div class="dcf-_lastpost" style="white-space:nowrap;">[LASTPOST][RESX:BY]
+									<div class="dcf-_lastpost" style="white-space:nowrap;">
+                                        [LASTPOST]
+                                            [RESX:BY]
 										<i class="fa fa-user fa-blue"></i>&nbsp;[FORUMTOPIC:LASTPOSTDISPLAYNAME][FORUMTOPIC:LASTREPLYURL|<a href="{0}" rel="nofollow"><img src="[FORUM:THEMELOCATION]/images/miniarrow_right.png" style="vertical-align: middle;" alt="[RESX:JumpToLastReply]" border="0" class="afminiarrow" /></a>]
-										<br />[FORUMTOPIC:LASTPOSTDATE][/LASTPOST]
+										    <br />[FORUMTOPIC:LASTPOSTDATE]
+                                        [/LASTPOST]
 									</div>
 								</td>
 							</tr>
@@ -184,10 +187,7 @@
 								<td class="dcf-col dcf-col-last-post">
 									<div class="dcf-last-post">
                                         [LASTPOST]
-										    <i class="fa fa-user fa-blue"></i>&nbsp;[FORUMPOST:LASTPOSTAUTHORDISPLAYNAMELINK|
-                                            [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUMPOST:LASTPOSTAUTHORDISPLAYNAME]</a>|
-                                            [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>[FORUMPOST:LASTPOSTAUTHORDISPLAYNAME]
-                                            ]
+                                            [FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAMELINK|[RESX:BY]<i class="fa fa-user fa-fw fa-blue"></i><a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]</a>|[RESX:BY]<i class="fa fa-user fa-fw fa-blue"></i>[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]]
                                             [FORUMTOPIC:LASTREPLYURL|<a href="{0}" rel="nofollow"><img src="[FORUM:THEMELOCATION]/images/miniarrow_right.png" style="vertical-align: middle;" alt="[RESX:JumpToLastReply]" border="0" class="afminiarrow" /></a>]
 										    <br />[FORUMTOPIC:LASTPOSTDATE]
                                         [/LASTPOST]
