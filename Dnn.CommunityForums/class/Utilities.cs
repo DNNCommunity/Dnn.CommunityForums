@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -154,26 +156,27 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string ParseToolBar(string template, int portalId, int forumTabId, int forumModuleId, int tabId, int moduleId, ForumUserInfo forumUser, int forumId = 0)
         {
+            var portalSettings = Utilities.GetPortalSettings(portalId);
+            var language = forumUser?.UserInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
             StringBuilder templateStringBuilder = new StringBuilder(template);
-            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId);
-            template = templateStringBuilder.ToString();
+            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyToolbarTokenSynonyms(templateStringBuilder, portalSettings, language);
 
             // Search popup
             var searchUrl = NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search", $"f={forumId}" });
             var advancedSearchUrl = NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" });
-            var searchText = forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]";
 
-            if (template.Contains("[AF:TB:Search]"))
+            if (templateStringBuilder.ToString().Contains("[DCF:TEMPLATE-TOOLBARSEARCHPOPUP]"))
             {
                 string searchPopupTemplate = TemplateCache.GetCachedTemplate(forumModuleId, "ToolbarSearchPopup");
                 searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:SearchURL]", HttpUtility.HtmlEncode(searchUrl));
                 searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:AdvancedSearchURL]", HttpUtility.HtmlEncode(advancedSearchUrl));
-                searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:SearchText]", searchText);
+                searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:SearchText]", forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]");
                 searchPopupTemplate = Utilities.LocalizeControl(searchPopupTemplate);
-                template = template.Replace("[AF:TB:Search]", searchPopupTemplate);
+                templateStringBuilder.Replace("[DCF:TEMPLATE-TOOLBARSEARCHPOPUP]", searchPopupTemplate);
             }
 
-            return template;
+            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId);
+            return templateStringBuilder.ToString();
         }
 
         public static string CleanStringForUrl(string text)
@@ -1266,10 +1269,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private static string LocalizeControl(string controlText, string resourceFile, bool isAdmin, bool scriptSafe)
         {
             controlText = controlText.Replace(" class=afquote", " class=\"afquote\"");
-
-            const string pattern = @"(\[RESX:.+?\])";
-            var regExp = new Regex(pattern);
-            var matches = regExp.Matches(controlText);
+            var matches = RegexUtils.GetCachedRegex(@"(\[RESX:.+?\])", RegexOptions.Compiled).Matches(controlText);
             foreach (Match match in matches)
             {
                 var sKey = match.Value;

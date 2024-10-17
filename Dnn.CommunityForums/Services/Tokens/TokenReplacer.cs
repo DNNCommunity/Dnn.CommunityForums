@@ -172,9 +172,7 @@ using DotNetNuke.Services.Tokens;
 
         internal static StringBuilder ReplaceForumControlTokens(StringBuilder template, PortalSettings portalSettings, ForumUserInfo forumUser, int forumTabId, int forumModuleId, int tabId, int moduleId)
         {
-            var language = forumUser?.UserInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
             template = RemoveObsoleteTokens(template);
-            template = MapLegacyToolbarTokenSynonyms(template, portalSettings, language);
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumTabId, forumModuleId, tabId, moduleId) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
@@ -448,7 +446,7 @@ using DotNetNuke.Services.Tokens;
             template = ReplaceTokenSynonym(template, "[PORTALNAME]", "[PORTAL:PORTALNAME]");
             return template;
         }
-        
+
         internal static StringBuilder MapLegacyModuleTokenSynonyms(StringBuilder template)
         {
             template = ReplaceTokenSynonym(template, "[MODULEID]", "[MODULE:MODULEID]");
@@ -462,6 +460,7 @@ using DotNetNuke.Services.Tokens;
             template = RemoveObsoleteTokens(template);
             template = MapLegacyPortalTokenSynonyms(template);
             template = MapLegacyModuleTokenSynonyms(template);
+            template = ReplaceTokenSynonym(template, "[AF:TB:Search]", "[DCF:TEMPLATE-TOOLBARSEARCHPOPUP]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:NotRead]", "[DCF:TOOLBAR-NOTREAD-ONCLICK", "[AF:TB:NotRead]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:MyTopics]", "[DCF:TOOLBAR-MYTOPICS-ONCLICK", "[AF:TB:MyTopics]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:MySettings]", "[DCF:TOOLBAR-MYSETTINGS-ONCLICK", "[AF:TB:MySettings]");
@@ -475,6 +474,7 @@ using DotNetNuke.Services.Tokens;
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:MostLiked]", "[DCF:TOOLBAR-MOSTLIKED-ONCLICK", "[AF:TB:MostLiked]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:MostReplies]", "[DCF:TOOLBAR-MOSTREPLIES-ONCLICK", "[AF:TB:MostReplies]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:Forums]", "[DCF:TOOLBAR-FORUMS-ONCLICK", "[AF:TB:Forums]");
+
             return template;
         }
 

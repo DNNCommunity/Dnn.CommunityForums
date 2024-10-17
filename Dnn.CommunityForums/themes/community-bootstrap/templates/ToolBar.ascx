@@ -25,7 +25,7 @@
             <li>[DCF:TOOLBAR-MYSETTINGS-ONCLICK|<a href="{0}"><i class="fa fa-cog fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:MySettings]</span></a>]</li>
             <li>[DCF:TOOLBAR-MYSUBSCRIPTIONS-ONCLICK|<a href="{0}"><i class="fa fa-envelope fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:MySubscriptions]</span></a>]</li>
             <li>[DCF:TOOLBAR-CONTROLPANEL-ONCLICK|<a href="{0}"><i class="fa fa-bars fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:ControlPanel]</span></a>]</li>
-            <li>[AF:TB:Search]</li>
+            <li>[DCF:TEMPLATE-TOOLBARSEARCHPOPUP]</li>
         </ul>
     </div>
 </div>
