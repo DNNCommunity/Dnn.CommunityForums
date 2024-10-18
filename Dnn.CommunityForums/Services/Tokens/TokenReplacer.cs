@@ -18,6 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Net;
+using System.Web.UI;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 {
 using System;
@@ -155,7 +158,7 @@ using DotNetNuke.Services.Tokens;
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
-        public TokenReplacer(PortalSettings portalSettings, int forumTabId, int forumModuleId, int tabId, int moduleId)
+        public TokenReplacer(PortalSettings portalSettings, int forumTabId, int forumModuleId, int tabId, int moduleId, HttpRequest request, Control control)
         {
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
             this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumTabId, forumModuleId, tabId, moduleId);
@@ -170,11 +173,11 @@ using DotNetNuke.Services.Tokens;
             return base.ReplaceTokens(source);
         }
 
-        internal static StringBuilder ReplaceForumControlTokens(StringBuilder template, PortalSettings portalSettings, ForumUserInfo forumUser, int forumTabId, int forumModuleId, int tabId, int moduleId)
+        internal static StringBuilder ReplaceForumControlTokens(StringBuilder template, PortalSettings portalSettings, ForumUserInfo forumUser, int forumTabId, int forumModuleId, int tabId, int moduleId, HttpRequest request, Control control)
         {
             template = RemoveObsoleteTokens(template);
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
-            var tokenReplacer = new TokenReplacer(portalSettings, forumTabId, forumModuleId, tabId, moduleId) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
+            var tokenReplacer = new TokenReplacer(portalSettings, forumTabId, forumModuleId, tabId, moduleId, request, control) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
             return template;

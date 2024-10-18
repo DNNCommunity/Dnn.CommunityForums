@@ -18,6 +18,11 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Net;
+using System.Web;
+using System.Web.UI;
+using DotNetNuke.Services.Authentication;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 {
     using DotNetNuke.Entities.Host;
@@ -29,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     {
         public int ForumTabId { get; set; }
 
-        public int TabId  { get; set; }
+        public int TabId { get; set; }
 
         public int ForumModuleId { get; set; }
 
@@ -41,6 +46,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         private const string PropertySource_portal = "portal";
         private const string PropertySource_host = "host";
         private PortalSettings portalSettings;
+        private HttpRequest request;
+        private Control control;
 
         public ForumsModuleTokenReplacer(PortalSettings portalSettings, int forumTabId, int forumModuleId, int tabId, int moduleId)
         {
@@ -58,10 +65,40 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
+        public ForumsModuleTokenReplacer(PortalSettings portalSettings, int forumTabId, int forumModuleId, int tabId, int moduleId, HttpRequest request, Control control)
+        {
+            this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
+            this.PropertySource[PropertySource_dcf] = this;
+            this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
+            this.PropertySource[PropertySource_portal] = portalSettings;
+            this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            this.CurrentAccessLevel = Scope.DefaultSettings;
+            this.PortalSettings = portalSettings;
+            this.ModuleId = moduleId;
+            this.ForumModuleId = forumModuleId;
+            this.TabId = tabId;
+            this.ForumTabId = forumTabId;
+            this.Request = request;
+            this.Control = control;
+            this.CurrentAccessLevel = Scope.DefaultSettings;
+        }
+
         public PortalSettings PortalSettings
         {
             get => this.portalSettings;
             set => this.portalSettings = value;
+        }
+
+        public HttpRequest Request
+        {
+            get => this.request;
+            set => this.request = value;
+        }
+
+        public Control Control
+        {
+            get => this.control;
+            set => this.control = value;
         }
 
         public new string ReplaceTokens(string source)
@@ -100,6 +137,31 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {
+                case "loginlink":
+                    {
+                        //Please <a href="{0}"{1}>login</a> to post a reply.
+                        string loginUrl = this.PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, "returnUrl=" + this.Request.RawUrl) : Utilities.NavigateURL(this.TabId, string.Empty, "ctl=login&returnUrl=" + this.Request.RawUrl);
+
+                        string onclick = string.Empty;
+                        if (this.PortalSettings.EnablePopUps && this.PortalSettings.LoginTabId == DotNetNuke.Common.Utilities.Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this.Control))
+                        {
+                            onclick = " onclick=\"return " + DotNetNuke.Common.Utilities.UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginUrl), this.Control, this.PortalSettings, true, false, 300, 650) + "\"";
+                        }
+                        return PropertyAccess.FormatString(loginUrl, format);
+                    }
+
+                case "loginpopuplink":
+                    {
+                        //Please <a href="{0}"{1}>login</a> to post a reply.
+                        // onclick = " onclick=\"return " + DotNetNuke.Common.Utilities.UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginUrl), this.Control, this.PortalSettings, true, false, 300, 650) + "\"";
+                        string loginUrl = this.PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, "returnUrl=" + this.Request.RawUrl) : Utilities.NavigateURL(this.TabId, string.Empty, "ctl=login&returnUrl=" + this.Request.RawUrl);
+                        string onclick = string.Empty;
+                        if (this.PortalSettings.EnablePopUps && this.PortalSettings.LoginTabId == DotNetNuke.Common.Utilities.Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this.Control))
+                        {
+                            onclick = DotNetNuke.Common.Utilities.UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginUrl), this.Control, this.PortalSettings, true, false, 300, 650);
+                        }
+                        return PropertyAccess.FormatString(onclick, format);
+                    }
                 case "toolbar-forums-onclick":
                     return PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId), format);
                 case "toolbar-controlpanel-onclick":
