@@ -450,6 +450,7 @@ using DotNetNuke.Services.Tokens;
         internal static StringBuilder MapLegacyTemplateTokenSynonyms(StringBuilder template)
         {
             template = ReplaceTokenSynonym(template, "[AF:CONTROL:TOPICACTIONS]", "[DCF:TEMPLATE-TOPICACTIONS]");
+            template = ReplaceTokenSynonym(template, "[AF:TB:Search]", "[DCF:TEMPLATE-TOOLBARSEARCHPOPUP]");
             return template;
         }
 
