@@ -240,6 +240,10 @@
 .dnn-community-forums .dcf-topic-view .dcf-topic-content {
   width: 100%;
 }
+.dnn-community-forums .dcf-topic-view .dcf-topic-content .dcf-post-body img {
+  max-width: 100% !important;
+  height: auto !important;
+}
 .dnn-community-forums .dcf-topic-view .dcf-topic-content .dcf-topic-content-top {
   border-bottom: solid 1px #ddd;
 }
