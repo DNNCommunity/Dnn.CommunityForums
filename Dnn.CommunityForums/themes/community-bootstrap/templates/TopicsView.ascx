@@ -79,10 +79,9 @@
 									</div>
 									</div>
 									<div>
-                                        [FORUMTOPIC:RATING|<span class="fa-rater fa-rate{0}"><i class="fa fa-star1"></i><i class="fa fa-star2"></i><i class="fa fa-star3"></i><i class="fa fa-star4"></i><i class="fa fa-star5"></i></span>
-                                        ]
+                                        [FORUMTOPIC:RATING|<span class="fa-rater fa-rate{0}"><i class="fa fa-star1"></i><i class="fa fa-star2"></i><i class="fa fa-star3"></i><i class="fa fa-star4"></i><i class="fa fa-star5"></i></span>]
                                     </div>
-									<div rowspan="2" class="dcf-status">[FORUMTOPIC:STATUS]</div>
+									<div rowspan="2" class="dcf-status">[FORUMTOPIC:STATUS|<div><i class="fa fa-status{0} fa-red fa-2x"></i></div>]</div>
 								</td>
 								<td class="dcf-col dcf-col-replies">[FORUMTOPIC:REPLYCOUNT]</td>
 								<td class="dcf-col dcf-col-views">[FORUMTOPIC:VIEWCOUNT]</td>
