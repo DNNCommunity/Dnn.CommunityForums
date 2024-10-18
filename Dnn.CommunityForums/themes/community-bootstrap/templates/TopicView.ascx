@@ -71,7 +71,7 @@
 							<header class="dcf-topic-content-top ">
 								<div class="d-flex flex-wrap pb-2">
 									<div class="dcf-postdate">[FORUMPOST:DATECREATED]</div>
-									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[DCF:TOOLBAR:POSTACTIONS]</div>
+									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[DCF:TEMPLATE-POSTACTIONS]</div>
 								</div>
 							</header>
 							<section class="dcf-topic-content-main py-4">
@@ -123,7 +123,7 @@
 							<header class="dcf-topic-content-top ">
 								<div class="d-flex flex-wrap pb-2">
 									<div class="dcf-postdate">[FORUMPOST:DATECREATED]</div>
-									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[DCF:TOOLBAR:POSTACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
+									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[DCF:TEMPLATE-POSTACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
 								</div>
 							</header>
 							<section class="dcf-topic-content-main py-4">

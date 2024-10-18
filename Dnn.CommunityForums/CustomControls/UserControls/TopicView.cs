@@ -747,7 +747,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTokenSynonym(
                     sbOutput,
                     "[AF:CONTROL:TOPICACTIONS]",
-                    "[DCF:TOOLBAR:POSTACTIONS]");
+                    "[DCF:TEMPLATE-POSTACTIONS]");
             }
 
             if (sbOutput.ToString().Contains("[AF:CONTROL:POSTACTIONS]"))
@@ -755,13 +755,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTokenSynonym(
                     sbOutput,
                     "[AF:CONTROL:POSTACTIONS]",
-                    "[DCF:TOOLBAR:POSTACTIONS]");
+                    "[DCF:TEMPLATE-POSTACTIONS]");
             }
 
-            if (sbOutput.ToString().Contains("[DCF:TOOLBAR:POSTACTIONS]"))
+            if (sbOutput.ToString().Contains("[DCF:TEMPLATE-POSTACTIONS]"))
             {
                 this.useListActions = true;
-                sbOutput.Replace("[DCF:TOOLBAR:POSTACTIONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "PostActions"));
+                sbOutput.Replace("[DCF:TEMPLATE-POSTACTIONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "PostActions"));
             }
 
             sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostActionTokenSynonyms(sbOutput, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale, this.useListActions);

@@ -702,12 +702,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string GetSearchUrl()
         {
-            var @params = new List<string> { ParamKeys.ViewType + "=searchadvanced" };
+            var @params = new List<string> { $"{ParamKeys.ViewType}=searchadvanced" };
             @params.AddRange(this.Parameters);
 
             if (this.SocialGroupId > 0)
             {
-                @params.Add("GroupId=" + this.SocialGroupId.ToString());
+                @params.Add($"GroupId={this.SocialGroupId}");
             }
 
             return this.NavigateUrl(this.TabId, string.Empty, @params.ToArray());

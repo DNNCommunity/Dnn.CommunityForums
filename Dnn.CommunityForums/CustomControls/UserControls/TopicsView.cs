@@ -126,13 +126,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTokenSynonym(
                         topicsTemplate,
                         "[AF:CONTROL:TOPICACTIONS]",
-                        "[DCF:TOOLBAR:TOPICACTIONS]");
+                        "[DCF:TEMPLATE-TOPICACTIONS]");
                 }
 
-                if (topicsTemplate.Contains("[DCF:TOOLBAR:TOPICACTIONS]"))
+                if (topicsTemplate.Contains("[DCF:TEMPLATE-TOPICACTIONS]"))
                 {
                     this.useListActions = true;
-                    topicsTemplate = topicsTemplate.Replace("[DCF:TOOLBAR:TOPICACTIONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicActions"));
+                    topicsTemplate = topicsTemplate.Replace("[DCF:TEMPLATE-TOPICACTIONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicActions"));
                 }
 
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(topicsTemplate)).ToString();

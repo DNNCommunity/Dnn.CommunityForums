@@ -39,6 +39,7 @@ using DotNetNuke.Services.Tokens;
     internal class TokenReplacer : BaseCustomTokenReplace
     {
         private const string PropertySource_resx = "resx";
+        private const string PropertySource_dcf = "dcf";
         private const string PropertySource_forumgroup = "forumgroup";
         private const string PropertySource_forum = "forum";
         private const string PropertySource_forumuser = "forumuser";
@@ -57,6 +58,7 @@ using DotNetNuke.Services.Tokens;
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, ForumInfo forumInfo)
         {
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumInfo.TabId, forumInfo.ModuleId, portalSettings.ActiveTab.TabID == -1 ? forumInfo.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? forumInfo.ModuleId : portalSettings.ActiveTab.ModuleID);
             this.PropertySource[PropertySource_forum] = forumInfo;
             this.PropertySource[PropertySource_forumgroup] = forumInfo.ForumGroup;
             this.PropertySource[PropertySource_forumuser] = forumUser;
@@ -73,6 +75,7 @@ using DotNetNuke.Services.Tokens;
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, ForumGroupInfo forumGroupInfo)
         {
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumGroupInfo.TabId, forumGroupInfo.ModuleId, portalSettings.ActiveTab.TabID == -1 ? forumGroupInfo.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? forumGroupInfo.ModuleId : portalSettings.ActiveTab.ModuleID);
             this.PropertySource[PropertySource_forumgroup] = forumGroupInfo;
             this.PropertySource[PropertySource_forumuser] = forumUser;
             this.PropertySource[PropertySource_user] = forumUser.UserInfo;
@@ -88,6 +91,7 @@ using DotNetNuke.Services.Tokens;
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, TopicInfo topicInfo)
         {
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.TabId, topicInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 ? topicInfo.Forum.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? topicInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID);
             this.PropertySource[PropertySource_forum] = topicInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = topicInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = topicInfo;
@@ -106,6 +110,7 @@ using DotNetNuke.Services.Tokens;
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, IPostInfo postInfo)
         {
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, postInfo.Forum.TabId, postInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 ? postInfo.Forum.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? postInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID);
             this.PropertySource[PropertySource_forum] = postInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = postInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = postInfo.Topic;
@@ -150,9 +155,29 @@ using DotNetNuke.Services.Tokens;
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
+        public TokenReplacer(PortalSettings portalSettings, int forumTabId, int forumModuleId, int tabId, int moduleId)
+        {
+            this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumTabId, forumModuleId, tabId, moduleId);
+            this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
+            this.PropertySource[PropertySource_portal] = portalSettings;
+            this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            this.CurrentAccessLevel = Scope.DefaultSettings;
+        }
+
         public new string ReplaceTokens(string source)
         {
             return base.ReplaceTokens(source);
+        }
+
+        internal static StringBuilder ReplaceForumControlTokens(StringBuilder template, PortalSettings portalSettings, ForumUserInfo forumUser, int forumTabId, int forumModuleId, int tabId, int moduleId)
+        {
+            template = RemoveObsoleteTokens(template);
+            template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
+            var tokenReplacer = new TokenReplacer(portalSettings, forumTabId, forumModuleId, tabId, moduleId) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
+            template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
+            template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
+            return template;
         }
 
         internal static StringBuilder ReplaceForumTokens(StringBuilder template, ForumInfo forum, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, HttpRequest request, int tabId, CurrentUserTypes currentUserType)
@@ -351,6 +376,8 @@ using DotNetNuke.Services.Tokens;
                 "[AF:BUTTON:PROFILECANCEL]",
                 "[AF:PROFILE:BIO]",
                 "[MODUSERSETTINGS]",
+                "[AF:TB:MyProfile]",
+                "[AF:TB:MemberList]",
             };
 
             if (tokens.Length > 0)
@@ -427,6 +454,30 @@ using DotNetNuke.Services.Tokens;
             template = ReplaceTokenSynonym(template, "[PAGENAME]", "[TAB:TITLE]");
             return template;
         }
+
+        internal static StringBuilder MapLegacyToolbarTokenSynonyms(StringBuilder template, PortalSettings portalSettings, string language)
+        {
+            template = RemoveObsoleteTokens(template);
+            template = MapLegacyPortalTokenSynonyms(template);
+            template = MapLegacyModuleTokenSynonyms(template);
+            template = ReplaceTokenSynonym(template, "[AF:TB:Search]", "[DCF:TEMPLATE-TOOLBARSEARCHPOPUP]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:NotRead]", "[DCF:TOOLBAR-NOTREAD-ONCLICK", "[AF:TB:NotRead]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:MyTopics]", "[DCF:TOOLBAR-MYTOPICS-ONCLICK", "[AF:TB:MyTopics]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:MySettings]", "[DCF:TOOLBAR-MYSETTINGS-ONCLICK", "[AF:TB:MySettings]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:MySubscriptions]", "[DCF:TOOLBAR-MYSUBSCRIPTIONS-ONCLICK", "[AF:TB:MySubscriptions]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:ControlPanel]", "[DCF:TOOLBAR-CONTROLPANEL-ONCLICK", "[AF:TB:ControlPanel]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:ModList]", "[DCF:TOOLBAR-MODERATE-ONCLICK", "[AF:TB:ModList]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:Unanswered]", "[DCF:TOOLBAR-UNANSWERED-ONCLICK", "[AF:TB:Unanswered]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:Unresolved]", "[DCF:TOOLBAR-UNRESOLVED-ONCLICK", "[AF:TB:Unresolved]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:Announcements]", "[DCF:TOOLBAR-ANNOUNCEMENTS-ONCLICK", "[AF:TB:Announcements]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:ActiveTopics]", "[DCF:TOOLBAR-ACTIVETOPICS-ONCLICK", "[AF:TB:ActiveTopics]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:MostLiked]", "[DCF:TOOLBAR-MOSTLIKED-ONCLICK", "[AF:TB:MostLiked]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:MostReplies]", "[DCF:TOOLBAR-MOSTREPLIES-ONCLICK", "[AF:TB:MostReplies]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:Forums]", "[DCF:TOOLBAR-FORUMS-ONCLICK", "[AF:TB:Forums]");
+
+            return template;
+        }
+
 
         internal static StringBuilder MapLegacyForumTokenSynonyms(StringBuilder template, PortalSettings portalSettings, string language)
         {

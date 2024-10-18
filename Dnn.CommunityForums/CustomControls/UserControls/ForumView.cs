@@ -81,11 +81,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     try
                     {
-                        if (template.Contains("[TOOLBAR"))
-                        {
-                            template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(this.PortalId, this.ForumModuleId, this.ForumTabId, this.ModuleId, this.TabId, this.CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value));
-                        }
-
                         Control tmpCtl = null;
                         try
                         {
@@ -252,7 +247,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             fi.PortalSettings = this.PortalSettings;
                             fi.MainSettings = this.MainSettings;
                             bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security?.View, this.ForumUser.UserRoles);
-                            if (this.UserInfo.IsSuperUser || canView || (!fi.ForumGroup.Hidden))
+                            if (this.UserInfo.IsSuperUser || (canView && !fi.ForumGroup.Hidden))
                             {
                                 if (tmpGroup != fi.GroupName)
                                 {
@@ -287,7 +282,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                                 if (iForum <= Globals.ForumCount)
                                 {
-                                    if (canView || (!fi.Hidden))
+                                    if (this.UserInfo.IsSuperUser || (canView && !fi.Hidden))
                                     {
                                         sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
                                         hasForums = true;

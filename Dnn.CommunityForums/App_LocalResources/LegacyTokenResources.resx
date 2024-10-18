@@ -354,4 +354,43 @@
   <data name="[FORUMPOST:SELECTEDANSWER].Text" xml:space="preserve">
     <value>{0}</value>
   </data>
+  <data name="[AF:TB:ActiveTopics].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-fire fa-fw fa-grey"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:ActiveTopics]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:Announcements].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-bullhorn fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Announcements]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:ControlPanel].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-bars fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:ControlPanel]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:Forums].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-home fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:FORUMS]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:ModList].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-wrench fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Moderate]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:MostLiked].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-thumbs-o-up fa-fw fa-grey"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:MostLiked]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:MostReplies].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-comments fa-fw fa-grey"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:MostReplies]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:MySettings].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-cog fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:MySettings]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:MySubscriptions].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-envelope fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:MySubscriptions]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:MyTopics].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-user fa-fw fa-grey"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:MyTopics]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:NotRead].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-eye-slash fa-fw fa-grey"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:NotRead]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:Unanswered].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-comment-o fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Unanswered]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:Unresolved].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-question fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Unresolved]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
 </root>

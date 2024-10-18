@@ -416,7 +416,7 @@ namespace DotNetNuke.Modules.ActiveForums
             HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
             base.Render(htmlWriter);
             string html = stringWriter.ToString();
-            html = Utilities.ParseToolBar(template: html, portalId: this.PortalId, forumTabId: this.ForumTabId, forumModuleId: this.ForumModuleId, tabId: this.TabId, moduleId: this.ModuleId, currentUserType: this.CurrentUserType, forumId: this.ForumId);
+            html = Utilities.ParseToolBar(template: html, portalId: this.PortalId, forumTabId: this.ForumTabId, forumModuleId: this.ForumModuleId, tabId: this.TabId, moduleId: this.ModuleId, forumId: this.ForumId, forumUser: this.ForumUser);
             html = Utilities.LocalizeControl(html);
             writer.Write(html);
         }
@@ -445,7 +445,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.ForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(this.ForumModuleId).FirstOrDefault().TabID;
                     }
 
-                    lit.Text = Utilities.BuildToolbar(this.PortalId, this.ForumModuleId, this.ForumTabId, this.ModuleId, this.TabId, this.CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value);
+                    lit.Text = Utilities.BuildToolbar(this.PortalId, this.ForumModuleId, this.ForumTabId, this.ModuleId, this.TabId, this.ForumUser, HttpContext.Current?.Response?.Cookies["language"]?.Value);
                     this.plhToolbar.Controls.Clear();
                     this.plhToolbar.Controls.Add(lit);
                 }

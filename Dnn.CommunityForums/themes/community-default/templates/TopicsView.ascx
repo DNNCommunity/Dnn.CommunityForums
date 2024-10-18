@@ -59,14 +59,13 @@
 									<div class="dcf-forum-description">[FORUMTOPIC:BODYTITLE]</div>
 
 									<div class="dcf-topic-tools">
-										[DCF:TOOLBAR:TOPICACTIONS]
+										[DCF:TEMPLATE-TOPICACTIONS]
 									</div>
 
 									</div>
-										<div>[FORUMTOPIC:RATING|<span class="fa-rater fa-rate{0}"><i class="fa fa-star1"></i><i class="fa fa-star2"></i><i class="fa fa-star3"></i><i class="fa fa-star4"></i><i class="fa fa-star5"></i></span>
-]
+										<div>[FORUMTOPIC:RATING|<span class="fa-rater fa-rate{0}"><i class="fa fa-star1"></i><i class="fa fa-star2"></i><i class="fa fa-star3"></i><i class="fa fa-star4"></i><i class="fa fa-star5"></i></span>]
 										</div>
-										<div rowspan="2" class="dcf-status">[FORUMTOPIC:STATUS]</div>
+										<div rowspan="2" class="dcf-status">[FORUMTOPIC:STATUS|<div><i class="fa fa-status{0} fa-red fa-2x"></i></div>]</div>
 
 							</td>
 							<td class="dcf-col dcf-col-replies">[FORUMTOPIC:REPLYCOUNT]</td>
@@ -137,7 +136,7 @@
 							<div class="dcf-topic-description">[FORUMTOPIC:BODYTITLE]</div>
 
 							<div class="dcf-topic-tools">
-                                [DCF:TOOLBAR:TOPICACTIONS]
+                                [DCF:TEMPLATE-TOPICACTIONS]
                             </div>
 
 							<div>
@@ -157,8 +156,7 @@
 					<td class="dcf-col dcf-col-subscribers">[FORUMTOPIC:SUBSCRIBERCOUNT]</td>
 					<td class="dcf-col dcf-col-last-post"><div class="dcf-last-post">
                         [LASTPOST]
-                            <%--[LASTPOSTDISPLAYNAME]--%>
-                        [FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAMELINK|[RESX:BY]<i class="fa fa-user fa-blue"></i><a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]</a>|[RESX:BY][FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]]
+                            [FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAMELINK|[RESX:BY]<i class="fa fa-user fa-blue"></i><a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]</a>|[RESX:BY][FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]]
                             [FORUMTOPIC:LASTREPLYURL|<a href="{0}" rel="nofollow"><img src="[FORUM:THEMELOCATION]/images/miniarrow_right.png" style="vertical-align: middle;" alt="[RESX:JumpToLastReply]" border="0" class="afminiarrow" /></a>]<br />[FORUMTOPIC:LASTPOSTDATE]
                         [/LASTPOST]
                     </div></td>
@@ -171,7 +169,7 @@
 
 		<div class="dcf-actions dcf-actions-bottom">
 			<div class="dcf-buttons">[ADDTOPIC] [MARKFORUMREAD]</div>
-			<div class="dcf-topics-pager">[PAGER2]<br />[JUMPTO]<br />[FORUM:RSSLINK]</div>
+			<div class="dcf-topics-pager">[PAGER2]<br />[JUMPTO]<br />[FORUM:RSSLINK|<a href="{0}" target="_blank"><img src="[FORUM:THEMELOCATION]images/rss.png" border="0" alt="[RESX:RSS]" /></a>]</div>
 		</div>
 	</div>
 

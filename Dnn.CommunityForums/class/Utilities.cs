@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -41,6 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Modules.ActiveForums.Controls;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Queue;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
@@ -134,14 +137,14 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
-        internal static string BuildToolbar(int portalId, int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType, string locale)
+        internal static string BuildToolbar(int portalId, int forumModuleId, int forumTabId, int moduleId, int tabId, ForumUserInfo forumUser, string locale)
         {
-            string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, currentUserType, locale);
-            string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : String.Empty;
+            string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, forumUser.CurrentUserType, locale);
+            string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : string.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
                 sToolbar = TemplateCache.GetCachedTemplate(forumModuleId, "ToolBar", 0);
-                sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
+                sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser);
                 if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
                 {
                     DataCache.SettingsCacheStore(moduleId: moduleId, cacheKey: cacheKey, sToolbar);
@@ -151,73 +154,29 @@ namespace DotNetNuke.Modules.ActiveForums
             return sToolbar;
         }
 
-        internal static string ParseToolBar(string template, int portalId, int forumTabId, int forumModuleId, int tabId, int moduleId, CurrentUserTypes currentUserType, int forumId = 0)
+        internal static string ParseToolBar(string template, int portalId, int forumTabId, int forumModuleId, int tabId, int moduleId, ForumUserInfo forumUser, int forumId = 0)
         {
-            var ctlUtils = new ControlUtils();
-
-            if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
-            {
-                template = template.Replace("[AF:TB:NotRead]", string.Format("<a href=\"{0}\"><i class=\"fa fa-eye-slash fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:NotRead]</span></a>", ctlUtils.BuildUrl(portalId, tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.NotRead, 1, -1, -1)));
-                template = template.Replace("[AF:TB:MyTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-user fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MyTopics]</span></a>", ctlUtils.BuildUrl(portalId, tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MyTopics, 1, -1, -1)));
-                template = template.Replace("[AF:TB:MySettings]", string.Format("<a href=\"{0}\"><i class=\"fa fa-cog fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:MySettings]</span></a>", ctlUtils.BuildUrl(portalId, tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MySettings, 1, -1, -1)));
-                template = template.Replace("[AF:TB:MySubscriptions]", string.Format("<a href=\"{0}\"><i class=\"fa fa-envelope fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:MySubscriptions]</span></a>", ctlUtils.BuildUrl(portalId, tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MySubscriptions, 1, -1, -1)));
-
-                if (currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.SuperUser)
-                {
-                    template = template.Replace("[AF:TB:ControlPanel]", string.Format("<a href=\"{0}\"><i class=\"fa fa-bars fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:ControlPanel]</span></a>", NavigateURL(forumTabId, "EDIT", "mid=" + forumModuleId)));
-                }
-                else
-                {
-                    template = template.Replace("[AF:TB:ControlPanel]", string.Empty);
-                }
-
-                if (currentUserType == CurrentUserTypes.ForumMod || currentUserType == CurrentUserTypes.SuperUser || currentUserType == CurrentUserTypes.Admin)
-                {
-                    template = template.Replace("[AF:TB:ModList]", string.Format("<a href=\"{0}\"><i class=\"fa fa-wrench fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Moderate]</span></a>", NavigateURL(tabId, string.Empty, ParamKeys.ViewType + "=" + Views.ModerateTopics)));
-                }
-                else
-                {
-                    template = template.Replace("[AF:TB:ModList]", string.Empty);
-                }
-            }
-            else
-            {
-                template = template.Replace("[AF:TB:NotRead]", string.Empty);
-                template = template.Replace("[AF:TB:MyTopics]", string.Empty);
-                template = template.Replace("[AF:TB:MySettings]", string.Empty);
-                template = template.Replace("[AF:TB:MySubscriptions]", string.Empty);
-                template = template.Replace("[AF:TB:ModList]", string.Empty);
-                template = template.Replace("[AF:TB:ControlPanel]", string.Empty);
-            }
-
-            template = template.Replace("[AF:TB:Unanswered]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comment-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Unanswered]</span></a>", ctlUtils.BuildUrl(portalId, tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Unanswered, 1, -1, -1)));
-            template = template.Replace("[AF:TB:Unresolved]", string.Format("<a href=\"{0}\"><i class=\"fa fa-question fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Unresolved]</span></a>", ctlUtils.BuildUrl(portalId, tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Unresolved, 1, -1, -1)));
-            template = template.Replace("[AF:TB:Announcements]", string.Format("<a href=\"{0}\"><i class=\"fa fa-bullhorn fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Announcements]</span></a>", ctlUtils.BuildUrl(portalId, tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Announcements, 1, -1, -1)));
-            template = template.Replace("[AF:TB:ActiveTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-fire fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:ActiveTopics]</span></a>", ctlUtils.BuildUrl(portalId, tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.ActiveTopics, 1, -1, -1)));
-            template = template.Replace("[AF:TB:MostLiked]", string.Format("<a href=\"{0}\"><i class=\"fa fa-thumbs-o-up fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MostLiked]</span></a>", ctlUtils.BuildUrl(portalId, tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostLiked, 1, -1, -1)));
-            template = template.Replace("[AF:TB:MostReplies]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comments fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MostReplies]</span></a>", ctlUtils.BuildUrl(portalId, tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostReplies, 1, -1, -1)));
-            template = template.Replace("[AF:TB:Forums]", string.Format("<a href=\"{0}\"><i class=\"fa fa-home fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:FORUMS]</span></a>", NavigateURL(tabId)));
+            var portalSettings = Utilities.GetPortalSettings(portalId);
+            var language = forumUser?.UserInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
+            StringBuilder templateStringBuilder = new StringBuilder(template);
+            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyToolbarTokenSynonyms(templateStringBuilder, portalSettings, language);
 
             // Search popup
-            var searchUrl = NavigateURL(tabId, string.Empty, new[] { ParamKeys.ViewType + "=search", "f=" + forumId });
-            var advancedSearchUrl = NavigateURL(tabId, string.Empty, new[] { ParamKeys.ViewType + "=searchadvanced", "f=" + forumId });
-            var searchText = forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]";
+            var searchUrl = NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search", $"f={forumId}" });
+            var advancedSearchUrl = NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" });
 
-            if (template.Contains("[AF:TB:Search]"))
+            if (templateStringBuilder.ToString().Contains("[DCF:TEMPLATE-TOOLBARSEARCHPOPUP]"))
             {
                 string searchPopupTemplate = TemplateCache.GetCachedTemplate(forumModuleId, "ToolbarSearchPopup");
                 searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:SearchURL]", HttpUtility.HtmlEncode(searchUrl));
                 searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:AdvancedSearchURL]", HttpUtility.HtmlEncode(advancedSearchUrl));
-                searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:SearchText]", searchText);
+                searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:SearchText]", forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]");
                 searchPopupTemplate = Utilities.LocalizeControl(searchPopupTemplate);
-                template = template.Replace("[AF:TB:Search]", searchPopupTemplate);
+                templateStringBuilder.Replace("[DCF:TEMPLATE-TOOLBARSEARCHPOPUP]", searchPopupTemplate);
             }
 
-            // These are no longer used in 5.0
-            template = template.Replace("[AF:TB:MyProfile]", string.Empty);
-            template = template.Replace("[AF:TB:MemberList]", string.Empty);
-
-            return template;
+            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId);
+            return templateStringBuilder.ToString();
         }
 
         public static string CleanStringForUrl(string text)
@@ -1310,10 +1269,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private static string LocalizeControl(string controlText, string resourceFile, bool isAdmin, bool scriptSafe)
         {
             controlText = controlText.Replace(" class=afquote", " class=\"afquote\"");
-
-            const string pattern = @"(\[RESX:.+?\])";
-            var regExp = new Regex(pattern);
-            var matches = regExp.Matches(controlText);
+            var matches = RegexUtils.GetCachedRegex(@"(\[RESX:.+?\])", RegexOptions.Compiled).Matches(controlText);
             foreach (Match match in matches)
             {
                 var sKey = match.Value;

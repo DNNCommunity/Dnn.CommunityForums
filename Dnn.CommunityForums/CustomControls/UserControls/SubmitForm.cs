@@ -411,7 +411,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (template.Contains("[TOOLBAR"))
             {
-                template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(this.PortalId, this.ForumModuleId, this.ForumTabId, this.ModuleId, this.TabId, this.CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value));
+                template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(this.PortalId, this.ForumModuleId, this.ForumTabId, this.ModuleId, this.TabId, this.ForumUser, HttpContext.Current?.Response?.Cookies["language"]?.Value));
             }
 
             template = template.Replace("[AF:INPUT:SUMMARY]", "<asp:textbox id=\"txtSummary\" cssclass=\"dcf-topic-edit-summary\" runat=\"server\" />");
