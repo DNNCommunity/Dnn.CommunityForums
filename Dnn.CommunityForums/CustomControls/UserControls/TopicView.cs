@@ -740,6 +740,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[TOPICSUBSCRIBE]", string.Empty);
             }
 
+#region "Backward compatilbility -- remove in v10.00.00"
+
             // Topic and post actions
             // for backward compatibility, this needs to map to post actions, not topic actions
             if (sbOutput.ToString().Contains("[AF:CONTROL:TOPICACTIONS]"))
@@ -765,6 +767,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostActionTokenSynonyms(sbOutput, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale, this.useListActions);
+#endregion "Backward compatilbility -- remove in v10.00.00"
 
             // Quick Reply
             if (this.CanReply)
