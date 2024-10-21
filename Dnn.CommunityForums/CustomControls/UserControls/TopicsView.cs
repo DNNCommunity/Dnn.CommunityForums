@@ -121,6 +121,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     topicsTemplate = topicsTemplate.Replace("[NOTOOLBAR]", string.Empty);
                 }
 
+#region "Backward compatilbility -- remove in v10.00.00"
+
                 if (topicsTemplate.Contains("[AF:CONTROL:TOPICACTIONS]"))
                 {
                     DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTokenSynonym(
@@ -139,6 +141,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicActionTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale, this.useListActions).ToString();
+
+#endregion "Backward compatilbility -- remove in v10.00.00"
 
                 this.pageSize = this.MainSettings.PageSize;
                 if (this.UserId > 0)

@@ -447,6 +447,12 @@ using DotNetNuke.Services.Tokens;
             return template;
         }
 
+        internal static StringBuilder MapLegacyTemplateTokenSynonyms(StringBuilder template)
+        {
+            template = ReplaceTokenSynonym(template, "[AF:CONTROL:TOPICACTIONS]", "[DCF:TEMPLATE-TOPICACTIONS]");
+            return template;
+        }
+
         internal static StringBuilder MapLegacyModuleTokenSynonyms(StringBuilder template)
         {
             template = ReplaceTokenSynonym(template, "[MODULEID]", "[MODULE:MODULEID]");
