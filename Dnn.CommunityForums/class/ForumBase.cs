@@ -43,10 +43,8 @@ using DotNetNuke.Services.Localization;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo foruminfo;
         private XmlDocument forumData;
 
-        private bool? canRead;
-        private bool? canView;
         private bool? canCreate;
-        private bool? canReply = null;
+        private bool? canReply;
 
         #endregion
 
@@ -399,17 +397,18 @@ using DotNetNuke.Services.Localization;
                         this.canCreate = true;
                     }
 
+                    // If we don't have a valid user, there is no way they could meed the minumum post count requirement
+                    else if (this.ForumUser.UserId <= 0)
+                    {
+                        this.canCreate = false;
+                    }
+
                     // If CreatePostCount is not set, no need to go further
                     else if (this.ForumInfo.CreatePostCount <= 0)
                     {
                         this.canCreate = true;
                     }
 
-                    // If we don't have a valid user, there is no way they could meed the minumum post count requirement
-                    else if (this.ForumUser.UserId <= 0)
-                    {
-                        this.canCreate = false;
-                    }
                     else
                     {
                         this.canCreate = this.ForumUser.PostCount >= this.ForumInfo.CreatePostCount;
@@ -438,17 +437,18 @@ using DotNetNuke.Services.Localization;
                         this.canReply = true;
                     }
 
+                    // If we don't have a valid user, there is no way they could meed the minumum post count requirement
+                    else if (this.ForumUser.UserId <= 0)
+                    {
+                        this.canReply = false;
+                    }
+
                     // If ReplyPostCount is not set, no need to go further
                     else if (this.ForumInfo.ReplyPostCount <= 0)
                     {
                         this.canReply = true;
                     }
 
-                    // If we don't have a valid user, there is no way they could meed the minumum post count requirement
-                    else if (this.ForumUser.UserId <= 0)
-                    {
-                        this.canReply = false;
-                    }
                     else
                     {
                         this.canReply = this.ForumUser.PostCount >= this.ForumInfo.ReplyPostCount;
@@ -458,6 +458,7 @@ using DotNetNuke.Services.Localization;
                 return this.canReply.Value;
             }
         }
+
         #endregion
 
         #region Helper Methods

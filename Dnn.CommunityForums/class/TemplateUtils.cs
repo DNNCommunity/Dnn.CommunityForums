@@ -356,27 +356,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string GetPostInfo(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, bool isMod, string ipAddress, bool isUserOnline, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)
         {
-            var sPostInfo = ParseProfileInfo(moduleId, user, imagePath, isMod, ipAddress, currentUserType, currentUserId, userPrefHideAvatar, timeZoneOffset);
-           
-            return sPostInfo; 
-            //if (sPostInfo.ToLower().Contains("<br"))
-            //{
-            //    return sPostInfo;
-            //}
-
-            //var sr = new StringReader(sPostInfo);
-            //var sTrim = string.Empty;
-
-            //while (sr.Peek() != -1)
-            //{
-            //    var tmp = sr.ReadLine();
-            //    if (tmp != null && tmp.Trim() != string.Empty)
-            //    {
-            //        sTrim += tmp.Trim() + "<br />";
-            //    }
-            //}
-
-            //return sTrim;
+            return ParseProfileInfo(moduleId, user, imagePath, isMod, ipAddress, currentUserType, currentUserId, userPrefHideAvatar, timeZoneOffset);
         }
 
         #region "Deprecated Methods"
@@ -518,7 +498,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 var result = new StringBuilder(pt);
-                
+
                 // IP Address
                 result.Replace("[MODIPADDRESS]", accessingUser.IsAdmin || accessingUser.IsSuperUser || accessingUser.GetIsMod(moduleId) ? ipAddress : string.Empty);
                 result.Replace("[FORUMPOST:MODIPADDRESS]", accessingUser.IsAdmin || accessingUser.IsSuperUser || accessingUser.GetIsMod(moduleId) ? ipAddress : string.Empty);

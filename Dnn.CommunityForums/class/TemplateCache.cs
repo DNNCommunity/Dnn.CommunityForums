@@ -18,6 +18,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Text;
+using System.Text.RegularExpressions;
+using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -75,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     catch (Exception ex)
                     {
                         DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        sTemplate = "ERROR: Loading template failed";
+                        sTemplate = $"ERROR: Loading template {TemplateType} failed";
                     }
                 }
                 else
@@ -88,6 +92,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
             }
+
+            sTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTemplateTokenSynonyms(new StringBuilder(sTemplate)).ToString();
 
             sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
             if (sTemplate.ToLowerInvariant().Contains("<dnn:"))
@@ -103,6 +109,19 @@ namespace DotNetNuke.Modules.ActiveForums
             if (sTemplate.ToLowerInvariant().Contains("<af:"))
             {
                 sTemplate = Globals.ForumsControlsRegisterAFTag + sTemplate;
+            }
+
+            if (sTemplate.ToUpperInvariant().Contains("DCF:TEMPLATE-"))
+            {
+                foreach (Match nestedTemplateToken in RegexUtils.GetCachedRegex(@"\[DCF:TEMPLATE-(?<templateName>.+)\]", RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(sTemplate))
+                {
+                    var token = nestedTemplateToken.Value;
+                    var nestedTemplateName = nestedTemplateToken.Groups["templateName"]?.Value;
+                    if (!string.IsNullOrEmpty(nestedTemplateName))
+                    {
+                        sTemplate = sTemplate.Replace(token, GetCachedTemplate(moduleId, nestedTemplateName, -1));
+                    }
+                }
             }
 
             if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)

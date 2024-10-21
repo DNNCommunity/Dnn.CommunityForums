@@ -162,21 +162,11 @@ namespace DotNetNuke.Modules.ActiveForums
             templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyToolbarTokenSynonyms(templateStringBuilder, portalSettings, language);
 
             // Search popup
-            var searchUrl = NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search", $"f={forumId}" });
-            var advancedSearchUrl = NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" });
-
-            if (templateStringBuilder.ToString().Contains("[DCF:TEMPLATE-TOOLBARSEARCHPOPUP]"))
-            {
-                string searchPopupTemplate = TemplateCache.GetCachedTemplate(forumModuleId, "ToolbarSearchPopup");
-                searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:SearchURL]", HttpUtility.HtmlEncode(searchUrl));
-                searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:AdvancedSearchURL]", HttpUtility.HtmlEncode(advancedSearchUrl));
-                searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:SearchText]", forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]");
-                searchPopupTemplate = Utilities.LocalizeControl(searchPopupTemplate);
-                templateStringBuilder.Replace("[DCF:TEMPLATE-TOOLBARSEARCHPOPUP]", searchPopupTemplate);
-            }
-
+            templateStringBuilder.Replace("[AF:TB:SearchURL]", HttpUtility.HtmlEncode(NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search", $"f={forumId}" })));
+            templateStringBuilder.Replace("[AF:TB:AdvancedSearchURL]", HttpUtility.HtmlEncode( NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" })));
+            templateStringBuilder.Replace("[AF:TB:SearchText]", forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]");
             templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId);
-            return templateStringBuilder.ToString();
+            return Utilities.LocalizeControl(templateStringBuilder.ToString());
         }
 
         public static string CleanStringForUrl(string text)
