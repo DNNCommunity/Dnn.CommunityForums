@@ -1516,17 +1516,11 @@ Da
   <data name="NoResults.Text" xml:space="preserve">
     <value>Nessun risultato trovato</value>
   </data>
-  <data name="NotificationBodyReply.Text" xml:space="preserve">
-    <value>[Messaggio]</value>
-  </data>
-  <data name="NotificationBodyTopic.Text" xml:space="preserve">
-    <value>[Messaggio]</value>
-  </data>
   <data name="NotificationSubjectReply.Text" xml:space="preserve">
-    <value>[DisplayName] ha pubblicato una risposta a [TopicSubject]</value>
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] ha pubblicato una risposta a [TopicSubject]</value>
   </data>
   <data name="NotificationSubjectTopic.Text" xml:space="preserve">
-    <value>[DisplayName] ha creato un nuovo argomento: [TopicSubject]</value>
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] ha creato un nuovo argomento: [TopicSubject]</value>
   </data>
   <data name="NotLoggedIn.Text" xml:space="preserve">
     <value>Effettua il login per inviare una risposta</value>
@@ -1779,5 +1773,13 @@ Da
   </data>
   <data name="[RESX:Started].Text" xml:space="preserve">
     <value>Avviato</value>
+  </data>
+  <data name="NotificationBodyReply.Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAME] ha pubblicato contenuti che richiedono moderazione.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Oggetto:&lt;/strong&gt; [FORUMPOST:OGGETTO]&lt;/p&gt;&lt;p&gt;Si prega di rivedere il contenuto e determinarne la disposizione.&lt;/p&gt;
+&lt;p&gt;Si può:&lt;ol&gt;&lt;li&gt;approvare l'argomento,&lt;/li&gt;&lt;li&gt;rifiutarlo (invio all'autore per le revisioni),&lt;/li&gt;&lt;li&gt;eliminarlo, oppure&lt;/li&gt;&lt;li&gt;bannare l'utente, cancellando questo e qualsiasi altro argomento o risposta postata da questo utente&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Se non riesci a determinare se questo contenuto è adatto solo in base all'argomento, utilizza &lt;a href="[FORUM:MODLINK]"&gt;questo link&lt;/a&gt; per rivedere e moderare gli argomenti.&lt;/p&gt;</value>
+  </data>
+  <data name="NotificationBodyTopic.Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAME] ha pubblicato contenuti che richiedono moderazione.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Oggetto:&lt;/strong&gt; [FORUMPOST:OGGETTO]&lt;/p&gt;&lt;p&gt;Si prega di rivedere il contenuto e determinarne la disposizione.&lt;/p&gt;
+&lt;p&gt;Si può:&lt;ol&gt;&lt;li&gt;approvare l'argomento,&lt;/li&gt;&lt;li&gt;rifiutarlo (invio all'autore per le revisioni),&lt;/li&gt;&lt;li&gt;eliminarlo, oppure&lt;/li&gt;&lt;li&gt;bannare l'utente, cancellando questo e qualsiasi altro argomento o risposta postata da questo utente&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Se non riesci a determinare se questo contenuto è adatto solo in base all'argomento, utilizza &lt;a href="[FORUM:MODLINK]"&gt;questo link&lt;/a&gt; per rivedere e moderare gli argomenti.&lt;/p&gt;</value>
   </data>
 </root>

@@ -1520,18 +1520,18 @@ De
     <value>No se han encontrado resultados</value>
   </data>
   <data name="NotificationBodyReply.Text" xml:space="preserve">
-    <value>&lt;p&gt;[DisplayName] ha publicado contenido que require moderación.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Asunto:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Por favor revise el contenido y verifique su validez.&lt;/p&gt;
-&lt;p&gt;Puede:&lt;ol&gt;&lt;li&gt;aprobar el tema,&lt;/li&gt;&lt;li&gt;rechazar el tema (y solicitar correcciones al autor),&lt;/li&gt;&lt;li&gt;eliminar el tema, o&lt;/li&gt;&lt;li&gt;bloquear al usuario, eliminanado este tema y otros que haya enviado&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si no puede determinar si el contenido es apropiado a partir del asunto, utilize &lt;a href="[MODLINK]"&gt;este enlace&lt;/a&gt; para revisar y moderar temas.&lt;/p&gt;</value>
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAME] ha publicado contenido que require moderación.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Asunto:&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Por favor revise el contenido y verifique su validez.&lt;/p&gt;
+&lt;p&gt;Puede:&lt;ol&gt;&lt;li&gt;aprobar el tema,&lt;/li&gt;&lt;li&gt;rechazar el tema (y solicitar correcciones al autor),&lt;/li&gt;&lt;li&gt;eliminar el tema, o&lt;/li&gt;&lt;li&gt;bloquear al usuario, eliminanado este tema y otros que haya enviado&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si no puede determinar si el contenido es apropiado a partir del asunto, utilize &lt;a href="[FORUM:MODLINK]"&gt;este enlace&lt;/a&gt; para revisar y moderar temas.&lt;/p&gt;</value>
   </data>
   <data name="NotificationBodyTopic.Text" xml:space="preserve">
-    <value>&lt;p&gt;[DisplayName] ha publicado contenido que require moderación.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Asunto:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Por favor revise el contenido y verifique su validez.&lt;/p&gt;
-&lt;p&gt;Puede:&lt;ol&gt;&lt;li&gt;aprobar el tema,&lt;/li&gt;&lt;li&gt;rechazar el tema (y solicitar correcciones al autor),&lt;/li&gt;&lt;li&gt;eliminar el tema, o&lt;/li&gt;&lt;li&gt;bloquear al usuario, eliminanado este tema y otros que haya enviado&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si no puede determinar si el contenido es apropiado a partir del asunto, utilize &lt;a href="[MODLINK]"&gt;este enlace&lt;/a&gt; para revisar y moderar temas.&lt;/p&gt;</value>
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAME] ha publicado contenido que require moderación.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Asunto:&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Por favor revise el contenido y verifique su validez.&lt;/p&gt;
+&lt;p&gt;Puede:&lt;ol&gt;&lt;li&gt;aprobar el tema,&lt;/li&gt;&lt;li&gt;rechazar el tema (y solicitar correcciones al autor),&lt;/li&gt;&lt;li&gt;eliminar el tema, o&lt;/li&gt;&lt;li&gt;bloquear al usuario, eliminanado este tema y otros que haya enviado&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si no puede determinar si el contenido es apropiado a partir del asunto, utilize &lt;a href="[FORUM:MODLINK]"&gt;este enlace&lt;/a&gt; para revisar y moderar temas.&lt;/p&gt;</value>
   </data>
   <data name="NotificationSubjectReply.Text" xml:space="preserve">
-    <value>[DisplayName] ha publicado una respuesta a [TopicSubject]</value>
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] ha publicado una respuesta a [TopicSubject]</value>
   </data>
   <data name="NotificationSubjectTopic.Text" xml:space="preserve">
-    <value>[DisplayName] ha creado un nuevo tema: [TopicSubject]</value>
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] ha creado un nuevo tema: [TopicSubject]</value>
   </data>
   <data name="NotLoggedIn.Text" xml:space="preserve">
     <value>Por favor, inicie sesión para publicar una respuesta</value>

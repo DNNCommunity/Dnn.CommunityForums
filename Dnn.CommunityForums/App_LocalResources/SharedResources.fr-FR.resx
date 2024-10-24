@@ -1517,8 +1517,8 @@ De,
     <value>Aucun résultat trouvé</value>
   </data>
   <data name="NotificationBodyReply.Text" xml:space="preserve">
-    <value>&lt;P&gt;[DisplayName] a publié du contenu nécessitant une modération.&lt;/P&gt;
-&lt;P&gt;&lt;STRONG&gt;Objet&amp;nbsp;:&lt;/STRONG&gt; [TopicSubject]&lt;/P&gt;
+    <value>&lt;P&gt;[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération.&lt;/P&gt;
+&lt;P&gt;&lt;STRONG&gt;Objet&amp;nbsp;:&lt;/STRONG&gt; [FORUMPOST:SUBJECT]&lt;/P&gt;
 &lt;P&gt;Veuillez examiner le contenu et déterminer sa disposition.&lt;/P&gt;
 &lt;P&gt;Vous pouvez&amp;nbsp;: 
 &lt;OL&gt;
@@ -1527,11 +1527,11 @@ De,
 &lt;LI&gt;le supprimer ou&lt;/LI&gt;
 &lt;LI&gt;bannir l'utilisateur, en supprimant ce sujet ainsi que tout autre sujet ou réponse publié par cet utilisateur&lt;/LI&gt;&lt;/OL&gt;
 &lt;P&gt;&lt;/P&gt;
-&lt;P&gt;Si vous ne pouvez pas déterminer si ce contenu est approprié en fonction du seul sujet, utilisez &lt;A href="about:[MODLINK]"&gt;ce lien&lt;/A&gt; pour consulter et modérer les sujets.&lt;/P&gt;</value>
+&lt;P&gt;Si vous ne pouvez pas déterminer si ce contenu est approprié en fonction du seul sujet, utilisez &lt;A href="about:[FORUM:MODLINK]"&gt;ce lien&lt;/A&gt; pour consulter et modérer les sujets.&lt;/P&gt;</value>
   </data>
   <data name="NotificationBodyTopic.Text" xml:space="preserve">
-    <value>&lt;P&gt;[DisplayName] a publié du contenu nécessitant une modération.&lt;/P&gt;
-&lt;P&gt;&lt;STRONG&gt;Objet&amp;nbsp;:&lt;/STRONG&gt; [TopicSubject]&lt;/P&gt;
+    <value>&lt;P&gt;[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération.&lt;/P&gt;
+&lt;P&gt;&lt;STRONG&gt;Objet&amp;nbsp;:&lt;/STRONG&gt; [FORUMPOST:SUBJECT]&lt;/P&gt;
 &lt;P&gt;Veuillez examiner le contenu et déterminer sa disposition.&lt;/P&gt;
 &lt;P&gt;Vous pouvez&amp;nbsp;: 
 &lt;OL&gt;
@@ -1540,13 +1540,13 @@ De,
 &lt;LI&gt;le supprimer ou&lt;/LI&gt;
 &lt;LI&gt;bannir l'utilisateur, en supprimant ce sujet ainsi que tout autre sujet ou réponse publié par cet utilisateur&lt;/LI&gt;&lt;/OL&gt;
 &lt;P&gt;&lt;/P&gt;
-&lt;P&gt;Si vous ne pouvez pas déterminer si ce contenu est approprié en fonction du seul sujet, utilisez &lt;A href="about:[MODLINK]"&gt;ce lien&lt;/A&gt; pour consulter et modérer les sujets.&lt;/P&gt;</value>
+&lt;P&gt;Si vous ne pouvez pas déterminer si ce contenu est approprié en fonction du seul sujet, utilisez &lt;A href="about:[FORUM:MODLINK]"&gt;ce lien&lt;/A&gt; pour consulter et modérer les sujets.&lt;/P&gt;</value>
   </data>
   <data name="NotificationSubjectReply.Text" xml:space="preserve">
-    <value>[DisplayName] a publié du contenu qui doit être modéré</value>
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu qui doit être modéré</value>
   </data>
   <data name="NotificationSubjectTopic.Text" xml:space="preserve">
-    <value>[DisplayName] a publié du contenu qui doit être modéré</value>
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu qui doit être modéré</value>
   </data>
   <data name="NotLoggedIn.Text" xml:space="preserve">
     <value>Veuillez vous connecter pour publier une réponse</value>
