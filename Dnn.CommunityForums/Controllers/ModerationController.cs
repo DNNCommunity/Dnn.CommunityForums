@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -22,6 +22,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
+    using System.Web;
 
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Social.Notifications;
@@ -45,6 +47,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static bool SendModerationNotification(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int AuthorId, string requestUrl)
         {
+            var portalSettings = Utilities.GetPortalSettings(portalId);
+            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
             try
             {
                 int authorId;
@@ -54,27 +58,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
                     subject = Utilities.GetSharedResource("NotificationSubjectReply");
-                    subject = subject.Replace("[DisplayName]", reply.Content?.AuthorName);
-                    subject = subject.Replace("[TopicSubject]", reply.Topic?.Content.Subject);
+                    subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUrl).ToString();
                     body = Utilities.GetSharedResource("NotificationBodyReply");
-                    body = body.Replace("[DisplayName]", reply.Content?.AuthorName);
-                    body = body.Replace("[TopicSubject]", reply.Content?.Subject);
+                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUrl).ToString();
                     authorId = reply.Content.AuthorId;
                 }
                 else
                 {
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                     subject = Utilities.GetSharedResource("NotificationSubjectTopic");
-                    subject = subject.Replace("[DisplayName]", topic.Content?.AuthorName);
-                    subject = subject.Replace("[TopicSubject]", topic.Content?.Subject);
+                    subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), topic, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUrl).ToString();
                     body = Utilities.GetSharedResource("NotificationBodyTopic");
-                    body = body.Replace("[DisplayName]", topic.Content?.AuthorName);
-                    body = body.Replace("[TopicSubject]", topic.Content?.Subject);
+                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), topic, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUrl).ToString();
                     authorId = topic.Content.AuthorId;
                 }
-
-                string modLink = Utilities.NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={forumId}" });
-                body = body.Replace("[MODLINK]", modLink);
 
                 string notificationKey = BuildNotificationContextKey(tabId, moduleId, forumId, topicId, replyId);
 

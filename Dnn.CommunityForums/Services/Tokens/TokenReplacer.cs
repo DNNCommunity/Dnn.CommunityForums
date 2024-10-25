@@ -180,7 +180,7 @@ using DotNetNuke.Services.Tokens;
             return template;
         }
 
-        internal static StringBuilder ReplaceForumTokens(StringBuilder template, ForumInfo forum, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, HttpRequest request, int tabId, CurrentUserTypes currentUserType)
+        internal static StringBuilder ReplaceForumTokens(StringBuilder template, ForumInfo forum, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, string requestUrl, int tabId, CurrentUserTypes currentUserType)
         {
             /* if no last post or subject missing, remove associated last topic tokens */
             if (forum.LastPostID == 0 || string.IsNullOrEmpty(HttpUtility.HtmlDecode(forum.LastPostSubject)))
@@ -207,7 +207,7 @@ using DotNetNuke.Services.Tokens;
             return template;
         }
 
-        internal static StringBuilder ReplaceForumGroupTokens(StringBuilder template, ForumGroupInfo forumGroup, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, HttpRequest request, int tabId, CurrentUserTypes currentUserType)
+        internal static StringBuilder ReplaceForumGroupTokens(StringBuilder template, ForumGroupInfo forumGroup, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, string requestUrl, int tabId, CurrentUserTypes currentUserType)
         {
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, forumGroup) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
@@ -233,9 +233,9 @@ using DotNetNuke.Services.Tokens;
             return template;
         }
 
-        internal static StringBuilder ReplaceTopicTokens(StringBuilder template, TopicInfo topic, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, HttpRequest request)
+        internal static StringBuilder ReplaceTopicTokens(StringBuilder template, TopicInfo topic, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, string requestUrl)
         {
-            topic.Content.Body = ReplaceBody(topic.Content, mainSettings, request.Url).Replace("<br />", "  ");
+            topic.Content.Body = ReplaceBody(topic.Content, mainSettings, new Uri(requestUrl)).Replace("<br />", "  ");
             topic.Content.Summary = topic.Content.Summary.Replace("<br />", "  ");
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
@@ -291,7 +291,7 @@ using DotNetNuke.Services.Tokens;
             return sBody;
         }
 
-        internal static StringBuilder ReplacePostTokens(StringBuilder template, IPostInfo post, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, HttpRequest request)
+        internal static StringBuilder ReplacePostTokens(StringBuilder template, IPostInfo post, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, string requestUrl)
         {
             // Perform Profile Related replacements
             var author = new AuthorInfo(post.PortalId, post.Forum.ModuleId, post.Author.AuthorId);
@@ -301,7 +301,7 @@ using DotNetNuke.Services.Tokens;
                 template.Replace("[POSTINFO]", sPostInfo);
             }
 
-            post.Content.Body = ReplaceBody(post.Content, mainSettings, request.Url).Replace("<br />", "  ");
+            post.Content.Body = ReplaceBody(post.Content, mainSettings, new Uri(requestUrl)).Replace("<br />", "  ");
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, post) { AccessingUser = forumUser.UserInfo, };
