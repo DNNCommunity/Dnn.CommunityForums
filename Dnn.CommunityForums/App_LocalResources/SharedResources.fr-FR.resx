@@ -1517,7 +1517,7 @@ De,
     <value>Aucun résultat trouvé</value>
   </data>
   <data name="NotificationBodyReply.Text" xml:space="preserve">
-    <value>&lt;P&gt;[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération.&lt;/P&gt;
+    <value>&lt;P&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération.&lt;/P&gt;
 &lt;P&gt;&lt;STRONG&gt;Objet&amp;nbsp;:&lt;/STRONG&gt; [FORUMPOST:SUBJECT]&lt;/P&gt;
 &lt;P&gt;Veuillez examiner le contenu et déterminer sa disposition.&lt;/P&gt;
 &lt;P&gt;Vous pouvez&amp;nbsp;: 
@@ -1530,7 +1530,7 @@ De,
 &lt;P&gt;Si vous ne pouvez pas déterminer si ce contenu est approprié en fonction du seul sujet, utilisez &lt;A href="about:[FORUM:MODLINK]"&gt;ce lien&lt;/A&gt; pour consulter et modérer les sujets.&lt;/P&gt;</value>
   </data>
   <data name="NotificationBodyTopic.Text" xml:space="preserve">
-    <value>&lt;P&gt;[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération.&lt;/P&gt;
+    <value>&lt;P&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération.&lt;/P&gt;
 &lt;P&gt;&lt;STRONG&gt;Objet&amp;nbsp;:&lt;/STRONG&gt; [FORUMPOST:SUBJECT]&lt;/P&gt;
 &lt;P&gt;Veuillez examiner le contenu et déterminer sa disposition.&lt;/P&gt;
 &lt;P&gt;Vous pouvez&amp;nbsp;: 
