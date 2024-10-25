@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // TODO: Add moderator functionality to edit a user's subscriptions; this currently is just for a user to edit own subscriptions
                 this.UID = this.Request.QueryString[Literals.UserId] != null ? Convert.ToInt32(this.Request.QueryString[Literals.UserId]) : this.UserInfo.UserID;
-                if (this.UserId == this.UID | this.UserIsMod)
+                if (this.UserId == this.UID | this.ForumUser.GetIsMod(this.ForumModuleId))
                 {
                     this.BindTopicSubs();
                     this.BindForumSubs();

@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             if (!string.IsNullOrEmpty(this.MetaTemplate))
                             {
                                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder( this.MetaTemplate)).ToString();
-                                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
+                                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType).ToString();
                                 this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", string.Empty);
                                 if (this.MetaTemplate.Contains("[TOPICSUBJECT:"))
                                 {
@@ -353,7 +353,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             StringBuilder stringBuilder = new StringBuilder(sOutput);
-            stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
+            stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType);
             sOutput = stringBuilder.ToString();
 
             sOutput = Utilities.LocalizeControl(sOutput);

@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     this.Response.Redirect(Utilities.NavigateURL(this.TabId));
                 }
-                else if (this.Request.IsAuthenticated && sMode == "ENABLEDMOD" && !this.UserIsMod)
+                else if (this.Request.IsAuthenticated && sMode == "ENABLEDMOD" && ! this.ForumUser.GetIsMod(this.ForumModuleId))
                 {
                     this.Response.Redirect(Utilities.NavigateURL(this.TabId));
                 }
