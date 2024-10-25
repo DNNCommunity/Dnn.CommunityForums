@@ -46,50 +46,48 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (obj != null)
             {
-                sTemplate = Convert.ToString(obj);
+                return Convert.ToString(obj);
+            }
+
+            if (TemplateId < 1)
+            {
+                try
+                {
+                    string fileName = $"{TemplateType}.ascx";
+                    SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(moduleId);
+                    string templateFilePathFileName = Utilities.MapPath(moduleSettings.TemplatePath + fileName);
+                    if (!System.IO.File.Exists(templateFilePathFileName))
+                    {
+                        templateFilePathFileName = Utilities.MapPath(Globals.TemplatesPath + fileName);
+                        if (!System.IO.File.Exists(templateFilePathFileName))
+                        {
+                            templateFilePathFileName = Utilities.MapPath(Globals.DefaultTemplatePath + fileName);
+                        }
+                    }
+
+                    if (System.IO.File.Exists(templateFilePathFileName))
+                    {
+                        using (System.IO.StreamReader objStreamReader = System.IO.File.OpenText(templateFilePathFileName))
+                        {
+                            sTemplate = objStreamReader.ReadToEnd();
+                        }
+
+                        sTemplate = Utilities.ParseSpacer(sTemplate);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    sTemplate = $"ERROR: Loading template {TemplateType} failed";
+                }
             }
             else
             {
-                if (TemplateId < 1)
+                TemplateInfo templateInfo = new TemplateController().Template_Get(TemplateId);
+                if (templateInfo != null)
                 {
-                    try
-                    {
-                        string fileName = $"{TemplateType}.ascx";
-                        SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(moduleId);
-                        string templateFilePathFileName = Utilities.MapPath(moduleSettings.TemplatePath + fileName);
-                        if (!System.IO.File.Exists(templateFilePathFileName))
-                        {
-                            templateFilePathFileName = Utilities.MapPath(Globals.TemplatesPath + fileName);
-                            if (!System.IO.File.Exists(templateFilePathFileName))
-                            {
-                                templateFilePathFileName = Utilities.MapPath(Globals.DefaultTemplatePath + fileName);
-                            }
-                        }
-
-                        if (System.IO.File.Exists(templateFilePathFileName))
-                        {
-                            using (System.IO.StreamReader objStreamReader = System.IO.File.OpenText(templateFilePathFileName))
-                            {
-                                sTemplate = objStreamReader.ReadToEnd();
-                            }
-
-                            sTemplate = Utilities.ParseSpacer(sTemplate);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        sTemplate = $"ERROR: Loading template {TemplateType} failed";
-                    }
-                }
-                else
-                {
-                    TemplateInfo templateInfo = new TemplateController().Template_Get(TemplateId);
-                    if (templateInfo != null)
-                    {
-                        sTemplate = templateInfo.Template;
-                        sTemplate = Utilities.ParseSpacer(sTemplate);
-                    }
+                    sTemplate = templateInfo.Template;
+                    sTemplate = Utilities.ParseSpacer(sTemplate);
                 }
             }
 

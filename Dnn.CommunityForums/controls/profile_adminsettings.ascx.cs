@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void cbAdmin_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
-            if (!(this.CurrentUserType == CurrentUserTypes.Anon) && !(this.CurrentUserType == CurrentUserTypes.Auth))
+            if (!(this.ForumUser.CurrentUserType == CurrentUserTypes.Anon) && !(this.ForumUser.CurrentUserType == CurrentUserTypes.Auth))
             {
                 DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
                 if (forumUserInfo != null)

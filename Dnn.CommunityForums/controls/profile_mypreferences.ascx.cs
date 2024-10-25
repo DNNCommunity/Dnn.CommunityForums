@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void btnSave_Click(object sender, System.EventArgs e)
         {
-            if (this.UserId == this.UID || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser)
+            if (this.UserId == this.UID || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser)
             {
                 var upi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
                 if (upi != null)
