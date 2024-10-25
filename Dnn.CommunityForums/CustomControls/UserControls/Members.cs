@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             sRow = sAltRow;
                         }
                         var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, up.UserId);
-                        sRow = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sRow, author, this.ImagePath, this.CurrentUserType, false, false, string.Empty, -1, this.TimeZoneOffset);
+                        sRow = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sRow, author, this.ImagePath, this.ForumUser.CurrentUserType, false, false, string.Empty, -1, this.TimeZoneOffset);
                         sb.Append(sRow);
                         i += 1;
                     }

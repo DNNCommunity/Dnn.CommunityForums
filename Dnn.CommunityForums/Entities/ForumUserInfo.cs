@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 
+using DotNetNuke.Security.Permissions;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -52,6 +53,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
             this.ModuleId = moduleId;
         }
+
+        [IgnoreColumn]
+        public bool IsAuthenticated { get; set; } = false;
 
         public int ProfileId { get; set; }
 
@@ -139,7 +143,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public bool GetIsMod(int ModuleId)
         {
-            return (!(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.UserRoles, this.PortalId, ModuleId, "CanApprove"))));
+            return (!this.IsAnonymous && !(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.UserRoles, this.PortalId, ModuleId, "CanApprove"))));
         }
 
         [IgnoreColumn]
@@ -155,7 +159,33 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool IsUserOnline => this.DateLastActivity > DateTime.UtcNow.AddMinutes(-5);
 
         [IgnoreColumn]
-        public CurrentUserTypes CurrentUserType { get; set; }
+        public CurrentUserTypes CurrentUserType
+        {
+            get
+            {
+                if (this.UserInfo.IsInRole(this.PortalSettings.RegisteredRoleName))
+                {
+                    if (this.UserInfo.IsSuperUser)
+                    {
+                        return CurrentUserTypes.SuperUser;
+                    }
+
+                    if (this.UserInfo.IsAdmin)
+                    {
+                        return CurrentUserTypes.Admin;
+                    }
+
+                    if (this.GetIsMod(this.ModuleId))
+                    {
+                        return CurrentUserTypes.ForumMod;
+                    }
+
+                    return CurrentUserTypes.Auth;
+                }
+
+                return CurrentUserTypes.Anon;
+            }
+        }
 
         [IgnoreColumn]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]

@@ -132,51 +132,14 @@ namespace DotNetNuke.Modules.ActiveForums
         public ForumsDB ForumsDB => throw new NotImplementedException();
 
         #region Public Properties - User Preferences
-        public CurrentUserTypes CurrentUserType
-        {
-            get
-            {
-                if (this.Request.IsAuthenticated)
-                {
-                    if (this.UserInfo.IsSuperUser)
-                    {
-                        return CurrentUserTypes.SuperUser;
-                    }
 
-                    if (ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "EDIT"))
-                    {
-                        return CurrentUserTypes.Admin;
-                    }
-                    if (this.ForumUser.GetIsMod(this.ForumModuleId))
-                    {
-                        return CurrentUserTypes.ForumMod;
-                    }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        public CurrentUserTypes CurrentUserType => this.ForumUser.CurrentUserType;
+        
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        public bool UserIsMod => this.ForumUser.GetIsMod(this.ForumModuleId);
 
-                    return CurrentUserTypes.Auth;
-                }
-
-                return CurrentUserTypes.Anon;
-            }
-        }
-
-        public bool UserIsMod
-        {
-            get
-            {
-                if (this.UserId == -1)
-                {
-                    return false;
-                }
-
-                if (this.ForumUser != null)
-                {
-                    return this.ForumUser.GetIsMod(this.ForumModuleId);
-                }
-
-                return false;
-            }
-        }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public string UserDefaultSort
         {
             get
@@ -203,6 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public bool UserPrefHideSigs
         {
             get
@@ -223,6 +187,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public bool UserPrefHideAvatars
         {
             get
@@ -236,6 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public bool UserPrefJumpLastPost
         {
             get
@@ -249,6 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public bool UserPrefShowReplies
         {
             get
