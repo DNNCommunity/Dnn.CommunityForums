@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
 {
@@ -15,7 +16,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
         public void ReplaceTopicTokensTest()
         {
             // Arrange
-            var mockRequest = new Mock<HttpRequest>();
+            var requestUri = new Uri("https://localhost/forums");
 
             var mockTopic = new Mock<Modules.ActiveForums.Entities.TopicInfo>();
             mockTopic.Object.ForumId = 1;
@@ -49,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
             var expectedResult = "blah blah [SPLITBUTTONS1] blah  [TOPICSUBJECT] blah";
             // Act
 
-            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, null, null, navigationManager, mockUser.Object, mockRequest.Object).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, null, null, navigationManager, mockUser.Object, requestUri.ToString()).ToString();
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
@@ -58,6 +59,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
         public void ReplaceForumTokensTest()
         {
             // Arrange
+            var requestUri = new Uri("https://localhost/forums");
+
             var mockForum = new Mock<Modules.ActiveForums.Entities.ForumInfo>();
             mockForum.Object.ForumID = 1;
             mockForum.Object.ForumName = "Test Forum";
@@ -79,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
             var expectedResult = "blah blah Test Forum Group blah blah";
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, mockUser.Object, HttpContext.Current.Request, 0, CurrentUserTypes.Auth).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, mockUser.Object, requestUri.ToString(), 0, CurrentUserTypes.Auth).ToString();
             
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
