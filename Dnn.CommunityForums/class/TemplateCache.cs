@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (sTemplate.ToUpperInvariant().Contains("DCF:TEMPLATE-"))
             {
-                foreach (Match nestedTemplateToken in RegexUtils.GetCachedRegex(@"\[DCF:TEMPLATE-(?<templateName>.+)\]", RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(sTemplate))
+                foreach (Match nestedTemplateToken in RegexUtils.GetCachedRegex(@"\[DCF:TEMPLATE-(?<templateName>.[^\]]+)\]", RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(sTemplate))
                 {
                     var token = nestedTemplateToken.Value;
                     var nestedTemplateName = nestedTemplateToken.Groups["templateName"]?.Value;
