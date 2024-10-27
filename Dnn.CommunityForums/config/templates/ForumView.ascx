@@ -43,7 +43,6 @@
 										<table>
 											<tr>
 												<td rowspan="2" class="afsubject">
-													<span class="afhiddenstats">[TOTALTOPICS] [RESX:TOPICSHEADER] and [TOTALREPLIES] [RESX:REPLIESHEADER] and [FORUMSUBSCRIBERCOUNT] [RESX:SUBSCRIBERS]</span>
 													<span class="aftopictitle">[FORUMNAME]</span>
 													<span class="af-colstats_responsive">
 														<i class="fa fa-files-o fa-fw fa-grey"></i>&nbsp;[TOTALTOPICS] 
@@ -79,7 +78,6 @@
 														<tr>
 															<td rowspan="2" class="afsubject">
 															
-															<span class="afhiddenstats">[TOTALTOPICS] [RESX:TOPICS] and [TOTALREPLIES] [RESX:REPLIES] and [FORUMSUBSCRIBERCOUNT] [RESX:SUBSCRIBERS]</span>
 															<span class="aftopictitle">[FORUMICONSM][FORUMNAME]</span>
 															<span class="af-colstats_responsive">
 																<i class="fa fa-files-o fa-fw fa-grey"></i>&nbsp;[TOTALTOPICS] 
