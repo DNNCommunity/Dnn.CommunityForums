@@ -39,7 +39,6 @@
 												<tr>
 													<td rowspan="2" class="afsubject">
 													
-													<span class="afhiddenstats">[TOTALTOPICS] [RESX:TOPICSHEADER] and [TOTALREPLIES] [RESX:REPLIESHEADER] and [FORUMSUBSCRIBERCOUNT] [RESX:SUBSCRIBERS]</span>
 													<span class="aftopictitle">[FORUMNAME]</span>
 													<span class="af-colstats_responsive">
 														<i class="fa fa-files-o fa-fw fa-grey"></i>&nbsp;[TOTALTOPICS] 
@@ -95,7 +94,6 @@
 										<td rowspan="2" class="afsubject" title="[BODYTITLE]">
 										
 										
-										<span class="afhiddenstats">[REPLIES] [RESX:REPLIESHEADER] and [VIEWS] [RESX:Views] and [TOPICSUBSCRIBERCOUNT] [RESX:SUBSCRIBERS]</span>
 										<span class="aftopictitle"><i class="fa fa-file-o fa-fw fa-grey"></i>&nbsp;[SUBJECTLINK][AF:ICONLINK:LASTREAD]</span> 
 										<span class="aftopicstarted">[RESX:StartedHeader] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</span>
 										
@@ -166,7 +164,6 @@
 										<td  rowspan="2" style="padding-top:5px; padding-right:7px;" class="[ROWCSS] af-posticon">[POSTICON]</td>
 											<td rowspan="2" class="afsubject" title="[BODYTITLE]">
 											
-											<span class="afhiddenstats">[REPLIES] [RESX:REPLIESHEADER] and [VIEWS] [RESX:Views] and [TOPICSUBSCRIBERCOUNT] [RESX:SUBSCRIBERS]</span>
 											<span class="aftopictitle">[SUBJECTLINK][AF:ICONLINK:LASTREAD][ICONPIN][ICONLOCK]</span> 
 											<span class="af-colstats_responsive">
 												<i class="fa fa-eye fa-fw fa-grey"></i>&nbsp;[VIEWS] 
