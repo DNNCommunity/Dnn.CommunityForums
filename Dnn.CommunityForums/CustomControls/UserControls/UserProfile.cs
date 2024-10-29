@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
             user.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(user.UserRoles, this.PortalId, this.ForumModuleId, "CanRead");
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, this.UID);
-            sTemplate = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sTemplate, author, this.ImagePath, this.CurrentUserType, false, false, string.Empty, this.UserInfo.UserID, this.TimeZoneOffset);
+            sTemplate = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sTemplate, author, this.ImagePath, this.ForumUser.CurrentUserType, false, false, string.Empty, this.UserInfo.UserID, this.TimeZoneOffset);
             sTemplate = this.RenderModals(sTemplate);
 
             sTemplate = sTemplate.Replace("[AM:CONTROLS:AdminProfileSettings]", "<asp:placeholder id=\"plhProfileAdminSettings\" runat=\"server\" />");
@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.btnProfileEdit != null)
             {
-                if (!(this.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser))
+                if (!(this.ForumUser.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser))
                 {
                     if (this.ProfileMode == ProfileModes.View)
                     {
@@ -259,7 +259,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void btnProfileEdit_Click(object sender, System.EventArgs e)
         {
-            if (!(this.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser))
+            if (!(this.ForumUser.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser))
             {
                 this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}", $"{ParamKeys.Mode}={Modes.Edit}" }));
             }
@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private bool CanEditMode()
         {
-            if (!(this.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser))
+            if (!(this.ForumUser.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser))
             {
                 return true;
             }
@@ -422,9 +422,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             bAddModal = true;
                             break;
                         case "private":
-                            if (!(this.CurrentUserType == CurrentUserTypes.Anon))
+                            if (!(this.ForumUser.CurrentUserType == CurrentUserTypes.Anon))
                             {
-                                if (this.UserId == this.UID || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser)
+                                if (this.UserId == this.UID || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser)
                                 {
                                     bAddModal = true;
                                 }
@@ -432,28 +432,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                             break;
                         case "auth":
-                            if (!(this.CurrentUserType == CurrentUserTypes.Anon))
+                            if (!(this.ForumUser.CurrentUserType == CurrentUserTypes.Anon))
                             {
                                 bAddModal = true;
                             }
 
                             break;
                         case "forummod":
-                            if (!(this.CurrentUserType == CurrentUserTypes.Anon) && !(this.CurrentUserType == CurrentUserTypes.Auth))
+                            if (!(this.ForumUser.CurrentUserType == CurrentUserTypes.Anon) && !(this.ForumUser.CurrentUserType == CurrentUserTypes.Auth))
                             {
                                 bAddModal = true;
                             }
 
                             break;
                         case "admin":
-                            if (this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser)
+                            if (this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser)
                             {
                                 bAddModal = true;
                             }
 
                             break;
                         case "superuser":
-                            if (this.CurrentUserType == CurrentUserTypes.SuperUser)
+                            if (this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser)
                             {
                                 bAddModal = true;
                             }
@@ -510,9 +510,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string sec = matchValue.Split(':')[1].ToLowerInvariant();
                     if (sec == "private")
                     {
-                        if (!(this.CurrentUserType == CurrentUserTypes.Anon))
+                        if (!(this.ForumUser.CurrentUserType == CurrentUserTypes.Anon))
                         {
-                            if (this.UserId == this.UID || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser)
+                            if (this.UserId == this.UID || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser)
                             {
                                 bAddTab = true;
                                 access = CurrentUserTypes.Admin;
@@ -543,28 +543,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 bAddTab = true;
                                 break;
                             case CurrentUserTypes.Auth:
-                                if (!(this.CurrentUserType == CurrentUserTypes.Anon))
+                                if (!(this.ForumUser.CurrentUserType == CurrentUserTypes.Anon))
                                 {
                                     bAddTab = true;
                                 }
 
                                 break;
                             case CurrentUserTypes.ForumMod:
-                                if (!(this.CurrentUserType == CurrentUserTypes.Anon) && !(this.CurrentUserType == CurrentUserTypes.Auth))
+                                if (!(this.ForumUser.CurrentUserType == CurrentUserTypes.Anon) && !(this.ForumUser.CurrentUserType == CurrentUserTypes.Auth))
                                 {
                                     bAddTab = true;
                                 }
 
                                 break;
                             case CurrentUserTypes.Admin:
-                                if (this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser)
+                                if (this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser)
                                 {
                                     bAddTab = true;
                                 }
 
                                 break;
                             case CurrentUserTypes.SuperUser:
-                                if (this.CurrentUserType == CurrentUserTypes.SuperUser)
+                                if (this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser)
                                 {
                                     bAddTab = true;
                                 }

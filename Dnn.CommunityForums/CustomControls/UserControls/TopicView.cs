@@ -420,6 +420,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sOutput = TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicView", this.topicTemplateId);
             }
+
             sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(sOutput)).ToString();
             sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(new StringBuilder(sOutput), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
 
@@ -485,8 +486,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(this.MetaTemplate)).ToString();
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
-                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(this.MetaTemplate), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request).ToString();
-                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(this.MetaTemplate), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString()).ToString();
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType).ToString();
                 this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", this.tags);
 
                 this.MetaTitle = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[TITLE]", "[/TITLE]").Replace("[TITLE]", string.Empty).Replace("[/TITLE]", string.Empty);
@@ -545,7 +546,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, "<asp:placeholder id=\"plhTopic\" runat=\"server\" />", "[AF:CONTROL:CALLBACK]", "[/AF:CONTROL:CALLBACK]");
                 sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sOutput), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
-                sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(sOutput), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request).ToString();
+                sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(sOutput), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString()).ToString();
 
                 sOutput = Utilities.LocalizeControl(sOutput);
                 sOutput = Utilities.StripTokens(sOutput);
@@ -933,8 +934,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Process topic and reply templates.
             var sTopicTemplate = TemplateUtils.GetTemplateSection(sOutput, "[TOPIC]", "[/TOPIC]");
             var sReplyTemplate = TemplateUtils.GetTemplateSection(sOutput, "[REPLIES]", "[/REPLIES]");
+
+#region "Backward compatilbility -- remove in v10.00.00"
+            sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyUserTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+            sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sReplyTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(sReplyTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+
+#endregion "Backward compatilbility -- remove in v10.00.00"
 
             var sTemp = string.Empty;
             var i = 0;
@@ -1114,14 +1121,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (reply.ReplyId > 0)
             {
-                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request);
+                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString());
             }
             else
             {
-                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request);
+                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString());
             }
 
-            sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceUserTokens(sbOutput, this.PortalSettings, this.MainSettings, author.ForumUser, this.ForumUser, this.ForumModuleId);
             sOutput = sbOutput.ToString();
 
             // Legacy attachment functionality, uses "attachid"

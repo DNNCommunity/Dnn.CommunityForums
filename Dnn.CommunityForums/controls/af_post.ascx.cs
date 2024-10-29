@@ -350,7 +350,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     message = Utilities.CleanString(this.PortalId, message, this.allowHTML, this.editorType, this.ForumInfo.UseFilter, this.ForumInfo.AllowScript, this.ForumModuleId, this.ImagePath, this.ForumInfo.AllowEmoticons);
                     message = Utilities.ManageImagePath(message, HttpContext.Current.Request.Url);
                     var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UserId);
-                    message = TemplateUtils.PreviewTopic(topicTemplateID, this.ForumInfo, user, message, this.ImagePath, DateTime.UtcNow, this.CurrentUserType, this.UserId, this.TimeZoneOffset);
+                    message = TemplateUtils.PreviewTopic(topicTemplateID, this.ForumInfo, user, message, this.ImagePath, DateTime.UtcNow, this.ForumUser.CurrentUserType, this.UserId, this.TimeZoneOffset);
                     this.hidPreviewText.Value = message;
                     break;
             }
@@ -563,7 +563,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ctlForm.TopicSubject = HttpUtility.HtmlDecode(ti.Content.Subject);
                 var body = string.Empty;
 
-                if (ti.IsLocked && (this.CurrentUserType == CurrentUserTypes.Anon || this.CurrentUserType == CurrentUserTypes.Auth))
+                if (ti.IsLocked && (this.ForumUser.CurrentUserType == CurrentUserTypes.Anon || this.ForumUser.CurrentUserType == CurrentUserTypes.Auth))
                 {
                     this.Response.Redirect(this.NavigateUrl(this.TabId));
                 }

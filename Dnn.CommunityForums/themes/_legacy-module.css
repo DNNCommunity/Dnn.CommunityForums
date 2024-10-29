@@ -521,23 +521,7 @@
 
 
 
-/* 27 Remove font sizes + styling */
-	.afhiddenstats,
-	.afhiddentime {
-		font-size: 15px;
-		display: none;
-		font-weight: 400;
-		color: #888;
-		text-transform: lowercase;
-	}
-	.afhiddentime {
-		display: block;
-		float: right;
-		font-size: 11px;
-		color: #bbb;
-	}
-
-/* /27 */
+/* 27 Remove font sizes + styling -> now removed*/
 
 
 

@@ -458,13 +458,7 @@ td.afprop-label {
 /* 26 -> */
 
 
-/* 27 Remove font sizes + styling -> */
-.afhiddenstats,
-.afhiddentime {
-	display: none;
-}
-
-/* /27 */
+/* 27 Remove font sizes + styling -> -- now completely removed */
 
 
 /* 28 ->  */
@@ -1364,12 +1358,6 @@ only screen and (max-device-width: 768px) {
 		float: left;
 	}
 
-	/*.afhiddenstats,*/
-	.afhiddentime {
-		display: inline-block;
-	}
-
-}
 
 @media only screen and (max-width: 490px),
 only screen and (max-device-width: 490px) {

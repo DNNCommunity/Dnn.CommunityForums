@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                     if (topic != null)
                     {
-                        itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request).ToString();
+                        itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url.ToString()).ToString();
                         ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text = itemTemplate;
                     }
                 }

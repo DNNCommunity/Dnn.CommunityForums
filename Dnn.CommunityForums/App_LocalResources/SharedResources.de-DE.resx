@@ -1518,17 +1518,17 @@ Von
     <value>Keine Ergebnisse gefunden</value>
   </data>
   <data name="NotificationBodyReply.Text" xml:space="preserve">
-    <value>&lt;p&gt;[DisplayName] hat einen Beitrag verfasst, der eine Moderation erfordert.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Betreff:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Bitte überprüfen Sie den Inhalt und genehmigen Sie diesen oder lehnen Sie ihn ab.&lt;/p&gt;</value>
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] hat einen Beitrag verfasst, der eine Moderation erfordert.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Betreff:&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Bitte überprüfen Sie den Inhalt und genehmigen Sie diesen oder lehnen Sie ihn ab.&lt;/p&gt;</value>
   </data>
   <data name="NotificationBodyTopic.Text" xml:space="preserve">
-    <value>&lt;p&gt;[DisplayName] at einen Beitrag verfasst, der eine Moderation erfordert.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Bitte überprüfen Sie den Inhalt und genehmigen Sie diesen oder lehnen Sie ihn ab.&lt;/p&gt;
-&lt;p&gt;Sie können:&lt;ol&gt;&lt;li&gt;das Thema genehmigen,&lt;/li&gt;&lt;li&gt;das Thema ablehnen (mit der Mitteilung an den Verfasser, den Beitrag zu überarbeiten),&lt;/li&gt;&lt;li&gt;das Thema löschen, oder&lt;/li&gt;&lt;li&gt;den Benutzer verbannen (Autorisierung entziehen und Beiträge des Benutzers löschen)&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Wenn Sie allein aufgrund des Themas nicht beurteilen können, ob dieser Inhalt erlaubt ist, verwenden Sie &lt;a href="[MODLINK]"&gt;diesen Link&lt;/a&gt; um das Thema zu prüfen und zu moderieren.&lt;/p&gt;</value>
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] at einen Beitrag verfasst, der eine Moderation erfordert.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Bitte überprüfen Sie den Inhalt und genehmigen Sie diesen oder lehnen Sie ihn ab.&lt;/p&gt;
+&lt;p&gt;Sie können:&lt;ol&gt;&lt;li&gt;das Thema genehmigen,&lt;/li&gt;&lt;li&gt;das Thema ablehnen (mit der Mitteilung an den Verfasser, den Beitrag zu überarbeiten),&lt;/li&gt;&lt;li&gt;das Thema löschen, oder&lt;/li&gt;&lt;li&gt;den Benutzer verbannen (Autorisierung entziehen und Beiträge des Benutzers löschen)&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Wenn Sie allein aufgrund des Themas nicht beurteilen können, ob dieser Inhalt erlaubt ist, verwenden Sie &lt;a href="[FORUM:MODLINK]"&gt;diesen Link&lt;/a&gt; um das Thema zu prüfen und zu moderieren.&lt;/p&gt;</value>
   </data>
   <data name="NotificationSubjectReply.Text" xml:space="preserve">
-    <value>[DisplayName] hat eine Antwort auf [TopicSubject] gepostet.</value>
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] hat eine Antwort auf [TopicSubject] gepostet.</value>
   </data>
   <data name="NotificationSubjectTopic.Text" xml:space="preserve">
-    <value>[DisplayName] hat ein neues Thema erstellt: [TopicSubject]</value>
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] hat ein neues Thema erstellt: [TopicSubject]</value>
   </data>
   <data name="NotLoggedIn.Text" xml:space="preserve">
     <value>Bitte melden Sie sich an, um eine Antwort zu schreiben</value>

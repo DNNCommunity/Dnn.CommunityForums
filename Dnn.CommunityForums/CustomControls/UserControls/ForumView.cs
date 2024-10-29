@@ -150,8 +150,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
                 StringBuilder stringBuilder = new StringBuilder(sTemplate);
+#region "Backward compatilbility -- remove in v10.00.00"
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(stringBuilder);
+                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyUserTokenSynonyms(stringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale);
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(stringBuilder, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale);
+#endregion "Backward compatilbility -- remove in v10.00.00"
+
                 stringBuilder.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
                 stringBuilder.Replace("[STATISTICS]", "<am:Stats id=\"amStats\" MID=\"" + this.ModuleId + "\" PID=\"" + this.PortalId.ToString() + "\" runat=\"server\" />");
                 stringBuilder.Replace("[WHOSONLINE]", this.MainSettings.UsersOnlineEnabled ? "<asp:placeholder id=\"plhUsersOnline\" runat=\"server\" />" : string.Empty);
@@ -179,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
                     string tmpGroup = string.Empty;
 
-                    #region "backward compatibilty - remove when removing ForumTable property"
+#region "backward compatibilty - remove when removing ForumTable property"
 #pragma warning disable CS0618
                     /* this is for backward compatibility -- remove when removing ForumTable property in 10.00.00 */
                     if (this.ForumTable != null)
@@ -193,7 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             this.Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"]), this.ForumModuleId));
                         }
                     }
-                    #endregion
+#endregion "backward compatibilty - remove when removing ForumTable property"
 
                     if (this.Forums == null)
                     {
@@ -264,12 +268,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                         sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
 
                                         StringBuilder sGroupSectionTempStringBuilder = new StringBuilder(sGroupSectionTemp);
-                                        sGroupSectionTempStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sGroupSectionTempStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
+                                        sGroupSectionTempStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sGroupSectionTempStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType);
                                         sGroupSectionTemp = sGroupSectionTempStringBuilder.ToString();
 
                                         //any replacements on the group
                                         StringBuilder sNewGroupStringBuilder = new StringBuilder("<div id=\"group" + fi.ForumGroupId + "\" class=\"afgroup\">" + sGroupTemplate + "</div>");
-                                        sNewGroupStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sNewGroupStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
+                                        sNewGroupStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sNewGroupStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType);
                                         string sNewGroup = sNewGroupStringBuilder.ToString();
 
                                         sGroupSectionTemp = TemplateUtils.ReplaceSubSection(sGroupSectionTemp, sNewGroup, "[GROUP]", "[/GROUP]");
@@ -377,7 +381,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             StringBuilder templateStringBuilder = new StringBuilder(template);
-            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType);
+            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType);
 
             if (templateStringBuilder.ToString().Contains("[AF:CONTROL:TOGGLESUBSCRIBE]"))
             {
@@ -418,7 +422,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string subForum;
                 foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in subforums)
                 {
-                    subForum = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder("[FORUMLINK]"), fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request, this.TabId, this.CurrentUserType).ToString();
+                    subForum = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder("[FORUMLINK]"), fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType).ToString();
                     if (subForum != string.Empty)
                     {
                         sb.Append(subForum);

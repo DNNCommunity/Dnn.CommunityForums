@@ -154,10 +154,10 @@
     <value>&lt;a href="{0}" class="dcf-forums-link"&gt;[RESX:ForumMain]&lt;/a&gt;</value>
   </data>
   <data name="[ICONLINK-LASTREAD].Text" xml:space="preserve">
-    <value>&lt;a href="{0}" rel="nofollow"&gt;&lt;img src="[FORUM:THEMELOCATION]/images/miniarrow_down.png" style="vertical-align:middle;" alt="[RESX:JumpToLastRead]" border="0" class="afminiarrow" /&gt;&lt;/a&gt;</value>
+    <value>&lt;a href="{0}" rel="nofollow"&gt;&lt;img src="[FORUM:THEMELOCATION]images/miniarrow_down.png" style="vertical-align:middle;" alt="[RESX:JumpToLastRead]" border="0" class="afminiarrow" /&gt;&lt;/a&gt;</value>
   </data>
   <data name="[ICONLINK-LASTREPLY].Text" xml:space="preserve">
-    <value>&lt;a href="{0}" rel="nofollow"&gt;&lt;img src="[FORUM:THEMELOCATION]/images/miniarrow_right.png" style="vertical-align:middle;" alt="[RESX:JumpToLastReply]" border="0" class="afminiarrow" /&gt;&lt;/a&gt;</value>
+    <value>&lt;a href="{0}" rel="nofollow"&gt;&lt;img src="[FORUM:THEMELOCATION]images/miniarrow_right.png" style="vertical-align:middle;" alt="[RESX:JumpToLastReply]" border="0" class="afminiarrow" /&gt;&lt;/a&gt;</value>
   </data>
   <data name="[ICONLOCK]-HideIcon.Text" xml:space="preserve">
     <value>&amp;nbsp;&amp;nbsp;&lt;i id="af-topicsview-lock-{0}" class="fa fa-fw fa-red"&gt;&lt;/i&gt;</value>
@@ -392,5 +392,20 @@
   </data>
   <data name="[AF:TB:Unresolved].Text" xml:space="preserve">
     <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-question fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Unresolved]&lt;/span&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[LINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;{0}  target="_blank"&lt;/a&gt;</value>
+  </data>
+  <data name="[AUTHORPMLINK].Text" xml:space="preserve">
+    <value>&lt;img class='ComposeMessage' data-recipient='{{ "id": "user-{0}", "name": "[FORUMAUTHOR:DISPLAYNAMEFORJSON]" }}' src='[FORUM:THEMELOCATION]images/icon_pm.png' alt="[RESX:SendPM]" title="[RESX:SendPM]" border="0" /&gt;</value>
+  </data>
+  <data name="[EDITAUTHORLINK].Text" xml:space="preserve">
+    <value>&lt;button class='af-button af-button-edituser' data-id="{0}" data-name="[FORUMAUTHOR:DISPLAYNAMEFORJSON]"&gt;[RESX:Edit]&lt;/button&gt;</value>
+  </data>
+  <data name="[EDITUSERLINK].Text" xml:space="preserve">
+    <value>&lt;button class='af-button af-button-edituser' data-id="{0}" data-name="[FORUMUSER:DISPLAYNAMEFORJSON]"&gt;[RESX:Edit]&lt;/button&gt;</value>
+  </data>
+  <data name="[USERPMLINK].Text" xml:space="preserve">
+    <value>&lt;img class='ComposeMessage' data-recipient='{{ "id": "user-{0}", "name": "[FORUMUSER:DISPLAYNAMEFORJSON]" }}' src='[FORUM:THEMELOCATION]images/icon_pm.png' alt="[RESX:SendPM]" title="[RESX:SendPM]" border="0" /&gt;</value>
   </data>
 </root>

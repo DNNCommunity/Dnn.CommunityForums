@@ -302,7 +302,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "subjectlink":
                 {
-                        string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, this.Forum.PortalSettings.ActiveTab.TabID, this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1,this.ContentId, this.Forum.SocialGroupId);
+                        string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1,this.ContentId, this.Forum.SocialGroupId);
                         string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
                         string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
                         string sBodyTitle = GetTopicTitle(this.Content.Body);
@@ -330,7 +330,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 @params.Add($"{ParamKeys.TopicId}={this.TopicId}");
                             }
 
-                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
+                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
                         }
                         else
                         {
@@ -346,7 +346,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, format);
                 case "link":
                 {
-                    string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, this.Forum.PortalSettings.ActiveTab.TabID, this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
+                    string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
                     string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
                     string sBodyTitle = GetTopicTitle(this.Content.Body);
                     string slink;
@@ -374,7 +374,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             @params.Add($"{ParamKeys.ContentJumpId}={this.ReplyId}");
                         }
 
-                        slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
+                        slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
                     }
                     else
                     {
@@ -489,7 +489,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             }
 
                             return PropertyAccess.FormatString(
-                                Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, editParams.ToArray()),
+                                Utilities.NavigateURL(GetTabId(), string.Empty, editParams.ToArray()),
                                 format);
                         }
 
@@ -530,7 +530,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             }
 
                             return PropertyAccess.FormatString(
-                                Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()),
+                                Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()),
                                 format);
                         }
                     }
@@ -570,7 +570,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             }
 
                             return PropertyAccess.FormatString(
-                                Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()),
+                                Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()),
                                 format);
                         }
                     }
@@ -611,7 +611,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             }
 
                             return PropertyAccess.FormatString(
-                                Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, editParams.ToArray()),
+                                Utilities.NavigateURL(GetTabId(), string.Empty, editParams.ToArray()),
                                 format);
                         }
                     }
@@ -637,7 +637,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             };
 
                             return PropertyAccess.FormatString(
-                                Utilities.NavigateURL(this.Forum.PortalSettings.ActiveTab.TabID, string.Empty, @params.ToArray()),
+                                Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()),
                                 format);
                         }
                     }
@@ -687,7 +687,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             propertyNotFound = true;
             return string.Empty;
         }
-        
+
+        private int GetTabId()
+        {
+            return this.Forum.PortalSettings.ActiveTab.TabID == -1 || this.Forum.PortalSettings.ActiveTab.TabID == this.Forum.PortalSettings.HomeTabId ? this.Forum.TabId : this.Forum.PortalSettings.ActiveTab.TabID;
+        }
+
         private static string GetTopicTitle(string body)
         {
             if (!string.IsNullOrEmpty(body))
