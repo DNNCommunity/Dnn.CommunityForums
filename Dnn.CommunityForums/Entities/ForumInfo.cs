@@ -18,9 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Web;
-using DotNetNuke.Entities.Modules;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
@@ -31,12 +28,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using Enums;
-    using Services.Tokens;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Tokens;
-    using Services;
 
 
     [TableName("activeforums_Forums")]
@@ -54,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
         private PortalSettings portalSettings;
         private ModuleInfo moduleInfo;
-        private int? subscriberCount = 0;
+        private int? subscriberCount;
         private string rssLink;
         private List<PropertyInfo> properties;
         private string lastPostSubject;

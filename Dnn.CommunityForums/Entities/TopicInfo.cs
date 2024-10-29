@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private int forumId = -1;
         private string tags = string.Empty;
         private string selectedcategories;
-        private int? subscriberCount = 0;
+        private int? subscriberCount;
 
         public int TopicId { get; set; }
 
