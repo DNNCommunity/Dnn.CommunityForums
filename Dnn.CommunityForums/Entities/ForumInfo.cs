@@ -833,7 +833,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "forumgrouplink":
                     return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
                             this.PortalSettings.PortalId,
-                            this.PortalSettings.ActiveTab.TabID,
+                            this.GetTabId(),
                             this.ModuleId,
                             this.ForumGroup.PrefixURL,
                             string.Empty,
@@ -851,7 +851,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(
                         new ControlUtils().BuildUrl(
                             this.PortalSettings.PortalId,
-                            this.PortalSettings.ActiveTab.TabID,
+                            this.GetTabId(),
                             this.ModuleId,
                             this.ForumGroup.PrefixURL,
                             this.PrefixURL,
@@ -867,7 +867,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "parentforumlink":
                     return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
                             this.PortalSettings.PortalId,
-                            this.PortalSettings.ActiveTab.TabID,
+                            this.GetTabId(),
                             this.ModuleId,
                             this.ForumGroup.PrefixURL,
                             this.ParentForumUrlPrefix,
@@ -904,7 +904,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "lastpostsubject":
                     return this.LastPostID < 1
                         ? string.Empty
-                        : PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(this.LastPost, length > 0 ? length : this.LastPostSubject.Length, this, this.PortalSettings.ActiveTab.TabID), format);
+                        : PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(this.LastPost, length > 0 ? length : this.LastPostSubject.Length, this, this.GetTabId()), format);
                 case "lastpostdate":
                     return this.LastPostID < 1
                         ? string.Empty
@@ -988,6 +988,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             propertyNotFound = true;
             return string.Empty;
+        }
+
+        private int GetTabId()
+        {
+            return this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId ? this.TabId : this.PortalSettings.ActiveTab.TabID;
         }
     }
 }

@@ -504,7 +504,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "forumgrouplink":
                     return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
                             this.PortalSettings.PortalId,
-                            this.PortalSettings.ActiveTab.TabID,
+                            this.GetTabId(),
                             this.ModuleId,
                             this.PrefixURL,
                             string.Empty,
@@ -528,6 +528,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             propertyNotFound = true;
             return string.Empty;
+        }
+
+        private int GetTabId()
+        {
+            return this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId ? this.TabId : this.PortalSettings.ActiveTab.TabID;
         }
     }
 }

@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         LastName = ui.LastName,
                         Username = ui.Username,
                     };
-                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalSettings.PortalId, this.moduleId, this.tabId, this.forumId, this.topicId, this.replyId, string.Empty, au);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalSettings.PortalId, this.moduleId, this.tabId, this.forumId, this.topicId, this.replyId, au);
                 }
             }
 
@@ -185,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 rc.Reply_Delete(this.PortalSettings.PortalId, this.forumId, this.topicId, this.replyId, ms.DeleteBehavior);
                 if (fi.ModDeleteTemplateId > 0 && reply?.Content?.AuthorId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, string.Empty, reply.Author);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, reply.Author);
                 }
             }
             else
@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(this.topicId);
                 if (fi.ModDeleteTemplateId > 0 && ti?.Content?.AuthorId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, string.Empty, ti.Author);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, ti.Author);
                 }
             }
 
