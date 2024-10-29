@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (ti.Forum.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, topicId, 0, string.Empty, ti.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, topicId, 0, ti.Author);
             }
 
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(ti.PortalId, ti.Forum.TabId, ti.Forum.ModuleId, ti.Forum.ForumGroupId, ti.ForumId, topicId, -1, ti.Content.AuthorId);
@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (oldForum.ModMoveTemplateId > 0 & ti?.Author?.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(oldForum.ModMoveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, forumId: ti.Forum.ForumID, ti.TopicId, -1, string.Empty, ti.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(oldForum.ModMoveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, forumId: ti.Forum.ForumID, topicId: ti.TopicId, replyId: -1, author: ti.Author);
             }
 
             new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: topicId, replyId: -1, authorId: ti.Content.AuthorId, requestUrl: null);

@@ -161,7 +161,13 @@
 					</td>
 								<td class="dcf-col dcf-col-subject">
 									<div class="dcf-subject" title="[FORUMTOPIC:BODYTITLE]">
-										<h4 class="dcf-title h5 mt-0 mb-2">[FORUMTOPIC:SUBJECTLINK][FORUMTOPIC:LASTREADURL|<a href="{0}" rel="nofollow"><img src="[FORUM:THEMELOCATION]/images/miniarrow_down.png" style="vertical-align: middle;" alt="[RESX:JumpToLastRead]" border="0" class="afminiarrow" /></a>][ICONPIN][ICONLOCK]</h4>
+										<h4 class="dcf-title h5 mt-0 mb-2">[FORUMTOPIC:SUBJECTLINK][FORUMTOPIC:LASTREADURL|<a href="{0}" rel="nofollow"><img src="[FORUM:THEMELOCATION]/images/miniarrow_down.png" style="vertical-align: middle;" alt="[RESX:JumpToLastRead]" border="0" class="afminiarrow" /></a>]
+                                            [FORUMTOPIC:ICONPINNED|&nbsp;&nbsp;<i id="af-topicsview-pin-{0}" class="fa fa-thumb-tack fa-fw fa-red"></i>]
+                                            [FORUMTOPIC:ICONUNPINNED|&nbsp;&nbsp;<i id="af-topicsview-pin-{0}" class="fa fa-fw fa-red"></i>]
+                                            [FORUMTOPIC:ICONLOCKED|&nbsp;&nbsp;<i id="af-topicsview-lock-{0}" class="fa fa-lock fa-fw fa-red"></i>]
+                                            [FORUMTOPIC:ICONUNLOCKED|&nbsp;&nbsp;<i id="af-topicsview-lock-{0}" class="fa fa-fw fa-red"></i>]
+
+										</h4>
 										<div class="dcf-topic-started">[RESX:StartedHeader]
 											<i class="fa fa-user fa-blue"></i>&nbsp;[FORUMTOPIC:AUTHORDISPLAYNAMELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>|[FORUMTOPIC:AUTHORDISPLAYNAME]][AF:UI:MINIPAGER]
 										</div>

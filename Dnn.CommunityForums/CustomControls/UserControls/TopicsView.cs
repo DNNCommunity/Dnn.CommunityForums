@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string MetaKeywords { get; set; } = string.Empty;
 
         public string ForumUrl { get; set; } = string.Empty;
-     
+
         #region Controls
         protected af_quickjump ctlForumJump = new af_quickjump();
 
@@ -138,6 +138,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(topicsTemplate)).ToString();
+                topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyUserTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+                topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicActionTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale, this.useListActions).ToString();
@@ -634,7 +636,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(stringBuilder, topicInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString());
-                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceUserTokens(stringBuilder, this.PortalSettings, this.MainSettings, topicInfo.Author.ForumUser, this.ForumUser, this.ForumModuleId);
                 stringBuilder.Replace("[LASTPOST]", string.Empty).Replace("[/LASTPOST]", string.Empty);
                 stringBuilder.Replace("[ROWCSS]", this.GetRowCSS(UserLastTopicRead, UserLastReplyRead, topicInfo.TopicId, topicInfo.LastReplyId, rowcount));
 

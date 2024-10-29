@@ -95,12 +95,6 @@
 								
 							</section>
 							<footer class="dcf-post-footer">
-								<!--
-								<div class="dcf-post-signature">
-									[SIGNATURE]
-								</div>
-                                -->
-
                                 [FORUMUSER:SIGNATURE|<div class="dcf-post-signature">{0}</div>]
 
                                 <div class="dcf-cols dcf-post-footer-bottom">
@@ -156,11 +150,6 @@
 								
 							</section>
 							<footer class="dcf-post-footer">
-<!--								
-									<div class="dcf-post-signature">
-									[SIGNATURE]
-								</div>
--->								
                                 [FORUMUSER:SIGNATURE|<div class="dcf-post-signature">{0}</div>]
 
 								<div class="dcf-cols dcf-post-footer-bottom">

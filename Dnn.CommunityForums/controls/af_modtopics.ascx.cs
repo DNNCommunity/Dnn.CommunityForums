@@ -111,7 +111,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                                     tmpForumId,
                                                     tmpTopicId,
                                                     -1,
-                                                    string.Empty,
                                                     ti.Author);
                                             }
                                             catch (Exception ex)
@@ -139,7 +138,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                                     tmpForumId,
                                                     tmpTopicId,
                                                     tmpReplyId,
-                                                    string.Empty,
                                                     ri.Author);
                                             }
                                             catch (Exception ex)
@@ -176,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     au.FirstName = ui.FirstName;
                                     au.LastName = ui.LastName;
                                     au.Username = ui.Username;
-                                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, au);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, au);
                                 }
                             }
 
@@ -200,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     // TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
                                     {
-                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ti.Author);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, ti.Author);
                                     }
 
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
@@ -219,7 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     // TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
                                     {
-                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ri.Author);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, ri.Author);
                                     }
 
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);

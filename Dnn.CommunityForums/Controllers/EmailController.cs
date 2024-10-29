@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Runtime.CompilerServices;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
@@ -42,20 +44,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     public class EmailController
     {
-        public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author)
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Not Used.")]
+        public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author) => throw new NotImplementedException();
+
+        internal static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author)
         {
             DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = Utilities.GetPortalSettings(portalId);
             var sTemplate = string.Empty;
             var ti = new TemplateController().Template_Get(templateId);
-            var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
-            var body = TemplateUtils.ParseEmailTemplate(ti.Template, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
-            body = body.Replace("[REASON]", comments);
+            var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url);
+            var body = TemplateUtils.ParseEmailTemplate(ti.Template, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url);
             var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
             var sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
 
             // Send now
-            var recipients = new List<string>();
-            recipients.Add(author.Email);
+            var recipients = new List<string>
+            {
+                author.Email,
+            };
             DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.EmailInfo()
             {
                 Body = body,
@@ -76,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs, Uri requestUrl)")]
         public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<DotNetNuke.Modules.ActiveForums.SubscriptionInfo> subs) => throw new NotImplementedException();
 
-        internal static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs, Uri requestUrl)
+        internal static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs, Uri requestUrl)
         {
             var navigationManager = (INavigationManager)new Services.URLNavigator().NavigationManager();
             DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = Utilities.GetPortalSettings(portalId);
@@ -89,35 +95,41 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 IEnumerable<TimeSpan> timeZoneOffsets = subs.Where(s => s.UserCulture == userCulture).Select(s => s.TimeZoneOffSet).Distinct();
                 foreach (TimeSpan timeZoneOffset in timeZoneOffsets)
                 {
-                    string sTemplate = string.Empty;
                     string sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
 
-                    /* subject and body, etc. can now be different based on topic subscriber vs forum subscriber so process first for topic subscribers and then for forum subscribers */
-                    var recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture && s.TopicSubscriber && !string.IsNullOrEmpty(s.Email)).Select(s => s.Email).ToList();
-                    if (recipients.Count > 0)
+                    /* subject and body, etc. can now be different based on topic subscriber vs forum subscriber so process first for topic subscribers and then for forum subscribers;
+                       in addition, user-specific tokens are now supported in email templates, so need to process template and send email uniquely for each user */
+                    var topicSubscribers = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture.Equals(userCulture) && s.TopicSubscriber && !string.IsNullOrEmpty(s.Email)).ToList();
+                    foreach (var topicSubscriber in topicSubscribers)
                     {
                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.EmailInfo()
                         {
                             From = sFrom,
                             PortalId = portalId,
                             ModuleId = moduleID,
-                            Recipients = recipients,
-                            Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: string.Empty, author: author, userId: author.AuthorId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl),
-                            Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, author: author, userId: author.AuthorId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl),
+                            Recipients = new List<string>()
+                            {
+                                topicSubscriber.Email,
+                            },
+                            Subject = Utilities.StripHTMLTag(TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: topicSubscriber.User, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl)),
+                            Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: topicSubscriber.User, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl),
                         });
                     }
 
-                    recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture && !s.TopicSubscriber && !string.IsNullOrEmpty(s.Email)).Select(s => s.Email).ToList();
-                    if (recipients.Count > 0)
+                    var forumSubscribers = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture.Equals(userCulture) && !s.TopicSubscriber && !string.IsNullOrEmpty(s.Email)).ToList();
+                    foreach (var forumSubscriber in forumSubscribers)
                     {
                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.EmailInfo()
                         {
                             From = sFrom,
                             ModuleId = moduleID,
                             PortalId = portalId,
-                            Recipients = recipients,
-                            Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: string.Empty, author: author, userId: author.AuthorId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl),
-                            Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, author: author, userId: author.AuthorId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl),
+                            Recipients = new List<string>()
+                            {
+                                forumSubscriber.Email,
+                            },
+                            Subject = Utilities.StripHTMLTag(TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: forumSubscriber.User, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl)),
+                            Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: forumSubscriber.User, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl),
                         });
                     }
                 }
