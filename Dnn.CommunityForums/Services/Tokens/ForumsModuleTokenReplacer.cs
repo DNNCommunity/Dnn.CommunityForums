@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
                 case "loginpopuplink":
                     {
-                        //[DCF:LOGINPOPULINK|Please <a href="[DCF:LOGINLINK]" onclick="return `{0}`;">login</a> to join the conversation|Please <a href="[DCF:LOGINLINK]">login</a> to join the conversation.].
+                        //[DCF:LOGINPOPUPLINK|Please <a href="[DCF:LOGINLINK]" onclick="return `{0}`;">login</a> to join the conversation|Please <a href="[DCF:LOGINLINK]">login</a> to join the conversation.].
                         return accessingUser.UserID < 0 &&
                                this.PortalSettings.EnablePopUps &&
                                this.PortalSettings.LoginTabId == DotNetNuke.Common.Utilities.Null.NullInteger &&
