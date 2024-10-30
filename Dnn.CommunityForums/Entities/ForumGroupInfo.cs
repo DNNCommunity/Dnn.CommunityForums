@@ -38,8 +38,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     // TODO [Cacheable("activeforums_Groups", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
     public partial class ForumGroupInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
-        private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
         private Hashtable groupSettings;
         private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
@@ -63,6 +61,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int PermissionsId { get; set; } = -1;
 
         public string PrefixURL { get; set; } = string.Empty;
+
+        [IgnoreColumn]
+        public Uri RequestUri { get; set; }
+
+        [IgnoreColumn]
+        public string RawUrl { get; set; }
 
         [IgnoreColumn]
         public int TabId => this.ModuleInfo.TabID;
@@ -484,7 +488,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
-                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this)
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this, this.RequestUri, this.RawUrl)
                 {
                     AccessingUser = accessingUser,
                 };

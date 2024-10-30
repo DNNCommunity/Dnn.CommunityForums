@@ -486,8 +486,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(this.MetaTemplate)).ToString();
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(this.MetaTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
-                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(this.MetaTemplate), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString()).ToString();
-                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType).ToString();
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(this.MetaTemplate), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
+                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl).ToString();
                 this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", this.tags);
 
                 this.MetaTitle = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[TITLE]", "[/TITLE]").Replace("[TITLE]", string.Empty).Replace("[/TITLE]", string.Empty);
@@ -546,7 +546,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, "<asp:placeholder id=\"plhTopic\" runat=\"server\" />", "[AF:CONTROL:CALLBACK]", "[/AF:CONTROL:CALLBACK]");
                 sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sOutput), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
-                sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(sOutput), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString()).ToString();
+                sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(sOutput), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
 
                 sOutput = Utilities.LocalizeControl(sOutput);
                 sOutput = Utilities.StripTokens(sOutput);
@@ -741,7 +741,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[TOPICSUBSCRIBE]", string.Empty);
             }
 
-#region "Backward compatilbility -- remove in v10.00.00"
+// TODO: remove in v10.00.00
+#region "TODO: Backward compatibility -- remove in v10.00.00"
 
             // Topic and post actions
             // for backward compatibility, this needs to map to post actions, not topic actions
@@ -768,7 +769,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostActionTokenSynonyms(sbOutput, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale, this.useListActions);
-#endregion "Backward compatilbility -- remove in v10.00.00"
+#endregion "Backward compatibility -- remove in v10.00.00"
 
             // Quick Reply
             if (this.CanReply)
@@ -799,19 +800,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (!this.Request.IsAuthenticated)
                 {
-                    string loginUrl = this.PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, "returnUrl=" + this.Request.RawUrl) : Utilities.NavigateURL(this.TabId, string.Empty, "ctl=login&returnUrl=" + this.Request.RawUrl);
-
-                    string onclick = string.Empty;
-                    if (this.PortalSettings.EnablePopUps && this.PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
-                    {
-                        onclick = " onclick=\"return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginUrl), this, this.PortalSettings, true, false, 300, 650) + "\"";
-                    }
-
-                    sbOutput.Replace("[ADDREPLY]", $"<span class=\"dcf-auth-false-login\">{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedReplyPleaseLogin]"), loginUrl, onclick)}</span>");
+                    sbOutput.Replace("[ADDREPLY]", $"{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedReplyPleaseLogin]"), "[DCF:LOGINLINK]", "[DCF:LOGINPOPUPLINK]")}");
                 }
                 else
                 {
-                    sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-auth-false\">[RESX:NotAuthorizedReply]</span>");
+                    sbOutput.Replace("[ADDREPLY]", "[RESX:NotAuthorizedReply]");
                 }
 
                 sbOutput.Replace("[QUICKREPLY]", string.Empty);
@@ -1121,11 +1114,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (reply.ReplyId > 0)
             {
-                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString());
+                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl);
             }
             else
             {
-                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString());
+                sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl);
             }
 
             sOutput = sbOutput.ToString();

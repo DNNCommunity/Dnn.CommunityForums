@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion "Deprecated Methods"
 
-        internal static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, bool topicSubscriber, INavigationManager navigationManager, Uri requestUrl)
+        internal static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, bool topicSubscriber, INavigationManager navigationManager, Uri requestUrl, string rawUrl)
         {
             if (navigationManager == null)
             {
@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(templateStringbuilder, postInfo, portalSettings, moduleSettings, navigationManager, accessingUser, requestUrl.ToString());
+            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(templateStringbuilder, postInfo, portalSettings, moduleSettings, navigationManager, accessingUser, requestUrl, rawUrl);
 
             return templateStringbuilder.ToString();
         }

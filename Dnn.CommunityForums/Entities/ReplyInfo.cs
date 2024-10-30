@@ -53,13 +53,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.Topic.ForumId = value;
         }
 
-        [IgnoreColumn()]
-        public int PostId {  get => this.ReplyId; }
+        [IgnoreColumn]
+        public int PostId { get => this.ReplyId; }
 
-        [IgnoreColumn] 
+        [IgnoreColumn]
         public bool IsTopic => false;
 
-        [IgnoreColumn] 
+        [IgnoreColumn]
         public bool IsReply => true;
 
         public int ReplyId { get; set; }
@@ -79,6 +79,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool IsDeleted { get; set; }
 
         [IgnoreColumn]
+        public Uri RequestUri { get; set; }
+
+        [IgnoreColumn]
+        public string RawUrl { get; set; }
+
+        [IgnoreColumn]
         public int PortalId { get => this.Forum.PortalId; }
 
         [IgnoreColumn]
@@ -95,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
         }
-        
+
         [IgnoreColumn]
         public string Subject => Content.Subject;
 
@@ -104,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn]
         public string Summary => Content.Summary;
-        
+
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
@@ -243,7 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return css;
         }
-        
+
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
         {
@@ -264,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
-                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.Forum.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this)
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.Forum.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this, this.RequestUri, this.RawUrl)
                 {
                     AccessingUser = accessingUser,
                 };
@@ -295,14 +301,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "forumid":
                     return PropertyAccess.FormatString(this.ForumId.ToString(), format);
                 case "subject":
-                {
+                    {
                         string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
                         return PropertyAccess.FormatString(length > 0 && this.Subject.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93"), "...") : Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage, format);
-                }
+                    }
 
                 case "subjectlink":
-                {
-                        string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1,this.ContentId, this.Forum.SocialGroupId);
+                    {
+                        string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
                         string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
                         string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
                         string sBodyTitle = GetTopicTitle(this.Content.Body);
@@ -338,58 +344,58 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                         return PropertyAccess.FormatString(slink + sPollImage, format);
-                }
+                    }
 
                 case "summary":
                     return PropertyAccess.FormatString(length > 0 && this.Summary.Length > length ? this.Summary.Substring(0, length) : this.Summary, format);
                 case "body":
                     return PropertyAccess.FormatString(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, format);
                 case "link":
-                {
-                    string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
-                    string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
-                    string sBodyTitle = GetTopicTitle(this.Content.Body);
-                    string slink;
-                    var @params = new List<string>
+                    {
+                        string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
+                        string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
+                        string sBodyTitle = GetTopicTitle(this.Content.Body);
+                        string slink;
+                        var @params = new List<string>
                     {
                         $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ContentJumpId}={this.ReplyId}",
                     };
 
-                    if (this.Forum.SocialGroupId > 0)
-                    {
-                        @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
-                    }
+                        if (this.Forum.SocialGroupId > 0)
+                        {
+                            @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+                        }
 
-                    if (sTopicURL == string.Empty)
-                    {
-                        @params = new List<string>
+                        if (sTopicURL == string.Empty)
+                        {
+                            @params = new List<string>
                         {
                             $"{ParamKeys.ForumId}={this.ForumId}",
                             $"{ParamKeys.TopicId}={this.TopicId}",
                             $"{ParamKeys.ReplyId}={this.ReplyId}",
                             $"{ParamKeys.ViewType}={Views.Post}",
                         };
-                        if (this.Forum.MainSettings.UseShortUrls)
+                            if (this.Forum.MainSettings.UseShortUrls)
+                            {
+                                @params.Add($"{ParamKeys.ContentJumpId}={this.ReplyId}");
+                            }
+
+                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
+                        }
+                        else
                         {
-                            @params.Add($"{ParamKeys.ContentJumpId}={this.ReplyId}");
+                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + sTopicURL + "\">" + subject + "</a>";
                         }
 
-                        slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
+                        return PropertyAccess.FormatString(slink, format);
                     }
-                    else
-                    {
-                        slink = "<a title=\"" + sBodyTitle + "\" href=\"" + sTopicURL + "\">" + subject + "</a>";
-                    }
-
-                    return PropertyAccess.FormatString(slink, format);
-                }
 
                 case "authorid":
                     return PropertyAccess.FormatString(this.Content.AuthorId.ToString(), format);
                 case "authorname":
                     return PropertyAccess.FormatString(this.Content.AuthorName.ToString(), format);
                 case "authordisplaynamelink":
-                {
+                    {
                         return PropertyAccess.FormatString(
                             Controllers.ForumUserController.CanLinkToProfile(
                                 this.Forum.PortalSettings,
@@ -404,7 +410,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                     $"userId={this.Content.AuthorId}")
                                 : string.Empty,
                             format);
-                }
+                    }
 
                 case "authordisplayname":
                     return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName :
@@ -464,7 +470,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return string.Empty;
 
                 case "actioneditonclick":
-                {
+                    {
                         var bEdit = Controllers.PermissionController.HasPerm(this.Forum.Security.Edit,
                             accessingUser.PortalID,
                             this.Forum.ModuleId, accessingUser.UserID);
@@ -494,7 +500,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                         return string.Empty;
-                }
+                    }
 
                 case "actionreplyonclick":
                     {
@@ -644,7 +650,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                     return string.Empty;
                 case "actionmarkansweronclick":
-                {
+                    {
                         if (this.IsReply && this.Topic.StatusId > 0 && this.Topic.StatusId != 3 && this.StatusId != 1)
                         {
                             var bEdit = Controllers.PermissionController.HasPerm(this.Forum.Security.Edit,
@@ -662,7 +668,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                         return string.Empty;
-                }
+                    }
 
                 case "actionmoveonclick": /* only valid for topic not for reply */
                     return string.Empty;

@@ -665,13 +665,13 @@ De,
     <value>Vous devez être connecté pour publier une réponse.</value>
   </data>
   <data name="[RESX:NotAuthorizedReply].Text" xml:space="preserve">
-    <value>Vous n'êtes pas authorisé à répondre.</value>
+    <value>&lt;span class="afnotauthorized"&gt;Vous n'êtes pas authorisé à répondre.&lt;/span&gt;</value>
   </data>
   <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve">
-    <value>Veuillez &lt;a href="{0}"{1}&gt;vous connecter&lt;/a&gt; pour répondre.</value>
+    <value>&lt;span class="dcf-auth-false-login"&gt;Veuillez &lt;a href="{0}" onclick="return {1};"&gt;vous connecter&lt;/a&gt; pour répondre.&lt;/span&gt;</value>
   </data>
   <data name="[RESX:NotAuthorizedTopic].Text" xml:space="preserve">
-    <value>&lt;span class="afnotauthorized"&gt;Vous n'avez pas la permission pour créer un nouveau sujet&lt;/span&gt;</value>
+    <value>&lt;div class="amnormal"&gt;&lt;span class="afnotauthorized"&gt;Vous n'avez pas la permission pour créer un nouveau sujet&lt;/span&gt;&lt;/div&gt;</value>
   </data>
   <data name="[RESX:Notify].Text" xml:space="preserve">
     <value>Notification</value>
@@ -1729,7 +1729,7 @@ De,
     <value>Le {0} des autorisations pour les {1} du forum ne se trouve pas dans la base de données ; Vous devrez réparer cela dans la base de données, ou supprimer le forum et le recréer. Veuillez visiter le dépôt Github (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour connaître les étapes de dépannage.</value>
   </data>
   <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
-    <value>Veuillez vous &lt;a href="{0}"{1}&gt;connectez-vous&lt;/a&gt; pour ajouter un sujet.</value>
+    <value>Veuillez vous &lt;a href="{0}" onclick="return {1};"&gt;connectez-vous&lt;/a&gt; pour ajouter un sujet.</value>
   </data>
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>Pas de contenu en attente</value>

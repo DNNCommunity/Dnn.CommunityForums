@@ -18,8 +18,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System;
+using System.Net;
+using System.Web;
+using System.Web.UI;
+
+using DotNetNuke.Services.Authentication;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 {
+    using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -29,11 +37,15 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     {
         public int ForumTabId { get; set; }
 
-        public int TabId  { get; set; }
+        public int TabId { get; set; }
 
         public int ForumModuleId { get; set; }
 
         public int ModuleId { get; set; }
+
+        public Uri RequestUri { get; set; }
+
+        public string RawUrl { get; set; }
 
         private const string PropertySource_resx = "resx";
         private const string PropertySource_dcf = "dcf";
@@ -42,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         private const string PropertySource_host = "host";
         private PortalSettings portalSettings;
 
-        public ForumsModuleTokenReplacer(PortalSettings portalSettings, int forumTabId, int forumModuleId, int tabId, int moduleId)
+        public ForumsModuleTokenReplacer(PortalSettings portalSettings, int forumTabId, int forumModuleId, int tabId, int moduleId, Uri requestUri, string rawUrl)
         {
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
             this.PropertySource[PropertySource_dcf] = this;
@@ -55,6 +67,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.ForumModuleId = forumModuleId;
             this.TabId = tabId;
             this.ForumTabId = forumTabId;
+            this.RequestUri = requestUri;
+            this.RawUrl = rawUrl;
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
@@ -82,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
-                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID))
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this.RequestUri, this.RawUrl)
                 {
                     AccessingUser = accessingUser,
                 };
@@ -100,6 +114,23 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {
+                case "loginlink":
+                    {
+                        //[DCF:LOGINLINK|Please <a href="{0}">login</a> to join the conversation.]
+                        return accessingUser.UserID < 0 ? PropertyAccess.FormatString(GetLoginUrl(), format) : string.Empty;
+                    }
+
+                case "loginpopuplink":
+                    {
+                        //[DCF:LOGINPOPULINK|Please <a href="[DCF:LOGINLINK]" onclick="return `{0}`;">login</a> to join the conversation|Please <a href="[DCF:LOGINLINK]">login</a> to join the conversation.].
+                        return accessingUser.UserID < 0 &&
+                               this.PortalSettings.EnablePopUps &&
+                               this.PortalSettings.LoginTabId == DotNetNuke.Common.Utilities.Null.NullInteger &&
+                               !AuthenticationController.HasSocialAuthenticationEnabled() ?
+                                    PropertyAccess.FormatString(DotNetNuke.Common.Utilities.UrlUtils.PopUpUrl(HttpUtility.UrlDecode(GetLoginUrl()), this.PortalSettings, true, false, 300, 650), format) :
+                                    string.Empty;
+                    }
+
                 case "toolbar-forums-onclick":
                     return PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId), format);
                 case "toolbar-controlpanel-onclick":
@@ -150,6 +181,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             propertyNotFound = true;
             return string.Empty;
+
+            string GetLoginUrl()
+            {
+                return this.PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, $"returnUrl={this.RawUrl}") : Utilities.NavigateURL(this.TabId, string.Empty, $"ctl=login&returnUrl={this.RawUrl}");
+            }
         }
     }
 }

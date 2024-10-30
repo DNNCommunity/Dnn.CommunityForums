@@ -1288,76 +1288,59 @@ a.af-markanswer em {
 
 /* 41 Styling of Forum view, part fo the classes from ascx > cleanup? */
 
-@media only screen and (max-width: 768px),
-only screen and (max-device-width: 768px) {
+@media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
+    .af-lastpost,
+    .af-colstats,
+    .afgrouprow-m,
+    .afgrouprow-l { display: none; }
 
-	.af-lastpost,
-	.af-colstats,
-	.afgrouprow-m,
-	.afgrouprow-l {
-		display: none;
-	}
+    .af-colstats_responsive { display: inline; }
 
-	.af-colstats_responsive {
-		display: inline;
-	}
+    .af_lastpost_responsive { display: block; }
 
-	.af_lastpost_responsive {
-		display: block;
-	}
+    .afpostinfo_responsive {
+        position: static;
+        width: 100%;
+        margin-right: 0px;
+        clear: both;
+    }
 
-	.afpostinfo_responsive {
-		position: static;
-		width: 100%;
-		margin-right: 0px;
-		clear: both;
-	}
+    .afpostcontent_responsive {
+        position: static;
+        padding-left: 0px;
+        width: 100%;
+        clear: both;
+    }
 
-	.afpostcontent_responsive {
-		position: static;
-		padding-left: 0px;
-		width: 100%;
-		clear: both;
-	}
+    .afpostinfo_responsive .afavatarprofile {
+        float: left;
+        width: 125px; /*position:absolute;*/
+        min-height: 100px;
+        padding-right: 5px;
+    }
 
-	.afpostinfo_responsive .afavatarprofile {
-		float: left;
-		width: 125px;
-		/*position:absolute;*/
-		min-height: 100px;
-		padding-right: 5px;
-	}
+    .afpostinfo_responsive .aftopprofile {
+        float: left; /*padding-left: 130px;*/
+        margin-left: 10px;
+        padding-right: 5px;
+        width: 125px;
+        min-height: 100px; /*position:absolute;*/
+    }
 
-	.afpostinfo_responsive .aftopprofile {
-		float: left;
-		/*padding-left: 130px;*/
-		margin-left: 10px;
-		padding-right: 5px;
-		width: 125px;
-		min-height: 100px;
-		/*position:absolute;*/
-	}
+    .afpostinfo_responsive .afbottomprofile {
+        float: left; /*padding-left: 250px;*/
+        margin-left: 10px;
+        width: 125px;
+        min-height: 100px;
+        padding-right: 5px; /*position:absolute;*/
+    }
 
-	.afpostinfo_responsive .afbottomprofile {
-		float: left;
-		/*padding-left: 250px;*/
-		margin-left: 10px;
-		width: 125px;
-		min-height: 100px;
-		padding-right: 5px;
-		/*position:absolute;*/
-	}
+    /*.afpostinfo_responsive .afavatarprofile *, */
+    .afpostinfo_responsive .aftopprofile *,
+    .afpostinfo_responsive .afbottomprofile * { /*display:block;*/ }
 
-	/*.afpostinfo_responsive .afavatarprofile *, */
-	.afpostinfo_responsive .aftopprofile *,
-	.afpostinfo_responsive .afbottomprofile * {
-		/*display:block;*/
-	}
-
-	ul.af-right {
-		float: left;
-	}
-
+    ul.af-right { float: left; }
+}
 
 @media only screen and (max-width: 490px),
 only screen and (max-device-width: 490px) {

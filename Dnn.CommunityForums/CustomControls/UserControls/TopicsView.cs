@@ -226,7 +226,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             if (!string.IsNullOrEmpty(this.MetaTemplate))
                             {
                                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder( this.MetaTemplate)).ToString();
-                                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType).ToString();
+                                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl).ToString();
                                 this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", string.Empty);
                                 if (this.MetaTemplate.Contains("[TOPICSUBJECT:"))
                                 {
@@ -355,7 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
                 
             StringBuilder stringBuilder = new StringBuilder(sOutput);
-            stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType);
+            stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl);
             sOutput = stringBuilder.ToString();
 
             sOutput = Utilities.LocalizeControl(sOutput);
@@ -465,24 +465,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (!this.Request.IsAuthenticated)
                 {
-                    string loginUrl = this.PortalSettings.LoginTabId > 0
-                        ? Utilities.NavigateURL(this.PortalSettings.LoginTabId,
-                            string.Empty,
-                            "returnUrl=" + this.Request.RawUrl)
-                        : Utilities.NavigateURL(this.TabId, string.Empty, "ctl=login&returnUrl=" + this.Request.RawUrl);
-
-                    string onclick = string.Empty;
-                    if (this.PortalSettings.EnablePopUps && this.PortalSettings.LoginTabId == DotNetNuke.Common.Utilities.Null.NullInteger &&
-                        !AuthenticationController.HasSocialAuthenticationEnabled(this))
-                    {
-                        onclick = " onclick=\"return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginUrl), this, this.PortalSettings, true, false, 300, 650) + "\"";
-                    }
-
-                    sOutput = sOutput.Replace("[ADDTOPIC]", $"<span class=\"dcf-auth-false-login\">{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedTopicPleaseLogin]"), loginUrl, onclick)}</span>");
+                    sOutput = sOutput.Replace("[ADDTOPIC]", $"{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedTopicPleaseLogin]"), "[DCF:LOGINLINK]", "[DCF:LOGINPOPUPLINK]")}");
                 }
                 else
                 {
-                    sOutput = sOutput.Replace("[ADDTOPIC]", "<div class=\"amnormal\">[RESX:NotAuthorizedTopic]</div>");
+                    sOutput = sOutput.Replace("[ADDTOPIC]", "[RESX:NotAuthorizedTopic]");
                 }
             }
 
@@ -635,7 +622,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     stringBuilder.Replace("[AF:URL:LASTREAD]", string.Empty);
                 }
 
-                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(stringBuilder, topicInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString());
+                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(stringBuilder, topicInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl);
                 stringBuilder.Replace("[LASTPOST]", string.Empty).Replace("[/LASTPOST]", string.Empty);
                 stringBuilder.Replace("[ROWCSS]", this.GetRowCSS(UserLastTopicRead, UserLastReplyRead, topicInfo.TopicId, topicInfo.LastReplyId, rowcount));
 

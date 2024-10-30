@@ -20,21 +20,24 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 {
-using System;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
+    using System;
+    using System.Data.SqlTypes;
+    using System.Linq;
+    using System.Net;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
 
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Tokens;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Tokens;
 
     internal class TokenReplacer : BaseCustomTokenReplace
     {
@@ -59,10 +62,16 @@ using DotNetNuke.Services.Tokens;
         private const string PropertySource_forumtopicaction = "forumtopicaction";
         private const string PropertySource_forumpostaction = "forumpostaction";
 
-        public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, ForumInfo forumInfo)
+        public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, ForumInfo forumInfo, Uri requestUri, string rawUrl)
         {
+            forumInfo.RawUrl = rawUrl;
+            forumInfo.ForumGroup.RawUrl = rawUrl;
+            forumUser.RawUrl = rawUrl;
+            forumInfo.RequestUri = requestUri;
+            forumInfo.ForumGroup.RequestUri = requestUri;
+            forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumInfo.TabId, forumInfo.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? forumInfo.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? forumInfo.ModuleId : portalSettings.ActiveTab.ModuleID);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumInfo.TabId, forumInfo.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? forumInfo.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? forumInfo.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = forumInfo;
             this.PropertySource[PropertySource_forumgroup] = forumInfo.ForumGroup;
             this.PropertySource[PropertySource_forumuser] = forumUser;
@@ -76,10 +85,14 @@ using DotNetNuke.Services.Tokens;
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
-        public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, ForumGroupInfo forumGroupInfo)
+        public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, ForumGroupInfo forumGroupInfo, Uri requestUri, string rawUrl)
         {
+            forumGroupInfo.RawUrl = rawUrl;
+            forumUser.RawUrl = rawUrl;
+            forumGroupInfo.RequestUri = requestUri;
+            forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumGroupInfo.TabId, forumGroupInfo.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId? forumGroupInfo.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? forumGroupInfo.ModuleId : portalSettings.ActiveTab.ModuleID);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumGroupInfo.TabId, forumGroupInfo.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId? forumGroupInfo.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? forumGroupInfo.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
             this.PropertySource[PropertySource_forumgroup] = forumGroupInfo;
             this.PropertySource[PropertySource_forumuser] = forumUser;
             this.PropertySource[PropertySource_user] = forumUser.UserInfo;
@@ -92,10 +105,18 @@ using DotNetNuke.Services.Tokens;
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
-        public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, TopicInfo topicInfo)
+        public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, TopicInfo topicInfo, Uri requestUri, string rawUrl)
         {
+            topicInfo.Forum.RawUrl = rawUrl;
+            topicInfo.Forum.ForumGroup.RawUrl = rawUrl;
+            topicInfo.RawUrl = rawUrl;
+            forumUser.RawUrl = rawUrl;
+            topicInfo.Forum.RequestUri = requestUri;
+            topicInfo.Forum.ForumGroup.RequestUri = requestUri;
+            topicInfo.RequestUri = requestUri;
+            forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.TabId, topicInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? topicInfo.Forum.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? topicInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.TabId, topicInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? topicInfo.Forum.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? topicInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = topicInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = topicInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = topicInfo;
@@ -115,10 +136,20 @@ using DotNetNuke.Services.Tokens;
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
-        public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, IPostInfo postInfo)
+        public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, IPostInfo postInfo, Uri requestUri, string rawUrl)
         {
+            postInfo.Forum.RawUrl = rawUrl;
+            postInfo.Forum.ForumGroup.RawUrl = rawUrl;
+            postInfo.Topic.RawUrl = rawUrl;
+            postInfo.RawUrl = rawUrl;
+            forumUser.RawUrl = rawUrl;
+            postInfo.Forum.RequestUri = requestUri;
+            postInfo.Forum.ForumGroup.RequestUri = requestUri;
+            postInfo.Topic.RequestUri = requestUri;
+            postInfo.RequestUri = requestUri;
+            forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, postInfo.Forum.TabId, postInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? postInfo.Forum.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? postInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, postInfo.Forum.TabId, postInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? postInfo.Forum.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? postInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = postInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = postInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = postInfo.Topic;
@@ -139,8 +170,10 @@ using DotNetNuke.Services.Tokens;
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
-        public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser)
+        public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
+            forumUser.RawUrl = rawUrl;
+            forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
             this.PropertySource[PropertySource_forumuser] = forumUser;
             this.PropertySource[PropertySource_user] = forumUser.UserInfo;
@@ -153,8 +186,10 @@ using DotNetNuke.Services.Tokens;
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
-        public TokenReplacer(PortalSettings portalSettings, AuthorInfo author, ForumUserInfo forumUser)
+        public TokenReplacer(PortalSettings portalSettings, AuthorInfo author, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
+            forumUser.RawUrl = rawUrl;
+            forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
             this.PropertySource[PropertySource_forumuser] = forumUser;
             this.PropertySource[PropertySource_user] = forumUser.UserInfo;
@@ -171,10 +206,10 @@ using DotNetNuke.Services.Tokens;
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
-        public TokenReplacer(PortalSettings portalSettings, int forumTabId, int forumModuleId, int tabId, int moduleId)
+        public TokenReplacer(PortalSettings portalSettings, int forumTabId, int forumModuleId, int tabId, int moduleId, Uri requestUri, string rawUrl)
         {
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumTabId, forumModuleId, tabId, moduleId);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumTabId, forumModuleId, tabId, moduleId, requestUri, rawUrl);
             this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
             this.PropertySource[PropertySource_portal] = portalSettings;
             this.PropertySource[PropertySource_host] = new HostPropertyAccess();
@@ -186,17 +221,17 @@ using DotNetNuke.Services.Tokens;
             return base.ReplaceTokens(source);
         }
 
-        internal static StringBuilder ReplaceForumControlTokens(StringBuilder template, PortalSettings portalSettings, ForumUserInfo forumUser, int forumTabId, int forumModuleId, int tabId, int moduleId)
+        internal static StringBuilder ReplaceForumControlTokens(StringBuilder template, PortalSettings portalSettings, ForumUserInfo forumUser, int forumTabId, int forumModuleId, int tabId, int moduleId, Uri requestUri, string rawUrl)
         {
             template = RemoveObsoleteTokens(template);
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
-            var tokenReplacer = new TokenReplacer(portalSettings, forumTabId, forumModuleId, tabId, moduleId) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
+            var tokenReplacer = new TokenReplacer(portalSettings, forumTabId, forumModuleId, tabId, moduleId, requestUri, rawUrl) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
             return template;
         }
 
-        internal static StringBuilder ReplaceForumTokens(StringBuilder template, ForumInfo forum, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, string requestUrl, int tabId, CurrentUserTypes currentUserType)
+        internal static StringBuilder ReplaceForumTokens(StringBuilder template, ForumInfo forum, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, int tabId, CurrentUserTypes currentUserType, Uri requestUri, string rawUrl)
         {
             /* if no last post or subject missing, remove associated last topic tokens */
             if (forum.LastPostID == 0 || string.IsNullOrEmpty(HttpUtility.HtmlDecode(forum.LastPostSubject)))
@@ -217,53 +252,53 @@ using DotNetNuke.Services.Tokens;
             }
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
-            var tokenReplacer = new TokenReplacer(portalSettings, forumUser, forum) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
+            var tokenReplacer = new TokenReplacer(portalSettings, forumUser, forum, requestUri, rawUrl) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
             return template;
         }
 
-        internal static StringBuilder ReplaceForumGroupTokens(StringBuilder template, ForumGroupInfo forumGroup, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, string requestUrl, int tabId, CurrentUserTypes currentUserType)
+        internal static StringBuilder ReplaceForumGroupTokens(StringBuilder template, ForumGroupInfo forumGroup, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, int tabId, CurrentUserTypes currentUserType, Uri requestUri, string rawUrl)
         {
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
-            var tokenReplacer = new TokenReplacer(portalSettings, forumUser, forumGroup) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
+            var tokenReplacer = new TokenReplacer(portalSettings, forumUser, forumGroup, requestUri, rawUrl) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
 
             return template;
         }
 
-        internal static StringBuilder ReplaceAuthorTokens(StringBuilder template, PortalSettings portalSettings, SettingsInfo mainSettings, AuthorInfo author, ForumUserInfo accessingUser, int forumModuleId)
+        internal static StringBuilder ReplaceAuthorTokens(StringBuilder template, PortalSettings portalSettings, SettingsInfo mainSettings, AuthorInfo author, ForumUserInfo accessingUser, Uri requestUri, string rawUrl, int forumModuleId)
         {
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
-            var tokenReplacer = new TokenReplacer(portalSettings, author, accessingUser) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = accessingUser?.UserInfo, };
+            var tokenReplacer = new TokenReplacer(portalSettings, author, accessingUser, requestUri, rawUrl) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = accessingUser?.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
 
             return template;
         }
 
-        internal static StringBuilder ReplaceUserTokens(StringBuilder template, PortalSettings portalSettings, SettingsInfo mainSettings, ForumUserInfo forumUser, ForumUserInfo accessingUser, int forumModuleId)
+        internal static StringBuilder ReplaceUserTokens(StringBuilder template, PortalSettings portalSettings, SettingsInfo mainSettings, ForumUserInfo forumUser, ForumUserInfo accessingUser, Uri requestUri, string rawUrl, int forumModuleId)
         {
             var language = accessingUser?.UserInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
 
             template = RemoveObsoleteTokens(template);
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
-            var tokenReplacer = new TokenReplacer(portalSettings, forumUser) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
+            var tokenReplacer = new TokenReplacer(portalSettings, forumUser, requestUri, rawUrl) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
 
             return template;
         }
 
-        internal static StringBuilder ReplaceTopicTokens(StringBuilder template, TopicInfo topic, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, string requestUrl)
+        internal static StringBuilder ReplaceTopicTokens(StringBuilder template, TopicInfo topic, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
-            topic.Content.Body = ReplaceBody(topic.Content, mainSettings, new Uri(requestUrl)).Replace("<br />", "  ");
+            topic.Content.Body = ReplaceBody(topic.Content, mainSettings, requestUri).Replace("<br />", "  ");
             topic.Content.Summary = topic.Content.Summary.Replace("<br />", "  ");
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
-            var tokenReplacer = new TokenReplacer(portalSettings, forumUser, topic) { AccessingUser = forumUser.UserInfo, };
+            var tokenReplacer = new TokenReplacer(portalSettings, forumUser, topic, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
 
@@ -315,7 +350,7 @@ using DotNetNuke.Services.Tokens;
             return sBody;
         }
 
-        internal static StringBuilder ReplacePostTokens(StringBuilder template, IPostInfo post, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, string requestUrl)
+        internal static StringBuilder ReplacePostTokens(StringBuilder template, IPostInfo post, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
             // Perform Profile Related replacements
             var author = new AuthorInfo(post.PortalId, post.Forum.ModuleId, post.Author.AuthorId);
@@ -325,10 +360,10 @@ using DotNetNuke.Services.Tokens;
                 template.Replace("[POSTINFO]", sPostInfo);
             }
 
-            post.Content.Body = ReplaceBody(post.Content, mainSettings, new Uri(requestUrl)).Replace("<br />", "  ");
+            post.Content.Body = ReplaceBody(post.Content, mainSettings, requestUri).Replace("<br />", "  ");
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
-            var tokenReplacer = new TokenReplacer(portalSettings, forumUser, post) { AccessingUser = forumUser.UserInfo, };
+            var tokenReplacer = new TokenReplacer(portalSettings, forumUser, post, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
 

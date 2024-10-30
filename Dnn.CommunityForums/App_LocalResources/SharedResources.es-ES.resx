@@ -668,13 +668,13 @@ De
     <value>Tiene que iniciar sesión para publicar una respuesta.</value>
   </data>
   <data name="[RESX:NotAuthorizedReply].Text" xml:space="preserve">
-    <value>No está autorizado a publicar una respuesta.</value>
+    <value>&lt;span class="afnotauthorized"&gt;No está autorizado a publicar una respuesta.&lt;/span&gt;</value>
   </data>
   <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve">
-    <value>Por favor, &lt;a href="{0}"{1}&gt;inicie sesión&lt;/a&gt; para publicar una respuesta.</value>
+    <value>&lt;span class="dcf-auth-false-login"&gt;Por favor, &lt;a href="{0}" onclick="return {1};"&gt;inicie sesión&lt;/a&gt; para publicar una respuesta.&lt;/span&gt;</value>
   </data>
   <data name="[RESX:NotAuthorizedTopic].Text" xml:space="preserve">
-    <value>&lt;span class="afnotauthorized"&gt;No está autorizado para crear un nuevo tema&lt;/span&gt;</value>
+    <value>&lt;div class="amnormal"&gt;&lt;span class="afnotauthorized"&gt;No está autorizado para crear un nuevo tema&lt;/span&gt;&lt;/div&gt;</value>
   </data>
   <data name="[RESX:Notify].Text" xml:space="preserve">
     <value>Notificación</value>
@@ -1720,7 +1720,7 @@ De
     <value>Los {0} de permisos para los {1} del foro no se encuentran en la base de datos; Tendrás que reparar esto en la base de datos, o eliminar el foro y volver a crearlo. Visite el repositorio de Github de los foros de la comunidad (https://github.com/DNNCommunity/Dnn.CommunityForums), donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
   </data>
   <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
-    <value>&lt;a href="{0}"{1}&gt;inicie sesión&lt;/a&gt; para agregar un tema.</value>
+    <value>&lt;a href="{0}" onclick="return {1};"&gt;inicie sesión&lt;/a&gt; para agregar un tema.</value>
   </data>
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>No hay contenido pendientes</value>

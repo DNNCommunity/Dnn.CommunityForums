@@ -120,6 +120,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int PrefPageSize { get; set; } = 20;
 
+        [IgnoreColumn] 
+        public string RawUrl { get; set; }
+
+        [IgnoreColumn]
+        public Uri RequestUri { get; set; }
+
         [IgnoreColumn]
         public string[] Roles => this.UserInfo?.Roles;
 
@@ -400,7 +406,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
-                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, this)
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, this, this.RequestUri, this.RawUrl)
                 {
                     AccessingUser = accessingUser,
                 };

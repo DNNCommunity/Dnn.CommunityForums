@@ -268,12 +268,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                         sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
 
                                         StringBuilder sGroupSectionTempStringBuilder = new StringBuilder(sGroupSectionTemp);
-                                        sGroupSectionTempStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sGroupSectionTempStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType);
+                                        sGroupSectionTempStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sGroupSectionTempStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl);
                                         sGroupSectionTemp = sGroupSectionTempStringBuilder.ToString();
 
                                         //any replacements on the group
                                         StringBuilder sNewGroupStringBuilder = new StringBuilder("<div id=\"group" + fi.ForumGroupId + "\" class=\"afgroup\">" + sGroupTemplate + "</div>");
-                                        sNewGroupStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sNewGroupStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType);
+                                        sNewGroupStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sNewGroupStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl);
                                         string sNewGroup = sNewGroupStringBuilder.ToString();
 
                                         sGroupSectionTemp = TemplateUtils.ReplaceSubSection(sGroupSectionTemp, sNewGroup, "[GROUP]", "[/GROUP]");
@@ -381,7 +381,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             StringBuilder templateStringBuilder = new StringBuilder(template);
-            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType);
+            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl);
 
             if (templateStringBuilder.ToString().Contains("[AF:CONTROL:TOGGLESUBSCRIBE]"))
             {
@@ -422,7 +422,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string subForum;
                 foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in subforums)
                 {
-                    subForum = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder("[FORUMLINK]"), fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, HttpContext.Current.Request.Url.ToString(), this.TabId, this.ForumUser.CurrentUserType).ToString();
+                    subForum = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder("[FORUMLINK]"), fi, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl).ToString();
                     if (subForum != string.Empty)
                     {
                         sb.Append(subForum);

@@ -17,6 +17,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
         {
             // Arrange
             var requestUri = new Uri("https://localhost/forums");
+            var rawUrl = "/forums";
 
             var mockTopic = new Mock<Modules.ActiveForums.Entities.TopicInfo>();
             mockTopic.Object.ForumId = 1;
@@ -50,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
             var expectedResult = "blah blah [SPLITBUTTONS1] blah  [TOPICSUBJECT] blah";
             // Act
 
-            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, null, null, navigationManager, mockUser.Object, requestUri.ToString()).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, null, null, navigationManager, mockUser.Object, requestUri, rawUrl).ToString();
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
@@ -60,6 +61,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
         {
             // Arrange
             var requestUri = new Uri("https://localhost/forums");
+            var rawUrl = "/forums";
+
 
             var mockForum = new Mock<Modules.ActiveForums.Entities.ForumInfo>();
             mockForum.Object.ForumID = 1;
@@ -82,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
             var expectedResult = "blah blah Test Forum Group blah blah";
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, mockUser.Object, requestUri.ToString(), 0, CurrentUserTypes.Auth).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, mockUser.Object, 0, CurrentUserTypes.Auth, requestUri, rawUrl).ToString();
             
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
