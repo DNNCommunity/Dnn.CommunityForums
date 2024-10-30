@@ -169,7 +169,7 @@
     <value>You must be logged in to post a reply.</value>
   </data>
   <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve">
-    <value>Please &lt;a href="{0}"{1}&gt;login&lt;/a&gt; to post a reply.</value>
+    <value>&lt;span class="dcf-auth-false-login"&gt;Please &lt;a href="{0}" onclick="return {1};"&gt;login&lt;/a&gt; to post a reply.&lt;/span&gt;</value>
   </data>
   <data name="PostedDate.Text" xml:space="preserve">
     <value>Posted:</value>
@@ -1127,10 +1127,10 @@ From,
     <value>Toggle Group Display</value>
   </data>
   <data name="[RESX:NotAuthorizedReply].Text" xml:space="preserve">
-    <value>You are not authorized to post a reply.</value>
+    <value>&lt;span class="afnotauthorized"&gt;You are not authorized to post a reply.&lt;/span&gt;</value>
   </data>
   <data name="[RESX:NotAuthorizedTopic].Text" xml:space="preserve">
-    <value>&lt;span class="afnotauthorized"&gt;You are not authorized to create a new topic&lt;/span&gt;</value>
+    <value>&lt;div class="amnormal"&gt;&lt;span class="afnotauthorized"&gt;You are not authorized to create a new topic&lt;/span&gt;&lt;/div&gt;</value>
   </data>
   <data name="[RESX:DateCreated].Text" xml:space="preserve">
     <value>Date Created</value>
@@ -1720,7 +1720,7 @@ From,
     <value>The Permissions {0} for Forum {1} are not found in the database; you will need to repair this in the database, or delete the forum and re-create it. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
   </data>
   <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
-    <value>Please &lt;a href="{0}"{1}&gt;login&lt;/a&gt; to add a topic.</value>
+    <value>&lt;span class="dcf-auth-false-login"&gt;Please &lt;a href="{0}" onclick="return {1};"&gt;login&lt;/a&gt; to add a topic.&lt;/span&gt;</value>
   </data>
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>No Pending Content</value>

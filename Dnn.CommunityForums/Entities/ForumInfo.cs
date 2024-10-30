@@ -83,6 +83,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int TotalReplies { get; set; }
 
         [IgnoreColumn]
+        public Uri RequestUri { get; set; }
+
+        [IgnoreColumn]
+        public string RawUrl { get; set; }
+
+        [IgnoreColumn]
         public int LastPostID => this.LastReplyId == 0 ? this.LastTopicId : this.LastReplyId;
 
         public string ForumSettingsKey { get; set; }
@@ -104,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.IPostInfo LastPost
         {
-            get => this.lastPostInfo ?? (this.lastPostInfo = this.LastReplyId == 0 ? (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo) new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.LastTopicId) : new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.LastReplyId));
+            get => this.lastPostInfo ?? (this.lastPostInfo = this.LastReplyId == 0 ? (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.LastTopicId) : new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.LastReplyId));
             set => this.lastPostInfo = value;
         }
 
@@ -377,7 +383,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 }
 
                 return this.mainSettings;
-            } 
+            }
 
             set => this.mainSettings = value;
         }
@@ -775,7 +781,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     }
             }
         }
-        
+
         /// <inheritdoc/>
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability => DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
@@ -791,7 +797,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
-                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this)
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this, this.RequestUri, this.RawUrl)
                 {
                     AccessingUser = accessingUser,
                 };
@@ -974,7 +980,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "rsslink":
                     return this.AllowRSS && Controllers.PermissionController.HasPerm(this.Security.Read,
                             new Controllers.ForumUserController(this.ModuleId)
-                                .GetByUserId(accessingUser.PortalID, accessingUser.UserID).UserRoles) 
+                                .GetByUserId(accessingUser.PortalID, accessingUser.UserID).UserRoles)
                         ? PropertyAccess.FormatString(this.RssLink, format)
                         : string.Empty;
             }

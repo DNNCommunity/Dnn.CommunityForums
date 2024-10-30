@@ -137,14 +137,14 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
-        internal static string BuildToolbar(int portalId, int forumModuleId, int forumTabId, int moduleId, int tabId, ForumUserInfo forumUser, string locale)
+        internal static string BuildToolbar(int portalId, int forumModuleId, int forumTabId, int moduleId, int tabId, ForumUserInfo forumUser, Uri requestUri, string rawUrl, string locale)
         {
             string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, forumUser.CurrentUserType, locale);
             string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : string.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
                 sToolbar = TemplateCache.GetCachedTemplate(forumModuleId, "ToolBar", 0);
-                sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser);
+                sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser, requestUri: requestUri, rawUrl: rawUrl);
                 if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
                 {
                     DataCache.SettingsCacheStore(moduleId: moduleId, cacheKey: cacheKey, sToolbar);
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return sToolbar;
         }
 
-        internal static string ParseToolBar(string template, int portalId, int forumTabId, int forumModuleId, int tabId, int moduleId, ForumUserInfo forumUser, int forumId = 0)
+        internal static string ParseToolBar(string template, int portalId, int forumTabId, int forumModuleId, int tabId, int moduleId, ForumUserInfo forumUser, Uri requestUri, string rawUrl, int forumId = 0)
         {
             var portalSettings = Utilities.GetPortalSettings(portalId);
             var language = forumUser?.UserInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
             templateStringBuilder.Replace("[AF:TB:SearchURL]", HttpUtility.HtmlEncode(NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search", $"f={forumId}" })));
             templateStringBuilder.Replace("[AF:TB:AdvancedSearchURL]", HttpUtility.HtmlEncode( NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" })));
             templateStringBuilder.Replace("[AF:TB:SearchText]", forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]");
-            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId);
+            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId, requestUri, rawUrl);
             return Utilities.LocalizeControl(templateStringBuilder.ToString());
         }
 

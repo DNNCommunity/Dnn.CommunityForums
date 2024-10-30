@@ -101,6 +101,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int PostId => this.TopicId;
 
         [IgnoreColumn]
+        public Uri RequestUri { get; set; }
+
+        [IgnoreColumn]
+        public string RawUrl { get; set; }
+
+        [IgnoreColumn]
         public int ForumId
         {
             get
@@ -509,7 +515,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
-                var tokenReplacer = new Services.Tokens.TokenReplacer(this.Forum.PortalSettings, new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this)
+                var tokenReplacer = new Services.Tokens.TokenReplacer(this.Forum.PortalSettings, new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this, this.RequestUri, this.RawUrl)
                 {
                     AccessingUser = accessingUser
                 };

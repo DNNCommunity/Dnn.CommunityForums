@@ -46,6 +46,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         bool IsReply { get; }
 
+        Uri RequestUri { get; set; }
+
+        string RawUrl { get; set; }
+
         DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author { get; set; }
 
         DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content { get; set; }
