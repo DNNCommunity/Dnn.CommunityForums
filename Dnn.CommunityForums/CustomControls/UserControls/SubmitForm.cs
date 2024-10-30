@@ -455,15 +455,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionTags", title: string.Empty) +
                     "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTags\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
                 template = template.Replace("[AF:UI:FIELDSET:TAGS]", "<fieldset class=\"affieldset\"><legend>[RESX:Tags]</legend><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
-                string sTagOut = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(this.ForumModuleId, "editor", "[AF:CONTROL:TAGS]");
-                if (string.IsNullOrEmpty(sTagOut))
-                {
-                    // sTagOut = "<am:textsuggest id=""tsTags"" runat=""server"" DataTextField=""TagName"" DataValueField=""TagName"" CssResults=""aftsresults"" CssResultItems=""aftsresultsitems"" CssResultItemsSelected=""aftsresultsel""  CssClass=""aftagstxt"" Width=""99%"" />"
-                    sTagOut = "<input type=\"text\" id=\"txtTags\" style=\"width:98%;\" class=\"NormalTextBox\"  />";
-
-                    // sTagOut &= "<script type=""text/javascript"">amaf_loadSuggest('txtTags', null, -1);</script>"
-                }
-
+                string sTagOut = "<input type=\"text\" id=\"txtTags\" name=\"txtTags\" style=\"width:98%;\" value=\"[TAGS]\" class=\"NormalTextBox\"  />";
                 sTagOut = sTagOut.Replace("[TAGS]", this.Tags);
                 template = template.Replace("[AF:CONTROL:TAGS]", sTagOut);
                 template = template.Replace("[/AF:UI:FIELDSET:TAGS]", "</fieldset>");

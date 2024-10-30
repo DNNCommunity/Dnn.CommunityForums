@@ -108,23 +108,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return null;
             }
         }
-
-        internal static string TokenGet(int moduleId, string group, string tokenName)
-        {
-            string sOut = string.Empty;
-            List<Token> tl = TokensList(moduleId, group);
-            foreach (Token t in tl)
-            {
-                if (t.TokenTag == tokenName)
-                {
-                    sOut = t.TokenReplace;
-                    break;
-                }
-            }
-
-            return sOut;
-        }
-
-
     }
 }

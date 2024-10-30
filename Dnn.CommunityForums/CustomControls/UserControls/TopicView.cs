@@ -941,6 +941,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.dtTopic.Rows.Count > 0)
             {
+                bool allReplies = true;
                 foreach (DataRow dr in this.dtTopic.Rows)
                 {
                     // deal with our separator first
@@ -960,6 +961,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (replyId == 0)
                     {
+                        allReplies = false;
                         sTopicTemplate = this.ParseContent(dr, sTopicTemplate, i);
                     }
                     else
@@ -973,11 +975,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (this.defaultSort == "ASC")
                 {
                     sOutput = TemplateUtils.ReplaceSubSection(sOutput, sTemp, "[REPLIES]", "[/REPLIES]");
-                    sOutput = TemplateUtils.ReplaceSubSection(sOutput, sTopicTemplate, "[TOPIC]", "[/TOPIC]");
+                    sOutput = TemplateUtils.ReplaceSubSection(sOutput, allReplies ? string.Empty : sTopicTemplate, "[TOPIC]", "[/TOPIC]");
                 }
                 else
                 {
-                    sOutput = TemplateUtils.ReplaceSubSection(sOutput, sTemp + sTopicTemplate, "[REPLIES]", "[/REPLIES]");
+                    sOutput = TemplateUtils.ReplaceSubSection(sOutput, sTemp + (allReplies ? string.Empty : sTopicTemplate), "[REPLIES]", "[/REPLIES]");
                     sOutput = TemplateUtils.ReplaceSubSection(sOutput, string.Empty, "[TOPIC]", "[/TOPIC]");
                 }
 
@@ -994,13 +996,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             var sOutput = template;
 
-            // most topic values come in first result set and are set in LoadData(); however IP Address from the topic comes in this result set.
+            // most topic values come in first result set and are set in LoadData(); however some, like IP Address and contentId, comes in this result set.
             this.topic.Content.IPAddress = dr.GetString("IPAddress");
+            this.topic.ContentId = dr.GetInt("ContentId");
+            this.topic.Content.ContentId = dr.GetInt("ContentId");
 
             var reply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             reply.ReplyId = dr.GetInt("ReplyId");
             reply.TopicId = dr.GetInt("TopicId");
             reply.Topic = this.topic;
+            reply.ContentId = dr.GetInt("ContentId");
             reply.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             reply.Content.ContentId = dr.GetInt("ContentId");
             reply.Content.Body = HttpUtility.HtmlDecode(dr.GetString("Body"));
@@ -1070,14 +1075,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.allowLikes)
             {
-                (int count, bool liked) likes = new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(this.UserId, (reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId));
+                (int count, bool liked) likes = new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(this.UserId, (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId));
                 string image = likes.liked ? "fa-thumbs-o-up" : "fa-thumbs-up";
 
                 if (this.CanReply)
                 {
-                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1-" + (reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId) + "\" class=\"fa " + image + "\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + this.ModuleId + "," + this.ForumId + "," + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + ")\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2-" + (reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId) + "\" class=\"fa " + image + " fa-2x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + this.ModuleId + "," + this.ForumId + "," + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + ")\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3-" + (reply.ReplyId > 0 ? reply.ReplyId : this.topic.TopicId) + "\" class=\"fa " + image + " fa-3x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + this.ModuleId + "," + this.ForumId + "," + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + ")\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1-" + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + "\" class=\"fa " + image + "\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + this.ModuleId + "," + this.ForumId + "," + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + ")\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2-" + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + "\" class=\"fa " + image + " fa-2x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + this.ModuleId + "," + this.ForumId + "," + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + ")\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3-" + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + "\" class=\"fa " + image + " fa-3x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + this.ModuleId + "," + this.ForumId + "," + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + ")\" > " + likes.count.ToString() + "</i>");
                 }
                 else
                 {
