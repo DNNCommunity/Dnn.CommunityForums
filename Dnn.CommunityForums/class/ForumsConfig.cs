@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -28,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
     using System.Web;
     using System.Web.Http.Results;
     using System.Web.Profile;
@@ -45,6 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
     using Microsoft.ApplicationBlocks.Data;
 
@@ -509,11 +509,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 NotificationsController.Instance.CreateNotificationType(type);
             }
         }
+
         internal static void Merge_Permissions_080200()
         {
             /* SQL for 08.02.00 will append two permissions sets being merged and put "::::" between them, ex. 0;|||::::2;|||
              * this method will separate them into two pieces, 0;||| and 2;||| and then merge them back together as 0;2;|||
-			 */
+             */
             foreach (var perms in new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Get())
             {
                 string unmergedPerms = perms.Lock;
@@ -524,8 +525,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 string message = $"Merged LOCK permissions from: {unmergedPerms} to {perms.Lock}";
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-                
-				unmergedPerms = perms.Pin;
+
+                unmergedPerms = perms.Pin;
                 perms.Pin = Merge_PermSet_080200(perms.Pin);
                 new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
                 log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
@@ -554,6 +555,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
         }
+
         private static string Merge_PermSet_080200(string tempSet)
         {
             string newSet = tempSet;
@@ -564,21 +566,21 @@ namespace DotNetNuke.Modules.ActiveForums
                     string oldSet1 = tempSet.Split("::::".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
                     string oldSet2 = tempSet.Split("::::".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[1];
 
-					
+
                     List<string> oldSet1permSet = oldSet1.Split('|').ToList();
                     List<string> oldSet1authRoles = oldSet1permSet[0].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-					List<string> oldSet1authUsers = new List<string>();
+                    List<string> oldSet1authUsers = new List<string>();
                     List<string> oldSet1authGroups = new List<string>();
 
 
                     if (!(string.IsNullOrEmpty(oldSet1permSet[1])) && oldSet1permSet[1].Contains(";"))
-					{
-						oldSet1authUsers = oldSet1permSet[1].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-					}
-					if (!(string.IsNullOrEmpty(oldSet1permSet[2])) && oldSet1permSet[2].Contains(";"))
-					{
-						oldSet1authGroups = oldSet1permSet[2].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-					}
+                    {
+                        oldSet1authUsers = oldSet1permSet[1].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+                    }
+                    if (!(string.IsNullOrEmpty(oldSet1permSet[2])) && oldSet1permSet[2].Contains(";"))
+                    {
+                        oldSet1authGroups = oldSet1permSet[2].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+                    }
 
                     List<string> oldSet2permSet = oldSet2.Split('|').ToList();
                     List<string> oldSet2authRoles = oldSet2permSet[0].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -586,13 +588,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     List<string> oldSet2authGroups = new List<string>();
 
                     if (!(string.IsNullOrEmpty(oldSet2permSet[1])) && oldSet2permSet[1].Contains(";"))
-					{
-						oldSet2authUsers = oldSet2permSet[1].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-					}
-					if (!(string.IsNullOrEmpty(oldSet2permSet[2])) && oldSet2permSet[2].Contains(";"))
-					{
-						oldSet2authGroups = oldSet2permSet[2].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-					}
+                    {
+                        oldSet2authUsers = oldSet2permSet[1].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+                    }
+                    if (!(string.IsNullOrEmpty(oldSet2permSet[2])) && oldSet2permSet[2].Contains(";"))
+                    {
+                        oldSet2authGroups = oldSet2permSet[2].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+                    }
 
                     List<string> newAuthRoles = oldSet1authRoles;
                     foreach (string oldSet2authRole in oldSet2authRoles)
@@ -642,8 +644,36 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-			return newSet;
+            return newSet;
         }
 
+        internal static void Upgrade_EmailNotificationSubjectTokens_080200()
+        {
+            try
+            {
+                TemplateController tc = new TemplateController();
+                foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
+                {
+                    if (templateInfo.TemplateType == Templates.TemplateTypes.Email)
+                    {
+                        try
+                        {
+                            templateInfo.Subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(templateInfo.Subject), PortalSettings.Current, PortalSettings.Current.DefaultLanguage).ToString();
+                            tc.Template_Save(templateInfo);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex.Message, ex);
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message, ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
     }
 }
