@@ -61,7 +61,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int pageSize = 20;
         private int rowCount;
         private bool isTrusted;
-        private bool allowLikes;
         private bool isSubscribedTopic;
         private string defaultSort;
         private string tags = string.Empty;
@@ -326,7 +325,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             this.topicTemplateId = Utilities.SafeConvertInt(this.drForum["TopicTemplateId"]);
             this.tags = this.drForum["Tags"].ToString();
-            this.allowLikes = Utilities.SafeConvertBool(this.drForum["AllowLikes"]);
             this.rowCount = Utilities.SafeConvertInt(this.drForum["ReplyCount"]) + 1;
             this.isSubscribedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumInfo.ForumID, this.TopicId);
 
@@ -932,6 +930,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyUserTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+            sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sReplyTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(sReplyTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
 
 #endregion "Backward compatilbility -- remove in v10.00.00"
@@ -1070,35 +1069,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[POSTINFOCSS]", "afpostinfo afpostinfo2");
                 sbOutput.Replace("[POSTREPLYCSS]", "afpostreply afpostreply2");
             }
-
-            #region "likes"
-
-            if (this.allowLikes)
-            {
-                (int count, bool liked) likes = new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(this.UserId, (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId));
-                string image = likes.liked ? "fa-thumbs-o-up" : "fa-thumbs-up";
-
-                if (this.CanReply)
-                {
-                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1-" + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + "\" class=\"fa " + image + "\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + this.ModuleId + "," + this.ForumId + "," + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + ")\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2-" + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + "\" class=\"fa " + image + " fa-2x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + this.ModuleId + "," + this.ForumId + "," + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + ")\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3-" + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + "\" class=\"fa " + image + " fa-3x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + this.ModuleId + "," + this.ForumId + "," + (reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId) + ")\" > " + likes.count.ToString() + "</i>");
-                }
-                else
-                {
-                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1\" class=\"fa " + image + "\" style=\"cursor:default\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2\" class=\"fa " + image + " fa-2x\" style=\"cursor:default\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3\" class=\"fa " + image + " fa-3x\" style=\"cursor:default\" > " + likes.count.ToString() + "</i>");
-                }
-            }
-            else
-            {
-                sbOutput = sbOutput.Replace("[LIKES]", string.Empty);
-                sbOutput = sbOutput.Replace("[LIKESx2]", string.Empty);
-                sbOutput = sbOutput.Replace("[LIKESx3]", string.Empty);
-            }
-
-            #endregion "likes"
 
             // Poll Results
             if (sOutput.Contains("[POLLRESULTS]"))

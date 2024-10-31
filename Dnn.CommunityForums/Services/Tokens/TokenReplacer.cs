@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Runtime.CompilerServices;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 {
     using System;
@@ -36,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
 
@@ -92,7 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             forumGroupInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumGroupInfo.TabId, forumGroupInfo.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId? forumGroupInfo.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? forumGroupInfo.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumGroupInfo.TabId, forumGroupInfo.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? forumGroupInfo.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? forumGroupInfo.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
             this.PropertySource[PropertySource_forumgroup] = forumGroupInfo;
             this.PropertySource[PropertySource_forumuser] = forumUser;
             this.PropertySource[PropertySource_user] = forumUser.UserInfo;
@@ -294,7 +297,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         internal static StringBuilder ReplaceTopicTokens(StringBuilder template, TopicInfo topic, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
-            topic.Content.Body = ReplaceBody(topic.Content, mainSettings, requestUri).Replace("<br />", "  ");
+            topic.Content.Body = ReplaceBody(topic.Content.Body, mainSettings, requestUri).Replace("<br />", "  ");
             topic.Content.Summary = topic.Content.Summary.Replace("<br />", "  ");
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
@@ -305,53 +308,54 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
-        private static string ReplaceBody(ContentInfo content, SettingsInfo mainSettings, Uri uri)
+        private static string ReplaceBody(string body, SettingsInfo mainSettings, Uri uri)
         {
-            var sBody = content?.Body;
-            if (string.IsNullOrEmpty(content?.Body))
+            if (!string.IsNullOrEmpty(body))
             {
-                sBody = " <br />";
-            }
-            else
-            {
-                sBody = Utilities.ManageImagePath(HttpUtility.HtmlDecode(content?.Body), uri);
-
-                sBody = sBody.Replace("[", "&#91;").Replace("]", "&#93;");
-                if (sBody.ToUpper().Contains("&#91;CODE&#93;"))
+                body = Utilities.ManageImagePath(HttpUtility.HtmlDecode(body), uri);
+                body = body.Replace("[", "&#91;").Replace("]", "&#93;");
+                if (body.ToUpper().Contains("&#91;CODE&#93;"))
                 {
-                    sBody = Regex.Replace(sBody, "(&#91;CODE&#93;)", "[CODE]", RegexOptions.IgnoreCase);
-                    sBody = Regex.Replace(sBody, "(&#91;\\/CODE&#93;)", "[/CODE]", RegexOptions.IgnoreCase);
+                    body = Regex.Replace(body, "(&#91;CODE&#93;)", "[CODE]", RegexOptions.IgnoreCase);
+                    body = Regex.Replace(body, "(&#91;\\/CODE&#93;)", "[/CODE]", RegexOptions.IgnoreCase);
                 }
 
                 // sBody = sBody.Replace("&lt;CODE&gt;", "<CODE>")
-                if (Regex.IsMatch(sBody, "\\[CODE([^>]*)\\]", RegexOptions.IgnoreCase))
+                if (Regex.IsMatch(body, "\\[CODE([^>]*)\\]", RegexOptions.IgnoreCase))
                 {
-                    var objCode = new CodeParser();
-                    sBody = CodeParser.ParseCode(HttpUtility.HtmlDecode(sBody));
+                    body = CodeParser.ParseCode(HttpUtility.HtmlDecode(body));
                 }
 
-                sBody = Utilities.StripExecCode(sBody);
+                body = Utilities.StripExecCode(body);
                 if (mainSettings.AutoLinkEnabled)
                 {
-                    sBody = Utilities.AutoLinks(sBody, uri.Host);
+                    body = Utilities.AutoLinks(body, uri.Host);
                 }
 
-                if (sBody.Contains("<%@"))
+                if (body.Contains("<%@"))
                 {
-                    sBody = sBody.Replace("<%@ ", "&lt;&#37;@ ");
+                    body = body.Replace("<%@ ", "&lt;&#37;@ ");
                 }
 
-                if (content.Body.ToLowerInvariant().Contains("runat"))
+                if (body.ToLowerInvariant().Contains("runat"))
                 {
-                    sBody = Regex.Replace(sBody, "runat", "&#114;&#117;nat", RegexOptions.IgnoreCase);
+                    body = Regex.Replace(body, "runat", "&#114;&#117;nat", RegexOptions.IgnoreCase);
                 }
             }
 
-            return sBody;
+            return body;
         }
 
         internal static StringBuilder ReplacePostTokens(StringBuilder template, IPostInfo post, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
+            /* if likes not allowed for forum, remove like-related tokens */
+            if (!post.Forum.AllowLikes)
+            {
+                template = RemovePrefixedToken(template, "[FORUMPOST:LINKONCLICK");
+                template = RemovePrefixedToken(template, "[FORUMPOST:LIKECOUNT");
+                template = RemovePrefixedToken(template, "[FORUMPOST:ISLIKED");
+            }
+
             // Perform Profile Related replacements
             var author = new AuthorInfo(post.PortalId, post.Forum.ModuleId, post.Author.AuthorId);
             if (template.ToString().Contains("[POSTINFO]"))
@@ -360,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 template.Replace("[POSTINFO]", sPostInfo);
             }
 
-            post.Content.Body = ReplaceBody(post.Content, mainSettings, requestUri).Replace("<br />", "  ");
+            post.Content.Body = ReplaceBody(post.Content.Body, mainSettings, requestUri).Replace("<br />", "  ");
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, post, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
@@ -407,7 +411,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             return template;
         }
-        
+
         internal static StringBuilder RemoveObsoleteTokens(StringBuilder template)
         {
             // no longer using this
@@ -931,6 +935,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = ReplaceTokenSynonym(template, "[LINKURL]", "[FORUMPOST:LINK]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[LINK]", "[FORUMPOST:LINK", "[LINK]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[HYPERLINK]", "[FORUMPOST:LINK", "[LINK]");
+
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[LIKES]", "[FORUMPOST:LIKEONCLICK", "[LIKESx1]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[LIKESx2]", "[FORUMPOST:LIKEONCLICK", "[LIKESx2]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[LIKESx3]", "[FORUMPOST:LIKEONCLICK", "[LIKESx3]");
 
             return template;
         }

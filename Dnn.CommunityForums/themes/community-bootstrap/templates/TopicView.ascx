@@ -95,10 +95,10 @@
 									<div class="dcf-col-50">
                                         [FORUMPOST:MODEDITDATE]
 									</div>
-									<div class="dcf-col-50 text-right text-end dcf-post-likes">
-										[LIKESx2]
-									</div>
-								</div>
+                                    <div class="dcf-col-50 text-right text-end dcf-post-likes">
+                                        [FORUMPOST:LIKEONCLICK|<i id="af-topicview-likes-[FORUMPOST:CONTENTID]" class="fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x" style="cursor: pointer" onclick="{0}"> [FORUMPOST:LIKECOUNT]</i>|<i id="af-topicview-likes" class="fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x"> [FORUMPOST:LIKECOUNT]</i>]
+                                    </div>
+                                </div>
 							</footer>
 						</div>
 					</div>
@@ -145,9 +145,9 @@
 									<div class="dcf-col-50">
                                         [FORUMPOST:MODEDITDATE]
 									</div>
-									<div class="dcf-col-50 text-right text-end dcf-post-likes">
-										[LIKESx2]
-									</div>
+                                    <div class="dcf-col-50 text-right text-end dcf-post-likes">
+                                        [FORUMPOST:LIKEONCLICK|<i id="af-topicview-likes-[FORUMPOST:CONTENTID]" class="fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x" style="cursor: pointer" onclick="{0}"> [FORUMPOST:LIKECOUNT]</i>|<i id="af-topicview-likes" class="fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x"> [FORUMPOST:LIKECOUNT]</i>]
+                                    </div>
 								</div>
 							</footer>
 						</div>

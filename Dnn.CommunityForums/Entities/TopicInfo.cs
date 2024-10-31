@@ -85,6 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private string tags = string.Empty;
         private string selectedcategories;
         private int? subscriberCount;
+        private int? likeCount;
 
         public int TopicId { get; set; }
 
@@ -215,6 +216,26 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 return (int)this.subscriberCount;
             }
+        }
+
+        [IgnoreColumn]
+        public int LikeCount
+        {
+            get
+            {
+                if (this.likeCount == null)
+                {
+                    this.likeCount =
+                        new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Count(this.ContentId);
+                }
+
+                return (int)this.likeCount;
+            }
+        }
+
+        public bool IsLikedByUser(ForumUserInfo forumUser)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().GetForUser(forumUser.UserId, this.ContentId);
         }
 
         [IgnoreColumn]
@@ -695,6 +716,24 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(this.ViewCount.ToString(), format);
                 case "subscribercount":
                     return PropertyAccess.FormatString(this.SubscriberCount.ToString(), format);
+                case "isliked":
+                    return !this.Forum.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.IsLikedByUser(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)) ? true.ToString() : string.Empty, format);
+                case "likecount":
+                    return !this.Forum.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.LikeCount.ToString(), format);
+                case "likeonclick":
+                    {
+                        var bReply = Controllers.PermissionController.HasPerm(this.Forum.Security.Reply,
+                            accessingUser.PortalID,
+                            this.Forum.ModuleId, accessingUser.UserID);
+                        if (this.Forum.AllowLikes)
+                        {
+                            return PropertyAccess.FormatString(bReply ?
+                                $"amaf_likePost({this.Forum.ModuleId},{this.Forum.ForumID},{this.ContentId})" : string.Empty,
+                                format);
+                        }
+                    }
+
+                    return string.Empty;
                 case "status":
                     {
                         var bRead = Controllers.PermissionController.HasPerm(this.Forum.Security.Read,

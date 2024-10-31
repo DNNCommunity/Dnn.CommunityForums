@@ -18,21 +18,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Data;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     internal partial class LikeController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>
     {
-        public LikeController() : base() { }
-
         public bool GetForUser(int userId, int postId)
         {
-            return this.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
+            return userId > 0 && this.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
         }
 
         public (int count, bool liked) Get(int userId, int postId)
@@ -82,6 +77,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Data;
+
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController")]
     class LikesController : DotNetNuke.Modules.ActiveForums.Controllers.LikeController
     {
