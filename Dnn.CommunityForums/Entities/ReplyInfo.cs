@@ -498,7 +498,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)),
                         format);
                 case "selectedanswer":
-                    if (this.IsReply && this.StatusId == 1)
+                    if (this.IsReply && this.Topic.StatusId == 3 && this.StatusId == 1)
                     {
                         return PropertyAccess.FormatString(
                             Utilities.GetSharedResource("[RESX:Status:Answer]"),
@@ -689,7 +689,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return string.Empty;
                 case "actionmarkansweronclick":
                     {
-                        if (this.IsReply && this.Topic.StatusId > 0 && this.Topic.StatusId != 3 && this.StatusId != 1)
+                        if (this.IsReply && this.Topic.StatusId > 0 && this.Topic.StatusId != 3)
                         {
                             var bEdit = Controllers.PermissionController.HasPerm(this.Forum.Security.Edit,
                                 accessingUser.PortalID,

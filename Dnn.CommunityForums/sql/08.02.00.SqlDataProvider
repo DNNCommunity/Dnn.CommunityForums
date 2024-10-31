@@ -2099,11 +2099,17 @@ END
 
 /* issue 1100 - Begin - additional indexes */
 
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Replies') AND name = N'idx_{objectQualifier}activeforums_Replies_Opt3')
+DROP INDEX [idx_{objectQualifier}activeforums_Replies_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Replies 
+GO
 CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_Replies_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Replies
 (
 	[ContentId] ASC,
     [ReplyId] ASC
 )WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics') AND name = N'idx_{objectQualifier}activeforums_Topics_Opt3')
+DROP INDEX [idx_{objectQualifier}activeforums_Topics_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Topics 
 GO
 CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_Topics_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Topics 
 (
@@ -2113,5 +2119,53 @@ CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_Topics_Opt3] ON {da
 GO
 /* issue 1100 - End - additional indexes */
 
+
+/* --------------------- */
+
+
+/* issue 1042 - begin - mark answer */
+
+/*activeforums_Replies_UpdateStatus*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Replies_UpdateStatus]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Replies_UpdateStatus]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Replies_UpdateStatus]
+@PortalId int,
+@ModuleId int,
+@TopicId int,
+@ReplyId int,
+@UserId int,
+@StatusId int,
+@IsMod bit = 0
+AS
+IF EXISTS(SELECT c.AuthorId FROM {databaseOwner}{objectQualifier}activeforums_topics as t inner join {databaseOwner}{objectQualifier}activeforums_content as c ON c.ContentId = t.ContentId WHERE c.AuthorId = @UserId AND t.TopicId =@TopicId) OR @IsMod = 1
+BEGIN
+	UPDATE  {databaseOwner}{objectQualifier}activeforums_Replies
+	SET		StatusId = @StatusId
+	WHERE TopicId = @TopicId AND ReplyId = @ReplyId
+    UPDATE  {databaseOwner}{objectQualifier}activeforums_Replies
+    SET		StatusId = -1
+    WHERE TopicId = @TopicId AND ReplyId <> @ReplyId
+	UPDATE	{databaseOwner}{objectQualifier}activeforums_Topics
+	SET		StatusId = 3
+	WHERE TopicId = @TopicId
+
+DECLARE @PointValue int
+DECLARE @AuthorAnswer int
+	SET @AuthorAnswer = (SELECT c.AuthorId FROM {databaseOwner}{objectQualifier}activeforums_replies as r inner join {databaseOwner}{objectQualifier}activeforums_content as c ON c.ContentId = r.ContentId WHERE r.TopicId =@TopicId AND r.ReplyId = @ReplyId)
+	SET @PointValue = 0
+	SELECT @PointValue = SettingValue FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'MARKANSWERPOINTVALUE' AND ModuleId = @ModuleId
+	UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles
+	SET RewardPoints = RewardPoints + @PointValue
+	WHERE UserId = @UserId AND PortalId = @PortalId 
+	UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles
+	SET AnswerCount = AnswerCount + @PointValue
+	WHERE UserId = @AuthorAnswer AND PortalId = @PortalId
+END
+GO
+
+
+/* issue 1042 - end - mark answer */
 
 /* --------------------- */

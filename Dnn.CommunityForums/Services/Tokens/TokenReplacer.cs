@@ -877,7 +877,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                     template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, $"[ACTIONS:{action}]", $"[FORUMPOST:ACTION{action}ONCLICK", useListActions ? $"[FORUMPOST:ACTIONS:{action}:LISTITEM]" : $"[FORUMPOST:ACTIONS:{action}:HYPERLINK]");
                 }
             }
-
+            
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[FORUMPOST:SELECTEDANSWER]", "[FORUMPOST:SELECTEDANSWER", "[FORUMPOST:SELECTEDANSWER]");
             return template;
         }
 
