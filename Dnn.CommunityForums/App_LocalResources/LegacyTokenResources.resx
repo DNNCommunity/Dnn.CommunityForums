@@ -340,19 +340,19 @@
     <value>&lt;li onclick="window.location.href='{0}';" title="[RESX:Reply]"&gt;&lt;i class="fa fa-reply fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Reply]&lt;/span&gt;&lt;/li&gt;</value>
   </data>
   <data name="[FORUMPOST:ACTIONS:MARKANSWER:HYPERLINK].Text" xml:space="preserve">
-    <value>&lt;a href="#" onclick="{0}" class="af-actions af-markanswer" title="[RESX:Status:SelectAnswer]"&gt;[RESX:Status:SelectAnswer]&lt;/a&gt;</value>
+    <value>&lt;a href="#" onclick="{0}" title="[RESX:Status:SelectAnswer]" class="af-actions af-markanswer"&gt;&lt;i class="fa fa-check fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Status:SelectAnswer]&lt;/span&gt;&lt;/a&gt;</value>
   </data>
   <data name="[FORUMPOST:ACTIONS:MARKANSWER:LISTITEM].Text" xml:space="preserve">
-    <value>&lt;li onclick="{0}" class="af-markanswer" title="[RESX:Status:SelectAnswer]"&gt;[RESX:Status:SelectAnswer]&lt;/li&gt;</value>
+    <value>&lt;li onclick="{0}" title="[RESX:Status:SelectAnswer]" class="af-markanswer"&gt;&lt;i class="fa fa-check fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Status:SelectAnswer]&lt;/span&gt;&lt;/li&gt;</value>
   </data>
   <data name="[FORUMPOST:SELECTEDANSWER:HYPERLINK].Text" xml:space="preserve">
-    <value>&lt;span class="af-actions af-answered" title="[RESX:Status:Answer]"&gt;{0}&lt;/span&gt;</value>
+    <value>&lt;i class="fa fa-check fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="af-actions af-answered" title="[RESX:Status:Answer]"&gt;{0}&lt;/span&gt;</value>
   </data>
   <data name="[FORUMPOST:SELECTEDANSWER:LISTITEM].Text" xml:space="preserve">
-    <value>&lt;li class="af-answered" title="[RESX:Status:Answer]"&gt;{0}&lt;/li&gt;</value>
+    <value>&lt;li class="af-answered" title="[RESX:Status:Answer]"&gt;{0}&lt;i class="fa fa-check fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:Status:SelectAnswer]&lt;/span&gt;&lt;/li&gt;</value>
   </data>
   <data name="[FORUMPOST:SELECTEDANSWER].Text" xml:space="preserve">
-    <value>{0}</value>
+    <value>&lt;li class="af-answered" title="[RESX:Status:Answer]"&gt;&lt;i class="fa fa-check-circle fa-fw fa-blue"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;{0}&lt;/span&gt;&lt;/li&gt;</value>
   </data>
   <data name="[AF:TB:ActiveTopics].Text" xml:space="preserve">
     <value>&lt;a href="{0}"&gt;&lt;i class="fa fa-fire fa-fw fa-grey"&gt;&lt;/i&gt;&lt;span class="dcf-link-text"&gt;[RESX:ActiveTopics]&lt;/span&gt;&lt;/a&gt;</value>

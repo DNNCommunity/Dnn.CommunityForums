@@ -1003,6 +1003,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var reply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             reply.ReplyId = dr.GetInt("ReplyId");
             reply.TopicId = dr.GetInt("TopicId");
+            reply.StatusId = dr.GetInt("StatusId");
             reply.Topic = this.topic;
             reply.ContentId = dr.GetInt("ContentId");
             reply.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();

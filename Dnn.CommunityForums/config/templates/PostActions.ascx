@@ -1,5 +1,6 @@
 ﻿<ul>
-    [FORUMPOST:ACTIONMARKANSWERONCLICK|<li onclick="{0}" title="[RESX:Status:SelectAnswer]" class="af-markanswer">[RESX:Status:SelectAnswer]</li>]
+    [FORUMPOST:ACTIONMARKANSWERONCLICK|<li onclick="{0}" title="[RESX:Status:SelectAnswer]" class="af-markanswer"><i class="fa fa-check fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:Status:SelectAnswer]</span></li>]
+    [FORUMPOST:SELECTEDANSWER|<li class="af-answered" title="[RESX:Status:Answer]"><i class="fa fa-check-circle fa-fw fa-blue"></i><span class="dcf-link-text">{0}</span></li>]
     [FORUMPOST:ACTIONDELETEONCLICK|<li onclick="{0}" title="[RESX:Delete]"><i class="fa fa-trash-o fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:Delete]</span></li>]
     [FORUMPOST:ACTIONEDITONCLICK|<li onclick="window.location.href='{0}';" title="[RESX:Edit]"><i class="fa fa-pencil fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:Edit]</span></li>]
     [FORUMPOST:ACTIONQUOTEONCLICK|<li onclick="window.location.href='{0}';" title="[RESX:Quote]"><i class="fa fa-quote-left fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:Quote]</span></li>]
