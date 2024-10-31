@@ -282,9 +282,12 @@ function amaf_likePost(mid, fid, cid) {
         url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Like/Like',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
+        $('#af-topicview-likes-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
+        /* these are for backward compatibility and can be remove in v10 */
         $('#af-topicview-likes1-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
         $('#af-topicview-likes2-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
         $('#af-topicview-likes3-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
+        /* these are for backward compatibility and can be remove in v10 */
     }).fail(function (xhr, status) {
         alert('error liking post');
     });

@@ -50,6 +50,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         string RawUrl { get; set; }
 
+        int LikeCount { get; }
+
         DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author { get; set; }
 
         DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content { get; set; }
@@ -57,6 +59,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum { get; set; }
 
         DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic { get; }
+
+        bool IsLikedByUser(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
 
         DotNetNuke.Modules.ActiveForums.Enums.PostStatus GetPostStatusForUser(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
 
