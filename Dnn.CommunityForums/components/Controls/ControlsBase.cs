@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.parseTemplate = value;
             }
         }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int DataPageId
         {
             get
@@ -141,7 +141,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (ctrl is Controls.ControlsBase)
                     {
                         ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
-                        ((Controls.ControlsBase)ctrl).ForumData = this.ForumData;
                         ((Controls.ControlsBase)ctrl).ForumInfo = this.ForumInfo;
                     }
 

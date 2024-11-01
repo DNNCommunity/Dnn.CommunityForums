@@ -310,7 +310,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ctrl is Controls.ControlsBase)
                 {
                     ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
-                    ((Controls.ControlsBase)ctrl).ForumData = this.ForumData;
                     ((Controls.ControlsBase)ctrl).ModuleConfiguration = this.ModuleConfiguration;
                 }
 

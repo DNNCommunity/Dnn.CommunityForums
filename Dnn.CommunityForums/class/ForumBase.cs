@@ -41,7 +41,6 @@ using DotNetNuke.Services.Localization;
         private int? quoteId;
         private int? authorid;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo foruminfo;
-        private XmlDocument forumData;
 
         private bool? canCreate;
         private bool? canReply;
@@ -49,11 +48,12 @@ using DotNetNuke.Services.Localization;
         #endregion
 
         #region Public Properties
-
+        
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public XmlDocument ForumData
         {
-            get => this.forumData ?? (this.forumData = this.ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.ControlConfig.PortalId, this.ControlConfig.ForumModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.PortalId, this.ForumModuleId));
-            set => this.forumData = value;
+            get => throw new NotImplementedException();// this.forumData ?? (this.forumData = this.ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.ControlConfig.PortalId, this.ControlConfig.ForumModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.PortalId, this.ForumModuleId));
+            set => throw new NotImplementedException(); //this.forumData = value;
         }
 
         public ControlsConfig ControlConfig { get; set; }
@@ -386,7 +386,7 @@ using DotNetNuke.Services.Localization;
                 if (!this.canCreate.HasValue)
                 {
                     // The basic security check trumps everything.
-                    if (!this.SecurityCheck("create"))
+                    if (!this.SecurityCheck(SecureActions.Create))
                     {
                         this.canCreate = false;
                     }
@@ -426,7 +426,7 @@ using DotNetNuke.Services.Localization;
                 if (!this.canReply.HasValue)
                 {
                     // The basic security check trumps everything.
-                    if (!this.SecurityCheck("reply"))
+                    if (!this.SecurityCheck(SecureActions.Reply))
                     {
                         this.canReply = false;
                     }
@@ -462,23 +462,14 @@ using DotNetNuke.Services.Localization;
         #endregion
 
         #region Helper Methods
-        private bool SecurityCheck(string secType)
+        private bool SecurityCheck(DotNetNuke.Modules.ActiveForums.SecureActions secType)
         {
             if (this.ForumUser == null)
             {
                 return false;
             }
 
-            var xNode = this.ForumData.SelectSingleNode(string.Concat("//forums/forum[@forumid='" + this.ForumId, "']/security/", secType));
-
-            if (xNode == null)
-            {
-                return false;
-            }
-
-            var secRoles = xNode.InnerText;
-
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(secRoles, this.ForumUser.UserRoles);
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoles);
         }
 
         protected string GetSharedResource(string key)
