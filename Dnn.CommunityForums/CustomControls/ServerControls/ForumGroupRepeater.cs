@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Linq;
+
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
@@ -136,17 +138,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
+
             // writer.Write(Text)
             writer.Write(this.HeaderTemplate);
             int i = 0;
-            if (this.ForumData != null)
+            var forumGroups = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(this.ControlConfig.ForumModuleId).ToList();
+            if (forumGroups.Count > 0)
             {
                 string tmp = this.DisplayTemplate;
-                System.Xml.XmlNodeList xGroups = this.ForumData.SelectNodes("//groups/group");
                 ForumDisplay fd = null;
-                foreach (System.Xml.XmlNode xNode in xGroups)
+                foreach (var forumGroup in forumGroups)
                 {
-                    int groupId = int.Parse(xNode.Attributes["groupid"].Value.ToString());
+                    int groupId = forumGroup.ForumGroupId;
                     fd = new ForumDisplay();
                     fd.DisplayTemplate = this.DisplayTemplate;
                     fd.ForumGroupId = groupId;

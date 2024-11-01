@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForums()")]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection Forums_List(int portalId, int moduleId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId);
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumListXML()")]
-        public XmlDocument ForumListXML(int portalId, int moduleId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(portalId, moduleId);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
+        public XmlDocument ForumListXML(int portalId, int moduleId) => throw new NotImplementedException();
     }
 }
