@@ -138,8 +138,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-
-            // writer.Write(Text)
             writer.Write(this.HeaderTemplate);
             int i = 0;
             var forumGroups = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(this.ControlConfig.ForumModuleId).ToList();
@@ -155,8 +153,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     fd.ForumGroupId = groupId;
                     fd.ControlConfig = this.ControlConfig;
                     fd.ModuleConfiguration = this.ModuleConfiguration;
-
-                    // fd.ForumData = ForumData
                     if (i == 0 && this.ToggleBehavior == 1)
                     {
                         fd.ToggleBehavior = 0;
