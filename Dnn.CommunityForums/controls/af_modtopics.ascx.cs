@@ -312,7 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
 
                         sb.Append("</td></tr>");
-                        sb.Append("<tr><td style=\"width:90px\" valign=\"top\">" + dr["AuthorName"].ToString() + "</td>");
+                        sb.Append("<tr><td style=\"width:90px\" valign=\"top\">" + "<a href=\"" + Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { $"userId={dr["AuthorId"]}" }) + "\" class=\"af-profile-link\" rel=\"nofollow\">" + dr["AuthorName"].ToString() + "</a></td>");
                         sb.Append("<td><div class=\"afrowsub\">[RESX:Subject]: " + dr["Subject"].ToString() + "</div><div class=\"afrowbod\">" + dr["Body"].ToString() + "</div>");
                         sb.Append(this.GetAttachments(Convert.ToInt32(dr["ContentId"]), this.PortalId, this.ModuleId, dtAttach) + "</td></tr>");
                         sb.Append("</table></div>");
