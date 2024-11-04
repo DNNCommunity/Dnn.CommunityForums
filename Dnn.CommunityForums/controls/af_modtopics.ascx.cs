@@ -312,8 +312,16 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
 
                         sb.Append("</td></tr>");
-                        sb.Append("<tr><td style=\"width:90px\" valign=\"top\">" + "<a href=\"" + Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { $"userId={dr["AuthorId"]}" }) + "\" class=\"af-profile-link\" rel=\"nofollow\">" + dr["AuthorName"].ToString() + "</a></td>");
+                        sb.Append("<tr><td style=\"width:90px\" valign=\"top\">" + "<a href=\"" + Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { $"userId={dr["AuthorId"]}" }) + "\" class=\"af-profile-link\" rel=\"nofollow\" target=\"_blank\">" + dr["AuthorName"].ToString() + "</a></td>");
                         sb.Append("<td><div class=\"afrowsub\">[RESX:Subject]: " + dr["Subject"].ToString() + "</div><div class=\"afrowbod\">" + dr["Body"].ToString() + "</div>");
+
+                        if (Convert.ToInt32(dr["ReplyId"]) > 0)
+                        {
+                            var @params = new List<string>() { $"{ParamKeys.ForumId}={dr["ForumId"]}", $"{ParamKeys.TopicId}={dr["TopicId"]}", $"{ParamKeys.ViewType}={Views.Topic}", };
+                            var viewLink = Utilities.NavigateURL(this.TabId, string.Empty, @params.ToArray());
+                            sb.Append("<div class=\"afrowbod\"><a href=\"" + viewLink + "\" class=\"dcf-link-text\" rel=\"nofollow\" target=\"_blank\">" + "[RESX:TopicReview]" + "</a></div>");
+                        }
+
                         sb.Append(this.GetAttachments(Convert.ToInt32(dr["ContentId"]), this.PortalId, this.ModuleId, dtAttach) + "</td></tr>");
                         sb.Append("</table></div>");
                     }
