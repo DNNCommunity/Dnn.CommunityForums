@@ -675,5 +675,51 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
+
+        internal static void Upgrade_RelocateSqlFiles_080200()
+        {
+            try
+            {
+                DotNetNuke.Services.Log.EventLog.LogInfo log;
+                string message;
+
+                var di = new System.IO.DirectoryInfo(Utilities.MapPath($"{Globals.ModulePath}sql/sql/"));
+                System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
+                foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: di.FullName, searchPattern: "*.SqlDataProvider", searchOption: System.IO.SearchOption.TopDirectoryOnly))
+                {
+                    if (fullFilePathName.ToLowerInvariant().Contains("uninstall"))
+                    {
+                        System.IO.File.Delete(fullFilePathName);
+                        log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                        log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                        message = $"During upgrade, removed old file {fullFilePathName}";
+                        log.AddProperty("Message", message);
+                        DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                    }
+                    else
+                    {
+                        System.IO.File.Copy(fullFilePathName, $"{Utilities.MapPath($"{Globals.ModulePath}sql/{new System.IO.FileInfo(fullFilePathName).Name}")}", true);
+                        System.IO.File.Delete(fullFilePathName);
+                        log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                        log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                        message = $"During upgrade, moved {fullFilePathName} to {Utilities.MapPath($"{Globals.ModulePath}sql/{new System.IO.FileInfo(fullFilePathName).Name}")}";
+                        log.AddProperty("Message", message);
+                        DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                    }
+
+                }
+
+                di.Delete();
+                log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                message = $"During upgrade, removed {di.FullName}";
+                log.AddProperty("Message", message);
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
     }
 }

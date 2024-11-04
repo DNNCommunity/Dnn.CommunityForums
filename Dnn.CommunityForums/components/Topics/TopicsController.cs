@@ -290,6 +290,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         ForumsConfig.Merge_Permissions_080200();
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
                         ForumsConfig.Upgrade_EmailNotificationSubjectTokens_080200();
+                        ForumsConfig.Upgrade_RelocateSqlFiles_080200();
                     }
                     catch (Exception ex)
                     {
