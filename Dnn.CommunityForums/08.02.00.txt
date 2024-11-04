@@ -21,3 +21,5 @@ DesktopModules/ActiveForums/themes/community-bootstrap/templates/PostPending.asc
 DesktopModules/ActiveForums/themes/community-bootstrap/templates/PostRejected.ascx
 DesktopModules/ActiveForums/themes/community-bootstrap/templates/SubscribedEmail.ascx
 DesktopModules/ActiveForums/themes/community-bootstrap/templates/Toolbar.ascx
+DesktopModules/ActiveForums/app.config
+DesktopModules/ActiveForums/packages.config
