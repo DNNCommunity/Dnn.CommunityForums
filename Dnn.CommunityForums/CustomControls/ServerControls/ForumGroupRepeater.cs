@@ -136,46 +136,41 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            // TODO: revisit this during webforms controls carveout #482 (https://github.com/DNNCommunity/Dnn.CommunityForums/issues/482)
-            throw new NotImplementedException();
-            ////////// writer.Write(Text)
-            ////////writer.Write(this.HeaderTemplate);
-            ////////int i = 0;
-            ////////if (this.ForumData != null)
-            ////////{
-            ////////    string tmp = this.DisplayTemplate;
-            ////////    System.Xml.XmlNodeList xGroups = this.ForumData.SelectNodes("//groups/group");
-            ////////    ForumDisplay fd = null;
-            ////////    foreach (System.Xml.XmlNode xNode in xGroups)
-            ////////    {
-            ////////        int groupId = int.Parse(xNode.Attributes["groupid"].Value.ToString());
-            ////////        fd = new ForumDisplay();
-            ////////        fd.DisplayTemplate = this.DisplayTemplate;
-            ////////        fd.ForumGroupId = groupId;
-            ////////        fd.ControlConfig = this.ControlConfig;
-            ////////        fd.ModuleConfiguration = this.ModuleConfiguration;
+            writer.Write(this.HeaderTemplate);
+            int i = 0;
+            var forumGroups = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(this.ControlConfig.ForumModuleId).ToList();
+            if (forumGroups.Count > 0)
+            {
+                string tmp = this.DisplayTemplate;
+                ForumDisplay fd = null;
+                foreach (var forumGroup in forumGroups)
+                {
+                    int groupId = forumGroup.ForumGroupId;
+                    fd = new ForumDisplay();
+                    fd.DisplayTemplate = this.DisplayTemplate;
+                    fd.ForumGroupId = groupId;
+                    fd.ControlConfig = this.ControlConfig;
+                    fd.ModuleConfiguration = this.ModuleConfiguration;
+                    if (i == 0 && this.ToggleBehavior == 1)
+                    {
+                        fd.ToggleBehavior = 0;
+                    }
+                    else if (i > 0 && this.ToggleBehavior == 1)
+                    {
+                        fd.ToggleBehavior = 1;
+                    }
 
-            ////////        // fd.ForumData = ForumData
-            ////////        if (i == 0 && this.ToggleBehavior == 1)
-            ////////        {
-            ////////            fd.ToggleBehavior = 0;
-            ////////        }
-            ////////        else if (i > 0 && this.ToggleBehavior == 1)
-            ////////        {
-            ////////            fd.ToggleBehavior = 1;
-            ////////        }
+                    this.Controls.Add(fd);
+                    fd.RenderControl(writer);
+                    i += 1;
+                }
+            }
+            else
+            {
+                writer.Write(this.NoResultsTemplate);
+            }
 
-            ////////        this.Controls.Add(fd);
-            ////////        fd.RenderControl(writer);
-            ////////        i += 1;
-            ////////    }
-            ////////}
-            ////////else
-            ////////{
-            ////////    writer.Write(this.NoResultsTemplate);
-            ////////}
-
-            ////////writer.Write(this.FooterTemplate);
+            writer.Write(this.FooterTemplate);
         }
 
         protected override void OnLoad(EventArgs e)
