@@ -361,11 +361,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public string GetPermSet(int moduleId, int permissionsId, string requestedAccess)
         {
+            return this.GetPermSet(moduleId, permissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), requestedAccess));
+        }
+
+        internal string GetPermSet(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess)
+        {
             var permission = this.GetById(permissionsId, moduleId);
             return this.GetRolesForRequestedAccess(permission, requestedAccess);
         }
 
         public string SavePermSet(int moduleId, int permissionsId, string requestedAccess, string permSet)
+        {
+            return this.SavePermSet(moduleId, permissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), requestedAccess), permSet);
+        }
+
+        public string SavePermSet(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess, string permSet)
         {
             var permission = this.GetById(permissionsId, moduleId);
             if (permission != null)
@@ -378,6 +388,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static void AddObjectToPermissions(int moduleId, int permissionsId, string requestedAccess, string objectId, int objectType)
         {
+            AddObjectToPermissions(moduleId, permissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), requestedAccess),objectId, objectType);
+        }
+
+        internal static void AddObjectToPermissions(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess, string objectId, int objectType)
+        {
             var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
             string permSet = pc.GetPermSet(moduleId, permissionsId, requestedAccess);
             permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(objectId, objectType, permSet);
@@ -385,6 +400,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
 
         public static void RemoveObjectFromPermissions(int moduleId, int permissionsId, string requestedAccess, string objectId, int objectType)
+        {
+            RemoveObjectFromPermissions(moduleId, permissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), requestedAccess), objectId, objectType);
+        }
+
+        internal static void RemoveObjectFromPermissions(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess, string objectId, int objectType)
         {
             var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
             string permSet = pc.GetPermSet(moduleId, permissionsId, requestedAccess);
@@ -573,153 +593,124 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return objects;
         }
 
-        internal string GetRolesForRequestedAccess(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permission, string requestedAccess)
+        internal string GetRolesForRequestedAccess(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permission, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess)
         {
             if (permission == null)
             {
                 return emptyPermissions;
             }
 
-            string access = string.Empty;
-            switch (requestedAccess.ToUpperInvariant())
+            switch (requestedAccess)
             {
-                case "ANNOUNCE":
-                    access = permission.Announce;
-                    break;
-                case "ATTACH":
-                    access = permission.Attach;
-                    break;
-                case "CATEGORIZE":
-                    access = permission.Categorize;
-                    break;
-                case "CREATE":
-                    access = permission.Create;
-                    break;
-                case "DELETE":
-                    access = permission.Delete;
-                    break;
-                case "EDIT":
-                    access = permission.Edit;
-                    break;
-                case "LOCK":
-                    access = permission.Lock;
-                    break;
-                case "PIN":
-                    access = permission.Pin;
-                    break;
-                case "POLL":
-                    access = permission.Poll;
-                    break;
-                case "PRIORITIZE":
-                    access = permission.Prioritize;
-                    break;
-                case "READ":
-                    access = permission.Read;
-                    break;
-                case "REPLY":
-                    access = permission.Reply;
-                    break;
-                case "SUBSCRIBE":
-                    access = permission.Subscribe;
-                    break;
-                case "TAG":
-                    access = permission.Tag;
-                    break;
-                case "TRUST":
-                    access = permission.Trust;
-                    break;
-                case "VIEW":
-                    access = permission.View;
-                    break;
-                case "MODERATE":
-                    access = permission.Moderate;
-                    break;
-                case "MOVE":
-                    access = permission.Move;
-                    break;
-                case "SPLIT":
-                    access = permission.Split;
-                    break;
-                case "BAN":
-                    access = permission.Ban;
-                    break;
+                case SecureActions.Announce:
+                    return permission.Announce;
+                case SecureActions.Attach:
+                    return permission.Attach;
+                case SecureActions.Categorize:
+                    return permission.Categorize;
+                case SecureActions.Create:
+                    return permission.Create;
+                case SecureActions.Delete:
+                    return permission.Delete;
+                case SecureActions.Edit:
+                    return permission.Edit;
+                case SecureActions.Lock:
+                    return permission.Lock;
+                case SecureActions.Pin:
+                    return permission.Pin;
+                case SecureActions.Poll:
+                    return permission.Poll;
+                case SecureActions.Prioritize:
+                    return permission.Prioritize;
+                case SecureActions.Read:
+                    return permission.Read;
+                case SecureActions.Reply:
+                    return permission.Reply;
+                case SecureActions.Subscribe:
+                    return permission.Subscribe;
+                case SecureActions.Tag:
+                    return permission.Tag;
+                case SecureActions.Trust:
+                    return permission.Trust;
+                case SecureActions.View:
+                    return permission.View;
+                case SecureActions.Moderate:
+                    return permission.Moderate;
+                case SecureActions.Move:
+                    return permission.Move;
+                case SecureActions.Split:
+                    return permission.Split;
+                case SecureActions.Ban:
+                    return permission.Ban;
                 default:
-                    access = emptyPermissions;
-                    break;
+                    return emptyPermissions;
             }
-
-            if (string.IsNullOrEmpty(access))
-            {
-                access = emptyPermissions;
-            }
-
-            return access;
         }
 
-        internal void SetRolesForRequestedAccess(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permission, string requestedAccess, string permSet)
+        internal void SetRolesForRequestedAccess(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permission, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess, string permSet)
         {
             if (permission != null)
             {
-                switch (requestedAccess.ToUpperInvariant())
+                switch (requestedAccess)
                 {
-                    case "ANNOUNCE":
+                    case SecureActions.Announce:
                         permission.Announce = permSet;
                         break;
-                    case "ATTACH":
+                    case SecureActions.Attach:
                         permission.Attach = permSet;
                         break;
-                    case "CATEGORIZE":
+                    case SecureActions.Categorize:
                         permission.Categorize = permSet;
                         break;
-                    case "CREATE":
+                    case SecureActions.Create:
                         permission.Create = permSet;
                         break;
-                    case "DELETE":
+                    case SecureActions.Delete:
                         permission.Delete = permSet;
                         break;
-                    case "EDIT":
+                    case SecureActions.Edit:
                         permission.Edit = permSet;
                         break;
-                    case "LOCK":
+                    case SecureActions.Lock:
                         permission.Lock = permSet;
                         break;
-                    case "PIN":
+                    case SecureActions.Pin:
                         permission.Pin = permSet;
                         break;
-                    case "POLL":
+                    case SecureActions.Poll:
                         permission.Poll = permSet;
                         break;
-                    case "PRIORITIZE":
+                    case SecureActions.Prioritize:
                         permission.Prioritize = permSet;
                         break;
-                    case "READ":
+                    case SecureActions.Read:
                         permission.Read = permSet;
                         break;
-                    case "REPLY":
+                    case SecureActions.Reply:
                         permission.Reply = permSet;
                         break;
-                    case "SUBSCRIBE":
+                    case SecureActions.Subscribe:
                         permission.Subscribe = permSet;
                         break;
-                    case "TAG":
+                    case SecureActions.Tag:
                         permission.Tag = permSet;
                         break;
-                    case "TRUST":
+                    case SecureActions.Trust:
                         permission.Trust = permSet;
                         break;
-                    case "VIEW":
+                    case SecureActions.View:
                         permission.View = permSet;
                         break;
-                    case "MODERATE":
+                    case SecureActions.Moderate:
                         permission.Moderate = permSet; 
                         break;
-                    case "MOVE":
+                    case SecureActions.Move:
                         permission.Move = permSet; 
                         break;
-                    case "SPLIT":
+                    case SecureActions.Split:
                         permission.Split = permSet; 
                         break;
-                    case "BAN":
+                    case SecureActions.Ban:
                         permission.Ban = permSet;
                         break;
                     default:
