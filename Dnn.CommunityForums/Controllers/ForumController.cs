@@ -256,8 +256,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void Forums_Delete(int portalId, int forumId, int moduleId)
         {
-            // TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumInfo
-            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forums_Delete(portalId, moduleId, forumId);
+            //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumInfo
+            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forums_Delete(portalId: portalId, moduleId: moduleId, forumId: forumId);
+            DataCache.ClearSettingsCache(moduleId);
         }
 
         internal static void IterateForumsList(System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo,

@@ -2169,3 +2169,30 @@ GO
 /* issue 1042 - end - mark answer */
 
 /* --------------------- */
+
+
+
+/* issue 1156 - begin - deleting a forum should remove subscriptions */
+
+/* activeforums_Forums_Delete -- delete from activeforums_Subscriptions when deleting forum */
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_Delete]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forums_Delete]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forums_Delete]
+@PortalId int,
+@ModuleId int,
+@ForumId int
+AS
+declare @ParentForumId int,
+@ForumGroupId int
+SELECT @ParentForumId = ParentForumId, @ForumGroupId = ForumGroupId
+FROM {databaseOwner}[{objectQualifier}activeforums_Forums]
+WHERE ForumId = @ForumId
+DELETE FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] WHERE ForumId = @ForumId
+DELETE FROM {databaseOwner}[{objectQualifier}activeforums_Forums] WHERE ForumId = @ForumId
+DELETE FROM {databaseOwner}[{objectQualifier}activeforums_Subscriptions] WHERE ForumId = @ForumId
+EXEC {databaseOwner}[{objectQualifier}activeforums_Forums_RepairSort] @ForumGroupId, @ParentForumId
+GO
+/* issue 1156 - end - deleting a forum should remove subscriptions */
+
+/* --------------------- */
