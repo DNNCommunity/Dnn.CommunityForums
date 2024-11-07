@@ -170,8 +170,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         HttpContext.Current.Items.Add("ShowToolbar", false);
                     }
+
                     stringBuilder.Replace("[NOTOOLBAR]", string.Empty);
                 }
+
                 sTemplate = stringBuilder.ToString();
 
                 if (sTemplate.Contains("[FORUMS]"))
@@ -219,7 +221,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                     }
 
-                    this.Forums = this.Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList();
+                    if (this.Request.QueryString[ParamKeys.GroupId] != null)
+                    {
+                        this.Forums = this.Forums.Where(f => f.ForumGroupId == Convert.ToInt32(this.Request.QueryString[ParamKeys.GroupId])).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList();
+                    }
+                    else
+                    {
+                        this.Forums = this.Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList();
+                    }
 
                     string sGroupName = (this.ForumGroupId != -1 && this.Forums?.Count > 0) ? this.Forums?.FirstOrDefault().GroupName : string.Empty;
                     string sCrumb = (this.ForumGroupId != -1 && this.Forums?.Count > 0) ? "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateURL(this.TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + sGroupName + "</div>" : string.Empty;
