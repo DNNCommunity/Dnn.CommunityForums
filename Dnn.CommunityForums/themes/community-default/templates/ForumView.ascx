@@ -3,12 +3,12 @@
 [BREADCRUMB]
 [GROUPSECTION]
 <div class="dcf-forums">
-	
-		[GROUP]
         <div class="dcf-group-title-wrap">
             <h3 class="dcf-group-title">[RESX:Group]: [FORUMGROUP:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUMGROUP:GROUPNAME]</a>]</h3>
             <span class="dcf-group-collapse">[FORUMGROUP:GROUPCOLLAPSE]</span>
         </div>
+
+        [GROUP]
 		<div class="dcf-forums-group">
 			<table class="dcf-table dcf-table-100">
 				<thead>

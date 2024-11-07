@@ -3,13 +3,13 @@
 [BREADCRUMB]
 [GROUPSECTION]
 		<div class="dcf-forums">
-			[GROUP]
             <div class="dcf-group-title-wrap d-flex align-items-center py-2">
 				<h3 class="dcf-group-title h5 flex-grow-1">[RESX:Group]: [FORUMGROUP:GROUPLINK|<a href="{0}" class="dcf-forumgroup-link">[FORUMGROUP:GROUPNAME]</a>]</h3>
 				<a class="bs-collapse" data-toggle="collapse" href="#forum-group-[FORUMGROUP:FORUMGROUPID]" role="button" data-bs-toggle="collapse">
 					<i class="fa fa-chevron-circle-down fa-lg"></i>
 				</a>
 			</div>
+            [GROUP]
 			<div id="forum-group-[FORUMGROUPID]"  class="dcf-forums-group collapse show">
 				<table class="dcf-table dcf-table-100 table table-responsive-md">
 					<thead>
