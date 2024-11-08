@@ -410,43 +410,43 @@ function deleteGroup(){
 		var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
 		<%=cbEditorAction.ClientID%>.Callback('deletegroup',forumid);
 	};
-    };
-    function amaf_toggleInheritFeatures() {
-        var chk = document.getElementById('<%=chkInheritGroupFeatures.ClientID%>');
-		var trTmp = document.getElementById('<%=trTemplates.ClientID%>');
-		var divSet = document.getElementById('divSettings');
-		if (chk.checked) {
-			trTmp.style.display = 'none';
-			if (divSet != null) {
-				divSet.style.display = 'none';
-			};
+};
+function amaf_toggleInheritFeatures() {
+    var chk = document.getElementById('<%=chkInheritGroupFeatures.ClientID%>');
+	var trTmp = document.getElementById('<%=trTemplates.ClientID%>');
+	var divSet = document.getElementById('divSettings');
+	if (chk.checked) {
+		trTmp.style.display = 'none';
+		if (divSet != null) {
+			divSet.style.display = 'none';
+		};
 
-		} else {
-			forumSave();
-			trTmp.style.display = '';
-			var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
-				if (forumid != '') {
-					divSet.style.display = '';
-				};
+	} else {
+		forumSave();
+		trTmp.style.display = '';
+		var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
+			if (forumid != '') {
+				divSet.style.display = '';
 			};
-    };
+		};
+};
 
-    function amaf_toggleInheritSecurity() {
-        var chk = document.getElementById('<%=chkInheritGroupSecurity.ClientID%>');
-		var divSec = document.getElementById('divSecurity');
-		if (chk.checked) {
-			if (divSec != null) {
-				divSec.style.display = 'none';
-			};
+function amaf_toggleInheritSecurity() {
+    var chk = document.getElementById('<%=chkInheritGroupSecurity.ClientID%>');
+	var divSec = document.getElementById('divSecurity');
+	if (chk.checked) {
+		if (divSec != null) {
+			divSec.style.display = 'none';
+		};
 
-		} else {
-			forumSave();
-			var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
-				if (forumid != '') {
-					divSec.style.display = '';
-				};
+	} else {
+		forumSave();
+		var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
+			if (forumid != '') {
+				divSec.style.display = '';
 			};
-    };
+		};
+};
 
 function maintRun(opt){
 	var topicsOlderThan = 0;
@@ -916,24 +916,46 @@ function afadmin_getProperties() {
 						<td></td>
 					</tr>
 				</table>
-                <table width="100%" id="trInheritFeatures" runat="server">
+                <table width="100%" id="trInheritModuleFeatures" runat="server">
                     <tr>
                         <td>
-                            <img id="Img9" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritGroupFeatures]');" onmouseout="amHideTip(this);" /></td>
-                        <td class="amcpbold" style="white-space: nowrap;">[RESX:InheritGroupFeatures]:</td>
+                            <img id="Img9" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritModuleFeatures]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap;">[RESX:InheritModuleFeatures]:</td>
                         <td width="100%">
-                            <asp:checkbox id="chkInheritGroupFeatures" runat="server" />
+                            <asp:CheckBox ID="chkInheritModuleFeatures" runat="server" />
                         </td>
                         <td></td>
                     </tr>
                 </table>
-                <table width="100%" id="trInheritSecurity" runat="server">
+                <table width="100%" id="trInheritModuleSecurity" runat="server">
                     <tr>
                         <td>
-                            <img id="Img10" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritGroupSecurity]');" onmouseout="amHideTip(this);" /></td>
+                            <img id="Img10" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritModuleSecurity]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap;">[RESX:InheritModuleSecurity]:</td>
+                        <td width="100%">
+                            <asp:CheckBox ID="chkInheritModuleSecurity" runat="server" />
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table width="100%" id="trInheritGroupFeatures" runat="server">
+                    <tr>
+                        <td>
+                            <img id="Img11" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritGroupFeatures]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap;">[RESX:InheritGroupFeatures]:</td>
+                        <td width="100%">
+                            <asp:CheckBox ID="chkInheritGroupFeatures" runat="server" />
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table width="100%" id="trInheritGroupSecurity" runat="server">
+                    <tr>
+                        <td>
+                            <img id="Img12" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritGroupSecurity]');" onmouseout="amHideTip(this);" /></td>
                         <td class="amcpbold" style="white-space: nowrap;">[RESX:InheritGroupSecurity]:</td>
                         <td width="100%">
-                            <asp:checkbox id="chkInheritGroupSecurity" runat="server" />
+                            <asp:CheckBox ID="chkInheritGroupSecurity" runat="server" />
                         </td>
                         <td></td>
                     </tr>

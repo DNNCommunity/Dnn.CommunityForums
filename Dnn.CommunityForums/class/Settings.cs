@@ -24,12 +24,14 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections;
 
     using DotNetNuke.Entities.Profile;
+    using Newtonsoft.Json.Linq;
 
     #region SettingsInfo
 
     public class SettingsInfo
     {
         public Hashtable MainSettings { get; set; }
+        private Hashtable forumDefaultSettings;
 
         public int PageSize
         {
@@ -265,6 +267,16 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        public int DefaultPermissionId
+        {
+            get { return this.MainSettings.GetInt(SettingKeys.DefaultPermissionId); }
+        }
+
+        public string DefaultSettingsKey
+        {
+            get { return this.MainSettings.GetString(SettingKeys.DefaultSettingsKey); }
+        }
+
         public SettingsInfo()
         {
             this.MainSettings = new Hashtable();
@@ -275,6 +287,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class Settings
     {
+        private Hashtable forumDefaultSettings;
+
         public static Hashtable GeneralSettings(int moduleId, string groupKey)
         {
             var ht = new Hashtable();
@@ -311,6 +325,21 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return false;
             }
+        }
+
+        public Hashtable DefaultForumSettings(int moduleId)
+        {
+            if (this.forumDefaultSettings == null)
+            {
+                this.forumDefaultSettings = this.LoadSettings(moduleId);
+            }
+
+            return this.forumDefaultSettings;
+        }
+
+        internal Hashtable LoadSettings(int moduleId)
+        {
+            return DataCache.GetSettings(moduleId, $"M:{moduleId}", string.Format(CacheKeys.DefaultSettingsByKey, moduleId), true);
         }
     }
 }
