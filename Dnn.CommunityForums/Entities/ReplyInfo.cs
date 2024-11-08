@@ -411,15 +411,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     }
 
                 case "isliked":
-                    return !this.Forum.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.IsLikedByUser(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)) ? true.ToString() : string.Empty, format);
+                    return !this.Forum.FeatureSettings.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.IsLikedByUser(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)) ? true.ToString() : string.Empty, format);
                 case "likecount":
-                    return !this.Forum.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.LikeCount.ToString(), format);
+                    return !this.Forum.FeatureSettings.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.LikeCount.ToString(), format);
                 case "likeonclick":
                     {
                         var bReply = Controllers.PermissionController.HasPerm(this.Forum.Security.Reply,
                             accessingUser.PortalID,
                             this.Forum.ModuleId, accessingUser.UserID);
-                        if (this.Forum.AllowLikes)
+                        if (this.Forum.FeatureSettings.AllowLikes)
                         {
                             return PropertyAccess.FormatString(bReply ?
                                     $"amaf_likePost({this.Forum.ModuleId},{this.Forum.ForumID},{this.ContentId})" : string.Empty,
@@ -555,10 +555,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             (bTrust ||
                              bModerate ||
                              ((!this.Topic.IsLocked) &&
-                              (this.Forum.ReplyPostCount <= 0 ||
+                              (this.Forum.FeatureSettings.ReplyPostCount <= 0 ||
                                new Controllers.ForumUserController(this.ModuleId).GetByUserId(
                                    accessingUser.PortalID,
-                                   accessingUser.UserID).PostCount >= this.Forum.ReplyPostCount))))
+                                   accessingUser.UserID).PostCount >= this.Forum.FeatureSettings.ReplyPostCount))))
                         {
                             var @params = new List<string>()
                             {
@@ -595,10 +595,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             (bTrust ||
                              bModerate ||
                              ((!this.Topic.IsLocked) &&
-                              (this.Forum.ReplyPostCount <= 0 ||
+                              (this.Forum.FeatureSettings.ReplyPostCount <= 0 ||
                                new Controllers.ForumUserController(this.ModuleId).GetByUserId(
                                    accessingUser.PortalID,
-                                   accessingUser.UserID).PostCount >= this.Forum.ReplyPostCount))))
+                                   accessingUser.UserID).PostCount >= this.Forum.FeatureSettings.ReplyPostCount))))
                         {
                             var @params = new List<string>()
                             {

@@ -59,14 +59,14 @@
 
         var options = {
             elementId: "<%= ClientID %>",
-            editorType: <%=(int)ForumInfo.EditorType%>,
+            editorType: <%=(int)ForumInfo.FeatureSettings.EditorType%>,
             moduleId: <%=ModuleId%>,
             forumId: <%=ForumId%>,
             attachmentsClientId: "<%=AttachmentsClientId %>",
             titleText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:Attachments:BrowseSite:Title]"))%>",
             nameHeaderText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:FileName]"))%>",
             typeHeaderText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:FileType]"))%>",
-            maxUploadSize: <%=ForumInfo.AttachMaxSize * 1024%>,
+            maxUploadSize: <%=ForumInfo.FeatureSettings.AttachMaxSize * 1024%>,
             lastModifiedHeaderText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:LastModified]"))%>",
             fileSizeText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:FileSize]"))%>",
             templatePath: "<%=Page.ResolveUrl("~/Resources/Shared/Components/UserFileManager/Templates/")%>",
@@ -75,11 +75,11 @@
             attachText : "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:Attach]"))%>",
             serverErrorMessage: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:Attachments:Error]"))%>",
             fileTypeNotAllowedMsg: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:Error:BlockedFile]"))%>",      
-            allowedFileTypes: "<%= ForumInfo.AttachTypeAllowed %>",
-            allowBrowseSite: <%= ForumInfo.AttachAllowBrowseSite ? 1 : 0 %>,
-            attachInsertAllowed: <%= ForumInfo.AttachInsertAllowed ? 1 : 0 %>,
-            maxFileSizeExceededMsg: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(string.Format(LocalizeString("[RESX:Error:FileTooLarge]").TextOrEmpty(), ForumInfo.AttachMaxSize))%>",
-            maxAttachmentCount: <%= ForumInfo.AttachCount %>,
+            allowedFileTypes: "<%= ForumInfo.FeatureSettings.AttachTypeAllowed %>",
+            allowBrowseSite: <%= ForumInfo.FeatureSettings.AttachAllowBrowseSite ? 1 : 0 %>,
+            attachInsertAllowed: <%= ForumInfo.FeatureSettings.AttachInsertAllowed ? 1 : 0 %>,
+            maxFileSizeExceededMsg: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(string.Format(LocalizeString("[RESX:Error:FileTooLarge]").TextOrEmpty(), ForumInfo.FeatureSettings.AttachMaxSize))%>",
+            maxAttachmentCount: <%= ForumInfo.FeatureSettings.AttachCount %>,
             uploadButtonText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:UploadButton]"))%>"
         };
 

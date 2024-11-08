@@ -349,7 +349,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         internal static StringBuilder ReplacePostTokens(StringBuilder template, IPostInfo post, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
             /* if likes not allowed for forum, remove like-related tokens */
-            if (!post.Forum.AllowLikes)
+            if (!post.Forum.FeatureSettings.AllowLikes)
             {
                 template = RemovePrefixedToken(template, "[FORUMPOST:LINKONCLICK");
                 template = RemovePrefixedToken(template, "[FORUMPOST:LIKECOUNT");

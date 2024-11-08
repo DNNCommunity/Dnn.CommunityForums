@@ -277,7 +277,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.bSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanSplit"].ToString(), this.ForumUser.UserRoles);
             this.bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanTrust"].ToString(), this.ForumUser.UserRoles);
 
-            this.isTrusted = Utilities.IsTrusted((int)this.ForumInfo.DefaultTrustValue, this.ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles));
+            this.isTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, this.ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles));
 
             // TODO: Eventually this will use DAL2 to load from stored procedure into object model, but for now populate topic object model from stored procedure results
             this.topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
@@ -635,8 +635,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ctlQuickReply.IsTrusted = this.isTrusted;
                     ctlQuickReply.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + this.topic.Subject;
                     ctlQuickReply.AllowSubscribe = this.Request.IsAuthenticated && this.bSubscribe;
-                    ctlQuickReply.AllowHTML = this.topic.Forum.AllowHTML;
-                    ctlQuickReply.AllowScripts = this.topic.Forum.AllowScript;
+                    ctlQuickReply.AllowHTML = this.topic.Forum.FeatureSettings.AllowHTML;
+                    ctlQuickReply.AllowScripts = this.topic.Forum.FeatureSettings.AllowScript;
                     ctlQuickReply.ForumId = this.ForumId;
                     ctlQuickReply.SocialGroupId = this.SocialGroupId;
                     ctlQuickReply.ForumModuleId = this.ForumModuleId;

@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (forumGroup != null)
                 {
                     forumGroup.LoadSecurity();
-                    forumGroup.LoadSettings();
+                    forumGroup.LoadFeatureSettings();
                 }
 
                 DataCache.SettingsCacheStore(moduleId, cachekey, forumGroup);

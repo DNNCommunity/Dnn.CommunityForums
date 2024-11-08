@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             try
             {
-                if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.ForumId, this.ForumModuleId).AllowLikes &&
+                if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.ForumId, this.ForumModuleId).FeatureSettings.AllowLikes &&
                     ServicesHelper.IsAuthorized(this.PortalSettings.PortalId, this.ForumModuleId, dto.ForumId, SecureActions.Reply, this.UserInfo))
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Like(dto.ContentId, this.UserInfo.UserID));
@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             try
             {
-                if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, this.ForumModuleId).AllowLikes)
+                if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, this.ForumModuleId).FeatureSettings.AllowLikes)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, value: new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(this.UserInfo.UserID, contentId));
                 }

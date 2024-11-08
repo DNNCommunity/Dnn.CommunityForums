@@ -176,9 +176,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             rc.Reply_Save(portalId, moduleId, reply);
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, forumId, topicId, replyId);
 
-            if (forum.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
+            if (forum.FeatureSettings.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(forum.ModApproveTemplateId, portalId, moduleId, tabId, forumId, topicId, replyId, reply.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(forum.FeatureSettings.ModApproveTemplateId, portalId, moduleId, tabId, forumId, topicId, replyId, reply.Author);
             }
 
             DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId, tabId, moduleId, forum.ForumGroupId, forumId, topicId, replyId, reply.Content.AuthorId);
