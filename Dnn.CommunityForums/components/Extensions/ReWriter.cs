@@ -284,7 +284,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.moduleId > 0)
             {
-                this.mainSettings = new SettingsInfo { MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.moduleId, tabId: this.tabId, ignoreCache: false).ModuleSettings };
+                this.mainSettings = new SettingsInfo { ModuleId = this.moduleId, MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.moduleId, tabId: this.tabId, ignoreCache: false).ModuleSettings };
             }
 
             if (this.mainSettings == null)

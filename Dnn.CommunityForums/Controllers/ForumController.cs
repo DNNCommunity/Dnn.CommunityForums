@@ -246,6 +246,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicTemplateId, "0");
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicFormId, "0");
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.ReplyFormId, "0");
+                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, "0");
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.AllowRSS, "false");
             }
 

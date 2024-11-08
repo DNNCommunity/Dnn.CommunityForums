@@ -59,11 +59,18 @@ namespace DotNetNuke.Modules.ActiveForums
             int totalGroups = this.GetGroupCount(dt);
             int totalGroupForum = 0;
             string tmpGroup = string.Empty;
-            int i = 0;
             int groupCount = 0;
             int forumCount = 0;
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.Append("<table width=\"95%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
+
+            sb.Append("<tr class=\"afgroupback\"><td class=\"afgroupback_left\">" + this.RenderSpacer(1, 4) + "</td><td colspan=\"3\" width=\"100%\" onmouseover=\"this.className='agrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + this.ModuleId + "|M');\">");
+            sb.Append(this.GetSharedResource("[RESX:DefaultSettings]"));
+            sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + this.ModuleId + "|M');\">" + this.edit + "</div></td><td>");
+            sb.Append("</td><td>");
+            sb.Append("</td><td class=\"afgroupback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
+            sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + this.RenderSpacer(2, 100) + "</td></tr>");
+
             foreach (DataRow row in dt.Rows)
             {
                 if (tmpGroup != row["ForumGroupId"].ToString())
@@ -73,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         string sGroupName = row["GroupName"].ToString();
                         if (groupCount > 0)
                         {
-                            sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + this.RenderSpacer(5, 100) + "</td></tr>");
+                            sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + this.RenderSpacer(2, 100) + "</td></tr>");
                         }
 
                         sb.Append("<tr class=\"afgroupback\"><td class=\"afgroupback_left\">" + this.RenderSpacer(1, 4) + "</td><td colspan=\"3\" width=\"100%\" onmouseover=\"this.className='agrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumGroupId"].ToString() + "|G');\">");
@@ -98,7 +105,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-                i += 1;
                 if (Convert.ToInt32(row["ParentForumId"]) == 0)
                 {
                     if (forumCount < Globals.ForumCount)
@@ -140,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private string RenderSpacer(int height, int width)
         {
-            return "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/spacer.gif") + "\" height=\"" + height + "\" width=\"" + width + "\" alt=\"-\" />";
+            return "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/spacer.gif") + "\" style=\"height:" + height + "px;width:" + width + "px\" alt=\"-\" />";
         }
 
         private int GetGroupCount(DataTable dt)

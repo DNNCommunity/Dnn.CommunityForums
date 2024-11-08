@@ -24,14 +24,29 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections;
 
     using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using Newtonsoft.Json.Linq;
 
     #region SettingsInfo
 
     public class SettingsInfo
     {
+        public int ModuleId { get; set; }
+
+        private DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings featureSettings;
+
         public Hashtable MainSettings { get; set; }
-        private Hashtable forumDefaultSettings;
+
+        public SettingsInfo()
+        {
+            this.MainSettings = new Hashtable();
+        }
+
+        public SettingsInfo(int moduleId)
+        {
+            this.MainSettings = new Hashtable();
+            this.ModuleId = moduleId;
+        }
 
         public int PageSize
         {
@@ -277,9 +292,15 @@ namespace DotNetNuke.Modules.ActiveForums
             get { return this.MainSettings.GetString(SettingKeys.DefaultSettingsKey); }
         }
 
-        public SettingsInfo()
+        public FeatureSettings ForumFeatureSettings
         {
-            this.MainSettings = new Hashtable();
+            get => this.featureSettings ?? (this.featureSettings = this.LoadFeatureSettings());
+            set => this.featureSettings = value;
+        }
+
+        internal FeatureSettings LoadFeatureSettings()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(moduleId: this.ModuleId, settingsKey: this.DefaultSettingsKey);
         }
     }
 
@@ -287,8 +308,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class Settings
     {
-        private Hashtable forumDefaultSettings;
-
         public static Hashtable GeneralSettings(int moduleId, string groupKey)
         {
             var ht = new Hashtable();
@@ -325,21 +344,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return false;
             }
-        }
-
-        public Hashtable DefaultForumSettings(int moduleId)
-        {
-            if (this.forumDefaultSettings == null)
-            {
-                this.forumDefaultSettings = this.LoadSettings(moduleId);
-            }
-
-            return this.forumDefaultSettings;
-        }
-
-        internal Hashtable LoadSettings(int moduleId)
-        {
-            return DataCache.GetSettings(moduleId, $"M:{moduleId}", string.Format(CacheKeys.DefaultSettingsByKey, moduleId), true);
         }
     }
 }

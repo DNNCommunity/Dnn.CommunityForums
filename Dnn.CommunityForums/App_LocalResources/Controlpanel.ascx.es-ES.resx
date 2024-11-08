@@ -1435,4 +1435,25 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
     <value>Administradores/Moderadores</value>
   </data>
+  <data name="[RESX:ModuleDefaults].Text" xml:space="preserve">
+    <value>Configuración y seguridad predeterminadas</value>
+  </data>
+  <data name="[RESX:Actions:DefaultsSaved].Text" xml:space="preserve">
+    <value>Configuración predeterminada y seguridad guardada</value>
+  </data>
+  <data name="[RESX:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Heredar la configuración predeterminada</value>
+  </data>
+  <data name="[RESX:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Heredar la seguridad predeterminada</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Marque esta casilla para heredar la configuración predeterminada de las funciones del módulo.</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Marque esta casilla para heredar la seguridad predeterminada del módulo.</value>
+  </data>
+  <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
+    <value>Configuración predeterminada de seguridad y funciones</value>
+  </data>
 </root>

@@ -72,6 +72,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string ThemeLocation => Utilities.ResolveUrl(SettingsBase.GetModuleSettings(this.ModuleId).ThemeLocation);
 
         [IgnoreColumn]
+        public bool InheritSecurity => this.PermissionsId == this.MainSettings.DefaultPermissionId;
+
+        [IgnoreColumn]
+        public bool InheritSettings => this.GroupSettingsKey == this.MainSettings.DefaultSettingsKey;
+
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
         {
             get => this.security ?? (this.security = this.LoadSecurity());
@@ -93,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return security;
         }
-        
+
         [IgnoreColumn]
         public FeatureSettings FeatureSettings
         {

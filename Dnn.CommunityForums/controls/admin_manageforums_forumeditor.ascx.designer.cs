@@ -78,6 +78,15 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::DotNetNuke.Modules.ActiveForums.Controls.RequiredFieldValidator reqGroups;
 
         /// <summary>
+        /// trName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trName;
+
+        /// <summary>
         /// Img14 control.
         /// </summary>
         /// <remarks>
@@ -159,6 +168,15 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.WebControls.TextBox txtPrefixURL;
 
         /// <summary>
+        /// trActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable trActive;
+
+        /// <summary>
         /// Img20 control.
         /// </summary>
         /// <remarks>
@@ -175,6 +193,15 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkActive;
+
+        /// <summary>
+        /// trHidden control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trHidden;
 
         /// <summary>
         /// Img21 control.

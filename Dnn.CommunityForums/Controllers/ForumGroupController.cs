@@ -43,20 +43,33 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumGroup;
         }
 
-        public int Groups_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo, bool isNew)
+        public int Groups_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo, bool isNew, bool useDefaultFeatures, bool useDefaultSecurity)
         {
-            if (forumGroupInfo.PermissionsId == -1)
+            if (useDefaultSecurity)
             {
-                forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), forumGroupInfo.ModuleId).PermissionsId;
+                forumGroupInfo.PermissionsId = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId;
             }
+            else
+            {
+                if (isNew || (forumGroupInfo?.PermissionsId == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId)) /* new forum group or switching from module security to group security */
+                {
+                    forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), forumGroupInfo.ModuleId).PermissionsId;
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, forumGroupInfo.ModuleId, forumGroupInfo.PermissionsId);
+                }
+            }
+
+            forumGroupInfo.GroupSettingsKey = useDefaultFeatures ? SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey : $"G:{forumGroupInfo.ForumGroupId}";
 
             // TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
             forumGroupInfo.ForumGroupId = DataProvider.Instance().Groups_Save(portalId, forumGroupInfo.ModuleId, forumGroupInfo.ForumGroupId, forumGroupInfo.GroupName, forumGroupInfo.SortOrder, forumGroupInfo.Active, forumGroupInfo.Hidden, forumGroupInfo.PermissionsId, forumGroupInfo.PrefixURL);
 
-            if (isNew)
+            if (forumGroupInfo.GroupSettingsKey == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey)
             {
-                forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, forumGroupInfo.ModuleId, forumGroupInfo.PermissionsId);
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forum_ConfigCleanUp(forumGroupInfo.ModuleId, $"G:{forumGroupInfo.ForumGroupId}");
+            }
+
+            if (isNew && useDefaultFeatures == false)
+            {
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicsTemplateId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicTemplateId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicFormId, "0");

@@ -1540,4 +1540,25 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
     <value>Administrators/Moderators</value>
   </data>
+  <data name="[RESX:ModuleDefaults].Text" xml:space="preserve">
+    <value>Default Settings and Security</value>
+  </data>
+  <data name="[RESX:Actions:DefaultsSaved].Text" xml:space="preserve">
+    <value>Default Settings and Security Saved</value>
+  </data>
+  <data name="[RESX:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Inherit Default Settings</value>
+  </data>
+  <data name="[RESX:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Inherit Default Security</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Check this box to inherit default module feature settings.</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Check this box to inherit default module security.</value>
+  </data>
+  <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
+    <value>Default Security and Feature Settings</value>
+  </data>
 </root>
