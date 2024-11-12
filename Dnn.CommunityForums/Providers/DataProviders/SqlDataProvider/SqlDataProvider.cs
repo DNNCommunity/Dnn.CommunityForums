@@ -180,6 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums
             throw new NotImplementedException();
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public override IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Forums_List", ModuleId, ForumGroupId, ParentForumId, FillLastPost);

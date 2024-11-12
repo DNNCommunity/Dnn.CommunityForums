@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Linq;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -53,12 +55,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindForums()
         {
-            IDataReader dr = DataProvider.Instance().Forums_List(this.PortalId, this.ModuleId, -1, -1, false);
-            DataTable dt = new DataTable("Forums");
-            dt.Load(dr);
-            int totalGroups = this.GetGroupCount(dt);
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+            int totalGroups = forums.ToList().Select(f => f.ForumGroupId).Distinct().Count();
             int totalGroupForum = 0;
-            string tmpGroup = string.Empty;
+            int tmpGroupId = -1;
             int groupCount = 0;
             int forumCount = 0;
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -71,73 +71,68 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("</td><td class=\"afgroupback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
             sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + this.RenderSpacer(2, 100) + "</td></tr>");
 
-            foreach (DataRow row in dt.Rows)
+            foreach (var forum in forums)
             {
-                if (tmpGroup != row["ForumGroupId"].ToString())
+                if (tmpGroupId != forum.ForumGroupId)
                 {
                     if (groupCount < Globals.GroupCount)
                     {
-                        string sGroupName = row["GroupName"].ToString();
+                        string sGroupName = forum.GroupName;
                         if (groupCount > 0)
                         {
                             sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + this.RenderSpacer(2, 100) + "</td></tr>");
                         }
 
-                        sb.Append("<tr class=\"afgroupback\"><td class=\"afgroupback_left\">" + this.RenderSpacer(1, 4) + "</td><td colspan=\"3\" width=\"100%\" onmouseover=\"this.className='agrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumGroupId"].ToString() + "|G');\">");
+                        sb.Append("<tr class=\"afgroupback\"><td class=\"afgroupback_left\">" + this.RenderSpacer(1, 4) + "</td><td colspan=\"3\" width=\"100%\" onmouseover=\"this.className='agrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + forum.ForumGroupId + "|G');\">");
                         sb.Append(sGroupName);
-                        sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumGroupId"].ToString() + "|G');\">" + this.edit + "</div></td><td>");
+                        sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + forum.ForumGroupId + "|G');\">" + this.edit + "</div></td><td>");
                         if (groupCount > 0)
                         {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + row["ForumGroupId"].ToString() + ",-1);\">" + this.arrowUp + "</div>");
+                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + forum.ForumGroupId + ",-1);\">" + this.arrowUp + "</div>");
                         }
 
                         groupCount += 1;
                         sb.Append("</td><td>");
                         if (groupCount < totalGroups)
                         {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + row["ForumGroupId"].ToString() + ",1);\">" + this.arrowDown + "</div>");
+                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + forum.ForumGroupId + ",1);\">" + this.arrowDown + "</div>");
                         }
 
                         sb.Append("</td><td class=\"afgroupback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
                         forumCount = 0;
-                        totalGroupForum = this.GetGroupForumCount(dt, Convert.ToInt32(row["ForumGroupId"]));
-                        tmpGroup = row["ForumGroupId"].ToString();
+                        totalGroupForum = forums.Count(f => f.ForumGroupId == forum.ForumGroupId && f.ParentForumId == 0);
+                        tmpGroupId = forum.ForumGroupId;
                     }
                 }
 
-                if (Convert.ToInt32(row["ParentForumId"]) == 0)
+                if (forum.ParentForumId == 0)
                 {
                     if (forumCount < Globals.ForumCount)
                     {
-                        string sForumName = row["ForumName"].ToString();
-                        sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + this.RenderSpacer(1, 4) + "</td><td style=\"width:15px;\" width=\"15\">" + this.RenderSpacer(5, 15) + "</td><td colspan=\"2\" width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">");
+                        string sForumName = forum.ForumName;
+                        sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + this.RenderSpacer(1, 4) + "</td><td style=\"width:15px;\" width=\"15\">" + this.RenderSpacer(5, 15) + "</td><td colspan=\"2\" width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + forum.ForumID + "|F');\">");
                         sb.Append(sForumName);
-                        sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">" + this.edit + "</div></td><td>");
+                        sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + forum.ForumID + "|F');\">" + this.edit + "</div></td><td>");
                         if (forumCount > 0)
                         {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",-1);\">" + this.arrowUp + "</div>");
+                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + forum.ForumID + ",-1);\">" + this.arrowUp + "</div>");
                         }
 
                         forumCount += 1;
                         sb.Append("</td><td>");
                         if (forumCount < totalGroupForum)
                         {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",1);\">" + this.arrowDown + "</div>");
+                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + forum.ForumID + ",1);\">" + this.arrowDown + "</div>");
                         }
 
                         sb.Append("</td><td class=\"afforumback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
 
-                        if (this.HasSubForums(Convert.ToInt32(row["ForumId"]), dt) > 0)
+                        if (forum.SubForums.Count > 0)
                         {
-                            sb.Append(this.AddSubForums(dt, row));
+                            sb.Append(this.AddSubForums(forum));
                         }
                     }
                 }
-            }
-
-            if (!dr.IsClosed)
-            {
-                dr.Close();
             }
 
             sb.Append("<tr><td></td><td></td><td></td><td width=\"100%\"></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td width=\"100%\" colspan=\"2\"></td><td></td><td></td><td></td><td></td></tr></table>");
@@ -149,81 +144,33 @@ namespace DotNetNuke.Modules.ActiveForums
             return "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/spacer.gif") + "\" style=\"height:" + height + "px;width:" + width + "px\" alt=\"-\" />";
         }
 
-        private int GetGroupCount(DataTable dt)
-        {
-            int i = 0;
-            string tmpGroup = string.Empty;
-            foreach (DataRow row in dt.Rows)
-            {
-                if (tmpGroup != row["ForumGroupId"].ToString())
-                {
-                    i += 1;
-                    tmpGroup = row["ForumGroupId"].ToString();
-                }
-            }
-
-            return i;
-        }
-
-        private int GetGroupForumCount(DataTable dt, int groupId)
-        {
-            int i = 0;
-            string tmpGroup = string.Empty;
-            foreach (DataRow row in dt.Rows)
-            {
-                if (Convert.ToInt32(row["ForumGroupId"]) == groupId && Convert.ToInt32(row["ParentForumId"]) == 0)
-                {
-                    i += 1;
-                }
-            }
-
-            return i;
-        }
-
-        private string AddSubForums(DataTable dt, DataRow dr)
+        private string AddSubForums(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            int totalSubCount = this.HasSubForums(Convert.ToInt32(dr["ForumId"]), dt);
+            int totalSubCount = forum.SubForums.Count;
             int subCount = 0;
-            foreach (DataRow row in dt.Rows)
+            foreach (var subforum in forum.SubForums)
             {
-                if (Convert.ToInt32(dr["ForumId"]) == Convert.ToInt32(row["ParentForumId"]))
+                string sForumName = subforum.ForumName;
+                sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + this.RenderSpacer(1, 4) + "</td><td style=\"width:15px;\">" + this.RenderSpacer(5, 15) + "</td><td style=\"width:15px;\">" + this.RenderSpacer(5, 15) + "</td><td width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + subforum.ForumID + "|F');\">");
+                sb.Append(sForumName);
+                sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + subforum.ForumID + "|F');\">" + this.edit + "</div></td><td>");
+                if (subCount > 0)
                 {
-                    string sForumName = row["ForumName"].ToString();
-                    sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + this.RenderSpacer(1, 4) + "</td><td style=\"width:15px;\">" + this.RenderSpacer(5, 15) + "</td><td style=\"width:15px;\">" + this.RenderSpacer(5, 15) + "</td><td width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">");
-                    sb.Append(sForumName);
-                    sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">" + this.edit + "</div></td><td>");
-                    if (subCount > 0)
-                    {
-                        sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",-1);\">" + this.arrowUp + "</div>");
-                    }
-
-                    subCount += 1;
-                    sb.Append("</td><td>");
-                    if (subCount < totalSubCount)
-                    {
-                        sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",1);\">" + this.arrowDown + "</div>");
-                    }
-
-                    sb.Append("</td><td class=\"afforumback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
+                    sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + subforum.ForumID + ",-1);\">" + this.arrowUp + "</div>");
                 }
+
+                subCount += 1;
+                sb.Append("</td><td>");
+                if (subCount < totalSubCount)
+                {
+                    sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + subforum.ForumID + ",1);\">" + this.arrowDown + "</div>");
+                }
+
+                sb.Append("</td><td class=\"afforumback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
             }
 
             return sb.ToString();
-        }
-
-        private int HasSubForums(int forumId, DataTable dt)
-        {
-            int subCount = 0;
-            foreach (DataRow row in dt.Rows)
-            {
-                if (Convert.ToInt32(row["ParentForumId"]) == forumId)
-                {
-                    subCount += 1;
-                }
-            }
-
-            return subCount;
         }
 
         private void cbGrid_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)

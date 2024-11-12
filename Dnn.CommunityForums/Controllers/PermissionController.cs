@@ -102,20 +102,67 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return Utilities.GetPortalSettings(portalId).RegisteredRoleName;
         }
+        
+        internal static DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetDefaultPermissions(int portalId, int moduleId)
+        {
+            string registeredUsersRoleId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString();
+            var permissionInfo = GetAdminPermissions(adminRole: GetAdministratorsRoleId(portalId: portalId).ToString(), moduleId: moduleId);
+            DotNetNuke.Modules.ActiveForums.SecureActions[] requestedAccessList =
+            {
+                SecureActions.View,
+                SecureActions.Read,
+            };
+            foreach (var access in requestedAccessList)
+            {
+                permissionInfo = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(permissionInfo, access, registeredUsersRoleId, 0);
+                permissionInfo = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(permissionInfo, access, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
+                permissionInfo = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(permissionInfo, access, DotNetNuke.Common.Globals.glbRoleUnauthUser, 0);
+            }
+
+            requestedAccessList = new[]
+            {
+                SecureActions.Create,
+                SecureActions.Edit,
+                SecureActions.Reply,
+                SecureActions.Delete,
+                SecureActions.Reply,
+                SecureActions.Subscribe,
+                SecureActions.Attach,
+            };
+            foreach (var access in requestedAccessList)
+            {
+                permissionInfo = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(permissionInfo, access, registeredUsersRoleId, 0);
+            }
+
+            return permissionInfo;
+        }
 
         internal static void CreateDefaultSets(int portalId, int moduleId, int permissionsId)
         {
-            string[] requestedAccessList = new[] { "View", "Read" };
             string registeredUsersRoleId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString();
-            foreach (string access in requestedAccessList)
+            DotNetNuke.Modules.ActiveForums.SecureActions[] requestedAccessList =
+            {
+                SecureActions.View,
+                SecureActions.Read,
+            };
+            foreach (var access in requestedAccessList)
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, access, registeredUsersRoleId, 0);
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, access, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, access, DotNetNuke.Common.Globals.glbRoleUnauthUser, 0);
             }
 
-            requestedAccessList = new[] { "Create", "Reply" };
-            foreach (string access in requestedAccessList)
+            requestedAccessList = new[]
+            {
+                SecureActions.Create,
+                SecureActions.Edit,
+                SecureActions.Reply,
+                SecureActions.Delete,
+                SecureActions.Reply,
+                SecureActions.Subscribe,
+                SecureActions.Attach,
+            };
+            foreach (var access in requestedAccessList)
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, access, registeredUsersRoleId, 0);
             }
@@ -182,26 +229,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             };
         }
 
-        internal static DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetDefaultPermissions(int portalId, int moduleId)
-        {
-            var permissionInfo = GetAdminPermissions(adminRole: GetAdministratorsRoleId(portalId: portalId).ToString(), moduleId: moduleId);
-            string[] requestedAccessList = new[] { "View", "Read" };
-            string registeredUsersRoleId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString();
-            foreach (string access in requestedAccessList)
-            {
-                permissionInfo = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(permissionInfo, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), access), registeredUsersRoleId, 0);
-                permissionInfo = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(permissionInfo, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), access), DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
-                permissionInfo = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(permissionInfo, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), access), DotNetNuke.Common.Globals.glbRoleUnauthUser, 0);
-            }
-
-            requestedAccessList = new[] { "Create", "Reply" };
-            foreach (string access in requestedAccessList)
-            {
-                permissionInfo = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(permissionInfo, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), access), registeredUsersRoleId, 0);
-            }
-
-            return permissionInfo;
-        }
 
         public static bool HasAccess(string authorizedRoles, string userRoles)
         {

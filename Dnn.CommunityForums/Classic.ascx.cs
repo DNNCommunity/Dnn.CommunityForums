@@ -63,8 +63,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
             }
             this.SetupPage();
-            
-            ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
+
+            //ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
             try
             {
                 if (this.MainSettings != null && this.MainSettings.InstallDate > Utilities.NullDate())

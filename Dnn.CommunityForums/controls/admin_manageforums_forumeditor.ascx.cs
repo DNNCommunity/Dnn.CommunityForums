@@ -275,8 +275,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         fi.SortOrder = string.IsNullOrWhiteSpace(e.Parameters[7]) ? 0 : Utilities.SafeConvertInt(e.Parameters[7]);
 
-                        var fkey = string.IsNullOrEmpty(fi.ForumSettingsKey) ? string.Empty : fi.ForumSettingsKey;
-
                         bool inheritFeatures = Utilities.SafeConvertBool(e.Parameters[8]);
                         bool inheritSecurity = Utilities.SafeConvertBool(e.Parameters[9]);
 
@@ -298,19 +296,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 case "groupsave":
                     {
-                        var bIsNew = false;
                         var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
                         var gi = (groupId > 0) ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(groupId, this.ModuleId) : new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo();
-
-                        var settingsKey = string.Empty;
-                        if (groupId == 0)
-                        {
-                            bIsNew = true;
-                        }
-                        else
-                        {
-                            settingsKey = "G:" + groupId;
-                        }
+                        var bIsNew = groupId == 0;
 
                         gi.ModuleId = this.ModuleId;
                         gi.ForumGroupId = groupId;
@@ -333,7 +321,15 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
 
-                        gi.GroupSettingsKey = settingsKey;
+                        if (inheritFeatures)
+                        {
+                            gi.GroupSettingsKey = "M:" + this.ModuleId;
+                        }
+                        else
+                        {
+                            gi.GroupSettingsKey = "G:" + groupId;
+                        }
+
                         groupId = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Save(this.PortalId, gi, bIsNew, inheritFeatures, inheritSecurity);
                         this.recordId = groupId;
                         this.hidEditorResult.Value = groupId.ToString();
@@ -550,6 +546,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.plhGrid.Controls.Add(this.ctlSecurityGrid);
             }
 
+            this.hidForumId.Value = string.Empty;
             this.trGroups.Visible = false;
             this.reqGroups.Enabled = false;
 
@@ -679,7 +676,6 @@ namespace DotNetNuke.Modules.ActiveForums
             this.BindAutoSubRoles(featureSettings.AutoSubscribeRoles);
         }
 
-
         private void BindAutoSubRoles(string roles)
         {
             var sb = new StringBuilder();
@@ -700,32 +696,31 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindGroups()
         {
-            var dr = DataProvider.Instance().Forums_List(this.PortalId, this.ModuleId, -1, -1, false);
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+
             this.drpGroups.Items.Add(new ListItem(Utilities.GetSharedResource("DropDownSelect"), "-1"));
 
             var tmpGroupId = -1;
-            while (dr.Read())
+            foreach (var forum in forums)
             {
-                var groupId = dr.GetInt("ForumGroupId");
+                var groupId = forum.ForumGroupId;
                 if (tmpGroupId != groupId)
                 {
-                    this.drpGroups.Items.Add(new ListItem(dr.GetString("GroupName"), "GROUP" + groupId));
+                    this.drpGroups.Items.Add(new ListItem(forum.GroupName, "GROUP" + groupId));
                     tmpGroupId = groupId;
                 }
 
-                var forumId = dr.GetInt("ForumId");
+                var forumId = forum.ForumID;
                 if (forumId == 0)
                 {
                     continue;
                 }
 
-                if (dr.GetInt("ParentForumID") == 0)
+                if (forum.ParentForumId == 0)
                 {
-                    this.drpGroups.Items.Add(new ListItem(" - " + dr.GetString("ForumName"), "FORUM" + forumId));
+                    this.drpGroups.Items.Add(new ListItem(" - " + forum.ForumName, "FORUM" + forumId));
                 }
             }
-
-            dr.Close();
         }
 
         private void BindTabs()

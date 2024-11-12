@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -301,6 +303,11 @@ namespace DotNetNuke.Modules.ActiveForums
         internal FeatureSettings LoadFeatureSettings()
         {
             return new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(moduleId: this.ModuleId, settingsKey: this.DefaultSettingsKey);
+        }
+
+        internal void SaveFeatureSettings(FeatureSettings settings)
+        {
+            FeatureSettings.Save(this.ModuleId, this.DefaultSettingsKey, settings);
         }
     }
 

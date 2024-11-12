@@ -21,6 +21,8 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System.Collections;
+    using System.Runtime;
+    using DotNetNuke.Modules.ActiveForums.Entities;
 
     internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>
     {
@@ -51,31 +53,33 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             else
             {
-                if (isNew || (forumGroupInfo?.PermissionsId == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId)) /* new forum group or switching from module security to group security */
+                if (isNew || forumGroupInfo.InheritSecurity) /* new forum group or switching from module security to group security */
                 {
-                    forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), forumGroupInfo.ModuleId).PermissionsId;
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, forumGroupInfo.ModuleId, forumGroupInfo.PermissionsId);
+                    // use module default settings
+                    forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Insert(new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId: SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId, moduleId: forumGroupInfo.ModuleId)).PermissionsId;
                 }
             }
 
-            forumGroupInfo.GroupSettingsKey = useDefaultFeatures ? SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey : $"G:{forumGroupInfo.ForumGroupId}";
+            if (useDefaultFeatures)
+            {
+                forumGroupInfo.GroupSettingsKey = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey;
+            }
+            else
+            {
+                if (isNew || forumGroupInfo.InheritSettings)
+                {
+                    forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
+                    forumGroupInfo.FeatureSettings = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).ForumFeatureSettings;
+                    FeatureSettings.Save(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, forumGroupInfo.FeatureSettings);
+                }
+            }
 
             // TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
             forumGroupInfo.ForumGroupId = DataProvider.Instance().Groups_Save(portalId, forumGroupInfo.ModuleId, forumGroupInfo.ForumGroupId, forumGroupInfo.GroupName, forumGroupInfo.SortOrder, forumGroupInfo.Active, forumGroupInfo.Hidden, forumGroupInfo.PermissionsId, forumGroupInfo.PrefixURL);
 
-            if (forumGroupInfo.GroupSettingsKey == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey)
+            if (useDefaultFeatures)
             {
                 DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forum_ConfigCleanUp(forumGroupInfo.ModuleId, $"G:{forumGroupInfo.ForumGroupId}");
-            }
-
-            if (isNew && useDefaultFeatures == false)
-            {
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicsTemplateId, "0");
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicTemplateId, "0");
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicFormId, "0");
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.ReplyFormId, "0");
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.QuickReplyFormId, "0");
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.AllowRSS, "false");
             }
 
             DataCache.ClearSettingsCache(forumGroupInfo.ModuleId);

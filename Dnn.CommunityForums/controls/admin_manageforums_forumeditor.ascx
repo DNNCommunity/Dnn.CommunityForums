@@ -15,44 +15,67 @@
 
     function forumSave() {
         closeAllProp();
-        if (!AMPage.IsGroupValid('afforum')) {
-            return false;
-        };
+        var fgp = document.getElementById("<%=drpGroups.ClientID%>");
+        if(fgp && !AMPage.IsGroupValid('afforum')){return false};
         af_showLoad();
-        var fid = document.getElementById("<%=hidForumId.ClientID%>");
-        var fgpid = document.getElementById("<%=drpGroups.ClientID%>");
-        var fn = document.getElementById("<%=txtForumName.ClientID%>").value;
-        var fd = document.getElementById("<%=txtForumDesc.ClientID%>");
-        if (fd != null) {
-            fd = fd.value
+        var fname = document.getElementById("<%=txtForumName.ClientID%>");
+        if (fname) {
+            fname = fname.value;
         } else {
-            fd = ''
+            fname = '';
         };
-        var a = document.getElementById("<%=chkActive.ClientID%>").checked;
-        var h = document.getElementById("<%=chkHidden.ClientID%>").checked;
-        var so = document.getElementById("<%=hidSortOrder.ClientID%>").value;
-        var purl = document.getElementById("<%=txtPrefixURL.ClientID%>").value;
+        var fdesc = document.getElementById("<%=txtForumDesc.ClientID%>");
+        if (fdesc) {
+            fdesc = fdesc.value;
+        } else {
+            fdesc = '';
+        };
+        var a = document.getElementById("<%=chkActive.ClientID%>");
+        if (a) {
+            a = a.checked;
+        } else {
+            a = false;
+        };
+        var h = document.getElementById("<%=chkHidden.ClientID%>");
+        if (h) {
+            h = h.checked;
+        } else {
+            h = false;
+        }
+        var so = document.getElementById("<%=hidSortOrder.ClientID%>"); 
+        if (so) {
+            so = so.value;
+        } else {
+            so = '';
+        }
+        var purl = document.getElementById("<%=txtPrefixURL.ClientID%>"); 
+        if (purl) {
+            purl = purl.value;
+        } else {
+            purl = '';
+        }
         var inheritModuleSecurity = document.getElementById("<%=chkInheritModuleSecurity.ClientID%>");
         var inheritModuleFeatures = document.getElementById("<%=chkInheritModuleFeatures.ClientID%>");
         var inheritGroupSecurity = document.getElementById("<%=chkInheritGroupSecurity.ClientID%>");
         var inheritGroupFeatures = document.getElementById("<%=chkInheritGroupFeatures.ClientID%>");
-        if (fid.value == '') {
-            fid = 0;
+        var forumId = document.getElementById("<%=hidForumId.ClientID%>");
+        if (forumId.value === '') {
+            forumId = 0;
             bSaveSettings = false;
         } else {
-            fid = fid.value;
+            forumId = forumId.value;
             bSaveSettings = true;
         };
-        if (fgpid) {
-            fgpid = fgpid.options[fgpid.selectedIndex].value;
+        if (fgp) {
+            fgp = fgp.options[fgp.selectedIndex].value;
             currAction = 'forumsave';
-        } else {
-            fgpid = 0;
+        } else if (inheritModuleSecurity || inheritGroupFeatures) {
+            fgp = 0;
             currAction = 'groupsave';
         };
         if (inheritModuleFeatures != null) {
             inheritModuleFeatures = inheritModuleFeatures.checked;
-            if (inheritModuleFeatures == true) {
+            if (inheritModuleFeatures === true) {
                 bSaveSettings = true;
             };
         } else {
@@ -61,7 +84,7 @@
         };
         if (inheritGroupFeatures != null) {
             inheritGroupFeatures = inheritGroupFeatures.checked;
-            if (inheritGroupFeatures == true) {
+            if (inheritGroupFeatures === true) {
                 bSaveSettings = true;
             };
         } else {
@@ -71,7 +94,7 @@
 
         if (inheritModuleSecurity != null) {
             inheritModuleSecurity = inheritModuleSecurity.checked;
-            if (inheritModuleSecurity == true) {
+            if (inheritModuleSecurity === true) {
                 bSaveSettings = true;
             };
         } else {
@@ -80,7 +103,7 @@
         };
         if (inheritGroupSecurity != null) {
             inheritGroupSecurity = inheritGroupSecurity.checked;
-            if (inheritGroupSecurity == true) {
+            if (inheritGroupSecurity === true) {
                 bSaveSettings = true;
             };
         } else {
@@ -93,9 +116,9 @@
             bSaveSettings = false;
         };
         if (currAction === 'groupsave') {
-            <%=cbEditorAction.ClientID%>.Callback(currAction, fid, fgpid, fn, fd, a, h, so, inheritModuleFeatures, inheritModuleSecurity, purl);
+            <%=cbEditorAction.ClientID%>.Callback(currAction, forumId, fgp, fname, fdesc, a, h, so, inheritModuleFeatures, inheritModuleSecurity, purl);
         } else {
-            <%=cbEditorAction.ClientID%>.Callback(currAction, fid, fgpid, fn, fd, a, h, so, inheritGroupFeatures, inheritGroupSecurity, purl);
+            <%=cbEditorAction.ClientID%>.Callback(currAction, forumId, fgp, fname, fdesc, a, h, so, inheritGroupFeatures, inheritGroupSecurity, purl);
         };
     };
 

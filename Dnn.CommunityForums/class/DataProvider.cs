@@ -72,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract IDataReader Forums_Get(int portalId, int moduleId, int forumID, int userId, bool withSecurity);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract IDataReader Forums_List(int portalId, int moduleId, int forumGroupId, int parentForumId, bool fillLastPost);
 
         public abstract void Forums_Move(int moduleId, int forumId, int sortDirection);

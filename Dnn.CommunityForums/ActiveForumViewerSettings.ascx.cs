@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Data;
+    using System.Linq;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Modules;
@@ -160,29 +161,27 @@ namespace DotNetNuke.Modules.ActiveForums
         public void LoadForumGroups(int forumModuleID)
         {
             this.drpForum.Items.Insert(0, new ListItem("-- Select a Group or Forum --", "-1"));
-            IDataReader dr = DataProvider.Instance().Forums_List(this.PortalId, forumModuleID, -1, -1, false);
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+
             int i = 1;
             string groupName = string.Empty;
-            string forumName = string.Empty;
             int forumID = -1;
-            while (dr.Read())
+            foreach (var forum in forums)
             {
-                if (groupName != Convert.ToString(dr["GroupName"]))
+                if (groupName != forum.GroupName)
                 {
-                    this.drpForum.Items.Insert(i, new ListItem(Convert.ToString(dr["GroupName"]), "GROUPID:" + Convert.ToString(dr["ForumGroupID"])));
+                    this.drpForum.Items.Insert(i, new ListItem(forum.GroupName, $"GROUPID:{forum.ForumGroupId}"));
                     i += 1;
-                    groupName = Convert.ToString(dr["GroupName"]);
+                    groupName = forum.GroupName;
                 }
 
-                if (forumID != Convert.ToInt32(dr["ForumID"]))
+                if (forumID != forum.ForumID)
                 {
-                    this.drpForum.Items.Insert(i, new ListItem("|---" + Convert.ToString(dr["ForumName"]), "FORUMID:" + Convert.ToString(dr["ForumID"])));
+                    this.drpForum.Items.Insert(i, new ListItem($"|---{forum.ForumName}", $"FORUMID:{forum.ForumID}"));
                     i += 1;
-                    forumID = Convert.ToInt32(dr["ForumID"]);
+                    forumID = forum.ForumID;
                 }
             }
-
-            dr.Close();
         }
 
         private void BindTemplates(int forumModuleID)

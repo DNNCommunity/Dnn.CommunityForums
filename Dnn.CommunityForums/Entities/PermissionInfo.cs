@@ -21,6 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
+    using System.Collections.Generic;
     using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
@@ -29,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [PrimaryKey("PermissionsId", AutoIncrement = true)]
     [Cacheable("activeforums_Permissions", CacheItemPriority.Low)]
     [Scope("ModuleId")]
-    public partial class PermissionInfo
+    public class PermissionInfo
     {
         public int PermissionsId { get; set; }
 
@@ -110,5 +111,31 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
         public int UserTrustLevel { get; set; }
+
+        public bool EqualPermissions(PermissionInfo other)
+        {
+            return !(other is null) &&
+                   this.View == other.View &&
+                   this.Read == other.Read &&
+                   this.Create == other.Create &&
+                   this.Reply == other.Reply &&
+                   this.Edit == other.Edit &&
+                   this.Delete == other.Delete &&
+                   this.Lock == other.Lock &&
+                   this.Pin == other.Pin &&
+                   this.Attach == other.Attach &&
+                   this.Poll == other.Poll &&
+                   this.Block == other.Block &&
+                   this.Trust == other.Trust &&
+                   this.Subscribe == other.Subscribe &&
+                   this.Announce == other.Announce &&
+                   this.Tag == other.Tag &&
+                   this.Categorize == other.Categorize &&
+                   this.Prioritize == other.Prioritize &&
+                   this.Moderate == other.Moderate &&
+                   this.Move == other.Move &&
+                   this.Split == other.Split &&
+                   this.Ban == other.Ban;
+        }
     }
 }

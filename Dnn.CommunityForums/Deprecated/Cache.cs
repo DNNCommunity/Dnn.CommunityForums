@@ -103,16 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                IDataReader rd;
-                rd = DataProvider.Instance().Forums_List(-1, moduleID, -1, -1, false);
-                while (rd.Read())
-                {
-                    int forumId = Convert.ToInt32(rd["ForumID"]);
-                    SettingsCacheClear(moduleID, string.Format(CacheKeys.ForumSettings, moduleID, forumId));
-                    SettingsCacheClear(moduleID, string.Format(CacheKeys.ForumInfo, moduleID, forumId));
-                }
-
-                rd.Close();
+                ClearAllCache(moduleID);
             }
             catch
             {
