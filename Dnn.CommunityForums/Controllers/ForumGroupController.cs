@@ -21,6 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System.Collections;
+    using DotNetNuke.Modules.ActiveForums.Entities;
 
     internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>
     {
@@ -69,10 +70,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumGroupInfo.ForumGroupId;
         }
 
-        public void Groups_Delete(int forumGroupId, int moduleId)
+        public void Groups_Delete(int moduleId, int forumGroupId)
         {
-            // TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
-            DataProvider.Instance().Groups_Delete(moduleId, forumGroupId);
+            //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
+            DataProvider.Instance().Groups_Delete(moduleID: moduleId, forumGroupID: forumGroupId);
+            DataCache.ClearSettingsCache(moduleId);
         }
     }
 }

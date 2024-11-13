@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -338,14 +338,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "deleteforum":
                     {
                         var forumId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Delete(this.PortalId, this.ModuleId, forumId);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Delete(portalId: this.PortalId, moduleId: this.ModuleId, forumId: forumId);
                         break;
                     }
 
                 case "deletegroup":
                     {
                         var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Delete(this.ModuleId, groupId);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Delete(moduleId: this.ModuleId, forumGroupId: groupId);
                         break;
                     }
             }
