@@ -741,32 +741,31 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindGroups()
         {
-            var dr = DataProvider.Instance().Forums_List(this.PortalId, this.ModuleId, -1, -1, false);
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+
             this.drpGroups.Items.Add(new ListItem(Utilities.GetSharedResource("DropDownSelect"), "-1"));
 
             var tmpGroupId = -1;
-            while (dr.Read())
+            foreach (var forum in forums)
             {
-                var groupId = dr.GetInt("ForumGroupId");
+                var groupId = forum.ForumGroupId;
                 if (tmpGroupId != groupId)
                 {
-                    this.drpGroups.Items.Add(new ListItem(dr.GetString("GroupName"), "GROUP" + groupId));
+                    this.drpGroups.Items.Add(new ListItem(forum.GroupName, "GROUP" + groupId));
                     tmpGroupId = groupId;
                 }
 
-                var forumId = dr.GetInt("ForumId");
+                var forumId = forum.ForumID;
                 if (forumId == 0)
                 {
                     continue;
                 }
 
-                if (dr.GetInt("ParentForumID") == 0)
+                if (forum.ParentForumId == 0)
                 {
-                    this.drpGroups.Items.Add(new ListItem(" - " + dr.GetString("ForumName"), "FORUM" + forumId));
+                    this.drpGroups.Items.Add(new ListItem(" - " + forum.ForumName, "FORUM" + forumId));
                 }
             }
-
-            dr.Close();
         }
 
         private void BindTabs()

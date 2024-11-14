@@ -169,6 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
         #region Forums
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public override void Forums_Delete(int PortalId, int ModuleId, int ForumId)
         {
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Forums_Delete", PortalId, ModuleId, ForumId);
@@ -180,6 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
             throw new NotImplementedException();
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public override IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Forums_List", ModuleId, ForumGroupId, ParentForumId, FillLastPost);
@@ -201,6 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Forum_Save", PortalId, ForumId, ModuleId, ForumGroupId, ParentForumId, ForumName, ForumDesc, SortOrder, Active, Hidden, ForumSettingsKey, PermissionsId, PrefixURL, SocialGroupId, HasProperties));
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey)
         {
             SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Forum_ConfigCleanUp", ModuleId, ForumSettingsKey);

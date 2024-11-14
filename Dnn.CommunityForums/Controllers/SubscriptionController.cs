@@ -62,6 +62,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
+        public void DeleteForForum(int forumId)
+        {
+            this.Delete("WHERE ForumId = @0", forumId);
+        }
+
         public void DeleteForUser(int portalId, int moduleId, int userId, int forumId)
         {
             this.Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId);

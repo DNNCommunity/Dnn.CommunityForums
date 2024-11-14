@@ -80,15 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Only Cleared but never Set so not needed.")]
         public static void ClearForumGroupsCache(int moduleID)
         {
-            SettingsCacheClear(moduleID, moduleID + "ForumGroups");
-            IDataReader rd;
-            rd = DataProvider.Instance().Groups_List(moduleID);
-            while (rd.Read())
-            {
-                ClearForumsByGroupCache(moduleID, Convert.ToInt32(rd["ForumGroupID"]));
-            }
-
-            rd.Close();
+            ClearAllCache(moduleID);
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
@@ -101,22 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Not Used.")]
         public static void ClearAllForumSettingsCache(int moduleID)
         {
-            try
-            {
-                IDataReader rd;
-                rd = DataProvider.Instance().Forums_List(-1, moduleID, -1, -1, false);
-                while (rd.Read())
-                {
-                    int forumId = Convert.ToInt32(rd["ForumID"]);
-                    SettingsCacheClear(moduleID, string.Format(CacheKeys.ForumSettings, moduleID, forumId));
-                    SettingsCacheClear(moduleID, string.Format(CacheKeys.ForumInfo, moduleID, forumId));
-                }
-
-                rd.Close();
-            }
-            catch
-            {
-            }
+            ClearAllCache(moduleID);
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
