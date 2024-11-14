@@ -28,13 +28,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Web;
     using System.Xml;
     using System.Web;
+    using DotNetNuke.UI.UserControls;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Modules.ActiveForums.Entities;
 
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
     {
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetById(int forumId, int moduleId)
         {
             string cachekey = string.Format(CacheKeys.ForumInfo, moduleId, forumId);
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumInfo;
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumInfo;
             if (forum == null)
             {
                 forum = base.GetById(forumId, moduleId);
@@ -50,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadSecurity();
                 }
 
-                DataCache.SettingsCacheStore(moduleId, cachekey, forum);
+                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, forum);
             }
 
             return forum;
@@ -58,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetForums(int moduleId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.ForumList, moduleId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.ForumList, moduleId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
@@ -75,7 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Add(forum);
                 }
 
-                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.ForumList, moduleId), forums);
+                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.ForumList, moduleId), forums);
             }
 
             return forums;
@@ -83,11 +86,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetSubForums(int forumId, int moduleId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.SubForumList, moduleId, forumId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.SubForumList, moduleId, forumId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in this.Find("WHERE ParentForumId = @0",forumId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder))
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in this.Find("WHERE ParentForumId = @0", forumId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder))
                 {
                     forum.LoadForumGroup();
                     forum.LoadProperties();
@@ -99,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Add(forum);
                 }
 
-                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.SubForumList, moduleId, forumId), forums);
+                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.SubForumList, moduleId, forumId), forums);
             }
 
             return forums;
@@ -167,7 +170,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use  GetForumsHtmlOption(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser)")]
-        public static string GetForumsHtmlOption(int moduleId, User currentUser)
+        public static string GetForumsHtmlOption(int moduleId, DotNetNuke.Modules.ActiveForums.User currentUser)
         {
             var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, currentUser.UserId);
             return GetForumsHtmlOption(moduleId, currentUser: user, includeHiddenForums: true);
@@ -203,6 +206,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroupFeatures, bool useGroupSecurity)
         {
+            var copySettings = false;
+            if (fi.ForumID <= 0)
+            {
+                isNew = true;
+            }
+
             var fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(fi.ForumGroupId, fi.ModuleId);
             if (useGroupSecurity)
             {
@@ -215,50 +224,49 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 if (isNew || (fi?.PermissionsId == fg?.PermissionsId)) /* new forum or switching from group security to forum security */
                 {
-                    fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), fi.ModuleId).PermissionsId;
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, fi.ModuleId, fi.PermissionsId);
+                    fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Insert(fg.Security).PermissionsId;
                 }
             }
 
             fi.ForumSettingsKey = useGroupFeatures ? (fg != null ? fg.GroupSettingsKey : string.Empty) : (fi.ForumID > 0 ? $"F:{fi.ForumID}" : string.Empty);
 
-            if (fi.ForumID <= 0)
-            {
-                isNew = true;
-            }
-
             // TODO: When this method is updated to use DAL2 for update, uncomment Cacheable attribute on ForumInfo
             var forumId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
-            if (!useGroupFeatures && String.IsNullOrEmpty(fi.ForumSettingsKey))
+            if (!useGroupFeatures && string.IsNullOrEmpty(fi.ForumSettingsKey))
             {
                 fi.ForumSettingsKey = $"F:{forumId}";
+                this.Update(fi);
             }
 
-            if (fi.ForumSettingsKey.StartsWith("G:"))
+            if (isNew && !useGroupFeatures)
             {
-                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, $"F:{fi.ForumID}");
+                fi.FeatureSettings = fi.ForumGroup.FeatureSettings;
+                FeatureSettings.Save(fi.ModuleId, fi.ForumSettingsKey, fi.FeatureSettings);
+                this.Update(fi);
             }
 
-            if (isNew && useGroupFeatures == false)
+            // if now inheriting group settings, remove any previously-defined forum settings
+            if (fi.InheritSettings)
             {
-                var sKey = $"F:{fi.ForumID}";
-                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
-                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicTemplateId, "0");
-                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicFormId, "0");
-                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.ReplyFormId, "0");
-                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, "0");
-                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.AllowRSS, "false");
+                DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND GroupKey = @1", fi.ModuleId, $"F:{fi.ForumID}");
             }
 
             // Clear the caches
-            DataCache.ClearSettingsCache(fi.ModuleId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(fi.ModuleId);
             return forumId;
         }
 
-        public void Forums_Delete(int portalId, int forumId, int moduleId)
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public void Forums_Delete(int portalId, int forumId, int moduleId) => Forums_Delete(forumId: forumId, moduleId: moduleId);
+
+        internal void Forums_Delete(int forumId, int moduleId)
         {
-            // TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumInfo
-            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forums_Delete(portalId, moduleId, forumId);
+            var parentForumId = this.GetById(forumId, moduleId).ParentForumId;
+            new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController().DeleteForForum(forumId);
+            new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().DeleteForForum(forumId);
+            this.DeleteById(forumId);
+            DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}activeforums_Forums_RepairSort", forumId, parentForumId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(moduleId);
         }
 
         internal static void IterateForumsList(System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo,
@@ -409,7 +417,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
-            DataCache.SettingsCacheClear(moduleId, string.Format(CacheKeys.ForumListXml, moduleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(moduleId, string.Format(CacheKeys.ForumListXml, moduleId));
 
             return forumId;
         }
@@ -436,7 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "activeforums_SaveTopicNextPrev", forumId);
+                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev", forumId);
                 return true;
             }
             catch (Exception ex)
@@ -450,7 +458,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "activeforums_Forums_LastUpdates", forumId);
+                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}activeforums_Forums_LastUpdates", forumId);
                 return true;
             }
             catch (Exception ex)

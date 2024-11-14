@@ -73,6 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.trGroups.Visible = false;
                 this.trName.Visible = false;
                 this.trPrefix.Visible = false;
+                this.trEmail.Visible = false;
                 this.trActive.Visible = false;
                 this.trHidden.Visible = false;
                 this.reqGroups.Enabled = false;
@@ -372,14 +373,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "deleteforum":
                     {
                         var forumId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Delete(this.PortalId, this.ModuleId, forumId);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Delete(moduleId: this.ModuleId, forumId: forumId);
                         break;
                     }
 
                 case "deletegroup":
                     {
                         var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Delete(this.ModuleId, groupId);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Delete(moduleId: this.ModuleId, forumGroupId: groupId);
                         break;
                     }
             }

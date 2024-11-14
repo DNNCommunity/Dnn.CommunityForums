@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
@@ -27,19 +25,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class ForumTopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo>
     {
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetByForumIdTopicId(int forumId, int topicId)
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetByForumIdTopicId(int forumId, int topicId)
         {
             // this accommodates duplicates which may exist since currently no uniqueness applied in database
             return this.Find("WHERE ForumId = @0 AND TopicId = @1", forumId, topicId).FirstOrDefault();
         }
-        
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetForumForTopic(int topicId)
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetForumForTopic(int topicId)
         {
             return this.Find("WHERE TopicId = @0", topicId).FirstOrDefault();
         }
-        public int GetForumIdForTopic(int topicId)
+
+        internal int GetForumIdForTopic(int topicId)
         {
             return this.GetForumForTopic(topicId).ForumId;
+        }
+
+        internal void DeleteForForum(int forumId)
+        {
+            this.Delete("WHERE ForumId = @0", forumId);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Linq;
 
     public partial class admin_manageforums_home : ActiveAdminBase
     {

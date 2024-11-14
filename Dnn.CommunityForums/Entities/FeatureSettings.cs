@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             this.featureSettings = featureSettings;
         }
-        
+
         internal static void Save(int moduleId, string settingsKey, FeatureSettings settings)
         {
             foreach (DictionaryEntry setting in settings.featureSettings)

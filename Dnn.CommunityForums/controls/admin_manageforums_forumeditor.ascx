@@ -475,33 +475,28 @@ function amaf_toggleInheritFeatures() {
 	var trTmp = document.getElementById('<%=trTemplates.ClientID%>');
     var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
 	var divSet = document.getElementById('divSettings');
-    if (chk1.checked) {
-        trTmp.style.display = 'none';
-        if (divSet != null) {
+    if (chk1 && chk1.checked) {
+        if (trTmp) {
+            trTmp.style.display = 'none';
+        }
+        if (divSet) {
             divSet.style.display = 'none';
         };
 
-    } else {
-        forumSave();
-        trTmp.style.display = '';
-        if (forumid != '') {
-            divSet.style.display = '';
-        };
-    };
-    
-    if (chk2.checked) {
-        trTmp.style.display = 'none';
-        if (divSet != null) {
+    } else if (chk2 && chk2.checked) {
+		if (trTmp) {
+            trTmp.style.display = 'none';
+        }
+        if (divSet) {
             divSet.style.display = 'none';
         };
-
     } else {
 		forumSave();
 		trTmp.style.display = '';
-			if (forumid != '') {
-				divSet.style.display = '';
-			};
+		if (forumid !== '') {
+			divSet.style.display = '';
 		};
+	};
 };
 
 function amaf_toggleInheritSecurity() {
@@ -509,18 +504,12 @@ function amaf_toggleInheritSecurity() {
     var chk2 = document.getElementById('<%=chkInheritGroupSecurity.ClientID%>');
     var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
 	var divSec = document.getElementById('divSecurity');
-    if (chk1.checked) {
+    if (chk1 && chk1.checked) {
         if (divSec != null) {
             divSec.style.display = 'none';
         };
 
-    } else {
-        forumSave();
-        if (forumid != '') {
-            divSec.style.display = '';
-        };
-    };
-    if (chk2.checked) {
+    } else if (chk2 && chk2.checked) {
         if (divSec != null) {
             divSec.style.display = 'none';
         };
@@ -982,7 +971,15 @@ function afadmin_getProperties() {
 						<td>
 							<img src="~/DesktopModules/ActiveForums/images/spacer.gif" width="20" runat="server" /></td>
 					</tr>
-				</table>
+                    <tr id="trEmail" runat="server">
+                        <td>
+                            <img id="Img19" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:EmailAddress]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap">[RESX:EmailAddress]:</td>
+                        <td width="100%">
+                            <asp:TextBox ID="txtEmailAddress" runat="server" CssClass="amcptxtbx" /></td>
+                        <td></td>
+                    </tr>
+                </table>
 				<table id="trActive" runat="server" width="100%">
 					<tr>
 						<td>
@@ -1095,32 +1092,8 @@ function afadmin_getProperties() {
 							<asp:DropDownList ID="drpProfileDisplay" runat="server" CssClass="amcptxtbx" /></td>
 						<td></td>
 					</tr>
-					<tr>
-						<td>
-							<img id="Img19" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:EmailAddress]');" onmouseout="amHideTip(this);" /></td>
-						<td class="amcpbold" style="white-space: nowrap">[RESX:EmailAddress]:</td>
-						<td width="100%">
-							<asp:TextBox ID="txtEmailAddress" runat="server" CssClass="amcptxtbx" /></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:CreatePostCount]');" onmouseout="amHideTip(this);" /></td>
-						<td class="amcpbold" style="white-space: nowrap">[RESX:CreatePostCount]:</td>
-						<td width="100%">
-							<asp:TextBox ID="txtCreatePostCount" runat="server" CssClass="amcptxtbx" /></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:ReplyPostCount]');" onmouseout="amHideTip(this);" /></td>
-						<td class="amcpbold" style="white-space: nowrap">[RESX:ReplyPostCount]:</td>
-						<td width="100%">
-							<asp:TextBox ID="txtReplyPostCount" runat="server" CssClass="amcptxtbx" /></td>
-						<td></td>
-					</tr>
+                </table>
 
-				</table>
 
 				<asp:HiddenField ID="hidForumId" runat="server" />
 				<asp:HiddenField ID="hidSortOrder" runat="server" />
@@ -1273,8 +1246,24 @@ function afadmin_getProperties() {
 							<asp:RadioButton ID="rdLikesOff" GroupName="AllowLikes" runat="server" Checked="true" />
 						</td>
 					</tr>
+                    <tr>
+                        <td>
+                            <img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:CreatePostCount]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap">[RESX:CreatePostCount]:</td>
+                        <td width="100%">
+                            <asp:TextBox ID="txtCreatePostCount" runat="server" CssClass="amcptxtbx" /></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:ReplyPostCount]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap">[RESX:ReplyPostCount]:</td>
+                        <td width="100%">
+                            <asp:TextBox ID="txtReplyPostCount" runat="server" CssClass="amcptxtbx" /></td>
+                        <td></td>
+                    </tr>
 
-				</table>
+                </table>
 			</div>
 		</div>
 
