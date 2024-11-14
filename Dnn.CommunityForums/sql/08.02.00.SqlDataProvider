@@ -2196,3 +2196,62 @@ GO
 /* issue 1156 - end - deleting a forum should remove subscriptions */
 
 /* --------------------- */
+
+/* issue 1162 - begin - pass group setting key to Groups_Save */
+
+/* activeforums_Groups_Save -- pass group setting key to Groups_Save */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_Save]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_Save]
+@PortalId int,
+@ModuleId int,
+@ForumGroupId int,
+@GroupName nvarchar(150),
+@SortOrder int,
+@Active bit,
+@Hidden bit,
+@PermissionsId int,
+@PrefixURL nvarchar(50),
+@GroupSettingsKey varchar(255) = ''
+AS
+IF @PrefixURL <> '' AND @ForumGroupId >0
+	BEGIN
+		DECLARE @currURL nvarchar(1000)
+		SET @currURL = {databaseOwner}{objectQualifier}fn_activeforums_GetURL(@ModuleId,@ForumGroupId, -1,-1,-1,-1)
+		DECLARE @newURL nvarchar(1000)
+		SET @currURL = {databaseOwner}{objectQualifier}fn_activeforums_GetURL(@ModuleId,-1, -1,-1,-1,-1) + @PrefixURL + '/'
+	IF LTRIM(RTRIM(LOWER(@newURL))) <> LTRIM(RTRIM(LOWER(@currURL)))
+		BEGIN
+			exec {databaseOwner}{objectQualifier}activeforums_URL_Archive @PortalId,@ForumGroupId, -1, -1, @currURL
+		END
+	END
+IF EXISTS(Select ForumGroupId FROM {databaseOwner}{objectQualifier}activeforums_Groups WHERE ForumGroupId = @ForumGroupId AND ModuleId = @ModuleId)
+	UPDATE {databaseOwner}{objectQualifier}activeforums_Groups
+	SET GroupName=@GroupName, Active=@Active,Hidden=@Hidden, PermissionsId = @PermissionsId,PrefixURL = @PrefixURL
+	WHERE ForumGroupId = @ForumGroupId and ModuleId = @ModuleId
+ELSE
+	BEGIN
+		BEGIN
+			SELECT @SortOrder = Max(SortOrder) + 1 From {databaseOwner}{objectQualifier}activeforums_Groups WHERE ModuleID=@ModuleID
+				If @SortOrder IS NULL 
+					SET @SortOrder = 1
+			END
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Groups
+		(ModuleId, GroupName, SortOrder,GroupSettingsKey,Active,Hidden, PermissionsId,PrefixURL)
+		VALUES
+		(@ModuleId, @GroupName, @SortOrder,'',@Active,@Hidden, @PermissionsId,@PrefixURL)
+		SET @ForumGroupId = SCOPE_IDENTITY()
+        BEGIN
+			IF @GroupSettingsKey = ''
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Groups SET GroupSettingsKey = 'G:' + CAST(@ForumGroupId as varchar(50)) WHERE ForumGroupId = @ForumGroupId
+			ELSE
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Groups SET GroupSettingsKey = GroupSettingsKey WHERE ForumGroupId = @ForumGroupId
+		END
+	END
+SELECT @ForumGroupId
+GO
+
+/* issue 1162 - end - adds group setting key to Groups_Save */
+
+/* --------------------- */

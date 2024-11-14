@@ -91,6 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Groups
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract void Groups_Delete(int moduleID, int forumGroupID);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
@@ -101,7 +102,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public abstract void Groups_Move(int moduleId, int forumGroupId, int sortDirection);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract int Groups_Save(int portalId, int moduleId, int forumGroupId, string groupName, int sortOrder, bool active, bool hidden, int permissionsId, string prefixURL);
+
+        public abstract int Groups_Save(int portalId, int moduleId, int forumGroupId, string groupName, int sortOrder, bool active, bool hidden, int permissionsId, string prefixURL, string groupSettingsKey);
         #endregion
 
         #region Polls

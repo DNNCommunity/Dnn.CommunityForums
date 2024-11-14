@@ -242,7 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND GroupKey = @1", fi.ModuleId, $"F:{fi.ForumID}");
             }
-            
+
             // for new forum not using group features, set defaults
             if (isNew && useGroupFeatures == false)
             {
@@ -260,14 +260,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // Clear the caches
             DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(fi.ModuleId);
             return forumId;
-        }
+        } 
 
-        public void Forums_Delete(int portalId, int forumId, int moduleId)
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public void Forums_Delete(int portalId, int forumId, int moduleId) => Forums_Delete(forumId: forumId, moduleId: moduleId)
+
+        internal void Forums_Delete(int forumId, int moduleId)
         {
             var parentForumId = this.GetById(forumId, moduleId).ParentForumId;
             new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController().DeleteForForum(forumId);
             new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().DeleteForForum(forumId);
-            base.DeleteById(forumId);
+            this.DeleteById(forumId);
             DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}activeforums_Forums_RepairSort", forumId, parentForumId);
             DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(moduleId);
         }
