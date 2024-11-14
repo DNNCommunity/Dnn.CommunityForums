@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal partial class SubscriptionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>
     {
-        public void Subscribe(int portalId, int moduleId, int userId, int forumId)
+        internal void Subscribe(int portalId, int moduleId, int userId, int forumId)
         {
             if (!this.Subscribed(portalId, moduleId, userId, forumId))
             {
@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        public void Subscribe(int portalId, int moduleId, int userId, int forumId, int topicId)
+        internal void Subscribe(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
             if (!this.Subscribed(portalId, moduleId, userId, forumId, topicId))
             {
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        public void Unsubscribe(int portalId, int moduleId, int userId, int forumId)
+        internal void Unsubscribe(int portalId, int moduleId, int userId, int forumId)
         {
             if (this.Subscribed(portalId, moduleId, userId, forumId))
             {
@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        public void Unsubscribe(int portalId, int moduleId, int userId, int forumId, int topicId)
+        internal void Unsubscribe(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
             if (this.Subscribed(portalId, moduleId, userId, forumId, topicId))
             {
@@ -62,32 +62,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        public void DeleteForForum(int forumId)
+        internal void DeleteForForum(int forumId)
         {
             this.Delete("WHERE ForumId = @0", forumId);
         }
 
-        public void DeleteForUser(int portalId, int moduleId, int userId, int forumId)
+        internal void DeleteForUser(int portalId, int moduleId, int userId, int forumId)
         {
             this.Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId);
         }
 
-        public void DeleteForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
+        internal void DeleteForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
             this.Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId);
         }
 
-        public bool Subscribed(int portalId, int moduleId, int userId, int forumId)
+        internal bool Subscribed(int portalId, int moduleId, int userId, int forumId)
         {
             return this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId).Count() == 1;
         }
 
-        public bool Subscribed(int portalId, int moduleId, int userId, int forumId, int topicId)
+        internal bool Subscribed(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
             return this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId).Count() == 1;
         }
 
-        public void InsertForUser(int portalId, int moduleId, int userId, int forumId)
+        internal void InsertForUser(int portalId, int moduleId, int userId, int forumId)
         {
             this.Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
             {
@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             });
         }
 
-        public void InsertForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
+        internal void InsertForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
             this.Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
             {
@@ -113,22 +113,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             });
         }
 
-        public int Count(int portalId, int moduleId, int forumId)
+        internal int Count(int portalId, int moduleId, int forumId)
         {
             return this.Count("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = 0", portalId, moduleId, forumId);
         }
 
-        public int Count(int portalId, int moduleId, int forumId, int topicId)
+        internal int Count(int portalId, int moduleId, int forumId, int topicId)
         {
             return this.Count("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = @3", portalId, moduleId, forumId, topicId);
         }
 
-        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedForums(int portalId, int moduleId, int userId)
+        internal List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedForums(int portalId, int moduleId, int userId)
         {
             return this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId = 0", portalId, moduleId, userId).ToList();
         }
 
-        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedTopics(int portalId, int moduleId, int userId)
+        internal List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedTopics(int portalId, int moduleId, int userId)
         {
             return this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId <> 0", portalId, moduleId, userId).ToList();
         }
