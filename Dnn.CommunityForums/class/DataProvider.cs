@@ -67,6 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Forums
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract void Forums_Delete(int portalId, int moduleId, int forumId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
