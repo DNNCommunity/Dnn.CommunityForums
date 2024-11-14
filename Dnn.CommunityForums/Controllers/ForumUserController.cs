@@ -283,7 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 StringBuilder postsRemoved = new StringBuilder();
 
-                var contentForBannedUser = DataContext.Instance().ExecuteQuery<JournalContentForUser>(System.Data.CommandType.StoredProcedure, "activeforums_Content_GetJournalKeysForUser", bannedUser.UserID, moduleId).ToList();
+                var contentForBannedUser = DataContext.Instance().ExecuteQuery<JournalContentForUser>(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}activeforums_Content_GetJournalKeysForUser", bannedUser.UserID, moduleId).ToList();
                 string objectKey;
                 contentForBannedUser.ForEach(c =>
                 {

@@ -41,5 +41,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return this.GetForumForTopic(topicId).ForumId;
         }
+        public void DeleteForForum(int forumId)
+        {
+            this.Delete("WHERE ForumId = @0", forumId);
+        }
     }
 }
