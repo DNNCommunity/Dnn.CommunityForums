@@ -394,20 +394,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void BindForumGroups()
         {
-            using (IDataReader dr = DataProvider.Instance().Forums_List(this.PortalId, this.ModuleId, -1, -1, false))
+            int tmpGroupId = -1;
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+            foreach (var forum in forums)
             {
-                var dt = new DataTable("Forums");
-                dt.Load(dr);
-                dr.Close();
-
-                string tmpGroup = string.Empty;
-                foreach (DataRow row in dt.Rows)
+                if (tmpGroupId != forum.ForumGroupId)
                 {
-                    if (tmpGroup != row["ForumGroupId"].ToString())
-                    {
-                        this.drpForumGroupTemplate.Items.Add(new ListItem(row["GroupName"].ToString(), row["ForumGroupId"].ToString()));
-                        tmpGroup = row["ForumGroupId"].ToString();
-                    }
+                    this.drpForumGroupTemplate.Items.Add(new ListItem(forum.GroupName, forum.ForumGroupId.ToString()));
+                    tmpGroupId = forum.ForumGroupId;
                 }
             }
         }
