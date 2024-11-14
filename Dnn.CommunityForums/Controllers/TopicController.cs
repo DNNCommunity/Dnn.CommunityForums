@@ -140,9 +140,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
 
-            if (ti.Forum.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
+            if (ti.Forum.FeatureSettings.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, topicId, 0, ti.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.FeatureSettings.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, topicId, 0, ti.Author);
             }
 
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(ti.PortalId, ti.Forum.TabId, ti.Forum.ModuleId, ti.Forum.ForumGroupId, ti.ForumId, topicId, -1, ti.Content.AuthorId);
@@ -180,9 +180,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Move(ti.PortalId, ti.ModuleId, newForumId, topicId);
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
 
-            if (oldForum.ModMoveTemplateId > 0 & ti?.Author?.AuthorId > 0)
+            if (oldForum.FeatureSettings.ModMoveTemplateId > 0 & ti?.Author?.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(oldForum.ModMoveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, forumId: ti.Forum.ForumID, topicId: ti.TopicId, replyId: -1, author: ti.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(oldForum.FeatureSettings.ModMoveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, forumId: ti.Forum.ForumID, topicId: ti.TopicId, replyId: -1, author: ti.Author);
             }
 
             new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: topicId, replyId: -1, authorId: ti.Content.AuthorId, requestUrl: null);

@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Make sure that we can find the forum and that attachments are allowed
                 var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.ActiveModule.PortalID, this.ActiveModule.ModuleID, forumId, true, -1);
 
-                if (forum == null || !forum.AllowAttach)
+                if (forum == null || !forum.FeatureSettings.AllowAttach)
                 {
                     File.Delete(file.LocalFileName);
                     return request.CreateErrorResponse(HttpStatusCode.BadRequest, "Forum Not Found");
@@ -164,9 +164,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 var di = new DirectoryInfo(folder.PhysicalPath);
                 var fileSize = di.GetFiles(localFileName)[0].Length;
 
-                var maxAllowedFileSize = (long)forum.AttachMaxSize * 1024;
+                var maxAllowedFileSize = (long)forum.FeatureSettings.AttachMaxSize * 1024;
 
-                if ((forum.AttachMaxSize > 0) && (fileSize > maxAllowedFileSize))
+                if ((forum.FeatureSettings.AttachMaxSize > 0) && (fileSize > maxAllowedFileSize))
                 {
                     File.Delete(file.LocalFileName);
                     return request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "Exceeds Max File Size");
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Make sure we have an acceptable extension type.
                 // Check against both the forum configuration and the host configuration
                 var extension = Path.GetExtension(fileName).TextOrEmpty().Replace(".", string.Empty).ToLower();
-                var isForumAllowedExtension = string.IsNullOrWhiteSpace(forum.AttachTypeAllowed) || forum.AttachTypeAllowed.Replace(".", string.Empty).Split(',').Any(val => val == extension);
+                var isForumAllowedExtension = string.IsNullOrWhiteSpace(forum.FeatureSettings.AttachTypeAllowed) || forum.FeatureSettings.AttachTypeAllowed.Replace(".", string.Empty).Split(',').Any(val => val == extension);
                 if (string.IsNullOrEmpty(extension) || !isForumAllowedExtension || !Host.AllowedExtensionWhitelist.IsAllowedExtension(extension))
                 {
                     File.Delete(file.LocalFileName);
@@ -207,8 +207,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     Image img = Image.FromFile(file.LocalFileName);
                     Image nimg;
 
-                    var maxWidth = forum.MaxAttachWidth;
-                    var maxHeight = forum.MaxAttachHeight;
+                    var maxWidth = forum.FeatureSettings.MaxAttachWidth;
+                    var maxHeight = forum.FeatureSettings.MaxAttachHeight;
 
                     int imgWidth = img.Width;
                     int imgHeight = img.Height;
@@ -221,7 +221,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         case ".png":
                             {
                                 imf = ImageFormat.Png;
-                                if (!forum.ConvertingToJpegAllowed)
+                                if (!forum.FeatureSettings.ConvertingToJpegAllowed)
                                 {
                                     sExtOut = ".png";
                                     imfout = ImageFormat.Png;

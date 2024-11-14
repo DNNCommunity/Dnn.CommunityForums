@@ -706,7 +706,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             template = template.Replace("[AF:BUTTON:CANCEL]", "<am:imagebutton id=\"btnCancel\" Text=\"[RESX:Cancel]\" runat=\"server\" />");
             template = template.Replace("[AF:BUTTON:PREVIEW]", this.Request.IsAuthenticated ? "<am:imagebutton id=\"btnPreview\" PostBack=\"False\"  Text=\"[RESX:Preview]\" runat=\"server\" />" : string.Empty);
 
-            if (template.Contains("[AF:CONTROL:POSTICONS]") && this.ForumInfo.AllowPostIcon)
+            if (template.Contains("[AF:CONTROL:POSTICONS]") && this.ForumInfo.FeatureSettings.AllowPostIcon)
             {
                 template = template.Replace("[AF:UI:FIELDSET:POSTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:PostIcons]</legend><div class=\"affieldsetnote\">[RESX:PostIcons:Note]</div>");
                 template = template.Replace("[AF:CONTROL:POSTICONS]", "<af:posticons id=\"afposticons\" runat=\"server\" Theme=\"" + this.MainSettings.Theme + "\" />");
@@ -725,7 +725,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", string.Empty);
             }
 
-            if (template.Contains("[AF:CONTROL:EMOTICONS]") && this.ForumInfo.AllowEmoticons)
+            if (template.Contains("[AF:CONTROL:EMOTICONS]") && this.ForumInfo.FeatureSettings.AllowEmoticons)
             {
                 template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(this.ForumModuleId, this.Page.ResolveUrl(this.MainSettings.ThemeLocation), this.EditorType) + "</fieldset>");
             }
@@ -736,7 +736,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (template.Contains("[AF:CONTROL:UPLOAD]"))
             {
-                if (this.canAttach && this.ForumInfo.AllowAttach)
+                if (this.canAttach && this.ForumInfo.FeatureSettings.AllowAttach)
                 {
                     template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_attach.ascx\" tagprefix=\"af\" tagname=\"attach\" %>" + template;
                     template = template.Replace("[AF:UI:FIELDSET:ATTACH]", "<fieldset class=\"affieldset\"><legend>[RESX:Attachments]</legend><div class=\"affieldsetnote\">[RESX:Attacments:Note]</div>");
@@ -772,7 +772,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var sb = new StringBuilder();
             bool bHasOptions = false;
             sb.Append("<table cellpadding=\"2\" cellspacing=\"0\">");
-            if (this.ForumInfo.IsModerated && this.canModerate && this.ShowModOptions)
+            if (this.ForumInfo.FeatureSettings.IsModerated && this.canModerate && this.ShowModOptions)
             {
                 sb.Append("<tr><td>[RESX:Approved]:</td>");
                 sb.Append("<td><asp:checkbox id=\"chkApproved\" Text=\"[RESX:Approved:Note]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
@@ -872,16 +872,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // 'plhEditor.Controls.Clear()
             Unit editorWidth;
             Unit editorHeight;
-            if (Convert.ToString(this.ForumInfo.EditorWidth) != null)
+            if (Convert.ToString(this.ForumInfo.FeatureSettings.EditorWidth) != null)
             {
-                editorWidth = Convert.ToString(this.ForumInfo.EditorWidth).IndexOf("%", 0, StringComparison.Ordinal) + 1 > 0 ? Unit.Percentage(Convert.ToDouble(Convert.ToString(this.ForumInfo.EditorWidth).TrimEnd('%'))) : Unit.Parse(this.ForumInfo.EditorWidth);
+                editorWidth = Convert.ToString(this.ForumInfo.FeatureSettings.EditorWidth).IndexOf("%", 0, StringComparison.Ordinal) + 1 > 0 ? Unit.Percentage(Convert.ToDouble(Convert.ToString(this.ForumInfo.FeatureSettings.EditorWidth).TrimEnd('%'))) : Unit.Parse(this.ForumInfo.FeatureSettings.EditorWidth);
             }
             else
             {
                 editorWidth = Unit.Pixel(600);
             }
 
-            editorHeight = Convert.ToString(this.ForumInfo.EditorHeight) != null ? Unit.Parse(this.ForumInfo.EditorHeight) : Unit.Pixel(400);
+            editorHeight = Convert.ToString(this.ForumInfo.FeatureSettings.EditorHeight) != null ? Unit.Parse(this.ForumInfo.FeatureSettings.EditorHeight) : Unit.Pixel(400);
             switch (this.EditorType)
             {
                 case EditorTypes.TEXTBOX:

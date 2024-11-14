@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadForumGroup();
                     forum.LoadSubForums();
                     forum.LoadProperties();
-                    forum.LoadSettings();
+                    forum.LoadFeatureSettings();
                     forum.LoadPortalSettings();
                     forum.LoadMainSettings();
                     forum.LoadModuleInfo();
@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadForumGroup();
                     forum.LoadSubForums();
                     forum.LoadProperties();
-                    forum.LoadSettings();
+                    forum.LoadFeatureSettings();
                     forum.LoadPortalSettings();
                     forum.LoadMainSettings();
                     forum.LoadModuleInfo();
@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     forum.LoadForumGroup();
                     forum.LoadProperties();
-                    forum.LoadSettings();
+                    forum.LoadFeatureSettings();
                     forum.LoadPortalSettings();
                     forum.LoadMainSettings();
                     forum.LoadModuleInfo();
@@ -260,10 +260,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // Clear the caches
             DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(fi.ModuleId);
             return forumId;
-        } 
+        }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public void Forums_Delete(int portalId, int forumId, int moduleId) => Forums_Delete(forumId: forumId, moduleId: moduleId)
+        public void Forums_Delete(int portalId, int forumId, int moduleId) => Forums_Delete(forumId: forumId, moduleId: moduleId);
 
         internal void Forums_Delete(int forumId, int moduleId)
         {
