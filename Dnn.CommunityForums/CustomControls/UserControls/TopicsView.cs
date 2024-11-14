@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 this.AppRelativeVirtualPath = "~/";
-                int defaultTemplateId = this.ForumInfo.TopicsTemplateId;
+                int defaultTemplateId = this.ForumInfo.FeatureSettings.TopicsTemplateId;
                 if (this.DefaultTopicsViewTemplateId >= 0)
                 {
                     defaultTemplateId = this.DefaultTopicsViewTemplateId;

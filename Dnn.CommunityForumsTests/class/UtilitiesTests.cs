@@ -12,10 +12,10 @@
     using Moq;
     using NUnit.Framework;
 
-    [TestFixture()]
+    [TestFixture]
     public partial class UtilitiesTests
     {
-        [Test()]
+        [Test]
         [TestCase(-1, 0)]
         [TestCase(5, 4)]
         public void IsTrustedTest(int userTrustLevel, int userPostCount)
@@ -29,7 +29,7 @@
             Assert.That(isTrusted, Is.False);
         }
 
-        [Test()]
+        [Test]
         public void NullDateTest()
         {
             // Arrange
@@ -42,7 +42,7 @@
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
-        [Test()]
+        [Test]
         [TestCase("  this is a : messy string for a +url = 0 -", "this-is-a-messy-string-for-a-url-0")]
         public void CleanStringForUrlTest(string input, string expectedResult)
         {
@@ -54,7 +54,7 @@
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
-        [Test()]
+        [Test]
         [TestCase(0, 0, false, ExpectedResult = true)] // flood interval disables
         [TestCase(20, 25, false, ExpectedResult = true)]
         [TestCase(200, 25, true, ExpectedResult = true)] // user is an admin
@@ -68,8 +68,11 @@
             mockUser.Object.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
             mockUser.Object.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
             var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
-            mockForum.Object.ForumSettings = new System.Collections.Hashtable();
-            mockForum.Object.ForumSettings.Add(ForumSettingKeys.DefaultTrustLevel, TrustTypes.NotTrusted);
+            var featureSettings = new System.Collections.Hashtable
+            {
+                { ForumSettingKeys.DefaultTrustLevel, TrustTypes.NotTrusted }
+            };
+            mockForum.Object.FeatureSettings = new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(featureSettings);
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
             mockForum.Object.Security = mockPermissions.Object;
 
@@ -80,7 +83,7 @@
             return actualResult;
         }
 
-        [Test()]
+        [Test]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
         public void HtmlEncodeTestEmptyTag()
         {
@@ -92,7 +95,7 @@
             Assert.That(actualResult, Is.Empty);
         }
 
-        [Test()]
+        [Test]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
         public void HtmlEncodeTest()
         {
@@ -107,7 +110,7 @@
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
-        [Test()]
+        [Test]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
         public void HtmlDecodeTestEmptyTag()
         {
@@ -119,7 +122,7 @@
             Assert.That(actualResult, Is.Empty);
         }
 
-        [Test()]
+        [Test]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
         public void HtmlDecodeTest()
         {
@@ -134,7 +137,7 @@
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
-        [Test()]
+        [Test]
         [TestCase("", ExpectedResult = false)]
         [TestCase("<p>test<p>", ExpectedResult = true)]
         [TestCase("<p>test</p>", ExpectedResult = true)]
@@ -148,7 +151,7 @@
             // Assert
         }
 
-        [Test()]
+        [Test]
         public void CheckSqlStringTest()
         {
             // Arrange

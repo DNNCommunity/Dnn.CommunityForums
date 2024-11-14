@@ -404,14 +404,14 @@ using DotNetNuke.Services.Localization;
                     }
 
                     // If CreatePostCount is not set, no need to go further
-                    else if (this.ForumInfo.CreatePostCount <= 0)
+                    else if (this.ForumInfo.FeatureSettings.CreatePostCount <= 0)
                     {
                         this.canCreate = true;
                     }
 
                     else
                     {
-                        this.canCreate = this.ForumUser.PostCount >= this.ForumInfo.CreatePostCount;
+                        this.canCreate = this.ForumUser.PostCount >= this.ForumInfo.FeatureSettings.CreatePostCount;
                     }
                 }
 
@@ -444,14 +444,14 @@ using DotNetNuke.Services.Localization;
                     }
 
                     // If ReplyPostCount is not set, no need to go further
-                    else if (this.ForumInfo.ReplyPostCount <= 0)
+                    else if (this.ForumInfo.FeatureSettings.ReplyPostCount <= 0)
                     {
                         this.canReply = true;
                     }
 
                     else
                     {
-                        this.canReply = this.ForumUser.PostCount >= this.ForumInfo.ReplyPostCount;
+                        this.canReply = this.ForumUser.PostCount >= this.ForumInfo.FeatureSettings.ReplyPostCount;
                     }
                 }
 

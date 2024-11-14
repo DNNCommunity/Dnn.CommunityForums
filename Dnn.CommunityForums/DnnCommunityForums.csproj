@@ -1379,6 +1379,7 @@
     <Compile Include="Entities\AuthorInfo.cs" />
     <Compile Include="Entities\CategoryInfo.cs" />
     <Compile Include="Entities\ContentInfo.cs" />
+    <Compile Include="Entities\FeatureSettings.cs" />
     <Compile Include="Entities\ForumCollection.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
     <Compile Include="Entities\ForumInfo.cs" />

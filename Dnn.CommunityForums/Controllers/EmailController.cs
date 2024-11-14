@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url, HttpContext.Current.Request.RawUrl);
             var body = TemplateUtils.ParseEmailTemplate(ti.Template, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url, HttpContext.Current.Request.RawUrl);
             var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
-            var sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
+            var sFrom = fi.FeatureSettings.EmailAddress != string.Empty ? fi.FeatureSettings.EmailAddress : portalSettings.Email;
 
             // Send now
             var recipients = new List<string>
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 IEnumerable<TimeSpan> timeZoneOffsets = subs.Where(s => s.UserCulture == userCulture).Select(s => s.TimeZoneOffSet).Distinct();
                 foreach (TimeSpan timeZoneOffset in timeZoneOffsets)
                 {
-                    string sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
+                    string sFrom = fi.FeatureSettings.EmailAddress != string.Empty ? fi.FeatureSettings.EmailAddress : portalSettings.Email;
 
                     /* subject and body, etc. can now be different based on topic subscriber vs forum subscriber so process first for topic subscribers and then for forum subscribers;
                        in addition, user-specific tokens are now supported in email templates, so need to process template and send email uniquely for each user */

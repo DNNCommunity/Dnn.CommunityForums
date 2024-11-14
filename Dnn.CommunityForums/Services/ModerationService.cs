@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 authorId = topic.Content.AuthorId;
             }
 
-            if (fi.ModRejectTemplateId > 0 && authorId > 0)
+            if (fi.FeatureSettings.ModRejectTemplateId > 0 && authorId > 0)
             {
                 var uc = new DotNetNuke.Entities.Users.UserController();
                 var ui = uc.GetUser(this.PortalSettings.PortalId, authorId);
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         LastName = ui.LastName,
                         Username = ui.Username,
                     };
-                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalSettings.PortalId, this.moduleId, this.tabId, this.forumId, this.topicId, this.replyId, au);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.FeatureSettings.ModRejectTemplateId, this.PortalSettings.PortalId, this.moduleId, this.tabId, this.forumId, this.topicId, this.replyId, au);
                 }
             }
 
@@ -183,9 +183,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
                 rc.Reply_Delete(this.PortalSettings.PortalId, this.forumId, this.topicId, this.replyId, ms.DeleteBehavior);
-                if (fi.ModDeleteTemplateId > 0 && reply?.Content?.AuthorId > 0)
+                if (fi.FeatureSettings.ModDeleteTemplateId > 0 && reply?.Content?.AuthorId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, reply.Author);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.FeatureSettings.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, reply.Author);
                 }
             }
             else
@@ -196,9 +196,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
                 }
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(this.topicId);
-                if (fi.ModDeleteTemplateId > 0 && ti?.Content?.AuthorId > 0)
+                if (fi.FeatureSettings.ModDeleteTemplateId > 0 && ti?.Content?.AuthorId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, ti.Author);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.FeatureSettings.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, ti.Author);
                 }
             }
 

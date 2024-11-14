@@ -99,12 +99,12 @@ namespace DotNetNuke.Modules.ActiveForums
                                     if (ti != null)
                                     {
                                         new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(tmpTopicId);
-                                        if (fi?.ModDeleteTemplateId > 0 & ti?.Author?.AuthorId > 0)
+                                        if (fi.FeatureSettings?.ModDeleteTemplateId > 0 & ti?.Author?.AuthorId > 0)
                                         {
                                             try
                                             {
                                                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(
-                                                    fi.ModDeleteTemplateId,
+                                                    fi.FeatureSettings.ModDeleteTemplateId,
                                                     this.PortalId,
                                                     this.ForumModuleId,
                                                     this.TabId,
@@ -126,12 +126,12 @@ namespace DotNetNuke.Modules.ActiveForums
                                     if (ri != null)
                                     {
                                         new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Delete(this.PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);
-                                        if (fi?.ModDeleteTemplateId > 0 & ri?.Author?.AuthorId > 0)
+                                        if (fi.FeatureSettings?.ModDeleteTemplateId > 0 & ri?.Author?.AuthorId > 0)
                                         {
                                             try
                                             {
                                                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(
-                                                    fi.ModDeleteTemplateId,
+                                                    fi.FeatureSettings.ModDeleteTemplateId,
                                                     this.PortalId,
                                                     this.ForumModuleId,
                                                     this.TabId,
@@ -162,7 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             ModController mc = new ModController();
                             mc.Mod_Reject(this.PortalId, this.ForumModuleId, this.UserId, tmpForumId, tmpTopicId, tmpReplyId);
                             DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
-                            if (fi.ModRejectTemplateId > 0 & tmpAuthorId > 0)
+                            if (fi.FeatureSettings.ModRejectTemplateId > 0 & tmpAuthorId > 0)
                             {
                                 DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, tmpAuthorId);
                                 if (ui != null)
@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     au.FirstName = ui.FirstName;
                                     au.LastName = ui.LastName;
                                     au.Username = ui.Username;
-                                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, au);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.FeatureSettings.ModRejectTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, au);
                                 }
                             }
 
@@ -196,9 +196,9 @@ namespace DotNetNuke.Modules.ActiveForums
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
 
                                     // TODO: Add Audit log for who approved topic
-                                    if (fi.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
+                                    if (fi.FeatureSettings.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
                                     {
-                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, ti.Author);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.FeatureSettings.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, ti.Author);
                                     }
 
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
@@ -215,9 +215,9 @@ namespace DotNetNuke.Modules.ActiveForums
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
 
                                     // TODO: Add Audit log for who approved topic
-                                    if (fi.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
+                                    if (fi.FeatureSettings.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
                                     {
-                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, ri.Author);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.FeatureSettings.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, ri.Author);
                                     }
 
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
