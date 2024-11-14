@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Linq;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System.Collections;
@@ -49,21 +51,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forumGroupInfo.PermissionsId == -1)
             {
                 forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), forumGroupInfo.ModuleId).PermissionsId;
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, forumGroupInfo.ModuleId, forumGroupInfo.PermissionsId);
+            }
+
+            if (string.IsNullOrEmpty(forumGroupInfo.GroupSettingsKey))
+            {
+                forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
             }
 
             // TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
-            forumGroupInfo.ForumGroupId = DataProvider.Instance().Groups_Save(portalId, forumGroupInfo.ModuleId, forumGroupInfo.ForumGroupId, forumGroupInfo.GroupName, forumGroupInfo.SortOrder, forumGroupInfo.Active, forumGroupInfo.Hidden, forumGroupInfo.PermissionsId, forumGroupInfo.PrefixURL);
+            forumGroupInfo.ForumGroupId = DataProvider.Instance().Groups_Save(portalId, forumGroupInfo.ModuleId, forumGroupInfo.ForumGroupId, forumGroupInfo.GroupName, forumGroupInfo.SortOrder, forumGroupInfo.Active, forumGroupInfo.Hidden, forumGroupInfo.PermissionsId, forumGroupInfo.PrefixURL, forumGroupInfo.GroupSettingsKey);
 
             if (isNew)
             {
-                forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, forumGroupInfo.ModuleId, forumGroupInfo.PermissionsId);
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicsTemplateId, "0");
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicTemplateId, "0");
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicFormId, "0");
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.ReplyFormId, "0");
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.QuickReplyFormId, "0");
-                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.AllowRSS, "false");
+                var tc = new TemplateController();
+                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicsTemplateId, tc.Template_Get(templateName: "TopicsView", portalId: portalId, moduleId: forumGroupInfo.ModuleId).TemplateId.ToString());
+                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicTemplateId, tc.Template_Get(templateName: "TopicView", portalId: portalId, moduleId: forumGroupInfo.ModuleId).TemplateId.ToString());
+                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicFormId, tc.Template_Get(templateName: "TopicEditor", portalId: portalId, moduleId: forumGroupInfo.ModuleId).TemplateId.ToString());
+                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.ReplyFormId, tc.Template_Get(templateName: "ReplyEditor", portalId: portalId, moduleId: forumGroupInfo.ModuleId).TemplateId.ToString());
+                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.QuickReplyFormId, tc.Template_Get(templateName: "QuickReply", portalId: portalId, moduleId: forumGroupInfo.ModuleId).TemplateId.ToString());
+                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.ProfileTemplateId, tc.Template_Get(templateName: "ProfileInfo", portalId: portalId, moduleId: forumGroupInfo.ModuleId).TemplateId.ToString());
+                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.AllowRSS, "true");
             }
 
             DataCache.ClearSettingsCache(forumGroupInfo.ModuleId);
@@ -72,8 +80,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void Groups_Delete(int moduleId, int forumGroupId)
         {
-            //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
-            DataProvider.Instance().Groups_Delete(moduleID: moduleId, forumGroupID: forumGroupId);
+            var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
+            foreach (var forum in fc.GetForums(moduleId: moduleId).Where(f => f.ForumGroupId == forumGroupId))
+            {
+                fc.Forums_Delete(forum.ForumID, moduleId);
+            }
+            this.DeleteById(forumGroupId);
             DataCache.ClearSettingsCache(moduleId);
         }
     }

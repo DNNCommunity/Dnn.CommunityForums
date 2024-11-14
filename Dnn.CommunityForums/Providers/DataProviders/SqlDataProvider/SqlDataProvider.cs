@@ -217,6 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
         #region Groups
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override void Groups_Delete(int ModuleID, int ForumGroupID)
         {
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Groups_Delete", ModuleID, ForumGroupID);
@@ -239,9 +240,15 @@ namespace DotNetNuke.Modules.ActiveForums
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Groups_MoveGroup", ModuleId, ForumGroupId, SortDirection);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override int Groups_Save(int PortalId, int ModuleId, int ForumGroupId, string GroupName, int SortOrder, bool Active, bool Hidden, int PermissionsId, string PrefixURL)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Groups_Save", PortalId, ModuleId, ForumGroupId, GroupName, SortOrder, Active, Hidden, PermissionsId, PrefixURL));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Groups_Save", PortalId, ModuleId, ForumGroupId, GroupName, SortOrder, Active, Hidden, PermissionsId, PrefixURL, $"G:{ForumGroupId}"));
+        }
+
+        public override int Groups_Save(int PortalId, int ModuleId, int ForumGroupId, string GroupName, int SortOrder, bool Active, bool Hidden, int PermissionsId, string PrefixURL, string GroupSettingsKey)
+        {
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Groups_Save", PortalId, ModuleId, ForumGroupId, GroupName, SortOrder, Active, Hidden, PermissionsId, PrefixURL, GroupSettingsKey));
         }
 
         #endregion

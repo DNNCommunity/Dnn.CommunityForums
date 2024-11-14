@@ -338,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "deleteforum":
                     {
                         var forumId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Delete(portalId: this.PortalId, moduleId: this.ModuleId, forumId: forumId);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Delete(moduleId: this.ModuleId, forumId: forumId);
                         break;
                     }
 
