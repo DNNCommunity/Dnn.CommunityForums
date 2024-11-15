@@ -49,16 +49,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public int Groups_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo, bool isNew, bool useDefaultFeatures, bool useDefaultSecurity)
         {
-            var copySettings = false;
+            var oldPermissionsId = -1;
+            var copyDownDefaultSettings = false;
             var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
             if (useDefaultSecurity)
             {
-                var oldPermissionsId = forumGroupInfo.PermissionsId;
-                forumGroupInfo.PermissionsId = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId;
-                foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.PermissionsId == oldPermissionsId))
+                if (isNew)
                 {
-                    forum.PermissionsId = forumGroupInfo.PermissionsId;
-                    fc.Update(forum);
+                    forumGroupInfo.PermissionsId = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId;
+                }
+                else
+                {
+                    if (!forumGroupInfo.InheritSecurity)
+                    {
+                        forumGroupInfo.PermissionsId = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId;
+                        foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.PermissionsId == oldPermissionsId))
+                        {
+                            forum.PermissionsId = forumGroupInfo.PermissionsId;
+                            fc.Update(forum);
+                        }
+
+                        oldPermissionsId = forumGroupInfo.PermissionsId;
+                    }
                 }
             }
             else
@@ -68,30 +80,52 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     // set forum group permissions to use module default permissions as starting point
                     forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Insert(new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId: SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId, moduleId: forumGroupInfo.ModuleId)).PermissionsId;
 
-                    // reset any forum permissions previously mapped to the module default to map to new permissions id
-                    foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.PermissionsId == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId))
+                    if (!isNew)
                     {
-                        forum.PermissionsId = forumGroupInfo.PermissionsId;
-                        fc.Update(forum);
+                        // reset any forum permissions previously mapped to the module default to map to new permissions id
+                        foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.PermissionsId == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId))
+                        {
+                            forum.PermissionsId = forumGroupInfo.PermissionsId;
+                            fc.Update(forum);
+                        }
                     }
                 }
             }
 
-            if (!isNew && useDefaultFeatures)
+            // if not using default features and new group or existing group previously using inherited settings, copy down default settings as a starting point
+            if (!useDefaultFeatures && (isNew || forumGroupInfo.InheritSettings))
             {
-                var oldSettingsKey = forumGroupInfo.GroupSettingsKey;
-                forumGroupInfo.GroupSettingsKey = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey;
-                foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.ForumSettingsKey == oldSettingsKey))
+                copyDownDefaultSettings = true;
+            }
+
+            if (useDefaultFeatures)
+            {
+                if (isNew)
                 {
-                    forum.ForumSettingsKey = forumGroupInfo.GroupSettingsKey;
-                    fc.Update(forum);
+                    forumGroupInfo.GroupSettingsKey = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey;
+                }
+                else
+                {
+                    var oldSettingsKey = forumGroupInfo.GroupSettingsKey;
+                    forumGroupInfo.GroupSettingsKey = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey;
+                    foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.ForumSettingsKey == oldSettingsKey))
+                    {
+                        forum.ForumSettingsKey = forumGroupInfo.GroupSettingsKey;
+                        fc.Update(forum);
+                    }
                 }
             }
             else
             {
-                if (isNew || forumGroupInfo.InheritSettings) /* if new forum group not using default module settings or previously using module settings and now switching to group settings */
+                if (!isNew || forumGroupInfo.InheritSettings)
                 {
-                    copySettings = true;
+                    // reset any forum settings keys previously mapped to the module default to map to new settings key
+                    forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
+                    foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.ForumSettingsKey == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey))
+                    {
+                        forum.ForumSettingsKey = forumGroupInfo.GroupSettingsKey;
+                        fc.Update(forum);
+                    }
                 }
             }
 
@@ -103,19 +137,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 this.Update(forumGroupInfo);
             }
 
-            if (copySettings)
+            // if new group and not using default features, copy default features to group features as starting point
+            if (copyDownDefaultSettings)
             {
-                // set group settings to use module settings as starting point
                 forumGroupInfo.FeatureSettings = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).ForumFeatureSettings;
                 FeatureSettings.Save(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, forumGroupInfo.FeatureSettings);
                 this.Update(forumGroupInfo);
+            }
 
-                // reset any forum settings keys previously mapped to the module default to map to new permissions id
-                foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.ForumSettingsKey == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey))
-                {
-                    forum.ForumSettingsKey = forumGroupInfo.GroupSettingsKey;
-                    fc.Update(forum);
-                }
+            if (oldPermissionsId != -1)
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveIfUnused(permissionId: oldPermissionsId, moduleId: forumGroupInfo.ModuleId);
             }
 
             if (useDefaultFeatures) /* if now using default module settings, remove group settings */

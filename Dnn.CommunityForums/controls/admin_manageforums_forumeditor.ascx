@@ -54,10 +54,16 @@
         } else {
             purl = '';
         }
+
         var inheritModuleSecurity = document.getElementById("<%=chkInheritModuleSecurity.ClientID%>");
         var inheritModuleFeatures = document.getElementById("<%=chkInheritModuleFeatures.ClientID%>");
         var inheritGroupSecurity = document.getElementById("<%=chkInheritGroupSecurity.ClientID%>");
         var inheritGroupFeatures = document.getElementById("<%=chkInheritGroupFeatures.ClientID%>");
+
+        var updatingGroup = (inheritModuleFeatures);
+        var updatingForum = (inheritGroupFeatures);
+        var updatingDefaults = (!updatingGroup && !updatingForum);
+
         var forumId = document.getElementById("<%=hidForumId.ClientID%>");
         if (forumId.value === '') {
             forumId = 0;
@@ -66,14 +72,17 @@
             forumId = forumId.value;
             bSaveSettings = true;
         };
-        if (fgp) {
+        if (updatingForum) {
             fgp = fgp.options[fgp.selectedIndex].value;
             currAction = 'forumsave';
-        } else if (inheritModuleSecurity || inheritGroupFeatures) {
+        } else if (updatingGroup) {
             fgp = 0;
             currAction = 'groupsave';
+        } else if (updatingDefaults) {
+            fgp = 0;
+            currAction = 'modulesave';
         };
-        if (inheritModuleFeatures != null) {
+        if (inheritModuleFeatures) {
             inheritModuleFeatures = inheritModuleFeatures.checked;
             if (inheritModuleFeatures === true) {
                 bSaveSettings = true;
@@ -82,7 +91,7 @@
             inheritModuleFeatures = false;
             //bSaveSettings = true;
         };
-        if (inheritGroupFeatures != null) {
+        if (inheritGroupFeatures) {
             inheritGroupFeatures = inheritGroupFeatures.checked;
             if (inheritGroupFeatures === true) {
                 bSaveSettings = true;
@@ -92,7 +101,7 @@
             //bSaveSettings = true;
         };
 
-        if (inheritModuleSecurity != null) {
+        if (inheritModuleSecurity) {
             inheritModuleSecurity = inheritModuleSecurity.checked;
             if (inheritModuleSecurity === true) {
                 bSaveSettings = true;
@@ -101,7 +110,7 @@
             inheritModuleSecurity = false;
             //bSaveSettings = true;
         };
-        if (inheritGroupSecurity != null) {
+        if (inheritGroupSecurity) {
             inheritGroupSecurity = inheritGroupSecurity.checked;
             if (inheritGroupSecurity === true) {
                 bSaveSettings = true;
@@ -110,95 +119,90 @@
             inheritGroupSecurity = false;
             //bSaveSettings = true;
         };
-        if (currAction === 'groupsave' || (inheritGroupFeatures === false) || (inheritGroupSecurity === false)) {
+        if ((currAction === 'modulesave') || 
+            (currAction === 'groupsave' && ((inheritModuleFeatures === false) || (inheritModuleSecurity === false))) ||
+            (currAction === 'forumsave' && ((inheritGroupFeatures === false) || (inheritGroupSecurity === false)))
+            ) {
             bSaveSettings = true;
         } else {
             bSaveSettings = false;
         };
         if (currAction === 'groupsave') {
             <%=cbEditorAction.ClientID%>.Callback(currAction, forumId, fgp, fname, fdesc, a, h, so, inheritModuleFeatures, inheritModuleSecurity, purl);
-        } else {
+        } else if (currAction === 'forumsave')  {
             <%=cbEditorAction.ClientID%>.Callback(currAction, forumId, fgp, fname, fdesc, a, h, so, inheritGroupFeatures, inheritGroupSecurity, purl);
+        } else {
+         <%=cbEditorAction.ClientID%>.Callback('modulesave', forumId, fgp, fname, fdesc, a, h, so, inheritGroupFeatures, inheritGroupSecurity, purl);
         };
     };
 
     function cbEditorAction_complete(){
 
-	var forumId = document.getElementById("<%=hidEditorResult.ClientID%>").value;
-	document.getElementById("<%=hidForumId.ClientID%>").value = forumId;
+		var forumId = document.getElementById("<%=hidEditorResult.ClientID%>").value;
+		document.getElementById("<%=hidForumId.ClientID%>").value = forumId;
 
-	switch (currAction){
-        case 'modulesettingssave':
-            af_setCurrObj(moduleId,'M');
-            break;
-		case 'forumsave':
-			af_setCurrObj(forumId,'F');
-			break;
-		case 'groupsave':
-			af_setCurrObj(forumId,'G');
-			break;       
-		case 'delforum':
-			bSaveSettings = false;
-			af_setCurrObj(0,'F');
-			break;
-		case 'delgroup':
-			bSaveSettings = false;
-			af_setCurrObj(0,'G');
-			break;   
+		switch (currAction){
+			case 'modulesave':
+				af_setCurrObj(forumId,'M');
+				break;
+			case 'forumsave':
+				af_setCurrObj(forumId,'F');
+				break;
+			case 'groupsave':
+				af_setCurrObj(forumId,'G');
+				break;       
+			case 'delforum':
+				bSaveSettings = false;
+				af_setCurrObj(0,'F');
+				break;
+			case 'delgroup':
+				bSaveSettings = false;
+				af_setCurrObj(0,'G');
+				break;   
 
-	}
-	if(bSaveSettings == true){
-		bSaveSettings = false;
-		saveSettings();
-	}else{
-		var fgpid = document.getElementById("<%=drpGroups.ClientID%>");
-		if (fgpid){
-			fgpid = fgpid.options[fgpid.selectedIndex].value;
-			if (fgpid.indexOf('GROUP') >= 0){
-				fgpid = fgpid.replace(/GROUP/,'');
-			};
+		}
+		if(bSaveSettings === true){
+			bSaveSettings = false;
+			saveSettings();
 		}else{
-			fgpid = forumId;
-			forumId = -1;
+			window.top.af_refreshView();
 		};
-		window.top.af_refreshView(fgpid,forumId);
-	};
-	af_clearLoad();
-	switch (currAction){
-		case 'modulesetingssave':
-			currAction = '';
-			amcp.UI.ShowSuccess('[RESX:Actions:DefaultsSaved]');
-            break;
-        case 'forumsave':
-            currAction = '';
-            amcp.UI.ShowSuccess('[RESX:Actions:ForumSaved]');
-            break;
-		case 'groupsave':
-			currAction = '';
-			amcp.UI.ShowSuccess('[RESX:Actions:GroupSaved]');
-			break;
-		case 'delforum':
-			currAction = '';
-			amcp.UI.ShowSuccess('[RESX:Actions:ForumDeleted]');
-			window.location.href = window.location.href;
-			break;
-		case 'delgroup':
-			currAction = '';
-			amcp.UI.ShowSuccess('[RESX:Actions:GroupDeleted]');
-			window.location.href = window.location.href;
-			break;
-	    };
+		af_clearLoad();
+		switch (currAction){
+			case 'modulesave':
+				currAction = '';
+				amcp.UI.ShowSuccess('[RESX:Actions:DefaultsSaved]');
+				break;
+			case 'forumsave':
+				currAction = '';
+				amcp.UI.ShowSuccess('[RESX:Actions:ForumSaved]');
+				break;
+			case 'groupsave':
+				currAction = '';
+				amcp.UI.ShowSuccess('[RESX:Actions:GroupSaved]');
+				break;
+			case 'delforum':
+				currAction = '';
+				amcp.UI.ShowSuccess('[RESX:Actions:ForumDeleted]');
+				window.location.href = window.location.href;
+				break;
+			case 'delgroup':
+				currAction = '';
+				amcp.UI.ShowSuccess('[RESX:Actions:GroupDeleted]');
+				window.location.href = window.location.href;
+				break;
+			};
 	
-    };
+		};
 
 function saveSettings(){
-	var settingsAction = "forumsettingssave";
+	var settingsAction = "modulesettingssave";
     var inheritModuleFeatures = document.getElementById("<%=chkInheritModuleFeatures.ClientID%>");
     var inheritGroupFeatures = document.getElementById("<%=chkInheritGroupFeatures.ClientID%>");
     if (inheritGroupFeatures != null){
-		settingsAction = "groupsettingssave";
-	}else if (inheritModuleFeatures != null){
-        settingsAction = "modulesettingssave";
+        settingsAction = "forumsettingssave";
+	}else if (inheritModuleFeatures != null) {
+        settingsAction = "groupsettingssave";
     };
 
 
@@ -238,9 +242,24 @@ function saveSettings(){
     } else {
         var ProfileTemplateId = 0;
     };
-	var EmailAddress = document.getElementById("<%=txtEmailAddress.ClientID%>").value;
-    var CreatePostCount = document.getElementById("<%=txtCreatePostCount.ClientID%>").value;
-    var ReplyPostCount = document.getElementById("<%=txtReplyPostCount.ClientID%>").value;
+	var EmailAddress = document.getElementById("<%=txtEmailAddress.ClientID%>");
+    if (EmailAddress) {
+        EmailAddress = EmailAddress.value;
+    } else {
+        EmailAddress = '';
+    };
+    var CreatePostCount = document.getElementById("<%=txtCreatePostCount.ClientID%>");
+    if (CreatePostCount) {
+        CreatePostCount = CreatePostCount.value;
+    } else {
+        CreatePostCount = '';
+    };
+    var ReplyPostCount = document.getElementById("<%=txtReplyPostCount.ClientID%>");
+    if (ReplyPostCount) {
+        ReplyPostCount = ReplyPostCount.value;
+    } else {
+        ReplyPostCount = '';
+    };
 	var UseFilter = document.getElementById("<%=rdFilterOn.ClientID%>").checked;
 	var AllowPostIcon = document.getElementById("<%=rdPostIconOn.ClientID%>").checked;
 	var AllowEmoticons = document.getElementById("<%=rdEmotOn.ClientID%>").checked;
@@ -1092,6 +1111,22 @@ function afadmin_getProperties() {
 							<asp:DropDownList ID="drpProfileDisplay" runat="server" CssClass="amcptxtbx" /></td>
 						<td></td>
 					</tr>
+                    <tr>
+                        <td>
+                            <img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:CreatePostCount]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap">[RESX:CreatePostCount]:</td>
+                        <td width="100%">
+                            <asp:TextBox ID="txtCreatePostCount" runat="server" CssClass="amcptxtbx" /></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:ReplyPostCount]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap">[RESX:ReplyPostCount]:</td>
+                        <td width="100%">
+                            <asp:TextBox ID="txtReplyPostCount" runat="server" CssClass="amcptxtbx" /></td>
+                        <td></td>
+                    </tr>
                 </table>
 
 
@@ -1246,23 +1281,6 @@ function afadmin_getProperties() {
 							<asp:RadioButton ID="rdLikesOff" GroupName="AllowLikes" runat="server" Checked="true" />
 						</td>
 					</tr>
-                    <tr>
-                        <td>
-                            <img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:CreatePostCount]');" onmouseout="amHideTip(this);" /></td>
-                        <td class="amcpbold" style="white-space: nowrap">[RESX:CreatePostCount]:</td>
-                        <td width="100%">
-                            <asp:TextBox ID="txtCreatePostCount" runat="server" CssClass="amcptxtbx" /></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:ReplyPostCount]');" onmouseout="amHideTip(this);" /></td>
-                        <td class="amcpbold" style="white-space: nowrap">[RESX:ReplyPostCount]:</td>
-                        <td width="100%">
-                            <asp:TextBox ID="txtReplyPostCount" runat="server" CssClass="amcptxtbx" /></td>
-                        <td></td>
-                    </tr>
-
                 </table>
 			</div>
 		</div>

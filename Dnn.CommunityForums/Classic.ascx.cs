@@ -64,7 +64,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             this.SetupPage();
 
+#if DEBUG
             //ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
+            new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveUnused(this.ForumModuleId);
+#endif
+
             try
             {
                 if (this.MainSettings != null && this.MainSettings.InstallDate > Utilities.NullDate())

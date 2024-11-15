@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             foreach (DictionaryEntry setting in settings.featureSettings)
             {
-                Settings.SaveSetting(moduleId, settingsKey, Enum.GetName(typeof(FeatureSettings), setting.Key), setting.Value.ToString());
+                Settings.SaveSetting(moduleId, settingsKey, setting.Key.ToString(), setting.Value.ToString());
             }
         }
 

@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public string imgOn;
         public string imgOff;
-        public string editorType = "G"; // "F"
+        public string editorType = string.Empty; //"G"; // "F"
         public int recordId = 0;
         protected Controls.admin_securitygrid ctlSecurityGrid = new Controls.admin_securitygrid();
 
@@ -84,6 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.trInheritGroupSecurity.Visible = false;
                 this.btnDelete.ClientSideScript = string.Empty;
                 this.btnDelete.Enabled = false;
+                this.btnDelete.Visible = false;
             }
             else if (this.editorType == "G")
             {
@@ -234,6 +235,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             switch (e.Parameters[0].ToLowerInvariant())
             {
+                case "modulesave":
+                    {
+                        this.recordId = this.ModuleId;
+                        this.hidEditorResult.Value = this.recordId.ToString();
+                        break;
+                    }
+
                 case "forumsave":
                     {
                         var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
@@ -322,25 +330,14 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
 
-                        if (inheritFeatures)
-                        {
-                            gi.GroupSettingsKey = "M:" + this.ModuleId;
-                        }
-                        else
-                        {
-                            gi.GroupSettingsKey = "G:" + groupId;
-                        }
-
-                        groupId = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Save(this.PortalId, gi, bIsNew, inheritFeatures, inheritSecurity);
-                        this.recordId = groupId;
-                        this.hidEditorResult.Value = groupId.ToString();
-
+                        this.recordId = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Save(this.PortalId, gi, bIsNew, inheritFeatures, inheritSecurity);
+                        this.hidEditorResult.Value = this.recordId.ToString();
                         break;
                     }
 
                 case "modulesettingssave":
                     {
-                        var sKey = "M:" + this.ModuleId;
+                        var sKey = $"M:{this.ModuleId}";
                         this.SaveSettings(sKey, e.Parameters);
 
                         this.hidEditorResult.Value = this.ModuleId.ToString();
@@ -351,7 +348,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "forumsettingssave":
                     {
                         var forumId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        var sKey = "F:" + forumId;
+                        var sKey = $"F:{forumId}";
                         this.SaveSettings(sKey, e.Parameters);
 
                         this.hidEditorResult.Value = forumId.ToString();
@@ -361,11 +358,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 case "groupsettingssave":
                     {
-                        var forumId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        var sKey = "G:" + forumId;
+                        var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
+                        var sKey = $"G:{groupId}";
                         this.SaveSettings(sKey, e.Parameters);
 
-                        this.hidEditorResult.Value = forumId.ToString();
+                        this.hidEditorResult.Value = groupId.ToString();
 
                         break;
                     }
@@ -476,7 +473,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             Utilities.SelectListItemByValue(this.drpGroups, groupValue);
 
-            if (fi.ForumSettingsKey == "G:" + fi.ForumGroupId)
+            if (fi.ForumSettingsKey == $"G:{fi.ForumGroupId}")
             {
                 this.chkInheritGroupFeatures.Checked = true;
                 this.trTemplates.Attributes.Add("style", "display:none;");
@@ -518,7 +515,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.txtPrefixURL.Text = gi.PrefixURL;
             this.chkInheritModuleSecurity.Checked = gi.InheritSecurity;
 
-            if (gi.GroupSettingsKey == "M:" + this.ModuleId)
+            if (gi.GroupSettingsKey == $"M:{this.ModuleId}")
             {
                 this.chkInheritModuleFeatures.Checked = true;
                 this.trTemplates.Attributes.Add("style", "display:none;");

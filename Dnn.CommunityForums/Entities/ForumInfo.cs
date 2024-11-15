@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string LastPostSubject
         {
-            get => this.lastPostSubject ?? (this.lastPostSubject = this.LastPost.Topic.Subject);
+            get => this.lastPostSubject ?? (this.lastPostSubject = this.LastPost?.Topic?.Subject);
             set => this.lastPostSubject = value;
         }
 
@@ -126,7 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int LastPostUserID { get; set; }
 
         [ColumnName("LastPostDate")]
-        public DateTime LastPostDateTime { get; set; }
+        public DateTime? LastPostDateTime { get; set; }
 
         public int PermissionsId { get; set; }
 
@@ -706,7 +706,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return this.LastPostID < 1
                         ? string.Empty
                         : PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime(
-                                (DateTime?)this.LastPostDateTime,
+                                this.LastPostDateTime,
                                 formatProvider,
                                 accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)),
                             format);

@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     {
         public SubscriptionInfo() { }
 
-        public SubscriptionInfo(int id, int portalId, int moduleId, int forumId, int topicId, int mode, int userId, string forumGroupName, string forumName, string subject, DateTime lastPostDate, bool subscribed)
+        public SubscriptionInfo(int id, int portalId, int moduleId, int forumId, int topicId, int mode, int userId, string forumGroupName, string forumName, string subject, DateTime? lastPostDate, bool subscribed)
         {
             this.Id = id;
             this.PortalId = portalId;
@@ -72,43 +72,43 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int UserId { get; set; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public bool TopicSubscriber { get => this.TopicId > 0; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public bool ForumSubscriber { get => this.ForumId > 0 && this.TopicId == 0; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo User => this.user ?? (this.user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(this.PortalId, this.UserId));
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum => this.forumInfo ?? (this.forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId));
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this.topicInfo ?? (this.topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId));
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string Email { get => this.email ?? (this.email = this.User?.Email); set => this.email = value; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public TimeSpan TimeZoneOffSet { get => Utilities.GetTimeZoneOffsetForUser(this.PortalId, this.UserId); }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public CultureInfo UserCulture { get => Utilities.GetCultureInfoForUser(this.PortalId, this.UserId); }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string ForumGroupName { get => this.forumGroupName ?? (this.forumGroupName = this.Forum.GroupName); set => this.forumGroupName = value; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string ForumName { get => this.forumName ?? (this.forumName = this.Forum.ForumName); set => this.forumName = value; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public string Subject { get => this.subject ?? (this.subject = string.IsNullOrEmpty(this.Topic?.Content?.Subject) ? string.Empty : this.Topic?.Content?.Subject); set => this.subject = value; }
 
-        [IgnoreColumn()]
-        public DateTime LastPostDate { get => (DateTime)(this.lastPostDate ?? (this.lastPostDate = this.TopicId > 0 ? this.Topic?.Content?.DateUpdated : this.Forum?.LastPostDateTime)); set => this.lastPostDate = value; }
+        [IgnoreColumn]
+        public DateTime? LastPostDate { get => this.lastPostDate ?? (this.lastPostDate = this.TopicId > 0 ? this.Topic?.Content?.DateUpdated : this.Forum?.LastPostDateTime); set => this.lastPostDate = value; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public bool Subscribed { get; set; }
     }
 }

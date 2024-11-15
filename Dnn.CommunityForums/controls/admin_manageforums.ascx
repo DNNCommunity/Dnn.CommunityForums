@@ -5,7 +5,7 @@
 	var currObj;
 	var currGroup = 0;
 
-	function af_refreshView(group,forum){
+	function af_refreshView(){
 		LoadView('manageforums_forumeditor',currObj + '|' + currCtl)
 	};
 	function af_setCurrObj(obj,ctl){

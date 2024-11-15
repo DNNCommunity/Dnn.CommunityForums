@@ -83,6 +83,47 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return permissions;
         }
 
+        internal void RemoveUnused(int moduleId)
+        {
+            foreach (var permissionInfo in this.Get(moduleId))
+            {
+                var isUsed = permissionInfo.PermissionsId == SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId;
+                if (!isUsed)
+                {
+                    isUsed = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(moduleId).Any(g => g.PermissionsId == permissionInfo.PermissionsId);
+                    if (!isUsed)
+                    {
+                        isUsed = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(moduleId).Any(f => f.PermissionsId == permissionInfo.PermissionsId);
+                        if (!isUsed)
+                        {
+                            var cachekey = string.Format(CacheKeys.PermissionsInfo, moduleId, permissionInfo.PermissionsId);
+                            this.DeleteById(permissionInfo.PermissionsId, moduleId);
+                            DataCache.SettingsCacheClear(moduleId, cachekey);
+                        }
+                    }
+                }
+            }
+        }
+
+        internal void RemoveIfUnused(int permissionId, int moduleId)
+        {
+            var isUsed = permissionId == SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId;
+            if (!isUsed)
+            {
+                isUsed = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(moduleId).Any(g => g.PermissionsId == permissionId);
+                if (!isUsed)
+                {
+                    isUsed = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(moduleId).Any(f => f.PermissionsId == permissionId);
+                    if (!isUsed)
+                    {
+                        var cachekey = string.Format(CacheKeys.PermissionsInfo, moduleId, permissionId);
+                        this.DeleteById(permissionId, moduleId);
+                        DataCache.SettingsCacheClear(moduleId, cachekey);
+                    }
+                }
+            }
+        }
+
         internal static int GetAdministratorsRoleId(int portalId)
         {
             return Utilities.GetPortalSettings(portalId).AdministratorRoleId;
