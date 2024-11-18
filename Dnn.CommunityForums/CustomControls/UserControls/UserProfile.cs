@@ -261,7 +261,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (!(this.ForumUser.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser))
             {
-                this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}", $"{ParamKeys.Mode}={Modes.Edit}" }));
+                this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}", $"{ParamKeys.Mode}={Modes.Edit}" }), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
         }
 
@@ -282,7 +283,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Methods
         private void GoViewURL()
         {
-            this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}" }));
+            this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}" }), false);
+            this.Context.ApplicationInstance.CompleteRequest();
         }
 
         private bool CanEditMode()

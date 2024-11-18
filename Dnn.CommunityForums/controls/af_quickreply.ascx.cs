@@ -82,7 +82,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (this.contactByFaxOnlyCheckBox.Checked)
                 {
                     // if someone activates this checkbox send him home :-)
-                    this.Response.Redirect("about:blank");
+                    this.Response.Redirect("about:blank", false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
 
                 if (this.Request.IsAuthenticated)
@@ -228,7 +229,8 @@ namespace DotNetNuke.Modules.ActiveForums
         protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             // if someone activates this checkbox send him home :-)
-            this.Response.Redirect("http://localhost/", true);
+            this.Response.Redirect("about:blank", false);
+            this.Context.ApplicationInstance.CompleteRequest();
         }
 
         private void SaveQuickReply()
@@ -357,6 +359,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 // Redirect to show post
                 this.Response.Redirect(fullURL, false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
             else
             {
@@ -369,6 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, @params.ToArray()), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
         }
 

@@ -85,17 +85,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (this.ForumId < 1)
                 {
-                    this.Response.Redirect(this.NavigateUrl(this.TabId));
+                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
 
                 if (this.ForumInfo == null)
                 {
-                    this.Response.Redirect(this.NavigateUrl(this.TabId));
+                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
 
                 if (this.ForumInfo.Active == false)
                 {
-                    this.Response.Redirect(this.NavigateUrl(this.TabId));
+                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
 
                 this.AppRelativeVirtualPath = "~/";
@@ -274,7 +277,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                         else
                         {
-                            this.Response.Redirect(this.NavigateUrl(this.TabId), true);
+                            this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                            this.Context.ApplicationInstance.CompleteRequest();
                         }
 
                         try
@@ -293,7 +297,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                     else
                     {
-                        this.Response.Redirect(this.NavigateUrl(this.TabId), true);
+                        this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                        this.Context.ApplicationInstance.CompleteRequest();
                     }
                 }
                 else

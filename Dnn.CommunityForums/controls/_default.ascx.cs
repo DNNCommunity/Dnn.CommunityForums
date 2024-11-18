@@ -47,7 +47,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "AFINSTALLED", init.ToString());
                 DataCache.ClearAllCache(this.ModuleId);
                 DataCache.ClearAllCacheForTabId(this.TabId);
-                this.Response.Redirect(this.EditUrl());
+                this.Response.Redirect(this.EditUrl(), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
         }
     }

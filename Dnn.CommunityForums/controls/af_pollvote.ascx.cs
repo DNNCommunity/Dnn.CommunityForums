@@ -126,7 +126,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-                this.Response.Redirect(this.Request.RawUrl);
+                this.Response.Redirect(this.Request.RawUrl, false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
             catch (Exception ex)
             {

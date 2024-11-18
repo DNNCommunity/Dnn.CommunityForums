@@ -240,12 +240,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 // Redirect to show post
                 string fullURL = Utilities.NavigateURL(this.PageId, string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
             else
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(this.portalId, this.TabId, this.moduleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId, this.Request.Url, this.Request.RawUrl);
                 string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
                 HttpContext.Current.Response.Redirect(Utilities.NavigateURL(this.PageId, string.Empty, @params), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
         }
 

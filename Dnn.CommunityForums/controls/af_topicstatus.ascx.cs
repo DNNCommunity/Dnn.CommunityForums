@@ -91,7 +91,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     DataProvider.Instance().Topics_UpdateStatus(this.PortalId, this.ModuleId, this.TopicId, -1, intStatus, -1, this.UserId);
                 }
 
-                this.Response.Redirect(this.Request.RawUrl);
+                this.Response.Redirect(this.Request.RawUrl, false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
         }
     }

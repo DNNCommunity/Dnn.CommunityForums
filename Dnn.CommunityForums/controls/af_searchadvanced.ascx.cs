@@ -396,7 +396,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 @params.Add($"{Literals.GroupId}={this.SocialGroupId}");
             }
 
-            this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, @params.ToArray()));
+            this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, @params.ToArray()), false);
+            this.Context.ApplicationInstance.CompleteRequest();
         }
 
         #endregion

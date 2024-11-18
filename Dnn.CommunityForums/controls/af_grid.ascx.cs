@@ -94,7 +94,8 @@ namespace DotNetNuke.Modules.ActiveForums
         private void DrpTimeFrameSelectedIndexChanged(object sender, EventArgs e)
         {
             var timeframe = Utilities.SafeConvertInt(this.drpTimeFrame.SelectedItem.Value, 1440);
-            this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}=" + this.Request.Params[$"{ParamKeys.GridType}"], $"{ParamKeys.TimeSpan}={timeframe}" }));
+            this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}=" + this.Request.Params[$"{ParamKeys.GridType}"], $"{ParamKeys.TimeSpan}={timeframe}" }), false);
+            this.Context.ApplicationInstance.CompleteRequest();
         }
 
         private void BtnMarkReadClick(object sender, EventArgs e)
@@ -104,7 +105,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 DataProvider.Instance().Utility_MarkAllRead(this.ForumModuleId, this.UserId, 0);
             }
 
-            this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}={GridTypes.NotRead}" }));
+            this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}={GridTypes.NotRead}" }), false);
+            this.Context.ApplicationInstance.CompleteRequest();
         }
 
         private void TopicRepeaterOnItemDataBound(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
@@ -178,7 +180,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         else
                         {
-                            this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
+                            this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+                            this.Context.ApplicationInstance.CompleteRequest();
                         }
 
                         break;
@@ -244,7 +247,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         else
                         {
-                            this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
+                            this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+                            this.Context.ApplicationInstance.CompleteRequest();
                         }
 
                         break;
@@ -306,7 +310,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
 
                     default:
-                        this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
+                        this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+                        this.Context.ApplicationInstance.CompleteRequest();
                         break;
                 }
 

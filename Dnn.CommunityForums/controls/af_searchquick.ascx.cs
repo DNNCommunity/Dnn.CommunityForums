@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -90,7 +90,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     @params.Add($"{Literals.GroupId}={this.SocialGroupId}");
                 }
 
-                this.Response.Redirect(this.NavigateUrl(this.ForumTabId, string.Empty, @params.ToArray()));
+                this.Response.Redirect(this.NavigateUrl(this.ForumTabId, string.Empty, @params.ToArray()), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
         }
     }
