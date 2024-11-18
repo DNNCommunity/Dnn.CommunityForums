@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -110,7 +110,8 @@ namespace DotNetNuke.Modules.ActiveForums
                                                                      ParamKeys.TopicId + "=" + this.TopicId,
                                                                      ParamKeys.Sort + "=" + sort,
                                                                  });
-            this.Response.Redirect(dest);
+            this.Response.Redirect(dest, false);
+            this.Context.ApplicationInstance.CompleteRequest();
         }
     }
 }

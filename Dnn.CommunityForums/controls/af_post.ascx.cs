@@ -102,12 +102,16 @@ namespace DotNetNuke.Modules.ActiveForums
             if (this.fi == null)
             {
                 if (!this.canEdit && (this.Request.Params[ParamKeys.Action].ToLowerInvariant() == PostActions.TopicEdit || this.Request.Params[ParamKeys.Action].ToLowerInvariant() == PostActions.ReplyEdit))
-                    this.Response.Redirect(this.NavigateUrl(this.TabId));
+                {
+                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
+                }
             }
 
             if (this.CanCreate == false && this.CanReply == false)
             {
-                this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, "ctl=login") + "?returnurl=" + this.Server.UrlEncode(this.Request.RawUrl));
+                this.Response.Redirect(this.NavigateUrl(this.TabId, string.Empty, "ctl=login") + "?returnurl=" + this.Server.UrlEncode(this.Request.RawUrl), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
 
             if (this.UserId > 0)
@@ -252,7 +256,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.isEdit && !this.Request.IsAuthenticated)
             {
-                this.Response.Redirect(this.NavigateUrl(this.TabId));
+                this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
 
             this.PrepareAttachments(this.contentId);
@@ -270,7 +275,8 @@ namespace DotNetNuke.Modules.ActiveForums
         protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             // if someone activates this checkbox send him home :-)
-            this.Response.Redirect("http://localhost/", true);
+            this.Response.Redirect("about:blank", false);
+            this.Context.ApplicationInstance.CompleteRequest();
         }
 
         private void ctlForm_Click(object sender, EventArgs e)
@@ -279,8 +285,10 @@ namespace DotNetNuke.Modules.ActiveForums
             if (this.ContactByFaxOnlyCheckBox.Checked)
             {
                 // if someone activates this checkbox send him home :-)
-                this.Response.Redirect("about:blank");
+                this.Response.Redirect("about:blank", false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
+
             if (!Utilities.HasFloodIntervalPassed(floodInterval: this.MainSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: this.ForumInfo))
             {
                 this.plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Error:FloodControl]"), this.MainSettings.FloodInterval) + "</div>" });
@@ -368,11 +376,13 @@ namespace DotNetNuke.Modules.ActiveForums
             var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
             if (ti == null)
             {
-                this.Response.Redirect(this.NavigateUrl(this.TabId));
+                this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
             else if ((ti.Content.AuthorId != this.UserId && this.canModEdit == false) | (ti.Content.AuthorId == this.UserId && this.canEdit == false) | (this.canEdit == false && this.canModEdit))
             {
-                this.Response.Redirect(this.NavigateUrl(this.TabId));
+                this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
             else if (!this.canModEdit && ti.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ti.Content.DateCreated, DateTime.UtcNow) > this.MainSettings.EditInterval)
             {
@@ -452,11 +462,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (ri == null)
             {
-                this.Response.Redirect(this.NavigateUrl(this.TabId));
+                this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
             else if ((ri.Content.AuthorId != this.UserId && this.canModEdit == false) | (ri.Content.AuthorId == this.UserId && this.canEdit == false) | (this.canEdit == false && this.canModEdit))
             {
-                this.Response.Redirect(this.NavigateUrl(this.TabId));
+                this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
             else if (!this.canModEdit && ri.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ri.Content.DateCreated, DateTime.UtcNow) > this.MainSettings.EditInterval)
             {
@@ -556,7 +568,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (ti == null)
                 {
-                    this.Response.Redirect(this.NavigateUrl(this.TabId));
+                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
 
                 this.ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + HttpUtility.HtmlDecode(ti.Content.Subject);
@@ -565,7 +578,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (ti.IsLocked && (this.ForumUser.CurrentUserType == CurrentUserTypes.Anon || this.ForumUser.CurrentUserType == CurrentUserTypes.Auth))
                 {
-                    this.Response.Redirect(this.NavigateUrl(this.TabId));
+                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
 
                 if (this.Request.Params[ParamKeys.QuoteId] != null | this.Request.Params[ParamKeys.ReplyId] != null | this.Request.Params[ParamKeys.PostId] != null)

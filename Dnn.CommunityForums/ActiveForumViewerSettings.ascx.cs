@@ -126,7 +126,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumGroupId, sID);
 
                 // Redirect back to the portal home page
-                this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
+                this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
             catch (Exception exc)
             {

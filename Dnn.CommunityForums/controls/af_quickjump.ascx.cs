@@ -120,11 +120,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 switch (sJumpType)
                 {
                     case "GROUPJUMP":
-                        this.Response.Redirect(this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, ParamKeys.GroupId + "=" + sJumpID));
+                        this.Response.Redirect(this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, ParamKeys.GroupId + "=" + sJumpID), false);
+                        this.Context.ApplicationInstance.CompleteRequest();
                         break;
                     case "FORUMJUMP":
                         string[] @params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + sJumpID };
-                        this.Response.Redirect(this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, @params));
+                        this.Response.Redirect(this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, @params), false);
+                        this.Context.ApplicationInstance.CompleteRequest();
                         break;
                 }
             }

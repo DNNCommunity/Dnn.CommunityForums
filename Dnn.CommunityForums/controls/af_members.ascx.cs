@@ -38,16 +38,19 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (sMode == "DISABLED")
                 {
-                    this.Response.Redirect(Utilities.NavigateURL(this.TabId));
+                    this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
 
                 if (!this.Request.IsAuthenticated & (sMode == "ENABLEDREG" || sMode == "ENABLEDMOD"))
                 {
-                    this.Response.Redirect(Utilities.NavigateURL(this.TabId));
+                    this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
                 else if (this.Request.IsAuthenticated && sMode == "ENABLEDMOD" && ! this.ForumUser.GetIsMod(this.ForumModuleId))
                 {
-                    this.Response.Redirect(Utilities.NavigateURL(this.TabId));
+                    this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
             }
 

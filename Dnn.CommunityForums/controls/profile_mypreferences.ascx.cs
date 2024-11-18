@@ -89,7 +89,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).Save<int>(upi, upi.UserId);
 
-                    this.Response.Redirect(this.NavigateUrl(this.TabId));
+                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
             }
         }

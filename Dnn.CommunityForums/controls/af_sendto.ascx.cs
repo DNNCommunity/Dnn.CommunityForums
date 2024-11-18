@@ -98,7 +98,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    this.Response.Redirect(this.NavigateUrl(this.TabId));
+                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
             }
         }
@@ -127,7 +128,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void btnCancel_Click(object sender, System.EventArgs e)
         {
-            this.Response.Redirect(this.NavigateUrl(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId }));
+            this.Response.Redirect(this.NavigateUrl(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId }), false);
+            this.Context.ApplicationInstance.CompleteRequest();
         }
 
         private void btnSend_Click(object sender, System.EventArgs e)
@@ -151,10 +153,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 catch (Exception ex)
                 {
-                    // Response.Redirect(NavigateUrl(CInt(Request.QueryString["TabId"]), "", New String() {ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ViewType & "=confirmaction", ParamKeys.ConfirmActionId & "=" & ConfirmActions.SendToFailed}))
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
 
-                this.Response.Redirect(sUrl);
+                this.Response.Redirect(sUrl, false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
         }
     }
