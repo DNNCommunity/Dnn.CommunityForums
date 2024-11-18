@@ -316,12 +316,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 body = body.Replace("[", "&#91;").Replace("]", "&#93;");
                 if (body.ToUpper().Contains("&#91;CODE&#93;"))
                 {
-                    body = Regex.Replace(body, "(&#91;CODE&#93;)", "[CODE]", RegexOptions.IgnoreCase);
-                    body = Regex.Replace(body, "(&#91;\\/CODE&#93;)", "[/CODE]", RegexOptions.IgnoreCase);
+                    body = RegexUtils.GetCachedRegex("(&#91;CODE&#93;)", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(body, "[CODE]");
+                    body = RegexUtils.GetCachedRegex("(&#91;\\/CODE&#93;)", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(body, "[CODE]");
                 }
 
-                // sBody = sBody.Replace("&lt;CODE&gt;", "<CODE>")
-                if (Regex.IsMatch(body, "\\[CODE([^>]*)\\]", RegexOptions.IgnoreCase))
+                if (RegexUtils.GetCachedRegex("\\[CODE([^>]*)\\]", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).IsMatch(body))
                 {
                     body = CodeParser.ParseCode(HttpUtility.HtmlDecode(body));
                 }
@@ -339,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
                 if (body.ToLowerInvariant().Contains("runat"))
                 {
-                    body = Regex.Replace(body, "runat", "&#114;&#117;nat", RegexOptions.IgnoreCase);
+                    body = RegexUtils.GetCachedRegex("runat", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(body, "&#114;&#117;nat");
                 }
             }
 
@@ -1067,7 +1066,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             // matches [token [embedded token] [embedded token].... ] to remove entire string
             var Pattern = $@"\[{tokenPrefix}(?>\[(?<c>)|[^\[\]]+|\](?<-c>))*(?(c)(?!))\]";
-            return new StringBuilder(RegexUtils.GetCachedRegex(Pattern, RegexOptions.Compiled & RegexOptions.IgnorePatternWhitespace, 30).Replace(template.ToString(), string.Empty));
+            return new StringBuilder(RegexUtils.GetCachedRegex(Pattern, RegexOptions.Compiled & RegexOptions.IgnorePatternWhitespace, 2).Replace(template.ToString(), string.Empty));
         }
 
         internal static string GetTokenFormatString(string key, PortalSettings portalSettings, string language = "en-US")

@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
@@ -366,9 +368,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[CSS:"))
             {
                 string pattern = "(\\[CSS:.+?\\])";
-                if (Regex.IsMatch(template, pattern))
+                if (RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).IsMatch(template))
                 {
-                    cssmatch = Regex.Match(template, pattern).Value;
+                    cssmatch = RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Match(template).Value;
                     css = cssmatch.Split(':'); // 0=CSS,1=TopRow, 2=mid rows, 3=lastRow
                 }
             }

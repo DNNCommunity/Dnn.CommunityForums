@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (doNotRedirectRegex.Contains(ignoreForumsRegex))
                     {
-                        doNotRedirectRegex.Replace(ignoreForumsRegex, string.Empty);
+                        doNotRedirectRegex = doNotRedirectRegex.Replace(ignoreForumsRegex, string.Empty);
                         DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: this.PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: doNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
                     }
                 }
