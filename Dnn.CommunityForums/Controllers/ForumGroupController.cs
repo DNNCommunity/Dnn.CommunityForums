@@ -62,14 +62,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     if (!forumGroupInfo.InheritSecurity)
                     {
+                        oldPermissionsId = forumGroupInfo.PermissionsId;
                         forumGroupInfo.PermissionsId = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId;
                         foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.PermissionsId == oldPermissionsId))
                         {
                             forum.PermissionsId = forumGroupInfo.PermissionsId;
                             fc.Update(forum);
                         }
-
-                        oldPermissionsId = forumGroupInfo.PermissionsId;
                     }
                 }
             }

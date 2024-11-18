@@ -247,7 +247,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
                         var bIsNew = false;
                         int forumGroupId;
-                        var forumSettingsKey = string.Empty;
 
                         if (Utilities.SafeConvertInt(e.Parameters[1]) <= 0)
                         {
@@ -473,7 +472,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             Utilities.SelectListItemByValue(this.drpGroups, groupValue);
 
-            if (fi.ForumSettingsKey == $"G:{fi.ForumGroupId}")
+            if (fi.InheritSettings)
             {
                 this.chkInheritGroupFeatures.Checked = true;
                 this.trTemplates.Attributes.Add("style", "display:none;");
@@ -515,7 +514,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.txtPrefixURL.Text = gi.PrefixURL;
             this.chkInheritModuleSecurity.Checked = gi.InheritSecurity;
 
-            if (gi.GroupSettingsKey == $"M:{this.ModuleId}")
+            if (gi.InheritSettings)
             {
                 this.chkInheritModuleFeatures.Checked = true;
                 this.trTemplates.Attributes.Add("style", "display:none;");

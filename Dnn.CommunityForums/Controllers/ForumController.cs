@@ -226,16 +226,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 else
                 {
                     if (!forumInfo.InheritSecurity)
-                    {   dddd
-                        oldPermissionsId = forumGroupInfo.PermissionsId;
-                        new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveIfUnused(permissionId: oldPermissionsId, moduleId: forumInfo.ModuleId);
+                    {
+                        oldPermissionsId = forumInfo.PermissionsId;
                         forumInfo.PermissionsId = forumGroupInfo.PermissionsId;
                     }
                 }
             }
             else
             {
-                if (isNew || (forumInfo?.PermissionsId == forumGroupInfo?.PermissionsId)) /* new forum or switching from group security to forum security */
+                if (isNew || forumInfo.InheritSecurity) /* new forum not inheriting security or existing forum switching from group security to forum security */
                 {
                     forumInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Insert(forumGroupInfo.Security).PermissionsId;
                 }

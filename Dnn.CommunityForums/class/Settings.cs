@@ -304,11 +304,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(moduleId: this.ModuleId, settingsKey: this.DefaultSettingsKey);
         }
-
-        internal void SaveFeatureSettings(FeatureSettings settings)
-        {
-            FeatureSettings.Save(this.ModuleId, this.DefaultSettingsKey, settings);
-        }
     }
 
     #endregion
