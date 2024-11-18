@@ -600,49 +600,49 @@ namespace DotNetNuke.Modules.ActiveForums
             this.hidSortOrder.Value = gi.SortOrder.ToString();
             this.txtPrefixURL.Text = gi.PrefixURL;
 
-            Utilities.SelectListItemByValue(this.drpTopicsTemplate, gi.TopicsTemplateId);
-            Utilities.SelectListItemByValue(this.drpTopicTemplate, gi.TopicTemplateId);
-            Utilities.SelectListItemByValue(this.drpTopicForm, gi.TopicFormId);
-            Utilities.SelectListItemByValue(this.drpReplyForm, gi.ReplyFormId);
-            Utilities.SelectListItemByValue(this.drpQuickReplyForm, gi.QuickReplyFormId);
-            Utilities.SelectListItemByValue(this.drpProfileDisplay, gi.ProfileTemplateId);
-            Utilities.SelectListItemByValue(this.drpModApprovedTemplateId, gi.ModApproveTemplateId);
-            Utilities.SelectListItemByValue(this.drpModRejectTemplateId, gi.ModRejectTemplateId);
-            Utilities.SelectListItemByValue(this.drpModDeleteTemplateId, gi.ModDeleteTemplateId);
-            Utilities.SelectListItemByValue(this.drpModMoveTemplateId, gi.ModMoveTemplateId);
-            Utilities.SelectListItemByValue(this.drpModNotifyTemplateId, gi.ModNotifyTemplateId);
-            Utilities.SelectListItemByValue(this.drpDefaultTrust, (int)gi.DefaultTrustValue);
-            Utilities.SelectListItemByValue(this.drpEditorTypes, (int)gi.EditorType);
-            Utilities.SelectListItemByValue(this.drpEditorMobile, (int)gi.EditorMobile);
-            Utilities.SelectListItemByValue(this.drpPermittedRoles, (int)gi.EditorPermittedUsers);
+            Utilities.SelectListItemByValue(this.drpTopicsTemplate, gi.FeatureSettings.TopicsTemplateId);
+            Utilities.SelectListItemByValue(this.drpTopicTemplate, gi.FeatureSettings.TopicTemplateId);
+            Utilities.SelectListItemByValue(this.drpTopicForm, gi.FeatureSettings.TopicFormId);
+            Utilities.SelectListItemByValue(this.drpReplyForm, gi.FeatureSettings.ReplyFormId);
+            Utilities.SelectListItemByValue(this.drpQuickReplyForm, gi.FeatureSettings.QuickReplyFormId);
+            Utilities.SelectListItemByValue(this.drpProfileDisplay, gi.FeatureSettings.ProfileTemplateId);
+            Utilities.SelectListItemByValue(this.drpModApprovedTemplateId, gi.FeatureSettings.ModApproveTemplateId);
+            Utilities.SelectListItemByValue(this.drpModRejectTemplateId, gi.FeatureSettings.ModRejectTemplateId);
+            Utilities.SelectListItemByValue(this.drpModDeleteTemplateId, gi.FeatureSettings.ModDeleteTemplateId);
+            Utilities.SelectListItemByValue(this.drpModMoveTemplateId, gi.FeatureSettings.ModMoveTemplateId);
+            Utilities.SelectListItemByValue(this.drpModNotifyTemplateId, gi.FeatureSettings.ModNotifyTemplateId);
+            Utilities.SelectListItemByValue(this.drpDefaultTrust, (int)gi.FeatureSettings.DefaultTrustValue);
+            Utilities.SelectListItemByValue(this.drpEditorTypes, (int)gi.FeatureSettings.EditorType);
+            Utilities.SelectListItemByValue(this.drpEditorMobile, (int)gi.FeatureSettings.EditorMobile);
+            Utilities.SelectListItemByValue(this.drpPermittedRoles, (int)gi.FeatureSettings.EditorPermittedUsers);
 
-            this.txtAutoTrustLevel.Text = gi.AutoTrustLevel.ToString();
-            this.txtEmailAddress.Text = gi.EmailAddress;
-            this.txtCreatePostCount.Text = gi.CreatePostCount.ToString();
-            this.txtReplyPostCount.Text = gi.ReplyPostCount.ToString();
+            this.txtAutoTrustLevel.Text = gi.FeatureSettings.AutoTrustLevel.ToString();
+            this.txtEmailAddress.Text = gi.FeatureSettings.EmailAddress;
+            this.txtCreatePostCount.Text = gi.FeatureSettings.CreatePostCount.ToString();
+            this.txtReplyPostCount.Text = gi.FeatureSettings.ReplyPostCount.ToString();
 
-            this.rdFilterOn.Checked = gi.UseFilter;
-            this.rdFilterOff.Checked = !gi.UseFilter;
+            this.rdFilterOn.Checked = gi.FeatureSettings.UseFilter;
+            this.rdFilterOff.Checked = !gi.FeatureSettings.UseFilter;
 
-            this.rdPostIconOn.Checked = gi.AllowPostIcon;
-            this.rdPostIconOff.Checked = !gi.AllowPostIcon;
+            this.rdPostIconOn.Checked = gi.FeatureSettings.AllowPostIcon;
+            this.rdPostIconOff.Checked = !gi.FeatureSettings.AllowPostIcon;
 
-            this.rdEmotOn.Checked = gi.AllowEmoticons;
-            this.rdEmotOff.Checked = !gi.AllowEmoticons;
+            this.rdEmotOn.Checked = gi.FeatureSettings.AllowEmoticons;
+            this.rdEmotOff.Checked = !gi.FeatureSettings.AllowEmoticons;
 
-            this.rdScriptsOn.Checked = gi.AllowScript;
-            this.rdScriptsOff.Checked = !gi.AllowScript;
+            this.rdScriptsOn.Checked = gi.FeatureSettings.AllowScript;
+            this.rdScriptsOff.Checked = !gi.FeatureSettings.AllowScript;
 
-            this.rdIndexOn.Checked = gi.IndexContent;
-            this.rdIndexOff.Checked = !gi.IndexContent;
+            this.rdIndexOn.Checked = gi.FeatureSettings.IndexContent;
+            this.rdIndexOff.Checked = !gi.FeatureSettings.IndexContent;
 
-            this.rdRSSOn.Checked = gi.AllowRSS;
-            this.rdRSSOff.Checked = !gi.AllowRSS;
+            this.rdRSSOn.Checked = gi.FeatureSettings.AllowRSS;
+            this.rdRSSOff.Checked = !gi.FeatureSettings.AllowRSS;
 
-            this.rdAttachOn.Checked = gi.AllowAttach;
-            this.rdAttachOff.Checked = !gi.AllowAttach;
+            this.rdAttachOn.Checked = gi.FeatureSettings.AllowAttach;
+            this.rdAttachOff.Checked = !gi.FeatureSettings.AllowAttach;
 
-            if (gi.AllowAttach)
+            if (gi.FeatureSettings.AllowAttach)
             {
                 this.cfgAttach.Attributes.Remove("style");
             }
@@ -651,32 +651,32 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.cfgAttach.Attributes.Add("style", "display:none;");
             }
 
-            this.txtMaxAttach.Text = gi.AttachCount.ToString();
-            this.txtMaxAttachSize.Text = gi.AttachMaxSize.ToString();
-            this.txtAllowedTypes.Text = gi.AttachTypeAllowed;
-            this.ckAllowBrowseSite.Checked = gi.AttachAllowBrowseSite;
-            this.txtMaxAttachWidth.Text = gi.MaxAttachWidth.ToString();
-            this.txtMaxAttachHeight.Text = gi.MaxAttachHeight.ToString();
-            this.ckAttachInsertAllowed.Checked = gi.AttachInsertAllowed;
-            this.ckConvertingToJpegAllowed.Checked = gi.ConvertingToJpegAllowed;
+            this.txtMaxAttach.Text = gi.FeatureSettings.AttachCount.ToString();
+            this.txtMaxAttachSize.Text = gi.FeatureSettings.AttachMaxSize.ToString();
+            this.txtAllowedTypes.Text = gi.FeatureSettings.AttachTypeAllowed;
+            this.ckAllowBrowseSite.Checked = gi.FeatureSettings.AttachAllowBrowseSite;
+            this.txtMaxAttachWidth.Text = gi.FeatureSettings.MaxAttachWidth.ToString();
+            this.txtMaxAttachHeight.Text = gi.FeatureSettings.MaxAttachHeight.ToString();
+            this.ckAttachInsertAllowed.Checked = gi.FeatureSettings.AttachInsertAllowed;
+            this.ckConvertingToJpegAllowed.Checked = gi.FeatureSettings.ConvertingToJpegAllowed;
 
             // if switching from HTML off to HTML on, switch editor to HTML editor, or vice versa
-            if (this.rdHTMLOff.Checked && gi.AllowHTML)
+            if (this.rdHTMLOff.Checked && gi.FeatureSettings.AllowHTML)
             {
                 Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorTypes.HTMLEDITORPROVIDER);
                 Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorTypes.HTMLEDITORPROVIDER);
             }
 
-            if (this.rdHTMLOn.Checked && !gi.AllowHTML)
+            if (this.rdHTMLOn.Checked && !gi.FeatureSettings.AllowHTML)
             {
                 Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorTypes.TEXTBOX);
                 Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorTypes.TEXTBOX);
             }
 
-            this.rdHTMLOn.Checked = gi.AllowHTML;
-            this.rdHTMLOff.Checked = !gi.AllowHTML;
+            this.rdHTMLOn.Checked = gi.FeatureSettings.AllowHTML;
+            this.rdHTMLOff.Checked = !gi.FeatureSettings.AllowHTML;
 
-            if (gi.AllowHTML)
+            if (gi.FeatureSettings.AllowHTML)
             {
                 this.cfgHTML.Attributes.Remove("style");
             }
@@ -685,10 +685,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.cfgHTML.Attributes.Add("style", "display:none;");
             }
 
-            this.rdModOn.Checked = gi.IsModerated;
-            this.rdModOff.Checked = !gi.IsModerated;
+            this.rdModOn.Checked = gi.FeatureSettings.IsModerated;
+            this.rdModOff.Checked = !gi.FeatureSettings.IsModerated;
 
-            if (gi.IsModerated)
+            if (gi.FeatureSettings.IsModerated)
             {
                 this.cfgMod.Attributes.Remove("style");
             }
@@ -697,13 +697,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.cfgMod.Attributes.Add("style", "display:none;");
             }
 
-            this.rdAutoSubOn.Checked = gi.AutoSubscribeEnabled;
-            this.rdAutoSubOff.Checked = !gi.AutoSubscribeEnabled;
+            this.rdAutoSubOn.Checked = gi.FeatureSettings.AutoSubscribeEnabled;
+            this.rdAutoSubOff.Checked = !gi.FeatureSettings.AutoSubscribeEnabled;
 
-            this.rdLikesOn.Checked = gi.AllowLikes;
-            this.rdLikesOff.Checked = !gi.AllowLikes;
+            this.rdLikesOn.Checked = gi.FeatureSettings.AllowLikes;
+            this.rdLikesOff.Checked = !gi.FeatureSettings.AllowLikes;
 
-            if (gi.AutoSubscribeEnabled)
+            if (gi.FeatureSettings.AutoSubscribeEnabled)
             {
                 this.cfgAutoSub.Attributes.Remove("style");
             }
@@ -712,13 +712,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.cfgAutoSub.Attributes.Add("style", "display:none;");
             }
 
-            var x = gi.EditorType;
-
-            this.txtEditorHeight.Text = (gi.EditorHeight == string.Empty) ? "400" : gi.EditorHeight;
-            this.txtEditorWidth.Text = (gi.EditorWidth == string.Empty) ? "99%" : gi.EditorWidth;
-            this.chkAutoSubscribeNewTopicsOnly.Checked = gi.AutoSubscribeNewTopicsOnly;
-            this.hidRoles.Value = gi.AutoSubscribeRoles;
-            this.BindAutoSubRoles(gi.AutoSubscribeRoles);
+            this.txtEditorHeight.Text = (gi.FeatureSettings.EditorHeight == string.Empty) ? "400" : gi.FeatureSettings.EditorHeight;
+            this.txtEditorWidth.Text = (gi.FeatureSettings.EditorWidth == string.Empty) ? "99%" : gi.FeatureSettings.EditorWidth;
+            this.chkAutoSubscribeNewTopicsOnly.Checked = gi.FeatureSettings.AutoSubscribeNewTopicsOnly;
+            this.hidRoles.Value = gi.FeatureSettings.AutoSubscribeRoles;
+            this.BindAutoSubRoles(gi.FeatureSettings.AutoSubscribeRoles);
         }
 
         private void BindAutoSubRoles(string roles)
