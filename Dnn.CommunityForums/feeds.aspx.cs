@@ -235,38 +235,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 body = TemplateUtils.GetTemplateSection(body, "<body>", "</body>");
             }
 
-            /*
-            if (body.Contains("&#91;IMAGE:"))
-            {
-                string strHost = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(Request)) + "/";
-                string pattern = "(&#91;IMAGE:(.+?)&#93;)";
-                Regex regExp = new Regex(pattern);
-                MatchCollection matches = null;
-                matches = regExp.Matches(body);
-                foreach (Match match in matches)
-                {
-                    string sImage = "";
-                    sImage = "<img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + PortalId + "&moduleid=" + ModuleID + "&attachid=" + match.Groups[2].Value + "\" border=\"0\" />";
-                    body = body.Replace(match.Value, sImage);
-                }
-            }
-            if (body.Contains("&#91;THUMBNAIL:"))
-            {
-                string strHost = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(Request)) + "/";
-                string pattern = "(&#91;THUMBNAIL:(.+?)&#93;)";
-                Regex regExp = new Regex(pattern);
-                MatchCollection matches = null;
-                matches = regExp.Matches(body);
-                foreach (Match match in matches)
-                {
-                    string sImage = "";
-                    string thumbId = match.Groups[2].Value.Split(':')[0];
-                    string parentId = match.Groups[2].Value.Split(':')[1];
-                    sImage = "<a href=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + PortalId + "&moduleid=" + ModuleID + "&attachid=" + parentId + "\" target=\"_blank\"><img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + PortalId + "&moduleid=" + ModuleID + "&attachid=" + thumbId + "\" border=\"0\" /></a>";
-                    body = body.Replace(match.Value, sImage);
-                }
-            }
-             */
             body = body.Replace("src=\"/Portals", "src=\"" + DotNetNuke.Common.Globals.AddHTTP(this.Request.Url.Host) + "/Portals");
             body = Utilities.ManageImagePath(body, new Uri(Common.Globals.AddHTTP(this.Request.Url.Host)));
 

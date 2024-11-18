@@ -915,7 +915,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sOutput = TemplateUtils.ReplaceSubSection(sOutput, string.Empty, "[REPLYSEPARATOR]", "[/REPLYSEPARATOR]");
                 }
 
-                foreach (Match match in Regex.Matches(sOutput, pattern))
+                foreach (Match match in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Matches(sOutput))
                 {
                     var rowIndex = int.Parse(match.Groups[1].Value);
                     var startTag = string.Format("[REPLYSEPARATOR:{0}]", rowIndex);
@@ -1096,7 +1096,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Attachments
-            sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments((reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId), true, this.PortalId, this.ForumModuleId));
+            sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments(reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId, true, this.PortalId, this.ForumModuleId));
 
             if (reply.ReplyId > 0)
             {
@@ -1168,8 +1168,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 var fileExtension = System.IO.Path.GetExtension(filename).TextOrEmpty().Replace(".", string.Empty);
 
-                filename = HttpUtility.HtmlEncode(Regex.Replace(filename, @"^__\d+__\d+__", string.Empty));
-
+                filename = HttpUtility.HtmlEncode(DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^__\d+__\d+__", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(filename, string.Empty));
                 sb.AppendFormat(itemTemplate, portalId, moduleId, attachId, fileExtension, filename);
             }
 
