@@ -117,7 +117,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     // We must have a forum id
                     if (this.ForumId < 1)
                     {
-                        this.Response.Redirect(Utilities.NavigateURL(this.TabId));
+                        this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+                        this.Context.ApplicationInstance.CompleteRequest();
                     }
                 }
 
@@ -135,7 +136,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             tURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + firstUnreadPost });
                         }
 
-                        this.Response.Redirect(tURL);
+                        this.Response.Redirect(tURL, false);
+                        this.Context.ApplicationInstance.CompleteRequest();
                     }
                 }
 
@@ -220,7 +222,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Test for a proper dataset
             if (ds.Tables.Count < 4 || ds.Tables[0].Rows.Count == 0 || ds.Tables[1].Rows.Count == 0)
             {
-                this.Response.Redirect(Utilities.NavigateURL(this.TabId));
+                this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
 
             // Load our values
@@ -236,22 +239,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (this.MainSettings.UseShortUrls)
                     {
-                        this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.TopicId + "=" + this.TopicId }), true);
+                        this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.TopicId + "=" + this.TopicId }), false);
+                        this.Context.ApplicationInstance.CompleteRequest();
                     }
                     else
                     {
-                        this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId }), true);
+                        this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId }), false);
+                        this.Context.ApplicationInstance.CompleteRequest();
                     }
                 }
                 else
                 {
                     if (this.MainSettings.UseShortUrls)
                     {
-                        this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ForumId + "=" + this.ForumId }), true);
+                        this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ForumId + "=" + this.ForumId }), false);
+                        this.Context.ApplicationInstance.CompleteRequest();
                     }
                     else
                     {
-                        this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topics }), true);
+                        this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topics }), false);
+                        this.Context.ApplicationInstance.CompleteRequest();
                     }
                 }
             }
@@ -263,11 +270,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (this.PortalSettings.LoginTabId > 0)
                 {
-                    this.Response.Redirect(Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, "returnUrl=" + this.Request.RawUrl), true);
+                    this.Response.Redirect(Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, "returnUrl=" + this.Request.RawUrl), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
                 else
                 {
-                    this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, "ctl=login&returnUrl=" + this.Request.RawUrl), true);
+                    this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, "ctl=login&returnUrl=" + this.Request.RawUrl), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
             }
 
@@ -392,7 +401,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.Request.IsAuthenticated)
             {
-                this.Response.Redirect(sURL, true);
+                this.Response.Redirect(sURL, false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
 
             // Not sure why we're doing this.  I assume it may have something to do with search engines - JB
@@ -905,7 +915,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sOutput = TemplateUtils.ReplaceSubSection(sOutput, string.Empty, "[REPLYSEPARATOR]", "[/REPLYSEPARATOR]");
                 }
 
-                foreach (Match match in Regex.Matches(sOutput, pattern))
+                foreach (Match match in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Matches(sOutput))
                 {
                     var rowIndex = int.Parse(match.Groups[1].Value);
                     var startTag = string.Format("[REPLYSEPARATOR:{0}]", rowIndex);
@@ -1086,7 +1096,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Attachments
-            sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments((reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId), true, this.PortalId, this.ForumModuleId));
+            sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments(reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId, true, this.PortalId, this.ForumModuleId));
 
             if (reply.ReplyId > 0)
             {
@@ -1158,8 +1168,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 var fileExtension = System.IO.Path.GetExtension(filename).TextOrEmpty().Replace(".", string.Empty);
 
-                filename = HttpUtility.HtmlEncode(Regex.Replace(filename, @"^__\d+__\d+__", string.Empty));
-
+                filename = HttpUtility.HtmlEncode(DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^__\d+__\d+__", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(filename, string.Empty));
                 sb.AppendFormat(itemTemplate, portalId, moduleId, attachId, fileExtension, filename);
             }
 

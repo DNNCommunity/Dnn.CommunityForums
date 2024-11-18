@@ -88,7 +88,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (this.Request.QueryString["cptry"] == null)
                 {
                     string sURL = this.EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
-                    this.Response.Redirect(sURL);
+                    this.Response.Redirect(sURL, false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
                 else
                 {
@@ -155,7 +156,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (this.Request.QueryString["cptry"] == null)
                 {
                     string sURL = this.EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
-                    this.Response.Redirect(sURL);
+                    this.Response.Redirect(sURL, false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
                 else
                 {
@@ -222,7 +224,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (this.Request.QueryString["cptry"] == null)
                 {
                     string sURL = this.EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
-                    this.Response.Redirect(sURL);
+                    this.Response.Redirect(sURL, false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
                 else
                 {

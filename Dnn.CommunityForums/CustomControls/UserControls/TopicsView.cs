@@ -85,17 +85,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (this.ForumId < 1)
                 {
-                    this.Response.Redirect(this.NavigateUrl(this.TabId));
+                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
 
                 if (this.ForumInfo == null)
                 {
-                    this.Response.Redirect(this.NavigateUrl(this.TabId));
+                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
 
                 if (this.ForumInfo.Active == false)
                 {
-                    this.Response.Redirect(this.NavigateUrl(this.TabId));
+                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
                 }
 
                 this.AppRelativeVirtualPath = "~/";
@@ -231,10 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 if (this.MetaTemplate.Contains("[TOPICSUBJECT:"))
                                 {
                                     string pattern = "(\\[TOPICSUBJECT:(.+?)\\])";
-                                    Regex regExp = new Regex(pattern);
-                                    MatchCollection matches = null;
-                                    matches = regExp.Matches(this.MetaTemplate);
-                                    foreach (Match m in matches)
+                                    foreach (Match m in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Matches(this.MetaTemplate))
                                     {
                                         this.MetaTemplate = this.MetaTemplate.Replace(m.Value, string.Empty);
                                     }
@@ -244,10 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 if (this.MetaTemplate.Contains("[BODY:"))
                                 {
                                     string pattern = "(\\[BODY:(.+?)\\])";
-                                    Regex regExp = new Regex(pattern);
-                                    MatchCollection matches = null;
-                                    matches = regExp.Matches(this.MetaTemplate);
-                                    foreach (Match m in matches)
+                                    foreach (Match m in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Matches(this.MetaTemplate))
                                     {
                                         int iLen = Convert.ToInt32(m.Groups[2].Value);
                                         if (this.ForumInfo.ForumDesc.Length > iLen)
@@ -274,7 +271,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                         else
                         {
-                            this.Response.Redirect(this.NavigateUrl(this.TabId), true);
+                            this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                            this.Context.ApplicationInstance.CompleteRequest();
                         }
 
                         try
@@ -293,7 +291,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                     else
                     {
-                        this.Response.Redirect(this.NavigateUrl(this.TabId), true);
+                        this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                        this.Context.ApplicationInstance.CompleteRequest();
                     }
                 }
                 else

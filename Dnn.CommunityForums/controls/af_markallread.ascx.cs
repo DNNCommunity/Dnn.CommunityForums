@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2024 by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -78,7 +78,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             DataProvider.Instance().Utility_MarkAllRead(this.ModuleId, this.UserId, this.ForumId > 0 ? this.ForumId : 0);
 
-            this.Response.Redirect(this.Request.RawUrl);
+            this.Response.Redirect(this.Request.RawUrl, false);
+            this.Context.ApplicationInstance.CompleteRequest();
         }
     }
 }

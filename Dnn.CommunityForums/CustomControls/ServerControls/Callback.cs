@@ -35,6 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI.WebControls;
     using System.Xml;
     using System.Xml.XPath;
+    using DotNetNuke.Common.Utilities;
 
     [SupportsEventValidation(), DefaultProperty("Text"), Designer("DotNetNuke.Modules.ActiveForums.Controls.ActiveCallbackDesigner"), ParseChildren(true, ""), ToolboxData("<{0}:Callback runat=server></{0}:Callback>")]
     public class Callback : WebControl
@@ -370,10 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             sText = HttpUtility.UrlDecode(sText);
             string pattern = "<script.*/*>|</script>|<[a-zA-Z][^>]*=['\"]+javascript:\\w+.*['\"]+>|<\\w+[^>]*\\son\\w+=.*[ /]*>";
-            sText = Regex.Replace(sText, pattern, string.Empty, RegexOptions.IgnoreCase);
-            sText = sText.Replace("-->", string.Empty);
-            sText = sText.Replace("<!--", string.Empty);
-            return sText;
+            return RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(sText, string.Empty).Replace("-->", string.Empty).Replace("<!--", string.Empty);
         }
 
         protected override void CreateChildControls()

@@ -120,7 +120,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 settings.Save(moduleController, this.ModuleId);
 
                 // Redirect back to the portal home page
-                this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
+                this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
             catch (Exception exc)
             {
@@ -130,7 +131,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void lnkCancel_Click(object sender, EventArgs e)
         {
-            this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
+            this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+            this.Context.ApplicationInstance.CompleteRequest();
         }
 
         private void chkRSS_Change(object sender, EventArgs e)

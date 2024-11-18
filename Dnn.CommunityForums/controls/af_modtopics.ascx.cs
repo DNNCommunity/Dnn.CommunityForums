@@ -63,7 +63,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                this.Response.Redirect(this.NavigateUrl(this.TabId));
+                this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
         }
 
