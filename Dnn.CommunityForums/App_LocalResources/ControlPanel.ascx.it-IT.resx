@@ -1462,10 +1462,16 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
     <value>Eredita le impostazioni</value>
   </data>
-  <data name="[RESX:ShouldInheritSecurity].Text" xml:space="preserve">
-    <value>Dovrebbe ereditare la sicurezza</value>
+  <data name="[RESX:Tips:InheritSecurityRecommended].Text" xml:space="preserve">
+    <value>{0} ha la stessa sicurezza di {1}, quindi dovresti abilitare "eredita sicurezza" per {0}</value>
   </data>
-  <data name="[RESX:ShouldInheritSettings].Text" xml:space="preserve">
-    <value>Deve ereditare le impostazioni</value>
+  <data name="[RESX:Tips:InheritSettingsOn].Text" xml:space="preserve">
+    <value>{0} eredita le impostazioni da {1}</value>
+  </data>
+  <data name="[RESX:Tips:InheritSettingsRecommended].Text" xml:space="preserve">
+    <value>{0} ha le stesse impostazioni di {1}, quindi dovresti abilitare "eredita impostazioni" per {0}</value>
+  </data>
+  <data name="[RESX:Tips:InheritSecurityOn].Text" xml:space="preserve">
+    <value>{0} eredita la sicurezza da {1}</value>
   </data>
 </root>

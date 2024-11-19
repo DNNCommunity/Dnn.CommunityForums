@@ -1567,10 +1567,16 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
     <value>Erbt Einstellungen</value>
   </data>
-  <data name="[RESX:ShouldInheritSecurity].Text" xml:space="preserve">
-    <value>Sollte Sicherheit erben</value>
+  <data name="[RESX:Tips:InheritSecurityRecommended].Text" xml:space="preserve">
+    <value>{0} hat die gleiche Sicherheit wie {1}, daher sollten Sie "Sicherheit erben" für {0} aktivieren</value>
   </data>
-  <data name="[RESX:ShouldInheritSettings].Text" xml:space="preserve">
-    <value>Sollte Einstellungen erben</value>
+  <data name="[RESX:Tips:InheritSettingsOn].Text" xml:space="preserve">
+    <value>{0} übernimmt Einstellungen von {1}</value>
+  </data>
+  <data name="[RESX:Tips:InheritSettingsRecommended].Text" xml:space="preserve">
+    <value>{0} hat die gleichen Einstellungen wie {1}, daher sollten Sie "Einstellungen erben" für {0} aktivieren</value>
+  </data>
+  <data name="[RESX:Tips:InheritSecurityOn].Text" xml:space="preserve">
+    <value>{0} übernimmt die Sicherheit von {1}</value>
   </data>
 </root>

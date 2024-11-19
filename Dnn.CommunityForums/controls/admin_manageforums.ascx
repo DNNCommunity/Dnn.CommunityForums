@@ -17,7 +17,10 @@
 	};
 
 </script>
-<div class="amcpsubnav"><asp:Literal ID="litButtons" runat="server" /></div>
+<div class="amcpsubnav"><asp:Literal ID="litButtons" runat="server" />
+    <div class="amcplnkbtn dcf-controlpanel-inheritance-heading-settings">[RESX:InheritsSettings]</div>
+    <div class="amcplnkbtn dcf-controlpanel-inheritance-heading-security">[RESX:InheritsSecurity]</div>
+</div>
 <table cellpadding="0" cellspacing="0" width="100%">
 	<tr>
 		<td valign="top" style="border-left:solid 1px #ccc;">

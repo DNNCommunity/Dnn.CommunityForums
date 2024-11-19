@@ -1465,10 +1465,16 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
     <value>Hérite des paramètres</value>
   </data>
-  <data name="[RESX:ShouldInheritSecurity].Text" xml:space="preserve">
-    <value>Doit hériter de la sécurité</value>
+  <data name="[RESX:Tips:InheritSecurityRecommended].Text" xml:space="preserve">
+    <value>{0} a la même sécurité que {1}, vous devez donc activer « Hériter de la sécurité » pour {0}</value>
   </data>
-  <data name="[RESX:ShouldInheritSettings].Text" xml:space="preserve">
-    <value>Doit hériter des paramètres</value>
+  <data name="[RESX:Tips:InheritSettingsOn].Text" xml:space="preserve">
+    <value>{0} hérite des paramètres de {1}</value>
+  </data>
+  <data name="[RESX:Tips:InheritSettingsRecommended].Text" xml:space="preserve">
+    <value>{0} a les mêmes paramètres que {1}, vous devez donc activer « Hériter des paramètres » pour {0}</value>
+  </data>
+  <data name="[RESX:Tips:InheritSecurityOn].Text" xml:space="preserve">
+    <value>{0} hérite de la sécurité de {1}</value>
   </data>
 </root>

@@ -1567,10 +1567,16 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
     <value>Inherits Settings</value>
   </data>
-  <data name="[RESX:ShouldInheritSecurity].Text" xml:space="preserve">
-    <value>Should inherit Security</value>
+  <data name="[RESX:Tips:InheritSecurityOn].Text" xml:space="preserve">
+    <value>{0} is inheriting security from {1}</value>
   </data>
-  <data name="[RESX:ShouldInheritSettings].Text" xml:space="preserve">
-    <value>Should inherit Settings</value>
+  <data name="[RESX:Tips:InheritSecurityRecommended].Text" xml:space="preserve">
+    <value>{0} has the same security as {1}, so you should enable 'inherit security' for {0}</value>
+  </data>
+  <data name="[RESX:Tips:InheritSettingsOn].Text" xml:space="preserve">
+    <value>{0} is inheriting settings from {1}</value>
+  </data>
+  <data name="[RESX:Tips:InheritSettingsRecommended].Text" xml:space="preserve">
+    <value>{0} has the same settings as {1}, so you should enable 'inherit settings' for {0}</value>
   </data>
 </root>
