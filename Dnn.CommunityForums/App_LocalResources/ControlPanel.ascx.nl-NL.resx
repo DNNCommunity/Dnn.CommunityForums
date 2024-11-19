@@ -1606,4 +1606,16 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
     <value>Standaardinstellingen voor beveiliging en functies</value>
   </data>
+  <data name="[RESX:InheritsSecurity].Text" xml:space="preserve">
+    <value>Erft beveiliging</value>
+  </data>
+  <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
+    <value>Neemt instellingen over</value>
+  </data>
+  <data name="[RESX:ShouldInheritSecurity].Text" xml:space="preserve">
+    <value>Moet beveiliging erven</value>
+  </data>
+  <data name="[RESX:ShouldInheritSettings].Text" xml:space="preserve">
+    <value>Moet instellingen overnemen</value>
+  </data>
 </root>

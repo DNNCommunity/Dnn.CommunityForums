@@ -1456,4 +1456,16 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
     <value>Configuración predeterminada de seguridad y funciones</value>
   </data>
+  <data name="[RESX:InheritsSecurity].Text" xml:space="preserve">
+    <value>Hereda la seguridad</value>
+  </data>
+  <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
+    <value>Hereda la configuración</value>
+  </data>
+  <data name="[RESX:ShouldInheritSecurity].Text" xml:space="preserve">
+    <value>Debería heredar la seguridad</value>
+  </data>
+  <data name="[RESX:ShouldInheritSettings].Text" xml:space="preserve">
+    <value>Debe heredar la configuración</value>
+  </data>
 </root>
