@@ -1456,4 +1456,16 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
     <value>Impostazioni predefinite di sicurezza e funzionalità</value>
   </data>
+  <data name="[RESX:InheritsSecurity].Text" xml:space="preserve">
+    <value>Eredita la sicurezza</value>
+  </data>
+  <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
+    <value>Eredita le impostazioni</value>
+  </data>
+  <data name="[RESX:ShouldInheritSecurity].Text" xml:space="preserve">
+    <value>Dovrebbe ereditare la sicurezza</value>
+  </data>
+  <data name="[RESX:ShouldInheritSettings].Text" xml:space="preserve">
+    <value>Deve ereditare le impostazioni</value>
+  </data>
 </root>

@@ -431,3 +431,5 @@ ul.amcpformlist li div.amcpradiorow input[type="checkbox"]{font-size:14px;margin
 .dcf-controlpanel .dcf-controlpanel-tooltip:hover::before { opacity: 1; visibility: visible; }
 .dcf-controlpanel .dcf-controlpanel-tooltip::after{content: "?"; display:inline-block; line-height: 1.5em; width: 1.6em; text-align:center; color: var(--tooltip-icon-color); border: solid 1px var(--tooltip-icon-color); border-radius: 50%; margin-left: 0.5em;}
 .dcf-controlpanel .dcf-controlpanel-tooltip:hover::after{ background: var(--tooltip-bg-color); border-color: var(--tooltip-bg-color); color: var(--tooltip-color);}
+
+.dcf-controlpanel .dcf-controlpanel-inheritance-label { width:150px;padding-left:3px;padding-right:3px;text-align:left;}
