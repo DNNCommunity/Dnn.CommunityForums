@@ -2242,13 +2242,13 @@ ELSE
 		VALUES
 		(@ModuleId, @GroupName, @SortOrder,'',@Active,@Hidden, @PermissionsId,@PrefixURL)
 		SET @ForumGroupId = SCOPE_IDENTITY()
-        BEGIN
+	END
+BEGIN
 			IF @GroupSettingsKey = ''
 				UPDATE {databaseOwner}{objectQualifier}activeforums_Groups SET GroupSettingsKey = 'G:' + CAST(@ForumGroupId as varchar(50)) WHERE ForumGroupId = @ForumGroupId
 			ELSE
-				UPDATE {databaseOwner}{objectQualifier}activeforums_Groups SET GroupSettingsKey = GroupSettingsKey WHERE ForumGroupId = @ForumGroupId
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Groups SET GroupSettingsKey = @GroupSettingsKey WHERE ForumGroupId = @ForumGroupId
 		END
-	END
 SELECT @ForumGroupId
 GO
 

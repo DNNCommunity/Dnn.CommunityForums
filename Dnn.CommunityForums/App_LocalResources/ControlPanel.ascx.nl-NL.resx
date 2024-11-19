@@ -1585,4 +1585,25 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
     <value>Beheerders/moderators</value>
   </data>
+  <data name="[RESX:ModuleDefaults].Text" xml:space="preserve">
+    <value>Standaardinstellingen en beveiliging</value>
+  </data>
+  <data name="[RESX:Actions:DefaultsSaved].Text" xml:space="preserve">
+    <value>Standaardinstellingen en beveiliging opgeslagen</value>
+  </data>
+  <data name="[RESX:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Standaardinstellingen overnemen</value>
+  </data>
+  <data name="[RESX:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Standaardbeveiliging overnemen</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Vink dit vakje aan om de standaardinstellingen van de modulefunctie over te nemen.</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Vink dit vakje aan om de standaardmodulebeveiliging over te nemen.</value>
+  </data>
+  <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
+    <value>Standaardinstellingen voor beveiliging en functies</value>
+  </data>
 </root>

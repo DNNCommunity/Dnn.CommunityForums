@@ -27,16 +27,24 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     public class FeatureSettings : IEquatable<FeatureSettings>
     {
-        private readonly Hashtable featureSettings;
+        internal readonly Hashtable featureSettings;
 
         public FeatureSettings(int moduleId, string settingsKey)
         {
-            this.featureSettings = DataCache.GetSettings(moduleId, settingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, settingsKey), true);;
+            this.featureSettings = DataCache.GetSettings(moduleId, settingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, settingsKey), true);
         }
 
         public FeatureSettings(Hashtable featureSettings)
         {
             this.featureSettings = featureSettings;
+        }
+
+        internal static void Save(int moduleId, string settingsKey, FeatureSettings settings)
+        {
+            foreach (DictionaryEntry setting in settings.featureSettings)
+            {
+                Settings.SaveSetting(moduleId, settingsKey, setting.Key.ToString(), setting.Value.ToString());
+            }
         }
 
         [IgnoreColumn]

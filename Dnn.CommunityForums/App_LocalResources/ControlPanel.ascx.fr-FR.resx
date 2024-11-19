@@ -1438,4 +1438,25 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
     <value>Administrateurs/modérateurs</value>
   </data>
+  <data name="[RESX:ModuleDefaults].Text" xml:space="preserve">
+    <value>Paramètres par défaut et sécurité</value>
+  </data>
+  <data name="[RESX:Actions:DefaultsSaved].Text" xml:space="preserve">
+    <value>Paramètres par défaut et sécurité sauvegardés</value>
+  </data>
+  <data name="[RESX:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Hériter des paramètres par défaut</value>
+  </data>
+  <data name="[RESX:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Hériter de la sécurité par défaut</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Cochez cette case pour hériter des paramètres de fonctionnalité par défaut du module.</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Cochez cette case pour hériter de la sécurité par défaut du module.</value>
+  </data>
+  <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
+    <value>Paramètres de sécurité et de fonctionnalité par défaut</value>
+  </data>
 </root>

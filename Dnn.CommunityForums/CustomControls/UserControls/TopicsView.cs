@@ -552,12 +552,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     topicInfo.Content.Summary = topicInfo.Content.Summary.Replace(System.Environment.NewLine, "<br />");
                 }
 
-                topicInfo.Author.FirstName = topicInfo.Author.FirstName.Replace("&amp;#", "&#");
-                topicInfo.Author.LastName = topicInfo.Author.LastName.Replace("&amp;#", "&#");
-                topicInfo.Author.DisplayName = topicInfo.Author.DisplayName.Replace("&amp;#", "&#");
-                topicInfo.LastReplyAuthor.FirstName = topicInfo.Author.FirstName.Replace("&amp;#", "&#");
-                topicInfo.LastReplyAuthor.LastName = topicInfo.Author.LastName.Replace("&amp;#", "&#");
-                topicInfo.LastReplyAuthor.DisplayName = topicInfo.Author.DisplayName.Replace("&amp;#", "&#");
+                topicInfo.Author.FirstName = topicInfo.Author?.FirstName?.Replace("&amp;#", "&#");
+                topicInfo.Author.LastName = topicInfo.Author.LastName?.Replace("&amp;#", "&#");
+                topicInfo.Author.DisplayName = topicInfo.Author.DisplayName?.Replace("&amp;#", "&#");
+                topicInfo.LastReplyAuthor.FirstName = topicInfo.Author.FirstName?.Replace("&amp;#", "&#");
+                topicInfo.LastReplyAuthor.LastName = topicInfo.Author.LastName?.Replace("&amp;#", "&#");
+                topicInfo.LastReplyAuthor.DisplayName = topicInfo.Author.DisplayName?.Replace("&amp;#", "&#");
 
                 int UserLastTopicRead = Convert.ToInt32(drTopic["UserLastTopicRead"]);
                 int UserLastReplyRead = Convert.ToInt32(drTopic["UserLastReplyRead"]);

@@ -1540,4 +1540,25 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
     <value>Administratoren/Moderatoren</value>
   </data>
+  <data name="[RESX:ModuleDefaults].Text" xml:space="preserve">
+    <value>Standardeinstellungen und Sicherheit</value>
+  </data>
+  <data name="[RESX:Actions:DefaultsSaved].Text" xml:space="preserve">
+    <value>Standardeinstellungen und gespeicherte Sicherheit</value>
+  </data>
+  <data name="[RESX:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Standardeinstellungen übernehmen</value>
+  </data>
+  <data name="[RESX:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Standardsicherheit erben</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Aktivieren Sie dieses Kontrollkästchen, um die Standardeinstellungen für Modulfunktionen zu übernehmen.</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Aktivieren Sie dieses Kontrollkästchen, um die Standardmodulsicherheit zu übernehmen.</value>
+  </data>
+  <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
+    <value>Standardeinstellungen für Sicherheit und Funktionen</value>
+  </data>
 </root>

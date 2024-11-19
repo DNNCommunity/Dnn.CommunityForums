@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Linq;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -58,11 +60,18 @@ namespace DotNetNuke.Modules.ActiveForums
             int totalGroups = forums.ToList().Select(f => f.ForumGroupId).Distinct().Count();
             int totalGroupForum = 0;
             int tmpGroupId = -1;
-            int i = 0;
             int groupCount = 0;
             int forumCount = 0;
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.Append("<table width=\"95%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
+
+            sb.Append("<tr class=\"afgroupback\"><td class=\"afgroupback_left\">" + this.RenderSpacer(1, 4) + "</td><td colspan=\"3\" width=\"100%\" onmouseover=\"this.className='agrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + this.ModuleId + "|M');\">");
+            sb.Append(this.GetSharedResource("[RESX:DefaultSettings]"));
+            sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + this.ModuleId + "|M');\">" + this.edit + "</div></td><td>");
+            sb.Append("</td><td>");
+            sb.Append("</td><td class=\"afgroupback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
+            sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + this.RenderSpacer(2, 100) + "</td></tr>");
+
             foreach (var forum in forums)
             {
                 if (tmpGroupId != forum.ForumGroupId)
@@ -97,7 +106,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-                i += 1;
                 if (forum.ParentForumId == 0)
                 {
                     if (forumCount < Globals.ForumCount)

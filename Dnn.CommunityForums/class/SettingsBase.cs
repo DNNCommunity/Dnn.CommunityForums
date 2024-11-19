@@ -257,7 +257,7 @@ namespace DotNetNuke.Modules.ActiveForums
             SettingsInfo objSettings = (SettingsInfo)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.MainSettings, moduleId));
             if (objSettings == null && moduleId > 0)
             {
-                objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleId).ModuleSettings };
+                objSettings = new SettingsInfo { ModuleId = moduleId, MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleId).ModuleSettings };
                 DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.MainSettings, moduleId), objSettings);
             }
 

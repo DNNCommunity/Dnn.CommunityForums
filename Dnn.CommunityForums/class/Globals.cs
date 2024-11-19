@@ -230,8 +230,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string PrefixURLTags = "URLTAGS";
         public const string PrefixURLCategories = "URLCATS";
         public const string PrefixURLOther = "URLOTHER";
-
+        
         public const string CacheTemplates = "CACHETEMPLATES";
+        
+        public const string DefaultSettingsKey = "DEFAULTSETTINGSKEY";
+        public const string DefaultPermissionId = "DEFAULTPERMISSIONID";
     }
 
     public class ForumSettingKeys
@@ -422,6 +425,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ForumInfoWithUser = "AF-{0}-fi-{1}-{2}";
         public const string HostUrl = "AF-{0}-url";
         public const string MainSettings = "AF-{0}-ms";
+        public const string DefaultSettingsByKey = "AF-{0}-dsk";
         public const string ForumSettingsByKey = "AF-{0}-fsk-{1}";
         public const string GroupSettingsByKey = "AF-{0}-gsk-{1}";
         public const string ForumList = "AF-{0}-fl";

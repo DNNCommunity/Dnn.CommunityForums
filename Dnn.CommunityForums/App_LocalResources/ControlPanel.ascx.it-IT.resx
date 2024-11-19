@@ -1435,4 +1435,25 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
     <value>Amministratori/Moderatori</value>
   </data>
+  <data name="[RESX:ModuleDefaults].Text" xml:space="preserve">
+    <value>Impostazioni predefinite e sicurezza</value>
+  </data>
+  <data name="[RESX:Actions:DefaultsSaved].Text" xml:space="preserve">
+    <value>Impostazioni predefinite e sicurezza salvate</value>
+  </data>
+  <data name="[RESX:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Eredita impostazioni predefinite</value>
+  </data>
+  <data name="[RESX:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Eredita sicurezza predefinita</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Selezionare questa casella per ereditare le impostazioni predefinite delle funzionalità del modulo.</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Selezionare questa casella per ereditare la sicurezza del modulo predefinita.</value>
+  </data>
+  <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
+    <value>Impostazioni predefinite di sicurezza e funzionalità</value>
+  </data>
 </root>

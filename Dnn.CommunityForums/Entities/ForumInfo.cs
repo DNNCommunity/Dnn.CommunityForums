@@ -21,13 +21,13 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using ComponentModel.DataAnnotations;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using Enums;
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
 
@@ -42,8 +42,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
         private DotNetNuke.Modules.ActiveForums.Entities.IPostInfo lastPostInfo;
-        private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
         private FeatureSettings featureSettings;
+        private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
         private PortalSettings portalSettings;
         private ModuleInfo moduleInfo;
         private int? subscriberCount;
@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string LastPostSubject
         {
-            get => this.lastPostSubject ?? (this.lastPostSubject = this.LastPost.Topic.Subject);
+            get => this.lastPostSubject ?? (this.lastPostSubject = this.LastPost?.Topic?.Subject);
             set => this.lastPostSubject = value;
         }
 
@@ -126,7 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int LastPostUserID { get; set; }
 
         [ColumnName("LastPostDate")]
-        public DateTime LastPostDateTime { get; set; }
+        public DateTime? LastPostDateTime { get; set; }
 
         public int PermissionsId { get; set; }
 
@@ -236,6 +236,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return name;
             }
         }
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn]
+        public int LastPostLastPostID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn]
+        public int LastPostParentPostID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn]
+        public int CustomFieldType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         [IgnoreColumn]
         public bool InheritSecurity => this.PermissionsId == this.ForumGroup.PermissionsId;
@@ -458,22 +470,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        #region "Deprecated Methods"
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn]
-        public int LastPostLastPostID { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn]
-        public int LastPostParentPostID { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn]
-        public int CustomFieldType { get; set; }
-
-        #endregion "Deprecated Methods"
-
         [IgnoreColumn]
         internal string GetForumStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
@@ -586,6 +582,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// <inheritdoc/>
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability => DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
+
 
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
@@ -709,7 +706,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return this.LastPostID < 1
                         ? string.Empty
                         : PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime(
-                                (DateTime?)this.LastPostDateTime,
+                                this.LastPostDateTime,
                                 formatProvider,
                                 accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)),
                             format);

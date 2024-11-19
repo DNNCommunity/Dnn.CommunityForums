@@ -18,18 +18,37 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
 
     using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using Newtonsoft.Json.Linq;
 
     #region SettingsInfo
 
     public class SettingsInfo
     {
+        public int ModuleId { get; set; }
+
+        private DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings featureSettings;
+
         public Hashtable MainSettings { get; set; }
+
+        public SettingsInfo()
+        {
+            this.MainSettings = new Hashtable();
+        }
+
+        public SettingsInfo(int moduleId)
+        {
+            this.MainSettings = new Hashtable();
+            this.ModuleId = moduleId;
+        }
 
         public int PageSize
         {
@@ -265,9 +284,25 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public SettingsInfo()
+        public int DefaultPermissionId
         {
-            this.MainSettings = new Hashtable();
+            get { return this.MainSettings.GetInt(SettingKeys.DefaultPermissionId); }
+        }
+
+        public string DefaultSettingsKey
+        {
+            get { return this.MainSettings.GetString(SettingKeys.DefaultSettingsKey); }
+        }
+
+        public FeatureSettings ForumFeatureSettings
+        {
+            get => this.featureSettings ?? (this.featureSettings = this.LoadFeatureSettings());
+            set => this.featureSettings = value;
+        }
+
+        internal FeatureSettings LoadFeatureSettings()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(moduleId: this.ModuleId, settingsKey: this.DefaultSettingsKey);
         }
     }
 

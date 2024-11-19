@@ -21,9 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
@@ -74,7 +71,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public string ThemeLocation => Utilities.ResolveUrl(SettingsBase.GetModuleSettings(this.ModuleId).ThemeLocation);
 
-        #region Settings & Security
+        [IgnoreColumn]
+        public bool InheritSecurity => this.PermissionsId == this.MainSettings.DefaultPermissionId;
+
+        [IgnoreColumn]
+        public bool InheritSettings => this.GroupSettingsKey == this.MainSettings.DefaultSettingsKey;
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
@@ -157,7 +158,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
         }
-        #endregion
 
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
