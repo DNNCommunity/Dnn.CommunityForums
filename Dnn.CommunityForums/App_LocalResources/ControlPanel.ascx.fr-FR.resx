@@ -1459,4 +1459,16 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
     <value>Paramètres de sécurité et de fonctionnalité par défaut</value>
   </data>
+  <data name="[RESX:InheritsSecurity].Text" xml:space="preserve">
+    <value>Hérite de la sécurité</value>
+  </data>
+  <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
+    <value>Hérite des paramètres</value>
+  </data>
+  <data name="[RESX:ShouldInheritSecurity].Text" xml:space="preserve">
+    <value>Doit hériter de la sécurité</value>
+  </data>
+  <data name="[RESX:ShouldInheritSettings].Text" xml:space="preserve">
+    <value>Doit hériter des paramètres</value>
+  </data>
 </root>

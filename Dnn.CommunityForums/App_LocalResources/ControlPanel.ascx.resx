@@ -1561,4 +1561,16 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
     <value>Default Security and Feature Settings</value>
   </data>
+  <data name="[RESX:InheritsSecurity].Text" xml:space="preserve">
+    <value>Inherits Security</value>
+  </data>
+  <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
+    <value>Inherits Settings</value>
+  </data>
+  <data name="[RESX:ShouldInheritSecurity].Text" xml:space="preserve">
+    <value>Should inherit Security</value>
+  </data>
+  <data name="[RESX:ShouldInheritSettings].Text" xml:space="preserve">
+    <value>Should inherit Settings</value>
+  </data>
 </root>

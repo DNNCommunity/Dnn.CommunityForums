@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Collections.Generic;
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    public class FeatureSettings : IEquatable<FeatureSettings>
+    public class FeatureSettings
     {
         internal readonly Hashtable featureSettings;
 
@@ -252,10 +252,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get { return Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.EditorToolbar], "bold,italic,underline"); }
         }
 
-        public bool Equals(FeatureSettings other)
+        public bool EqualSettings(FeatureSettings other)
         {
             return !(other is null) &&
-                   EqualityComparer<Hashtable>.Default.Equals(this.featureSettings, other.featureSettings) &&
                    this.AllowAttach == other.AllowAttach &&
                    this.AllowEmoticons == other.AllowEmoticons &&
                    this.AllowHTML == other.AllowHTML &&
@@ -304,61 +303,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                    this.AttachMaxWidth == other.AttachMaxWidth &&
                    this.EditorStyle == other.EditorStyle &&
                    this.EditorToolBar == other.EditorToolBar;
-        }
-
-        public override int GetHashCode()
-        {
-            var hashCode = -1940783632;
-            hashCode = hashCode * -1521134295 + EqualityComparer<Hashtable>.Default.GetHashCode(this.featureSettings);
-            hashCode = hashCode * -1521134295 + this.AllowAttach.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AllowEmoticons.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AllowHTML.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AllowLikes.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AllowPostIcon.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AllowRSS.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AllowScript.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AllowSubscribe.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AttachCount.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AttachMaxSize.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.AttachTypeAllowed);
-            hashCode = hashCode * -1521134295 + this.AttachAllowBrowseSite.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.MaxAttachWidth.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.MaxAttachHeight.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AttachInsertAllowed.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.ConvertingToJpegAllowed.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.EditorHeight);
-            hashCode = hashCode * -1521134295 + this.EditorMobile.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.EditorType.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.EditorPermittedUsers.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.EditorWidth);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.EmailAddress);
-            hashCode = hashCode * -1521134295 + this.IndexContent.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.IsModerated.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.TopicsTemplateId.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.TopicTemplateId.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.TopicFormId.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.ReplyFormId.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.QuickReplyFormId.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.ProfileTemplateId.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.UseFilter.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AutoTrustLevel.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.DefaultTrustValue.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.ModApproveTemplateId.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.ModRejectTemplateId.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.ModMoveTemplateId.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.ModDeleteTemplateId.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.ModNotifyTemplateId.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AllowTags.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AutoSubscribeEnabled.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.AutoSubscribeRoles);
-            hashCode = hashCode * -1521134295 + this.AutoSubscribeNewTopicsOnly.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.CreatePostCount.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.ReplyPostCount.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AttachMaxHeight.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.AttachMaxWidth.GetHashCode();
-            hashCode = hashCode * -1521134295 + this.EditorStyle.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.EditorToolBar);
-            return hashCode;
         }
     }
 }
