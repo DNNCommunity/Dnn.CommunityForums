@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sURL = Utilities.NavigateURL(this.PageId, string.Empty, new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + parentPostID, ParamKeys.ContentJumpId + "=" + postId });
                 }
 
-                sOut = "<af:link id=\"hypLastPostSubject" + fid + "\" NavigateUrl=\"" + sURL + "\" Text=\"" + System.Web.HttpUtility.HtmlEncode(subject) + "\" runat=\"server\" />";
+                sOut = "<af:link id=\"hypLastPostSubject" + fid + "\" NavigateUrl=\"" + sURL + "\" Text=\"" + System.Net.WebUtility.HtmlEncode(subject) + "\" runat=\"server\" />";
             }
 
             return sOut;

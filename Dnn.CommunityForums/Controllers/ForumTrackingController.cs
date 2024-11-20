@@ -18,11 +18,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     internal class ForumTrackingController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo>

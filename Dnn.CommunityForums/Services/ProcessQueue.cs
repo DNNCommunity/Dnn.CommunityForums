@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
 {
     using System;
@@ -28,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
 
     using DotNetNuke.Modules.ActiveForums.DAL2;
     using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Scheduling;
 
     public class Scheduler : DotNetNuke.Services.Scheduling.SchedulerClient

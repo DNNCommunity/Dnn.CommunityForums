@@ -369,7 +369,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string XSSFilter(string sText)
         {
-            sText = HttpUtility.UrlDecode(sText);
+            sText = System.Net.WebUtility.UrlDecode(sText);
             string pattern = "<script.*/*>|</script>|<[a-zA-Z][^>]*=['\"]+javascript:\\w+.*['\"]+>|<\\w+[^>]*\\son\\w+=.*[ /]*>";
             return RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(sText, string.Empty).Replace("-->", string.Empty).Replace("<!--", string.Empty);
         }

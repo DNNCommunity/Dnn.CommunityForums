@@ -367,7 +367,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         user.Signature = Utilities.XSSFilter(this.txtSignature.Text, true);
                         user.Signature = Utilities.StripHTMLTag(user.Signature);
-                        user.Signature = HttpUtility.HtmlEncode(user.Signature);
+                        user.Signature = System.Net.WebUtility.HtmlEncode(user.Signature);
                     }
                     else if (this.MainSettings.AllowSignatures == 2)
                     {

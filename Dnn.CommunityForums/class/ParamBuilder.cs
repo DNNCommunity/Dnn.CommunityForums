@@ -18,10 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
@@ -37,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this.Params == null ? new string[] { } : this.Params.Keys.Select(key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(this.Params[key].ToString()))).ToArray();
+                return this.Params == null ? new string[] { } : this.Params.Keys.Select(key => string.Format("{0}={1}", System.Net.WebUtility.UrlEncode(key), System.Net.WebUtility.UrlEncode(this.Params[key].ToString()))).ToArray();
             }
         }
 
@@ -88,8 +87,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (urlEncoded)
                 {
-                    key = HttpUtility.UrlDecode(key);
-                    value = HttpUtility.UrlDecode(value);
+                    key = System.Net.WebUtility.UrlDecode(key);
+                    value = System.Net.WebUtility.UrlDecode(value);
                 }
 
                 this.Params[key] = value;

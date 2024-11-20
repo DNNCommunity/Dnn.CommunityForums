@@ -18,15 +18,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Collections;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Web;
     using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
@@ -330,7 +329,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     {
                         string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
                         string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
-                        string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
+                        string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
                         string sBodyTitle = GetTopicTitle(this.Content.Body);
                         string slink;
                         var @params = new List<string>
@@ -373,7 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "link":
                     {
                         string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
-                        string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
+                        string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
                         string sBodyTitle = GetTopicTitle(this.Content.Body);
                         string slink;
                         var @params = new List<string>
@@ -742,7 +741,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             if (!string.IsNullOrEmpty(body))
             {
 
-                body = HttpUtility.HtmlDecode(body);
+                body = System.Net.WebUtility.HtmlDecode(body);
                 body = body.Replace("<br>", System.Environment.NewLine);
                 body = Utilities.StripHTMLTag(body);
                 body = body.Length > 500 ? body.Substring(0, 500) + "..." : body;

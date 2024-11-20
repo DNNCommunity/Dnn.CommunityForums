@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -27,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Data;
     using System.Linq;
     using System.Text;
+    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -464,12 +463,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!string.IsNullOrWhiteSpace(this.SearchText))
                     {
-                        this.parameters.Add($"{SearchParamKeys.Query}=" + System.Web.HttpUtility.UrlEncode(this.SearchText));
+                        this.parameters.Add($"{SearchParamKeys.Query}=" + System.Net.WebUtility.UrlEncode(this.SearchText));
                     }
 
                     if (!string.IsNullOrWhiteSpace(this.Tags))
                     {
-                        this.parameters.Add($"{SearchParamKeys.Tag}=" + System.Web.HttpUtility.UrlEncode(this.Tags));
+                        this.parameters.Add($"{SearchParamKeys.Tag}=" + System.Net.WebUtility.UrlEncode(this.Tags));
                     }
 
                     if (this.SearchId > 0)
@@ -509,12 +508,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!string.IsNullOrWhiteSpace(this.AuthorUsername))
                     {
-                        this.parameters.Add($"{SearchParamKeys.Author}=" + System.Web.HttpUtility.UrlEncode(this.AuthorUsername));
+                        this.parameters.Add($"{SearchParamKeys.Author}=" + System.Net.WebUtility.UrlEncode(this.AuthorUsername));
                     }
 
                     if (!string.IsNullOrWhiteSpace(this.Forums))
                     {
-                        this.parameters.Add($"{SearchParamKeys.Forums}=" + System.Web.HttpUtility.UrlEncode(this.Forums));
+                        this.parameters.Add($"{SearchParamKeys.Forums}=" + System.Net.WebUtility.UrlEncode(this.Forums));
                     }
                 }
 

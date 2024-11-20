@@ -18,16 +18,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
-using System.Xml;
-using DotNetNuke.Data;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Xml;
+
+    using DotNetNuke.Data;
     using DotNetNuke.Data;
     using DotNetNuke.Modules.ActiveForums.Entities;
 

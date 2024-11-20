@@ -405,7 +405,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             var outputName = GetDisplayName(portalSettings, mainSettings, isMod, isAdmin, userId, username, firstName, lastName, displayName);
-            outputName = HttpUtility.HtmlEncode(outputName);
+            outputName = System.Net.WebUtility.HtmlEncode(outputName);
 
             return string.Format(outputTemplate, outputName);
         }
@@ -534,7 +534,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 outputName = userId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
             }
 
-            return HttpUtility.HtmlEncode(outputName);
+            return System.Net.WebUtility.HtmlEncode(outputName);
         }
 
         internal static string UserStatus(string themePath, bool isUserOnline, int userID, int moduleID)

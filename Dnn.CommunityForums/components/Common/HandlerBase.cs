@@ -240,11 +240,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     this._ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
                 }
 
-                // Dim sc As New Social.SocialSettings
-                // _mainSettings = sc.LoadSettings[_ps.PortalId]
                 this._mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
 
-                // If context.Request.IsAuthenticated Then
                 this._isValid = true;
                 if (this.AdminRequired & !context.Request.IsAuthenticated)
                 {
@@ -254,7 +251,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
                 if (this.AdminRequired && context.Request.IsAuthenticated)
                 {
-                    // _isValid = DotNetNuke.Security.PortalSecurity.IsInRole(_ps.AdministratorRoleName)
                     DotNetNuke.Entities.Modules.ModuleController objMC =
                         new DotNetNuke.Entities.Modules.ModuleController();
                     DotNetNuke.Entities.Modules.ModuleInfo objM = objMC.GetModule(this.ModuleId, this.TabId);
@@ -387,7 +383,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                             {
                                 if (!string.IsNullOrEmpty(tmp))
                                 {
-                                    tmp = HttpUtility.UrlDecode(tmp);
+                                    tmp = System.Net.WebUtility.UrlDecode(tmp);
                                 }
 
                                 if (slist != null)
@@ -428,7 +424,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         }
                         else if (!string.IsNullOrEmpty(prop) && !string.IsNullOrEmpty(tmp))
                         {
-                            ht.Add(prop, HttpUtility.UrlDecode(tmp));
+                            ht.Add(prop, System.Net.WebUtility.UrlDecode(tmp));
                         }
                         else if (!string.IsNullOrEmpty(prop) && slist != null)
                         {

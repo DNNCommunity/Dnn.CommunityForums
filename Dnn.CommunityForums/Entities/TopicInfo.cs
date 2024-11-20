@@ -35,22 +35,23 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 #pragma warning restore SA1403 // File may only contain a single namespace
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Drawing.Printing;
     using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+
     using Collections;
     using ComponentModel.DataAnnotations;
-    using DotNetNuke.Services.Tokens;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Modules;
-    using System.Collections;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
-    using System.Text.RegularExpressions;
-    using System.Web.UI;
-    using DotNetNuke.Modules.ActiveForums.Data;
-    using System.Web;
     using DotNetNuke.Abstractions.Portals;
-    using System.Drawing.Printing;
-    using System.Text;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
+    using DotNetNuke.Services.Tokens;
 
     [TableName("activeforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
@@ -572,7 +573,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     {
                         string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.TopicUrl, -1, -1, string.Empty, 1, -1, this.Forum.SocialGroupId);
                         string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
-                        string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
+                        string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty); ;
                         string sBodyTitle = GetTopicTitle(this.Content.Body);
                         string slink;
                         var @params = new List<string>
@@ -814,7 +815,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "link":
                     {
                         string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.TopicUrl, -1, -1, string.Empty, 1, -1, this.Forum.SocialGroupId);
-                        string subject = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty);
+                        string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty);
                         string sBodyTitle = GetTopicTitle(this.Content.Body);
                         string slink;
                         var @params = new List<string>
@@ -1393,7 +1394,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             if (!string.IsNullOrEmpty(body))
             {
 
-                body = HttpUtility.HtmlDecode(body);
+                body = System.Net.WebUtility.HtmlDecode(body);
                 body = body.Replace("<br>", System.Environment.NewLine);
                 body = Utilities.StripHTMLTag(body);
                 body = body.Length > 500 ? body.Substring(0, 500) + "..." : body;

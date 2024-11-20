@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Text.RegularExpressions;
     using System.Web.UI;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
     public partial class WhatsNew : PortalModuleBase, IActionable
@@ -229,7 +230,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var template = sbTemplate.ToString();
 
                     // Do this regex replace first before moving on to the simpler ones.
-                    template = Regex.Replace(template, @"\[BODY\:\s*(\d+)\s*\]", m => SafeSubstring(body, int.Parse(m.Groups[1].Value)), RegexOptions.IgnoreCase);
+                    template = RegexUtils.GetCachedRegex( @"\[BODY\:\s*(\d+)\s*\]", RegexOptions.IgnoreCase).Replace(template, m => SafeSubstring(body, int.Parse(m.Groups[1].Value)));
 
                     sb.Append(template);
                 }

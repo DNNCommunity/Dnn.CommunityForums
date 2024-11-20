@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Text.RegularExpressions;
     using System.Web;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Security;
 
     public partial class Utilities
@@ -66,18 +67,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     return string.Empty;
                 }
 
-                // TODO: REPLACE THIS
-                PortalSecurity objPortalSecurity = new PortalSecurity();
-                try
-                {
-                    text = objPortalSecurity.InputFilter(text, PortalSecurity.FilterFlag.NoScripting);
-                }
-                catch (Exception ex)
-                {
-                }
-
+                text = System.Net.WebUtility.HtmlEncode(text);
                 string pattern = "<script.*/*>|</script>|<[a-zA-Z][^>]*=['\"]+javascript:\\w+.*['\"]+>|<\\w+[^>]*\\son\\w+=.*[ /]*>";
-                text = Regex.Replace(text, pattern, string.Empty, RegexOptions.IgnoreCase);
+                text = RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase).Replace(text, string.Empty);
                 string strip = "/*,*/,alert,document.,window.,eval(,eval[,@import,vbscript,javascript,jscript,msgbox";
                 foreach (string s in strip.Split(','))
                 {
@@ -98,17 +90,15 @@ namespace DotNetNuke.Modules.ActiveForums
                     return string.Empty;
                 }
 
-                sText = HttpUtility.HtmlDecode(sText);
-                sText = HttpUtility.UrlDecode(sText);
+                sText = System.Net.WebUtility.HtmlDecode(sText);
+                sText = System.Net.WebUtility.UrlDecode(sText);
                 sText = sText.Trim();
                 if (string.IsNullOrEmpty(sText))
                 {
                     return string.Empty;
                 }
 
-                // TODO: REPLACE THIS
-                PortalSecurity objPortalSecurity = new PortalSecurity();
-                sText = objPortalSecurity.InputFilter(sText, PortalSecurity.FilterFlag.NoScripting);
+                sText = System.Net.WebUtility.HtmlEncode(sText);
                 sText = FilterScripts(sText);
                 string strip = "/*,*/,alert,document.,window.,eval(,eval[,src=,rel=,href=,@import,vbscript,javascript,jscript,msgbox,<style";
                 foreach (string s in strip.Split(','))
@@ -121,10 +111,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 string pattern = "<(.|\\n)*?>";
-                sText = Regex.Replace(sText, pattern, string.Empty, RegexOptions.IgnoreCase);
-                sText = HttpUtility.HtmlEncode(sText);
+                sText = RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase).Replace(sText, string.Empty);
+                sText = System.Net.WebUtility.HtmlEncode(sText);
 
-                // sText = HttpUtility.UrlEncode(sText)
                 return sText;
             }
         }

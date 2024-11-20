@@ -348,12 +348,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (!string.IsNullOrWhiteSpace(searchText))
             {
-                @params.Add($"{SearchParamKeys.Query}={System.Web.HttpUtility.UrlEncode(searchText)}");
+                @params.Add($"{SearchParamKeys.Query}={System.Net.WebUtility.UrlEncode(searchText)}");
             }
 
             if (!string.IsNullOrWhiteSpace(tags))
             {
-                @params.Add($"{SearchParamKeys.Tag}={System.Web.HttpUtility.UrlEncode(tags)}");
+                @params.Add($"{SearchParamKeys.Tag}={System.Net.WebUtility.UrlEncode(tags)}");
             }
 
             if (searchType > 0)
@@ -383,12 +383,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (!string.IsNullOrWhiteSpace(authorUsername))
             {
-                @params.Add($"{SearchParamKeys.Author}={System.Web.HttpUtility.UrlEncode(authorUsername)}");
+                @params.Add($"{SearchParamKeys.Author}={System.Net.WebUtility.UrlEncode(authorUsername)}");
             }
 
             if (!string.IsNullOrWhiteSpace(forums))
             {
-                @params.Add($"{SearchParamKeys.Forums}={System.Web.HttpUtility.UrlEncode(forums)}");
+                @params.Add($"{SearchParamKeys.Forums}={System.Net.WebUtility.UrlEncode(forums)}");
             }
 
             if (this.SocialGroupId > 0)

@@ -18,19 +18,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Net;
-using System.Web;
-using System.Web.UI;
-
-using DotNetNuke.Services.Authentication;
-
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 {
+    using System;
+    using System.Net;
+    using System.Web;
+    using System.Web.UI;
+
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Tokens;
 
     internal class ForumsModuleTokenReplacer : BaseCustomTokenReplace, DotNetNuke.Services.Tokens.IPropertyAccess
@@ -127,7 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                                this.PortalSettings.EnablePopUps &&
                                this.PortalSettings.LoginTabId == DotNetNuke.Common.Utilities.Null.NullInteger &&
                                !AuthenticationController.HasSocialAuthenticationEnabled() ?
-                                    PropertyAccess.FormatString(DotNetNuke.Common.Utilities.UrlUtils.PopUpUrl(HttpUtility.UrlDecode(GetLoginUrl()), this.PortalSettings, true, false, 300, 650), format) :
+                                    PropertyAccess.FormatString(DotNetNuke.Common.Utilities.UrlUtils.PopUpUrl(System.Net.WebUtility.UrlDecode(GetLoginUrl()), this.PortalSettings, true, false, 300, 650), format) :
                                     string.Empty;
                     }
 
