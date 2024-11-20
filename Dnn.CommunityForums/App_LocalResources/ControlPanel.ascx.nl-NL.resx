@@ -1612,10 +1612,16 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
     <value>Neemt instellingen over</value>
   </data>
-  <data name="[RESX:ShouldInheritSecurity].Text" xml:space="preserve">
-    <value>Moet beveiliging erven</value>
+  <data name="[RESX:Tips:InheritSecurityRecommended].Text" xml:space="preserve">
+    <value>{0} heeft dezelfde beveiliging als {1}, dus u moet 'beveiliging overnemen' inschakelen voor {0}</value>
   </data>
-  <data name="[RESX:ShouldInheritSettings].Text" xml:space="preserve">
-    <value>Moet instellingen overnemen</value>
+  <data name="[RESX:Tips:InheritSettingsOn].Text" xml:space="preserve">
+    <value>{0} neemt instellingen over van {1}</value>
+  </data>
+  <data name="[RESX:Tips:InheritSettingsRecommended].Text" xml:space="preserve">
+    <value>{0} heeft dezelfde instellingen als {1}, dus u moet 'instellingen overnemen' inschakelen voor {0}</value>
+  </data>
+  <data name="[RESX:Tips:InheritSecurityOn].Text" xml:space="preserve">
+    <value>{0} erft de veiligheid van {1}</value>
   </data>
 </root>

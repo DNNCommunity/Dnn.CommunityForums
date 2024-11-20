@@ -1462,10 +1462,16 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
     <value>Hereda la configuración</value>
   </data>
-  <data name="[RESX:ShouldInheritSecurity].Text" xml:space="preserve">
-    <value>Debería heredar la seguridad</value>
+  <data name="[RESX:Tips:InheritSecurityRecommended].Text" xml:space="preserve">
+    <value>{0} tiene la misma seguridad que {1}, por lo que debe habilitar la "seguridad heredada" para {0}</value>
   </data>
-  <data name="[RESX:ShouldInheritSettings].Text" xml:space="preserve">
-    <value>Debe heredar la configuración</value>
+  <data name="[RESX:Tips:InheritSettingsOn].Text" xml:space="preserve">
+    <value>{0} hereda la configuración de {1}</value>
+  </data>
+  <data name="[RESX:Tips:InheritSettingsRecommended].Text" xml:space="preserve">
+    <value>{0} tiene la misma configuración que {1}, por lo que debe habilitar 'heredar configuración' para {0}</value>
+  </data>
+  <data name="[RESX:Tips:InheritSecurityOn].Text" xml:space="preserve">
+    <value>{0} hereda la seguridad de {1}</value>
   </data>
 </root>
