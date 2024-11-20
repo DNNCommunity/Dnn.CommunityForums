@@ -18,9 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
@@ -38,8 +35,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.ActiveForums.Constants;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicView runat=server></{0}:TopicView>")]
@@ -306,8 +305,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.NextTopic = Utilities.SafeConvertInt(this.drForum["NextTopic"]);
             this.topic.PrevTopic = Utilities.SafeConvertInt(this.drForum["PrevTopic"]);
             this.topic.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-            this.topic.Content.Subject = HttpUtility.HtmlDecode(this.drForum["Subject"].ToString());
-            this.topic.Content.Body = HttpUtility.HtmlDecode(this.drForum["Body"].ToString());
+            this.topic.Content.Subject = System.Net.WebUtility.HtmlDecode(this.drForum["Subject"].ToString());
+            this.topic.Content.Body = System.Net.WebUtility.HtmlDecode(this.drForum["Body"].ToString());
             this.topic.Content.AuthorId = Utilities.SafeConvertInt(this.drForum["AuthorId"]);
             this.topic.Content.AuthorName = this.drForum["TopicAuthor"].ToString();
             this.topic.Content.DateCreated = Utilities.SafeConvertDateTime(this.drForum["DateCreated"]);
@@ -452,8 +451,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         var pl = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(this.topic.TopicData);
                         foreach (var p in pl)
                         {
-                            var pName = HttpUtility.HtmlDecode(p.Name);
-                            var pValue = HttpUtility.HtmlDecode(p.Value);
+                            var pName = System.Net.WebUtility.HtmlDecode(p.Name);
+                            var pValue = System.Net.WebUtility.HtmlDecode(p.Value);
 
                             // This builds the replacement text for the properties template
                             var tmp = sPropTemplate.Replace("[AF:PROPERTY:LABEL]", "[RESX:" + pName + "]");
@@ -709,7 +708,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 const string pattern = @"(\[BANNER:(.+?)\])";
                 const string sBanner = "<dnn:BANNER runat=\"server\" BannerCount=\"1\" GroupName=\"$1\" EnableViewState=\"False\" />";
 
-                sOutput = Regex.Replace(sOutput, pattern, sBanner);
+                sOutput = RegexUtils.GetCachedRegex(pattern).Replace(sOutput, sBanner);
             }
 
             // Hide Toolbar
@@ -829,7 +828,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Printer Friendly Link
-            var sURL = "<a rel=\"nofollow\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, "mid=" + this.ModuleId, "dnnprintmode=true") + "?skinsrc=" + HttpUtility.UrlEncode("[G]" + SkinController.RootSkin + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Skin") + "&amp;containersrc=" + HttpUtility.UrlEncode("[G]" + SkinController.RootContainer + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Container") + "\" target=\"_blank\">";
+            var sURL = "<a rel=\"nofollow\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, "mid=" + this.ModuleId, "dnnprintmode=true") + "?skinsrc=" + System.Net.WebUtility.UrlEncode("[G]" + SkinController.RootSkin + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Skin") + "&amp;containersrc=" + System.Net.WebUtility.UrlEncode("[G]" + SkinController.RootContainer + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Container") + "\" target=\"_blank\">";
 
             sURL += "<i class=\"fa fa-print fa-fw fa-blue\"></i></a>";
             sbOutput.Replace("[AF:CONTROL:PRINTER]", sURL);
@@ -1018,8 +1017,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             reply.ContentId = dr.GetInt("ContentId");
             reply.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             reply.Content.ContentId = dr.GetInt("ContentId");
-            reply.Content.Body = HttpUtility.HtmlDecode(dr.GetString("Body"));
-            reply.Content.Subject = HttpUtility.HtmlDecode(dr.GetString("Subject"));
+            reply.Content.Body = System.Net.WebUtility.HtmlDecode(dr.GetString("Body"));
+            reply.Content.Subject = System.Net.WebUtility.HtmlDecode(dr.GetString("Subject"));
             reply.Content.AuthorId = dr.GetInt("AuthorId");
             reply.Content.DateCreated = dr.GetDateTime("DateCreated");
             reply.Content.DateUpdated = dr.GetDateTime("DateUpdated");
@@ -1046,7 +1045,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         tagList += ", ";
                     }
 
-                    tagList += "<a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + "=search", ParamKeys.Tags + "=" + HttpUtility.UrlEncode(tag) }) + "\">" + tag + "</a>";
+                    tagList += "<a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + "=search", ParamKeys.Tags + "=" + System.Net.WebUtility.UrlEncode(tag) }) + "\">" + tag + "</a>";
                 }
 
                 sOutput = sOutput.Replace("[AF:LABEL:TAGS]", tagList);
@@ -1115,7 +1114,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(this.Request)) + "/";
                 const string pattern = "(&#91;IMAGE:(.+?)&#93;)";
-                sOutput = Regex.Replace(sOutput, pattern, match => "<img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + this.PortalId + "&moduleid=" + this.ForumModuleId + "&attachid=" + match.Groups[2].Value + "\" border=\"0\" class=\"afimg\" />");
+                sOutput = RegexUtils.GetCachedRegex(pattern).Replace(sOutput, match => "<img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + this.PortalId + "&moduleid=" + this.ForumModuleId + "&attachid=" + match.Groups[2].Value + "\" border=\"0\" class=\"afimg\" />");
             }
 
             // Legacy attachment functionality, uses "attachid"
@@ -1124,7 +1123,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(this.Request)) + "/";
                 const string pattern = "(&#91;THUMBNAIL:(.+?)&#93;)";
-                sOutput = Regex.Replace(sOutput, pattern, match =>
+                sOutput = RegexUtils.GetCachedRegex(pattern).Replace(sOutput, match =>
                 {
                     var thumbId = match.Groups[2].Value.Split(':')[0];
                     var parentId = match.Groups[2].Value.Split(':')[1];
@@ -1168,7 +1167,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 var fileExtension = System.IO.Path.GetExtension(filename).TextOrEmpty().Replace(".", string.Empty);
 
-                filename = HttpUtility.HtmlEncode(DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^__\d+__\d+__", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(filename, string.Empty));
+                filename = System.Net.WebUtility.HtmlEncode(DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^__\d+__\d+__", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(filename, string.Empty));
                 sb.AppendFormat(itemTemplate, portalId, moduleId, attachId, fileExtension, filename);
             }
 

@@ -151,7 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         // build channel
                         sb.Append(this.WriteElement("channel", 1));
-                        sb.Append(this.WriteElement("title", HttpUtility.HtmlEncode(ps.PortalName) + " " + this.forumName, 2));
+                        sb.Append(this.WriteElement("title", System.Net.WebUtility.HtmlEncode(ps.PortalName) + " " + this.forumName, 2));
                         sb.Append(this.WriteElement("link", uRL, 2));
                         sb.Append(this.WriteElement("description", this.forumDescription, 2));
                         sb.Append(this.WriteElement("language", this.PortalSettings.DefaultLanguage, 2));
@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
 
-                        sb.Append("<atom:link href=\"http://" + this.Request.Url.Host + HttpUtility.HtmlEncode(this.Request.RawUrl) + "\" rel=\"self\" type=\"application/rss+xml\" />");
+                        sb.Append("<atom:link href=\"http://" + this.Request.Url.Host + System.Net.WebUtility.HtmlEncode(this.Request.RawUrl) + "\" rel=\"self\" type=\"application/rss+xml\" />");
                         sb.Append(this.WriteElement("/channel", 1));
                         sb.Replace("[LASTBUILDDATE]", this.lastBuildDate.ToString("r"));
                         sb.Append("</rss>");

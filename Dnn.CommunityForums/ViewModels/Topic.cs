@@ -18,12 +18,11 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Web.UI.Design;
-
 namespace DotNetNuke.Modules.ActiveForums.ViewModels
 {
     using System;
     using System.Collections.Generic;
+    using System.Web.UI.Design;
 
     public class Topic
     {

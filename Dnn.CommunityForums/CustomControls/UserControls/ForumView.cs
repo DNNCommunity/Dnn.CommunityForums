@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
@@ -32,6 +30,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:ForumView runat=server></{0}:ForumView>")]
     public class ForumView : ForumBase
@@ -206,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (this.Forums == null)
                     {
                         string cachekey = string.Format(CacheKeys.ForumViewForUser, this.ForumModuleId, this.ForumUser.UserId, this.ForumIds, HttpContext.Current?.Response?.Cookies["language"]?.Value);
-                        var obj = DataCache.ContentCacheRetrieve(this.ForumModuleId, cachekey);
+                        var obj = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.ForumModuleId, cachekey);
                         if (obj == null)
                         {
                             this.Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
@@ -215,7 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 this.Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(forumId), this.ForumModuleId));
                             }
 
-                            DataCache.ContentCacheStore(this.ForumModuleId, cachekey, this.Forums);
+                            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ForumModuleId, cachekey, this.Forums);
                         }
                         else
                         {

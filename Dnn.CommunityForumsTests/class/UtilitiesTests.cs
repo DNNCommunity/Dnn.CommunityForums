@@ -96,7 +96,7 @@
         }
 
         [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlEncode.")]
         public void HtmlEncodeTest()
         {
             // Arrange
@@ -111,7 +111,7 @@
         }
 
         [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlDecode.")]
         public void HtmlDecodeTestEmptyTag()
         {
             // Arrange
@@ -123,7 +123,7 @@
         }
 
         [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlDecode.")]
         public void HtmlDecodeTest()
         {
             // Arrange

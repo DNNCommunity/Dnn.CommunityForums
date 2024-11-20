@@ -18,13 +18,12 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using Newtonsoft.Json.Linq;

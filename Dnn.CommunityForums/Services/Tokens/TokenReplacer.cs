@@ -18,14 +18,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Runtime.CompilerServices;
-
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 {
     using System;
     using System.Data.SqlTypes;
     using System.Linq;
     using System.Net;
+    using System.Runtime.CompilerServices;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -237,7 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         internal static StringBuilder ReplaceForumTokens(StringBuilder template, ForumInfo forum, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, int tabId, CurrentUserTypes currentUserType, Uri requestUri, string rawUrl)
         {
             /* if no last post or subject missing, remove associated last topic tokens */
-            if (forum.LastPostID == 0 || string.IsNullOrEmpty(HttpUtility.HtmlDecode(forum.LastPostSubject)))
+            if (forum.LastPostID == 0 || string.IsNullOrEmpty(System.Net.WebUtility.HtmlDecode(forum.LastPostSubject)))
             {
                 template = RemovePrefixedToken(template, "[FORUM:LASTPOSTSUBJECT");
                 template = RemovePrefixedToken(template, "[FORUM:LASTPOSTDISPLAYNAME");
@@ -312,7 +311,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             if (!string.IsNullOrEmpty(body))
             {
-                body = Utilities.ManageImagePath(HttpUtility.HtmlDecode(body), uri);
+                body = Utilities.ManageImagePath(System.Net.WebUtility.HtmlDecode(body), uri);
                 body = body.Replace("[", "&#91;").Replace("]", "&#93;");
                 if (body.ToUpper().Contains("&#91;CODE&#93;"))
                 {
@@ -322,7 +321,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
                 if (RegexUtils.GetCachedRegex("\\[CODE([^>]*)\\]", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).IsMatch(body))
                 {
-                    body = CodeParser.ParseCode(HttpUtility.HtmlDecode(body));
+                    body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
                 }
 
                 body = Utilities.StripExecCode(body);

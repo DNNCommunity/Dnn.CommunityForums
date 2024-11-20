@@ -354,7 +354,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             template = sHTML;
                         }
 
-                        templateInfo.Template = System.Web.HttpUtility.HtmlDecode(template);
+                        templateInfo.Template = System.Net.WebUtility.HtmlDecode(template);
                         tc.Template_Save(templateInfo);
                     }
                     catch (Exception ex)

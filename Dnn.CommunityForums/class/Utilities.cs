@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -38,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Xml.Linq;
 
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
@@ -48,6 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
     using Microsoft.SqlServer.Server;
+
     using static log4net.Appender.RollingFileAppender;
 
     public abstract partial class Utilities
@@ -162,8 +162,8 @@ namespace DotNetNuke.Modules.ActiveForums
             templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyToolbarTokenSynonyms(templateStringBuilder, portalSettings, language);
 
             // Search popup
-            templateStringBuilder.Replace("[AF:TB:SearchURL]", HttpUtility.HtmlEncode(NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search", $"f={forumId}" })));
-            templateStringBuilder.Replace("[AF:TB:AdvancedSearchURL]", HttpUtility.HtmlEncode( NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" })));
+            templateStringBuilder.Replace("[AF:TB:SearchURL]", System.Net.WebUtility.HtmlEncode(NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search", $"f={forumId}" })));
+            templateStringBuilder.Replace("[AF:TB:AdvancedSearchURL]", System.Net.WebUtility.HtmlEncode( NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" })));
             templateStringBuilder.Replace("[AF:TB:SearchText]", forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]");
             templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId, requestUri, rawUrl);
             return Utilities.LocalizeControl(templateStringBuilder.ToString());
@@ -173,8 +173,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             text = text.Trim();
             text = text.Replace(":", string.Empty);
-            text = Regex.Replace(text, @"[^\w]", "-");
-            text = Regex.Replace(text, @"([-]+)", "-");
+            text = RegexUtils.GetCachedRegex(@"[^\w]", RegexOptions.Compiled & RegexOptions.IgnoreCase).Replace(text, "-");
+            text = RegexUtils.GetCachedRegex(@"([-]+)", RegexOptions.Compiled & RegexOptions.IgnoreCase).Replace(text, "-");
             if (text.EndsWith("-"))
             {
                 text = text.Substring(0, text.Length - 1);
@@ -368,28 +368,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string PrepareForEdit(int portalId, int moduleId, string themePath, string text, bool allowHTML, EditorTypes editorType)
         {
-            if (!allowHTML)
+            if (!allowHTML || editorType == EditorTypes.TEXTBOX)
             {
-                text = text.Replace("&#91;", "[");
-                text = text.Replace("&#93;", "]");
-                text = text.Replace("<br>", System.Environment.NewLine);
-                text = text.Replace("<br />", System.Environment.NewLine);
-                text = text.Replace("<BR>", System.Environment.NewLine);
+                text = DecodeBrackets(text);
+                text = ReplaceHtmlBreakTagWithNewLine(text);
                 text = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, text, true, !allowHTML, HttpContext.Current.Request.Url);
-
-                return text;
-            }
-
-            if (editorType == EditorTypes.TEXTBOX)
-            {
-                text = text.Replace("&#91;", "[");
-                text = text.Replace("&#93;", "]");
-                text = text.Replace("<br>", System.Environment.NewLine);
-                text = text.Replace("<br />", System.Environment.NewLine);
-                text = text.Replace("<BR>", System.Environment.NewLine);
-                text = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, text, true, !allowHTML, HttpContext.Current.Request.Url);
-
-                return text;
             }
 
             return text;
@@ -445,15 +428,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 const string encodedHref = "&lt;a.*?href=[\"'](?<url>.*?)[\"'].*?&gt;(http[s]?.*?)&lt;/a&gt;"; // Encoded href regex
 
                 // Replace encoded url with decoded url
-                foreach (Match m in Regex.Matches(text, encodedHref, RegexOptions.IgnoreCase))
+                foreach (Match m in RegexUtils.GetCachedRegex(encodedHref, RegexOptions.IgnoreCase).Matches(text))
                 {
-                    text = text.Replace(m.Value, HttpUtility.HtmlDecode(m.Value));
+                    text = text.Replace(m.Value, System.Net.WebUtility.HtmlDecode(m.Value));
                 }
 
                 const string regHref = "<a.*?href=[\"'](?<url>.*?)[\"'].*?>(?<http>http[s]?.*?)</a>";
 
                 // Remove all exiting <A> anchors, so they will be treated by the ReplaceLink function. (adding target=_blank & nofollow)
-                foreach (Match m in Regex.Matches(text, regHref, RegexOptions.IgnoreCase))
+                foreach (Match m in RegexUtils.GetCachedRegex(regHref, RegexOptions.IgnoreCase).Matches(text))
                 {
                     text = text.Replace(m.Value, m.Groups["http"].Value.Contains("...") ? m.Groups["url"].Value : m.Groups["http"].Value);
                 }
@@ -468,7 +451,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 String strRegexUrl = @"(?<!['""]+|<a.*?>\s*)http[s]?://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?";
 
                 // Create auto link
-                text = Regex.Replace(text, strRegexUrl, m => ReplaceLink(m, currentSite, text), RegexOptions.IgnoreCase);
+                text = RegexUtils.GetCachedRegex(strRegexUrl, RegexOptions.IgnoreCase).Replace(text, m => ReplaceLink(m, currentSite, text));
 
                 if (string.IsNullOrEmpty(text))
                 {
@@ -488,9 +471,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sClean = editorType == EditorTypes.TEXTBOX ? CleanTextBox(portalId, sClean, allowHTML, useFilter, moduleId, themePath, processEmoticons) : CleanEditor(portalId, sClean, useFilter, moduleId, themePath, processEmoticons);
 
-                var regExp = new Regex(@"(<a [^>]*>)(?'url'(\S*?))(</a>)", RegexOptions.IgnoreCase);
-                var matches = regExp.Matches(sClean);
-                foreach (Match match in matches)
+                var pattern = @"(<a [^>]*>)(?'url'(\S*?))(</a>)";
+                foreach (Match match in RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase).Matches(sClean))
                 {
                     var sNewURL = match.Groups[0].Value;
                     var sStart = match.Groups[1].Value;
@@ -505,13 +487,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!allowScript)
                 {
-                    sClean = sClean.Replace("&#91;", "[");
-                    sClean = sClean.Replace("&#93;", "]");
+                    sClean = DecodeBrackets(sClean);
                     sClean = XSSFilter(sClean);
                 }
 
-                sClean = sClean.Replace("[", "&#91;");
-                sClean = sClean.Replace("]", "&#93;");
+                sClean = EncodeBrackets(sClean);
             }
 
             return sClean;
@@ -526,39 +506,36 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var codes = new List<string>();
                     var i = 0;
-                    var objRegEx = new Regex(@"(\[CODE\](.*?)\[\/CODE\])", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-                    var matches = objRegEx.Matches(strMessage);
-                    foreach (Match m in matches)
+                    var pattern = @"(\[CODE\](.*?)\[\/CODE\])";
+                    foreach (Match m in RegexUtils.GetCachedRegex(pattern, RegexOptions.Singleline & RegexOptions.IgnoreCase).Matches(strMessage))
                     {
                         strMessage = strMessage.Replace(m.Value, string.Concat("[CODEHOLDER", i, "]"));
                         codes.Add(m.Value);
                         i += 1;
                     }
 
-                    strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
-                    strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
+                    strMessage = EncodeFormTags(strMessage);
                     if (useFilter)
                     {
                         strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
                     }
 
-                    strMessage = HttpUtility.HtmlEncode(strMessage);
-                    strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
+                    strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
+                    strMessage = ReplaceNewLineWithHtmlBreakTag(strMessage);
 
                     i = 0;
                     foreach (var s in codes)
                     {
-                        strMessage = strMessage.Replace(string.Concat("[CODEHOLDER", i, "]"), HttpUtility.HtmlEncode(s));
+                        strMessage = strMessage.Replace(string.Concat("[CODEHOLDER", i, "]"), System.Net.WebUtility.HtmlEncode(s));
                         i += 1;
                     }
                 }
                 else
                 {
-                    strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
-                    strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
+                    strMessage = EncodeFormTags(strMessage);
                     if (!allowHTML)
                     {
-                        strMessage = HttpUtility.HtmlEncode(strMessage);
+                        strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
                     }
 
                     if (useFilter)
@@ -566,14 +543,33 @@ namespace DotNetNuke.Modules.ActiveForums
                         strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
                     }
 
-                    strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
+                    strMessage = ReplaceNewLineWithHtmlBreakTag(strMessage);
                 }
 
-                strMessage = strMessage.Replace("[", "&#91;");
-                strMessage = strMessage.Replace("]", "&#93;");
+                strMessage = EncodeBrackets(strMessage);
             }
 
             return strMessage;
+        }
+
+        private static string ReplaceHtmlBreakTagWithNewLine(string text)
+        {
+            return text.Replace("<br>", System.Environment.NewLine).Replace("<br />", System.Environment.NewLine).Replace("<BR>", System.Environment.NewLine);
+        }
+
+        private static string ReplaceNewLineWithHtmlBreakTag(string text)
+        {
+            return RegexUtils.GetCachedRegex(System.Environment.NewLine).Replace(text, " <br /> ");
+        }
+
+        private static string EncodeBrackets(string text)
+        {
+            return text.Replace("[", "&#91;").Replace("]", "&#93;");
+        }
+
+        private static string DecodeBrackets(string text)
+        {
+            return text.Replace("&#91;", "[").Replace("&#93;", "]");
         }
 
         private static string CleanEditor(int portalId, string text, bool useFilter, int moduleId, string themePath, bool processEmoticons)
@@ -591,9 +587,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
                 }
 
-                strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
-                strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
-
+                strMessage = EncodeFormTags(strMessage);
                 strMessage = strMessage.Replace("[CODEHOLDER]", sCode);
             }
             else
@@ -603,13 +597,20 @@ namespace DotNetNuke.Modules.ActiveForums
                     strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
                 }
 
-                strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
-                strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
+                strMessage = EncodeFormTags(strMessage);
             }
 
             return strMessage;
         }
 
+        private static string EncodeFormTags(string text)
+        {
+            text = RegexUtils.GetCachedRegex("<form>", RegexOptions.IgnoreCase).Replace(text, "&lt;form&gt;");
+            text = RegexUtils.GetCachedRegex("</form>", RegexOptions.IgnoreCase).Replace(text, "&lt;/form&gt;");
+            return text;
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public static string GetCaseInsensitiveSearch(string strSearch)
         {
             var strReturn = string.Empty;
@@ -647,6 +648,27 @@ namespace DotNetNuke.Modules.ActiveForums
             return !string.IsNullOrEmpty(body.Replace("&nbsp;", string.Empty));
         }
 
+        internal static string StripQuoteTag(string text)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                var patterns = new[]
+                {
+                    @"(?<removequote><blockquote>.*</blockquote>).*?",
+                    @"(?<removequote>\[quote\].*\[/quote\]).*?",
+                };
+                foreach (var pattern in patterns)
+                {
+                    foreach (Match match in RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.ExplicitCapture).Matches(text))
+                    {
+                        text = text.Replace(match.Groups["removequote"].Value, string.Empty);
+                    }
+                }
+            }
+
+            return text;
+        }
+
         public static string StripHTMLTag(string sText)
         {
             if (string.IsNullOrEmpty(sText))
@@ -655,7 +677,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             const string pattern = @"<(.|\n)*?>";
-            return Regex.Replace(sText, pattern, string.Empty).Trim();
+            return RegexUtils.GetCachedRegex(pattern).Replace(sText, string.Empty).Trim();
         }
 
         public static bool HasHTML(string sText)
@@ -666,16 +688,18 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             const string pattern = @"<(.|\n)*?>";
-            return Regex.IsMatch(sText, pattern);
+            return RegexUtils.GetCachedRegex(pattern).IsMatch(sText);
         }
 
         public static string StripTokens(string sText)
         {
             sText = sText.Replace("AF:DIR:", "AFHOLD:");
-            const string pattern = @"(\[AF:.+?\])";
-            sText = Regex.Replace(sText, pattern, string.Empty);
-            sText = Regex.Replace(sText, @"(\[/AF:.+?\])", string.Empty);
-            sText = Regex.Replace(sText, @"(\[RESX:.+?\])", string.Empty);
+            string[] patterns = { @"(\[AF:.+?\])", @"(\[RESX:.+?\])", @"(\[RESX:.+?\])" };
+            foreach (var pattern in patterns)
+            {
+                sText = RegexUtils.GetCachedRegex(pattern).Replace(sText, string.Empty);
+            }
+
             sText = sText.Replace("[ATTACHMENTS]", string.Empty);
             sText = sText.Replace("[MODEDITDATE]", string.Empty);
             sText = sText.Replace("[SIGNATURE]", string.Empty);
@@ -687,7 +711,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string XSSFilter(string sText = "", bool removeHTML = false)
         {
             const string pattern = "<style.*/*>|</style>|<script.*/*>|</script>|<[a-zA-Z][^>]*=[`'\"]+javascript:\\w+.*[`'\"]+>|<\\w+[^>]*\\son\\w+.*[ /]*>|<[a-zA-Z][^>].*=javascript:.*>|<\\w+[^>]*[\\x00-\\x20]*=[\\x00-\\x20]*[`'\"]*[\\x00-\\x20]*j[\\x00-\\x20]*a[\\x00-\\x20]*v[\\x00-\\x20]*a[\\x00-\\x20]*s[\\x00-\\x20]*c[\\x00-\\x20]*r[\\x00-\\x20]*i[\\x00-\\x20]*p[\\x00-\\x20]*t[\\x00-\\x20]*(.|\\n)*?";
-            foreach (Match m in Regex.Matches(sText, pattern, RegexOptions.IgnoreCase))
+            foreach (Match m in RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase).Matches(sText))
             {
                 sText = sText.Replace(m.Value, StrongEncode(m.Value));
             }
@@ -715,13 +739,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     var mInner = aspRunAt.Match(m.Value, 0);
                     if (mInner.Success)
                     {
-                        sText = sText.Replace(tag, HttpUtility.HtmlEncode(m.Value));
+                        sText = sText.Replace(tag, System.Net.WebUtility.HtmlEncode(m.Value));
                         var endTag = new System.Web.RegularExpressions.EndTagRegex();
                         m = endTag.Match(sText, i);
                         if (m.Success)
                         {
                             i = m.Index + m.Length;
-                            sText = sText.Replace(m.Value, HttpUtility.HtmlEncode(m.Value));
+                            sText = sText.Replace(m.Value, System.Net.WebUtility.HtmlEncode(m.Value));
                         }
                     }
 
@@ -731,12 +755,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 i += 1;
             }
 
-            foreach (var m in Regex.Matches(sText, "<%(?!@)(?<code>.*?)%>", RegexOptions.IgnoreCase))
+            foreach (var m in RegexUtils.GetCachedRegex("<%(?!@)(?<code>.*?)%>", RegexOptions.IgnoreCase).Matches(sText))
             {
-                sText = sText.Replace(m.ToString(), HttpUtility.HtmlEncode(m.ToString().Replace("<br />", System.Environment.NewLine)));
+                sText = sText.Replace(m.ToString(), System.Net.WebUtility.HtmlEncode(m.ToString().Replace("<br />", System.Environment.NewLine)));
             }
 
-            foreach (var m in Regex.Matches(sText, "<!--\\s*#(?i:include)\\s*(?<pathtype>[\\w]+)\\s*=\\s*[\"']?(?<filename>[^\\\"']*?)[\"']?\\s*-->", RegexOptions.IgnoreCase))
+            foreach (var m in RegexUtils.GetCachedRegex("<!--\\s*#(?i:include)\\s*(?<pathtype>[\\w]+)\\s*=\\s*[\"']?(?<filename>[^\\\"']*?)[\"']?\\s*-->", RegexOptions.IgnoreCase).Matches(sText))
             {
                 sText = sText.Replace(m.ToString(), StrongEncode(m.ToString()));
             }
@@ -755,7 +779,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string StrongDecode(string text)
         {
             var @out = string.Empty;
-            foreach (Match m in Regex.Matches(text, "&#[a-zA-Z0-9];"))
+            foreach (Match m in RegexUtils.GetCachedRegex("&#[a-zA-Z0-9];").Matches(text))
             {
                 var scode = m.Value.Replace("&#", string.Empty).Replace(";", string.Empty);
                 text = text.Replace(m.Value, scode);
@@ -1187,11 +1211,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (canRead)
                     {
                         string[] @params = { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + lastPostID, ParamKeys.PageJumpId + "=" + intPages };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, @params), postId, System.Web.HttpUtility.HtmlEncode(subject));
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, @params), postId, System.Net.WebUtility.HtmlEncode(subject));
                     }
                     else
                     {
-                        sb.Append(HttpUtility.HtmlEncode(subject));
+                        sb.Append(System.Net.WebUtility.HtmlEncode(subject));
                     }
                 }
                 else
@@ -1199,11 +1223,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (canRead)
                     {
                         string[] @params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + lastPostID };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, @params), postId, System.Web.HttpUtility.HtmlEncode(subject));
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, @params), postId, System.Net.WebUtility.HtmlEncode(subject));
                     }
                     else
                     {
-                        sb.Append(HttpUtility.HtmlEncode(subject));
+                        sb.Append(System.Net.WebUtility.HtmlEncode(subject));
                     }
                 }
             }
@@ -1217,7 +1241,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             const string expression = @"\[SPACER\:(\d+)\:(\d+)\]";
 
-            return Regex.Replace(template, expression, spacerTemplate, RegexOptions.IgnoreCase);
+            return RegexUtils.GetCachedRegex(expression, RegexOptions.IgnoreCase).Replace(template, spacerTemplate);
         }
 
         internal static string GetSqlString(string sqlFile)
@@ -1286,7 +1310,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (scriptSafe)
                 {
-                    newValue = HttpUtility.HtmlEncode(newValue).Replace("'", @"\'");
+                    newValue = System.Net.WebUtility.HtmlEncode(newValue).Replace("'", @"\'");
                     newValue = newValue.Replace("[", @"\[").Replace("]", @"\]");
                     newValue = JSON.EscapeJsonString(newValue);
                 }

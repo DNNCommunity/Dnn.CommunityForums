@@ -29,6 +29,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Text.RegularExpressions;
     using System.Web;
 
+    using DotNetNuke.Common.Utilities;
+
     public partial class Utilities
     {
         public class JSON
@@ -203,7 +205,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
 
                             val = val.Replace("#^", ", ");
-                            dict.Add(pairArray[0], HttpUtility.UrlDecode(val));
+                            dict.Add(pairArray[0], System.Net.WebUtility.UrlDecode(val));
                         }
                     }
 
@@ -263,8 +265,7 @@ namespace DotNetNuke.Modules.ActiveForums
             /// <returns>string</returns>
             internal static string EscapeJsonString(string originalString)
             {
-                Regex reg = new Regex("\\s+", RegexOptions.Multiline);
-                originalString = reg.Replace(originalString, " ");
+                originalString = RegexUtils.GetCachedRegex("\\s+", RegexOptions.Multiline).Replace(originalString, " ");
                 return IsJSONArray(originalString) ? originalString : originalString.Replace("\\/", "/").Replace("/", "\\/").Replace("\\\"", "\"").Replace("\"", "\\\"").Replace(System.Environment.NewLine, string.Empty);
             }
         }

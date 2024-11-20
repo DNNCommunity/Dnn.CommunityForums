@@ -18,14 +18,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Text;
-using System.Text.RegularExpressions;
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
+    using System.Text;
+    using System.Text.RegularExpressions;
     using System.Web;
+
+    using DotNetNuke.Common.Utilities;
 
     internal static class TemplateCache
     {

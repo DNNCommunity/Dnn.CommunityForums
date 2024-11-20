@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 sb.Append(",");
                 sb.Append(Utilities.JSON.Pair("IsRequired", p.IsRequired.ToString().ToLowerInvariant()));
                 sb.Append(",");
-                sb.Append(Utilities.JSON.Pair("ValidationExpression", HttpUtility.UrlEncode(HttpUtility.HtmlEncode(p.ValidationExpression.ToString()))));
+                sb.Append(Utilities.JSON.Pair("ValidationExpression", System.Net.WebUtility.UrlEncode(System.Net.WebUtility.HtmlEncode(p.ValidationExpression.ToString()))));
                 sb.Append(",");
                 sb.Append(Utilities.JSON.Pair("ViewTemplate", p.ViewTemplate.ToString()));
                 sb.Append(",");
@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 sb.Append(",");
                 sb.Append(Utilities.JSON.Pair("DefaultValue", p.DefaultValue.ToString()));
                 sb.Append(",");
-                sb.Append(Utilities.JSON.Pair("Label", HttpUtility.HtmlEncode("[RESX:" + p.Name + "]")));
+                sb.Append(Utilities.JSON.Pair("Label", System.Net.WebUtility.HtmlEncode("[RESX:" + p.Name + "]")));
                 sb.Append("},");
             }
 

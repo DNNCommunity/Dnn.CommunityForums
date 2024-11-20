@@ -212,7 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private static string CleanXmlString(string xmlString)
         {
-            xmlString = HttpUtility.HtmlEncode(xmlString);
+            xmlString = System.Net.WebUtility.HtmlEncode(xmlString);
             return xmlString;
         }
 
@@ -377,7 +377,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 dr.Close();
-                sb.Append("<atom:link href=\"http://" + HttpContext.Current.Request.Url.Host + HttpUtility.HtmlEncode(HttpContext.Current.Request.RawUrl) + "\" rel=\"self\" type=\"application/rss+xml\" />");
+                sb.Append("<atom:link href=\"http://" + HttpContext.Current.Request.Url.Host + System.Net.WebUtility.HtmlEncode(HttpContext.Current.Request.RawUrl) + "\" rel=\"self\" type=\"application/rss+xml\" />");
                 sb.Append(WriteElement("/channel", 1));
                 sb.Append("</rss>");
                 sb.Replace("[LASTBUILDDATE]", lastBuildDate.ToString("r"));

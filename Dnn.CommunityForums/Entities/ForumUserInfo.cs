@@ -18,17 +18,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-
-using DotNetNuke.Security.Permissions;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
     using System.Web;
+
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.UserControls;
 
@@ -464,11 +463,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             switch (this.MainSettings.AllowSignatures)
                             {
                                 case 1:
-                                    sSignature = System.Web.HttpUtility.HtmlEncode(sSignature);
+                                    sSignature = System.Net.WebUtility.HtmlEncode(sSignature);
                                     sSignature = sSignature.Replace(System.Environment.NewLine, "<br />");
                                     break;
                                 case 2:
-                                    sSignature = System.Web.HttpUtility.HtmlDecode(sSignature);
+                                    sSignature = System.Net.WebUtility.HtmlDecode(sSignature);
                                     break;
                             }
                         }
