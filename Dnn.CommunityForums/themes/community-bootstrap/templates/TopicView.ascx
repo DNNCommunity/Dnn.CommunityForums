@@ -64,7 +64,7 @@
 
 			
 						<div class="dcf-topic-info bg-light px-3 pb-2 mb-2 mb-md-0">
-							[POSTINFO]
+							[DCF:TEMPLATE-PROFILEINFO]
 						</div>
 
 					<div class="dcf-topic-content px-3">
@@ -111,7 +111,7 @@
 				<div class="d-flex flex-wrap">
 
 						<div class="dcf-topic-info bg-light px-3 pb-2  mb-2 mb-md-0">
-							[POSTINFO]
+							[DCF:TEMPLATE-PROFILEINFO]
 						</div>
 
 						<div class="dcf-topic-content px-3">

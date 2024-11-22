@@ -539,6 +539,12 @@ namespace DotNetNuke.Modules.ActiveForums
             this.ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
             string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ReplyEditor", this.fi.FeatureSettings.ReplyFormId);
+            
+#region "Backward compatilbility -- remove in v10.00.00"
+            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+#endregion "Backward compatilbility -- remove in v10.00.00"
+
             if (this.isEdit)
             {
                 template = template.Replace("[RESX:ReplyToTopic]", "[RESX:EditingExistingReply]");
