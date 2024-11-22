@@ -51,7 +51,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 };
                 if (string.IsNullOrEmpty(summary))
                 {
-                    summary = Utilities.StripHTMLTag(body);
+                    summary = Utilities.StripQuoteTag(body);
+                    summary = Utilities.StripHTMLTag(summary);
                     if (summary.Length > 150)
                     {
                         summary = summary.Substring(0, 150) + "...";
@@ -59,6 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 ji.Summary = summary;
+                ji.Body = Utilities.StripQuoteTag(body);
                 ji.Body = Utilities.StripHTMLTag(body);
                 ji.JournalTypeId = 5;
                 ji.ObjectKey = $"{forumId}:{topicId}";
