@@ -73,7 +73,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.trGroups.Visible = false;
                 this.trName.Visible = false;
                 this.trPrefix.Visible = false;
-                this.trEmail.Visible = false;
                 this.trActive.Visible = false;
                 this.trHidden.Visible = false;
                 this.reqGroups.Enabled = false;
@@ -435,6 +434,7 @@ namespace DotNetNuke.Modules.ActiveForums
             AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModNotifyTemplateId, parameters[41]);
             AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoSubscribeEnabled, parameters[42]);
             AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, parameters[43]);
+            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EmailNotificationSubjectTemplate, parameters[44]);
         }
 
         private void LoadForum(int forumId)
@@ -570,6 +570,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.txtAutoTrustLevel.Text = featureSettings.AutoTrustLevel.ToString();
             this.txtEmailAddress.Text = featureSettings.EmailAddress;
+            this.txtEmailNotificationSubjectTemplate.Text = featureSettings.EmailNotificationSubjectTemplate;
             this.txtCreatePostCount.Text = featureSettings.CreatePostCount.ToString();
             this.txtReplyPostCount.Text = featureSettings.ReplyPostCount.ToString();
 

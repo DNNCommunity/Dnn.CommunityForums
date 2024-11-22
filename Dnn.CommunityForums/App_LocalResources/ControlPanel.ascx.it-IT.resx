@@ -1474,4 +1474,10 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:Tips:InheritSecurityOn].Text" xml:space="preserve">
     <value>{0} eredita la sicurezza da {1}</value>
   </data>
+  <data name="[RESX:EmailSubjectTemplate].Text" xml:space="preserve">
+    <value>Modello di oggetto dell'email</value>
+  </data>
+  <data name="[RESX:Tips:EmailSubjectTemplate].Text" xml:space="preserve">
+    <value>Inserisci il modello da utilizzare come oggetto per l'invio delle notifiche. Il modello può includere token. Visita il repository Github (https://github.com/DNNCommunity/Dnn.CommunityForums) dei forum della community DNN e consulta il wiki per la documentazione sui token.</value>
+  </data>
 </root>

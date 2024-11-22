@@ -141,6 +141,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string EmailAddress => Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.EmailAddress], string.Empty);
 
         [IgnoreColumn]
+        public string EmailNotificationSubjectTemplate => Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.EmailNotificationSubjectTemplate], string.Empty);
+
+        [IgnoreColumn]
         public bool IndexContent => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.IndexContent]);
 
         /// <summary>
