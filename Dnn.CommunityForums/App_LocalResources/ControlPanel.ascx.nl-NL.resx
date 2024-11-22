@@ -1624,4 +1624,10 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:Tips:InheritSecurityOn].Text" xml:space="preserve">
     <value>{0} erft de veiligheid van {1}</value>
   </data>
+  <data name="[RESX:EmailSubjectTemplate].Text" xml:space="preserve">
+    <value>E-mail Onderwerp Sjabloon</value>
+  </data>
+  <data name="[RESX:Tips:EmailSubjectTemplate].Text" xml:space="preserve">
+    <value>Voer de sjabloon in die als onderwerpregel moet worden gebruikt bij het verzenden van meldingen. De sjabloon kan tokens bevatten. Ga naar de Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums) van de DNN-communityforums en bekijk de wiki voor documentatie over tokens.</value>
+  </data>
 </root>

@@ -1579,4 +1579,10 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:Tips:InheritSettingsRecommended].Text" xml:space="preserve">
     <value>{0} has the same settings as {1}, so you should enable 'inherit settings' for {0}</value>
   </data>
+  <data name="[RESX:EmailSubjectTemplate].Text" xml:space="preserve">
+    <value>Email Subject Template</value>
+  </data>
+  <data name="[RESX:Tips:EmailSubjectTemplate].Text" xml:space="preserve">
+    <value>Enter the template to be used as the subject line when sending notifications. The template can include tokens. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums) and review the wiki for documentation on tokens.</value>
+  </data>
 </root>

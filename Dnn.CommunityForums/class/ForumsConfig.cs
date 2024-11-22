@@ -250,7 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         SortOrder = c,
                                         ForumSettingsKey = $"G:{groupId}",
                                         PermissionsId = SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId,
-};
+                                    };
                                     new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, true, true, true);
                                 }
                             }
@@ -598,6 +598,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             templateInfo.Subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(templateInfo.Subject), PortalSettings.Current, PortalSettings.Current.DefaultLanguage).ToString();
                             tc.Template_Save(templateInfo);
+                            Settings.SaveSetting(templateInfo.ModuleId, $"M:{templateInfo.ModuleId}", ForumSettingKeys.EmailNotificationSubjectTemplate, templateInfo.Subject);
+                            DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(templateInfo.ModuleId);
                         }
                         catch (Exception ex)
                         {
@@ -691,6 +693,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 string sKey = $"M:{moduleId}";
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.DefaultSettingsKey, sKey);
+                if (string.IsNullOrEmpty(SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.EmailNotificationSubjectTemplate))
+                {
+                    Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EmailNotificationSubjectTemplate, "[FORUMAUTHOR:DISPLAYNAME] [POSTEDORREPLIEDTO] [SUBSCRIBEDFORUMORTOPICSUBJECTFORUMNAME] on [PORTAL:PORTALNAME]");
+                }
+
                 Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EmailAddress, string.Empty);
                 Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.UseFilter, "true");
                 Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowPostIcon, "false");
@@ -742,12 +749,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ReplyFormId, Convert.ToString(replyEditorTemplateId));
                 Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.QuickReplyFormId, Convert.ToString(quickReplyTemplateId));
                 Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ProfileTemplateId, Convert.ToString(profileInfoTemplateId));
+                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(moduleId);
             }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
-            
+
         }
     }
 }

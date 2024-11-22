@@ -274,6 +274,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ModDeleteTemplateId = "MODDELETETEMPLATEID";
         public const string ModNotifyTemplateId = "MODNOTIFYTEMPLATEID";
         public const string EmailAddress = "EMAILADDRESS";
+        public const string EmailNotificationSubjectTemplate = "EMAILNOTIFICATIONSUBJECTTEMPLATE";
         public const string UseFilter = "USEFILTER";
         public const string AllowAttach = "ALLOWATTACH";
         public const string TopicFormId = "TOPICFORMID";

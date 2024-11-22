@@ -50,13 +50,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author)
         {
-            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = Utilities.GetPortalSettings(portalId);
-            var sTemplate = string.Empty;
-            var ti = new TemplateController().Template_Get(templateId);
-            var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url, HttpContext.Current.Request.RawUrl);
-            var body = TemplateUtils.ParseEmailTemplate(ti.Template, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url, HttpContext.Current.Request.RawUrl);
             var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
+            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = Utilities.GetPortalSettings(portalId);
             var sFrom = fi.FeatureSettings.EmailAddress != string.Empty ? fi.FeatureSettings.EmailAddress : portalSettings.Email;
+            var subjectTemplate = !string.IsNullOrEmpty(fi.FeatureSettings.EmailNotificationSubjectTemplate) ?
+                fi.FeatureSettings.EmailNotificationSubjectTemplate :
+                (!string.IsNullOrEmpty(fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate) ?
+                    fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate :
+                    SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.EmailNotificationSubjectTemplate);
+            var ti = new TemplateController().Template_Get(templateId);
+            var subject = TemplateUtils.ParseEmailTemplate(subjectTemplate, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url, HttpContext.Current.Request.RawUrl);
+            var body = TemplateUtils.ParseEmailTemplate(ti.Template, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url, HttpContext.Current.Request.RawUrl);
 
             // Send now
             var recipients = new List<string>
@@ -90,6 +94,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             TemplateController tc = new TemplateController();
             TemplateUtils.lstSubscriptionInfo = subs;
             TemplateInfo ti = templateId > 0 ? tc.Template_Get(templateId) : tc.Template_Get("SubscribedEmail", portalId, moduleID);
+            var subjectTemplate = !string.IsNullOrEmpty(fi.FeatureSettings.EmailNotificationSubjectTemplate) ?
+                fi.FeatureSettings.EmailNotificationSubjectTemplate :
+                (!string.IsNullOrEmpty(fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate) ?
+                    fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate :
+                    SettingsBase.GetModuleSettings(moduleID).ForumFeatureSettings.EmailNotificationSubjectTemplate);
             IEnumerable<CultureInfo> userCultures = subs.Select(s => s.UserCulture).Distinct();
             foreach (CultureInfo userCulture in userCultures)
             {
@@ -112,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             {
                                 topicSubscriber.Email,
                             },
-                            Subject = Utilities.StripHTMLTag(TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: topicSubscriber.User, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl)),
+                            Subject = Utilities.StripHTMLTag(TemplateUtils.ParseEmailTemplate(subjectTemplate, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: topicSubscriber.User, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl)),
                             Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: topicSubscriber.User, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl),
                         });
                     }
@@ -129,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             {
                                 forumSubscriber.Email,
                             },
-                            Subject = Utilities.StripHTMLTag(TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: forumSubscriber.User, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl)),
+                            Subject = Utilities.StripHTMLTag(TemplateUtils.ParseEmailTemplate(subjectTemplate, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: forumSubscriber.User, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl)),
                             Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: forumSubscriber.User, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl),
                         });
                     }

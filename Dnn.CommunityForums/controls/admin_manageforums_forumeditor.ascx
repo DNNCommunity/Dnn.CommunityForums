@@ -242,11 +242,17 @@ function saveSettings(){
     } else {
         var ProfileTemplateId = 0;
     };
-	var EmailAddress = document.getElementById("<%=txtEmailAddress.ClientID%>");
+    var EmailAddress = document.getElementById("<%=txtEmailAddress.ClientID%>");
     if (EmailAddress) {
         EmailAddress = EmailAddress.value;
     } else {
         EmailAddress = '';
+    };
+    var EmailNotificationSubjectTemplate = document.getElementById("<%=txtEmailNotificationSubjectTemplate.ClientID%>");
+    if (EmailNotificationSubjectTemplate) {
+        EmailNotificationSubjectTemplate = EmailNotificationSubjectTemplate.value;
+    } else {
+        EmailNotificationSubjectTemplate = '';
     };
     var CreatePostCount = document.getElementById("<%=txtCreatePostCount.ClientID%>");
     if (CreatePostCount) {
@@ -360,7 +366,7 @@ function saveSettings(){
 		IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, EditorMobile, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, AttachInsertAllowed, MaxAttachWidth,
 		MaxAttachHeight, AttachConvertToJGPAllowed, AllowHtml, EditorType, EditorHeight, EditorWidth, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles, TopicFormId, ReplyFormId,
 		AutoSubscribeRoles, ProfileTemplateId, IsModerated, DefaultTrustLevel, AutoTrustLevel, ModApproveTemplateId, ModRejectTemplateId, ModMoveTemplateId, ModDeleteTemplateId,
-        ModNotifyTemplateId, AutoSubscribeEnabled, QuickReplyFormId);
+        ModNotifyTemplateId, AutoSubscribeEnabled, QuickReplyFormId, EmailNotificationSubjectTemplate);
 
 
 };
@@ -990,14 +996,6 @@ function afadmin_getProperties() {
 						<td>
 							<img src="~/DesktopModules/ActiveForums/images/spacer.gif" width="20" runat="server" /></td>
 					</tr>
-                    <tr id="trEmail" runat="server">
-                        <td>
-                            <img id="Img19" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:EmailAddress]');" onmouseout="amHideTip(this);" /></td>
-                        <td class="amcpbold" style="white-space: nowrap">[RESX:EmailAddress]:</td>
-                        <td width="100%">
-                            <asp:TextBox ID="txtEmailAddress" runat="server" CssClass="amcptxtbx" /></td>
-                        <td></td>
-                    </tr>
                 </table>
 				<table id="trActive" runat="server" width="100%">
 					<tr>
@@ -1098,11 +1096,11 @@ function afadmin_getProperties() {
 						<td></td>
 					</tr>
 					 <tr>
-					<td><img id="Img24" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:QuickReplyForm]');" onmouseout="amHideTip(this);" /></td>
-					<td class="amcpbold" style="white-space:nowrap">[RESX:QuickReplyForm]:</td>
-					<td width="100%"><asp:DropDownList ID="drpQuickReplyForm" runat="server" CssClass="amcptxtbx" /></td>
-					<td></td>
-				</tr>
+					    <td><img id="Img24" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:QuickReplyForm]');" onmouseout="amHideTip(this);" /></td>
+					    <td class="amcpbold" style="white-space:nowrap">[RESX:QuickReplyForm]:</td>
+					    <td width="100%"><asp:DropDownList ID="drpQuickReplyForm" runat="server" CssClass="amcptxtbx" /></td>
+					    <td></td>
+				    </tr>
 					<tr>
 						<td>
 							<img id="Img16" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:UserProfileTemplate]');" onmouseout="amHideTip(this);" /></td>
@@ -1111,6 +1109,22 @@ function afadmin_getProperties() {
 							<asp:DropDownList ID="drpProfileDisplay" runat="server" CssClass="amcptxtbx" /></td>
 						<td></td>
 					</tr>
+                    <tr id="trEmail" runat="server">
+                        <td>
+                            <img id="Img19" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:EmailAddress]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap">[RESX:EmailAddress]:</td>
+                        <td width="100%">
+                            <asp:TextBox ID="txtEmailAddress" runat="server" CssClass="amcptxtbx" /></td>
+                        <td></td>
+                    </tr>
+                    <tr id="trEmailNotificationSubjectTemplate" runat="server">
+                        <td>
+                            <img id="Img27" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:EmailSubjectTemplate]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap">[RESX:EmailSubjectTemplate]:</td>
+                        <td width="100%">
+                            <asp:TextBox ID="txtEmailNotificationSubjectTemplate" runat="server" CssClass="amcptxtbx" /></td>
+                        <td></td>
+                    </tr>
                     <tr>
                         <td>
                             <img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:CreatePostCount]');" onmouseout="amHideTip(this);" /></td>

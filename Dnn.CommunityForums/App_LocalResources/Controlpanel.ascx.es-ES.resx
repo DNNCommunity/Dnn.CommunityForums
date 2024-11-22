@@ -1474,4 +1474,10 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:Tips:InheritSecurityOn].Text" xml:space="preserve">
     <value>{0} hereda la seguridad de {1}</value>
   </data>
+  <data name="[RESX:EmailSubjectTemplate].Text" xml:space="preserve">
+    <value>Plantilla de asunto de correo electrónico</value>
+  </data>
+  <data name="[RESX:Tips:EmailSubjectTemplate].Text" xml:space="preserve">
+    <value>Introduzca la plantilla que se utilizará como asunto al enviar notificaciones. La plantilla puede incluir tokens. Visite el repositorio de Github (https://github.com/DNNCommunity/Dnn.CommunityForums) de los foros de la comunidad DNN y revise la wiki para obtener documentación sobre tokens.</value>
+  </data>
 </root>

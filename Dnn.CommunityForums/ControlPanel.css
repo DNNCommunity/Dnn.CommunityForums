@@ -434,5 +434,5 @@ ul.amcpformlist li div.amcpradiorow input[type="checkbox"]{font-size:14px;margin
 
 .dcf-controlpanel .dcf-controlpanel-inheritance-label { width: 150px; padding-left: 3px; padding-right: 3px; text-align: center; }
 .dcf-controlpanel .dcf-controlpanel-inheritance-img { width: 16px; height: 16px; }
+.dcf-controlpanel .dcf-controlpanel-inheritance-heading-settings { margin-left: 500px; cursor: auto; }
 .dcf-controlpanel .dcf-controlpanel-inheritance-heading-security { margin-left: 30px; cursor: auto; }
-.dcf-controlpanel .dcf-controlpanel-inheritance-heading-settings { margin-left: 665px; cursor: auto; }
