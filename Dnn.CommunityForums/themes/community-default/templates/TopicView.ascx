@@ -61,7 +61,7 @@
 				<div class="dcf-cols">
 					<div class="dcf-col-25">
 						<div class="dcf-topic-info">
-							[POSTINFO]
+							[DCF:TEMPLATE-PROFILEINFO]
 						</div>
 					</div>
 					<div class="dcf-col-75">
@@ -118,7 +118,7 @@
 				<div class="dcf-cols">
 					<div class="dcf-col-25">
 						<div class="dcf-topic-info">
-							[POSTINFO]
+							[DCF:TEMPLATE-PROFILEINFO]
 						</div>
 					</div>
 					<div class="dcf-col-75">

@@ -73,26 +73,26 @@
 									<table width="100%" style="background-color:#fff;border-top:solid 1px #cdcdcd;" cellspacing="0" cellpadding="4">
 										[TOPIC]
 											<tr>
-												<td valign="top" class="[POSTINFOCSS]" height="100">[POSTINFO]<br />[SPACER:1:125]</td>
+												<td valign="top" class="[POSTINFOCSS]" height="100">[DCF:TEMPLATE-PROFILEINFO]<br />[SPACER:1:125]</td>
 												<td valign="top" class="[POSTREPLYCSS]" width="100%">
 													<table cellpadding="4" cellspacing="0" border="0" width="100%">
 														<tr>
-															<td class="afsubrow"><a name="[POSTID]"></a>[POSTDATE]</td>
+															<td class="afsubrow"><a name="[FORUMPOST:POSTID]"></a>[FORUMPOST:DATECREATED]</td>
 															<td class="afsubrow" align=right valign=top>
 															
 															</td>
 														</tr>
 														<tr>
-															<td colspan="2" class="afpostbody">[AF:CONTROL:POLL][BODY]</td>
+															<td colspan="2" class="afpostbody">[AF:CONTROL:POLL][FORUMPOST:BODY]</td>
 														</tr>
 														<tr>
 															<td colspan="2" class="afpostattach">[ATTACHMENTS]</td>
 														</tr>
 														<tr>
-															<td colspan="2" class="afpostsig">[SIGNATURE]</td>
+															<td colspan="2" class="afpostsig">[FORUMAUTHOR:SIGNATURE]</td>
 														</tr>
 														<tr>
-															<td colspan="2" class="afposteditdate" align="right">[MODEDITDATE]</td>
+															<td colspan="2" class="afposteditdate" align="right">[FORUMPOST:MODEDITDATE]</td>
 														</tr>
 													</table>				
 												</td>
@@ -100,26 +100,26 @@
 											[/TOPIC]
 											[REPLIES]
 											<tr>
-												<td valign="top" class="[POSTINFOCSS]" height="100">[POSTINFO]<br />[SPACER:1:125]</td>
+												<td valign="top" class="[POSTINFOCSS]" height="100">[DCF:TEMPLATE-PROFILEINFO]<br />[SPACER:1:125]</td>
 												<td valign="top" class="[POSTREPLYCSS]" width="100%">
 													<table cellpadding="4" cellspacing="0" border="0" width="100%">
 														<tr>
-															<td class="afsubrow"><a name="[POSTID]"></a>[POSTDATE]</td>
+															<td class="afsubrow"><a name="[FORUMPOST:POSTID]"></a>[FORUMPOST:DATECREATED]</td>
 															<td class="afsubrow" align="right">
 																
 															</td>
 														</tr>
 														<tr>
-															<td colspan="2" class="afpostbody">[BODY]</td>
+															<td colspan="2" class="afpostbody">[FORUMPOST:BODY]</td>
 														</tr>
 														<tr>
 															<td colspan="2" class="afpostattach">[ATTACHMENTS]</td>
 														</tr>
 														<tr>
-															<td colspan="2" class="afpostsig">[SIGNATURE]</td>
+															<td colspan="2" class="afpostsig">[FORUMAUTHOR:SIGNATURE]</td>
 														</tr>
 														<tr>
-															<td colspan="2" class="afposteditdate" align="right">[MODEDITDATE]</td>
+															<td colspan="2" class="afposteditdate" align="right">[FORUMPOST:MODEDITDATE]</td>
 														</tr>
 													</table>				
 												</td>
