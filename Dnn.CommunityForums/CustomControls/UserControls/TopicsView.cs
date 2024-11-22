@@ -18,14 +18,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Diagnostics;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
+    using System.Diagnostics;
     using System.Runtime.CompilerServices;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -516,10 +515,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     TopicType = (TopicTypes)Enum.Parse(typeof(TopicTypes), Convert.ToInt32(drTopic["TopicType"]).ToString()),
                     Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
                     {
-                        Subject = HttpUtility.HtmlDecode(Convert.ToString(drTopic["Subject"])),
-                        Summary = HttpUtility.HtmlDecode(Convert.ToString(drTopic["Summary"])),
+                        Subject = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Subject"])),
+                        Summary = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Summary"])),
                         DateCreated = Convert.ToDateTime(drTopic["DateCreated"]),
-                        Body = HttpUtility.HtmlDecode(Convert.ToString(drTopic["Body"])),
+                        Body = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Body"])),
                         AuthorId = Convert.ToInt32(drTopic["AuthorId"]),
                         AuthorName = Convert.ToString(drTopic["AuthorName"]).ToString().Replace("&amp;#", "&#"),
                     },
@@ -539,8 +538,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         TopicId = Convert.ToInt32(drTopic["TopicId"]),
                         Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
                         {
-                            Subject = HttpUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySubject"])),
-                            Summary = HttpUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySummary"])),
+                            Subject = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySubject"])),
+                            Summary = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySummary"])),
                             DateCreated = Convert.ToDateTime(drTopic["LastReplyDate"]),
                             AuthorId = Convert.ToInt32(drTopic["LastReplyAuthorId"]),
                             AuthorName = Convert.ToString(drTopic["LastReplyAuthorName"]).ToString().Replace("&amp;#", "&#"),
@@ -584,8 +583,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     foreach (var p in pl)
                     {
                         string tmp = sPropTemplate;
-                        var pName = HttpUtility.HtmlDecode(p.Name);
-                        var pValue = HttpUtility.HtmlDecode(p.Value);
+                        var pName = System.Net.WebUtility.HtmlDecode(p.Name);
+                        var pValue = System.Net.WebUtility.HtmlDecode(p.Value);
                         tmp = tmp.Replace("[AF:PROPERTY:LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
                         tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
                         topicTemplate = topicTemplate.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));

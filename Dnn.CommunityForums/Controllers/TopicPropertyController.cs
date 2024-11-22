@@ -74,8 +74,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     int i = 0;
                     for (i = 0; i < xNodeList.Count; i++)
                     {
-                        string pName = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
-                        string pValue = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
+                        string pName = System.Net.WebUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
+                        string pValue = System.Net.WebUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
                         int pId = Convert.ToInt32(xNodeList[i].Attributes["id"].Value);
                         DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo p = new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo();
                         p.Name = pName;

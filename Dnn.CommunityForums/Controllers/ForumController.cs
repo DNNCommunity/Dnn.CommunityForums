@@ -494,7 +494,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static string GetLastPostSubjectLinkTag(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo lastPost, int length, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int tabId)
         {
-            string subject = Utilities.StripHTMLTag(System.Web.HttpUtility.HtmlDecode(lastPost.Topic.Subject)).Replace("[", "&#91").Replace("]", "&#93");
+            string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(lastPost.Topic.Subject)).Replace("[", "&#91").Replace("]", "&#93");
             if (subject.Length > length & length > 0)
             {
                 subject = subject.Substring(0, length) + "...";
@@ -510,7 +510,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 sURL += Utilities.UseFriendlyURLs(fi.ModuleId) ? $"#{lastPost.PostId}" : $"?{ParamKeys.ContentJumpId}={lastPost.PostId}";
             }
 
-            return $"<a href=\"{sURL}\">{System.Web.HttpUtility.HtmlEncode(subject)}</a>";
+            return $"<a href=\"{sURL}\">{System.Net.WebUtility.HtmlEncode(subject)}</a>";
         }
     }
 }

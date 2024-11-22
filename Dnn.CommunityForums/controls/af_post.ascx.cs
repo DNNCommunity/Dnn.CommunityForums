@@ -396,12 +396,12 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 // User has acccess
-                var sBody = HttpUtility.HtmlDecode(ti.Content.Body);
-                var sSubject = HttpUtility.HtmlDecode(ti.Content.Subject);
+                var sBody = System.Net.WebUtility.HtmlDecode(ti.Content.Body);
+                var sSubject = System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
                 sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this.allowHTML, this.editorType);
                 sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorTypes.TEXTBOX);
                 this.ctlForm.Subject = sSubject;
-                this.ctlForm.Summary = HttpUtility.HtmlDecode(ti.Content.Summary);
+                this.ctlForm.Summary = System.Net.WebUtility.HtmlDecode(ti.Content.Summary);
                 this.ctlForm.Body = sBody;
                 this.ctlForm.AnnounceEnd = ti.AnnounceEnd;
                 this.ctlForm.AnnounceStart = ti.AnnounceStart;
@@ -481,8 +481,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var sBody = HttpUtility.HtmlDecode(ri.Content.Body);
-                var sSubject = HttpUtility.HtmlDecode(ri.Content.Subject);
+                var sBody = System.Net.WebUtility.HtmlDecode(ri.Content.Body);
+                var sSubject = System.Net.WebUtility.HtmlDecode(ri.Content.Subject);
                 sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this.allowHTML, this.editorType);
                 sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorTypes.TEXTBOX);
                 this.ctlForm.Subject = sSubject;
@@ -578,8 +578,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.Context.ApplicationInstance.CompleteRequest();
                 }
 
-                this.ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + HttpUtility.HtmlDecode(ti.Content.Subject);
-                this.ctlForm.TopicSubject = HttpUtility.HtmlDecode(ti.Content.Subject);
+                this.ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
+                this.ctlForm.TopicSubject = System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
                 var body = string.Empty;
 
                 if (ti.IsLocked && (this.ForumUser.CurrentUserType == CurrentUserTypes.Anon || this.ForumUser.CurrentUserType == CurrentUserTypes.Auth))
@@ -650,7 +650,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (body.ToUpper().Contains("<CODE") | body.ToUpper().Contains("[CODE]"))
                         {
                             var objCode = new CodeParser();
-                            body = CodeParser.ParseCode(System.Web.HttpUtility.HtmlDecode(body));
+                            body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
                         }
                     }
                     else
@@ -940,7 +940,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // This HTML decode is used to make Quote functionality work properly even when it appears in Text Box instead of Editor
             if (this.Request.Params[ParamKeys.QuoteId] != null)
             {
-                body = System.Web.HttpUtility.HtmlDecode(body);
+                body = System.Net.WebUtility.HtmlDecode(body);
             }
 
             int authorId;

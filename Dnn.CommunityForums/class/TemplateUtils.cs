@@ -18,9 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Modules.ActiveForums.Controllers;
-using DotNetNuke.Modules.ActiveForums.Entities;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -37,7 +34,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.UI.UserControls;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using Microsoft.ApplicationBlocks.Data;
 
     public class TemplateUtils
@@ -595,7 +593,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 var objCode = new CodeParser();
-                template = CodeParser.ParseCode(HttpUtility.HtmlDecode(template));
+                template = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(template));
             }
 
             return template;

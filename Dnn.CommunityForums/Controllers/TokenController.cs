@@ -41,6 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Collections.Generic;
     using System.Web;
+
     using DotNetNuke.Modules.ActiveForums.Entities;
 
 #pragma warning disable SA1402 // File may only contain a single type
@@ -85,11 +86,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 };
                                 if (xNodeList[i].Attributes["value"] != null)
                                 {
-                                    tk.TokenReplace = HttpUtility.HtmlDecode(xNodeList[i].Attributes["value"].Value);
+                                    tk.TokenReplace = System.Net.WebUtility.HtmlDecode(xNodeList[i].Attributes["value"].Value);
                                 }
                                 else
                                 {
-                                    tk.TokenReplace = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                    tk.TokenReplace = System.Net.WebUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
                                 }
 
                                 li.Add(tk);

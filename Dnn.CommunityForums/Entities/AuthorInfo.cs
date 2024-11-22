@@ -18,10 +18,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.UI.UserControls;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using DotNetNuke.UI.UserControls;
+
     /// <summary>
     /// Author is really the same as a user. Just separated out to make code more understandable.
     /// </summary>

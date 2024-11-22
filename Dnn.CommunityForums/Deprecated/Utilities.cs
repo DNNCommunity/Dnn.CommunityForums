@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string ParsePre(string strMessage)
         {
             var objRegEx = new System.Text.RegularExpressions.Regex("<pre>(.*?)</pre>");
-            strMessage = "<code>" + HttpUtility.HtmlDecode(objRegEx.Replace(strMessage, "$1")) + "</code>";
+            strMessage = "<code>" + System.Net.WebUtility.HtmlDecode(objRegEx.Replace(strMessage, "$1")) + "</code>";
             return strMessage;
         }
 
@@ -206,11 +206,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
-        public static string HtmlEncode(string strMessage = "") => HttpUtility.HtmlEncode(strMessage);
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlEncode.")]
+        public static string HtmlEncode(string strMessage = "") => System.Net.WebUtility.HtmlEncode(strMessage);
 
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
-        public static string HtmlDecode(string strMessage) => HttpUtility.HtmlDecode(strMessage);
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlDecode.")]
+        public static string HtmlDecode(string strMessage) => System.Net.WebUtility.HtmlDecode(strMessage);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId) [Note URL in NavigateURL() is uppercase]")]
         public static string NavigateUrl(int tabId)

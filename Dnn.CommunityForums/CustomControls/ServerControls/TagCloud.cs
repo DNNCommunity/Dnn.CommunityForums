@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 writer.Write("<a href=\"");
                 sURL = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, int.Parse(dr["TagID"].ToString()), -1, Utilities.CleanName(tagName), 1, -1, -1);
                 writer.Write(sURL);
-                writer.Write("\" title=\"" + HttpUtility.HtmlAttributeEncode(tagName) + "\">" + tagName + "</a></span> ");
+                writer.Write("\" title=\"" + System.Net.WebUtility.HtmlEncode(tagName) + "\">" + tagName + "</a></span> ");
             }
 
             dr.Close();

@@ -145,9 +145,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             sOut += ",";
             sOut += Utilities.JSON.Pair("FilterType", filter.FilterType.ToString());
             sOut += ",";
-            sOut += Utilities.JSON.Pair("Find", HttpUtility.UrlEncode(filter.Find.Replace(" ", "-|-")));
+            sOut += Utilities.JSON.Pair("Find", System.Net.WebUtility.UrlEncode(filter.Find.Replace(" ", "-|-")));
             sOut += ",";
-            sOut += Utilities.JSON.Pair("Replacement", HttpUtility.UrlEncode(filter.Replace.Replace(" ", "-|-")));
+            sOut += Utilities.JSON.Pair("Replacement", System.Net.WebUtility.UrlEncode(filter.Replace.Replace(" ", "-|-")));
             sOut += "}";
             return sOut;
         }
@@ -289,7 +289,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             pi.Name = Utilities.CleanName(pi.Name);
             if (!string.IsNullOrEmpty(pi.ValidationExpression))
             {
-                pi.ValidationExpression = HttpUtility.UrlDecode(HttpUtility.HtmlDecode(pi.ValidationExpression));
+                pi.ValidationExpression = System.Net.WebUtility.UrlDecode(System.Net.WebUtility.HtmlDecode(pi.ValidationExpression));
             }
 
             if (pi.PropertyId == -1)
