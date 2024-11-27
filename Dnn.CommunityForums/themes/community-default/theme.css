@@ -608,6 +608,9 @@
   height: 100% !important;
   object-fit: cover;
 }
+.dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-topic-info .dcf-user-ipaddress {
+  overflow: hidden;
+}
 .dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-topic-info .dcf-post-user-rank,
 .dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-topic-info .dcf-post-user-data {
   display: none;
