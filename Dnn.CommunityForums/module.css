@@ -1253,15 +1253,41 @@ a.af-markanswer em {
 }
 
 
-/* quick fix for secuirty width */
-.afsecgrid>div>table {
-	table-layout: fixed;
-	width: 100%;
+/* Fix for security width */
+.afsecgrid {
+	padding: 0 1em;
 }
-
-.afsecgrid>div>table>tbody>tr>td:first-child {
+.afsecgrid .dcf-sec-grid{
+	width: 100%;
+	table-layout: fixed;
+}
+.afsecgrid .dcf-sec-grid-roles{
+	vertical-align: top;
 	width: 200px;
 }
+
+.afsecgrid .dcf-sec-grid-roles .afsecobjecthd{
+	
+	padding: 0.6em 0.35em
+}
+
+.afsecgrid .dcf-sec-grid-roles td,
+.afsecgrid .dcf-sec-grid-rights td{
+	border-bottom: solid 1px #ddd;
+	padding: 0.5em 0.1em;
+}
+
+.afsecgrid .dcf-sec-grid-rights{
+	width: calc(100% - 200px);
+}
+.afsecgrid .dcf-sec-grid-rights table{
+	table-layout: fixed;
+}
+
+.afsecgrid .dcf-sec-grid-rights .afsecactionhd{
+	width: 8em;
+}
+
 
 /* /38 */
 
