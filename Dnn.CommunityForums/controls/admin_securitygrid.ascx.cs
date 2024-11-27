@@ -255,7 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     i += 1;
                 }
 
-                sb.Append("</table></div></td><td class=\"dcf-sec-grid-rights\"><div class=\"afsecactions\" style=\"overflow-x:auto;overflow-y:hidden;\">");
+                sb.Append("</table></div></td><td class=\"dcf-sec-grid-rights\"><div class=\"afsecactions\">");
                 sb.Append("<table  id=\"tblSecGrid" + gridIndex + "\">");
                 sb.Append("<tr>");
                 string keyText;
