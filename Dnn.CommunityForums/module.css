@@ -1551,3 +1551,20 @@ div.dcf-mod-edit-wrap {
 .dnn-community-forums .afmodrow .dnnActions > * {
     margin-left: 0.5em;
 }
+
+/* TB: will need to be redone when the template is further cleaned up #999 */
+.dnn-community-forums .dcf-confirm-action .dcf-confirm-title{
+	display:block;
+	font-size: 1.5em;
+	margin: 0.8em 0 0.5em;
+}
+
+.dnn-community-forums .dcf-confirm-action .dcf-confirm-message{
+	display:block;
+	margin-bottom: 1em;
+}
+	
+
+.dnn-community-forums .dcf-confirm-action .dcf-confirm-buttons td{
+	padding: 0.5em 0;
+}
