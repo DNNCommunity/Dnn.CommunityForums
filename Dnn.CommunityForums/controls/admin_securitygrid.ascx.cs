@@ -228,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string[,] grid = new string[pl.Count + 1, 3 + gridSecurityActions[gridIndex].GetUpperBound(0) + 1];
 
                 sb.Append($"<h6>{gridHeader}</h6>");
-                sb.Append("<table cellpadding=\"0\" cellspacing=\"0\"><tr><td valign=\"top\"><div class=\"afsecobjects\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">");
+                sb.Append("<table class=\"dcf-sec-grid\"><tr><td class=\"dcf-sec-grid-roles\"><div class=\"afsecobjects\"><table>");
                 sb.Append("<tr><td class=\"afsecobjecthd\" colspan=\"2\">" + Utilities.GetSharedResource("[RESX:SecureObjects]", true) + "</td></tr>");
 
                 foreach (DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi in pl)
@@ -255,8 +255,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     i += 1;
                 }
 
-                sb.Append("</table></div></td><td valign=\"top\" width=\"94%\"><div class=\"afsecactions\" style=\"overflow-x:auto;overflow-y:hidden;\">");
-                sb.Append("<table cellpadding=0 cellspacing=0 border=0 width=\"100%\" id=\"tblSecGrid" + gridIndex + "\">");
+                sb.Append("</table></div></td><td class=\"dcf-sec-grid-rights\"><div class=\"afsecactions\">");
+                sb.Append("<table  id=\"tblSecGrid" + gridIndex + "\">");
                 sb.Append("<tr>");
                 string keyText;
                 for (int td = gridSecurityActions[gridIndex].GetLowerBound(0); td <= gridSecurityActions[gridIndex].GetUpperBound(0); td++)

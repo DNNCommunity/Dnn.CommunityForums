@@ -130,15 +130,16 @@ tr.afgroupback td.afgroupback_right{background-image:url(images/groupback_right.
 .afsecgrid{border:solid 1px #333;}
 .afgridrow{background-color:#fff;}
 .afgridrowover{background-color: #87cefa;}
-.afsecobjects{width:165px;overflow:hidden;}
+.afsecobjects{width:200px;overflow:hidden;}
 .afsecobjecttxt{height:18px;overflow:hidden;width:165px;float:left;}
-.afsecobject{width:165px;font-size:11px;font-family:Tahoma;padding:0;overflow:hidden;white-space:nowrap;height:24px;}
+.afsecobject{width:200px;font-size:11px;font-family:Tahoma;padding:0;overflow:hidden;white-space:nowrap;height:24px;}
 .afsecobjecthd{font-weight:bold;font-size:11px;font-family:Tahoma;padding:2px;width:75px;white-space:nowrap; background-color:#dcdcdc;}
 .afsecactions{overflow:hidden;white-space:nowrap;padding-bottom:30px; width:100%; max-width:100%; overflow: auto !important;}
 .afsecactiongrp{width:50px;}
 .afsectoggle{height:18px; cursor:pointer;}
 .afsecactionhd{font-size:11px;font-family:Tahoma;padding:2px;text-align:center;border-bottom:solid 1px #dcdcdc;}
 .afsecactionelem{font-size:11px;font-family:Tahoma;text-align:center;padding:0;border-left:dashed 1px #dcdcdc;height:22px;}
+.afsecactionelem:last-child{border-right:solid 1px #dcdcdc;}
 .amtbwrapper {text-decoration:none;text-align:center !important;display:block;padding:0px;margin:0px;height:60px;}
 .amnavbar {height:61px;text-decoration:none;text-align:center;display:block;padding:0px;margin:0px;background:#eee;}
 .amcpmdtoolbarbtm{display:flex; justify-content: center;}
