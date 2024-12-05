@@ -54,12 +54,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public ForumInfo()
         {
             this.PortalSettings = Utilities.GetPortalSettings(this.PortalId);
+            this.UpdateCache();
         }
 
         public ForumInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             this.PortalSettings = portalSettings;
             this.PortalId = this.PortalSettings.PortalId;
+            this.UpdateCache();
         }
 
         [ColumnName("ForumId")]
@@ -108,15 +110,43 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string LastPostSubject
         {
-            get => this.lastPostSubject ?? (this.lastPostSubject = this.LastPost?.Topic?.Subject);
-            set => this.lastPostSubject = value;
+            get
+            {
+                if (this.lastPostSubject == null)
+                {
+                    this.lastPostSubject = this.LastPost?.Topic?.Subject;
+                    this.UpdateCache();
+                }
+
+                return this.lastPostSubject;
+            }
+
+            set
+            {
+                this.lastPostSubject = value;
+                this.UpdateCache();
+            }
         }
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.IPostInfo LastPost
         {
-            get => this.lastPostInfo ?? (this.lastPostInfo = this.LastReplyId == 0 ? (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.LastTopicId) : new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.LastReplyId));
-            set => this.lastPostInfo = value;
+            get
+            {
+                if (this.lastPostInfo == null)
+                {
+                    this.lastPostInfo = this.LastReplyId == 0 ? (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.LastTopicId) : new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.LastReplyId);
+                    this.UpdateCache();
+                }
+
+                return this.lastPostInfo;
+            }
+
+            set
+            {
+                this.lastPostInfo = value;
+                this.UpdateCache();
+            }
         }
 
         [ColumnName("LastPostAuthorName")]
@@ -139,8 +169,22 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo ForumGroup
         {
-            get => this.forumGroup ?? (this.forumGroup = this.LoadForumGroup());
-            set => this.forumGroup = value;
+            get
+            {
+                if (this.forumGroup == null)
+                {
+                    this.forumGroup = this.LoadForumGroup();
+                    this.UpdateCache();
+                }
+
+                return this.forumGroup;
+            }
+
+            set
+            {
+                this.forumGroup = value;
+                this.UpdateCache();
+            }
         }
 
         internal ForumGroupInfo LoadForumGroup()
@@ -263,13 +307,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 if (this.subscriberCount == null)
                 {
                     this.subscriberCount = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: this.PortalId, moduleId: this.ModuleId, forumId: this.ForumID);
-                    string cachekey = string.Format(CacheKeys.ForumInfo, this.ModuleId, this.ForumID);
-                    DataCache.SettingsCacheStore(this.ModuleId, cachekey, this);
+                    this.UpdateCache();
                 }
 
                 return (int)this.subscriberCount;
             }
         }
+
 
         [IgnoreColumn]
         public string ParentForumName => this.ParentForumId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ParentForumId, this.ModuleId).ForumName : string.Empty;
@@ -286,8 +330,22 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> SubForums
         {
-            get => this.subforums ?? this.LoadSubForums();
-            set => this.subforums = value;
+            get
+            {
+                if (this.subforums == null)
+                {
+                    this.subforums = this.LoadSubForums();
+                    this.UpdateCache();
+                }
+
+                return this.subforums;
+            }
+
+            set
+            {
+                this.subforums = value;
+                this.UpdateCache();
+            }
         }
 
         [IgnoreColumn]
@@ -296,8 +354,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             if (this.subforums == null)
             {
                 this.subforums = new Controllers.ForumController().GetSubForums(this.ForumID, this.ModuleId).ToList();
-                string cachekey = string.Format(CacheKeys.ForumInfo, this.ModuleId, this.ForumID);
-                DataCache.SettingsCacheStore(this.ModuleId, cachekey, this);
+                DataCache.SettingsCacheStore(this.ModuleId, this.GetCacheKey(), this);
             }
 
             return this.subforums;
@@ -307,8 +364,22 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties
         {
-            get => this.properties ?? (this.properties = this.LoadProperties());
-            set => this.properties = value;
+            get
+            {
+                if (this.properties == null)
+                {
+                    this.properties = this.LoadProperties();
+                    this.UpdateCache();
+                }
+
+                return this.properties;
+            }
+
+            set
+            {
+                this.properties = value;
+                this.UpdateCache();
+            }
         }
 
         [IgnoreColumn]
@@ -365,8 +436,22 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
         {
-            get => this.security ?? (this.security = this.LoadSecurity());
-            set => this.security = value;
+            get
+            {
+                if (this.security == null)
+                {
+                    this.security = this.LoadSecurity();
+                    this.UpdateCache();
+                }
+
+                return this.security;
+            }
+
+            set
+            {
+                this.security = value;
+                this.UpdateCache();
+            }
         }
 
         internal PermissionInfo LoadSecurity()
@@ -381,8 +466,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 log.AddProperty("Message", message);
                 LogController.Instance.AddLog(log);
             }
-            string cachekey = string.Format(CacheKeys.ForumInfo, this.ModuleId, this.ForumID);
-            DataCache.SettingsCacheStore(this.ModuleId, cachekey, this);
 
             return security;
         }
@@ -395,15 +478,19 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 if (this.mainSettings == null)
                 {
                     this.mainSettings = this.LoadMainSettings();
-                    string cachekey = string.Format(CacheKeys.ForumInfo, this.ModuleId, this.ForumID);
-                    DataCache.SettingsCacheStore(this.ModuleId, cachekey, this);
+                    this.UpdateCache();
                 }
 
                 return this.mainSettings;
             }
 
-            set => this.mainSettings = value;
+            set
+            {
+                this.mainSettings = value;
+                this.UpdateCache();
+            }
         }
+
 
         internal SettingsInfo LoadMainSettings()
         {
@@ -413,8 +500,22 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public PortalSettings PortalSettings
         {
-            get => this.portalSettings ?? (this.portalSettings = this.LoadPortalSettings());
-            set => this.portalSettings = value;
+            get
+            {
+                if (this.portalSettings == null)
+                {
+                    this.portalSettings = this.LoadPortalSettings();
+                    this.UpdateCache();
+                }
+
+                return this.portalSettings;
+            }
+
+            set
+            {
+                this.portalSettings = value;
+                this.UpdateCache();
+            }
         }
 
         internal PortalSettings LoadPortalSettings()
@@ -425,8 +526,22 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public FeatureSettings FeatureSettings
         {
-            get => this.featureSettings ?? (this.featureSettings = this.LoadFeatureSettings());
-            set => this.featureSettings = value;
+            get
+            {
+                if (this.featureSettings == null)
+                {
+                    this.featureSettings = this.LoadFeatureSettings();
+                    this.UpdateCache();
+                }
+
+                return this.featureSettings;
+            }
+
+            set
+            {
+                this.featureSettings = value;
+                this.UpdateCache();
+            }
         }
 
         internal FeatureSettings LoadFeatureSettings()
@@ -437,8 +552,22 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public ModuleInfo ModuleInfo
         {
-            get => this.moduleInfo ?? (this.moduleInfo = this.LoadModuleInfo());
-            set => this.moduleInfo = value;
+            get
+            {
+                if (this.moduleInfo == null)
+                {
+                    this.moduleInfo = this.LoadModuleInfo();
+                    this.UpdateCache();
+                }
+
+                return this.moduleInfo;
+            }
+
+            set
+            {
+                this.moduleInfo = value;
+                this.UpdateCache();
+            }
         }
 
         internal ModuleInfo LoadModuleInfo()
@@ -464,6 +593,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     {
                         this.rssLink = string.Empty;
                     }
+                    this.UpdateCache();
                 }
 
                 return this.rssLink;
@@ -791,5 +921,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId ? this.TabId : this.PortalSettings.ActiveTab.TabID;
         }
+
+        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetCacheKey(this.ForumID, this.ModuleId);
+
+        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateCache(this.ModuleId, this.GetCacheKey(), this);
     }
 }
