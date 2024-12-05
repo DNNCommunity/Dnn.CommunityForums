@@ -432,4 +432,67 @@
   <data name="[RESX:Ban].Text" xml:space="preserve">
     <value>Ban</value>
   </data>
+  <data name="[RESX:SecGrid:pin].Text" xml:space="preserve">
+    <value>Pin</value>
+  </data>
+  <data name="[RESX:SecGrid:attach].Text" xml:space="preserve">
+    <value>Attach</value>
+  </data>
+  <data name="[RESX:SecGrid:ban].Text" xml:space="preserve">
+    <value>Ban</value>
+  </data>
+  <data name="[RESX:SecGrid:create].Text" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="[RESX:SecGrid:delete].Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="[RESX:SecGrid:edit].Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="[RESX:SecGrid:lock].Text" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="[RESX:SecGrid:moderate].Text" xml:space="preserve">
+    <value>Moderate</value>
+  </data>
+  <data name="[RESX:SecGrid:move].Text" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="[RESX:SecGrid:read].Text" xml:space="preserve">
+    <value>Read</value>
+  </data>
+  <data name="[RESX:SecGrid:reply].Text" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="[RESX:SecGrid:subscribe]Text" xml:space="preserve">
+    <value>Subscribe</value>
+  </data>
+  <data name="[RESX:SecGrid:view].Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="[RESX:SecGrid:announce].Text" xml:space="preserve">
+    <value>Announce</value>
+  </data>
+  <data name="[RESX:SecGrid:subscribe].Text" xml:space="preserve">
+    <value>Subscribe</value>
+  </data>
+  <data name="[RESX:SecGrid:trust].Text" xml:space="preserve">
+    <value>Trust</value>
+  </data>
+  <data name="[RESX:SecGrid:tag].Text" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="[RESX:SecGrid:prioritize].Text" xml:space="preserve">
+    <value>Prioritize</value>
+  </data>
+  <data name="[RESX:SecGrid:categorize].Text" xml:space="preserve">
+    <value>Categorize</value>
+  </data>
+  <data name="[RESX:SecGrid:poll].Text" xml:space="preserve">
+    <value>Poll</value>
+  </data>
+  <data name="[RESX:SecGrid:split].Text" xml:space="preserve">
+    <value>Split</value>
+  </data>
 </root>
