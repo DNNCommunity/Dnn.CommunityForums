@@ -491,7 +491,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     sb.Append("<td class=\"" + sClass + "\">");
-                    sb.Append(this.LocalizeString("SecGrid:" + rows[i, 0]));
+                    sb.Append(this.LocalizeString("[RESX:SecGrid:" + rows[i, 0].ToLowerInvariant() + "]"));
                     sb.Append("</td>");
                 }
 
