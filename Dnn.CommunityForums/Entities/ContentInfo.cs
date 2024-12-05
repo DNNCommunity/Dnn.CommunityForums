@@ -30,6 +30,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Scope("ModuleId")]
     public class ContentInfo
     {
+        private DotNetNuke.Modules.ActiveForums.Entities.IPostInfo postInfo;
+
         public int ContentId { get; set; }
 
         public string Subject { get; set; } = string.Empty;
@@ -53,5 +55,25 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int ContentItemId { get; set; }
 
         public int ModuleId { get; set; }
+
+        [IgnoreColumn]
+        public DotNetNuke.Modules.ActiveForums.Entities.IPostInfo Post
+        {
+            get
+            {
+                if (this.postInfo == null)
+                {
+                    this.postInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetByContentId(this.ContentId);
+                    if (this.postInfo == null)
+                    {
+                        this.postInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetByContentId(this.ContentId);
+                    }
+                }
+
+                return this.postInfo;
+            }
+
+            set => this.postInfo = value;
+        }
     }
 }

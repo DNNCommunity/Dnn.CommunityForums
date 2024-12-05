@@ -60,6 +60,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return ti;
         }
 
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetByContentId(int contentId)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = base.Find("WHERE ContentId = @0", contentId).First();
+            if (ti != null)
+            {
+                ti.GetForum();
+                ti.GetContent();
+                ti.GetAuthor(ti.PortalId, ti.ModuleId, ti.Content.AuthorId);
+            }
+
+            return ti;
+        }
+
         public static int QuickCreate(int portalId, int moduleId, int forumId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);

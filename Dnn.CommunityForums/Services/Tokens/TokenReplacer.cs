@@ -171,7 +171,40 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
-
+        
+        public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, LikeInfo likeInfo, Uri requestUri, string rawUrl)
+        {
+            likeInfo.Forum.RawUrl = rawUrl;
+            likeInfo.Forum.ForumGroup.RawUrl = rawUrl;
+            likeInfo.Topic.RawUrl = rawUrl;
+            likeInfo.RawUrl = rawUrl;
+            forumUser.RawUrl = rawUrl;
+            likeInfo.Forum.RequestUri = requestUri;
+            likeInfo.Forum.ForumGroup.RequestUri = requestUri;
+            likeInfo.Topic.RequestUri = requestUri;
+            likeInfo.RequestUri = requestUri;
+            forumUser.RequestUri = requestUri;
+            this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, likeInfo.Forum.TabId, likeInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? likeInfo.Forum.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? likeInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
+            this.PropertySource[PropertySource_forum] = likeInfo.Forum;
+            this.PropertySource[PropertySource_forumgroup] = likeInfo.Forum.ForumGroup;
+            this.PropertySource[PropertySource_forumtopic] = likeInfo.Topic;
+            this.PropertySource[PropertySource_forumpost] = likeInfo;
+            this.PropertySource[PropertySource_forumpostaction] = likeInfo;
+            this.PropertySource[PropertySource_forumuser] = forumUser;
+            this.PropertySource[PropertySource_user] = forumUser.UserInfo;
+            this.PropertySource[PropertySource_profile] = new ProfilePropertyAccess(forumUser.UserInfo);
+            this.PropertySource[PropertySource_membership] = new MembershipPropertyAccess(forumUser.UserInfo);
+            this.PropertySource[PropertySource_forumauthor] = likeInfo.Author.ForumUser;
+            this.PropertySource[PropertySource_forumauthoruser] = likeInfo.Author.ForumUser.UserInfo;
+            this.PropertySource[PropertySource_forumauthorprofile] = new ProfilePropertyAccess(likeInfo.Author.ForumUser.UserInfo);
+            this.PropertySource[PropertySource_forumauthormembership] = new MembershipPropertyAccess(likeInfo.Author.ForumUser.UserInfo);
+            this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
+            this.PropertySource[PropertySource_module] = likeInfo.Forum.ModuleInfo;
+            this.PropertySource[PropertySource_portal] = portalSettings;
+            this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            this.CurrentAccessLevel = Scope.DefaultSettings;
+        }
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
             forumUser.RawUrl = rawUrl;

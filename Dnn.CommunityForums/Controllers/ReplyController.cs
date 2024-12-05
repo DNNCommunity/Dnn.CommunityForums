@@ -53,7 +53,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return ri;
         }
-        
+
+        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetByContentId(int contentId)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = base.Find("WHERE ContentId = @0", contentId).First();
+            if (ri != null)
+            {
+                ri.GetTopic();
+                ri.Topic.GetForum();
+                ri.GetContent();
+                ri.Author = ri.GetAuthor(ri.PortalId, ri.ModuleId, ri.Content.AuthorId);
+            }
+
+            return ri;
+        }
+
         public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, int delBehavior)
         {
             var ri = this.GetById(replyId);
