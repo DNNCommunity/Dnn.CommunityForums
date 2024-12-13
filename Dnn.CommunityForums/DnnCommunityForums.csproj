@@ -236,6 +236,7 @@
     <Content Include="config\defaultgroupforums.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="config\templates\Likes.ascx" />
     <Content Include="config\templates\TopicResults.ascx" />
     <Content Include="config\templates\SearchResults.ascx" />
     <Content Include="config\templates\ToolbarSearchPopup.ascx" />
@@ -273,6 +274,7 @@
     </Content>
     <Content Include="controls\af_polls.ascx" />
     <Content Include="controls\af_pollvote.ascx" />
+    <Content Include="controls\af_likes.ascx" />
     <Content Include="controls\profile_mysubscriptions.ascx" />
     <Content Include="controls\af_sendto.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -1365,6 +1367,13 @@
     <Compile Include="Controllers\TopicTrackingController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\ForumUserController.cs" />
+    <Compile Include="controls\af_likes.ascx.cs">
+      <DependentUpon>af_likes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controls\af_likes.ascx.designer.cs">
+      <DependentUpon>af_likes.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controls\profile_mysubscriptions.ascx.cs">
       <DependentUpon>profile_mysubscriptions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -10,7 +10,7 @@
 				</a>
 			</div>
             [GROUP]
-			<div id="forum-group-[FORUMGROUPID]"  class="dcf-forums-group collapse show">
+			<div id="forum-group-[FORUMGROUP:FORUMGROUPID]" class="dcf-forums-group collapse show">
 				<table class="dcf-table dcf-table-100 table table-responsive-md">
 					<thead>
 						<tr class="dcf-table-head-row">
@@ -48,7 +48,8 @@
 						<tr class="dcf-table-body-row">
 							<td class="dcf-col dcf-col-text">
 								<div class="d-flex">
-								[FORUMICONCSS]
+                                    [FORUM:FORUMICONCSS|<div class="dcf-forum-icon" style="height: 30px; margin-right: 10px;"><i class="fa {0} fa-2x"></i></div>
+                                    ]
 									<div class="dcf-forum-title-text">
 										<h4 class="dcf-forum-title h5 mt-0 mb-2">[FORUM:FORUMLINK|
                                             <a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>
