@@ -1797,4 +1797,10 @@ De,
   <data name="[RESX:Started].Text" xml:space="preserve">
     <value>Commencé</value>
   </data>
+  <data name="[RESX:Likes].Text" xml:space="preserve">
+    <value>Aime</value>
+  </data>
+  <data name="[RESX:likedby].Text" xml:space="preserve">
+    <value>aimé par</value>
+  </data>
 </root>

@@ -48,6 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         private const string PropertySource_forumgroup = "forumgroup";
         private const string PropertySource_forum = "forum";
         private const string PropertySource_forumuser = "forumuser";
+        private const string PropertySource_like = "forumlike";
         private const string PropertySource_user = "user";
         private const string PropertySource_profile = "profile";
         private const string PropertySource_membership = "membership";
@@ -186,11 +187,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
             this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, likeInfo.Forum.TabId, likeInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? likeInfo.Forum.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? likeInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
+            this.PropertySource[PropertySource_like] = likeInfo;
             this.PropertySource[PropertySource_forum] = likeInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = likeInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = likeInfo.Topic;
-            this.PropertySource[PropertySource_forumpost] = likeInfo;
-            this.PropertySource[PropertySource_forumpostaction] = likeInfo;
+            this.PropertySource[PropertySource_forumpost] = likeInfo.Content.Post;
+            this.PropertySource[PropertySource_forumpostaction] = likeInfo.Content.Post;
             this.PropertySource[PropertySource_forumuser] = forumUser;
             this.PropertySource[PropertySource_user] = forumUser.UserInfo;
             this.PropertySource[PropertySource_profile] = new ProfilePropertyAccess(forumUser.UserInfo);
@@ -376,7 +378,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             return body;
         }
-
+        
         internal static StringBuilder ReplacePostTokens(StringBuilder template, IPostInfo post, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
             /* if likes not allowed for forum, remove like-related tokens */
@@ -399,6 +401,32 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, post, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
+            template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
+            template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
+
+            return template;
+        }
+
+        internal static StringBuilder ReplaceLikeTokens(StringBuilder template, LikeInfo like, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
+        {
+            /* if likes not allowed for forum, remove like-related tokens */
+            if (!like.Forum.FeatureSettings.AllowLikes)
+            {
+                template = RemovePrefixedToken(template, "[FORUMLIKE:");
+            }
+
+            // Perform Profile Related replacements
+            var author = new AuthorInfo(like.PortalId, like.ModuleId, like.Content.AuthorId);
+            if (template.ToString().Contains("[POSTINFO]"))
+            {
+                var sPostInfo = TemplateUtils.GetPostInfo(like.ModuleId, author.ForumUser, like.Forum.ThemeLocation, like.Forum.GetIsMod(forumUser), like.Content.IPAddress, author.ForumUser.IsUserOnline, forumUser.CurrentUserType, forumUser.UserId, forumUser.PrefBlockAvatars, forumUser.UserInfo.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
+                template.Replace("[POSTINFO]", sPostInfo);
+            }
+
+            like.Content.Body = ReplaceBody(like.Content.Body, mainSettings, requestUri).Replace("<br />", "  ");
+
+            template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
+            var tokenReplacer = new TokenReplacer(portalSettings, forumUser, like, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
 

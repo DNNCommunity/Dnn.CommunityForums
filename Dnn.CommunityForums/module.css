@@ -1594,3 +1594,27 @@ div.dcf-mod-edit-wrap {
 .dnn-community-forums .dcf-confirm-action .dcf-confirm-buttons td{
 	padding: 0.5em 0;
 }
+
+/* added for likes views and like tooltips */
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header { }
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header .af_pagernumber,
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer .af_pagernumber { margin-left: 2px; margin-right: 2px; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header .af_pager,
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer .af_pager { padding: 0px 5px; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer { position: relative; margin: 10px 0px; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header .afpager,
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer .afpager { position: absolute; top: 0px; right: 0px; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-noresults { text-align: center; color: rgba(0, 0, 0, 0.44); padding: 50px 0px; font-size: 20px; letter-spacing: -0.02em; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-results a { font-weight: bold; position: relative; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-like-header { position: relative; margin: 10px 0px; }
+.dnn-community-forums .dcf-likes-wrap .dcf-like { }
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-title { }
+.dnn-community-forums .dcf-likes-wrap .dcf-postinfo { }
+.dnn-community-forums .dcf-likes-wrap .dcf-like-content { }
+.dnn-community-forums .dcf-likes-wrap .dcf-profile-link { }

@@ -1818,4 +1818,10 @@ Van,
   <data name="PostedIn.Text" xml:space="preserve">
     <value>Verzonden naar</value>
   </data>
+  <data name="[RESX:Likes].Text" xml:space="preserve">
+    <value>Houdt</value>
+  </data>
+  <data name="[RESX:likedby].Text" xml:space="preserve">
+    <value>Gemarkeerd als interessant door</value>
+  </data>
 </root>

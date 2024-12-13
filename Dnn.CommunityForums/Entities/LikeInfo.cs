@@ -63,11 +63,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string RawUrl { get; set; }
 
         [IgnoreColumn]
-        public int PortalId { get => this.Content.Post.PortalId; }
+        public int PortalId { get; set; }
 
         [IgnoreColumn]
-        public int ModuleId { get => this.Content.ModuleId; }
+        public int ModuleId { get; set; }
 
+        [IgnoreColumn]
         public int TopicId => this.Content.Post.TopicId;
 
         [IgnoreColumn]
@@ -76,38 +77,47 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
-            get => this.contentInfo ?? (this.contentInfo = this.GetContent());
+            get
+            {
+                if (this.contentInfo == null)
+                {
+                    this.contentInfo = this.GetContent();
+                    this.UpdateCache();
+                }
+
+                return this.contentInfo;
+            }
             set => this.contentInfo = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent()
-        {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId, this.ModuleId);
-        }
+        internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent() => this.contentInfo = new Controllers.ContentController().GetById(this.ContentId, this.ModuleId);
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
         {
-            get => this.forumUserInfo ?? (this.forumUserInfo = this.GetForumUser());
+            get
+            {
+                if (this.forumUserInfo == null)
+                {
+                    this.forumUserInfo = this.GetForumUser();
+                    this.UpdateCache();
+                }
+
+                return this.forumUserInfo;
+            }
             set => this.forumUserInfo = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetForumUser() => new Controllers.ForumUserController(this.ModuleId).GetByUserId(this.PortalId, this.UserId);
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetForumUser() => this.forumUserInfo = new Controllers.ForumUserController((int)this.ModuleId).GetByUserId(this.PortalId, this.UserId);
 
         [IgnoreColumn]
-        public PortalSettings PortalSettings => this.Forum.PortalSettings;
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this.Content?.Post?.Topic;
 
         [IgnoreColumn]
-        public SettingsInfo MainSettings => this.Forum.MainSettings;
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum => this.Content?.Post?.Forum;
 
         [IgnoreColumn]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this.Content.Post.Topic;
-
-        [IgnoreColumn]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum => this.Content.Post.Forum;
-
-        [IgnoreColumn]
-        public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author => this.Content.Post.Author;
+        public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author => this.Content?.Post?.Author;
 
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
@@ -252,5 +262,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return this.Forum.PortalSettings.ActiveTab.TabID == -1 || this.Forum.PortalSettings.ActiveTab.TabID == this.Forum.PortalSettings.HomeTabId ? this.Forum.TabId : this.Forum.PortalSettings.ActiveTab.TabID;
         }
+
+        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().GetCacheKey(this.ModuleId, this.ContentId);
+
+        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.Controllers.LikeController.UpdateCache(this.ModuleId, this.GetCacheKey(), this);
     }
 }
