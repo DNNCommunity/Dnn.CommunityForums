@@ -390,4 +390,10 @@
   <data name="[RESX:SecGrid:split].Text" xml:space="preserve">
     <value>Partir</value>
   </data>
+  <data name="URLPrefixLikes.Text" xml:space="preserve">
+    <value>Ruta de los Me gusta</value>
+  </data>
+  <data name="URLPrefixLikes.Help" xml:space="preserve">
+    <value>Este es el texto que se utilizará como parte de la URL para identificar los Me gusta del foro.</value>
+  </data>
 </root>

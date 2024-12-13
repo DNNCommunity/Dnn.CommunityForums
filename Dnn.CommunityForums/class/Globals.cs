@@ -229,6 +229,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string PrefixURLBase = "URLBASE";
         public const string PrefixURLTags = "URLTAGS";
         public const string PrefixURLCategories = "URLCATS";
+        public const string PrefixURLLikes = "URLLIKES";
         public const string PrefixURLOther = "URLOTHER";
         
         public const string CacheTemplates = "CACHETEMPLATES";

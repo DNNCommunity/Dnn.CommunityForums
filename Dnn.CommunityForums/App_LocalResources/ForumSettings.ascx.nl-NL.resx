@@ -390,4 +390,10 @@
   <data name="[RESX:SecGrid:split].Text" xml:space="preserve">
     <value>Splijten</value>
   </data>
+  <data name="URLPrefixLikes.Text" xml:space="preserve">
+    <value>Likes Pad</value>
+  </data>
+  <data name="URLPrefixLikes.Help" xml:space="preserve">
+    <value>Dit is de tekst die zal worden gebruikt als onderdeel van de URL om forum-likes te identificeren.</value>
+  </data>
 </root>
