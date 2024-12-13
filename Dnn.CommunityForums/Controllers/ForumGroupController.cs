@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetById(int forumGroupId, int moduleId)
         {
-            var cachekey = this.GetCacheKey(forumGroupId, moduleId);
+            var cachekey = this.GetCacheKey(moduleId, forumGroupId);
             var forumGroup = LoadFromCache(moduleId, cachekey);
             if (forumGroup == null)
             {
@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumGroup.LoadFeatureSettings();
                 }
 
-                UpdateCache(moduleId, cachekey, forumGroup);
+                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, forumGroup);
             }
 
             return forumGroup;

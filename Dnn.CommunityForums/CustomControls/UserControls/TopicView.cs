@@ -316,6 +316,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.Author.ForumUser.UserInfo.FirstName = this.drForum["FirstName"].ToString();
             this.topic.Author.ForumUser.UserInfo.LastName = this.drForum["LastName"].ToString();
             this.topic.Author.ForumUser.UserInfo.Username = this.drForum["UserName"].ToString();
+            this.topic.Author.ForumUser.PortalId = this.PortalId;
+            this.topic.Author.ForumUser.ModuleId = this.ForumModuleId;
 
             this.topic.Forum = this.ForumInfo;
 
@@ -330,6 +332,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.LastReply.Author.ForumUser.UserInfo.FirstName = this.drForum["LastPostFirstName"].ToString();
             this.topic.LastReply.Author.ForumUser.UserInfo.LastName = this.drForum["LastPostLastName"].ToString();
             this.topic.LastReply.Author.ForumUser.UserInfo.Username = this.drForum["LastPostUserName"].ToString();
+            this.topic.LastReply.Author.ForumUser.PortalId = this.PortalId;
+            this.topic.LastReply.Author.ForumUser.ModuleId = this.ForumModuleId;
 
             this.topicTemplateId = Utilities.SafeConvertInt(this.drForum["TopicTemplateId"]);
             this.tags = this.drForum["Tags"].ToString();

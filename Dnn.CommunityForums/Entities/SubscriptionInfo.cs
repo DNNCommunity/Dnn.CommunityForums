@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum => this.forumInfo ?? (this.forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId));
 
         [IgnoreColumn]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this.topicInfo ?? (this.topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId));
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this.topicInfo ?? (this.topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.TopicId));
 
         [IgnoreColumn]
         public string Email { get => this.email ?? (this.email = this.User?.Email); set => this.email = value; }

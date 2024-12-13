@@ -109,14 +109,14 @@ namespace DotNetNuke.Modules.ActiveForums
             var @params = new List<string>();
 
             if (!mainSettings.URLRewriteEnabled || (((string.IsNullOrEmpty(forumPrefix) && forumID > 0 && string.IsNullOrEmpty(groupPrefix)) || (string.IsNullOrEmpty(forumPrefix) && string.IsNullOrEmpty(groupPrefix) && forumGroupId > 0)) && string.IsNullOrEmpty(otherPrefix)))
-            {
+            { 
                 if (forumID > 0 && topicId == -1)
                 {
-                    @params.Add(ParamKeys.ForumId + "=" + forumID);
+                    @params.Add($"{ParamKeys.ForumId}={forumID}");
                 }
                 else if (forumGroupId > 0 && topicId == -1)
                 {
-                    @params.Add(ParamKeys.GroupId + "=" + forumGroupId);
+                    @params.Add($"{ParamKeys.GroupId}={forumGroupId}");
                 }
                 else if (tagId > 0)
                 {
@@ -124,7 +124,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     @params.Add($"{ParamKeys.GridType}={Views.Tags}");
                     @params.Add($"{ParamKeys.Tags}=" + tagId);
                 }
-
                 else if (categoryId > 0)
                 {
                     @params.Add($"{ParamKeys.Category}=" + categoryId);
@@ -134,20 +133,25 @@ namespace DotNetNuke.Modules.ActiveForums
                     @params.Add($"{ParamKeys.ViewType}={Views.Grid}");
                     @params.Add($"{ParamKeys.GridType}=" + otherPrefix);
                 }
-
+                else if (!string.IsNullOrEmpty(otherPrefix) && otherPrefix.Equals(Views.Likes) && contentId > 0)
+                {
+                    @params.Add($"{ParamKeys.ViewType}={Views.Grid}");
+                    @params.Add($"{ParamKeys.GridType}={Views.Likes}");
+                    @params.Add($"{ParamKeys.ContentId}={contentId}");
+                }
                 else if (topicId > 0)
                 {
-                    @params.Add(ParamKeys.TopicId + "=" + topicId);
+                    @params.Add($"{ParamKeys.TopicId}={topicId}");
                 }
 
                 if (pageId > 1)
                 {
-                    @params.Add(ParamKeys.PageId + "=" + pageId);
+                    @params.Add($"{ParamKeys.PageId}={pageId}");
                 }
 
                 if (contentId > 1)
                 {
-                    @params.Add(ParamKeys.ContentJumpId + "=" + contentId);
+                    @params.Add($"{ParamKeys.ContentJumpId}={contentId}");
                 }
 
                 if (socialGroupId > 0)
@@ -187,11 +191,14 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sURL += "/" + mainSettings.PrefixURLCategory + "/" + otherPrefix;
             }
+            else if (!string.IsNullOrEmpty(otherPrefix) && (otherPrefix.Equals(Views.Likes, StringComparison.InvariantCultureIgnoreCase) && contentId > 0))
+            {
+                sURL += "/" + mainSettings.PrefixURLLikes + "/" + contentId;
+            }
             else if (!string.IsNullOrEmpty(otherPrefix) && (tagId == -1 || categoryId == -1))
             {
                 sURL += "/" + mainSettings.PrefixURLOther + "/" + otherPrefix;
             }
-
             if (topicId > 0 && string.IsNullOrEmpty(topicURL))
             {
                 return Utilities.NavigateURL(tabId, portalSettings, string.Empty, ParamKeys.TopicId + "=" + topicId);
@@ -212,7 +219,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Utilities.NavigateURL(tabId);
             }
 
-            //return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL() + sURL + "/";
             return sURL + "/";
         }
 

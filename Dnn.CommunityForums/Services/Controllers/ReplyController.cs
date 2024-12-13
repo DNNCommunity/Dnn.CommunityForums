@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 int replyId = dto.ReplyId;
                 if (forumId > 0 && topicId > 0 && replyId > 0)
                 {
-                    var r = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
+                    var r = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(replyId);
                     if (r != null)
                     {
                         if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.Moderate, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forumId > 0 && replyId > 0)
                 {
-                    var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
+                    var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId);
                     var r = rc.GetById(replyId);
                     if (r != null)
                     {

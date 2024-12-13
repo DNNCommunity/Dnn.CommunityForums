@@ -27,13 +27,15 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
     public class Topic
     {
         private readonly DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic;
-        
+
         public Topic()
         {
-            this.topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
-            this.topic.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
-            this.topic.LastReplyAuthor = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
-            this.topic.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+            this.topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
+            {
+                Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.ModuleId),
+                LastReplyAuthor = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.ModuleId),
+                Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo(),
+            };
         }
 
         public Topic(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic)

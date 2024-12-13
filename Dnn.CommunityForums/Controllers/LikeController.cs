@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     like.Content?.GetPost();
                 }
 
-                UpdateCache(this.moduleId, cachekey, like);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, like);
             }
 
             return like;
@@ -65,7 +65,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public bool GetForUser(int userId, int postId)
         {
-            return userId > 0 && this.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
+            var cachekey = string.Format(CacheKeys.LikedByUser, this.moduleId, postId, userId);
+            bool? liked = (bool?)DataCache.ContentCacheRetrieve(this.moduleId, cachekey);
+
+            if (liked == null)
+            {
+                liked = userId > 0 && this.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, liked);
+            }
+
+            return (bool)liked;
         }
 
         public (int count, bool liked) Get(int userId, int postId)
@@ -86,7 +95,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public int Count(int postId)
         {
-            return this.Count("WHERE PostId = @0 AND Checked = 1", postId);
+            var cachekey = string.Format(CacheKeys.LikeCount, this.moduleId, postId);
+            var count = (int?)DataCache.ContentCacheRetrieve(this.moduleId, cachekey);
+            if (count == null)
+            {
+                count = this.Count("WHERE PostId = @0 AND Checked = 1", postId);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, count);
+            }
+
+            return (int)count;
         }
 
         public int Like(int contentId, int userId)
@@ -116,7 +133,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 this.Insert(like);
             }
 
-            like.UpdateCache();
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.LikeInfo, this.moduleId, like.Id));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.LikeCount, this.moduleId, contentId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.LikedByUser, this.moduleId, contentId, userId));
             return this.Count(contentId);
         }
     }

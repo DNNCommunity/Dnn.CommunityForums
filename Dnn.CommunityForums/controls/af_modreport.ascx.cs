@@ -116,18 +116,18 @@ namespace DotNetNuke.Modules.ActiveForums
             if (this.Request.IsAuthenticated)
             {
                 string comments = this.drpReasons.SelectedItem.Value + "<br>";
-                comments += Utilities.CleanString(this.PortalId, this.txtComments.Text, false, EditorTypes.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
+                comments += Utilities.CleanString(this.PortalId, this.txtComments.Text, false, EditorTypes.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);
                 string sUrl = this.SocialGroupId > 0
                     ? Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + Literals.GroupId + "=" + this.SocialGroupId })
                     : Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent });
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
                 string sBody = string.Empty;
                 string authorName = string.Empty;
                 string sSubject = string.Empty;
                 string sTopicURL = topic.TopicUrl;
                 if (this.ReplyId > 0 & this.TopicId != this.ReplyId)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.ReplyId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(this.ReplyId);
                     sBody = reply.Content.Body;
                     sSubject = reply.Content.Subject;
                     authorName = reply.Author.DisplayName;

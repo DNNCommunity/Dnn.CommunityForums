@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     string itemTemplate = ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text;
                     int topicId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["TopicId"].ToString(), 1);
-                    var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                    var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                     if (topic != null)
                     {
                         itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
@@ -201,14 +201,14 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post = null;
                     int topicId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["TopicId"].ToString(), 1);
                     int contentId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["ContentId"].ToString(), 1);
-                    var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Find("WHERE ContentId = @0", contentId).FirstOrDefault();
+                    var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).Find("WHERE ContentId = @0", contentId).FirstOrDefault();
                     if (reply != null)
                     {
                         post = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)reply;
                     }
                     else
                     {
-                        var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                        var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                         if (topic != null)
                         {
                             post = topic;

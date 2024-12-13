@@ -63,17 +63,31 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (this.postInfo == null)
                 {
-                    this.postInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetByContentId(this.ContentId);
-                    if (this.postInfo == null)
-                    {
-                        this.postInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetByContentId(this.ContentId);
-                    }
+                    this.postInfo = this.GetPost();
+                    this.UpdateCache();
                 }
 
                 return this.postInfo;
             }
-
             set => this.postInfo = value;
         }
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.IPostInfo GetPost()
+        {
+            if (this.postInfo == null)
+            {
+                this.postInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetByContentId(this.ContentId);
+                if (this.postInfo == null)
+                {
+                    this.postInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetByContentId(this.ContentId);
+                }
+            }
+
+            return this.postInfo;
+        }
+
+        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetCacheKey(this.ModuleId, this.ContentId);
+
+        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
     }
 }

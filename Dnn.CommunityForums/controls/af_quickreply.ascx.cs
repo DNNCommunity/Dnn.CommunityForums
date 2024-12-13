@@ -335,14 +335,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId, ri.TopicId);
             }
 
-            int replyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(this.PortalId, this.ModuleId, ri);
-            ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
+            var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId);
+            int replyId = rc.Reply_Save(this.PortalId, this.ModuleId, ri);
+            ri = rc.GetById(replyId);
             DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, ri.Forum.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId);
-            DataCache.CacheClearPrefix(this.ModuleId, string.Format(CacheKeys.TopicViewPrefix, this.ModuleId));
-            DataCache.CacheClearPrefix(this.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, this.ModuleId));
-            DataCache.CacheClearPrefix(this.ModuleId, string.Format(CacheKeys.ForumViewPrefix, this.ModuleId));
+            DataCache.ContentCacheClearForForum(this.ModuleId, this.ForumId);
+            DataCache.ContentCacheClearForReply(this.ModuleId, replyId);
+            DataCache.ContentCacheClearForTopic(this.ModuleId, ri.TopicId);
 
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
             string fullURL = new ControlUtils().BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, replyId, this.SocialGroupId);
 
             if (fullURL.Contains("~/"))

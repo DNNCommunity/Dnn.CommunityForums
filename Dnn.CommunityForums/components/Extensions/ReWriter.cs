@@ -24,8 +24,10 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Text.RegularExpressions;
     using System.Web;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
@@ -162,11 +164,19 @@ namespace DotNetNuke.Modules.ActiveForums
             string newSearchURL = string.Empty;
             if (searchURL.Contains("/likes/"))
             {
-                newSearchURL = searchURL + "/"; /* if this is a URL for viewing "likes", don't remove numeric segments which contains content id */
+                newSearchURL = searchURL + "/"; /* if this is a URL for viewing "likes", don't remove numeric segments because it contains content id */
                 if (newSearchURL.StartsWith("/"))
                 {
                     newSearchURL = newSearchURL.Substring(1);
                 }
+
+                /* but do remove (optional) page number; it will be restored later */
+                var pageSegment = RegexUtils.GetCachedRegex(".*/likes/(?<contentId>[\\d]+)(?<page>/[\\d]+).*", RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace).Match(newSearchURL).Groups["page"];
+                if (!string.IsNullOrEmpty(pageSegment?.Value))
+                {
+                    newSearchURL = newSearchURL.Replace(pageSegment.Value, string.Empty);
+                }
+
             }
             else
             {

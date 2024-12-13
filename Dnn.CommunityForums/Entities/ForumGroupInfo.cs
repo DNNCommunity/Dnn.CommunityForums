@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
             }
 
-            return security;
+            return this.security = security;
         }
 
         [IgnoreColumn]
@@ -137,7 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal FeatureSettings LoadFeatureSettings()
         {
-            return new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(moduleId: this.ModuleId, settingsKey: this.GroupSettingsKey);
+            return this.featureSettings = new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(moduleId: this.ModuleId, settingsKey: this.GroupSettingsKey);
         }
 
         [IgnoreColumn]
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal SettingsInfo LoadMainSettings()
         {
-            return SettingsBase.GetModuleSettings(this.ModuleId);
+            return this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
         }
 
         [IgnoreColumn]
@@ -189,7 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal PortalSettings LoadPortalSettings()
         {
-            return Utilities.GetPortalSettings(this.ModuleInfo.PortalID);
+            return this.portalSettings = Utilities.GetPortalSettings(this.ModuleInfo.PortalID);
         }
 
         [IgnoreColumn]
@@ -215,7 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal ModuleInfo LoadModuleInfo()
         {
-            return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
+            return this.moduleInfo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
         }
 
         [IgnoreColumn]
@@ -284,8 +284,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId ? this.TabId : this.PortalSettings.ActiveTab.TabID;
         }
 
-        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetCacheKey(this.ForumGroupId, this.ModuleId);
+        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetCacheKey(this.ModuleId, this.ForumGroupId);
 
-        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.UpdateCache(this.ModuleId, this.GetCacheKey(), this);
+        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(this.ModuleId, this.GetCacheKey(), this);
     }
 }

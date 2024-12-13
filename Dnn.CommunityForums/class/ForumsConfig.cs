@@ -414,7 +414,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             string connectionString = new Connection().connectionString;
             string dbPrefix = new Connection().dbPrefix;
-            var tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController();
 
             using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT f.PortalId,f.ModuleId,ft.ForumId,t.topicId,c.Subject FROM {dbPrefix}Topics t INNER JOIN {dbPrefix}ForumTopics ft ON ft.TopicId = t.TopicId INNER JOIN {dbPrefix}Content c ON c.ContentId = t.ContentId INNER JOIN {dbPrefix}Forums f ON f.ForumId = ft.ForumId WHERE t.URL = ''"))
             {
@@ -426,6 +425,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     int topicId = Utilities.SafeConvertInt(dr["TopicId"]);
                     string subject = Utilities.SafeConvertString(dr["Subject"]);
                     DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
+                    var tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId);
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.GetById(topicId);
                     topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrlSegment(portalId: portalId, moduleId: moduleId, topicId: topicId, subject: subject, forumInfo: forumInfo);
                     tc.Update(topicInfo);

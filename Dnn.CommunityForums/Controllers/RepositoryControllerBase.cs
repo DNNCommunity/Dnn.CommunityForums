@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Runtime.InteropServices.WindowsRuntime;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System.Collections.Generic;
@@ -152,7 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(moduleId);
         }
 
-        internal string GetCacheKey<TProperty>(TProperty id, int moduleId)
+        internal string GetCacheKey<TProperty>(int moduleId, TProperty id)
         {
             return string.Format(this.cacheKeyTemplate, moduleId, id);
         }

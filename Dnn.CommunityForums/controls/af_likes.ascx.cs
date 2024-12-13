@@ -22,10 +22,8 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
     using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -39,15 +37,47 @@ namespace DotNetNuke.Modules.ActiveForums
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerTop = new PagerNav();
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerBottom = new PagerNav();
 
+        private Control ctl;
         private int? contentId;
 
         private List<string> parameters;
 
         private int pageSize = 20;
-        private int rowIndex;
+        private DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post;
         private int rowCount;
+        private int rowIndex;
 
-        private Control ctl;
+        private int ContentId
+        {
+            get
+            {
+                if (!this.contentId.HasValue)
+                {
+                    int parsedContentId;
+                    this.contentId = int.TryParse(this.Request.Params[ParamKeys.ContentId], out parsedContentId) ? parsedContentId : 0;
+                }
+
+                return this.contentId.Value;
+            }
+        }
+
+        private List<string> Parameters
+        {
+            get
+            {
+                if (this.parameters == null)
+                {
+                    this.parameters = new List<string>();
+
+                    if (this.ContentId > 0)
+                    {
+                        this.parameters.Add($"{ParamKeys.ContentId}={this.ContentId}");
+                    }
+                }
+
+                return this.parameters;
+            }
+        }
 
         protected override void OnInit(EventArgs e)
         {
@@ -135,7 +165,49 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LikeRepeaterOnItemDataBound(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
         {
-            if (repeaterItemEventArgs.Item.ItemType == ListItemType.Item || repeaterItemEventArgs.Item.ItemType == ListItemType.AlternatingItem)
+            if (repeaterItemEventArgs.Item.ItemType == ListItemType.Header || repeaterItemEventArgs.Item.ItemType == ListItemType.Footer)
+            {
+                this.post = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId, this.ForumModuleId).Post;
+
+                foreach (Control control in repeaterItemEventArgs.Item.Controls)
+                {
+                    string itemTemplate = string.Empty;
+                    try
+                    {
+                        if (control.GetType().FullName == "System.Web.UI.LiteralControl")
+                        {
+                            itemTemplate = ((System.Web.UI.LiteralControl)control).Text;
+                        }
+                        else if (control.GetType().FullName == "System.Web.UI.HtmlControls.HtmlGenericControl")
+                        {
+                            itemTemplate = ((System.Web.UI.HtmlControls.HtmlGenericControl)control).InnerText;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Exceptions.LogException(ex);
+                    }
+
+                    if (!string.IsNullOrEmpty(itemTemplate) && itemTemplate.Contains("["))
+                    {
+                        if (this.post != null)
+                        {
+
+                            itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), this.post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
+
+                            if (control.GetType().FullName == "System.Web.UI.LiteralControl")
+                            {
+                                ((System.Web.UI.LiteralControl)control).Text = itemTemplate;
+                            }
+                            else if (control.GetType().FullName == "System.Web.UI.HtmlControls.HtmlGenericControl")
+                            {
+                                ((System.Web.UI.HtmlControls.HtmlGenericControl)control).InnerText = itemTemplate;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (repeaterItemEventArgs.Item.ItemType == ListItemType.Item || repeaterItemEventArgs.Item.ItemType == ListItemType.AlternatingItem)
             {
                 try
                 {
@@ -181,80 +253,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     Exceptions.LogException(ex);
                 }
-            }
-            else if (repeaterItemEventArgs.Item.ItemType == ListItemType.Header || repeaterItemEventArgs.Item.ItemType == ListItemType.Footer)
-            {
-                var post = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId, this.ForumModuleId).Post;
-
-                foreach (Control control in repeaterItemEventArgs.Item.Controls)
-                {
-                    string itemTemplate = string.Empty;
-                    try
-                    {
-                        if (control.GetType().FullName == "System.Web.UI.LiteralControl")
-                        {
-                            itemTemplate = ((System.Web.UI.LiteralControl)control).Text;
-                        }
-                        else if (control.GetType().FullName == "System.Web.UI.HtmlControls.HtmlGenericControl")
-                        {
-                            itemTemplate = ((System.Web.UI.HtmlControls.HtmlGenericControl)control).InnerText;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Exceptions.LogException(ex);
-                    }
-
-                    if (!string.IsNullOrEmpty(itemTemplate) && itemTemplate.Contains("["))
-                    {
-                        if (post != null)
-                        {
-
-                            itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
-
-                            if (control.GetType().FullName == "System.Web.UI.LiteralControl")
-                            {
-                                ((System.Web.UI.LiteralControl)control).Text = itemTemplate;
-                            }
-                            else if (control.GetType().FullName == "System.Web.UI.HtmlControls.HtmlGenericControl")
-                            {
-                                ((System.Web.UI.HtmlControls.HtmlGenericControl)control).InnerText = itemTemplate;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private int ContentId
-        {
-            get
-            {
-                if (!this.contentId.HasValue)
-                {
-                    int parsedContentId;
-                    this.contentId = int.TryParse(this.Request.Params[ParamKeys.ContentId], out parsedContentId) ? parsedContentId : 0;
-                }
-
-                return this.contentId.Value;
-            }
-        }
-
-        private List<string> Parameters
-        {
-            get
-            {
-                if (this.parameters == null)
-                {
-                    this.parameters = new List<string>();
-
-                    if (this.ContentId > 0)
-                    {
-                        this.parameters.Add($"{ParamKeys.ContentId}={this.ContentId}");
-                    }
-                }
-
-                return this.parameters;
             }
         }
 
@@ -348,11 +346,13 @@ namespace DotNetNuke.Modules.ActiveForums
             pager.CurrentPage = this.PageId;
             pager.TabID = this.TabId;
             pager.ForumID = this.ForumId;
+            pager.UseShortUrls = this.MainSettings.UseShortUrls;
             pager.ContentId = this.ContentId;
             pager.PageText = Utilities.GetSharedResource("[RESX:Page]");
             pager.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
             pager.View = Views.Likes;
             pager.PageMode = PagerNav.Mode.Links;
+            pager.BaseURL = URL.ForumLink(this.TabId, this.post.Forum) + this.post.Topic.TopicUrl + "/" + this.MainSettings.PrefixURLLikes + "/" + this.ContentId;
 
             pager.Params = this.Parameters.ToArray();
         }

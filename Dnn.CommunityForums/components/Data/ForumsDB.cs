@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     public class ForumsDB : DataConfig
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId()")]
-        public int Forum_GetByTopicId(int topicId) => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(topicId);
+        public int Forum_GetByTopicId(int topicId) => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(-1, topicId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForSocialGroup()")]
         public IDataReader Forums_GetForSocialGroup(int portalId, int socialGroupId) => SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "GetForumsForSocialGroup", socialGroupId);

@@ -469,9 +469,14 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TopicInfoByContentId = "AF-{0}-tci-{1}";
         public const string ReplyInfo = "AF-{0}-ri-{1}";
         public const string ReplyInfoByContentId = "AF-{0}-rci-{1}";
+        public const string LikeCount = "AF-{0}-lc-{1}";
+        public const string LikedByUser = "AF-{0}-lbu-{1}-{2}";
         public const string LikeInfo = "AF-{0}-li-{1}";
+        public const string TopicTrackingInfoPrefix = "AF-{0}-tti-{1}";
         public const string TopicTrackingInfo = "AF-{0}-tti-{1}-{2}";
+        public const string ForumTrackingInfoPrefix = "AF-{0}-fti-{1}";
         public const string ForumTrackingInfo = "AF-{0}-fti-{1}-{2}";
+        public const string TopicReadCountPrefix = "AF-{0}-trc-{1}";
         public const string TopicReadCount = "AF-{0}-trc-{1}-{2}";
 
         public const string RoleNames = "AF-rn-{0}";
@@ -481,9 +486,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string CultureInfoForUser = "AF-usercultureinfo-{0}";
         public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
         
-        // public const string ForumView = "AF-{0}-FV-{1}";
-        // public const string AllSettings = "AF-afset{0}";
-        // public const string GroupInfo = "AF-gi{0}";
     }
 
     public class SortColumns

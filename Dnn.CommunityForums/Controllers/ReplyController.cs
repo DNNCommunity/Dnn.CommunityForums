@@ -33,6 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Modules.ActiveForums.API;
     using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Log.EventLog;
@@ -40,46 +41,100 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal partial class ReplyController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo>
     {
+        private int moduleId = -1;
+
+        internal override string cacheKeyTemplate => CacheKeys.ReplyInfo;
+
+        internal ReplyController(int moduleId)
+        {
+            this.moduleId = moduleId;
+        }
+
+        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetById(int replyId, int moduleId)
+        {
+            this.moduleId = moduleId;
+            return this.GetById(replyId);
+        }
+
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetById(int replyId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = base.GetById(replyId);
-            if (ri != null)
+            var cachekey = this.GetCacheKey(moduleId: this.moduleId, id: replyId);
+            var ri = LoadFromCache(this.moduleId, cachekey);
+            if (ri == null)
             {
-                ri.GetTopic();
-                ri.Topic.GetForum();
-                ri.GetContent();
-                ri.Author = ri.GetAuthor(ri.PortalId, ri.ModuleId, ri.Content.AuthorId);
+                try
+                {
+                    ri = base.GetById(replyId);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+
             }
 
+            if (ri != null)
+            {
+                ri.ModuleId = this.moduleId;
+                ri.GetTopic();
+                ri.Topic.GetForum(this.moduleId);
+                if (ri.Forum != null)
+                {
+                    ri.PortalId = ri.Forum.PortalId;
+                }
+                ri.GetContent();
+                if (ri.Content != null)
+                {
+                    ri.Author = ri.GetAuthor(ri.PortalId, ri.ModuleId, ri.Content.AuthorId);
+                }
+
+            }
+
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, ri);
             return ri;
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetByContentId(int contentId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = base.Find("WHERE ContentId = @0", contentId).First();
+            var cachekey = string.Format(CacheKeys.ReplyInfoByContentId, this.moduleId, contentId);
+            var ri = LoadFromCache(this.moduleId, cachekey);
+            if (ri == null)
+            {
+                ri = this.Find("WHERE ContentId = @0", contentId).FirstOrDefault();
+            }
             if (ri != null)
             {
+                ri.ModuleId = this.moduleId;
                 ri.GetTopic();
-                ri.Topic.GetForum();
+                ri.Topic.GetForum(this.moduleId);
+                if (ri.Forum != null)
+                {
+                    ri.PortalId = ri.Forum.PortalId;
+                }
                 ri.GetContent();
-                ri.Author = ri.GetAuthor(ri.PortalId, ri.ModuleId, ri.Content.AuthorId);
+                if (ri.Content != null)
+                {
+                    ri.Author = ri.GetAuthor(ri.PortalId, ri.ModuleId, ri.Content.AuthorId);
+                }
             }
 
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, ri);
             return ri;
         }
 
         public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, int delBehavior)
         {
             var ri = this.GetById(replyId);
-            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Delete(forumId, topicId, replyId, delBehavior);   
+            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Delete(forumId, topicId, replyId, delBehavior);
             DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_SaveToForum(forumId, topicId, replyId); /* this updates LastReplyId in ForumTopics */
 
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(forumId);
 
-            DataCache.ContentCacheClear(ri.ModuleId, string.Format(CacheKeys.ForumInfo, ri.ModuleId, forumId));
-            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ri.ModuleId));
-            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ri.ModuleId));
-            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ri.ModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(ri.ModuleId, ri.ForumId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(ri.ModuleId, ri.ReplyId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(ri.ModuleId, ri.TopicId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(ri.ModuleId, ri.ContentId);
 
             new Social().DeleteJournalItemForPost(portalId, forumId, topicId, replyId);
 
@@ -114,6 +169,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             int replyId = -1;
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo
             {
+                ModuleId = moduleId,
+                PortalId = portalId,
                 TopicId = topicId,
                 ReplyToId = replyToId,
                 IsApproved = isApproved,
@@ -147,10 +204,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, ri.Content.AuthorId);
 
-            DataCache.ContentCacheClear(ri.ModuleId, string.Format(CacheKeys.ForumInfo, ri.ModuleId, ri.ForumId));
-            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ri.ModuleId));
-            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ri.ModuleId));
-            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ri.ModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(ri.ModuleId, ri.ForumId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(ri.ModuleId, ri.ReplyId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(ri.ModuleId, ri.TopicId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(ri.ModuleId, ri.ContentId);
 
             // if existing topic, update associated journal item
             if (ri.ReplyId > 0)
@@ -179,7 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ApproveReply(int portalId, int tabId, int moduleId, int forumId, int topicId, int replyId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);
-            var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
+            var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId);
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = rc.GetById(replyId);
             if (reply == null)
             {
@@ -214,7 +271,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).GetById(replyId);
                 if (reply == null)
                 {
                     var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };

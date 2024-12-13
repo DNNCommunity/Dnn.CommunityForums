@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums
             templateStringbuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(templateStringbuilder, portalSettings, accessingUser?.UserInfo?.Profile?.PreferredLocale);
 
             // Load Subject and body from topic or reply
-            var postInfo = (topicId > 0 && replyId > 0) ? (IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId) : new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+            var postInfo = (topicId > 0 && replyId > 0) ? (IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleID).GetById(replyId) : new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleID).GetById(topicId);
             string subject = postInfo.Content.Subject;
             templateStringbuilder.Replace("[POSTEDORREPLIEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:posted]") : Utilities.GetSharedResource("[RESX:repliedto]")));
             templateStringbuilder.Replace("[POSTEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:postedto]") : string.Empty));

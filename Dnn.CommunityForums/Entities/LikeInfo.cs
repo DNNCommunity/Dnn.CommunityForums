@@ -263,8 +263,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return this.Forum.PortalSettings.ActiveTab.TabID == -1 || this.Forum.PortalSettings.ActiveTab.TabID == this.Forum.PortalSettings.HomeTabId ? this.Forum.TabId : this.Forum.PortalSettings.ActiveTab.TabID;
         }
 
-        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().GetCacheKey(this.ModuleId, this.ContentId);
+        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalId, this.ModuleId).GetCacheKey(this.ModuleId, this.ContentId);
 
-        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.Controllers.LikeController.UpdateCache(this.ModuleId, this.GetCacheKey(), this);
+        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
     }
 }
