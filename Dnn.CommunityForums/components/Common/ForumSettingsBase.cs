@@ -303,6 +303,19 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        public string PrefixURLLikes
+        {
+            get
+            {
+                return this.Settings.GetString(SettingKeys.PrefixURLLikes, Views.Likes);
+            }
+
+            set
+            {
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLLikes, value);
+            }
+        }
+
         public bool FullTextSearch
         {
             get

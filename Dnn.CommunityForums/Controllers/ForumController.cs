@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Runtime.CompilerServices;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using DotNetNuke.Data;
@@ -34,10 +36,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
     {
+        internal override string cacheKeyTemplate => CacheKeys.ForumInfo;
+
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetById(int forumId, int moduleId)
         {
-            string cachekey = string.Format(CacheKeys.ForumInfo, moduleId, forumId);
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumInfo;
+            var cachekey = this.GetCacheKey(moduleId: moduleId, id: forumId);
+            var forum = LoadFromCache(moduleId, cachekey);
             if (forum == null)
             {
                 forum = base.GetById(forumId, moduleId);
@@ -51,6 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadMainSettings();
                     forum.LoadModuleInfo();
                     forum.LoadSecurity();
+                    forum.LoadLastPost();
                 }
 
                 DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, forum);
@@ -61,7 +66,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetForums(int moduleId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.ForumList, moduleId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
+            string cacheKey = string.Format(CacheKeys.ForumList, moduleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, cacheKey) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
@@ -75,10 +81,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadMainSettings();
                     forum.LoadModuleInfo();
                     forum.LoadSecurity();
+                    forum.LoadLastPost();
                     forums.Add(forum);
+                    forum.UpdateCache();
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.ForumList, moduleId), forums);
+                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cacheKey, forums);
             }
 
             return forums;
@@ -86,7 +94,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetSubForums(int forumId, int moduleId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.SubForumList, moduleId, forumId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
+            string cacheKey = string.Format(CacheKeys.SubForumList, moduleId, forumId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, cacheKey) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
@@ -102,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Add(forum);
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.SubForumList, moduleId, forumId), forums);
+                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cacheKey, forums);
             }
 
             return forums;
@@ -123,7 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // Get the forum by topic id
             if (topicId > 0 & forumId <= 0)
             {
-                forumId = Forum_GetByTopicId(topicId);
+                forumId = Forum_GetByTopicId(moduleId, topicId);
             }
 
             return forumId <= 0 ? null : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
@@ -276,7 +285,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             // Clear the caches
-            DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(forumInfo.ModuleId);
+            ClearSettingsCache(forumInfo.ModuleId);
             return forumId;
         }
 
@@ -286,11 +295,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal void Forums_Delete(int forumId, int moduleId)
         {
             var parentForumId = this.GetById(forumId, moduleId).ParentForumId;
-            new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController().DeleteForForum(forumId);
-            new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().DeleteForForum(forumId);
+            new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(moduleId).DeleteForForum(forumId);
+            new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().DeleteForForum(moduleId, forumId);
             this.DeleteById(forumId);
             DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}activeforums_Forums_RepairSort", forumId, parentForumId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(moduleId);
+            ClearSettingsCache(moduleId);
         }
 
         internal static void IterateForumsList(System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo,
@@ -446,9 +455,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumId;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static int Forum_GetByTopicId(int topicId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController().GetForumIdForTopic(topicId);
+            return Forum_GetByTopicId(-1, topicId);
+        }
+
+        public static int Forum_GetByTopicId(int moduleId, int topicId)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(moduleId).GetForumForTopic(topicId).ForumId;
         }
 
         public static DateTime Forum_GetLastReadTopicByUser(int forumId, int userId)
@@ -492,22 +507,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static string GetLastPostSubjectLinkTag(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo lastPost, int length, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int tabId)
+        internal static string GetLastPostSubjectLinkTag(int length, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int tabId)
         {
-            string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(lastPost.Topic.Subject)).Replace("[", "&#91").Replace("]", "&#93");
+            string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(fi.LastPostSubject)).Replace("[", "&#91").Replace("]", "&#93");
             if (subject.Length > length & length > 0)
             {
                 subject = subject.Substring(0, length) + "...";
             }
 
-            string sURL = new ControlUtils().TopicURL(tabId, fi.ModuleId, lastPost.TopicId, fi.ForumGroup.PrefixURL, fi.PrefixURL, lastPost.Topic.TopicUrl);
+            if (fi.LastReplyId > 0)
+            {
+                var ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(fi.ModuleId).GetById(fi.LastReplyId);
+            }
+
+            string sURL = new ControlUtils().TopicURL(tabId, fi.ModuleId, fi.LastPostTopicId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.LastPostTopicUrl);
             if (sURL.Contains("~/"))
             {
-                sURL = Utilities.NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.TopicId}={lastPost.TopicId}", lastPost.IsReply ? $"{ParamKeys.ContentJumpId}={lastPost.PostId}" : string.Empty });
+                sURL = Utilities.NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.TopicId}={fi.LastPostTopicId}", fi.LastPostIsReply ? $"{ParamKeys.ContentJumpId}={fi.LastReplyId}" : string.Empty });
             }
-            if (sURL.EndsWith("/") && lastPost.IsReply)
+            if (sURL.EndsWith("/") && fi.LastPostIsReply)
             {
-                sURL += Utilities.UseFriendlyURLs(fi.ModuleId) ? $"#{lastPost.PostId}" : $"?{ParamKeys.ContentJumpId}={lastPost.PostId}";
+                sURL += Utilities.UseFriendlyURLs(fi.ModuleId) ? $"#{fi.LastPostID}" : $"?{ParamKeys.ContentJumpId}={fi.LastPostID}";
             }
 
             return $"<a href=\"{sURL}\">{System.Net.WebUtility.HtmlEncode(subject)}</a>";

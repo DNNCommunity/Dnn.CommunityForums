@@ -22,12 +22,59 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
+    
+    using DotNetNuke.Collections;
 
     internal partial class LikeController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>
     {
+        private readonly int moduleId = -1;
+        private readonly int portalId = -1;
+
+        internal override string cacheKeyTemplate => CacheKeys.LikeInfo;
+
+        internal LikeController()
+        {
+        }
+
+        internal LikeController(int portalId, int moduleId)
+        {
+            this.portalId = portalId;
+            this.moduleId = moduleId;
+        }
+
+        public DotNetNuke.Modules.ActiveForums.Entities.LikeInfo GetById(int contentId)
+        {
+            var cachekey = this.GetCacheKey(moduleId: this.moduleId, id: contentId);
+            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.LikeInfo;
+            if (like == null)
+            {
+                like = this.GetById(contentId, this.moduleId);
+                if (like != null)
+                {
+                    like.ModuleId = this.moduleId;
+                    like.PortalId = this.portalId;
+                    like.GetContent();
+                    like.Content?.GetPost();
+                }
+
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, like);
+            }
+
+            return like;
+        }
+
         public bool GetForUser(int userId, int postId)
         {
-            return userId > 0 && this.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
+            var cachekey = string.Format(CacheKeys.LikedByUser, this.moduleId, postId, userId);
+            bool? liked = (bool?)DataCache.ContentCacheRetrieve(this.moduleId, cachekey);
+
+            if (liked == null)
+            {
+                liked = userId > 0 && this.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, liked);
+            }
+
+            return (bool)liked;
         }
 
         public (int count, bool liked) Get(int userId, int postId)
@@ -37,12 +84,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public List<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo> GetForPost(int postId)
         {
-            return this.Find("WHERE PostId = @0 AND Checked = 1", postId).ToList();
+            return this.Find("WHERE PostId = @0 AND Checked = 1", postId).ForEach(l =>
+            {
+                l.PortalId = this.portalId;
+                l.ModuleId = this.moduleId;
+                l.GetContent();
+                l.Content?.GetPost();
+            }).ToList();
         }
 
         public int Count(int postId)
         {
-            return this.Count("WHERE PostId = @0 AND Checked = 1", postId);
+            var cachekey = string.Format(CacheKeys.LikeCount, this.moduleId, postId);
+            var count = (int?)DataCache.ContentCacheRetrieve(this.moduleId, cachekey);
+            if (count == null)
+            {
+                count = this.Count("WHERE PostId = @0 AND Checked = 1", postId);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, count);
+            }
+
+            return (int)count;
         }
 
         public int Like(int contentId, int userId)
@@ -63,19 +124,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             else
             {
-                like = new DotNetNuke.Modules.ActiveForums.Entities.LikeInfo();
-                like.PostId = contentId;
-                like.UserId = userId;
-                like.Checked = true;
+                like = new DotNetNuke.Modules.ActiveForums.Entities.LikeInfo
+                {
+                    PostId = contentId,
+                    UserId = userId,
+                    Checked = true
+                };
                 this.Insert(like);
             }
 
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.LikeInfo, this.moduleId, like.Id));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.LikeCount, this.moduleId, contentId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.LikedByUser, this.moduleId, contentId, userId));
             return this.Count(contentId);
         }
     }
 }
 
+#pragma warning disable SA1403 // File may only contain a single namespace
 namespace DotNetNuke.Modules.ActiveForums
+#pragma warning restore SA1403 // File may only contain a single namespace
 {
     using System;
     using System.Collections.Generic;
@@ -83,10 +151,14 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Data;
 
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController")]
+#pragma warning disable SA1400 // Access modifier should be declared
     class LikesController : DotNetNuke.Modules.ActiveForums.Controllers.LikeController
+#pragma warning restore SA1400 // Access modifier should be declared
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController.GetForPost()")]
+#pragma warning disable SA1600 // Elements should be documented
         public new List<DotNetNuke.Modules.ActiveForums.Likes> GetForPost(int postId)
+#pragma warning restore SA1600 // Elements should be documented
         {
             IDataContext ctx = DataContext.Instance();
             IRepository<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo> repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>();
@@ -100,7 +172,9 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Like()")]
+#pragma warning disable SA1600 // Elements should be documented
         public new void Like(int contentId, int userId)
+#pragma warning restore SA1600 // Elements should be documented
         {
             base.Like(contentId, userId);
         }

@@ -1551,7 +1551,6 @@ div.dcf-mod-edit-wrap {
 .afpollresults {
 	border: solid 1px #333;
 }
-}
 
 /* pin & lock from topic view */
 .dnn-community-forums * .dcf-topic-lock-lock {
@@ -1594,3 +1593,32 @@ div.dcf-mod-edit-wrap {
 .dnn-community-forums .dcf-confirm-action .dcf-confirm-buttons td{
 	padding: 0.5em 0;
 }
+
+/* added for likes views and like tooltips */
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header { }
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header .af_pager,
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer .af_pager { padding: 0px 5px; position: relative; top: 0px; right: 0px; }
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header .af_pagernumber,
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer .af_pagernumber {  }
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header .af_pagernumber a,
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer .af_pagernumber a { margin-left: 3px; margin-right: 3px; }
+
+
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer { position: relative; margin: 10px 0px; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-noresults { text-align: center; color: rgba(0, 0, 0, 0.44); padding: 50px 0px; font-size: 20px; letter-spacing: -0.02em; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-results a { font-weight: bold; position: relative; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-like-header { position: relative; margin: 10px 0px; }
+.dnn-community-forums .dcf-likes-wrap .dcf-like { }
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-title { }
+.dnn-community-forums .dcf-likes-wrap .dcf-postinfo { }
+.dnn-community-forums .dcf-likes-wrap .dcf-like-content { }
+.dnn-community-forums .dcf-likes-wrap .dcf-profile-link { }
+
+.dnn-community-forums .dcf-likes-tooltip { position: relative; display: inline-block; }
+.dnn-community-forums .dcf-likes-tooltip .dcf-likes-tooltiptext { background-color: white; text-align: center; border-radius: 6px; padding: 5px 0; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -30px; opacity: 0; transition: opacity 0.5s; }
+.dnn-community-forums .dcf-likes-tooltip .dcf-likes-tooltiptext::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #555 transparent transparent transparent; }
+.dnn-community-forums .dcf-likes-tooltip:hover .dcf-likes-tooltiptext { visibility: visible; opacity: 1; }
+.dnn-community-forums .dcf-likes-tooltip .dcf-likes-tooltiptext a { cursor: pointer; }

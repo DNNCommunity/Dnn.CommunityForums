@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int TagId { get; set; }
 
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.TagInfo Tag
+        internal DotNetNuke.Modules.ActiveForums.Entities.TagInfo Tag
         {
             get
             {
@@ -51,23 +51,5 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
-        {
-            get
-            {
-                if (this.topicInfo == null)
-                {
-                    this.topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
-                    if (this.topicInfo == null)
-                    {
-                        this.topicInfo = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
-                        this.topicInfo.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-                    }
-                }
-
-                return this.topicInfo;
-            }
-        }
     }
 }

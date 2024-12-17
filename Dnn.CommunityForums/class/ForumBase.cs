@@ -267,7 +267,7 @@ using DotNetNuke.Services.Localization;
                 // If we still don't have a forum id, but we have a topic id, look up the forum id
                 if (this.forumId < 1 & this.TopicId > 0)
                 {
-                    this.forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(this.TopicId);
+                    this.forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(this.ForumModuleId, this.TopicId);
                 }
 
                 return this.forumId.Value;

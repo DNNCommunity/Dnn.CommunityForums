@@ -1,5 +1,4 @@
 <%@ Register TagPrefix="am" Namespace="DotNetNuke.Modules.ActiveForums.Controls" Assembly="DotNetNuke.Modules.ActiveForums" %>
-
 <div class="dcf-topic-view">
     <header>
 		<div class="dcf-prev-next border-bottom border-top py-2">
@@ -96,6 +95,7 @@
                                         [FORUMPOST:MODEDITDATE]
 									</div>
                                     <div class="dcf-col-50 text-right text-end dcf-post-likes">
+                                        [FORUMPOST:LIKESLINK|<div id="dcf-likes-tooltip-[FORUMPOST:CONTENTID]" class="dcf-likes-tooltip"><span id="dcf-likes-tooltip-[FORUMPOST:CONTENTID]" class="dcf-likes-tooltiptext">[RESX:likedby] <a href="{0}">[RESX:Members]</a></span></div>]
                                         [FORUMPOST:LIKEONCLICK|<i id="af-topicview-likes-[FORUMPOST:CONTENTID]" class="fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x" style="cursor: pointer" onclick="{0}"> [FORUMPOST:LIKECOUNT]</i>|<i id="af-topicview-likes" class="fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x"> [FORUMPOST:LIKECOUNT]</i>]
                                     </div>
                                 </div>
@@ -146,6 +146,7 @@
                                         [FORUMPOST:MODEDITDATE]
 									</div>
                                     <div class="dcf-col-50 text-right text-end dcf-post-likes">
+                                        [FORUMPOST:LIKESLINK|<div id="dcf-likes-tooltip-[FORUMPOST:CONTENTID]" class="dcf-likes-tooltip"><span id="dcf-likes-tooltip-[FORUMPOST:CONTENTID]" class="dcf-likes-tooltiptext">[RESX:likedby] <a href="{0}">[RESX:Members]</a></span></div>]
                                         [FORUMPOST:LIKEONCLICK|<i id="af-topicview-likes-[FORUMPOST:CONTENTID]" class="fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x" style="cursor: pointer" onclick="{0}"> [FORUMPOST:LIKECOUNT]</i>|<i id="af-topicview-likes" class="fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x"> [FORUMPOST:LIKECOUNT]</i>]
                                     </div>
 								</div>

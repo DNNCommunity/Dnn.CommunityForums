@@ -20,7 +20,7 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    using DotNetNuke.UI.UserControls;
+    using System;
 
     /// <summary>
     /// Author is really the same as a user. Just separated out to make code more understandable.
@@ -31,7 +31,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public AuthorInfo()
         {
-            this.forumUserInfo = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo();
+        }
+
+        public AuthorInfo(int moduleId)
+        {
+            this.forumUserInfo = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(moduleId);
         }
 
         public AuthorInfo(ForumUserInfo forumUserInfo)
@@ -46,6 +50,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 this.AuthorId = userId;
                 this.DisplayName = this.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+            }
+            else
+            {
+                this.forumUserInfo.PortalId = portalId;
+                this.forumUserInfo.ModuleId = moduleId;
             }
         }
 

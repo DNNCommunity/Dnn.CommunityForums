@@ -1782,4 +1782,10 @@ Von
   <data name="[RESX:Started].Text" xml:space="preserve">
     <value>Gestartet</value>
   </data>
+  <data name="[RESX:Likes].Text" xml:space="preserve">
+    <value>Mag</value>
+  </data>
+  <data name="[RESX:likedby].Text" xml:space="preserve">
+    <value>Beliebt bei</value>
+  </data>
 </root>

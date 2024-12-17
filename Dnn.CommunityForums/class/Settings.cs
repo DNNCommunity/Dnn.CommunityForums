@@ -283,6 +283,16 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        public string PrefixURLLikes
+        {
+            get
+            {
+                return !this.URLRewriteEnabled
+                    ? string.Empty
+                    : this.MainSettings.GetString(SettingKeys.PrefixURLLikes, Views.Likes);
+            }
+        }
+
         public int DefaultPermissionId
         {
             get { return this.MainSettings.GetInt(SettingKeys.DefaultPermissionId); }

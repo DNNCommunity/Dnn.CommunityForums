@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 ControlUtils cUtils = new ControlUtils();
-                DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo auth = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo();
+                DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo auth = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.ModuleId);
                 string columnPrefix = "Topic";
                 if (Convert.ToInt32(row["ReplyId"].ToString()) > 0)
                 {

@@ -164,6 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.txtURLPrefixBase.Text = this.PrefixURLBase;
                 this.txtURLPrefixCategory.Text = this.PrefixURLCategory;
                 this.txtURLPrefixOther.Text = this.PrefixURLOther;
+                this.txtURLPrefixLikes.Text = this.PrefixURLLikes;
                 this.txtURLPrefixTags.Text = this.PrefixURLTag;
 
                 this.txtAvatarHeight.Text = this.AvatarHeight.ToString();
@@ -245,6 +246,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.PrefixURLBase = this.txtURLPrefixBase.Text;
                 this.PrefixURLCategory = this.txtURLPrefixCategory.Text;
                 this.PrefixURLOther = this.txtURLPrefixOther.Text;
+                this.PrefixURLLikes = this.txtURLPrefixLikes.Text;
                 this.PrefixURLTag = this.txtURLPrefixTags.Text;
 
                 this.EnablePoints = Utilities.SafeConvertBool(this.rdPoints.SelectedValue);

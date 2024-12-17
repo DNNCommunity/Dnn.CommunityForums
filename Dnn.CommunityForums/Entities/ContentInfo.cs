@@ -27,9 +27,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     [TableName("activeforums_Content")]
     [PrimaryKey("ContentId", AutoIncrement = true)]
-    [Scope("ModuleId")]
     public class ContentInfo
     {
+        private DotNetNuke.Modules.ActiveForums.Entities.IPostInfo postInfo;
+
         public int ContentId { get; set; }
 
         public string Subject { get; set; } = string.Empty;
@@ -53,5 +54,39 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int ContentItemId { get; set; }
 
         public int ModuleId { get; set; }
+
+        [IgnoreColumn]
+        public DotNetNuke.Modules.ActiveForums.Entities.IPostInfo Post
+        {
+            get
+            {
+                if (this.postInfo == null)
+                {
+                    this.postInfo = this.GetPost();
+                    this.UpdateCache();
+                }
+
+                return this.postInfo;
+            }
+            set => this.postInfo = value;
+        }
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.IPostInfo GetPost()
+        {
+            if (this.postInfo == null)
+            {
+                this.postInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetByContentId(this.ContentId);
+                if (this.postInfo == null)
+                {
+                    this.postInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetByContentId(this.ContentId);
+                }
+            }
+
+            return this.postInfo;
+        }
+
+        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetCacheKey(this.ModuleId, this.ContentId);
+
+        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
     }
 }

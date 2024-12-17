@@ -495,4 +495,10 @@
   <data name="[RESX:SecGrid:split].Text" xml:space="preserve">
     <value>Trennen</value>
   </data>
+  <data name="URLPrefixLikes.Text" xml:space="preserve">
+    <value>Gefällt mir-Pfad</value>
+  </data>
+  <data name="URLPrefixLikes.Help" xml:space="preserve">
+    <value>Dies ist der Text, der als Teil der URL verwendet wird, um Likes im Forum zu identifizieren.</value>
+  </data>
 </root>

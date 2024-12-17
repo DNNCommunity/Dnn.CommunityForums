@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.replyId > 0)
             {
-                var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().ApproveReply(this.PortalSettings.PortalId, this.tabId, this.moduleId, this.forumId, this.topicId, this.replyId);
+                var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.moduleId).ApproveReply(this.PortalSettings.PortalId, this.tabId, this.moduleId, this.forumId, this.topicId, this.replyId);
                 if (reply == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(this.topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(this.moduleId, this.topicId);
                 if (topic == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.replyId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.moduleId).GetById(this.replyId);
 
                 if (reply == null)
                 {
@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.topicId);
+                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.moduleId).GetById(this.topicId);
                 if (topic == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var ui = uc.GetUser(this.PortalSettings.PortalId, authorId);
                 if (ui != null)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo au = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo
+                    DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo au = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.moduleId)
                     {
                         AuthorId = authorId,
                         DisplayName = ui.DisplayName,
@@ -174,14 +174,14 @@ namespace DotNetNuke.Modules.ActiveForums
             var ms = SettingsBase.GetModuleSettings(this.moduleId);
             if (this.replyId > 0 & this.replyId != this.topicId)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.moduleId).GetById(this.replyId);
 
                 if (reply == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
                 }
 
-                var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
+                var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.moduleId);
                 rc.Reply_Delete(this.PortalSettings.PortalId, this.forumId, this.topicId, this.replyId, ms.DeleteBehavior);
                 if (fi.FeatureSettings.ModDeleteTemplateId > 0 && reply?.Content?.AuthorId > 0)
                 {
@@ -190,12 +190,12 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.topicId);
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.moduleId).GetById(this.topicId);
                 if (ti == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
                 }
-                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(this.topicId);
+                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.moduleId).DeleteById(this.topicId);
                 if (fi.FeatureSettings.ModDeleteTemplateId > 0 && ti?.Content?.AuthorId > 0)
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.FeatureSettings.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, ti.Author);
@@ -228,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int authorId;
             if (this.replyId > 0 & this.replyId != this.topicId)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(this.replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.moduleId).GetById(this.replyId);
 
                 if (reply == null)
                 {
@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.topicId);
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.moduleId).GetById(this.topicId);
                 if (ti == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });

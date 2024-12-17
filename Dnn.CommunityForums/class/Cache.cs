@@ -189,6 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return null;
         }
+
         internal static void UserCacheClear(string cacheKey)
         {
             try
@@ -220,6 +221,80 @@ namespace DotNetNuke.Modules.ActiveForums
                 try
                 {
                     Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                }
+            }
+        }
+
+        internal static void ContentCacheClearForTopic(int moduleId, int topicId)
+        {
+            if (IsContentCachingEnabledForModule(moduleId))
+            {
+                try
+                {
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicInfo, moduleId, topicId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicTrackingInfoPrefix, moduleId, topicId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.ForumViewPrefix, moduleId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicViewPrefix, moduleId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicsViewPrefix, moduleId));
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                }
+            }
+        }
+
+        internal static void ContentCacheClearForContent(int moduleId, int contentId)
+        {
+            if (IsContentCachingEnabledForModule(moduleId))
+            {
+                try
+                {
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ContentInfo, moduleId, contentId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicInfoByContentId, moduleId, contentId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ReplyInfoByContentId, moduleId, contentId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.ForumViewPrefix, moduleId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicViewPrefix, moduleId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicsViewPrefix, moduleId));
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                }
+            }
+        }
+
+        internal static void ContentCacheClearForReply(int moduleId, int replyId)
+        {
+            if (IsContentCachingEnabledForModule(moduleId))
+            {
+                try
+                {
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ReplyInfo, moduleId, replyId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.ForumViewPrefix, moduleId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicViewPrefix, moduleId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicsViewPrefix, moduleId));
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                }
+            }
+        }
+
+        internal static void ContentCacheClearForForum(int moduleId, int forumId)
+        {
+            if (IsContentCachingEnabledForModule(moduleId))
+            {
+                try
+                {
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicReadCountPrefix, moduleId, forumId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.ForumTrackingInfoPrefix, moduleId, forumId));
                 }
                 catch (Exception ex)
                 {

@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Runtime.InteropServices.WindowsRuntime;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System.Collections.Generic;
@@ -29,10 +31,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Data;
+    using DotNetNuke.Modules.ActiveForums.Entities;
 
-    internal partial class RepositoryControllerBase<T> where T : class
+    internal class RepositoryControllerBase<T> where T : class
     {
         private readonly IRepository<T> repo;
+
+        internal virtual string cacheKeyTemplate => string.Empty;
 
         internal RepositoryControllerBase()
         {
@@ -132,6 +137,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal IPagedList<T> GetPage<TScopeType>(TScopeType scopeValue, int pageIndex, int pageSize)
         {
             return this.repo.GetPage(scopeValue, pageIndex, pageSize);
+        }
+
+        internal static T LoadFromCache(int moduleId, string cachekey)
+        {
+            return (T)DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, cachekey);
+        }
+
+        internal static void UpdateCache(int moduleId, string cachekey, T entity)
+        {
+            DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, entity);
+        }
+
+        internal static void ClearSettingsCache(int moduleId)
+        {
+            DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(moduleId);
+        }
+
+        internal string GetCacheKey<TProperty>(int moduleId, TProperty id)
+        {
+            return string.Format(this.cacheKeyTemplate, moduleId, id);
         }
     }
 }

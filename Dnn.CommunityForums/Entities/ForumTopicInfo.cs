@@ -20,51 +20,22 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-using System;
+    using System;
 
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Services.Log.EventLog;
 
-[TableName("activeforums_ForumTopics")]
-[PrimaryKey("ForumTopicId", AutoIncrement = true)]
+    [TableName("activeforums_ForumTopics")]
+    [PrimaryKey("ForumTopicId", AutoIncrement = true)]
 
-internal class ForumTopicInfo
+    internal class ForumTopicInfo
     {
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum;
-        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic;
-
         public int ForumTopicId { get; set; }
 
         public int ForumId { get; set; }
 
         public int TopicId { get; set; }
-        
+
         public int LastReplyId { get; set; } = 0;
-        
-        [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
-        {
-            get => this.forum ?? (this.forum = this.LoadForum());
-            set => this.forum = value;
-        }
-
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumInfo LoadForum()
-        {
-            this.forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId);
-            return this.forum;
-        }
-
-        [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
-        {
-            get => this.topic ?? (this.topic = this.LoadTopic());
-            set => this.topic = value;
-        }
-
-        internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo LoadTopic()
-        {
-            this.topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
-            return this.topic;
-        }
     }
 }

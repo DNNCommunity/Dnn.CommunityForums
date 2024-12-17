@@ -26,9 +26,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class ForumTrackingController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo>
     {
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo GetByUserIdForumId(int moduleId, int userId, int forumId)
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo GetByUserIdForumId(int moduleId, int userId, int forumId)
         {
-                string cachekey = string.Format(CacheKeys.ForumTrackingInfo, moduleId, userId, forumId);
+                string cachekey = string.Format(CacheKeys.ForumTrackingInfo, moduleId, forumId, userId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo forumTrackingInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo;
                 if (forumTrackingInfo == null)
                 {
@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return forumTrackingInfo;
         }
 
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo> GetForumsTrackingForUser(int userId)
+        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo> GetForumsTrackingForUser(int userId)
         {
             return this.Find("WHERE UserId = @0", userId).OrderBy(t => t.ForumId).ThenBy(t => t.LastAccessDateTime);
         }

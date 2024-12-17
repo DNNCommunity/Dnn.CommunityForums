@@ -40,11 +40,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private PortalSettings portalSettings;
         private SettingsInfo mainSettings;
         private ModuleInfo moduleInfo;
-        private string userRoles = Globals.DefaultAnonRoles + "|-1;||";
+        private string userRoles;
 
         public ForumUserInfo()
         {
-            this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
         }
 
         public ForumUserInfo(int moduleId)
@@ -209,36 +208,107 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         TimeSpan TimeZoneOffsetForUser => Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
 
         [IgnoreColumn]
-        public PortalSettings PortalSettings
+        public SettingsInfo MainSettings
         {
-            get => this.portalSettings ?? (this.portalSettings = Utilities.GetPortalSettings(this.PortalId));
-            set => this.portalSettings = value;
+            get
+            {
+                if (this.mainSettings == null)
+                {
+                    this.mainSettings = this.LoadMainSettings();
+                    this.UpdateCache();
+                }
+
+                return this.mainSettings;
+            }
+
+            set
+            {
+                this.mainSettings = value;
+                this.UpdateCache();
+            }
+        }
+
+        internal SettingsInfo LoadMainSettings()
+        {
+            return this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
         }
 
         [IgnoreColumn]
-        public SettingsInfo MainSettings
+        public PortalSettings PortalSettings
         {
-            get => this.mainSettings ?? (this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId));
-            set => this.mainSettings = value;
+            get
+            {
+                if (this.portalSettings == null)
+                {
+                    this.portalSettings = this.LoadPortalSettings();
+                    this.UpdateCache();
+                }
+
+                return this.portalSettings;
+            }
+
+            set
+            {
+                this.portalSettings = value;
+                this.UpdateCache();
+            }
+        }
+
+        internal PortalSettings LoadPortalSettings()
+        {
+            return this.portalSettings = Utilities.GetPortalSettings(this.PortalId);
         }
 
         [IgnoreColumn]
         public ModuleInfo ModuleInfo
         {
-            get => this.moduleInfo ?? (this.moduleInfo = this.LoadModuleInfo());
-            set => this.moduleInfo = value;
+            get
+            {
+                if (this.moduleInfo == null)
+                {
+                    this.moduleInfo = this.LoadModuleInfo();
+                    this.UpdateCache();
+                }
+
+                return this.moduleInfo;
+            }
+
+            set
+            {
+                this.moduleInfo = value;
+                this.UpdateCache();
+            }
         }
 
         internal ModuleInfo LoadModuleInfo()
         {
-            return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
+            return this.moduleInfo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
         }
 
         [IgnoreColumn]
         public DotNetNuke.Entities.Users.UserInfo UserInfo
         {
-            get => this.userInfo ?? (this.userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, this.UserId));
-            set => this.userInfo = value;
+            get
+            {
+                if (this.userInfo == null)
+                {
+                    this.userInfo = this.GetUser();
+                    this.UpdateCache();
+                }
+
+                return this.userInfo;
+            }
+
+            set
+            {
+                this.userInfo = value;
+                this.UpdateCache();
+            }
+        }
+
+        internal DotNetNuke.Entities.Users.UserInfo GetUser()
+        {
+            return this.userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, this.UserId);
         }
 
         [IgnoreColumn]
@@ -246,20 +316,23 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(this.PortalId);
-                var ids = this.GetRoleIds(this.UserInfo, this.PortalId);
-                if (string.IsNullOrEmpty(ids))
+                if (string.IsNullOrEmpty(this.userRoles))
                 {
-                    ids = Globals.DefaultAnonRoles + "|-1;||";
-                }
+                    var ids = this.GetRoleIds(this.UserInfo, this.PortalId);
+                    if (string.IsNullOrEmpty(ids))
+                    {
+                        ids = Globals.DefaultAnonRoles + "|-1;||";
+                    }
 
-                if (this.IsSuperUser)
-                {
-                    ids += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
-                }
+                    if (this.IsSuperUser)
+                    {
+                        ids += Globals.DefaultAnonRoles + this.PortalSettings.AdministratorRoleId + ";";
+                    }
 
-                ids += "|" + this.UserId + "|" + string.Empty + "|";
-                this.userRoles = ids;
+                    ids += "|" + this.UserId + "|" + string.Empty + "|";
+                    this.userRoles = ids;
+                    this.UpdateCache();
+                }
 
                 return this.userRoles;
             }
@@ -450,7 +523,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "rankname":
                     return PropertyAccess.FormatString(this.UserId > 0 ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(this.ModuleId, this, 1) : string.Empty, format);
                 case "userprofilelink":
-                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.CanLinkToProfile(this.PortalSettings, this.MainSettings, this.ModuleId, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this) ? Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { $"userId={this.UserId}" }) : string.Empty, format);
+                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.CanLinkToProfile(this.PortalSettings, this.MainSettings, this.ModuleId, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this) ? Utilities.NavigateURL(this.ModuleInfo.TabID, string.Empty, new[] { $"userId={this.UserId}" }) : string.Empty, format);
                 case "signature":
                     var sSignature = string.Empty;
                     if (this.MainSettings.AllowSignatures != 0 && !this.PrefBlockSignatures && !this.SignatureDisabled)
@@ -475,9 +548,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                     return PropertyAccess.FormatString(sSignature, format);
                 case "userstatus":
-                    return PropertyAccess.FormatString(this.MainSettings.UsersOnlineEnabled && this.UserId > 0 ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString(this.IsUserOnline ? "[FORUMUSER-USERONLINE]" : "[FORUMUSER-USEROFFLINE]", this.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty, format);
-                case "userstatuscss":
-                    return PropertyAccess.FormatString(this.MainSettings.UsersOnlineEnabled && this.UserId > 0 ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString(this.IsUserOnline ? "[FORUMUSER-USERONLINECSS]" : "[FORUMUSER-USEROFFLINECSS]", this.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty, format);
+                    {
+                        return PropertyAccess.FormatString(this.MainSettings != null && this.MainSettings.UsersOnlineEnabled && this.UserId > 0 ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString(this.IsUserOnline ? "[FORUMUSER-USERONLINE]" : "[FORUMUSER-USEROFFLINE]", this.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty, format);
+                    } case "userstatuscss":
+                    {
+                        return PropertyAccess.FormatString(this.MainSettings != null && this.MainSettings.UsersOnlineEnabled && this.UserId > 0 ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString(this.IsUserOnline ? "[FORUMUSER-USERONLINECSS]" : "[FORUMUSER-USEROFFLINECSS]", this.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty, format);
+                    }
+
                 case "pmlink":
                     return PropertyAccess.FormatString((accessingUser.IsAdmin || accessingUser.IsSuperUser) && this.UserId > 0 ? this.UserId.ToString() : string.Empty, format);
                 case "editlink":
@@ -489,5 +566,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             propertyNotFound = true;
             return string.Empty;
         }
+
+        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetCacheKey(this.PortalId, this.UserId);
+
+        internal void UpdateCache() => DataCache.UserCacheStore(this.GetCacheKey(), this);
     }
 }

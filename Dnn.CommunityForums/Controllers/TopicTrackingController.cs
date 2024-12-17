@@ -35,8 +35,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         internal DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo GetByUserIdTopicId(int moduleId, int userId, int topicId)
         {
-            string cachekey = string.Format(CacheKeys.TopicTrackingInfo, moduleId, userId, topicId);
-            DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo topicTrackingInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as  DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo;
+            string cachekey = string.Format(CacheKeys.TopicTrackingInfo, moduleId, topicId, userId);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo topicTrackingInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo;
             if (topicTrackingInfo == null)
             {
                 // this accommodates duplicates which may exist since currently no uniqueness applied in database
@@ -49,8 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal int GetTopicsReadCountForUserForum(int moduleId, int userId, int forumId)
         {
-            
-            string cachekey = string.Format(CacheKeys.TopicReadCount, moduleId, userId, forumId);
+            string cachekey = string.Format(CacheKeys.TopicReadCount, moduleId, forumId, userId);
             var topicReadCount = DataCache.ContentCacheRetrieve(moduleId, cachekey);
             if (topicReadCount == null)
             {

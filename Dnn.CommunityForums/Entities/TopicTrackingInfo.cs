@@ -41,55 +41,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int LastReplyId { get; set; } = 0;
 
         public int UserId { get; set; }
-        
+
         public DateTime DateAdded { get; set; } = DateTime.UtcNow;
 
-        [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
-        {
-            get => this.topic ?? (this.topic = this.LoadTopic());
-            set => this.topic = value;
-        }
-
-        internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo LoadTopic()
-        {
-            this.topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
-            if (this.topic == null)
-            {
-                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
-                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                string message = string.Format(Utilities.GetSharedResource("[RESX:TopicMissingForTopicTrackingId]"), this.TopicId, this.TrackingId);
-                log.AddProperty("Message", message);
-                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-
-                var ex = new NullReferenceException(string.Format(Utilities.GetSharedResource("[RESX:TopicMissingForTopicTrackingId]"), this.TopicId, this.TrackingId));
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                throw ex;
-            }
-
-            return this.topic;
-        }
-
-        [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
-        {
-            get => this.forumUser ?? (this.forumUser = this.GetForumUser());
-            set => this.forumUser = value;
-        }
-
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetForumUser()
-        {
-            this.forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.Topic.ModuleId).GetByUserId(this.Topic.PortalId, this.UserId);
-            if (this.forumUser == null)
-            {
-                this.forumUser = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(this.Topic.ModuleId)
-                {
-                    UserId = this.UserId,
-                };
-                this.forumUser.UserInfo.DisplayName = this.UserId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
-            }
-
-            return this.forumUser;
-        }
     }
 }

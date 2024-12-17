@@ -1779,4 +1779,10 @@ From,
   <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
     <value>Deletes all posts for this user and unauthorizes the user.</value>
   </data>
+  <data name="[RESX:Likes].Text" xml:space="preserve">
+    <value>Likes</value>
+  </data>
+  <data name="[RESX:likedby].Text" xml:space="preserve">
+    <value>liked by</value>
+  </data>
 </root>

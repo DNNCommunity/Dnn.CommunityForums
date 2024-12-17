@@ -66,7 +66,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
 #if DEBUG
             //ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
-            new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveUnused(this.ForumModuleId);
+            //new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveUnused(this.ForumModuleId);
+            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
 #endif
 
             try
@@ -88,6 +89,14 @@ namespace DotNetNuke.Modules.ActiveForums
                     else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.MySubscriptions)
                     {
                         ctl = Views.MySubscriptions;
+                    }
+                    else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.Likes)
+                    {
+                        ctl = Views.Likes;
+                        if (this.Request.QueryString[ParamKeys.ContentId] != null)
+                        {
+                            opts = $"{ParamKeys.ContentId}={this.Request.QueryString[ParamKeys.ContentId]}";
+                        }
                     }
                     else if (this.Request.Params[ParamKeys.ViewType] != null)
                     {
@@ -241,7 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: this.PortalId, roleId: this.SocialGroupId);
 
-                        // Create new foportalId: rum
+                        // Create new forum
                         bool isPrivate = false;
                         if (!role.IsPublic)
                         {

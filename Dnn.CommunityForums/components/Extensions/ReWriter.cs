@@ -24,8 +24,10 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Text.RegularExpressions;
     using System.Web;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
@@ -160,13 +162,32 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             string newSearchURL = string.Empty;
-            foreach (string up in searchURL.Split('/'))
+            if (searchURL.Contains("/likes/"))
             {
-                if (!string.IsNullOrEmpty(up))
+                newSearchURL = searchURL + "/"; /* if this is a URL for viewing "likes", don't remove numeric segments because it contains content id */
+                if (newSearchURL.StartsWith("/"))
                 {
-                    if (!SimulateIsNumeric.IsNumeric(up))
+                    newSearchURL = newSearchURL.Substring(1);
+                }
+
+                /* but do remove (optional) page number; it will be restored later */
+                var pageSegment = RegexUtils.GetCachedRegex(".*/likes/(?<contentId>[\\d]+)(?<page>/[\\d]+).*", RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace).Match(newSearchURL).Groups["page"];
+                if (!string.IsNullOrEmpty(pageSegment?.Value))
+                {
+                    newSearchURL = newSearchURL.Replace(pageSegment.Value, string.Empty);
+                }
+
+            }
+            else
+            {
+                foreach (string up in searchURL.Split('/'))
+                {
+                    if (!string.IsNullOrEmpty(up))
                     {
-                        newSearchURL += up + "/";
+                        if (!SimulateIsNumeric.IsNumeric(up))
+                        {
+                            newSearchURL += up + "/";
+                        }
                     }
                 }
             }
@@ -440,24 +461,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 string sendTo = string.Empty;
-                if ((this.topicId > 0) || (this.forumId > 0) || (this.forumgroupId > 0))
-                {
-                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, $"~/default.aspx?tabid={this.tabId}" +
-                                (this.forumgroupId > 0 ? $"&{ParamKeys.GroupId}={this.forumgroupId}" : string.Empty) +
-                                (this.forumId > 0 ? $"&{ParamKeys.ForumId}={this.forumId}" : string.Empty) +
-                                (this.topicId > 0 ? $"&{ParamKeys.TopicId}={this.topicId}" : string.Empty) +
-                                sPage + qs +
-                                ((this.forumgroupId > 0 || this.forumId > 0) ? catQS : string.Empty));
-                }
-                else if (this.urlType == 2 && this.otherId > 0)
-                {
-                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.tabId + $"&{ParamKeys.Category}=" + this.otherId + sPage + qs);
-                }
-                else if (this.urlType == 3 && this.otherId > 0)
-                {
-                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}={Views.Tags}&{ParamKeys.Tags}=" + this.otherId + sPage + qs);
-                }
-                else if (this.urlType == 1)
+                if (this.urlType == 1)
                 {
                     string v = string.Empty;
                     switch (this.otherId)
@@ -495,6 +499,27 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}=" + v + sPage + qs);
+                }
+                else if (this.urlType == 2 && this.otherId > 0)
+                {
+                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.tabId + $"&{ParamKeys.Category}=" + this.otherId + sPage + qs);
+                }
+                else if (this.urlType == 3 && this.otherId > 0)
+                {
+                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}={Views.Tags}&{ParamKeys.Tags}=" + this.otherId + sPage + qs);
+                }
+                else if (this.urlType == 4 && this.otherId > 0)
+                {
+                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}={Views.Likes}&{ParamKeys.ContentId}=" + this.otherId + sPage + qs);
+                }
+                else if ((this.topicId > 0) || (this.forumId > 0) || (this.forumgroupId > 0))
+                {
+                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, $"~/default.aspx?tabid={this.tabId}" +
+                                (this.forumgroupId > 0 ? $"&{ParamKeys.GroupId}={this.forumgroupId}" : string.Empty) +
+                                (this.forumId > 0 ? $"&{ParamKeys.ForumId}={this.forumId}" : string.Empty) +
+                                (this.topicId > 0 ? $"&{ParamKeys.TopicId}={this.topicId}" : string.Empty) +
+                                sPage + qs +
+                                ((this.forumgroupId > 0 || this.forumId > 0) ? catQS : string.Empty));
                 }
                 else if (this.tabId > 0)
                 {

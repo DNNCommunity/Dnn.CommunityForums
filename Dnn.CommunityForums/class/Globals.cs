@@ -229,10 +229,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string PrefixURLBase = "URLBASE";
         public const string PrefixURLTags = "URLTAGS";
         public const string PrefixURLCategories = "URLCATS";
+        public const string PrefixURLLikes = "URLLIKES";
         public const string PrefixURLOther = "URLOTHER";
-        
+
         public const string CacheTemplates = "CACHETEMPLATES";
-        
+
         public const string DefaultSettingsKey = "DEFAULTSETTINGSKEY";
         public const string DefaultPermissionId = "DEFAULTPERMISSIONID";
     }
@@ -334,6 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string QuoteId = "afq";
         public const string PageId = "afpg";
         public const string PostId = "postid";
+        public const string ContentId = "contentid";
         public const string UserId = "uid";
         public const string Sort = "afs";
         public const string PageJumpId = "afpgj";
@@ -390,6 +392,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ModerateTopics = "modtopics";
         public const string ModerateBan = "modban";
         public const string ModerateReport = "modreport";
+        public const string Likes = "likes";
     }
 
     internal static class GridTypes
@@ -453,15 +456,34 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ViewRolesForForumList = "AF-{0}-Perm-{1}";
         public const string Subscriber = "AF-{0}-Subs-{1}-{2}-{3}-{4}";
         public const string ForumSettings = "AF-{0}-fs-{1}";
-
+        
+        public const string ForumTopicInfo = "AF-{0}-forumtopicinfo-{1}";
+        public const string ForumTopicInfoPrefix = "AF-{0}-forumtopicinfo";
         public const string ForumGroupInfo = "AF-{0}-fgi-{1}";
         public const string ForumGroupSettings = "AF-{0}-fgs-{1}";
         public const string PermissionsInfo = "AF-{0}-perms-{1}";
 
         
         public const string ContentInfo = "AF-{0}-ci-{1}";
+        public const string TopicInfo = "AF-{0}-ti-{1}";
+        public const string TopicInfoByContentId = "AF-{0}-tci-{1}";
+        public const string ReplyInfo = "AF-{0}-ri-{1}";
+        public const string ReplyInfoByContentId = "AF-{0}-rci-{1}";
+        public const string LikeCount = "AF-{0}-lc-{1}";
+        public const string LikedByUser = "AF-{0}-lbu-{1}-{2}";
+        public const string ForumSubscriberPrefix = "AF-{0}-fsub-{1}";
+        public const string ForumSubscriber = "AF-{0}-fsub-{1}-{2}";
+        public const string ForumSubscriberCount = "AF-{0}-fsubcount-{1}";
+        public const string TopicSubscriberPrefix = "AF-{0}-tsub-{1}";
+        public const string TopicSubscriber = "AF-{0}-tsub-{1}-{2}-{3}";
+        public const string TopicSubscriberCount = "AF-{0}-tsub-{1}-{2}";
+        public const string TopicSubscriberCountPrefix = "AF-{0}-tsub-{1}";
+        public const string LikeInfo = "AF-{0}-li-{1}";
+        public const string TopicTrackingInfoPrefix = "AF-{0}-tti-{1}";
         public const string TopicTrackingInfo = "AF-{0}-tti-{1}-{2}";
+        public const string ForumTrackingInfoPrefix = "AF-{0}-fti-{1}";
         public const string ForumTrackingInfo = "AF-{0}-fti-{1}-{2}";
+        public const string TopicReadCountPrefix = "AF-{0}-trc-{1}";
         public const string TopicReadCount = "AF-{0}-trc-{1}-{2}";
 
         public const string RoleNames = "AF-rn-{0}";
@@ -471,9 +493,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string CultureInfoForUser = "AF-usercultureinfo-{0}";
         public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
         
-        // public const string ForumView = "AF-{0}-FV-{1}";
-        // public const string AllSettings = "AF-afset{0}";
-        // public const string GroupInfo = "AF-gi{0}";
     }
 
     public class SortColumns

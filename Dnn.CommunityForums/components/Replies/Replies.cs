@@ -30,22 +30,22 @@ namespace DotNetNuke.Modules.ActiveForums
     public class ReplyController
     {
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
-        public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, int delBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Delete(portalId, forumId, topicId, replyId, delBehavior);
+        public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, int delBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(-1).Reply_Delete(portalId, forumId, topicId, replyId, delBehavior);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
-        public int Reply_QuickCreate(int portalId, int moduleId, int forumId, int topicId, int replyToId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_QuickCreate(portalId, moduleId, forumId, topicId, replyToId, subject, body, userId, displayName, isApproved, iPAddress);
+        public int Reply_QuickCreate(int portalId, int moduleId, int forumId, int topicId, int replyToId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).Reply_QuickCreate(portalId, moduleId, forumId, topicId, replyToId, subject, body, userId, displayName, isApproved, iPAddress);
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
-        public int Reply_Save(int portalId, ReplyInfo ri) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(portalId, -1, ri);
+        public int Reply_Save(int portalId, ReplyInfo ri) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(-1).Reply_Save(portalId, -1, ri);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
-        public int Reply_Save(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.ReplyInfo ri) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(portalId, moduleId, ri);
+        public int Reply_Save(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.ReplyInfo ri) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).Reply_Save(portalId, moduleId, ri);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
-        public DotNetNuke.Modules.ActiveForums.ReplyInfo Reply_Get(int portalId, int moduleId, int topicId, int replyId) => (DotNetNuke.Modules.ActiveForums.ReplyInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
+        public DotNetNuke.Modules.ActiveForums.ReplyInfo Reply_Get(int portalId, int moduleId, int topicId, int replyId) => (DotNetNuke.Modules.ActiveForums.ReplyInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).GetById(replyId);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
-        public DotNetNuke.Modules.ActiveForums.ReplyInfo ApproveReply(int portalId, int tabId, int moduleId, int forumId, int topicId, int replyId) => (DotNetNuke.Modules.ActiveForums.ReplyInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().ApproveReply(portalId, tabId, moduleId, forumId, topicId, replyId);
+        public DotNetNuke.Modules.ActiveForums.ReplyInfo ApproveReply(int portalId, int tabId, int moduleId, int forumId, int topicId, int replyId) => (DotNetNuke.Modules.ActiveForums.ReplyInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).ApproveReply(portalId, tabId, moduleId, forumId, topicId, replyId);
 
         [Obsolete("Deprecated in Community Forums. Moved to Utilities and changed to internal in 10.00.00.")]
         public void UpdateModuleLastContentModifiedOnDate(int moduleId) => Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);

@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author)
         {
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
             DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = Utilities.GetPortalSettings(portalId);
             var sFrom = fi.FeatureSettings.EmailAddress != string.Empty ? fi.FeatureSettings.EmailAddress : portalSettings.Email;
             var subjectTemplate = !string.IsNullOrEmpty(fi.FeatureSettings.EmailNotificationSubjectTemplate) ?

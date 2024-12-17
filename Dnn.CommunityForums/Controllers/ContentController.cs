@@ -25,17 +25,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class ContentController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo>
     {
+        internal override string cacheKeyTemplate => CacheKeys.ContentInfo;
+
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetById(int contentId, int moduleId)
         {
-            string cachekey = string.Format(CacheKeys.ContentInfo, moduleId, contentId);
+            var cachekey = this.GetCacheKey(moduleId: moduleId, id: contentId);
             DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ContentInfo;
             if (content == null)
             {
-                content = base.GetById(contentId, moduleId);
-                DataCache.ContentCacheStore(moduleId, cachekey, content);
+                content = base.GetById(contentId);
+                if (moduleId.Equals(-1) && !content.Equals(null))
+                {
+                    content.UpdateCache();
+                }
+                else
+                {
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, content);
+                }
             }
 
             return content;
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use GetById(int contentId, int moduleId).")]
+        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetById(int contentId)
+        {
+            return this.GetById(contentId, -1);
         }
     }
 }

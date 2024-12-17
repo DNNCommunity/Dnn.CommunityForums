@@ -1782,4 +1782,10 @@ Da
     <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] ha pubblicato contenuti che richiedono moderazione.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Oggetto:&lt;/strong&gt; [FORUMPOST:OGGETTO]&lt;/p&gt;&lt;p&gt;Si prega di rivedere il contenuto e determinarne la disposizione.&lt;/p&gt;
 &lt;p&gt;Si può:&lt;ol&gt;&lt;li&gt;approvare l'argomento,&lt;/li&gt;&lt;li&gt;rifiutarlo (invio all'autore per le revisioni),&lt;/li&gt;&lt;li&gt;eliminarlo, oppure&lt;/li&gt;&lt;li&gt;bannare l'utente, cancellando questo e qualsiasi altro argomento o risposta postata da questo utente&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Se non riesci a determinare se questo contenuto è adatto solo in base all'argomento, utilizza &lt;a href="[FORUM:MODLINK]"&gt;questo link&lt;/a&gt; per rivedere e moderare gli argomenti.&lt;/p&gt;</value>
   </data>
+  <data name="[RESX:Likes].Text" xml:space="preserve">
+    <value>Preferenza</value>
+  </data>
+  <data name="[RESX:likedby].Text" xml:space="preserve">
+    <value>Consigliato da</value>
+  </data>
 </root>

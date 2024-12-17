@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Linq;
+
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
@@ -50,6 +52,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         [Bindable(true), Category("Appearance"), DefaultValue("0")]
         public int TopicId { get; set; }
+
+        [Bindable(true), Category("Appearance"), DefaultValue("0")]
+        public int ContentId { get; set; }
 
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public int TabID { get; set; }
@@ -126,8 +131,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (string.IsNullOrEmpty(this.BaseURL))
                         {
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, 1, this.TopicId)) + "\" title=\"First Page\"> &lt;&lt; </a></td>");
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.CurrentPage - 1, this.TopicId)) + "\" title=\"Previous Page\"> &lt; </a></td>");
+                            //if (this.ContentId > 0)
+                            //{
+                            //    sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, 1, this.TopicId, this.ContentId)) + "\" title=\"First Page\"> &lt;&lt; </a></td>");
+                            //    sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.CurrentPage - 1, this.TopicId, this.ContentId)) + "\" title=\"Previous Page\"> &lt; </a></td>");
+                            //}
+                            //else
+                            //{
+                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, 1, this.TopicId)) + "\" title=\"First Page\"> &lt;&lt; </a></td>");
+                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.CurrentPage - 1, this.TopicId)) + "\" title=\"Previous Page\"> &lt; </a></td>");
+//                            }
                         }
                         else
                         {
@@ -238,7 +251,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return sb.ToString();
         }
 
-        private string[] BuildParams(string view, int forumID, int page, int postID = 0)
+        private string[] BuildParams(string view, int forumID, int page, int postID = 0, int contentId = 0)
         {
             string[] params2;
             if (view.ToLowerInvariant() == Views.Topics.ToLowerInvariant())
@@ -306,7 +319,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    params2 = new[] { ParamKeys.ViewType + "=" + view, ParamKeys.PageId + "=" + page };
+                    params2 = new[] { $"{ParamKeys.ViewType}={view}", ParamKeys.PageId + "=" + page };
                 }
             }
 

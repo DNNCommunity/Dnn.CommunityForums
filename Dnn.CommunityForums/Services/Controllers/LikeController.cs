@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.ForumId, this.ForumModuleId).FeatureSettings.AllowLikes &&
                     ServicesHelper.IsAuthorized(this.PortalSettings.PortalId, this.ForumModuleId, dto.ForumId, SecureActions.Reply, this.UserInfo))
                 {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Like(dto.ContentId, this.UserInfo.UserID));
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalSettings.PortalId, this.ForumModuleId).Like(dto.ContentId, this.UserInfo.UserID));
                 }
             }
             catch (Exception ex)
@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, this.ForumModuleId).FeatureSettings.AllowLikes)
                 {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, value: new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(this.UserInfo.UserID, contentId));
+                    return this.Request.CreateResponse(HttpStatusCode.OK, value: new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalSettings.PortalId, this.ForumModuleId).Get(this.UserInfo.UserID, contentId));
                 }
             }
             catch (Exception ex)

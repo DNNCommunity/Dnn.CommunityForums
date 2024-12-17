@@ -25,13 +25,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     using DotNetNuke.Data;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
 
     internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>
     {
+        internal override string cacheKeyTemplate => CacheKeys.ForumGroupInfo;
+
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetById(int forumGroupId, int moduleId)
         {
-            var cachekey = string.Format(CacheKeys.ForumGroupInfo, moduleId, forumGroupId);
-            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
+            var cachekey = this.GetCacheKey(moduleId, forumGroupId);
+            var forumGroup = LoadFromCache(moduleId, cachekey);
             if (forumGroup == null)
             {
                 forumGroup = base.GetById(forumGroupId, moduleId);
@@ -41,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumGroup.LoadFeatureSettings();
                 }
 
-                DataCache.SettingsCacheStore(moduleId, cachekey, forumGroup);
+                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, forumGroup);
             }
 
             return forumGroup;
@@ -154,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND GroupKey = @1", forumGroupInfo.ModuleId, $"G:{forumGroupInfo.ForumGroupId}");
             }
 
-            DataCache.ClearSettingsCache(forumGroupInfo.ModuleId);
+            ClearSettingsCache(forumGroupInfo.ModuleId);
             return forumGroupInfo.ForumGroupId;
         }
 
@@ -167,7 +170,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             this.DeleteById(forumGroupId);
-            DataCache.ClearSettingsCache(moduleId);
+            ClearSettingsCache(moduleId);
         }
     }
 }
