@@ -57,18 +57,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (replyId > 0)
                 {
                     DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).GetById(replyId);
-                    subject = Utilities.GetSharedResource("NotificationSubjectReply");
+                    subject = Utilities.GetSharedResource("[RESX:NotificationSubjectReply]");
                     subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUri, rawUrl).ToString();
-                    body = Utilities.GetSharedResource("NotificationBodyReply");
+                    body = Utilities.GetSharedResource("[RESX:NotificationBodyReply]");
                     body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUri,  rawUrl).ToString();
                     authorId = reply.Content.AuthorId;
                 }
                 else
                 {
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
-                    subject = Utilities.GetSharedResource("NotificationSubjectTopic");
+                    subject = Utilities.GetSharedResource("[RESX:NotificationSubjectTopic]");
                     subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), topic, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUri, rawUrl).ToString();
-                    body = Utilities.GetSharedResource("NotificationBodyTopic");
+                    body = Utilities.GetSharedResource("[RESX:NotificationBodyTopic]");
                     body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), topic, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUri, rawUrl).ToString();
                     authorId = topic.Content.AuthorId;
                 }

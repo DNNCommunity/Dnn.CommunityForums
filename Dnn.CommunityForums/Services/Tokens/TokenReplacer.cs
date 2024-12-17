@@ -158,21 +158,21 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[PropertySource_forumtopic] = postInfo.Topic;
             this.PropertySource[PropertySource_forumpost] = postInfo;
             this.PropertySource[PropertySource_forumpostaction] = postInfo;
-            this.PropertySource[PropertySource_forumuser] = forumUser;
-            this.PropertySource[PropertySource_user] = forumUser.UserInfo;
-            this.PropertySource[PropertySource_profile] = new ProfilePropertyAccess(forumUser.UserInfo);
-            this.PropertySource[PropertySource_membership] = new MembershipPropertyAccess(forumUser.UserInfo);
             this.PropertySource[PropertySource_forumauthor] = postInfo.Author.ForumUser;
             this.PropertySource[PropertySource_forumauthoruser] = postInfo.Author.ForumUser.UserInfo;
             this.PropertySource[PropertySource_forumauthorprofile] = new ProfilePropertyAccess(postInfo.Author.ForumUser.UserInfo);
             this.PropertySource[PropertySource_forumauthormembership] = new MembershipPropertyAccess(postInfo.Author.ForumUser.UserInfo);
+            this.PropertySource[PropertySource_forumuser] = forumUser;
+            this.PropertySource[PropertySource_user] = forumUser.UserInfo;
+            this.PropertySource[PropertySource_profile] = new ProfilePropertyAccess(forumUser.UserInfo);
+            this.PropertySource[PropertySource_membership] = new MembershipPropertyAccess(forumUser.UserInfo);
             this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
             this.PropertySource[PropertySource_module] = postInfo.Forum.ModuleInfo;
             this.PropertySource[PropertySource_portal] = portalSettings;
             this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
-        
+
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, LikeInfo likeInfo, Uri requestUri, string rawUrl)
         {
             likeInfo.Forum.RawUrl = rawUrl;
@@ -207,6 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
+
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
             forumUser.RawUrl = rawUrl;
@@ -378,7 +379,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             return body;
         }
-        
+
         internal static StringBuilder ReplacePostTokens(StringBuilder template, IPostInfo post, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
             /* if likes not allowed for forum, remove like-related tokens */
@@ -414,16 +415,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 template = RemovePrefixedToken(template, "[FORUMLIKE:");
             }
-
-            // Perform Profile Related replacements
-            var author = new AuthorInfo(like.PortalId, like.ModuleId, like.Content.AuthorId);
-            if (template.ToString().Contains("[POSTINFO]"))
-            {
-                var sPostInfo = TemplateUtils.GetPostInfo(like.ModuleId, author.ForumUser, like.Forum.ThemeLocation, like.Forum.GetIsMod(forumUser), like.Content.IPAddress, author.ForumUser.IsUserOnline, forumUser.CurrentUserType, forumUser.UserId, forumUser.PrefBlockAvatars, forumUser.UserInfo.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
-                template.Replace("[POSTINFO]", sPostInfo);
-            }
-
-            like.Content.Body = ReplaceBody(like.Content.Body, mainSettings, requestUri).Replace("<br />", "  ");
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, like, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
@@ -936,7 +927,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                     template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, $"[ACTIONS:{action}]", $"[FORUMPOST:ACTION{action}ONCLICK", useListActions ? $"[FORUMPOST:ACTIONS:{action}:LISTITEM]" : $"[FORUMPOST:ACTIONS:{action}:HYPERLINK]");
                 }
             }
-            
+
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[FORUMPOST:SELECTEDANSWER]", "[FORUMPOST:SELECTEDANSWER", "[FORUMPOST:SELECTEDANSWER]");
             return template;
         }

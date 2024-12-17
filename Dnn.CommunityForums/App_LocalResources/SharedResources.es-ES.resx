@@ -1519,18 +1519,18 @@ De
   <data name="NoResults.Text" xml:space="preserve">
     <value>No se han encontrado resultados</value>
   </data>
-  <data name="NotificationBodyReply.Text" xml:space="preserve">
+  <data name="[RESX:NotificationBodyReply].Text" xml:space="preserve">
     <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] ha publicado contenido que require moderación.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Asunto:&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Por favor revise el contenido y verifique su validez.&lt;/p&gt;
 &lt;p&gt;Puede:&lt;ol&gt;&lt;li&gt;aprobar el tema,&lt;/li&gt;&lt;li&gt;rechazar el tema (y solicitar correcciones al autor),&lt;/li&gt;&lt;li&gt;eliminar el tema, o&lt;/li&gt;&lt;li&gt;bloquear al usuario, eliminanado este tema y otros que haya enviado&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si no puede determinar si el contenido es apropiado a partir del asunto, utilize &lt;a href="[FORUM:MODLINK]"&gt;este enlace&lt;/a&gt; para revisar y moderar temas.&lt;/p&gt;</value>
   </data>
-  <data name="NotificationBodyTopic.Text" xml:space="preserve">
+  <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
     <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] ha publicado contenido que require moderación.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Asunto:&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Por favor revise el contenido y verifique su validez.&lt;/p&gt;
 &lt;p&gt;Puede:&lt;ol&gt;&lt;li&gt;aprobar el tema,&lt;/li&gt;&lt;li&gt;rechazar el tema (y solicitar correcciones al autor),&lt;/li&gt;&lt;li&gt;eliminar el tema, o&lt;/li&gt;&lt;li&gt;bloquear al usuario, eliminanado este tema y otros que haya enviado&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si no puede determinar si el contenido es apropiado a partir del asunto, utilize &lt;a href="[FORUM:MODLINK]"&gt;este enlace&lt;/a&gt; para revisar y moderar temas.&lt;/p&gt;</value>
   </data>
-  <data name="NotificationSubjectReply.Text" xml:space="preserve">
+  <data name="[RESX:NotificationSubjectReply].Text" xml:space="preserve">
     <value>[FORUMPOST:AUTHORDISPLAYNAME] ha publicado una respuesta a [TopicSubject]</value>
   </data>
-  <data name="NotificationSubjectTopic.Text" xml:space="preserve">
+  <data name="[RESX:NotificationSubjectTopic].Text" xml:space="preserve">
     <value>[FORUMPOST:AUTHORDISPLAYNAME] ha creado un nuevo tema: [TopicSubject]</value>
   </data>
   <data name="NotLoggedIn.Text" xml:space="preserve">
@@ -1796,5 +1796,12 @@ De
   </data>
   <data name="[RESX:LikeNotificationsEnabled].Help" xml:space="preserve">
     <value>Seleccione esta opción si desea recibir notificaciones cuando otros usuarios le den "Me gusta" a sus publicaciones.</value>
+  </data>
+  <data name="[RESX:LikeNotificationSubject].Text" xml:space="preserve">
+    <value>[FORUMLIKE:USERDISPLAYNAME] me ha gustado tu publicación sobre el tema: [FORUMPOST:SUBJECT]</value>
+  </data>
+  <data name="[RESX:LikeNotificationBody].Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME]&lt;/a&gt;] Me gustó tu publicación en [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
+&lt;p&gt;Para ver a quién le gusta tu publicación, visita [FORUMPOST:LIKESLINK|&lt;a href="{0}"&gt;[FORUMPOST:LIKESLINK]&lt;/a&gt;]&lt;/p&gt;</value>
   </data>
 </root>

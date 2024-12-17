@@ -1444,18 +1444,18 @@ From,
   <data name="AlertSubject.Text" xml:space="preserve">
     <value>A post by [DisplayName] has been flagged for review by [FlaggedBy]</value>
   </data>
-  <data name="NotificationBodyReply.Text" xml:space="preserve">
+  <data name="[RESX:NotificationBodyReply].Text" xml:space="preserve">
     <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME]&lt;/a&gt;] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
 &lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[FORUM:MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
   </data>
-  <data name="NotificationSubjectReply.Text" xml:space="preserve">
+  <data name="[RESX:NotificationSubjectReply].Text" xml:space="preserve">
     <value>[FORUMPOST:AUTHORDISPLAYNAME] has posted content requiring moderation</value>
   </data>
-  <data name="NotificationBodyTopic.Text" xml:space="preserve">
+  <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
     <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
 &lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[FORUM:MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
   </data>
-  <data name="NotificationSubjectTopic.Text" xml:space="preserve">
+  <data name="[RESX:NotificationSubjectTopic].Text" xml:space="preserve">
     <value>[FORUMPOST:AUTHORDISPLAYNAME] has posted content requiring moderation</value>
   </data>
   <data name="ForumEditor.Text" xml:space="preserve">
@@ -1793,5 +1793,13 @@ From,
   </data>
   <data name="[RESX:LikeNotificationsEnabled].Help" xml:space="preserve">
     <value>Select this option if you wish to receive notifications when other users 'like' your posts.</value>
+  </data>
+  <data name="[RESX:LikeNotificationBody].Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME]&lt;/a&gt;] liked your post on [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
+&lt;p&gt;To see who likes your post, visit [FORUMPOST:LIKESLINK|&lt;a href="{0}"&gt;[FORUMPOST:LIKESLINK]&lt;/a&gt;]&lt;/p&gt;
+</value>
+  </data>
+  <data name="[RESX:LikeNotificationSubject].Text" xml:space="preserve">
+    <value>[FORUMLIKE:USERDISPLAYNAME] liked your post on topic: [FORUMPOST:SUBJECT]</value>
   </data>
 </root>

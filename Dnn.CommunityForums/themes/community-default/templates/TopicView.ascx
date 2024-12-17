@@ -95,7 +95,7 @@
 								
 							</section>
 							<footer class="dcf-post-footer">
-                                [FORUMUSER:SIGNATURE|<div class="dcf-post-signature">{0}</div>]
+                                [FORUMAUTHOR:SIGNATURE|<div class="dcf-post-signature">{0}</div>]
 
                                 <div class="dcf-cols dcf-post-footer-bottom">
 									<div class="dcf-col-50">
@@ -151,7 +151,7 @@
 								
 							</section>
 							<footer class="dcf-post-footer">
-                                [FORUMUSER:SIGNATURE|<div class="dcf-post-signature">{0}</div>]
+                                [FORUMAUTHOR:SIGNATURE|<div class="dcf-post-signature">{0}</div>]
 
 								<div class="dcf-cols dcf-post-footer-bottom">
 									<div class="dcf-col-50">

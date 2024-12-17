@@ -45,7 +45,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     TabId = tabId,
                     TopicId = topicId,
                     ReplyId = replyId,
+                    ContentId = contentId,
                     AuthorId = authorId,
+                    UserId = userId,
                     DateCreated = DateTime.UtcNow,
                     RequestUrl = requestUrl,
                 });

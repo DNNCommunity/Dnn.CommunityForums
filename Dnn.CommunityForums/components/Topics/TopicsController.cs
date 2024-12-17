@@ -293,6 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         ForumsConfig.Upgrade_RelocateSqlFiles_080200();
                         ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
+                        ForumsConfig.Install_LikeNotificationType_080200();
                     }
                     catch (Exception ex)
                     {

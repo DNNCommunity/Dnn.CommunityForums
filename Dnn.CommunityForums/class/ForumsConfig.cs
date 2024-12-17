@@ -82,6 +82,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Create "User Banned" core messaging notification type new in 08.01.00
                 ForumsConfig.Install_BanUser_NotificationType_080100();
 
+                // Create "like notification" core messaging notification type new in 08.02.00
+                ForumsConfig.Install_LikeNotificationType_080200();
+
                 return true;
             }
             catch (Exception ex)
@@ -756,6 +759,19 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
+        }
+
+        internal static void Install_LikeNotificationType_080200()
+        {
+            string notificationTypeName = Globals.LikeNotificationType;
+            string notificationTypeDescription = Globals.LikeNotificationTypeDescription;
+            int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
+
+            NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
+            if (NotificationsController.Instance.GetNotificationType(notificationTypeName) == null)
+            {
+                NotificationsController.Instance.CreateNotificationType(type);
+            }
         }
     }
 }
