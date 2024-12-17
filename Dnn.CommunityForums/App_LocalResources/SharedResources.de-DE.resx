@@ -1788,4 +1788,13 @@ Von
   <data name="[RESX:likedby].Text" xml:space="preserve">
     <value>Beliebt bei</value>
   </data>
+  <data name="[RESX:UnableToFindLikeToProcess].Text" xml:space="preserve">
+    <value>Die Prozesswarteschlange für DNN-Community-Foren konnte {0} für Beiträge von Benutzern {1} nicht verarbeiten, da sie nicht vorhanden ist und wahrscheinlich vor der Verarbeitung gelöscht wurde. Für diesen Artikel werden keine weiteren Aktionen ausgeführt. Wenn Sie diese Meldung häufig sehen, besuchen Sie bitte das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki auf Schritte zur Fehlerbehebung überprüfen können.</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Like-Benachrichtigungen erhalten</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Wählen Sie diese Option, wenn Sie Benachrichtigungen erhalten möchten, wenn andere Benutzer Ihre Beiträge mit "Gefällt mir" markieren.</value>
+  </data>
 </root>

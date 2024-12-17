@@ -1824,4 +1824,13 @@ Van,
   <data name="[RESX:likedby].Text" xml:space="preserve">
     <value>Gemarkeerd als interessant door</value>
   </data>
+  <data name="[RESX:UnableToFindLikeToProcess].Text" xml:space="preserve">
+    <value>De proceswachtrij van DNN-communityforums kan niet worden verwerkt zoals voor berichten die door de gebruiker zijn {0}{1} omdat deze niet bestaat en waarschijnlijk is verwijderd voordat deze is verwerkt. Er wordt geen verdere actie ondernomen voor dit object. Als u dit bericht vaak ziet, ga dan naar de Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums) van de DNN-communityforums, waar u een probleem kunt melden of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Like-meldingen ontvangen</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Selecteer deze optie als u meldingen wilt ontvangen wanneer andere gebruikers uw berichten 'liken'.</value>
+  </data>
 </root>

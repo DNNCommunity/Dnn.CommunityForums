@@ -1788,4 +1788,13 @@ De
   <data name="[RESX:likedby].Text" xml:space="preserve">
     <value>Recomendado por</value>
   </data>
+  <data name="[RESX:UnableToFindLikeToProcess].Text" xml:space="preserve">
+    <value>La cola de proceso de los foros de la comunidad DNN no se pudo procesar como para la publicación {0} por el usuario {1} porque no existe y probablemente se eliminó antes del procesamiento. No se realizará ninguna otra acción para este artículo. Si ve este mensaje con frecuencia, visite el repositorio de Github (https://github.com/DNNCommunity/Dnn.CommunityForums) de los foros de la comunidad de DNN, donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Recibir notificaciones Me gusta</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Seleccione esta opción si desea recibir notificaciones cuando otros usuarios le den "Me gusta" a sus publicaciones.</value>
+  </data>
 </root>

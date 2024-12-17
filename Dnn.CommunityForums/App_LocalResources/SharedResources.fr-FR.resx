@@ -1803,4 +1803,13 @@ De,
   <data name="[RESX:likedby].Text" xml:space="preserve">
     <value>aimé par</value>
   </data>
+  <data name="[RESX:UnableToFindLikeToProcess].Text" xml:space="preserve">
+    <value>La file d’attente de traitement des forums de la communauté DNN n’a pas pu être traitée comme pour les messages {0} par les utilisateurs {1} car elle n’existe pas et a probablement été supprimée avant d’être traitée. Aucune autre mesure ne sera prise à l’égard de cet article. Si vous voyez ce message fréquemment, veuillez visiter le référentiel Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour connaître les étapes de dépannage.</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Recevoir des notifications J’aime</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Sélectionnez cette option si vous souhaitez recevoir des notifications lorsque d’autres utilisateurs « aiment » vos publications.</value>
+  </data>
 </root>

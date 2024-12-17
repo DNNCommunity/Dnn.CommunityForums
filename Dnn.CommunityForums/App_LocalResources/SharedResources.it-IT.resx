@@ -1788,4 +1788,13 @@ Da
   <data name="[RESX:likedby].Text" xml:space="preserve">
     <value>Consigliato da</value>
   </data>
+  <data name="[RESX:UnableToFindLikeToProcess].Text" xml:space="preserve">
+    <value>La coda di processo dei forum della community DNN non è stata elaborata come per i post {0} dall'utente {1} perché non esiste ed è stata probabilmente eliminata prima dell'elaborazione. Non verranno eseguite ulteriori azioni per questo oggetto. Se visualizzi spesso questo messaggio, visita il repository Github (https://github.com/DNNCommunity/Dnn.CommunityForums) dei forum della community DNN, dove puoi pubblicare un problema o rivedere il wiki per la procedura di risoluzione dei problemi.</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Ricevi notifiche Mi piace</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Seleziona questa opzione se desideri ricevere notifiche quando altri utenti mettono "mi piace" ai tuoi post.</value>
+  </data>
 </root>

@@ -118,6 +118,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int PrefPageSize { get; set; } = 20;
 
+        public bool LikeNotificationsEnabled { get; set; } = true;
+
         [IgnoreColumn] 
         public string RawUrl { get; set; }
 
