@@ -471,6 +471,13 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ReplyInfoByContentId = "AF-{0}-rci-{1}";
         public const string LikeCount = "AF-{0}-lc-{1}";
         public const string LikedByUser = "AF-{0}-lbu-{1}-{2}";
+        public const string ForumSubscriberPrefix = "AF-{0}-fsub-{1}";
+        public const string ForumSubscriber = "AF-{0}-fsub-{1}-{2}";
+        public const string ForumSubscriberCount = "AF-{0}-fsubcount-{1}";
+        public const string TopicSubscriberPrefix = "AF-{0}-tsub-{1}";
+        public const string TopicSubscriber = "AF-{0}-tsub-{1}-{2}-{3}";
+        public const string TopicSubscriberCount = "AF-{0}-tsub-{1}-{2}";
+        public const string TopicSubscriberCountPrefix = "AF-{0}-tsub-{1}";
         public const string LikeInfo = "AF-{0}-li-{1}";
         public const string TopicTrackingInfoPrefix = "AF-{0}-tti-{1}";
         public const string TopicTrackingInfo = "AF-{0}-tti-{1}-{2}";

@@ -296,7 +296,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             var parentForumId = this.GetById(forumId, moduleId).ParentForumId;
             new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(moduleId).DeleteForForum(forumId);
-            new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().DeleteForForum(forumId);
+            new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().DeleteForForum(moduleId, forumId);
             this.DeleteById(forumId);
             DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}activeforums_Forums_RepairSort", forumId, parentForumId);
             ClearSettingsCache(moduleId);

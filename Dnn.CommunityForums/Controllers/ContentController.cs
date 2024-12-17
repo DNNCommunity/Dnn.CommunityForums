@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ContentInfo;
             if (content == null)
             {
-                content = base.GetById(contentId, moduleId);
+                content = base.GetById(contentId);
                 if (moduleId.Equals(-1) && !content.Equals(null))
                 {
                     content.UpdateCache();

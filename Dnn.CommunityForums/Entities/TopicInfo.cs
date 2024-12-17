@@ -259,7 +259,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.contentInfo = value;
         }
 
-        [IgnoreColumn()]
         internal ContentInfo GetContent()
         {
             return this.contentInfo = new Controllers.ContentController().GetById(this.ContentId, this.ModuleId);
@@ -280,11 +279,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
             set => this.forumInfo = value;
         }
-
-        //internal ForumInfo GetForum()
-        //{
-        //    return this.forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId); /* can't get using moduleId since ModuleId comes from Forum */
-        //}
 
         internal ForumInfo GetForum(int moduleId)
         {

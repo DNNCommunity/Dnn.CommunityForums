@@ -291,6 +291,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
             this.topic.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             this.topic.TopicId = this.TopicId;
+            this.topic.ModuleId = this.ForumModuleId;
+            this.topic.PortalId = this.PortalId;
             this.topic.IsPinned = Utilities.SafeConvertBool(this.drForum["IsPinned"]);
             this.topic.IsLocked = Utilities.SafeConvertBool(this.drForum["IsLocked"]);
             this.topic.ViewCount = Utilities.SafeConvertInt(this.drForum["ViewCount"]);
@@ -322,7 +324,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.Forum = this.ForumInfo;
 
             this.topic.LastReply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
-            this.topic.LastReply.TopicId = this.topic.TopicId;
+            this.topic.LastReply.TopicId = this.TopicId;
             this.topic.LastReply.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             this.topic.LastReply.Content.DateCreated = Utilities.SafeConvertDateTime(this.drForum["LastPostDate"]);
             this.topic.LastReply.Content.AuthorId = Utilities.SafeConvertInt(this.drForum["LastPostAuthorId"]);
@@ -1013,23 +1015,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.ContentId = dr.GetInt("ContentId");
             this.topic.Content.ContentId = dr.GetInt("ContentId");
 
-            var reply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
-            reply.ReplyId = dr.GetInt("ReplyId");
-            reply.TopicId = dr.GetInt("TopicId");
-            reply.StatusId = dr.GetInt("StatusId");
-            reply.Topic = this.topic;
-            reply.ContentId = dr.GetInt("ContentId");
-            reply.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-            reply.Content.ContentId = dr.GetInt("ContentId");
-            reply.Content.Body = System.Net.WebUtility.HtmlDecode(dr.GetString("Body"));
-            reply.Content.Subject = System.Net.WebUtility.HtmlDecode(dr.GetString("Subject"));
-            reply.Content.AuthorId = dr.GetInt("AuthorId");
-            reply.Content.DateCreated = dr.GetDateTime("DateCreated");
-            reply.Content.DateUpdated = dr.GetDateTime("DateUpdated");
-            reply.Content.IPAddress = dr.GetString("IPAddress");
+            var reply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo
+            {
+                ReplyId = dr.GetInt("ReplyId"),
+                TopicId = dr.GetInt("TopicId"),
+                StatusId = dr.GetInt("StatusId"),
+                Topic = this.topic,
+                ContentId = dr.GetInt("ContentId"),
+                Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
+                {
+                    ContentId = dr.GetInt("ContentId"),
+                    Body = System.Net.WebUtility.HtmlDecode(dr.GetString("Body")),
+                    Subject = System.Net.WebUtility.HtmlDecode(dr.GetString("Subject")),
+                    AuthorId = dr.GetInt("AuthorId"),
+                    DateCreated = dr.GetDateTime("DateCreated"),
+                    DateUpdated = dr.GetDateTime("DateUpdated"),
+                    IPAddress = dr.GetString("IPAddress"),
+                },
+            };
 
-            var authorId = reply.ReplyId > 0 ? reply.Content.AuthorId : this.topic.Content.AuthorId;
-            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, reply.ReplyId > 0 ? reply.Content.AuthorId : this.topic.Content.AuthorId);
             var tags = dr.GetString("Tags");
 
             // Replace Tags Control
