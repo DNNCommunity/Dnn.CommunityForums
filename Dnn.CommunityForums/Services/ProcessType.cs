@@ -33,5 +33,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
         UnapprovedReplyCreated = 4,
         UpdateForumLastUpdated = 5,
         UpdateForumTopicPointers = 6,
+        PostLiked = 7,
     }
 }

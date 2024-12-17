@@ -55,7 +55,19 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.ForumId, this.ForumModuleId).FeatureSettings.AllowLikes &&
                     ServicesHelper.IsAuthorized(this.PortalSettings.PortalId, this.ForumModuleId, dto.ForumId, SecureActions.Reply, this.UserInfo))
                 {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalSettings.PortalId, this.ForumModuleId).Like(dto.ContentId, this.UserInfo.UserID));
+                    var post = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(dto.ContentId, this.ForumModuleId).Post;
+                    if (post != null)
+                    {
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalSettings.PortalId, this.ForumModuleId).Like(contentId: dto.ContentId,
+                                                                                                                                                                                                    userId: this.UserInfo.UserID,
+                                                                                                                                                                                                    authorId: post.Author.AuthorId,
+                                                                                                                                                                                                    tabId: this.ActiveModule.TabID,
+                                                                                                                                                                                                    forumGroupId: post.Forum.ForumGroupId,
+                                                                                                                                                                                                    forumId: dto.ForumId,
+                                                                                                                                                                                                    topicId: post.TopicId,
+                                                                                                                                                                                                    replyId: post.ReplyId,
+                                                                                                                                                                                                    requestUrl: this.Request.RequestUri.ToString()));
+                    }
                 }
             }
             catch (Exception ex)

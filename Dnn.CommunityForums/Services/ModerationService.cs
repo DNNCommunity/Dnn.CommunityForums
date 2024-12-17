@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.replyId > 0)
             {
-                var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.moduleId).ApproveReply(this.PortalSettings.PortalId, this.tabId, this.moduleId, this.forumId, this.topicId, this.replyId);
+                var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.moduleId).ApproveReply(portalId: this.PortalSettings.PortalId, tabId: this.tabId, moduleId: this.moduleId, forumId: this.forumId, topicId: this.topicId, replyId: this.replyId, this.UserInfo.UserID);
                 if (reply == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(this.moduleId, this.topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(this.moduleId, this.topicId, this.UserInfo.UserID);
                 if (topic == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });

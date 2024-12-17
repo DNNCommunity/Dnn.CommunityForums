@@ -79,10 +79,10 @@ namespace DotNetNuke.Modules.ActiveForums
         public void Topics_Delete(int portalId, int moduleId, int forumId, int topicId, int delBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).DeleteById(topicId);
 
         [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(int TopicId, int NewForumId)")]
-        public void Topics_Move(int portalId, int moduleId, int forumId, int topicId) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(moduleId, topicId, forumId);
+        public void Topics_Move(int portalId, int moduleId, int forumId, int topicId) => throw new NotImplementedException();
 
         [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(int TopicId)")]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ApproveTopic(int portalId, int tabId, int moduleId, int forumId, int topicId) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(moduleId, topicId);
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ApproveTopic(int portalId, int tabId, int moduleId, int forumId, int topicId) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Moved to Utilities and changed to internal in 10.00.00.")]
         public void UpdateModuleLastContentModifiedOnDate(int moduleId) => Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);

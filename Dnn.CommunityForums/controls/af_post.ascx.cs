@@ -892,7 +892,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!ti.IsApproved)
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroupId, this.ForumId, this.TopicId, 0, ti.Content.AuthorId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: 0, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: this.ForumUser.UserId);
                     string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
                     this.Response.Redirect(this.NavigateUrl(this.ForumTabId, string.Empty, @params), false);
                     this.Context.ApplicationInstance.CompleteRequest();
@@ -901,7 +901,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (!this.isEdit)
                     {
-                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(this.PortalId, this.TabId, this.ModuleId, this.ForumInfo.ForumGroupId, this.ForumId, this.TopicId, 0, ti.Content.AuthorId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: 0, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: this.ForumUser.UserId);
                     }
 
                     ControlUtils ctlUtils = new ControlUtils();
@@ -1047,7 +1047,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!ri.IsApproved)
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroupId, this.ForumId, this.TopicId, tmpReplyId, ri.Content.AuthorId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: tmpReplyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
 
                     string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
                     this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, @params), false);
@@ -1057,7 +1057,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (!this.isEdit)
                     {
-                        DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, this.ForumInfo.ForumGroupId, this.ForumId, this.TopicId, tmpReplyId, ri.Content.AuthorId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: tmpReplyId, contentId:ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
                     }
 
                     var fullURL = new ControlUtils().BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, this.SocialGroupId);

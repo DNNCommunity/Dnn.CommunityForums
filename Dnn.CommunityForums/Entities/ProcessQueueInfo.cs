@@ -49,7 +49,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int ReplyId { get; set; }
 
+        public int ContentId { get; set; }
+
         public int AuthorId { get; set; }
+
+        public int UserId { get; set; }
 
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 

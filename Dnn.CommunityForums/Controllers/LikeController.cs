@@ -24,6 +24,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Linq;
     
     using DotNetNuke.Collections;
+    using DotNetNuke.Modules.ActiveForums.API;
+    using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 
     internal partial class LikeController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>
     {
@@ -106,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return (int)count;
         }
 
-        public int Like(int contentId, int userId)
+        public int Like(int contentId, int userId, int authorId, int tabId, int forumGroupId, int forumId, int replyId, int topicId, string requestUrl)
         {
             DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = this.Find("WHERE PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
             if (like != null)
@@ -128,9 +130,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     PostId = contentId,
                     UserId = userId,
-                    Checked = true
+                    Checked = true,
                 };
                 this.Insert(like);
+                new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.PostLiked,
+                                                                                             portalId: this.portalId,
+                                                                                             tabId: tabId,
+                                                                                             moduleId: this.moduleId,
+                                                                                             forumGroupId: forumGroupId,
+                                                                                             forumId: forumId,
+                                                                                             topicId: topicId,
+                                                                                             replyId: replyId,
+                                                                                             contentId: contentId,
+                                                                                             authorId: authorId,
+                                                                                             userId: userId, 
+                                                                                             requestUrl: requestUrl);
             }
 
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.LikeInfo, this.moduleId, like.Id));
@@ -157,26 +171,11 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController.GetForPost()")]
 #pragma warning disable SA1600 // Elements should be documented
-        public new List<DotNetNuke.Modules.ActiveForums.Likes> GetForPost(int postId)
+        public new List<DotNetNuke.Modules.ActiveForums.Likes> GetForPost(int postId) => throw new NotImplementedException();
 #pragma warning restore SA1600 // Elements should be documented
-        {
-            IDataContext ctx = DataContext.Instance();
-            IRepository<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo> repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>();
-            List<DotNetNuke.Modules.ActiveForums.Likes> likes = new List<DotNetNuke.Modules.ActiveForums.Likes>();
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like in base.GetForPost(postId))
-            {
-                likes.Add((DotNetNuke.Modules.ActiveForums.Likes)like);
-            }
-
-            return likes;
-        }
-
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Like()")]
 #pragma warning disable SA1600 // Elements should be documented
-        public new void Like(int contentId, int userId)
+        public new void Like(int contentId, int userId) => throw new NotImplementedException();
 #pragma warning restore SA1600 // Elements should be documented
-        {
-            base.Like(contentId, userId);
-        }
     }
 }

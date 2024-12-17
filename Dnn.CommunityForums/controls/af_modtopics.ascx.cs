@@ -203,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     }
 
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
-                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(this.PortalId, this.ForumTabId, this.ForumModuleId, fi.ForumGroupId, this.ForumId, tmpTopicId, -1, ti.Content.AuthorId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: this.PortalId, tabId: this.ForumTabId, moduleId: this.ForumModuleId, forumGroupId: fi.ForumGroupId, forumId: this.ForumId, topicId: tmpTopicId, replyId: -1, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: this.ForumUser.UserId);
                                 }
                             }
                             else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
@@ -222,7 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     }
 
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
-                                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.ForumTabId, this.ForumModuleId, fi.ForumGroupId, tmpForumId, tmpTopicId, tmpReplyId, ri.Content.AuthorId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId:this.PortalId, tabId: this.ForumTabId, moduleId: this.ForumModuleId, forumGroupId: fi.ForumGroupId, forumId: tmpForumId, topicId: tmpTopicId, replyId: tmpReplyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
                                 }
                             }
 

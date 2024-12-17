@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (isApproved)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.portalId, this.TabId, this.moduleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId);
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: this.portalId, tabId: this.TabId, moduleId: this.moduleId, forumGroupId: forumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: replyId, contentId: ri.ContentId, ri.Content.AuthorId, userId: this.ForumUser.UserId);
 
                 // Redirect to show post
                 string fullURL = Utilities.NavigateURL(this.PageId, string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + replyId });

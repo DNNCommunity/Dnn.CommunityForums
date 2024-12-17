@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                                     DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
                                         this.ActiveModule.PortalID, this.UserInfo.Roles))))
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(this.ForumModuleId, topicId, forumId);
+                            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(moduleId: this.ForumModuleId, userId: this.UserInfo.UserID, topicId: topicId, newForumId: forumId);
                             DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.CacheModulePrefix, this.ForumModuleId));
                             return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                         }
@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
-            
+
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 #pragma warning disable CS1570

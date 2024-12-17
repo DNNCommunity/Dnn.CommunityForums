@@ -205,7 +205,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        public static DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Approve(int moduleId, int topicId)
+        public static DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Approve(int moduleId, int topicId, int userId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
             if (ti == null)
@@ -222,11 +222,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.FeatureSettings.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, topicId, 0, ti.Author);
             }
 
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(ti.PortalId, ti.Forum.TabId, ti.Forum.ModuleId, ti.Forum.ForumGroupId, ti.ForumId, topicId, -1, ti.Content.AuthorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: ti.PortalId, tabId: ti.Forum.TabId, moduleId: ti.Forum.ModuleId, forumGroupId: ti.Forum.ForumGroupId, forumId: ti.ForumId, topicId: topicId,  replyId: -1,  contentId: ti.ContentId, userId: userId, authorId: ti.Content.AuthorId);
             return ti;
         }
 
-        public static void Move(int moduleId, int topicId, int newForumId)
+        public static void Move(int moduleId, int userId, int topicId, int newForumId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
             int oldForumId = (int)ti.ForumId;
@@ -262,8 +262,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(oldForum.FeatureSettings.ModMoveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, forumId: ti.Forum.ForumID, topicId: ti.TopicId, replyId: -1, author: ti.Author);
             }
 
-            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: topicId, replyId: -1, authorId: ti.Content.AuthorId, requestUrl: null);
-            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: newForum.ForumGroupId, forumId: newForum.ForumID, topicId: topicId, replyId: -1, authorId: ti.Content.AuthorId, requestUrl: null);
+            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: topicId, replyId: -1, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: userId, requestUrl: null);
+            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: newForum.ForumGroupId, forumId: newForum.ForumID, topicId: topicId, replyId: -1, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: userId, requestUrl: null);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(moduleId, ti.ForumId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(moduleId, topicId);
@@ -349,17 +349,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static bool QueueApprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int authorId)
+        internal static bool QueueApprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.ApprovedTopicCreated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, authorId: authorId, requestUrl: HttpContext.Current.Request.Url.ToString());
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.ApprovedTopicCreated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, requestUrl: HttpContext.Current.Request.Url.ToString());
         }
 
-        internal static bool QueueUnapprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int authorId)
+        internal static bool QueueUnapprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UnapprovedTopicCreated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, authorId: authorId, requestUrl: HttpContext.Current.Request.Url.ToString());
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UnapprovedTopicCreated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, requestUrl: HttpContext.Current.Request.Url.ToString());
         }
 
-        internal static bool ProcessApprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int authorId, string requestUrl)
+        internal static bool ProcessApprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, string requestUrl)
         {
             try
             {
@@ -382,8 +382,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 amas.AddTopicToJournal(portalId, moduleId, tabId, forumId, topicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body, topic.Forum.Security.Read, topic.Forum.SocialGroupId);
 
                 var pqc = new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController();
-                pqc.Add(ProcessType.UpdateForumTopicPointers, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, authorId: authorId, requestUrl: requestUrl);
-                pqc.Add(ProcessType.UpdateForumLastUpdated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, authorId: authorId, requestUrl: requestUrl);
+                pqc.Add(ProcessType.UpdateForumTopicPointers, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, requestUrl: requestUrl);
+                pqc.Add(ProcessType.UpdateForumLastUpdated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, requestUrl: requestUrl);
 
                 Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
 
@@ -396,7 +396,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static bool ProcessUnapprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int authorId, string requestUrl)
+        internal static bool ProcessUnapprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int userId, int authorId, string requestUrl)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(portalId, tabId, moduleId, forumGroupId, forumId, topicId, replyId, authorId, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery);
         } 

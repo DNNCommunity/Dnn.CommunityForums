@@ -338,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId);
             int replyId = rc.Reply_Save(this.PortalId, this.ModuleId, ri);
             ri = rc.GetById(replyId);
-            DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, ri.Forum.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: ri.Forum.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: replyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
             DataCache.ContentCacheClearForForum(this.ModuleId, this.ForumId);
             DataCache.ContentCacheClearForReply(this.ModuleId, replyId);
             DataCache.ContentCacheClearForTopic(this.ModuleId, ri.TopicId);
@@ -364,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, ri.Forum.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId);
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: ri.Forum.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: replyId, contentId: ri.ContentId , authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
 
                 var @params = new List<string> { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
                 if (this.SocialGroupId > 0)
