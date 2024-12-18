@@ -224,6 +224,9 @@
 .dnn-community-forums .dcf-forum-view .bs-collapse.collapsed .fa {
   transform: rotate(180deg);
 }
+.dnn-community-forums .dcf-topics-view .dcf-last-post .dcf-last-reply-link {
+  white-space: nowrap;
+}
 .dnn-community-forums .dcf-topic-view .dcf-title .fa {
   margin-right: 0.75rem;
   font-size: 0.9em;
@@ -283,6 +286,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.dnn-community-forums .dcf-topic-view .dcf-post-like, .dnn-community-forums .dcf-topic-view .dcf-post-liked {
+  cursor: pointer;
 }
 .dnn-community-forums .dcf-topic-view .dcf-quick-reply .dcf-subscribe .amaf-chk-subs {
   margin-right: 0.25rem;

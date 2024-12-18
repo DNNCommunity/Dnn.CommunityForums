@@ -380,8 +380,8 @@
 .dnn-community-forums .dcf-forum-view .dcf-forums-group .dcf-main-forums .dcf-col-text-inner {
   display: flex;
 }
-.dnn-community-forums .dcf-forum-view .dcf-forums-group .dcf-lastpost-subject {
-  display: block;
+.dnn-community-forums .dcf-forum-view .dcf-forums-group .dcf-col-last-post {
+  white-space: nowrap;
 }
 .dnn-community-forums .dcf-forum-view .dcf-forums-group .dcf-sub-forums .dcf-col-icon {
   border: none;
@@ -472,14 +472,8 @@
     display: block;
   }
 }
-.dnn-community-forums .dcf-topics-view .dcf-topics .dcf-last-post {
+.dnn-community-forums .dcf-topics-view .dcf-topics .dcf-last-post .dcf-last-reply-link {
   white-space: nowrap;
-}
-.dnn-community-forums .dcf-topics-view .dcf-topics .dcf-last-post a {
-  display: block;
-}
-.dnn-community-forums .dcf-topics-view .dcf-topics .dcf-last-post br {
-  display: none;
 }
 .dnn-community-forums .dcf-topics-view .dcf-topics .dcf-actions-bottom {
   display: flex;
@@ -697,6 +691,10 @@
 }
 .dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-post-footer-bottom .dcf-post-likes {
   font-size: 0.8em;
+}
+.dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-post-like,
+.dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-post-liked {
+  cursor: pointer;
 }
 .dnn-community-forums .dcf-quick-reply {
   padding: 1rem 0;
