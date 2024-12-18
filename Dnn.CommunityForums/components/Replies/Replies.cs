@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public DotNetNuke.Modules.ActiveForums.ReplyInfo Reply_Get(int portalId, int moduleId, int topicId, int replyId) => (DotNetNuke.Modules.ActiveForums.ReplyInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).GetById(replyId);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
-        public DotNetNuke.Modules.ActiveForums.ReplyInfo ApproveReply(int portalId, int tabId, int moduleId, int forumId, int topicId, int replyId) => (DotNetNuke.Modules.ActiveForums.ReplyInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).ApproveReply(portalId, tabId, moduleId, forumId, topicId, replyId);
+        public DotNetNuke.Modules.ActiveForums.ReplyInfo ApproveReply(int portalId, int tabId, int moduleId, int forumId, int topicId, int replyId) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Moved to Utilities and changed to internal in 10.00.00.")]
         public void UpdateModuleLastContentModifiedOnDate(int moduleId) => Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);

@@ -1032,6 +1032,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DateUpdated = dr.GetDateTime("DateUpdated"),
                     IPAddress = dr.GetString("IPAddress"),
                 },
+                Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId,  dr.GetInt("AuthorId")),
             };
 
             var tags = dr.GetString("Tags");

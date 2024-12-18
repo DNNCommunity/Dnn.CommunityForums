@@ -1516,7 +1516,7 @@ De,
   <data name="NoResults.Text" xml:space="preserve">
     <value>Aucun résultat trouvé</value>
   </data>
-  <data name="NotificationBodyReply.Text" xml:space="preserve">
+  <data name="[RESX:NotificationBodyReply].Text" xml:space="preserve">
     <value>&lt;P&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération.&lt;/P&gt;
 &lt;P&gt;&lt;STRONG&gt;Objet&amp;nbsp;:&lt;/STRONG&gt; [FORUMPOST:SUBJECT]&lt;/P&gt;
 &lt;P&gt;Veuillez examiner le contenu et déterminer sa disposition.&lt;/P&gt;
@@ -1529,7 +1529,7 @@ De,
 &lt;P&gt;&lt;/P&gt;
 &lt;P&gt;Si vous ne pouvez pas déterminer si ce contenu est approprié en fonction du seul sujet, utilisez &lt;A href="about:[FORUM:MODLINK]"&gt;ce lien&lt;/A&gt; pour consulter et modérer les sujets.&lt;/P&gt;</value>
   </data>
-  <data name="NotificationBodyTopic.Text" xml:space="preserve">
+  <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
     <value>&lt;P&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération.&lt;/P&gt;
 &lt;P&gt;&lt;STRONG&gt;Objet&amp;nbsp;:&lt;/STRONG&gt; [FORUMPOST:SUBJECT]&lt;/P&gt;
 &lt;P&gt;Veuillez examiner le contenu et déterminer sa disposition.&lt;/P&gt;
@@ -1542,10 +1542,10 @@ De,
 &lt;P&gt;&lt;/P&gt;
 &lt;P&gt;Si vous ne pouvez pas déterminer si ce contenu est approprié en fonction du seul sujet, utilisez &lt;A href="about:[FORUM:MODLINK]"&gt;ce lien&lt;/A&gt; pour consulter et modérer les sujets.&lt;/P&gt;</value>
   </data>
-  <data name="NotificationSubjectReply.Text" xml:space="preserve">
+  <data name="[RESX:NotificationSubjectReply].Text" xml:space="preserve">
     <value>[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu qui doit être modéré</value>
   </data>
-  <data name="NotificationSubjectTopic.Text" xml:space="preserve">
+  <data name="[RESX:NotificationSubjectTopic].Text" xml:space="preserve">
     <value>[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu qui doit être modéré</value>
   </data>
   <data name="NotLoggedIn.Text" xml:space="preserve">
@@ -1802,5 +1802,21 @@ De,
   </data>
   <data name="[RESX:likedby].Text" xml:space="preserve">
     <value>aimé par</value>
+  </data>
+  <data name="[RESX:UnableToFindLikeToProcess].Text" xml:space="preserve">
+    <value>La file d’attente de traitement des forums de la communauté DNN n’a pas pu être traitée comme pour les messages {0} par les utilisateurs {1} car elle n’existe pas et a probablement été supprimée avant d’être traitée. Aucune autre mesure ne sera prise à l’égard de cet article. Si vous voyez ce message fréquemment, veuillez visiter le référentiel Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums), où vous pouvez poster un problème ou consulter le wiki pour connaître les étapes de dépannage.</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Recevoir des notifications J’aime</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Sélectionnez cette option si vous souhaitez recevoir des notifications lorsque d’autres utilisateurs « aiment » vos publications.</value>
+  </data>
+  <data name="[RESX:LikeNotificationSubject].Text" xml:space="preserve">
+    <value>[FORUMLIKE :USERDISPLAYNAME] a aimé ton message sur le sujet : [FORUMPOST :SUBJECT]</value>
+  </data>
+  <data name="[RESX:LikeNotificationBody].Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMLIKE:USERDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp ; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMLIKE:USERDISPLAYNAME]&lt;/a&gt;] J’ai aimé ton message sur [FORUMPOST :SUBJECTLINK]&lt;/p&gt;
+&lt;p&gt;Pour voir qui aime votre message, visitez [FORUMPOST :LIKESLINK|&lt;a href="{0}"&gt;[FORUMPOST :LIKESLINK]&lt;/a&gt;]&lt;/p&gt;</value>
   </data>
 </root>

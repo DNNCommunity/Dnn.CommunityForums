@@ -60,6 +60,15 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.WebControls.CheckBox chkPrefTopicSubscribe;
 
         /// <summary>
+        /// chkLikesNotificationsEnabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkLikesNotificationsEnabled;
+
+        /// <summary>
         /// chkPrefBlockAvatars control.
         /// </summary>
         /// <remarks>

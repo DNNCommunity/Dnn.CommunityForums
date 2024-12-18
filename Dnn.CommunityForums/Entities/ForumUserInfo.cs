@@ -118,6 +118,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int PrefPageSize { get; set; } = 20;
 
+        public bool LikeNotificationsEnabled { get; set; } = true;
+
         [IgnoreColumn] 
         public string RawUrl { get; set; }
 
@@ -256,6 +258,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal PortalSettings LoadPortalSettings()
         {
+            if (this.PortalId == -1 && this.UserInfo != null && this.UserInfo.PortalID != -1)
+            {
+                this.PortalId = this.UserInfo.PortalID;
+            }
+
             return this.portalSettings = Utilities.GetPortalSettings(this.PortalId);
         }
 

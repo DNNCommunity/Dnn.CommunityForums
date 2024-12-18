@@ -2373,3 +2373,28 @@ GO
 /* issue 801 end -- view likes */
 /* --------------------- */
 
+
+/* issue 632 begin -- like notifications */
+
+/* add LikeNotificationsEnabled to activeforums_UserProfiles */
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'LikeNotificationsEnabled' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserProfiles] ADD
+	[LikeNotificationsEnabled] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_UserProfiles_LikeNotificationsEnabled] DEFAULT(1)
+END
+GO
+/* add ContentId and UserId to activeforums_ProcessQueue */
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'ContentId' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_ProcessQueue]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ProcessQueue] ADD
+	[ContentId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_ContentId] DEFAULT(-1)
+END
+GO
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'UserId' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_ProcessQueue]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ProcessQueue] ADD
+	[UserId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_UserId] DEFAULT(-1)
+END
+GO
+/* issue 632 end -- like notifications */
+/* --------------------- */

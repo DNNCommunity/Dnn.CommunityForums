@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool IsLikedByUser(ForumUserInfo forumUser)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalId, this.ModuleId).GetForUser(forumUser.UserId, this.ContentId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalId, this.ModuleId).GetLikedByUser(forumUser.UserId, this.ContentId);
         }
 
         [IgnoreColumn]

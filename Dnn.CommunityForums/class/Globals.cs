@@ -169,7 +169,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ModerationNotificationType = "AF-ForumModeration";
         public const string ContentAlertNotificationType = "AF-ContentAlert";
         public const string BanUserNotificationType = "DCF-UserBanned";
-        public const string BanUserNotificationTypeDescription = Globals.ModuleFriendlyName + "User Banned";
+        public const string BanUserNotificationTypeDescription = Globals.ModuleFriendlyName + " User Banned";
+        public const string LikeNotificationType = "DCF-LikeNotification";
+        public const string LikeNotificationTypeDescription = Globals.ModuleFriendlyName + " Like Notification";
     }
 
     public class SettingKeys
@@ -456,19 +458,19 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ViewRolesForForumList = "AF-{0}-Perm-{1}";
         public const string Subscriber = "AF-{0}-Subs-{1}-{2}-{3}-{4}";
         public const string ForumSettings = "AF-{0}-fs-{1}";
-        
+
         public const string ForumTopicInfo = "AF-{0}-forumtopicinfo-{1}";
         public const string ForumTopicInfoPrefix = "AF-{0}-forumtopicinfo";
         public const string ForumGroupInfo = "AF-{0}-fgi-{1}";
         public const string ForumGroupSettings = "AF-{0}-fgs-{1}";
         public const string PermissionsInfo = "AF-{0}-perms-{1}";
 
-        
         public const string ContentInfo = "AF-{0}-ci-{1}";
         public const string TopicInfo = "AF-{0}-ti-{1}";
         public const string TopicInfoByContentId = "AF-{0}-tci-{1}";
         public const string ReplyInfo = "AF-{0}-ri-{1}";
         public const string ReplyInfoByContentId = "AF-{0}-rci-{1}";
+        public const string LikeInfo = "AF-{0}-like-{1}";
         public const string LikeCount = "AF-{0}-lc-{1}";
         public const string LikedByUser = "AF-{0}-lbu-{1}-{2}";
         public const string ForumSubscriberPrefix = "AF-{0}-fsub-{1}";
@@ -478,7 +480,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TopicSubscriber = "AF-{0}-tsub-{1}-{2}-{3}";
         public const string TopicSubscriberCount = "AF-{0}-tsub-{1}-{2}";
         public const string TopicSubscriberCountPrefix = "AF-{0}-tsub-{1}";
-        public const string LikeInfo = "AF-{0}-li-{1}";
         public const string TopicTrackingInfoPrefix = "AF-{0}-tti-{1}";
         public const string TopicTrackingInfo = "AF-{0}-tti-{1}-{2}";
         public const string ForumTrackingInfoPrefix = "AF-{0}-fti-{1}";

@@ -1517,17 +1517,17 @@ Von
   <data name="NoResults.Text" xml:space="preserve">
     <value>Keine Ergebnisse gefunden</value>
   </data>
-  <data name="NotificationBodyReply.Text" xml:space="preserve">
+  <data name="[RESX:NotificationBodyReply].Text" xml:space="preserve">
     <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] hat einen Beitrag verfasst, der eine Moderation erfordert.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Betreff:&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Bitte überprüfen Sie den Inhalt und genehmigen Sie diesen oder lehnen Sie ihn ab.&lt;/p&gt;</value>
   </data>
-  <data name="NotificationBodyTopic.Text" xml:space="preserve">
+  <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
     <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] at einen Beitrag verfasst, der eine Moderation erfordert.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Bitte überprüfen Sie den Inhalt und genehmigen Sie diesen oder lehnen Sie ihn ab.&lt;/p&gt;
 &lt;p&gt;Sie können:&lt;ol&gt;&lt;li&gt;das Thema genehmigen,&lt;/li&gt;&lt;li&gt;das Thema ablehnen (mit der Mitteilung an den Verfasser, den Beitrag zu überarbeiten),&lt;/li&gt;&lt;li&gt;das Thema löschen, oder&lt;/li&gt;&lt;li&gt;den Benutzer verbannen (Autorisierung entziehen und Beiträge des Benutzers löschen)&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Wenn Sie allein aufgrund des Themas nicht beurteilen können, ob dieser Inhalt erlaubt ist, verwenden Sie &lt;a href="[FORUM:MODLINK]"&gt;diesen Link&lt;/a&gt; um das Thema zu prüfen und zu moderieren.&lt;/p&gt;</value>
   </data>
-  <data name="NotificationSubjectReply.Text" xml:space="preserve">
+  <data name="[RESX:NotificationSubjectReply].Text" xml:space="preserve">
     <value>[FORUMPOST:AUTHORDISPLAYNAME] hat eine Antwort auf [TopicSubject] gepostet.</value>
   </data>
-  <data name="NotificationSubjectTopic.Text" xml:space="preserve">
+  <data name="[RESX:NotificationSubjectTopic].Text" xml:space="preserve">
     <value>[FORUMPOST:AUTHORDISPLAYNAME] hat ein neues Thema erstellt: [TopicSubject]</value>
   </data>
   <data name="NotLoggedIn.Text" xml:space="preserve">
@@ -1787,5 +1787,21 @@ Von
   </data>
   <data name="[RESX:likedby].Text" xml:space="preserve">
     <value>Beliebt bei</value>
+  </data>
+  <data name="[RESX:UnableToFindLikeToProcess].Text" xml:space="preserve">
+    <value>Die Prozesswarteschlange für DNN-Community-Foren konnte {0} für Beiträge von Benutzern {1} nicht verarbeiten, da sie nicht vorhanden ist und wahrscheinlich vor der Verarbeitung gelöscht wurde. Für diesen Artikel werden keine weiteren Aktionen ausgeführt. Wenn Sie diese Meldung häufig sehen, besuchen Sie bitte das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki auf Schritte zur Fehlerbehebung überprüfen können.</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Like-Benachrichtigungen erhalten</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Wählen Sie diese Option, wenn Sie Benachrichtigungen erhalten möchten, wenn andere Benutzer Ihre Beiträge mit "Gefällt mir" markieren.</value>
+  </data>
+  <data name="[RESX:LikeNotificationSubject].Text" xml:space="preserve">
+    <value>[FORUMLIKE:USERDISPLAYNAME] hat dein Beitrag zum Thema [FORUMPOST:SUBJECT] gefallen</value>
+  </data>
+  <data name="[RESX:LikeNotificationBody].Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMLIKE:USERDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMLIKE:USERDISPLAYNAME]&lt;/a&gt;] Gefällt mir dein Beitrag auf [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
+&lt;p&gt;Um zu sehen, wem dein Beitrag gefällt, besuche [FORUMPOST:LIKESLINK|&lt;a href="{0}"&gt;[FORUMPOST:LIKESLINK]&lt;/a&gt;]&lt;/p&gt;</value>
   </data>
 </root>

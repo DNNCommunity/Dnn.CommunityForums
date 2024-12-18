@@ -87,6 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             PrefBlockSignatures = false,
                             PrefBlockAvatars = false,
                             PrefTopicSubscribe = false,
+                            LikeNotificationsEnabled = true,
                             PrefJumpLastPost = false,
                             PrefDefaultShowReplies = false,
                             PrefDefaultSort = "ASC",
