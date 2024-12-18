@@ -1624,7 +1624,7 @@ div.dcf-mod-edit-wrap {
 .dnn-community-forums .dcf-likes-tooltip .dcf-likes-tooltiptext a { cursor: pointer; }
 
 
-/* Search results : needs cleaning for V9 */
+/* Search results : needs cleaning for V9, see #1116 */
  .dcf-search-results-wrap .afgrid {
      width: 100%;
      display: table;
