@@ -224,6 +224,9 @@
 .dnn-community-forums .dcf-forum-view .bs-collapse.collapsed .fa {
   transform: rotate(180deg);
 }
+.dnn-community-forums .dcf-topics-view .dcf-last-post .dcf-last-reply-link {
+  white-space: nowrap;
+}
 .dnn-community-forums .dcf-topic-view .dcf-title .fa {
   margin-right: 0.75rem;
   font-size: 0.9em;
