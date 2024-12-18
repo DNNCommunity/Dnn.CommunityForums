@@ -645,6 +645,10 @@
     margin: 1rem 0;
   }
 }
+.dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-topic-info .dcf-post-like,
+.dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-topic-info .dcf-post-liked {
+  cursor: pointer;
+}
 .dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-topic-content {
   background: #fafafa;
   min-height: 100%;

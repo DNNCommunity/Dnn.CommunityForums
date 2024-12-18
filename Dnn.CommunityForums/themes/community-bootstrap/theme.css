@@ -284,6 +284,9 @@
   height: 100%;
   object-fit: cover;
 }
+.dnn-community-forums .dcf-topic-view .dcf-post-like, .dnn-community-forums .dcf-topic-view .dcf-post-liked {
+  cursor: pointer;
+}
 .dnn-community-forums .dcf-topic-view .dcf-quick-reply .dcf-subscribe .amaf-chk-subs {
   margin-right: 0.25rem;
 }
