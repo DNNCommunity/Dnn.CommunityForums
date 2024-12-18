@@ -163,7 +163,8 @@
 					<td class="dcf-col dcf-col-status">[FORUMTOPIC:STATUS]</td>
 					<td class="dcf-col dcf-col-views">[FORUMTOPIC:VIEWCOUNT]</td>
 					<td class="dcf-col dcf-col-subscribers">[FORUMTOPIC:SUBSCRIBERCOUNT]</td>
-					<td class="dcf-col dcf-col-last-post"><div class="dcf-last-post">
+					<td class="dcf-col dcf-col-last-post">
+						<div class="dcf-last-post">
 								[LASTPOST]
 									<div class="dcf-last-reply">
 									[FORUMTOPIC:LASTREPLYURL|<a class="dcf-last-reply-link" href="{0}" rel="nofollow" title="[RESX:JumpToLastReply]">[FORUMTOPIC:LASTPOSTDATE]</a>]
@@ -172,7 +173,8 @@
 									[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAMELINK|[RESX:BY]<i class="fa fa-user fa-fw fa-blue"></i><a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]</a>|[RESX:BY]<i class="fa fa-user fa-fw fa-blue"></i>[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]]
 									</div>
 								[/LASTPOST]
-                    </div></td>
+                    	</div>
+					</td>
 				</tr>
 			</tbody>
 			[/TOPICS]
