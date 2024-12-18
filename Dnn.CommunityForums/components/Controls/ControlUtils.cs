@@ -133,12 +133,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     @params.Add($"{ParamKeys.ViewType}={Views.Grid}");
                     @params.Add($"{ParamKeys.GridType}=" + otherPrefix);
                 }
-                else if (!string.IsNullOrEmpty(otherPrefix) && otherPrefix.Equals(Views.Likes) && contentId > 0)
-                {
-                    @params.Add($"{ParamKeys.ViewType}={Views.Grid}");
-                    @params.Add($"{ParamKeys.GridType}={Views.Likes}");
-                    @params.Add($"{ParamKeys.ContentId}={contentId}");
-                }
                 else if (topicId > 0)
                 {
                     @params.Add($"{ParamKeys.TopicId}={topicId}");
@@ -149,9 +143,16 @@ namespace DotNetNuke.Modules.ActiveForums
                     @params.Add($"{ParamKeys.PageId}={pageId}");
                 }
 
-                if (contentId > 1)
+                if (contentId > 0)
                 {
-                    @params.Add($"{ParamKeys.ContentJumpId}={contentId}");
+                    if (!string.IsNullOrEmpty(otherPrefix) && otherPrefix.Equals(Views.Likes))
+                    {
+                        @params.Add($"{ParamKeys.ContentId}={contentId}");
+                    }
+                    else
+                    {
+                        @params.Add($"{ParamKeys.ContentJumpId}={contentId}");
+                    }
                 }
 
                 if (socialGroupId > 0)
