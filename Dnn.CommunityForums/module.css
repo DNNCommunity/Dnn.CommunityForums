@@ -1622,3 +1622,71 @@ div.dcf-mod-edit-wrap {
 .dnn-community-forums .dcf-likes-tooltip .dcf-likes-tooltiptext::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #555 transparent transparent transparent; }
 .dnn-community-forums .dcf-likes-tooltip:hover .dcf-likes-tooltiptext { visibility: visible; opacity: 1; }
 .dnn-community-forums .dcf-likes-tooltip .dcf-likes-tooltiptext a { cursor: pointer; }
+
+
+/* Search results : needs cleaning for V9, see #1116 */
+ .dcf-search-results-wrap .afgrid {
+     width: 100%;
+     display: table;
+}
+ .dcf-search-results-wrap .aftopicrow {
+     width: 100%;
+     display: table-row;
+     border-bottom: solid 1px #eee;
+     padding: 0.5em;
+}
+ .dcf-search-results-wrap .aftopicrow .afsubject {
+     width: 60%;
+     display: table-cell;
+}
+ .dcf-search-results-wrap .af-colstats {
+     display: table-cell;
+     width: 10%;
+}
+ .dcf-search-results-wrap .af-lastpost {
+     display: table-cell;
+     width: 20%;
+     white-space: nowrap;
+     font-weight: 400;
+}
+ .dcf-search-results-wrap .af-lastpost div {
+     text-align: left;
+     overflow: hidden;
+     white-space: normal !important;
+}
+ .dcf-search-results-wrap .af-lastpost div a:link, .dcf-search-results-wrap .af-lastpost div a:visited {
+     text-decoration: none;
+     font-weight: 700;
+     color: #333;
+}
+ .dcf-search-results-wrap .aftopictitle, .dcf-search-results-wrap .aftopictitle a {
+    /*display: block;
+    */
+     font-weight: 700;
+     line-height: 1.25;
+}
+ .dcf-search-results-wrap.af-content .afsubject {
+     vertical-align: top;
+     padding-right: 10px;
+}
+ .dcf-search-results-wrap .af-content div.afsubject > a {
+     color: #333;
+     font-weight: 700;
+}
+ .dcf-search-results-wrap .af-content div.afsubject .aftopicstarted a {
+     color: #333;
+     font-weight: 700;
+     display: inline-block;
+     margin-top: 4px;
+     margin-bottom: 4px;
+}
+ .dcf-search-results-wrap .aftopicstarted {
+     display: block;
+}
+ .dcf-search-results-wrap .aftopicsubtitle {
+     font-weight: 400;
+     display: block;
+     word-break: break-word;
+     overflow: hidden;
+}
+ 
