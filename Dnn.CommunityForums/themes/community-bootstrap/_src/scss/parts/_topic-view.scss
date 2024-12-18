@@ -37,6 +37,8 @@
         .dcf-topic-content-top{
             border-bottom: solid 1px $border-inner-color;
         }
+
+        @include img-responsive;
     }
     .dcf-topic-info{
         width: 100%;
