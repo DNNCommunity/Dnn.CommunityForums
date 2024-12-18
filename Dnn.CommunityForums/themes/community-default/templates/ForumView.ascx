@@ -54,19 +54,14 @@
 					<td class="dcf-col dcf-col-replies">[FORUM:TOTALREPLIES]</td>
 					<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
 					<td class="dcf-col dcf-col-last-post">
-                        <div class="dcf-last-post">
-							[FORUM:LASTPOSTSUBJECT:25]
-						<div class="dcf-last-profile">
+						<span class="dcf-lastpost-subject">[FORUM:LASTPOSTSUBJECT:25]</span>
+                        <span class="dcf-lastpost-author">
                             [FORUM:LASTPOSTAUTHORDISPLAYNAMELINK|
                             [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUM:LASTPOSTAUTHORDISPLAYNAME]</a>|
                             [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>[FORUM:LASTPOSTAUTHORDISPLAYNAME]
-                            ]
-							</div>
-							<div class="dcf-last-date">
-                            [FORUM:LASTPOSTDATE]
-							</div>
-						</div>
-                    </td>
+                            ]</span>
+						<span class="dcf-lastpost-date">[FORUM:LASTPOSTDATE]</span>
+					</td>
 				</tr>
 
 				[SUBFORUMS]
@@ -89,18 +84,12 @@
                     <td class="dcf-col dcf-col-replies">[FORUM:TOTALREPLIES]</td>
                     <td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
                     <td class="dcf-col dcf-col-last-post">
-                        <div class="dcf-last-post">
-							[FORUM:LASTPOSTSUBJECT:25]
-						<div class="dcf-last-profile">
+                        <div class="af_lastpost" style="white-space: nowrap;">[FORUM:LASTPOSTSUBJECT:25]<br />
                             [FORUM:LASTPOSTAUTHORDISPLAYNAMELINK|
                             [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUM:LASTPOSTAUTHORDISPLAYNAME]</a>|
                             [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>[FORUM:LASTPOSTAUTHORDISPLAYNAME]
-                            ]
-							</div>
-							<div class="dcf-last-date">
-                            [FORUM:LASTPOSTDATE]
-							</div>
-						</div>
+                            ]<br />
+                            [FORUM:LASTPOSTDATE]</div>
                     </td>
                 </tr>
 				[/SUBFORUMS]

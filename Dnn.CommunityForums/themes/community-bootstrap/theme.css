@@ -246,6 +246,10 @@
 .dnn-community-forums .dcf-topic-view .dcf-topic-content .dcf-topic-content-top {
   border-bottom: solid 1px #ddd;
 }
+.dnn-community-forums .dcf-topic-view .dcf-topic-content-main img {
+  max-width: 100% !important;
+  height: auto !important;
+}
 .dnn-community-forums .dcf-topic-view .dcf-topic-info {
   width: 100%;
   border-bottom: solid 1px #ddd;
