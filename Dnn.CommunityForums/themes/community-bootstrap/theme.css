@@ -246,7 +246,7 @@
 .dnn-community-forums .dcf-topic-view .dcf-topic-content .dcf-topic-content-top {
   border-bottom: solid 1px #ddd;
 }
-.dnn-community-forums .dcf-topic-view .dcf-topic-content-main img {
+.dnn-community-forums .dcf-topic-view .dcf-topic-content img {
   max-width: 100% !important;
   height: auto !important;
 }
