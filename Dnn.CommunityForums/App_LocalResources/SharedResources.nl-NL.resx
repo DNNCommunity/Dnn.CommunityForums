@@ -1837,7 +1837,7 @@ Van,
     <value>[FORUMLIKE:USERDISPLAYNAME] vond je bericht over het onderwerp leuk: [FORUMPOST:ONDERWERP]</value>
   </data>
   <data name="[RESX:LikeNotificationBody].Text" xml:space="preserve">
-    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME]&lt;/a&gt;] Ik vond je bericht leuk op [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
+    <value>&lt;p&gt;[FORUMLIKE:USERDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMLIKE:USERDISPLAYNAME]&lt;/a&gt;] Ik vond je bericht leuk op [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
 &lt;p&gt;Om te zien wie je bericht leuk vindt, ga je naar [FORUMPOST:LIKESLINK|&lt;a href="{0}"&gt;[FORUMPOST:LIKESLINK]&lt;/a&gt;]&lt;/p&gt;</value>
   </data>
 </root>

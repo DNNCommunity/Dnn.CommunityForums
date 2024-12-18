@@ -1795,7 +1795,7 @@ From,
     <value>Select this option if you wish to receive notifications when other users 'like' your posts.</value>
   </data>
   <data name="[RESX:LikeNotificationBody].Text" xml:space="preserve">
-    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME]&lt;/a&gt;] liked your post on [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
+    <value>&lt;p&gt;[FORUMLIKE:USERDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMLIKE:USERDISPLAYNAME]&lt;/a&gt;] liked your post on [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
 &lt;p&gt;To see who likes your post, visit [FORUMPOST:LIKESLINK|&lt;a href="{0}"&gt;[FORUMPOST:LIKESLINK]&lt;/a&gt;]&lt;/p&gt;
 </value>
   </data>

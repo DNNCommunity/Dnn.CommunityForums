@@ -258,6 +258,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal PortalSettings LoadPortalSettings()
         {
+            if (this.PortalId == -1 && this.UserInfo != null && this.UserInfo.PortalID != -1)
+            {
+                this.PortalId = this.UserInfo.PortalID;
+            }
+
             return this.portalSettings = Utilities.GetPortalSettings(this.PortalId);
         }
 

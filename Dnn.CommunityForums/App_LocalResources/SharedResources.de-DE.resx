@@ -1801,7 +1801,7 @@ Von
     <value>[FORUMLIKE:USERDISPLAYNAME] hat dein Beitrag zum Thema [FORUMPOST:SUBJECT] gefallen</value>
   </data>
   <data name="[RESX:LikeNotificationBody].Text" xml:space="preserve">
-    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME]&lt;/a&gt;] Gefällt mir dein Beitrag auf [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
+    <value>&lt;p&gt;[FORUMLIKE:USERDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMLIKE:USERDISPLAYNAME]&lt;/a&gt;] Gefällt mir dein Beitrag auf [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
 &lt;p&gt;Um zu sehen, wem dein Beitrag gefällt, besuche [FORUMPOST:LIKESLINK|&lt;a href="{0}"&gt;[FORUMPOST:LIKESLINK]&lt;/a&gt;]&lt;/p&gt;</value>
   </data>
 </root>

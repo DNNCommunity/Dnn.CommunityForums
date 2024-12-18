@@ -1801,7 +1801,7 @@ Da
     <value>[FORUMLIKE:USERDISPLAYNAME] ha messo mi piace al tuo post sull'argomento: [FORUMPOST:SUBJECT]</value>
   </data>
   <data name="[RESX:LikeNotificationBody].Text" xml:space="preserve">
-    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK]&lt;/a&gt;] mi piace il tuo post su [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
+    <value>&lt;p&gt;[FORUMLIKE:USERDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMLIKE:USERDISPLAYNAME]&lt;/a&gt;] mi piace il tuo post su [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
 &lt;p&gt;Per vedere a chi piace il tuo post, visita [FORUMPOST:LIKESLINK|&lt;a href="{0}"&gt;[FORUMPOST:LIKESLINK]&lt;/a&gt;]&lt;/p&gt;</value>
   </data>
 </root>
