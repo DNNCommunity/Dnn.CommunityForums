@@ -1,92 +1,112 @@
-.dcf-topic-view{
+.dcf-topic-view {
 
     // Thread Title
 
-    .dcf-title{
-       .fa{
-        margin-right: $spacer-md;
-        font-size: $font-sm;
-       }
-    }
-
-    .dcf-prev-next{
-        $fa-padding: 0.5em;
-        .fa-prev{
-           .fa{
-            margin-right: $fa-padding;
-           } 
+    .dcf-title {
+        .fa {
+            margin-right: $spacer-md;
+            font-size: $font-sm;
         }
-        .fa-next{
-            .fa{
-             margin-left: $fa-padding;
-            } 
-         }
     }
 
-    .dcf-post-likes{
-        .fa{
+    .dcf-prev-next {
+        $fa-padding: 0.5em;
+
+        .fa-prev {
+            .fa {
+                margin-right: $fa-padding;
+            }
+        }
+
+        .fa-next {
+            .fa {
+                margin-left: $fa-padding;
+            }
+        }
+    }
+
+    .dcf-post-likes {
+        .fa {
             font-size: 1.5rem;
         }
-        
+
     }
 
-   
-    .dcf-topic-content{
+
+    .dcf-topic-content {
         width: 100%;
 
-        .dcf-topic-content-top{
+        .dcf-topic-content-top {
             border-bottom: solid 1px $border-inner-color;
         }
+
     }
-    .dcf-topic-info{
+
+    // Make sure Images are forced to max 100% width
+    .dcf-topic-content-main {
+
+        @include img-responsive;
+    }
+
+    .dcf-topic-info {
         width: 100%;
         border-bottom: solid 1px $border-inner-color;
 
-        .dcf-user-ipaddress{
+        .dcf-user-ipaddress {
             overflow: hidden;
         }
     }
+
     @media screen and (min-width: $break-tablet) {
-        .dcf-topic-content{
+        .dcf-topic-content {
             width: 75%;
         }
-        .dcf-topic-info{
+
+        .dcf-topic-info {
             width: 25%;
             border-right: solid 1px $border-inner-color;
             border-bottom: none;
         }
     }
+
     @media screen and (min-width: $break-desktop) {
-        .dcf-topic-content{
+        .dcf-topic-content {
             width: 85%;
         }
-        .dcf-topic-info{
+
+        .dcf-topic-info {
             width: 15%;
         }
     }
-    .dcf-avatar-img{
+
+    .dcf-avatar-img {
         aspect-ratio: 1/1;
         border-radius: 50%;
         overflow: hidden;
         max-width: 50px;
+
         @media screen and (min-width: $break-tablet) {
             max-width: 80%
         }
 
-        img{
+        img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
     }
 
+    .dcf-post-like, .dcf-post-liked{
+        cursor:pointer;
+    }
+
 
 
     .dcf-quick-reply {
-        .dcf-subscribe{
-            .amaf-chk-subs{
+        .dcf-subscribe {
+            .amaf-chk-subs {
                 margin-right: $spacer-xs;
             }
         }
     }
- }
+}

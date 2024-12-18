@@ -308,8 +308,15 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string NavigateURL(int tabId, string controlKey, params string[] additionalParameters)
         {
             var ti = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(tabId, -1, false);
-            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(ti.PortalID);
-            return Utilities.NavigateURL(tabId, portalSettings, controlKey, additionalParameters);
+            if (ti == null)
+            {
+                return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(-1);
+            }
+            else
+            {
+                DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(ti.PortalID);
+                return Utilities.NavigateURL(tabId, portalSettings, controlKey, additionalParameters);
+            }
         }
 
         public static string NavigateURL(int tabId, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, string controlKey, params string[] additionalParameters)
