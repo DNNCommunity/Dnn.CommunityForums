@@ -1051,17 +1051,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     }
 
                 case "authorfirstname":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName)
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.FirstName)
                             ? this.Content.AuthorName
                             : this.Author.FirstName,
                         format);
                 case "authorlastname":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName)
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.LastName)
                             ? this.Content.AuthorName
                             : this.Author.LastName,
                         format);
                 case "authoremail":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? string.Empty : this.Author.Email.ToString(), format);
+                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.Email) ? string.Empty : this.Author.Email.ToString(), format);
                 case "lastreplyauthorid":
                     return PropertyAccess.FormatString(this.LastReply?.Author?.AuthorId.ToString(), format);
                 case "lastreplyauthorname":
@@ -1150,12 +1150,26 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     }
 
                 case "statuscssclass":
-                case "posticoncss":
-                case "posticon":
                     {
                         var forumUser = new Controllers.ForumUserController(this.ModuleId)
                             .GetByUserId(accessingUser.PortalID, accessingUser.UserID);
                         return PropertyAccess.FormatString(this.GetPostStatusCss(forumUser),
+                            format);
+                    }
+
+                case "posticoncss":
+                    {
+                        var forumUser = new Controllers.ForumUserController(this.ModuleId)
+                            .GetByUserId(accessingUser.PortalID, accessingUser.UserID);
+                        return PropertyAccess.FormatString(this.GetTopicStatusIconCss(forumUser),
+                            format);
+                    }
+
+                case "posticon":
+                    {
+                        var forumUser = new Controllers.ForumUserController(this.ModuleId)
+                            .GetByUserId(accessingUser.PortalID, accessingUser.UserID);
+                        return PropertyAccess.FormatString(this.GetTopicStatusIconCss(forumUser),
                         format);
                     } 
 
