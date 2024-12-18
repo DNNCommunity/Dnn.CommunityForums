@@ -94,9 +94,9 @@
                                         [FORUMPOST:MODEDITDATE]
 									</div>
                                     <div class="dcf-col-50 text-right text-end dcf-post-likes">
-                                        [FORUMPOST:LIKESLINK|<div id="dcf-likes-tooltip-[FORUMPOST:CONTENTID]" class="dcf-likes-tooltip"><span id="dcf-likes-tooltip-[FORUMPOST:CONTENTID]" class="dcf-likes-tooltiptext">[RESX:likedby] <a href="{0}">[RESX:Members]</a></span></div>]
-                                        [FORUMPOST:LIKEONCLICK|<i id="af-topicview-likes-[FORUMPOST:CONTENTID]" class="dcf-post-like fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x" onclick="{0}"> [FORUMPOST:LIKECOUNT]</i>|<i id="af-topicview-likes" class="dcf-post-liked fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x"> [FORUMPOST:LIKECOUNT]</i>]
-                                    </div>
+										[FORUMPOST:LIKEONCLICK|<i id="af-topicview-likes-[FORUMPOST:CONTENTID]" class="dcf-post-like fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x" onclick="{0}"> [FORUMPOST:LIKECOUNT]</i>|<i id="af-topicview-likes" class="dcf-post-liked fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x"> [FORUMPOST:LIKECOUNT]</i>]
+										[FORUMPOST:LIKESLINK|<div id="dcf-likes-[FORUMPOST:CONTENTID]" class="dcf-likes">[RESX:likedby] <a href="{0}">[RESX:Members]</a></div>]
+									</div>
                                 </div>
 							</footer>
 						</div>
@@ -144,9 +144,9 @@
                                         [FORUMPOST:MODEDITDATE]
 									</div>
                                     <div class="dcf-col-50 text-right text-end dcf-post-likes">
-                                        [FORUMPOST:LIKESLINK|<div id="dcf-likes-tooltip-[FORUMPOST:CONTENTID]" class="dcf-likes-tooltip"><span id="dcf-likes-tooltip-[FORUMPOST:CONTENTID]" class="dcf-likes-tooltiptext">[RESX:likedby] <a href="{0}">[RESX:Members]</a></span></div>]
-                                        [FORUMPOST:LIKEONCLICK|<i id="af-topicview-likes-[FORUMPOST:CONTENTID]" class="dcf-post-like fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x" onclick="{0}"> [FORUMPOST:LIKECOUNT]</i>|<i id="af-topicview-likes" class="dcf-post-liked fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x"> [FORUMPOST:LIKECOUNT]</i>]
-                                    </div>
+										[FORUMPOST:LIKEONCLICK|<i id="af-topicview-likes-[FORUMPOST:CONTENTID]" class="dcf-post-like fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x" onclick="{0}"> [FORUMPOST:LIKECOUNT]</i>|<i id="af-topicview-likes" class="dcf-post-liked fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x"> [FORUMPOST:LIKECOUNT]</i>]
+										[FORUMPOST:LIKESLINK|<div id="dcf-likes-[FORUMPOST:CONTENTID]" class="dcf-likes">[RESX:likedby] <a href="{0}">[RESX:Members]</a></div>]
+				                   </div>
 								</div>
 							</footer>
 						</div>
