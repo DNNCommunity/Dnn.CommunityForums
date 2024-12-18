@@ -207,11 +207,15 @@
 .dnn-community-forums .dcf-subscribe-topic input, .dnn-community-forums .dcf-subscribe-forum input {
   margin-right: 0.25rem;
 }
-.dnn-community-forums .dnn-community-forums .dcf-col-icon {
+.dnn-community-forums .dcf-col-icon {
   font-size: 0.8em;
 }
-.dnn-community-forums .dnn-community-forums input[type=text], .dnn-community-forums .dnn-community-forums textarea {
+.dnn-community-forums input[type=text], .dnn-community-forums textarea {
   border: solid 1px #aaa;
+}
+.dnn-community-forums .dcf-table-body-row .dcf-col {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 .dnn-community-forums .dcf-breadcrumb .fa {
   color: #888;
