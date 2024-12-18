@@ -48,7 +48,7 @@
 						<tr class="dcf-table-body-row">
 							<td class="dcf-col dcf-col-text">
 								<div class="d-flex">
-                                    [FORUM:FORUMICONCSS|<div class="dcf-forum-icon" style="height: 30px; margin-right: 10px;"><i class="fa {0} fa-2x"></i></div>
+                                    [FORUM:FORUMICONCSS|<div class="dcf-forum-icon pe-2"><i class="fa {0} fa-2x"></i></div>
                                     ]
 									<div class="dcf-forum-title-text">
 										<h4 class="dcf-forum-title h5 mt-0 mb-2">[FORUM:FORUMLINK|
@@ -61,15 +61,19 @@
 							<td class="dcf-col dcf-col-topics">[FORUM:TOTALTOPICS] </td>
 							<td class="dcf-col dcf-col-replies">[FORUM:TOTALREPLIES]</td>
 							<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
-							<td class="dcf-col dcf-col-last-post">
-								<span class="dcf-lastpost-subject">[FORUM:LASTPOSTSUBJECT:25]</span>
-								<span class="dcf-lastpost-author">
-                                    [FORUM:LASTPOSTAUTHORDISPLAYNAMELINK|
-                                    [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUM:LASTPOSTAUTHORDISPLAYNAME]</a>|
-                                    [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>[FORUM:LASTPOSTAUTHORDISPLAYNAME]
-                                    ]
-								</span>
-								<span class="dcf-lastpost-date">[FORUM:LASTPOSTDATE]</span>
+														<td class="dcf-col dcf-col-last-post">
+								<div class="dcf-last-post">
+									[FORUM:LASTPOSTSUBJECT:25]
+								<div class="dcf-last-profile">
+									[FORUM:LASTPOSTAUTHORDISPLAYNAMELINK|
+									[RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUM:LASTPOSTAUTHORDISPLAYNAME]</a>|
+									[RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>[FORUM:LASTPOSTAUTHORDISPLAYNAME]
+									]
+									</div>
+									<div class="dcf-last-date">
+									[FORUM:LASTPOSTDATE]
+									</div>
+								</div>
 							</td>
 						</tr>
 
@@ -93,14 +97,17 @@
 							<td class="dcf-col dcf-col-replies">[FORUM:TOTALREPLIES]</td>
 							<td class="dcf-col dcf-col-subscribers">[FORUM:SUBSCRIBERCOUNT]</td>
 							<td class="dcf-col dcf-col-last-post">
-								<div class="af_lastpost" style="white-space:nowrap;">[FORUM:LASTPOSTSUBJECT:25]
-									<br />
-                                    [FORUM:LASTPOSTAUTHORDISPLAYNAMELINK|
-                                    [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUM:LASTPOSTAUTHORDISPLAYNAME]</a>|
-                                    [RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>[FORUM:LASTPOSTAUTHORDISPLAYNAME]
-                                    ]
-									<br />
-                                    [FORUM:LASTPOSTDATE]
+								<div class="dcf-last-post">
+									[FORUM:LASTPOSTSUBJECT:25]
+								<div class="dcf-last-profile">
+									[FORUM:LASTPOSTAUTHORDISPLAYNAMELINK|
+									[RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUM:LASTPOSTAUTHORDISPLAYNAME]</a>|
+									[RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>[FORUM:LASTPOSTAUTHORDISPLAYNAME]
+									]
+									</div>
+									<div class="dcf-last-date">
+									[FORUM:LASTPOSTDATE]
+									</div>
 								</div>
 							</td>
 						</tr>
@@ -115,5 +122,5 @@
 		<!-- Who's online -->
 [WHOSONLINE]
 		<!-- Jump To -->
-		<div style="text-align:right;">[JUMPTO]</div>
+		<div class="text-end">[JUMPTO]</div>
 	</div>

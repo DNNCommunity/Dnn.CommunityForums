@@ -14,8 +14,8 @@
     <div class="dcf-post-user">
         [FORUMAUTHOR:USERCAPTION]
         [FORUMAUTHOR:RANKNAME]
-        [FORUMAUTHOR:PMLINK|<img class='ComposeMessage' data-recipient='{{ "id": "user-{0}", "name": "[FORUMAUTHOR:DISPLAYNAMEFORJSON]"}}' src='[FORUM:THEMELOCATION]/images/icon_pm.png' alt="[RESX:SendPM]" title="[RESX:SendPM]" border="0" />]
-        [FORUMAUTHOR:EDITLINK|
+        [FORUMAUTHOR:USERIDFORPMLINK|<img class='ComposeMessage' data-recipient='{{ "id": "user-{0}", "name": "[FORUMAUTHOR:DISPLAYNAMEFORJSON]"}}' src='[FORUM:THEMELOCATION]/images/icon_pm.png' alt="[RESX:SendPM]" title="[RESX:SendPM]" border="0" />]
+        [FORUMAUTHOR:USERIDFOREDITLINK|
         <button class='af-button af-button-edituser' data-id="{0}" data-name="[FORUMAUTHOR:DISPLAYNAMEFORJSON]">[RESX:Edit]</button>]
     </div>
     <div class="dcf-post-user-rank">
