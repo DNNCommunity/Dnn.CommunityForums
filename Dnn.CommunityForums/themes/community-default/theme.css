@@ -734,14 +734,8 @@
   padding: 0.5rem 0;
   margin: 0;
 }
-.dnn-community-forums .af-search-results .afgrid .aftopicrow {
-  vertical-align: top;
-  padding: 1rem 0.5rem;
-  border-bottom: solid 1px #ccc;
-}
-.dnn-community-forums .af-search-results .afgrid .aftopicrow .aftopictitle {
-  display: block;
-  padding-bottom: 0.5rem;
+.dnn-community-forums .dcf-search-results-wrap .af-search-title {
+  margin-top: 1rem;
 }
 .dnn-community-forums .af-adv-search .af-adv-search-header .af-adv-search-title {
   display: block;
