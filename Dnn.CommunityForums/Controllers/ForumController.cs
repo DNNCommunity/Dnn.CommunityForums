@@ -44,7 +44,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var forum = LoadFromCache(moduleId, cachekey);
             if (forum == null)
             {
-                forum = base.GetById(forumId, moduleId);
+                if (moduleId.Equals(-1))
+                {
+                    forum = this.GetById(forumId);
+                }
+                else
+                {
+                    forum = base.GetById(forumId, moduleId);
+                }
+
                 if (forum != null)
                 {
                     forum.LoadForumGroup();
