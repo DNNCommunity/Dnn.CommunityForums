@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetById(int forumId, int moduleId)
         {
             var cachekey = this.GetCacheKey(moduleId: moduleId, id: forumId);
-            var forum = LoadFromCache(moduleId, cachekey);
+            var forum = LoadFromSettingsCache(moduleId, cachekey);
             if (forum == null)
             {
                 if (moduleId.Equals(-1))

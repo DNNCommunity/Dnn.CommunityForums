@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetById(int forumGroupId, int moduleId)
         {
             var cachekey = this.GetCacheKey(moduleId, forumGroupId);
-            var forumGroup = LoadFromCache(moduleId, cachekey);
+            var forumGroup = LoadFromSettingsCache(moduleId, cachekey);
             if (forumGroup == null)
             {
                 forumGroup = base.GetById(forumGroupId, moduleId);

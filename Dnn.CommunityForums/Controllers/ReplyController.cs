@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetById(int replyId)
         {
             var cachekey = this.GetCacheKey(moduleId: this.moduleId, id: replyId);
-            var ri = LoadFromCache(this.moduleId, cachekey);
+            var ri = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo;
             if (ri == null)
             {
                 ri = base.GetById(replyId);
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetByContentId(int contentId)
         {
             var cachekey = string.Format(CacheKeys.ReplyInfoByContentId, this.moduleId, contentId);
-            var ri = LoadFromCache(this.moduleId, cachekey);
+            var ri = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo;
             if (ri == null)
             {
                 ri = this.Find("WHERE ContentId = @0", contentId).FirstOrDefault();
