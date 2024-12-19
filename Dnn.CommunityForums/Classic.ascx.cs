@@ -69,6 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
             //new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveUnused(this.ForumModuleId);
             //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
             ForumsConfig.Install_LikeNotificationType_080200();
+            ForumsConfig.Install_PinNotificationType_080200();
 #endif
 
             try

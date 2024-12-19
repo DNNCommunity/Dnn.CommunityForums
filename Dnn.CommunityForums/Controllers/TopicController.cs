@@ -18,33 +18,19 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
-    using System.Runtime.InteropServices;
-    using System.Text.RegularExpressions;
+    using System.Text;
     using System.Web;
-    using System.Web.Http.Controllers;
-    using System.Xml.Linq;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Modules.ActiveForums.API;
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Journal;
-    using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Modules.ActiveForums.Enums;
-    using System.Text;
+    using DotNetNuke.Services.Social.Notifications;
 
     internal class TopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
     {
@@ -55,13 +41,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal TopicController(int moduleId)
         {
             this.moduleId = moduleId;
-        }
-
-
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int topicId, int moduleId)
-        {
-            this.moduleId = moduleId;
-            return this.GetById(topicId);
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int topicId)
@@ -406,7 +385,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId, moduleId);
+                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
                 if (topic == null)
                 {
                     var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };

@@ -18,18 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Common.Utilities;
-
-namespace DotNetNuke.Modules.ActiveForums
-{
-    using System;
-
-    [Obsolete("Deprecated in Community Forums. Scheduled for removal in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.TopicInfo")]
-    public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
-    {
-    }
-}
-
 #pragma warning disable SA1403 // File may only contain a single namespace
 namespace DotNetNuke.Modules.ActiveForums.Entities
 #pragma warning restore SA1403 // File may only contain a single namespace
@@ -56,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [TableName("activeforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
 #pragma warning disable SA1402 // File may only contain a single type
-    public class TopicInfo : IPostInfo
+    public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.IPostInfo
 #pragma warning restore SA1402 // File may only contain a single type
     {
         [IgnoreColumn]
@@ -77,11 +65,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         private List<Category> categories;
 
-        private ContentInfo contentInfo;
-        private ForumInfo forumInfo;
-        private ReplyInfo lastReply;
-        private AuthorInfo author;
-        private AuthorInfo lastReplyAuthor;
+        private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo lastReply;
+        private DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author;
+        private DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo lastReplyAuthor;
         private int forumId = -1;
         private string tags = string.Empty;
         private string selectedcategories;
@@ -261,7 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal ContentInfo GetContent()
         {
-            return this.contentInfo = new Controllers.ContentController().GetById(this.ContentId, this.ModuleId);
+            return this.contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId, this.ModuleId);
         }
 
         [IgnoreColumn]
@@ -1529,5 +1517,21 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn]
         internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
+    }
+}
+
+#pragma warning disable SA1403 // File may only contain a single namespace
+namespace DotNetNuke.Modules.ActiveForums
+#pragma warning restore SA1403 // File may only contain a single namespace
+{
+    using System;
+
+    [Obsolete("Deprecated in Community Forums. Scheduled for removal in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.TopicInfo")]
+#pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1402 // File may only contain a single type
+    public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
+#pragma warning restore SA1600 // Elements should be documented
+#pragma warning restore SA1402 // File may only contain a single type
+    {
     }
 }

@@ -102,11 +102,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return this.topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.TopicId);
         }
 
-        [IgnoreColumn] public string Subject => Content.Subject;
+        [IgnoreColumn] public string Subject => this.Content.Subject;
 
-        [IgnoreColumn] public string Body => Content.Body;
+        [IgnoreColumn] public string Body => this.Content.Body;
 
-        [IgnoreColumn] public string Summary => Content.Summary;
+        [IgnoreColumn] public string Summary => this.Content.Summary;
 
         [IgnoreColumn]
         public int LikeCount
@@ -402,7 +402,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, format);
                 case "link":
                     {
-                        string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
+                        string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, this.GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
                         string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty);
                         ;
                         string sBodyTitle = GetTopicTitle(this.Content.Body);
@@ -425,7 +425,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 @params.Add($"{ParamKeys.ContentJumpId}={this.ReplyId}");
                             }
 
-                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
+                            slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(this.GetTabId(), string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
                         }
                         else
                         {
@@ -514,7 +514,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 editParams.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
                             }
 
-                            return PropertyAccess.FormatString(Utilities.NavigateURL(GetTabId(), string.Empty, editParams.ToArray()), format);
+                            return PropertyAccess.FormatString(Utilities.NavigateURL(this.GetTabId(), string.Empty, editParams.ToArray()), format);
                         }
 
                         return string.Empty;
@@ -540,7 +540,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
                             }
 
-                            return PropertyAccess.FormatString(Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()), format);
+                            return PropertyAccess.FormatString(Utilities.NavigateURL(this.GetTabId(), string.Empty, @params.ToArray()), format);
                         }
                     }
 
@@ -565,7 +565,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
                             }
 
-                            return PropertyAccess.FormatString(Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()), format);
+                            return PropertyAccess.FormatString(Utilities.NavigateURL(this.GetTabId(), string.Empty, @params.ToArray()), format);
                         }
                     }
 
@@ -594,7 +594,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 editParams.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
                             }
 
-                            return PropertyAccess.FormatString(Utilities.NavigateURL(GetTabId(), string.Empty, editParams.ToArray()), format);
+                            return PropertyAccess.FormatString(Utilities.NavigateURL(this.GetTabId(), string.Empty, editParams.ToArray()), format);
                         }
                     }
 
@@ -615,7 +615,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 $"{ParamKeys.AuthorId}={this.Author.AuthorId}",
                             };
 
-                            return PropertyAccess.FormatString(Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()), format);
+                            return PropertyAccess.FormatString(Utilities.NavigateURL(this.GetTabId(), string.Empty, @params.ToArray()), format);
                         }
                     }
 

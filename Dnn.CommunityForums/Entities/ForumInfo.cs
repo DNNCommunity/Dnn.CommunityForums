@@ -192,8 +192,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             if (this.LastReplyId == 0)
             {
-                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.LastTopicId);
-                this.lastPostInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)ti;
+                if (this.LastTopicId != 0)
+                {
+                    var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.LastTopicId);
+                    this.lastPostInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)ti;
+                }
             }
             else
             {

@@ -21,23 +21,12 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
-    using System.Reflection;
-    using System.Security.Policy;
-    using System.Text;
     using System.Web;
 
-    using DotNetNuke.Data;
-    using DotNetNuke.Modules.ActiveForums.API;
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Services.Social.Notifications;
 
     internal partial class ReplyController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo>
     {
@@ -50,28 +39,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this.moduleId = moduleId;
         }
 
-        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetById(int replyId, int moduleId)
-        {
-            this.moduleId = moduleId;
-            return this.GetById(replyId);
-        }
-
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetById(int replyId)
         {
             var cachekey = this.GetCacheKey(moduleId: this.moduleId, id: replyId);
             var ri = LoadFromCache(this.moduleId, cachekey);
             if (ri == null)
             {
-                try
-                {
-                    ri = base.GetById(replyId);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-
+                ri = base.GetById(replyId);
             }
 
             if (ri != null)
@@ -83,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     ri.PortalId = ri.Forum.PortalId;
                 }
+
                 ri.GetContent();
                 if (ri.Content != null)
                 {
@@ -103,6 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 ri = this.Find("WHERE ContentId = @0", contentId).FirstOrDefault();
             }
+
             if (ri != null)
             {
                 ri.ModuleId = this.moduleId;
@@ -112,6 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     ri.PortalId = ri.Forum.PortalId;
                 }
+
                 ri.GetContent();
                 if (ri.Content != null)
                 {

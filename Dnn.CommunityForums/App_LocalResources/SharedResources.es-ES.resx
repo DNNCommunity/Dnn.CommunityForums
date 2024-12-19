@@ -1804,4 +1804,16 @@ De
     <value>&lt;p&gt;[FORUMLIKE:USERDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMLIKE:USERDISPLAYNAME]&lt;/a&gt;] Me gustó tu publicación en [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
 &lt;p&gt;Para ver a quién le gusta tu publicación, visita [FORUMPOST:LIKESLINK|&lt;a href="{0}"&gt;[FORUMPOST:LIKESLINK]&lt;/a&gt;]&lt;/p&gt;</value>
   </data>
+  <data name="[RESX:PinNotificationsEnabled].Text" xml:space="preserve">
+    <value>Recibir notificaciones de PIN</value>
+  </data>
+  <data name="[RESX:PinNotificationsEnabled].Help" xml:space="preserve">
+    <value>Seleccione esta opción si desea recibir notificaciones cuando se ancle un tema de su creación.</value>
+  </data>
+  <data name="[RESX:PinNotificationSubject].Text" xml:space="preserve">
+    <value>Tu tema: [FORUMTOPIC:SUBJECT] ha sido anclado</value>
+  </data>
+  <data name="[RESX:PinNotificationBody].Text" xml:space="preserve">
+    <value>&lt;p&gt;Su tema: [FORUMTOPIC:SUBJECTLINK] ha sido anclado.&lt;/p&gt;</value>
+  </data>
 </root>

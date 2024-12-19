@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                             if (ti.IsPinned)
                             {
-                                new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.PostLiked,
+                                new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.TopicPinned,
                                     portalId: ti.PortalId,
                                     tabId: ti.Forum.TabId,
                                     moduleId: ti.ModuleId,
