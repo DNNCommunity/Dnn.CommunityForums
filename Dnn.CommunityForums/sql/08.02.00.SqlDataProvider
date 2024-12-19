@@ -2398,3 +2398,15 @@ END
 GO
 /* issue 632 end -- like notifications */
 /* --------------------- */
+
+/* issue 688 begin -- pin notifications */
+
+/* add PinNotificationsEnabled to activeforums_UserProfiles */
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'PinNotificationsEnabled' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserProfiles] ADD
+	[PinNotificationsEnabled] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_UserProfiles_PinNotificationsEnabled] DEFAULT(1)
+END
+GO
+/* issue 688 end -- like notifications */
+/* --------------------- */
