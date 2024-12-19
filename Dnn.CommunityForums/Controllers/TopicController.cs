@@ -55,7 +55,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (ti != null)
             {
                 ti.ModuleId = this.moduleId;
-                ti.GetForum(this.moduleId);
+                ti.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ti.ForumId, this.moduleId);
+
                 if (ti.Forum != null)
                 {
                     ti.PortalId = ti.Forum.PortalId;
@@ -89,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (ti != null)
             {
                 ti.ModuleId = this.moduleId;
-                ti.GetForum(this.moduleId);
+                ti.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ti.ForumId, this.moduleId);
                 if (ti.Forum != null)
                 {
                     ti.PortalId = ti.Forum.PortalId;

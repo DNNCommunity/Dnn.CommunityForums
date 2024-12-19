@@ -602,7 +602,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         try
                         {
-                            templateInfo.Subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(templateInfo.Subject), PortalSettings.Current, PortalSettings.Current.DefaultLanguage).ToString();
+                            var portalSettings = PortalSettings.Current;
+                            if (portalSettings == null)
+                            {
+                                portalSettings = Utilities.GetPortalSettings(templateInfo.PortalId);
+                            }
+
+                            templateInfo.Subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(templateInfo.Subject), portalSettings, portalSettings.DefaultLanguage).ToString();
                             tc.Template_Save(templateInfo);
                             Settings.SaveSetting(templateInfo.ModuleId, $"M:{templateInfo.ModuleId}", ForumSettingKeys.EmailNotificationSubjectTemplate, templateInfo.Subject);
                             DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(templateInfo.ModuleId);
@@ -630,37 +636,40 @@ namespace DotNetNuke.Modules.ActiveForums
                 string message;
 
                 var di = new System.IO.DirectoryInfo(Utilities.MapPath($"{Globals.ModulePath}sql/sql/"));
-                System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
-                foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: di.FullName, searchPattern: "*.SqlDataProvider", searchOption: System.IO.SearchOption.TopDirectoryOnly))
+                if (di.Exists)
                 {
-                    if (fullFilePathName.ToLowerInvariant().Contains("uninstall"))
+                    foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: di.FullName, searchPattern: "*.SqlDataProvider", searchOption: System.IO.SearchOption.TopDirectoryOnly))
                     {
-                        System.IO.File.Delete(fullFilePathName);
-                        log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
-                        log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                        message = $"During upgrade, removed old file {fullFilePathName}";
-                        log.AddProperty("Message", message);
-                        DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-                    }
-                    else
-                    {
-                        System.IO.File.Copy(fullFilePathName, $"{Utilities.MapPath($"{Globals.ModulePath}sql/{new System.IO.FileInfo(fullFilePathName).Name}")}", true);
-                        System.IO.File.Delete(fullFilePathName);
-                        log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
-                        log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                        message = $"During upgrade, moved {fullFilePathName} to {Utilities.MapPath($"{Globals.ModulePath}sql/{new System.IO.FileInfo(fullFilePathName).Name}")}";
-                        log.AddProperty("Message", message);
-                        DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                        if (fullFilePathName.ToLowerInvariant().Contains("uninstall"))
+                        {
+                            System.IO.File.Delete(fullFilePathName);
+                            log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                            log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                            message = $"During upgrade, removed old file {fullFilePathName}";
+                            log.AddProperty("Message", message);
+                            DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                        }
+                        else
+                        {
+                            System.IO.File.Copy(fullFilePathName, $"{Utilities.MapPath($"{Globals.ModulePath}sql/{new System.IO.FileInfo(fullFilePathName).Name}")}", true);
+                            System.IO.File.Delete(fullFilePathName);
+                            log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                            log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                            message = $"During upgrade, moved {fullFilePathName} to {Utilities.MapPath($"{Globals.ModulePath}sql/{new System.IO.FileInfo(fullFilePathName).Name}")}";
+                            log.AddProperty("Message", message);
+                            DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                        }
+
                     }
 
+                    di.Delete();
+                    log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                    log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                    message = $"During upgrade, removed {di.FullName}";
+                    log.AddProperty("Message", message);
+                    DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
                 }
 
-                di.Delete();
-                log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
-                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                message = $"During upgrade, removed {di.FullName}";
-                log.AddProperty("Message", message);
-                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
             }
             catch (Exception ex)
             {

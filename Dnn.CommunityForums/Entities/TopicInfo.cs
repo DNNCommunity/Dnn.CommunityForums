@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Collections.Generic;
     using System.Drawing.Printing;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -105,6 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 if (this.forumId < 1 && this.TopicId > 0)
                 {
                     this.forumId = Controllers.ForumController.Forum_GetByTopicId(-1, this.TopicId);
+                    this.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.forumId, this.ModuleId);
                     this.UpdateCache();
                 }
 
@@ -259,18 +261,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (this.forumInfo == null)
                 {
-                    this.forumInfo = this.GetForum(this.ModuleId);
+                    this.forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId);
                     this.UpdateCache();
                 }
 
                 return this.forumInfo;
             }
             set => this.forumInfo = value;
-        }
-
-        internal ForumInfo GetForum(int moduleId)
-        {
-            return this.forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, moduleId);
         }
 
         [IgnoreColumn]
