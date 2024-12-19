@@ -85,6 +85,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Create "like notification" core messaging notification type new in 08.02.00
                 ForumsConfig.Install_LikeNotificationType_080200();
 
+                // Create "Pin notification" core messaging notification type new in 08.02.00
+                ForumsConfig.Install_PinNotificationType_080200();
+
                 return true;
             }
             catch (Exception ex)
@@ -765,6 +768,19 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             string notificationTypeName = Globals.LikeNotificationType;
             string notificationTypeDescription = Globals.LikeNotificationTypeDescription;
+            int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
+
+            NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
+            if (NotificationsController.Instance.GetNotificationType(notificationTypeName) == null)
+            {
+                NotificationsController.Instance.CreateNotificationType(type);
+            }
+        }
+
+        internal static void Install_PinNotificationType_080200()
+        {
+            string notificationTypeName = Globals.PinNotificationType;
+            string notificationTypeDescription = Globals.PinNotificationTypeDescription;
             int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
 
             NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
