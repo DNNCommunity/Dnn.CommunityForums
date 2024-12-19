@@ -126,10 +126,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        public int PortalId { get; set; } = -1;
+        public int PortalId { get; set; }
 
         [IgnoreColumn]
-        public int ModuleId { get; set; } = -1;
+        public int ModuleId { get; set; }
 
         public int ContentId { get; set; }
 
