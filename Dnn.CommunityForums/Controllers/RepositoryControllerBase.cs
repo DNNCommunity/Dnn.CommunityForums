@@ -139,12 +139,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return this.repo.GetPage(scopeValue, pageIndex, pageSize);
         }
 
-        internal static T LoadFromCache(int moduleId, string cachekey)
+        internal static T LoadFromSettingsCache(int moduleId, string cachekey)
         {
             return (T)DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, cachekey);
         }
 
-        internal static void UpdateCache(int moduleId, string cachekey, T entity)
+        internal static void UpdateSettingsCache(int moduleId, string cachekey, T entity)
         {
             DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, entity);
         }
