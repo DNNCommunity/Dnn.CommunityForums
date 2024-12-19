@@ -283,11 +283,11 @@ function amaf_likePost(mid, fid, cid) {
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         $('#af-topicview-likes-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
-        /* these are for backward compatibility and can be remove in v10 */
+        /* TODO: these are for backward compatibility and can be removed in v10 */
         $('#af-topicview-likes1-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
         $('#af-topicview-likes2-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
         $('#af-topicview-likes3-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
-        /* these are for backward compatibility and can be remove in v10 */
+        /* TODO: these are for backward compatibility and can be removed in v10 */
     }).fail(function (xhr, status) {
         alert('error liking post');
     });
@@ -379,20 +379,20 @@ function amaf_Pin(mid, fid, tid) {
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         $('#af-topicsview-pin-' + tid).toggleClass('fa-thumb-tack');
-        $('.dcf-topic-pin-inner').toggleClass('dcf-topic-pin-pin').toggleClass('dcf-topic-pin-unpin');
+        $('#dcf-topic-pin-inner-' + tid).toggleClass('dcf-topic-pin-pin').toggleClass('dcf-topic-pin-unpin');
         if (data == true) {
             /* pinned --change icon and text to 'unpin' */
-            $('.dcf-topic-pin-text').text(amaf.resx.UnPin);
-            $('.dcf-topic-pin-outer').attr("onclick", "javascript:if (confirm('" + amaf.resx.UnPinConfirm + "')) { amaf_Pin(" + mid + ", " + fid + "," + tid + "); };");
-            $('.dcf-topic-pin-outer').attr("title", amaf.resx.UnPinTopic);
-            $('.dcf-topic-pin-inner').attr("title", amaf.resx.UnPinTopic);
+            $('#dcf-topic-pin-text-' + tid).text(amaf.resx.UnPin);
+            $('#dcf-topic-pin-outer-' + tid).attr("onclick", "javascript:if (confirm('" + amaf.resx.UnPinConfirm + "')) { amaf_Pin(" + mid + ", " + fid + "," + tid + "); };");
+            $('#dcf-topic-pin-outer-' + tid).attr("title", amaf.resx.UnPinTopic);
+            $('#dcf-topic-pin-inner-' + tid).attr("title", amaf.resx.UnPinTopic);
         }
         else {
             /* unpinned --change icon and text to 'pin' */
-            $('.dcf-topic-pin-text').text(amaf.resx.Pin);
-            $('.dcf-topic-pin-outer').attr("onclick", "javascript:if (confirm('" + amaf.resx.PinConfirm + "')) { amaf_Pin(" + mid + ", " + fid + "," + tid + "); };");
-            $('.dcf-topic-pin-outer').attr("title", amaf.resx.PinTopic);
-            $('.dcf-topic-pin-inner').attr("title", amaf.resx.PinTopic);
+            $('#dcf-topic-pin-text-' + tid).text(amaf.resx.Pin);
+            $('#dcf-topic-pin-outer-' + tid).attr("onclick", "javascript:if (confirm('" + amaf.resx.PinConfirm + "')) { amaf_Pin(" + mid + ", " + fid + "," + tid + "); };");
+            $('#dcf-topic-pin-outer-' + tid).attr("title", amaf.resx.PinTopic);
+            $('#dcf-topic-pin-inner-' + tid).attr("title", amaf.resx.PinTopic);
         }
     }).fail(function (xhr, status) {
         alert('error pinning post');
@@ -413,25 +413,25 @@ function amaf_Lock(mid, fid, tid) {
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         $('#af-topicsview-lock-' + tid).toggleClass('fa-lock');
-        $('.dcf-topic-lock-inner').toggleClass('dcf-topic-lock-lock').toggleClass('dcf-topic-lock-unlock').toggleClass('fa-lock').toggleClass('fa-unlock');
-        $('.dcf-topic-reply-link').toggleClass('dcf-topic-reply-locked').toggleClass('dcf-topic-reply-unlocked'); /* enable/disable reply button */
+        $('#dcf-topic-lock-inner-' + tid).toggleClass('dcf-topic-lock-lock').toggleClass('dcf-topic-lock-unlock').toggleClass('fa-lock').toggleClass('fa-unlock');
+        $('#dcf-topic-reply-link-' + tid).toggleClass('dcf-topic-reply-locked').toggleClass('dcf-topic-reply-unlocked'); /* enable/disable reply button */
         if (data == true) {
             /* locked -change icon and text to 'unlock'; hide quick reply and add message 'topic is locked'*/
             $('.dcf-quickreply-wrapper').css('display', 'none');
-            $('.dcf-topic-lock-locked-label').text(amaf.resx.TopicLocked)
-            $('.dcf-topic-lock-text').text(amaf.resx.UnLock);
-            $('.dcf-topic-lock-outer').attr("onclick", "javascript:if (confirm('" + amaf.resx.UnLockConfirm + "')) { amaf_Lock(" + mid + ", " + fid + "," + tid + "); };");
-            $('.dcf-topic-lock-outer').attr("title", amaf.resx.UnLockTopic);
-            $('.dcf-topic-lock-inner').attr("title", amaf.resx.UnLockTopic);
+            $('#dcf-topic-lock-locked-label-' + tid).text(amaf.resx.TopicLocked)
+            $('#dcf-topic-lock-text-' + tid).text(amaf.resx.UnLock);
+            $('#dcf-topic-lock-outer-' + tid).attr("onclick", "javascript:if (confirm('" + amaf.resx.UnLockConfirm + "')) { amaf_Lock(" + mid + ", " + fid + "," + tid + "); };");
+            $('#dcf-topic-lock-outer-' + tid).attr("title", amaf.resx.UnLockTopic);
+            $('#dcf-topic-lock-inner-' + tid).attr("title", amaf.resx.UnLockTopic);
         }
         else {
             /* unlocked -change icon and text to lock; show quick reply and remove 'topic is locked' message */
             $('.dcf-quickreply-wrapper').css('display', 'block');
-            $('.dcf-topic-lock-locked-label').text('')
-            $('.dcf-topic-lock-text').text(amaf.resx.Lock);
-            $('.dcf-topic-lock-outer').attr("onclick", "javascript:if (confirm('" + amaf.resx.LockConfirm + "')) { amaf_Lock(" + mid + ", " + fid + "," + tid + "); };");
-            $('.dcf-topic-lock-outer').attr("title", amaf.resx.LockTopic);
-            $('.dcf-topic-lock-inner').attr("title", amaf.resx.LockTopic);
+            $('#dcf-topic-lock-locked-label-' + tid).text('')
+            $('#dcf-topic-lock-text-' + tid).text(amaf.resx.Lock);
+            $('#dcf-topic-lock-outer-' + tid).attr("onclick", "javascript:if (confirm('" + amaf.resx.LockConfirm + "')) { amaf_Lock(" + mid + ", " + fid + "," + tid + "); };");
+            $('#dcf-topic-lock-outer-' + tid).attr("title", amaf.resx.LockTopic);
+            $('#dcf-topic-lock-inner-' + tid).attr("title", amaf.resx.LockTopic);
         }
     }).fail(function (xhr, status) {
         alert('error locking post');

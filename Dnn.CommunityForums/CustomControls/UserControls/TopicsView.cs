@@ -509,12 +509,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 /* pull in as much data as needed from stored procedure to populate object model; eventually want to move this part to DAL2 */
                 var topicInfo = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
                 {
+                    ModuleId = this.ForumModuleId,
+                    PortalId = this.PortalId,
                     ForumId = Convert.ToInt32(drTopic["ForumId"]),
                     Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Convert.ToInt32(drTopic["ForumId"]), this.ForumModuleId),
                     TopicId = Convert.ToInt32(drTopic["TopicId"]),
                     TopicType = (TopicTypes)Enum.Parse(typeof(TopicTypes), Convert.ToInt32(drTopic["TopicType"]).ToString()),
                     Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
                     {
+                        ModuleId = this.ForumModuleId,
                         Subject = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Subject"])),
                         Summary = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Summary"])),
                         DateCreated = Convert.ToDateTime(drTopic["DateCreated"]),
@@ -533,11 +536,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     TopicData = drTopic["TopicData"].ToString(),
                     LastReply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo
                     {
+                        ModuleId = this.ForumModuleId,
+                        PortalId = this.PortalId,
                         Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, Convert.ToInt32(drTopic["LastReplyAuthorId"])),
                         ReplyId = Convert.ToInt32(drTopic["LastReplyId"]),
                         TopicId = Convert.ToInt32(drTopic["TopicId"]),
                         Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
                         {
+                            ModuleId = this.ForumModuleId,
                             Subject = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySubject"])),
                             Summary = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySummary"])),
                             DateCreated = Convert.ToDateTime(drTopic["LastReplyDate"]),
@@ -551,9 +557,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     topicInfo.Content.Summary = topicInfo.Content.Summary.Replace(System.Environment.NewLine, "<br />");
                 }
 
+                topicInfo.Author.ForumUser.ModuleId = this.ForumModuleId;
+                topicInfo.Author.ForumUser.PortalId = this.PortalId;
                 topicInfo.Author.FirstName = topicInfo.Author?.FirstName?.Replace("&amp;#", "&#");
                 topicInfo.Author.LastName = topicInfo.Author.LastName?.Replace("&amp;#", "&#");
                 topicInfo.Author.DisplayName = topicInfo.Author.DisplayName?.Replace("&amp;#", "&#");
+                topicInfo.LastReplyAuthor.ForumUser.ModuleId = this.ForumModuleId;
+                topicInfo.LastReplyAuthor.ForumUser.PortalId = this.PortalId;
                 topicInfo.LastReplyAuthor.FirstName = topicInfo.Author.FirstName?.Replace("&amp;#", "&#");
                 topicInfo.LastReplyAuthor.LastName = topicInfo.Author.LastName?.Replace("&amp;#", "&#");
                 topicInfo.LastReplyAuthor.DisplayName = topicInfo.Author.DisplayName?.Replace("&amp;#", "&#");
