@@ -76,9 +76,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn] public string RawUrl { get; set; }
 
-        [IgnoreColumn] public int PortalId { get; set; } = -1;
+        [IgnoreColumn] public int PortalId { get; set; }
 
-        [IgnoreColumn] public int ModuleId { get; set; } = -1;
+        [IgnoreColumn] public int ModuleId { get; set; }
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
