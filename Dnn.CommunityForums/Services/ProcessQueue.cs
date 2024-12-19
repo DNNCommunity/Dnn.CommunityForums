@@ -79,6 +79,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                         case ProcessType.PostLiked:
                             completed = DotNetNuke.Modules.ActiveForums.Controllers.LikeController.ProcessPostLiked(portalId: item.PortalId, tabId: item.TabId, moduleId: item.ModuleId, forumGroupId: item.ForumGroupId, forumId: item.ForumId, topicId: item.TopicId, replyId: item.ReplyId, contentId: item.ContentId, userId: item.UserId, authorId: item.AuthorId, requestUrl: item.RequestUrl);
                             break;
+                        case ProcessType.TopicPinned:
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.ProcessTopicPinned(portalId: item.PortalId, tabId: item.TabId, moduleId: item.ModuleId, forumGroupId: item.ForumGroupId, forumId: item.ForumId, topicId: item.TopicId, replyId: item.ReplyId, contentId: item.ContentId, userId: item.UserId, authorId: item.AuthorId, requestUrl: item.RequestUrl);
+                            break;
                         case ProcessType.UpdateForumLastUpdated:
                             completed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(item.ForumId);
                             break;

@@ -1819,4 +1819,16 @@ De,
     <value>&lt;p&gt;[FORUMLIKE:USERDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp ; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMLIKE:USERDISPLAYNAME]&lt;/a&gt;] J’ai aimé ton message sur [FORUMPOST :SUBJECTLINK]&lt;/p&gt;
 &lt;p&gt;Pour voir qui aime votre message, visitez [FORUMPOST :LIKESLINK|&lt;a href="{0}"&gt;[FORUMPOST :LIKESLINK]&lt;/a&gt;]&lt;/p&gt;</value>
   </data>
+  <data name="[RESX:PinNotificationsEnabled].Text" xml:space="preserve">
+    <value>Recevoir des notifications d’épingle</value>
+  </data>
+  <data name="[RESX:PinNotificationsEnabled].Help" xml:space="preserve">
+    <value>Sélectionnez cette option si vous souhaitez recevoir des notifications lorsqu’une rubrique que vous avez créée est épinglée.</value>
+  </data>
+  <data name="[RESX:PinNotificationSubject].Text" xml:space="preserve">
+    <value>Votre sujet : [FORUMTOPIC :SUBJECT] a été épinglé</value>
+  </data>
+  <data name="[RESX:PinNotificationBody].Text" xml:space="preserve">
+    <value>&lt;p&gt;Votre sujet : [FORUMTOPIC :SUBJECTLINK] a été épinglé.&lt;/p&gt;</value>
+  </data>
 </root>

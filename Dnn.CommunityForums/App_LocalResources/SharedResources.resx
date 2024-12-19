@@ -1802,4 +1802,16 @@ From,
   <data name="[RESX:LikeNotificationSubject].Text" xml:space="preserve">
     <value>[FORUMLIKE:USERDISPLAYNAME] liked your post on topic: [FORUMPOST:SUBJECT]</value>
   </data>
+  <data name="[RESX:PinNotificationsEnabled].Text" xml:space="preserve">
+    <value>Receive Pin Notifications</value>
+  </data>
+  <data name="[RESX:PinNotificationsEnabled].Help" xml:space="preserve">
+    <value>Select this option if you wish to receive notifications when a topic you authored is pinned.</value>
+  </data>
+  <data name="[RESX:PinNotificationSubject].Text" xml:space="preserve">
+    <value>Your topic: [FORUMTOPIC:SUBJECT] has been pinned</value>
+  </data>
+  <data name="[RESX:PinNotificationBody].Text" xml:space="preserve">
+    <value>&lt;p&gt;Your topic: [FORUMTOPIC:SUBJECTLINK] has been pinned.&lt;/p&gt;</value>
+  </data>
 </root>

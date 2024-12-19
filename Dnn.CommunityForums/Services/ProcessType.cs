@@ -34,5 +34,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
         UpdateForumLastUpdated = 5,
         UpdateForumTopicPointers = 6,
         PostLiked = 7,
+        TopicPinned = 8,
     }
 }

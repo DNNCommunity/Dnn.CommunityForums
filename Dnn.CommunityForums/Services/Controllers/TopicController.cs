@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     using System.Web;
     using System.Web.Http;
 
+    using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -166,6 +167,22 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         {
                             ti.IsPinned = !ti.IsPinned;
                             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
+                            if (ti.IsPinned)
+                            {
+                                new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.TopicPinned,
+                                    portalId: ti.PortalId,
+                                    tabId: ti.Forum.TabId,
+                                    moduleId: ti.ModuleId,
+                                    forumGroupId: ti.Forum.ForumGroupId,
+                                    forumId: ti.ForumId,
+                                    topicId: topicId,
+                                    replyId: -1,
+                                    contentId: ti.ContentId,
+                                    authorId: ti.Content.AuthorId,
+                                    userId: this.UserInfo.UserID,
+                                    requestUrl: this.Request.RequestUri.ToString());
+                            }
+
                             return this.Request.CreateResponse(HttpStatusCode.OK, value: ti.IsPinned);
                         }
 

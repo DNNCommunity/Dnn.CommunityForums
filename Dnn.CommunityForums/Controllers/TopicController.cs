@@ -18,32 +18,19 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
-    using System.Runtime.InteropServices;
-    using System.Text.RegularExpressions;
+    using System.Text;
     using System.Web;
-    using System.Web.Http.Controllers;
-    using System.Xml.Linq;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Modules.ActiveForums.API;
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Journal;
-    using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Services.Social.Notifications;
 
     internal class TopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
     {
@@ -54,13 +41,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal TopicController(int moduleId)
         {
             this.moduleId = moduleId;
-        }
-
-
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int topicId, int moduleId)
-        {
-            this.moduleId = moduleId;
-            return this.GetById(topicId);
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int topicId)
@@ -399,6 +379,59 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static bool ProcessUnapprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int userId, int authorId, string requestUrl)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(portalId, tabId, moduleId, forumGroupId, forumId, topicId, replyId, authorId, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery);
-        } 
+        }
+
+        internal static bool ProcessTopicPinned(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, string requestUrl)
+        {
+            try
+            {
+                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+                if (topic == null)
+                {
+                    var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                    log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                    var message = string.Format(Utilities.GetSharedResource("[RESX:UnableToFindTopicToProcess]"), contentId, userId);
+                    log.AddProperty("Message", message);
+                    DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                    return true;
+                }
+
+                if ((bool)topic.Author?.ForumUser?.PinNotificationsEnabled)
+                {
+                    var subject = Utilities.GetSharedResource("[RESX:PinNotificationSubject]");
+                    subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(subject), topic, topic.Forum.PortalSettings, topic.Forum.MainSettings, new Services.URLNavigator().NavigationManager(), topic.Author.ForumUser, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery).ToString();
+                    subject = subject.Length > 400 ? subject.Substring(0, 400) : subject;
+                    var body = Utilities.GetSharedResource("[RESX:PinNotificationBody]");
+                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(body), topic, topic.Forum.PortalSettings, topic.Forum.MainSettings, new Services.URLNavigator().NavigationManager(), topic.Author.ForumUser, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery).ToString();
+
+                    string notificationKey = BuildNotificationContextKey(tabId, moduleId, topicId, userId);
+
+                    NotificationType notificationType = NotificationsController.Instance.GetNotificationType(Globals.PinNotificationType);
+                    Notification notification = new Notification
+                    {
+                        NotificationTypeID = notificationType.NotificationTypeId,
+                        Subject = subject,
+                        Body = body,
+                        IncludeDismissAction = true,
+                        SenderUserID = userId,
+                        Context = notificationKey,
+                    };
+                    var users = new List<DotNetNuke.Entities.Users.UserInfo> { topic.Author.ForumUser.UserInfo };
+                    NotificationsController.Instance.SendNotification(notification, portalId, null, users);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                return false;
+            }
+        }
+
+        internal static string BuildNotificationContextKey(int tabId, int moduleId, int topicId, int userId)
+        {
+            return $"{tabId}:{moduleId}:{topicId}:{userId}";
+        }
     }
 }

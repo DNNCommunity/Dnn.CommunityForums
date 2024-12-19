@@ -56,6 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.chkPrefBlockAvatars.Checked = ui.PrefBlockAvatars;
                 this.chkPrefBlockSignatures.Checked = ui.PrefBlockSignatures;
                 this.chkLikesNotificationsEnabled.Checked = ui.LikeNotificationsEnabled;
+                this.chkPinNotificationsEnabled.Checked = ui.PinNotificationsEnabled;
                 this.txtSignature.Text = ui.Signature;
             }
         }
@@ -79,6 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     upi.PrefBlockAvatars = this.chkPrefBlockAvatars.Checked;
                     upi.PrefBlockSignatures = this.chkPrefBlockSignatures.Checked;
                     upi.LikeNotificationsEnabled = this.chkLikesNotificationsEnabled.Checked;
+                    upi.PinNotificationsEnabled = this.chkPinNotificationsEnabled.Checked;
                     if (this.MainSettings.AllowSignatures == 1 || this.MainSettings.AllowSignatures == 0)
                     {
                         upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, true);

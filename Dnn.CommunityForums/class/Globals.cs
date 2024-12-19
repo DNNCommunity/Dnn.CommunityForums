@@ -172,6 +172,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string BanUserNotificationTypeDescription = Globals.ModuleFriendlyName + " User Banned";
         public const string LikeNotificationType = "DCF-LikeNotification";
         public const string LikeNotificationTypeDescription = Globals.ModuleFriendlyName + " Like Notification";
+        public const string PinNotificationType = "DCF-PinNotification";
+        public const string PinNotificationTypeDescription = Globals.ModuleFriendlyName + " Pin Notification";
     }
 
     public class SettingKeys

@@ -40,6 +40,10 @@
         <asp:CheckBox ID="chkLikesNotificationsEnabled" runat="server" />
     </div>
     <div class="dnnFormItem">
+        <dnn:label controlname="chkPinNotificationsEnabled" text="[RESX:PinNotificationsEnabled]" suffix=":" runat="server" />
+        <asp:CheckBox ID="chkPinNotificationsEnabled" runat="server" />
+    </div>
+    <div class="dnnFormItem">
         <dnn:label controlname="chkPrefBlockAvatars" text="[RESX:PrefBlockAvatars]" suffix=":" runat="server" />
         <asp:checkbox id="chkPrefBlockAvatars" runat="server" />
     </div>
