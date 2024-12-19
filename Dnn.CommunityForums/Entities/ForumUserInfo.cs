@@ -120,6 +120,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool LikeNotificationsEnabled { get; set; } = true;
 
+        public bool PinNotificationsEnabled { get; set; } = true;
+
         [IgnoreColumn] 
         public string RawUrl { get; set; }
 
