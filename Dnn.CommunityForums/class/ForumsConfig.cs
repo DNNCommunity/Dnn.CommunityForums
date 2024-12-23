@@ -242,7 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 System.Xml.XmlNodeList cNodes = xNodeList[i].ChildNodes;
                                 for (int c = 0; c < cNodes.Count; c++)
                                 {
-                                    var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo
+                                    var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(portalId)
                                     {
                                         ForumID = -1,
                                         ModuleId = moduleId,

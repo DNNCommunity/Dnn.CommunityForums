@@ -2487,8 +2487,22 @@ INCLUDE ( [ProfileId],
 [DateLastPost]) WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
 GO
 
+/* issue 1218 end -- multiple userProfiles records */
 
 /* --------------------- */
 
+/* issue 263 begin -- enable/disable notifications to original poster */
 
-/* issue 1218 end -- multiple userProfiles records */
+/* add EnableNotificationsForOwnContent to activeforums_UserProfiles */
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'EnableNotificationsForOwnContent' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserProfiles] ADD
+	[EnableNotificationsForOwnContent] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_UserProfiles_EnableNotificationsForOwnContent] DEFAULT(0)
+END
+GO
+
+/* issue 263 end -- enable/disable notifications to original poster */
+
+
+/* --------------------- */
+

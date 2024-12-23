@@ -29,6 +29,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [PrimaryKey("ContentId", AutoIncrement = true)]
     public class ContentInfo
     {
+        [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.ContentInfo;
+
         private DotNetNuke.Modules.ActiveForums.Entities.IPostInfo postInfo;
 
         public int ContentId { get; set; }
@@ -85,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return this.postInfo;
         }
 
-        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetCacheKey(this.ModuleId, this.ContentId);
+        internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ContentId);
 
         internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
     }

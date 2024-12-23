@@ -1831,4 +1831,10 @@ De,
   <data name="[RESX:PinNotificationBody].Text" xml:space="preserve">
     <value>&lt;p&gt;Votre sujet : [FORUMTOPIC :SUBJECTLINK] a été épinglé.&lt;/p&gt;</value>
   </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Text" xml:space="preserve">
+    <value>Pour les forums/sujets auxquels vous êtes abonné, envoyez-moi des notifications même pour mes propres messages</value>
+  </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Help" xml:space="preserve">
+    <value>Sélectionnez cette option si vous souhaitez recevoir des notifications indiquant qu’un nouveau contenu a été publié même si vous êtes l’utilisateur qui l’a publié.</value>
+  </data>
 </root>

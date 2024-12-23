@@ -66,6 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         private List<Category> categories;
 
+        [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.TopicInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo lastReply;
@@ -1509,10 +1510,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return string.Empty;
         }
 
-        [IgnoreColumn]
-        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetCacheKey(this.ModuleId, this.TopicId);
+        internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.TopicId);
 
-        [IgnoreColumn]
         internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
     }
 }

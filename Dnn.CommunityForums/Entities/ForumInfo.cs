@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     // TODO [Cacheable("activeforums_Forums", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
     public class ForumInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
+        [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.ForumInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
         private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
@@ -59,6 +60,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.UpdateCache();
         }
 
+        public ForumInfo(int portalId)
+        {
+            this.PortalId = portalId;
+            this.PortalSettings = Utilities.GetPortalSettings(portalId);
+            this.UpdateCache();
+        }
+        
         public ForumInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             this.PortalSettings = portalSettings;
@@ -980,7 +988,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return this.ModuleInfo.TabID > 0 ? this.ModuleInfo.TabID : this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId ? this.TabId : this.PortalSettings.ActiveTab.TabID;
         }
 
-        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetCacheKey(this.ModuleId, this.ForumID);
+        internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ForumID);
 
         internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(this.ModuleId, this.GetCacheKey(), this);
     }

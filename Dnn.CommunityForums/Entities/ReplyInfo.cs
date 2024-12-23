@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [PrimaryKey("ReplyId")]
     public partial class ReplyInfo : DotNetNuke.Modules.ActiveForums.Entities.IPostInfo
     {
+        [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.ReplyInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author;
@@ -687,10 +688,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return string.Empty;
         }
 
-        [IgnoreColumn]
-        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetCacheKey(this.ModuleId, this.ReplyId);
+        internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ReplyId);
 
-        [IgnoreColumn]
         internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
     }
 }

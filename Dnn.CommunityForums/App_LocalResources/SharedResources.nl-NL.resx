@@ -1852,4 +1852,10 @@ Van,
   <data name="[RESX:PinNotificationBody].Text" xml:space="preserve">
     <value>&lt;p&gt;Uw onderwerp: [FORUMTOPIC:SUBJECTLINK] is vastgezet.&lt;/p&gt;</value>
   </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Text" xml:space="preserve">
+    <value>Voor geabonneerde forums/onderwerpen, stuur me meldingen, zelfs voor mijn eigen berichten</value>
+  </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Help" xml:space="preserve">
+    <value>Selecteer deze optie als u meldingen wilt ontvangen dat er nieuwe inhoud is geplaatst, ook al bent u de gebruiker die de inhoud heeft geplaatst.</value>
+  </data>
 </root>

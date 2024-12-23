@@ -357,7 +357,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 int permissionsId = pc.CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), moduleId).PermissionsId;
 
-                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo
+                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(portalId)
                 {
                     ForumDesc = forumDescription,
                     Active = true,
