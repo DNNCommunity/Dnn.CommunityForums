@@ -1814,4 +1814,10 @@ From,
   <data name="[RESX:PinNotificationBody].Text" xml:space="preserve">
     <value>&lt;p&gt;Your topic: [FORUMTOPIC:SUBJECTLINK] has been pinned.&lt;/p&gt;</value>
   </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Text" xml:space="preserve">
+    <value>For subscribed forums/topics, send me notifications even for my own posts</value>
+  </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Help" xml:space="preserve">
+    <value>Select this option if you wish to receive notifications that new content has been posted even though you are the user who posted the content. </value>
+  </data>
 </root>

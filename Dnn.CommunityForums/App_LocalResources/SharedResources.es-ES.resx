@@ -1816,4 +1816,10 @@ De
   <data name="[RESX:PinNotificationBody].Text" xml:space="preserve">
     <value>&lt;p&gt;Su tema: [FORUMTOPIC:SUBJECTLINK] ha sido anclado.&lt;/p&gt;</value>
   </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Text" xml:space="preserve">
+    <value>Para los foros/temas suscritos, envíame notificaciones incluso para mis propias publicaciones</value>
+  </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Help" xml:space="preserve">
+    <value>Seleccione esta opción si desea recibir notificaciones de que se ha publicado nuevo contenido aunque usted sea el usuario que publicó el contenido.</value>
+  </data>
 </root>

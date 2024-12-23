@@ -122,6 +122,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool PinNotificationsEnabled { get; set; } = true;
 
+        public bool EnableNotificationsForOwnContent { get; set; } = false;
+
         [IgnoreColumn] 
         public string RawUrl { get; set; }
 

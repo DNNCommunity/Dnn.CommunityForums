@@ -1816,4 +1816,10 @@ Da
   <data name="[RESX:PinNotificationBody].Text" xml:space="preserve">
     <value>&lt;p&gt;Il tuo argomento: [FORUMTOPIC:SUBJECTLINK] è stato appuntato.&lt;/p&gt;</value>
   </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Text" xml:space="preserve">
+    <value>Per forum/argomenti iscritti, inviami notifiche anche per i miei post</value>
+  </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Help" xml:space="preserve">
+    <value>Selezionare questa opzione se si desidera ricevere notifiche relative alla pubblicazione di nuovi contenuti anche se l'utente che ha pubblicato il contenuto è stato pubblicato.</value>
+  </data>
 </root>

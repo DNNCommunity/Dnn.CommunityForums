@@ -1816,4 +1816,10 @@ Von
   <data name="[RESX:PinNotificationBody].Text" xml:space="preserve">
     <value>&lt;p&gt;Dein Thema: [FORUMTOPIC:SUBJECTLINK] wurde angeheftet.&lt;/p&gt;</value>
   </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Text" xml:space="preserve">
+    <value>Senden Sie mir für abonnierte Foren/Themen Benachrichtigungen, auch für meine eigenen Beiträge</value>
+  </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Help" xml:space="preserve">
+    <value>Wählen Sie diese Option aus, wenn Sie Benachrichtigungen erhalten möchten, dass neue Inhalte veröffentlicht wurden, obwohl Sie der Benutzer sind, der die Inhalte veröffentlicht hat.</value>
+  </data>
 </root>

@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Modules.ActiveForums.Entities;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -73,24 +75,31 @@ namespace DotNetNuke.Modules.ActiveForums
             return -1;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Subscription_GetSubscribers(int portalId, int moduleId, int forumId, int topicId, SubscriptionTypes mode, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, string canSubscribe).")]
+        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(int portalId, int forumId, int topicId, SubscriptionTypes mode, int authorId, string canSubscribe) => throw new NotImplementedException();
+
         // TODO: move to new DAL2 subscription controller
-        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(int portalId, int forumId, int topicId, SubscriptionTypes mode, int authorId, string canSubscribe)
+        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, int topicId, SubscriptionTypes mode, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo si;
             var sl = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
-            IDataReader dr = DataProvider.Instance().Subscriptions_GetSubscribers(portalId, forumId, topicId, (int)mode);
+            IDataReader dr = DataProvider.Instance().Subscriptions_GetSubscribers(forum.PortalId, forum.ForumID, topicId, (int)mode);
             while (dr.Read())
             {
-                if (authorId != Convert.ToInt32(dr["UserId"]))
+                if (Convert.ToInt32(dr["userId"]) != author.AuthorId || author.ForumUser.EnableNotificationsForOwnContent)
                 {
-                    si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
+                    var si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
                     {
-                        UserId = Convert.ToInt32(dr["UserId"]),
+                        ModuleId = forum.ModuleId,
+                        PortalId = forum.PortalId,
+                        ForumId = forum.ForumID,
+                        UserId = Convert.ToInt32(dr["userId"]),
+                        Email = dr["email"].ToString(),
+                        TopicId = Convert.ToInt32(dr["topicsubscriber"]).Equals(1) ? topicId : 0,
                     };
 
                     if (!sl.Contains(si))
                     {
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(canSubscribe, portalId, si.ModuleId, si.UserId))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.Subscribe, forum.PortalId, forum.ModuleId, si.UserId))
                         {
                             sl.Add(si);
                         }
@@ -133,12 +142,11 @@ namespace DotNetNuke.Modules.ActiveForums
         // TODO: move to new DAL2 subscription controller
         public static void SendSubscriptions(int templateId, int portalId, int moduleId, int tabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int topicId, int replyId, int authorId, Uri requestUrl)
         {
-            var sc = new SubscriptionController();
-            List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs = sc.Subscription_GetSubscribers(portalId, fi.ForumID, topicId, SubscriptionTypes.Instant, authorId, fi.Security.Subscribe);
+            var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, moduleId, authorId);
+            List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs = new DotNetNuke.Modules.ActiveForums.SubscriptionController().Subscription_GetSubscribers(fi, topicId, SubscriptionTypes.Instant, author);
 
             if (subs.Count > 0)
             {
-                var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, moduleId, authorId);
                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleId, tabId, author, fi, subs, requestUrl, requestUrl.PathAndQuery);
             }
         }
