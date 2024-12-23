@@ -32,6 +32,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Scope("ModuleId")]
     public class PermissionInfo
     {
+        [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.PermissionsInfo;
+
         public int PermissionsId { get; set; }
 
         public int ModuleId { get; set; }
@@ -137,5 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                    this.Split == other.Split &&
                    this.Ban == other.Ban;
         }
+
+        internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.PermissionsId);
     }
 }

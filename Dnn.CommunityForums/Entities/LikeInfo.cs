@@ -33,6 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
     internal class LikeInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
+        [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.LikeInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo;
 
@@ -263,7 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return this.Forum.PortalSettings.ActiveTab.TabID == -1 || this.Forum.PortalSettings.ActiveTab.TabID == this.Forum.PortalSettings.HomeTabId ? this.Forum.TabId : this.Forum.PortalSettings.ActiveTab.TabID;
         }
 
-        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalId, this.ModuleId).GetCacheKey(this.ModuleId, this.ContentId);
+        internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ContentId);
 
         internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
     }

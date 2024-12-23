@@ -35,6 +35,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     // TODO [Cacheable("activeforums_Groups", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
     public partial class ForumGroupInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
+        [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.ForumGroupInfo;
+
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
         private FeatureSettings featureSettings;
         private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
@@ -284,7 +286,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId ? this.TabId : this.PortalSettings.ActiveTab.TabID;
         }
 
-        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetCacheKey(this.ModuleId, this.ForumGroupId);
+        internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ForumGroupId);
 
         internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(this.ModuleId, this.GetCacheKey(), this);
     }

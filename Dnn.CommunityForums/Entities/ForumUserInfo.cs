@@ -36,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Scope("PortalId")]
     public class ForumUserInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
+        [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.ForumUser;
         private DotNetNuke.Entities.Users.UserInfo userInfo;
         private PortalSettings portalSettings;
         private SettingsInfo mainSettings;
@@ -624,8 +625,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return string.Empty;
         }
 
-        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetCacheKey(this.PortalId, this.UserId);
+        [IgnoreColumn]
+        internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.PortalId, this.UserId);
 
+        [IgnoreColumn]
         internal void UpdateCache() => DataCache.UserCacheStore(this.GetCacheKey(), this);
     }
 }

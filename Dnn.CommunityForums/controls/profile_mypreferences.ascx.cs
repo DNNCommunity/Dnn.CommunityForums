@@ -57,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.chkPrefBlockSignatures.Checked = ui.PrefBlockSignatures;
                 this.chkLikesNotificationsEnabled.Checked = ui.LikeNotificationsEnabled;
                 this.chkPinNotificationsEnabled.Checked = ui.PinNotificationsEnabled;
+                this.chkEnableNotificationsForOwnContent.Checked = ui.EnableNotificationsForOwnContent;
                 this.txtSignature.Text = ui.Signature;
             }
         }
@@ -81,6 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     upi.PrefBlockSignatures = this.chkPrefBlockSignatures.Checked;
                     upi.LikeNotificationsEnabled = this.chkLikesNotificationsEnabled.Checked;
                     upi.PinNotificationsEnabled = this.chkPinNotificationsEnabled.Checked;
+                    upi.EnableNotificationsForOwnContent = this.chkEnableNotificationsForOwnContent.Checked;
                     if (this.MainSettings.AllowSignatures == 1 || this.MainSettings.AllowSignatures == 0)
                     {
                         upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, true);
@@ -91,7 +93,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
                     }
-                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).Save<int>(upi, upi.UserId);
+
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Save(upi);
 
                     this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                     this.Context.ApplicationInstance.CompleteRequest();

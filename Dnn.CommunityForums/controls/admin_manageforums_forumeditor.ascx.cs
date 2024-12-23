@@ -243,7 +243,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 case "forumsave":
                     {
-                        var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
+                        var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(this.PortalId);
                         var bIsNew = false;
                         int forumGroupId;
 

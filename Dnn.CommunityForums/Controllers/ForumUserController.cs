@@ -220,9 +220,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user)
         {
             user.DateUpdated = DateTime.UtcNow;
-            var x = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(user.ModuleId).Save<int>(user, user.ProfileId);
+            var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(user.ModuleId).Save<int>(user, user.ProfileId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(user.PortalId, user.UserId);
-            return x.UserId;
+            return forumUser.UserId;
         }
 
         public bool GetUserIsAdmin(int portalId, int moduleId, int userId)
