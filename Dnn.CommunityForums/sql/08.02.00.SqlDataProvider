@@ -2410,3 +2410,85 @@ END
 GO
 /* issue 688 end -- like notifications */
 /* --------------------- */
+
+
+/* issue 1218 begin -- multiple userProfiles records */
+
+
+/* activeforums_UserProfiles_Opt3  */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{objectQualifier}activeforums_UserProfiles') AND name = N'idx_{objectQualifier}activeforums_UserProfiles_Opt3')
+DROP INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt3] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+GO
+
+
+
+/* delete any duplicated user records, keeping latest one */
+WITH up_max AS (
+SELECT up.PortalId, up.UserId, MAX(ProfileId) AS ProfileId 
+FROM {databaseOwner}[{objectQualifier}activeforums_UserProfiles] up 
+GROUP BY up.PortalId, up.UserId
+)
+, up_multiples AS (
+SELECT up.PortalId, up.UserId, up_max.ProfileId
+FROM {databaseOwner}[{objectQualifier}activeforums_UserProfiles] up 
+LEFT OUTER JOIN up_max
+ON up_max.PortalId = up.PortalId
+AND up_max.UserId = up.UserId
+GROUP BY up.UserId, up.PortalId, up_max.ProfileId
+HAVING COUNT(*) > 1
+)
+
+DELETE up 
+FROM {databaseOwner}[{objectQualifier}activeforums_UserProfiles] up 
+INNER JOIN up_max
+ON up_max.PortalId = up.PortalId
+AND up_max.UserId = up.UserId
+INNER JOIN up_multiples
+ON up_multiples.PortalId = up_max.PortalId
+AND up_multiples.UserId = up_max.UserId
+
+WHERE up.PortalId = up_max.PortalId
+AND up.UserId = up_max.UserId
+AND up.ProfileId < up_max.ProfileId
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt3] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+(
+	[PortalId] ASC,
+	[UserId] ASC
+)
+INCLUDE ( [ProfileId],
+[TopicCount],
+[ReplyCount],
+[ViewCount],
+[AnswerCount],
+[RewardPoints],
+[UserCaption],
+[DateCreated],
+[DateUpdated],
+[DateLastActivity],
+[Signature],
+[SignatureDisabled],
+[TrustLevel],
+[AdminWatch],
+[AttachDisabled],
+[Avatar],
+[AvatarType],
+[AvatarDisabled],
+[PrefDefaultSort],
+[PrefDefaultShowReplies],
+[PrefJumpLastPost],
+[PrefTopicSubscribe],
+[PrefSubscriptionType],
+[PrefEmailFormat],
+[PrefBlockAvatars],
+[PrefBlockSignatures],
+[PrefPageSize],
+[DateLastPost]) WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+
+/* --------------------- */
+
+
+/* issue 1218 end -- multiple userProfiles records */

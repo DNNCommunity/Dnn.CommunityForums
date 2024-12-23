@@ -622,7 +622,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return string.Empty;
         }
 
-        internal string GetCacheKey() => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetCacheKey(this.PortalId, this.UserId);
+        internal string GetCacheKey() => string.Format(CacheKeys.ForumUser, this.PortalId, this.UserId);
 
         internal void UpdateCache() => DataCache.UserCacheStore(this.GetCacheKey(), this);
     }

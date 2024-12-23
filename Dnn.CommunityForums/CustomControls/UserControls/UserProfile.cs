@@ -374,10 +374,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         user.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
                     }
 
-
                 }
 
-                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).Save<int>(user, user.UserId);
+                DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Save(user);
             }
 
             return true;
