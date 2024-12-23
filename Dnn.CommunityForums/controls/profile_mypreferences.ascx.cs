@@ -91,7 +91,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
                     }
-                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).Save<int>(upi, upi.UserId);
+
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Save(upi);
 
                     this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                     this.Context.ApplicationInstance.CompleteRequest();
