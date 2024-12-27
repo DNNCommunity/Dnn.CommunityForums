@@ -295,7 +295,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
                         ForumsConfig.Install_LikeNotificationType_080200();
                         ForumsConfig.Install_PinNotificationType_080200();
-                        ForumsConfig.Sort_PermissionSets_080200();
+                        //ForumsConfig.Sort_PermissionSets_080200();
                     }
                     catch (Exception ex)
                     {
