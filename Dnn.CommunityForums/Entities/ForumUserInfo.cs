@@ -36,7 +36,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Scope("PortalId")]
     public class ForumUserInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
-        [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.ForumUser;
+        [IgnoreColumn]
+        private string cacheKeyTemplate => CacheKeys.ForumUser;
         private DotNetNuke.Entities.Users.UserInfo userInfo;
         private PortalSettings portalSettings;
         private SettingsInfo mainSettings;
@@ -134,7 +135,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public string[] Roles => this.UserInfo?.Roles;
 
-        [IgnoreColumn] public string FirstName => this.UserInfo?.FirstName;
+        [IgnoreColumn]
+        public string FirstName => this.UserInfo?.FirstName;
 
         [IgnoreColumn]
         public string LastName => string.IsNullOrEmpty(this.UserInfo?.LastName) ? string.Empty : this.UserInfo?.LastName;

@@ -31,10 +31,10 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
     using Moq;
     using NUnit.Framework;
 
-    [TestFixture()]
+    [TestFixture]
     public class PermissionControllerTests
     {
-        [Test()]
+        [Test]
         public void GetNamesForRolesTest()
         {
             // Arrange
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
-        [Test()]
+        [Test]
         public void GetRoleNameTest()
         {
             // Arrange
@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             Assert.Throws<NullReferenceException>(() => PermissionController.GetRoleName(portalId, roles));
         }
 
-        [Test()]
+        [Test]
         [TestCase(new string[] { "1", "2", "3" }, new string[] { "1", "2", "3" }, ExpectedResult = true)]
         [TestCase(new string[] { "1", "2" }, new string[] { "3" }, ExpectedResult = false)]
         [TestCase(new string[] { "1" }, new string[] { "1", "2", "3" }, ExpectedResult = true)]
@@ -76,6 +76,18 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             return PermissionController.HasRequiredPerm(authRoles, userRoles);
 
             // Assert
+        }
+
+        [Test]
+        [TestCase(arg1: "0;1;-3;-1;38;||", arg2: "0;1;-1;-3;38;||", ExpectedResult = true)]
+        [TestCase(arg1: "0;1;-1;-3;38;|||", arg2: "0;1;-1;-3;38;||", ExpectedResult = true)]
+        public bool SortPermissionSetMembersTest(string permSet, string expectedResults)
+        {
+            // Arrange
+            // Act
+            // Assert
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(permSet).Equals(expectedResults);
+
         }
     }
 }
