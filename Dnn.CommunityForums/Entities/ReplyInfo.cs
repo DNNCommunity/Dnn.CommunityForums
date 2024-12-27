@@ -37,13 +37,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [TableName("activeforums_Replies")]
     [PrimaryKey("ReplyId")]
     public partial class ReplyInfo : DotNetNuke.Modules.ActiveForums.Entities.IPostInfo
-<<<<<<< HEAD
-    {     
-        private string cacheKeyTemplate => CacheKeys.ReplyInfo;
-=======
     {
-        [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.ReplyInfo;
->>>>>>> dev
+        [IgnoreColumn] 
+        private string cacheKeyTemplate => CacheKeys.ReplyInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author;

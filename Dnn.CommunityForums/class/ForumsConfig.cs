@@ -573,7 +573,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         newRoles += ";";
                     }
 
-                    newRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newRoles);
+                    //newRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newRoles);
 
                     string newUsers = string.Join(";", newAuthUsers);
                     if (!string.IsNullOrEmpty(newUsers))
@@ -581,7 +581,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         newUsers += ";";
                     }
 
-                    newUsers = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newUsers);
+                   // newUsers = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newUsers);
 
                     string newGroups = string.Join(";", newAuthGroups);
                     if (!string.IsNullOrEmpty(newGroups))
@@ -589,7 +589,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         newGroups += ";";
                     }
 
-                    newGroups = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newGroups);
+                    //newGroups = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newGroups);
 
                     newSet = string.Concat(newRoles, "|", newUsers, "|", newGroups, "|");
                 }
@@ -810,36 +810,36 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static void Sort_PermissionSets_080200()
-        {
-            foreach (var perms in new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Get())
-            {
-                perms.Announce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Announce);
-                perms.Attach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Attach);
-                perms.Ban = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Ban);
-                perms.Block = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Block);
-                perms.Categorize = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Categorize);
-                perms.Create = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Create);
-                perms.Delete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Delete);
-                perms.Edit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Edit);
-                perms.Lock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Lock);
-                perms.Moderate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Moderate);
-                perms.Move = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Move);
-                perms.Pin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Pin);
-                perms.Poll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Poll);
-                perms.Prioritize = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Prioritize);
-                perms.Read = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Read);
-                perms.Reply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Reply);
-                perms.Split = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Split);
-                perms.Subscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Subscribe);
-                perms.Tag = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Tag);
-                perms.Trust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Trust);
-                perms.View = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.View);
-                new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
+        //internal static void Sort_PermissionSets_080200()
+        //{
+        //    foreach (var perms in new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Get())
+        //    {
+        //        perms.Announce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Announce);
+        //        perms.Attach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Attach);
+        //        perms.Ban = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Ban);
+        //        perms.Block = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Block);
+        //        perms.Categorize = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Categorize);
+        //        perms.Create = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Create);
+        //        perms.Delete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Delete);
+        //        perms.Edit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Edit);
+        //        perms.Lock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Lock);
+        //        perms.Moderate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Moderate);
+        //        perms.Move = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Move);
+        //        perms.Pin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Pin);
+        //        perms.Poll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Poll);
+        //        perms.Prioritize = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Prioritize);
+        //        perms.Read = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Read);
+        //        perms.Reply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Reply);
+        //        perms.Split = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Split);
+        //        perms.Subscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Subscribe);
+        //        perms.Tag = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Tag);
+        //        perms.Trust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Trust);
+        //        perms.View = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.View);
+        //        new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
 
-            }
+        //    }
 
-        }
+        //}
 
     }
 }

@@ -465,6 +465,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var permission = this.GetById(permissionsId, moduleId);
             if (permission != null)
             {
+                //permSet = SortPermissionSetMembers(permSet);
                 SetRolesForRequestedAccess(permission, requestedAccess, permSet);
                 this.Update(permission);
             }
@@ -636,7 +637,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             string newSet = RemovePermFromSet(objectId, objectType, permissionSet);
             string[] permSet = newSet.Split('|');
-            permSet[objectType] += SortPermissionSetMembers(string.Concat(objectId, ";"));
             newSet = string.Concat(permSet[0] + "|" + (permSet.Length > 1 ? permSet[1] : string.Empty) + "|" + (permSet.Length > 2 ? permSet[2] : string.Empty), "|");
             return newSet;
         }
