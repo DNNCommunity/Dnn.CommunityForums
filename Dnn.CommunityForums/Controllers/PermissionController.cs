@@ -22,21 +22,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
     using System.Collections.Specialized;
-    using System.Data;
-    using System.Drawing;
     using System.Linq;
-    using System.Reflection;
-    using System.Security.Cryptography;
-    using System.Web.Razor.Parser.SyntaxTree;
-    using System.Web.Security;
-    using System.Web.UI.WebControls;
+    using System.Linq.Expressions;
 
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Common.Controls;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Modules.ActiveForums.API;
-    using DotNetNuke.Modules.ActiveForums.DAL2;
-    using Microsoft.ApplicationBlocks.Data;
 
     internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
@@ -67,6 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Update(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
         {
             var cachekey = this.GetCacheKey(moduleId: permissionInfo.ModuleId, id: permissionInfo.PermissionsId);
+            DataCache.SettingsCacheClear(permissionInfo.ModuleId, cachekey);
             base.Update(permissionInfo);
             return this.GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
         }
@@ -616,12 +606,38 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return newSet;
         }
 
+        public static string SortPermissionSetMembers(string permissionSet)
+        {
+            if (string.IsNullOrEmpty(permissionSet))
+            {
+                return string.Empty;
+            }
+
+            string newSet = string.Empty;
+
+            string[] permSet = permissionSet.Split('|');
+            for (int section = 0; section < 2; section++)
+            {
+                var members = permSet[section].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+                Array.Sort(members);
+                permSet[section] = string.Join(";", members);
+                if (!string.IsNullOrEmpty(permSet[section]))
+                {
+                    permSet[section] += ";";
+                }
+
+                newSet += string.Concat(permSet[section], "|");
+            }
+
+            return newSet;
+        }
+
         public static string AddPermToSet(string objectId, int objectType, string permissionSet)
         {
             string newSet = RemovePermFromSet(objectId, objectType, permissionSet);
             string[] permSet = newSet.Split('|');
-            permSet[objectType] += string.Concat(objectId, ";");
-            newSet = string.Concat(permSet[0] + "|" + permSet[1] + "|" + permSet[2], "|");
+            permSet[objectType] += SortPermissionSetMembers(string.Concat(objectId, ";"));
+            newSet = string.Concat(permSet[0] + "|" + (permSet.Length > 1 ? permSet[1] : string.Empty) + "|" + (permSet.Length > 2 ? permSet[2] : string.Empty), "|");
             return newSet;
         }
 
@@ -647,6 +663,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             roleObjects = GetObjFromSecObj(portalSettings, s.Announce, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Attach, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Ban, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Categorize, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Create, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Delete, objectType, roleObjects);
@@ -654,13 +671,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             roleObjects = GetObjFromSecObj(portalSettings, s.Lock, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Moderate, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Move, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.Split, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.Ban, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Pin, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Poll, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Prioritize, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Read, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Reply, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Split, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Subscribe, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Tag, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Trust, objectType, roleObjects);

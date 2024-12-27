@@ -301,11 +301,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                    this.AutoSubscribeRoles == other.AutoSubscribeRoles &&
                    this.AutoSubscribeNewTopicsOnly == other.AutoSubscribeNewTopicsOnly &&
                    this.CreatePostCount == other.CreatePostCount &&
-                   this.ReplyPostCount == other.ReplyPostCount &&
-                   this.AttachMaxHeight == other.AttachMaxHeight &&
-                   this.AttachMaxWidth == other.AttachMaxWidth &&
-                   this.EditorStyle == other.EditorStyle &&
-                   this.EditorToolBar == other.EditorToolBar;
+                   this.ReplyPostCount == other.ReplyPostCount /*&&*/
+                   /*this.AttachMaxHeight == other.AttachMaxHeight &&*/
+                   /*this.AttachMaxWidth == other.AttachMaxWidth &&*/
+                   /*this.EditorStyle == other.EditorStyle &&*/
+                   /*this.EditorToolBar == other.EditorToolBar*/;
         }
     }
 }

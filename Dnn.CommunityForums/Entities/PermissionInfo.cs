@@ -32,7 +32,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Scope("ModuleId")]
     public class PermissionInfo
     {
-        [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.PermissionsInfo;
+        [IgnoreColumn]
+        private string cacheKeyTemplate => CacheKeys.PermissionsInfo;
 
         public int PermissionsId { get; set; }
 
@@ -117,27 +118,33 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool EqualPermissions(PermissionInfo other)
         {
             return !(other is null) &&
-                   this.View == other.View &&
-                   this.Read == other.Read &&
-                   this.Create == other.Create &&
-                   this.Reply == other.Reply &&
-                   this.Edit == other.Edit &&
-                   this.Delete == other.Delete &&
-                   this.Lock == other.Lock &&
-                   this.Pin == other.Pin &&
-                   this.Attach == other.Attach &&
-                   this.Poll == other.Poll &&
-                   this.Block == other.Block &&
-                   this.Trust == other.Trust &&
-                   this.Subscribe == other.Subscribe &&
-                   this.Announce == other.Announce &&
-                   this.Tag == other.Tag &&
-                   this.Categorize == other.Categorize &&
-                   this.Prioritize == other.Prioritize &&
-                   this.Moderate == other.Moderate &&
-                   this.Move == other.Move &&
-                   this.Split == other.Split &&
-                   this.Ban == other.Ban;
+                   EqualPermissionMembers(this.Announce, other.Announce) &&
+                   EqualPermissionMembers(this.Attach, other.Attach) &&
+                   EqualPermissionMembers(this.Ban, other.Ban) &&
+                   //EqualPermissionMembers(this.Block, other.Block) &&
+                   EqualPermissionMembers(this.Categorize, other.Categorize) &&
+                   EqualPermissionMembers(this.Create, other.Create) &&
+                   EqualPermissionMembers(this.Delete, other.Delete) &&
+                   EqualPermissionMembers(this.Edit, other.Edit) &&
+                   EqualPermissionMembers(this.Lock, other.Lock) &&
+                   EqualPermissionMembers(this.Moderate, other.Moderate) &&
+                   EqualPermissionMembers(this.Moderate, other.Moderate) &&
+                   EqualPermissionMembers(this.Move, other.Move) &&
+                   EqualPermissionMembers(this.Pin, other.Pin) &&
+                   EqualPermissionMembers(this.Poll, other.Poll) &&
+                   EqualPermissionMembers(this.Prioritize, other.Prioritize) &&
+                   EqualPermissionMembers(this.Read, other.Read) &&
+                   EqualPermissionMembers(this.Reply, other.Reply) &&
+                   EqualPermissionMembers(this.Split, other.Split) &&
+                   EqualPermissionMembers(this.Subscribe, other.Subscribe) &&
+                   EqualPermissionMembers(this.Tag, other.Tag) &&
+                   EqualPermissionMembers(this.Trust, other.Trust) &&
+                   EqualPermissionMembers(this.View, other.View);
+
+            bool EqualPermissionMembers(string thisPermissions, string otherPermissions)
+            {
+                return (thisPermissions == otherPermissions || (thisPermissions.Equals("||") && string.IsNullOrEmpty(otherPermissions)) || string.IsNullOrEmpty(thisPermissions) && otherPermissions.Equals("||"));
+            }
         }
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.PermissionsId);

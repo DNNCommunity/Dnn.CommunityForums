@@ -37,8 +37,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [TableName("activeforums_Replies")]
     [PrimaryKey("ReplyId")]
     public partial class ReplyInfo : DotNetNuke.Modules.ActiveForums.Entities.IPostInfo
+<<<<<<< HEAD
+    {     
+        private string cacheKeyTemplate => CacheKeys.ReplyInfo;
+=======
     {
         [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.ReplyInfo;
+>>>>>>> dev
         private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author;
@@ -51,11 +56,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.Topic.ForumId = value;
         }
 
-        [IgnoreColumn] public int PostId { get => this.ReplyId; }
+        [IgnoreColumn]
+        public int PostId { get => this.ReplyId; }
 
-        [IgnoreColumn] public bool IsTopic => false;
+        [IgnoreColumn]
+        public bool IsTopic => false;
 
-        [IgnoreColumn] public bool IsReply => true;
+        [IgnoreColumn]
+        public bool IsReply => true;
 
         public int ReplyId { get; set; }
 
@@ -73,13 +81,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool IsDeleted { get; set; }
 
-        [IgnoreColumn] public Uri RequestUri { get; set; }
+        [IgnoreColumn]
+        public Uri RequestUri { get; set; }
 
-        [IgnoreColumn] public string RawUrl { get; set; }
+        [IgnoreColumn]
+        public string RawUrl { get; set; }
 
-        [IgnoreColumn] public int PortalId { get; set; }
+        [IgnoreColumn]
+        public int PortalId { get; set; }
 
-        [IgnoreColumn] public int ModuleId { get; set; }
+        [IgnoreColumn]
+        public int ModuleId { get; set; }
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
@@ -103,11 +115,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return this.topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.TopicId);
         }
 
-        [IgnoreColumn] public string Subject => this.Content.Subject;
+        [IgnoreColumn]
+        public string Subject => this.Content.Subject;
 
-        [IgnoreColumn] public string Body => this.Content.Body;
+        [IgnoreColumn]
+        public string Body => this.Content.Body;
 
-        [IgnoreColumn] public string Summary => this.Content.Summary;
+        [IgnoreColumn]
+        public string Summary => this.Content.Summary;
 
         [IgnoreColumn]
         public int LikeCount
