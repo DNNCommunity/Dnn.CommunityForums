@@ -1239,9 +1239,7 @@
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
-    <None Include="sql\08.02.00.SqlDataProvider" />
     <None Include="sql\07.00.11.SqlDataProvider" />
-    <None Include="sql\08.02.00.SqlDataProvider" />
     <None Include="sql\08.01.00.SqlDataProvider" />
     <None Include="sql\08.00.00.SqlDataProvider" />
     <None Include="sql\07.00.05.SqlDataProvider" />
