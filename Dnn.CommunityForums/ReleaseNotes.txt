@@ -187,6 +187,7 @@
         <ul>
             <li>UX: Many New Mobile User Experience Updates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/932">Issue 932</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>UX: (Re)Organized the Security in the Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/931">Issue 931</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+            <li>UPDATE: Email Notifications Modernized to Use Token Replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1128">Issue 1128</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>UPDATE: New Template &amp; Tokens for Search Results (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1101">Issue 1101</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>UPDATE: New Template &amp; Tokens for Filtered Topic Results (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1102">Issue 1102</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>UPDATE: New Template &amp; Tokens for the Forum Toolbar (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1113">Issue 1113</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
@@ -219,6 +220,8 @@
             <li>UPDATE: Don't Emit the Signature HTML Output When There Isn't a Signature (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/486">Issue 486</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>UPDATE: Adds Exception Logging to Web API Authentication (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1051">Issue 1051</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>UPDATE: Refactored Nested Template Insertion &amp; Honor the `[DCF:TEMPLATE-xxxx]` Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1124">Issue 1124</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+            <li>UPDATE: Removed Unnecessary HTML from Token Replacement in Email Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1127">Issue 1127</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+            <li>UPDATE: New Token `[FORUM:LOGINLINK]` Replaces `[ADDREPLY]` When Unauthenticated (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1107">Issue 1107</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <!--
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>
             <li>None at this time.</li>
@@ -241,6 +244,7 @@
             <li>FIXED: Exception When Switching Between Tabs with Different Forums Instances (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1075">Issue 1075</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>FIXED: Updates to Resolve Known Process Queue Errors (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1090">Issue 1090</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>FIXED: Unable to Move an Existing Topic to a Hidden Forum (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1089">Issue 1089</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+            <li>FIXED: Topic View is Showing an Incorrect Topic Template on a Forum Thread Page with Only Replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1139">Issue 1139</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>
             <li>None at this time.</li>
@@ -272,6 +276,8 @@
             <li>TASK: Added Indexes in the Database to Support `ContentID` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1100">Issue 1100</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>TASK: Updated Tokens in Delivered `ProfileInfo` Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1119">Issue 1119</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>TASK: Refactored the `ForumUserInfo` `CurrentUserType` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1131">Issue 1131</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+            <li>TASK: Removed Duplicate Legacy Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1126">Issue 1126</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+            <li>TASK: Removed Duplicate `HiddenStats` from HTML Output (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/461">Issue 461</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>TASK: Added `NewtonSoft.Json` package via NuGet (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1085">Issue 1085</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>TASK: Updated Support for `NUnit` &amp; `Moq` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1087">Issue 1087</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
             <li>TASK: Create 8.2 Release (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/986">Issue 986</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
