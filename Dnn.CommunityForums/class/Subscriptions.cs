@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!sl.Contains(si))
                     {
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.Subscribe, forum.PortalId, forum.ModuleId, si.UserId))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.Subscribe, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(forum.ModuleId).GetByUserId(forum.PortalId, si.UserId).UserRoles))
                         {
                             sl.Add(si);
                         }

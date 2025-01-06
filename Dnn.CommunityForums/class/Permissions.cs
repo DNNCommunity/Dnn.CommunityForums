@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public class Permissions
     {
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
-        public static bool HasPerm(string authorizedRoles, int userId, int portalId) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(authorizedRoles, portalId, -1, userId);
+        public static bool HasPerm(string authorizedRoles, int userId, int portalId) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
         public static bool HasPerm(string authorizedRoles, string userPermSet) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(authorizedRoles, userPermSet);
@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string AddPermToSet(string objectId, int objectType, string permissionSet) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(objectId, objectType, permissionSet);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
-        public static string GetRoleIds(string[] roles, int portalId) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(portalId, roles);
+        public static string GetRoleIds(string[] roles, int portalId) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(portalId, roles);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
         public static bool HasRequiredPerm(string[] authorizedRoles, string[] userRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(authorizedRoles, userRoles);

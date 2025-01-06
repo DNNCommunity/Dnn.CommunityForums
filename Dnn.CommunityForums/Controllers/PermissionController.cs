@@ -366,14 +366,55 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use GetRoleIds(int PortalId, string[] Roles).")]
-        public static string GetRoleIds(string[] roles, int portalId) => GetRoleIds(portalId, roles);
+        public static string GetRoleIds(string[] roles, int portalId) => GetPortalRoleIds(portalId, roles);
 
-        internal static string GetRoleIds(int portalId, string[] roles)
+        internal static string GetUsersRoleIds(int PortalId, DotNetNuke.Entities.Users.UserInfo u)
+        {
+            var roles = new System.Collections.Generic.List<int>();
+            if (u != null && u.Roles != null)
+            {
+                {
+                    foreach (var r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
+                    {
+                        foreach (string role in u?.Roles)
+                        {
+                            if (!string.IsNullOrEmpty(role))
+                            {
+                                if (r.RoleName == role)
+                                {
+                                    if (!roles.Contains(r.RoleID))
+                                    {
+                                        roles.Add(r.RoleID);
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (u != null && u.Social.Roles != null && u.Social.Roles != null)
+                    {
+                        foreach (DotNetNuke.Entities.Users.UserRoleInfo r in u?.Social?.Roles)
+                        {
+                            if (!roles.Contains(r.RoleID))
+                            {
+                                roles.Add(r.RoleID);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return string.Join(";", roles.ToArray());
+        }
+
+        internal static string GetPortalRoleIds(int portalId, string[] roles)
         {
             string roleIds = (string)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.RoleIDs, portalId));
             if (string.IsNullOrEmpty(roleIds))
             {
-                foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: portalId))
+                foreach (var ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: portalId))
                 {
                     string roleName = ri.RoleName;
                     foreach (string role in roles)
@@ -434,6 +475,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Exceptions.LogException(ex);
                 return null;
             }
+        }
+
+        public static bool HasPerm(string authorizedRoles, DotNetNuke.Entities.Users.UserInfo user)
+        {
+            return HasPerm(authorizedRoles, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(user.PortalID, user));
         }
 
         public static bool HasPerm(string authorizedRoles, int portalId, int moduleId, int userId)
