@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             int iStatus = 0;
             SubscriptionController sc = new SubscriptionController();
-            iStatus = sc.Subscription_Update(this.PortalId, this.ModuleId, this.ForumId, this.TopicId, 1, this.UserId, this.ForumUser.UserRoles);
+            iStatus = sc.Subscription_Update(this.PortalId, this.ModuleId, this.ForumId, this.TopicId, 1, this.UserId, this.ForumUser.UserPermSet);
             if (iStatus == 1)
             {
                 this.IsSubscribed = true;

@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // Make sure the user has permissions to attach files
-                if (forumUser == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.Attach, forumUser.UserRoles))
+                if (forumUser == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.Attach, forumUser.UserPermSet))
                 {
                     File.Delete(file.LocalFileName);
                     return request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized");
@@ -388,7 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var userInfo = portalSettings.UserInfo;
             var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).GetByUserId(this.ActiveModule.PortalID, userInfo.UserID);
             Dictionary<string, string> rows = new Dictionary<string, string>();
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(this.ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (this.UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, forumUser.UserRoles))))
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(this.ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (this.UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, forumUser.UserPermSet))))
             {
                 rows.Add(fi.ForumID.ToString(), fi.ForumName.ToString());
             }
@@ -432,15 +432,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (oldForum == newForum)
                     {
-                        hasCreatePerm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Create, forumUser.UserRoles);
+                        hasCreatePerm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Create, forumUser.UserPermSet);
                     }
                     else
                     {
-                        hasCreatePerm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Create, forumUser.UserRoles) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(newForum.Security.Create, forumUser.UserRoles);
+                        hasCreatePerm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Create, forumUser.UserPermSet) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(newForum.Security.Create, forumUser.UserPermSet);
                     }
 
-                    var canSplit = (ti.Content.AuthorId == userInfo.UserID && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Split, forumUser.UserRoles)) || userInfo.IsAdmin || userInfo.IsSuperUser ||
-                                   (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Moderate, forumUser.UserRoles) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Split, forumUser.UserRoles));
+                    var canSplit = (ti.Content.AuthorId == userInfo.UserID && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Split, forumUser.UserPermSet)) || userInfo.IsAdmin || userInfo.IsSuperUser ||
+                                   (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Moderate, forumUser.UserPermSet) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Split, forumUser.UserPermSet));
 
                     if (hasCreatePerm && canSplit)
                     {

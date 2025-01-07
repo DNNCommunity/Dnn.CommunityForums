@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 
             var mockUser = new Mock<ForumUserInfo>();
             mockUser.Object.UserId = 1;
-            mockUser.Object.UserRoles = Globals.DefaultAnonRoles + "|-1;||";
+            mockUser.Object.UserPermSet = Globals.DefaultAnonRoles + "|-1;||";
             mockUser.Object.UserInfo = new DotNetNuke.Entities.Users.UserInfo();
             mockUser.Object.UserInfo.DisplayName = "Test User";
             mockUser.Object.UserInfo.Profile = new DotNetNuke.Entities.Users.UserProfile();

@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Public Properties
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetUserFromHttpContext(this.PortalId, this.ForumModuleId);
 
-        internal string UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ForumModuleId);
+        internal string UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserPermSet, this.PortalId, this.ForumModuleId);
 
         public int ForumModuleId
         {

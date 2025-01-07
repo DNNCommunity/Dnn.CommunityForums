@@ -399,7 +399,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         internal Enums.TopicStatus GetTopicStatusForUser(ForumUserInfo forumUser)
         {
-            if (!Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserRoles))
+            if (!Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserPermSet))
             {
                 return Enums.TopicStatus.Forbidden;
             }
@@ -573,7 +573,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.Read, accessingUser))
+            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.PortalSettings ,this.Forum.Security.Read, accessingUser))
             {
                 return string.Empty;
             }

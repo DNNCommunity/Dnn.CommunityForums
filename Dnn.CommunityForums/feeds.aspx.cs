@@ -126,8 +126,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     return string.Empty;
                 }
 
-                this.bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanView"].ToString(), u.UserRoles);
-                this.bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanRead"].ToString(), u.UserRoles);
+                this.bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanView"].ToString(), u.UserPermSet);
+                this.bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanRead"].ToString(), u.UserPermSet);
                 StringBuilder sb = new StringBuilder(1024);
                 if (this.bRead)
                 {

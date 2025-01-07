@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string Render()
         {
-            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ModuleId, "CanEdit");
+            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserPermSet, this.PortalId, this.ModuleId, "CanEdit");
             if (!string.IsNullOrEmpty(fs))
             {
                 this._canEdit = true;

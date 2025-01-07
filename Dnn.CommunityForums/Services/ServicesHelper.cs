@@ -31,8 +31,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services
             try
             {
 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
-                string roles;
-                switch (permissionRequired)
+string roles;
+switch (permissionRequired)
                 {
                     case SecureActions.View:
                         roles = fi.Security.View;
@@ -101,7 +101,7 @@ DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.A
                         return false;
                 }
 
-                return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, userInfo);
+                return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(Utilities.GetPortalSettings(portalId), roles, userInfo);
             }
             catch (Exception ex)
             {

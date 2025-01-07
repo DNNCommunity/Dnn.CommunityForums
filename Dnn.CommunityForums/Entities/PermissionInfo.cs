@@ -18,6 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Diagnostics.Eventing.Reader;
+using System.Linq;
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
@@ -143,7 +146,50 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             bool EqualPermissionMembers(string thisPermissions, string otherPermissions)
             {
-                return (thisPermissions == otherPermissions || (thisPermissions.Equals("||") && string.IsNullOrEmpty(otherPermissions)) || string.IsNullOrEmpty(thisPermissions) && otherPermissions.Equals("||"));
+                if (thisPermissions.Equals("||") && string.IsNullOrEmpty(otherPermissions) || string.IsNullOrEmpty(thisPermissions) && otherPermissions.Equals("||"))
+                {
+                    return true;
+                }
+
+                var thisPermsRoles = new HashSet<string>();
+                var thisPermsUsers = new HashSet<string>();
+                var thisPermsGroups = new HashSet<string>();
+                var thisPerms = thisPermissions.Split("|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                if (thisPerms.Length > 0 && !string.IsNullOrEmpty(thisPerms[0]))
+                {
+                    thisPermsRoles = thisPerms[0].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+                }
+
+                if (thisPerms.Length > 1 && !string.IsNullOrEmpty(thisPerms[1]))
+                {
+                    thisPermsUsers = thisPerms[1].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+                }
+
+                if (thisPerms.Length > 2 && !string.IsNullOrEmpty(thisPerms[2]))
+                {
+                    thisPermsGroups = thisPerms[2].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+                }
+
+                var otherPermsRoles = new HashSet<string>();
+                var otherPermsUsers = new HashSet<string>();
+                var otherPermsGroups = new HashSet<string>();
+                var otherPerms = otherPermissions.Split("|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                if (otherPerms.Length > 0 && !string.IsNullOrEmpty(otherPerms[0]))
+                {
+                    otherPermsRoles = otherPerms[0].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+                }
+
+                if (otherPerms.Length > 1 && !string.IsNullOrEmpty(otherPerms[1]))
+                {
+                    otherPermsUsers = otherPerms[1].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+                }
+
+                if (otherPerms.Length > 2 && !string.IsNullOrEmpty(otherPerms[2]))
+                {
+                    otherPermsGroups = otherPerms[2].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+                }
+
+                return thisPermsRoles.SetEquals(otherPermsRoles) && thisPermsUsers.SetEquals(otherPermsUsers) && thisPermsGroups.SetEquals(otherPermsGroups);
             }
         }
 

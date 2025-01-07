@@ -321,7 +321,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (ctrl is Controls.ForumRow)
                 {
-                    ((Controls.ForumRow)ctrl).UserRoles = this.ForumUser.UserRoles;
+                    ((Controls.ForumRow)ctrl).UserPermSet = this.ForumUser.UserPermSet;
                 }
 
                 if (ctrl is Controls.ControlsBase)

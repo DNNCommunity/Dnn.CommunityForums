@@ -21,11 +21,13 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Linq.Expressions;
 
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Entities.Portals;
 
     internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
@@ -368,13 +370,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use GetRoleIds(int PortalId, string[] Roles).")]
         public static string GetRoleIds(string[] roles, int portalId) => GetPortalRoleIds(portalId, roles);
 
-        internal static string GetUsersRoleIds(int PortalId, DotNetNuke.Entities.Users.UserInfo u)
+        internal static string GetUsersRoleIds(PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo u)
         {
-            var roles = new System.Collections.Generic.List<int>();
+            var roleIds = new System.Collections.Generic.List<int>();
             if (u != null && u.Roles != null)
             {
                 {
-                    foreach (var r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
+                    foreach (var r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: portalSettings.PortalId))
                     {
                         foreach (string role in u?.Roles)
                         {
@@ -382,9 +384,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             {
                                 if (r.RoleName == role)
                                 {
-                                    if (!roles.Contains(r.RoleID))
+                                    if (!roleIds.Contains(r.RoleID))
                                     {
-                                        roles.Add(r.RoleID);
+                                        roleIds.Add(r.RoleID);
                                     }
 
                                     break;
@@ -397,16 +399,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     {
                         foreach (DotNetNuke.Entities.Users.UserRoleInfo r in u?.Social?.Roles)
                         {
-                            if (!roles.Contains(r.RoleID))
+                            if (!roleIds.Contains(r.RoleID))
                             {
-                                roles.Add(r.RoleID);
+                                roleIds.Add(r.RoleID);
                             }
                         }
                     }
                 }
             }
 
-            return string.Join(";", roles.ToArray());
+            if (roleIds.Count < 1)
+            {
+                return Globals.DefaultAnonRoles + "|-1;||";
+            }
+
+            if (u.IsSuperUser)
+            {
+                roleIds.Add(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers));
+                roleIds.Add(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser));
+                roleIds.Add(portalSettings.AdministratorRoleId);
+            }
+
+            roleIds.Sort();
+            return string.Join(";", roleIds.ToArray());
         }
 
         internal static string GetPortalRoleIds(int portalId, string[] roles)
@@ -477,18 +492,68 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        public static bool HasPerm(string authorizedRoles, DotNetNuke.Entities.Users.UserInfo user)
-        {
-            return HasPerm(authorizedRoles, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(user.PortalID, user));
-        }
-
-        public static bool HasPerm(string authorizedRoles, int portalId, int moduleId, int userId)
-        {
-            return HasPerm(authorizedRoles, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId).UserRoles);
-        }
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
+        public static bool HasPerm(string authorizedPermSet, int userId, int portalId) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public static bool HasPerm(string authorizedRoles, int userId, int portalId) => throw new NotImplementedException();
+        public static bool HasPerm(string authorizedPermSet, DotNetNuke.Entities.Users.UserInfo user) => throw new NotImplementedException();
+
+        public static bool HasPerm(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string authorizedPermSet, DotNetNuke.Entities.Users.UserInfo user)
+        {
+            return HasPerm(authorizedPermSet, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(portalSettings, user));
+        }
+
+        public static bool HasPerm(string authorizedPermSet, int portalId, int moduleId, int userId)
+        {
+            return HasPerm(Utilities.GetPortalSettings(portalId), authorizedPermSet, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId).UserInfo);
+        }
+
+        public static bool HasPerm(string authorizedPermSet, string userPermSet)
+        {
+            if (string.IsNullOrEmpty(authorizedPermSet) || string.IsNullOrEmpty(userPermSet))
+            {
+                return false;
+            }
+
+            string[] permSet = authorizedPermSet.Split('|');
+            string[] userSet = userPermSet.Split('|');
+
+            // Authorized
+            string[] authRoles = permSet[0].Split(';');
+            string[] userRoles = userSet[0].Split(';');
+            if (HasRequiredPerm(authRoles, userRoles))
+            {
+                return true;
+            }
+
+            if (!string.IsNullOrEmpty(permSet[1]))
+            {
+                string[] authUsers = permSet[1].Split(';');
+                if (!string.IsNullOrEmpty(userSet[1]))
+                {
+                    string[] userIds = userSet[1].Split(';');
+                    if (HasRequiredPerm(authUsers, userIds))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(permSet[2]))
+            {
+                string[] authGroups = permSet[2].Split(';');
+                if (!string.IsNullOrEmpty(userSet[2]))
+                {
+                    string[] userGroups = userSet[2].Split(';');
+                    if (HasRequiredPerm(authGroups, userGroups))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
 
         public string GetPermSet(int moduleId, int permissionsId, string requestedAccess)
         {
@@ -551,53 +616,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             string permSet = pc.GetPermSet(moduleId, permissionsId, requestedAccess);
             permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemovePermFromSet(objectId, objectType, permSet);
             pc.SavePermSet(moduleId, permissionsId, requestedAccess, permSet);
-        }
-
-        public static bool HasPerm(string authorizedRoles, string userPermSet)
-        {
-            if (string.IsNullOrEmpty(authorizedRoles) || string.IsNullOrEmpty(userPermSet))
-            {
-                return false;
-            }
-
-            string[] permSet = authorizedRoles.Split('|');
-            string[] userSet = userPermSet.Split('|');
-
-            // Authorized
-            string[] authRoles = permSet[0].Split(';');
-            string[] userRoles = userSet[0].Split(';');
-            if (HasRequiredPerm(authRoles, userRoles))
-            {
-                return true;
-            }
-
-            if (!string.IsNullOrEmpty(permSet[1]))
-            {
-                string[] authUsers = permSet[1].Split(';');
-                if (!string.IsNullOrEmpty(userSet[1]))
-                {
-                    string[] userIds = userSet[1].Split(';');
-                    if (HasRequiredPerm(authUsers, userIds))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            if (!string.IsNullOrEmpty(permSet[2]))
-            {
-                string[] authGroups = permSet[2].Split(';');
-                if (!string.IsNullOrEmpty(userSet[2]))
-                {
-                    string[] userGroups = userSet[2].Split(';');
-                    if (HasRequiredPerm(authGroups, userGroups))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         public static string RemovePermFromSet(string objectId, int objectType, string permissionSet)
@@ -913,7 +931,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return sRoles;
         }
 
-        public static string CheckForumIdsForViewForRSS(int moduleId, string forumIds, string userRoles)
+        public static string CheckForumIdsForViewForRSS(int moduleId, string forumIds, string userPermSet)
         {
             string cacheKey = string.Format(CacheKeys.ViewRolesForForumList, moduleId, forumIds);
             string sForums = (string)DataCache.SettingsCacheRetrieve(moduleId, cacheKey);
@@ -925,7 +943,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     foreach (string forumId in forumIds.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
                     {
                         DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Convert.ToInt32(forumId), moduleId);
-                        if (forum.FeatureSettings.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security?.View, userRoles))
+                        if (forum.FeatureSettings.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security?.View, userPermSet))
                         {
                             sForums += forum.ForumID.ToString() + ":";
                         }

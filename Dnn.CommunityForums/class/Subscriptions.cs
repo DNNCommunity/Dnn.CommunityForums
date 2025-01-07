@@ -53,21 +53,21 @@ namespace DotNetNuke.Modules.ActiveForums
     public class SubscriptionController
     {
         // TODO: move to new DAL2 subscription controller
-        public int Subscription_Update(int portalId, int moduleId, int forumId, int topicId, int mode, int userId, string userRoles = "")
+        public int Subscription_Update(int portalId, int moduleId, int forumId, int topicId, int mode, int userId, string userPermSet = "")
         {
             if (userId == -1)
             {
                 return -1;
             }
 
-            if (string.IsNullOrEmpty(userRoles))
+            if (string.IsNullOrEmpty(userPermSet))
             {
-                userRoles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId).UserRoles;
+                userPermSet = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId).UserPermSet;
             }
 
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId, moduleId, forumId, false, -1);
 
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, userRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, userPermSet))
             {
                 return Convert.ToInt32(DataProvider.Instance().Subscription_Update(portalId, moduleId, forumId, topicId, mode, userId));
             }
@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!sl.Contains(si))
                     {
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.Subscribe, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(forum.ModuleId).GetByUserId(forum.PortalId, si.UserId).UserRoles))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.Subscribe, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(forum.ModuleId).GetByUserId(forum.PortalId, si.UserId).UserPermSet))
                         {
                             sl.Add(si);
                         }

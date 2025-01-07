@@ -458,7 +458,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public bool GetIsMod(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
-            return (!(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, this.PortalId, this.ModuleId, "CanApprove"))));
+            return (!(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserPermSet, this.PortalId, this.ModuleId, "CanApprove"))));
         }
 
         [IgnoreColumn]
@@ -467,7 +467,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         internal DotNetNuke.Modules.ActiveForums.Enums.ForumStatus GetForumStatusForUser(ForumUserInfo forumUser)
         {
-            var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Security.View, forumUser?.UserRoles);
+            var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Security.View, forumUser?.UserPermSet);
 
             if (!canView)
             {
@@ -784,7 +784,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Security.View, accessingUser))
+            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.portalSettings, this.Security.View, accessingUser))
             {
                 return string.Empty;
             }
@@ -975,7 +975,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "rsslink":
                     return this.FeatureSettings.AllowRSS && Controllers.PermissionController.HasPerm(this.Security.Read,
                             new Controllers.ForumUserController(this.ModuleId)
-                                .GetByUserId(accessingUser.PortalID, accessingUser.UserID).UserRoles)
+                                .GetByUserId(accessingUser.PortalID, accessingUser.UserID).UserPermSet)
                         ? PropertyAccess.FormatString(this.RssLink, format)
                         : string.Empty;
             }

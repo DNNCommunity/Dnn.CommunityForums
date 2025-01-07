@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return string.Concat(Common.Globals.glbRoleUnauthUser, ";", Common.Globals.glbRoleAllUsers, ";");
+                return string.Concat(Common.Globals.glbRoleAllUsers, ";", Common.Globals.glbRoleUnauthUser, ";");
             }
         }
 

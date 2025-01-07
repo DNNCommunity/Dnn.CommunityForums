@@ -254,12 +254,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     DotNetNuke.Entities.Modules.ModuleController objMC =
                         new DotNetNuke.Entities.Modules.ModuleController();
                     DotNetNuke.Entities.Modules.ModuleInfo objM = objMC.GetModule(this.ModuleId, this.TabId);
-                    string roleIds =
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.PortalId,
-                            objM.ModulePermissions.ToString("EDIT").Split(';'));
-                    this._isValid =
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(roleIds,
-                            this.ForumUser.UserRoles);
+                    string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.PortalId, objM.ModulePermissions.ToString("EDIT").Split(';'));
+                    this._isValid = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(roleIds, this.ForumUser.UserPermSet);
                 }
                 else if (this.AdminRequired & !context.Request.IsAuthenticated)
                 {

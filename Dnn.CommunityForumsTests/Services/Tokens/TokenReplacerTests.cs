@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
             mockUser.Object.UserInfo = new DotNetNuke.Entities.Users.UserInfo();
             mockUser.Object.UserInfo.DisplayName = "Test User";
             mockUser.Object.UserInfo.Profile = new DotNetNuke.Entities.Users.UserProfile();
-            mockUser.Object.UserRoles = Globals.DefaultAnonRoles + "|-1;||";
+            mockUser.Object.UserPermSet = Globals.DefaultAnonRoles + "|-1;||";
             mockUser.Object.UserInfo.Profile.PreferredLocale = "en-US";
 
             var navigationManager = new Modules.ActiveForums.Services.Tests.NavigationManager(null); // new Services.URLNavigator().NavigationManager();
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
             mockUser.Object.UserInfo = new DotNetNuke.Entities.Users.UserInfo();
             mockUser.Object.UserInfo.DisplayName = "Test User";
             mockUser.Object.UserInfo.Profile = new DotNetNuke.Entities.Users.UserProfile();
-            mockUser.Object.UserRoles = Globals.DefaultAnonRoles + "|-1;||";
+            mockUser.Object.UserPermSet = Globals.DefaultAnonRoles + "|-1;||";
             mockUser.Object.UserInfo.Profile.PreferredLocale = "en-US";
 
             var navigationManager = new Modules.ActiveForums.Services.Tests.NavigationManager(null); // new Services.URLNavigator().NavigationManager();

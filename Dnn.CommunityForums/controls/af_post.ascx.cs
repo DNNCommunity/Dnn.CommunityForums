@@ -84,13 +84,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             this.authorId = this.UserId;
-            this.canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Moderate, this.ForumUser.UserRoles);
-            this.canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Edit, this.ForumUser.UserRoles);
+            this.canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Moderate, this.ForumUser.UserPermSet);
+            this.canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Edit, this.ForumUser.UserPermSet);
             this.canModEdit = (this.canModApprove && this.canEdit);
 
-            this.canTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles);
-            this.canLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Lock, this.ForumUser.UserRoles);
-            this.canPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Pin, this.ForumUser.UserRoles);
+            this.canTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserPermSet);
+            this.canLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Lock, this.ForumUser.UserPermSet);
+            this.canPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Pin, this.ForumUser.UserPermSet);
 
             if (this.ForumInfo == null)
             {
@@ -815,7 +815,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
 
             this.SaveAttachments(ti.ContentId);
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Tag, this.ForumUser.UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Tag, this.ForumUser.UserPermSet))
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopicId(this.TopicId);
                 var tagForm = string.Empty;
@@ -835,7 +835,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Categorize, this.ForumUser.UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Categorize, this.ForumUser.UserPermSet))
             {
                 if (this.Request.Form["amaf-catselect"] != null)
                 {
@@ -1033,7 +1033,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (!sc.Subscribed(this.PortalId, this.ForumModuleId, authorId, this.ForumId, this.TopicId))
                     {
                         // TODO: move to new DAL2 subscription controller
-                        new SubscriptionController().Subscription_Update(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, 1, authorId, this.ForumUser.UserRoles);
+                        new SubscriptionController().Subscription_Update(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, 1, authorId, this.ForumUser.UserPermSet);
                     }
                 }
                 else if (this.isEdit)
@@ -1042,7 +1042,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (isSub && !this.ctlForm.Subscribe)
                     {
                         // TODO: move to new DAL2 subscription controller
-                        new SubscriptionController().Subscription_Update(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, 1, authorId, this.ForumUser.UserRoles);
+                        new SubscriptionController().Subscription_Update(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, 1, authorId, this.ForumUser.UserPermSet);
                     }
                 }
 

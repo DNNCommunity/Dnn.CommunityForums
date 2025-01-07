@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 // Security
                 sTemp = sTemp.Replace("[CREATEROLES]", "1;");
-                sTemp = sTemp.Replace("[USERROLES]", this.ForumUser.UserRoles);
+                sTemp = sTemp.Replace("[USERROLES]", string.Join(";",this.ForumUser.UserInfo.Roles));
                 sTemp = sTemp.Replace("[THEMEPATH]", this.ThemePath);
                 sTemp = sTemp.Replace("[SUBJECT]", this.Subject);
                 sTemp = sTemp.Replace("[REPLYROLES]", this.ForumInfo.Security.Reply);
@@ -192,9 +192,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return;
             }
 
-            bool userIsTrusted = Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, this.ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, this.ForumUser.UserRoles), forumInfo.FeatureSettings.AutoTrustLevel, this.ControlConfig.User.PostCount);
+            bool userIsTrusted = Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, this.ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, this.ForumUser.UserPermSet), forumInfo.FeatureSettings.AutoTrustLevel, this.ControlConfig.User.PostCount);
             bool isApproved = Convert.ToBoolean((forumInfo.FeatureSettings.IsModerated == true) ? false : true);
-            if (userIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, this.ForumUser.UserRoles))
+            if (userIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, this.ForumUser.UserPermSet))
             {
                 isApproved = true;
             }

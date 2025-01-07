@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Make sure the user has read access
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId);
-            if (u == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(attachment.CanRead, u.UserRoles))
+            if (u == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(attachment.CanRead, u.UserPermSet))
             {
                 this.Response.StatusCode = 401;
                 this.Response.Write("Unauthorized");
