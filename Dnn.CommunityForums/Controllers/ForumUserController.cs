@@ -96,6 +96,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         if (user.UserInfo != null)
                         {
                             user.DateCreated = user.UserInfo.CreatedOnDate;
+                            if (user.DateCreated < System.Data.SqlTypes.SqlDateTime.MinValue.Value)
+                            {
+                                user.DateCreated = System.Data.SqlTypes.SqlDateTime.MinValue.Value;
+                            }
                             this.Insert(user);
                         }
                     }
