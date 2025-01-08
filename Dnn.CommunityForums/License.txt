@@ -6,7 +6,7 @@
     ﻿<div class="License">
         <h3>License</h3>
         <p class="Owner">
-            DNN Community <a href="https://dnncommunity.org">https://dnncommunity.org</a></br>
+            DNN Community <a href="https://dnncommunity.org">https://dnncommunity.org</a><br />
             Copyright (c) by DNN Community</br>
         </p>
        <p>
