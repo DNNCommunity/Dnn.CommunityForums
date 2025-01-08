@@ -15,9 +15,17 @@
     <hr />
 
     <div class="dnnClear">
+        <h1 class="muy-importante">
+            IMPORTANT: Release Candidate (Not for Production)
+        </h1>
+        <p class="muy-importante">
+            This is a <b>Release Candidate (RC)</b>.  Please do not use this installation/upgrade package for any production 
+            websites of <b>ANY KIND</b>.  This release is not supported and is only provided for test purposes, to allow 
+            others to test their websites first.  
+        </p>
+        <hr />
 
-
-        <h2 class="muy-importante">IMPORTANT: Upgrade 8.2 Notes</h2>
+        <h2 class="muy-importante">Important Upgrade Notes</h2>
         <p>
             The release notes will follow, below these <b>important</b> notes.
         </p>
@@ -174,10 +182,14 @@
     </div>
     <hr />
     <div class="dnnClear">
-        <h2>Release Notes</h2>
+        <h2>
+            DNN Community Forums Release Notes
+        </h2>
         <hr />
 
-        <h3>08.02.00</h3>
+        <h3>
+            08.02.00
+        </h3>
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, 
             <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>, and 
@@ -193,64 +205,75 @@
 
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-        <!--
-        control panel/security changes
-        notifications (likes/pins)
-        tokens / templates
-        -->
-            <li>UX: Many New Mobile User Experience Updates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/932">Issue 932</a>)</li>
-            <li>UX: (Re)Organized the Security in the Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/931">Issue 931</a>)</li>
-            <li>UPDATE: Get Notified When Someone Likes Your Post (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/632">Issue 632</a>)</li>
-            <li>UPDATE: Allow Default Forum Settings to Be Created &amp; Easily Used by Forum Groups (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/650">Issue 650</a>)</li>
-            <li>UPDATE: Allow Authorized Visitors to See Who Likes a Post (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/801">Issue 801</a>)</li>
-            <li>UPDATE: Email Notifications Modernized to Use Token Replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1128">Issue 1128</a>)</li>
-            <li>UPDATE: New Template &amp; Tokens for Search Results (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1101">Issue 1101</a>)</li>
-            <li>UPDATE: New Template &amp; Tokens for Filtered Topic Results (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1102">Issue 1102</a>)</li>
-            <li>UPDATE: New Template &amp; Tokens for the Forum Toolbar (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1113">Issue 1113</a>)</li>
-            <li>UPDATE: Use Token Replacement Service for Moderation Notifications (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1112">Issue 1112</a>)</li>
-            <li>UPDATE: Static Text in Templates Can Now Be Localized (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/470">Issue 470</a>)</li>
-            <li>UPDATE: New Messages &amp; Admin Log Reporting When Using Legacy Tokens in Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1062">Issue 1062</a>)</li>
-            <li>UPDATE: Improved UX on Topics When Not Logged In w/ Login Link (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1001">Issue 1001</a>)</li>
-            <li>UPDATE: Send Notification to Original Poster When Topic is Moved (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1008">Issue 1008</a>)</li>
-            <li>UPDATE: Improved Avatar Image Quality for Forum Users (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/888">Issue 888</a>)</li>
-            <li>UPDATE: Enable/Disable Option for Email Notification to Posting User (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/263">Issue 263</a>)</li>
-            <li>UX: Improved Messaging with No Moderator Content Pending (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/958">Issue 958</a>)</li>
-            <li>UX: My Subscriptions &amp; My Settings Cleared Upon Logout (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/981">Issue 981</a>)</li>
-            <li>UX: Re-Labeled Security Permission Options After Consolidation for Better UX (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/930">Issue 930</a>)</li>
-            <li>UX: Added Helpful Explanatory Text to Security Grid Titles (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/862">Issue 862</a>)</li>
-            <li>UX: Combined (Duplicated) &quot;ModLock&quot; and &quot;Lock&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/926">Issue 926</a>)</li>
-            <li>UX: Combined (Duplicated) &quot;ModPin&quot; and &quot;Pin&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/927">Issue 927</a>)</li>
-            <li>UX: Combined (Duplicated) &quot;ModEdit&quot; and &quot;Edit&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/929">Issue 929</a>)</li>
-            <li>UX: Combined (Duplicated) &quot;ModDelete&quot; and &quot;Delete&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/928">Issue 928</a>)</li>
-            <li>UX: Moderator Button Styling Improved (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/969">Issue 969</a>)</li>
-            <li>UX: Improved How Moderated Forums Are Displayed (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/999">Issue 999</a>)</li>
-            <li>UX: Improved How IPv6 Addresses Are Displayed (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1118">Issue 1118</a>)</li>
-            <li>UX: Improved How the Security Grid is Displayed in the Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1115">Issue 1115</a>)</li>
-            <li>UX: Improved the Scaling of Large Images on All Viewports (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/982">Issue 982</a>)</li>
-            <li>UX: Made Distance Consistent in the `TopicsView` Bootstrap Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1192">Issue 1192</a>)</li>
-            <li>UX: Styling for New Like Features (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1189">Issue 1189</a>)</li>
-            <li>UPDATE: Modernized Statuses for Forums, Topics, Replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/468">Issue 468</a>)</li>
-            <li>UPDATE: Updated `community-*` Templates to Move Markup from Code to a Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1117">Issue 1117</a>)</li>
-            <li>UPDATE: Improved CSS for control panel security tooltip position (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1050">Issue 1050</a>)</li>
-            <li>UPDATE: User Online Status Now More Accurate (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1083">Issue 1083</a>)</li>
-            <li>UPDATE: Use Template Caching Module Setting for Forums Toolbar Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1095">Issue 1095</a>)</li>
-            <li>UPDATE: Search Results HTML Output has Newly Added `div` Tags (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/480">Issue 480</a>)</li>
-            <li>UPDATE: Changed Replaced Tokens to Use Classes Instead of Inline Styles (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/467">Issue 467</a>)</li>
-            <li>UPDATE: Added the `[FORUMPARENTNAME]` Token for Child Forums (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/469">Issue 469</a>)</li>
-            <li>UPDATE: Improved the HTML Output of the `[AF:CONTROL:STATUSICON]` Token (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/743">Issue 743</a>)</li>
-            <li>UPDATE: Added Core Token Replace Support to Some Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/521">Issue 521</a>)</li>
-            <li>UPDATE: Don't Emit the Signature HTML Output When There Isn't a Signature (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/486">Issue 486</a>)</li>
-            <li>UPDATE: Adds Exception Logging to Web API Authentication (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1051">Issue 1051</a>)</li>
-            <li>UPDATE: Refactored Nested Template Insertion &amp; Honor the `[DCF:TEMPLATE-xxxx]` Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1124">Issue 1124</a>)</li>
-            <li>UPDATE: Removed Unnecessary HTML from Token Replacement in Email Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1127">Issue 1127</a>)</li>
-            <li>UPDATE: New Token `[FORUM:LOGINLINK]` Replaces `[ADDREPLY]` When Unauthenticated (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1107">Issue 1107</a>)</li>
-            <li>UPDATE: Replaced Like Button Hard-Coded HTML with Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1142">Issue 1142</a>)</li>
-            <li>UPDATE: Forums Responses Marked as an Answer to be More Obvious (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1144">Issue 1144</a>)</li>
-            <li>UPDATE: Moderator Views Now Make it Easier to Navigate to Reported Posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1041">Issue 1041</a>)</li>
-            <li>UPDATE: Made Forum Security Configuration Inheritance More Logical (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/62">Issue 62</a>)</li>
-            <li>UPDATE: Added Inheritance Labels When Forums are Inheriting Security and/or Settings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1161">Issue 1161</a>)</li>
-            <li>UPDATE: Optimized HOw &amp; What Gets Posted to the Journal (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/748">Issue 748</a>)</li>
-            <li>UPDATE: Moved Email Subject From the Template to Forum Settings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/702">Issue 702</a>)</li>
+            <li><strong>Control Panel &amp; Security Configuration</strong> 
+                <ul>
+                    <li>UX: (Re)Organized the Security in the Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/931">Issue 931</a>)</li>
+                    <li>UPDATE: Allow Default Forum Settings to Be Created &amp; Easily Used by Forum Groups (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/650">Issue 650</a>)</li>
+                    <li>UPDATE: Made Forum Security Configuration Inheritance More Logical (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/62">Issue 62</a>)</li>
+                    <li>UPDATE: Added Inheritance Labels When Forums are Inheriting Security and/or Settings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1161">Issue 1161</a>)</li>
+                    <li>UX: Re-Labeled Security Permission Options After Consolidation for Better UX (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/930">Issue 930</a>)</li>
+                    <li>UX: Added Helpful Explanatory Text to Security Grid Titles (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/862">Issue 862</a>)</li>
+                    <li>UX: Combined (Duplicated) &quot;ModLock&quot; and &quot;Lock&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/926">Issue 926</a>)</li>
+                    <li>UX: Combined (Duplicated) &quot;ModPin&quot; and &quot;Pin&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/927">Issue 927</a>)</li>
+                    <li>UX: Combined (Duplicated) &quot;ModEdit&quot; and &quot;Edit&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/929">Issue 929</a>)</li>
+                    <li>UX: Combined (Duplicated) &quot;ModDelete&quot; and &quot;Delete&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/928">Issue 928</a>)</li>
+                    <li>UX: Improved How the Security Grid is Displayed in the Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1115">Issue 1115</a>)</li>
+                    <li>UPDATE: Improved CSS for Control Panel Security Tooltip Position (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1050">Issue 1050</a>)</li>
+                </ul>
+            </li>
+            <li><strong>Notifications, Likes, and Pins</strong> 
+                <ul>
+                    <li>UPDATE: Get Notified When Someone Likes Your Post (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/632">Issue 632</a>)</li>
+                    <li>UPDATE: Allow Authorized Visitors to See Who Likes a Post (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/801">Issue 801</a>)</li>
+                    <li>UPDATE: Send Notification to Original Poster When Topic is Moved (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1008">Issue 1008</a>)</li>
+                    <li>UPDATE: Enable/Disable Option for Email Notification to Posting User (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/263">Issue 263</a>)</li>
+                </ul>
+            </li>
+            <li><strong>Templates &amp; Tokens</strong> 
+                <ul>
+                    <li>UPDATE: Email Notifications Modernized to Use Token Replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1128">Issue 1128</a>)</li>
+                    <li>UPDATE: New Template &amp; Tokens for Search Results (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1101">Issue 1101</a>)</li>
+                    <li>UPDATE: New Template &amp; Tokens for Filtered Topic Results (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1102">Issue 1102</a>)</li>
+                    <li>UPDATE: New Template &amp; Tokens for the Forum Toolbar (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1113">Issue 1113</a>)</li>
+                    <li>UPDATE: New Token `[FORUM:LOGINLINK]` Replaces `[ADDREPLY]` When Unauthenticated (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1107">Issue 1107</a>)</li>
+                    <li>UPDATE: Added the `[FORUMPARENTNAME]` Token for Child Forums (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/469">Issue 469</a>)</li>
+                    <li>UPDATE: New Messages &amp; Admin Log Reporting When Using Legacy Tokens in Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1062">Issue 1062</a>)</li>
+                    <li>UPDATE: Refactored Nested Template Insertion &amp; Honor the `[DCF:TEMPLATE-xxxx]` Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1124">Issue 1124</a>)</li>
+                    <li>UPDATE: Use Token Replacement Service for Moderation Notifications (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1112">Issue 1112</a>)</li>
+                    <li>UPDATE: Static Text in Templates Can Now Be Localized (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/470">Issue 470</a>)</li>
+                    <li>UPDATE: Updated `community-*` Templates to Move Markup from Code to a Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1117">Issue 1117</a>)</li>
+                    <li>UPDATE: Use Template Caching Module Setting for Forums Toolbar Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1095">Issue 1095</a>)</li>
+                    <li>UPDATE: Changed Replaced Tokens to Use Classes Instead of Inline Styles (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/467">Issue 467</a>)</li>
+                    <li>UPDATE: Improved the HTML Output of the `[AF:CONTROL:STATUSICON]` Token (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/743">Issue 743</a>)</li>
+                    <li>UPDATE: Added Core Token Replace Support to Some Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/521">Issue 521</a>)</li>
+                    <li>UPDATE: Removed Unnecessary HTML from Token Replacement in Email Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1127">Issue 1127</a>)</li>
+                    <li>UPDATE: Replaced Like Button Hard-Coded HTML with Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1142">Issue 1142</a>)</li>
+                    <li>UPDATE: Moved Email Subject From the Template to Forum Settings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/702">Issue 702</a>)</li>
+                </ul>
+            </li>
+            <li><strong>User Experience &amp; More...</strong> 
+                <ul>
+                    <li>UX: Improved the Scaling of Large Images on All Viewports (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/982">Issue 982</a>)</li>
+                    <li>UX: Many New Mobile User Experience Updates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/932">Issue 932</a>)</li>
+                    <li>UX: Improved How Moderated Forums Are Displayed (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/999">Issue 999</a>)</li>
+                    <li>UX: Improved How IPv6 Addresses Are Displayed (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1118">Issue 1118</a>)</li>
+                    <li>UX: Improved Messaging with No Moderator Content Pending (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/958">Issue 958</a>)</li>
+                    <li>UX: Moderator Button Styling Improved (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/969">Issue 969</a>)</li>
+                    <li>UX: Made Distance Consistent in the `TopicsView` Bootstrap Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1192">Issue 1192</a>)</li>
+                    <li>UX: My Subscriptions &amp; My Settings Cleared Upon Logout (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/981">Issue 981</a>)</li>
+                    <li>UX: Styling for New Like Features (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1189">Issue 1189</a>)</li>
+                    <li>UPDATE: Improved Avatar Image Quality for Forum Users (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/888">Issue 888</a>)</li>
+                    <li>UPDATE: Improved UX on Topics When Not Logged In w/ Login Link (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1001">Issue 1001</a>)</li>
+                    <li>UPDATE: Modernized Statuses for Forums, Topics, Replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/468">Issue 468</a>)</li>
+                    <li>UPDATE: Forums Responses Marked as an Answer to be More Obvious (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1144">Issue 1144</a>)</li>
+                    <li>UPDATE: Moderator Views Now Make it Easier to Navigate to Reported Posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1041">Issue 1041</a>)</li>
+                    <li>UPDATE: Optimized How &amp; What Gets Posted to the Journal (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/748">Issue 748</a>)</li>
+                    <li>UPDATE: User Online Status Now More Accurate (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1083">Issue 1083</a>)</li>
+                    <li>UPDATE: Search Results HTML Output has Newly Added `div` Tags (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/480">Issue 480</a>)</li>
+                    <li>UPDATE: Don't Emit the Signature HTML Output When There Isn't a Signature (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/486">Issue 486</a>)</li>
+                    <li>UPDATE: Adds Exception Logging to Web API Authentication (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1051">Issue 1051</a>)</li>
+                </ul>
+            </li>
             <!--
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
