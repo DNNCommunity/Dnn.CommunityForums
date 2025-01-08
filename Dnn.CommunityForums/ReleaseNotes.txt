@@ -70,7 +70,7 @@
             a theme folder if not specifically customizing a template for a particular theme.
             Several templates shipped with the community themes have been removed in 08.02.00 since
             they
-            are same as the defaults in /config/templates. If you have a custom theme, and a
+            are the same as the defaults in /config/templates. If you have a custom theme and a
             template has not been customized from the version shipped with DNN Community Forums,
             the template can be removed from your custom theme if desired.
         </p>
@@ -78,7 +78,7 @@
         <blockquote class="dcf-oldnews">
 
             <h2 class="muy-importante">
-                IMPORTANT: Upgrade Notes Releated Recent Major/Minor Releases
+                IMPORTANT: Upgrade Notes Related Recent Major/Minor Releases
             </h2>
             <p>
                 The release notes will follow, below these <b>important</b> notes.
@@ -86,9 +86,7 @@
 
             <h3>New <strong>Bootstrap</strong> 4 &amp; 5 Forum Theme</h3>
             <p>
-                Please be sure to test this and <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/new/choose"
-                                                    target="_blank">report any issues you may find</a>. It's a brand-new
-                feature!
+                Please be sure to test this and <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/new/choose" target="_blank">report any issues you may find</a>. It's a brand-new feature!
             </p>
             <p>
                 When you use the &quot;community-default&quot; or the
@@ -317,7 +315,7 @@
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
             <li>TASK: Migrated Features from `afmod.js` to `afcommon.js` to Support Enhanced Moderator Support (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1045">Issue 1045</a>)</li>
-            <li>TASK: Added Viewmodels for Primary Forums Objects, Forum &amp; Topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1047">Issue 1047</a>)</li>
+            <li>TASK: Added ViewModels for Primary Forums Objects, Forum &amp; Topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1047">Issue 1047</a>)</li>
             <li>TASK: Remove Unused/Unneeded Legacy User Profile Preferences (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/761">Issue 761</a>)</li>
             <li>TASK: Adopt DNN Code Quality Rules (e.g. StyleCop) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/779">Issue 779</a>)</li>
             <li>TASK: Adopted Code Quality Recommendations from StyleCop (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1018">Issue 1018</a>)</li>
