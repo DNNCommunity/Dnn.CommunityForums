@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
@@ -41,6 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private PortalSettings portalSettings;
         private SettingsInfo mainSettings;
         private ModuleInfo moduleInfo;
+        private HashSet<int> userRoleIds;
         private string userPermSet;
 
         public ForumUserInfo()
@@ -339,6 +341,26 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
+        public HashSet<int> UserRoleIds
+        {
+            get
+            {
+                if (this.userRoleIds == null)
+                {
+                    this.userRoleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, this.UserInfo);
+                    this.UpdateCache();
+                }
+
+                return this.userRoleIds;
+            }
+
+            set
+            {
+                this.userRoleIds = value;
+            }
+        }
+
+        [IgnoreColumn]
         public string UserPermSet
         {
             get
@@ -346,10 +368,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 if (string.IsNullOrEmpty(this.userPermSet))
                 {
                     var ids = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, this.UserInfo);
-
-
-                    ids = string.Join(";", ids.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList().OrderBy(p => p).ToArray());
-                    this.userPermSet = ids + "|" + this.UserId + "|" + string.Empty + "|";
+                    this.userPermSet = string.Join(",", this.userRoleIds) + "|" + this.UserId + "|" + string.Empty + "|";
                     this.UpdateCache();
                 }
 

@@ -265,41 +265,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static bool HasAccess(string authorizedRoles, string userRoles)
         {
-            return string.IsNullOrEmpty(authorizedRoles) || string.IsNullOrEmpty(userRoles) ? false : HasRequiredPerm(authorizedRoles.Split(new[] { ';' }), userRoles.Split(new[] { ';' }));
+            return !string.IsNullOrEmpty(authorizedRoles) && !string.IsNullOrEmpty(userRoles) && HasRequiredPerm(authorizedRoles.Split(";".ToCharArray(),StringSplitOptions.RemoveEmptyEntries).Select(r => Convert.ToInt32(r)).ToHashSet(), userRoles.Split(";".ToCharArray(),StringSplitOptions.RemoveEmptyEntries).Select(r => Convert.ToInt32(r)).ToHashSet());
         }
 
         internal static bool HasRequiredPerm(string[] authorizedRoles, string[] userRoles)
         {
-            bool bolAuth = false;
-            if (userRoles != null)
-            {
-                foreach (string role in authorizedRoles)
-                {
-                    if (!string.IsNullOrEmpty(role))
-                    {
-                        foreach (string authRole in userRoles)
-                        {
-                            if (!string.IsNullOrEmpty(authRole))
-                            {
-                                if (role == authRole)
-                                {
-                                    bolAuth = true;
-                                    break;
-                                }
-                            }
-                        }
+            var authorizedRolesIds = authorizedRoles.Select(r => Convert.ToInt32(r)).ToHashSet();
+            var userRoleIds = userRoles.Select(r => Convert.ToInt32(r)).ToHashSet();
+            return HasRequiredPerm(authorizedRoleIds: authorizedRolesIds, userRoleIds: userRoleIds);
+        }
 
-                        if (bolAuth)
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                return bolAuth;
-            }
-
-            return false;
+        internal static bool HasRequiredPerm(HashSet<int> authorizedRoleIds, HashSet<int> userRoleIds)
+        {
+            return userRoleIds.Intersect(authorizedRoleIds).Any();
         }
 
         internal static System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> GetRoles(int portalId)
@@ -370,9 +348,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use GetRoleIds(int PortalId, string[] Roles).")]
         public static string GetRoleIds(string[] roles, int portalId) => GetPortalRoleIds(portalId, roles);
 
-        internal static string GetUsersRoleIds(PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo u)
+        internal static HashSet<int> GetUsersRoleIds(PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo u)
         {
-            var roleIds = new System.Collections.Generic.List<int>();
+            var roleIds = new HashSet<int>();
             if (u != null && u.Roles != null)
             {
                 {
@@ -410,7 +388,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (roleIds.Count < 1)
             {
-                return Globals.DefaultAnonRoles + "|-1;||";
+                return new HashSet<int>
+                {
+                    Convert.ToInt32(Common.Globals.glbRoleAllUsers),
+                    Convert.ToInt32(Common.Globals.glbRoleUnauthUser),
+                };
             }
 
             if (u.IsSuperUser)
@@ -420,8 +402,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 roleIds.Add(portalSettings.AdministratorRoleId);
             }
 
-            roleIds.Sort();
-            return string.Join(";", roleIds.ToArray());
+            return roleIds;
         }
 
         internal static string GetPortalRoleIds(int portalId, string[] roles)
@@ -500,7 +481,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static bool HasPerm(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string authorizedPermSet, DotNetNuke.Entities.Users.UserInfo user)
         {
-            return HasPerm(authorizedPermSet, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(portalSettings, user));
+            var roles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(portalSettings, user);
+            var userPermSet = string.Join(",", roles) + "|" + user.UserID + "|" + string.Empty + "|";
+            return HasPerm(authorizedPermSet, userPermSet);
         }
 
         public static bool HasPerm(string authorizedPermSet, int portalId, int moduleId, int userId)
