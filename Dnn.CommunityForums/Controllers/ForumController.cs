@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static string GetForumIdsBySocialGroup(int portalId, int moduleId, int socialGroupId)
         {
-            return socialGroupId > 0 ? string.Join(";", new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Find("WHERE SocialGroupId = @0", socialGroupId).Select(f => f.ForumID.ToString()).ToArray()) : string.Empty;
+            return socialGroupId > 0 ? string.Join(";", new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Find("WHERE SocialGroupId = @0 AND ModuleId = @1", socialGroupId, moduleId).Select(f => f.ForumID.ToString()).ToArray()) : string.Empty;
         }
 
         internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache, int topicId)
