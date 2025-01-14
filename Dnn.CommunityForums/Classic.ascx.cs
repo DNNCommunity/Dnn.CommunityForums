@@ -252,18 +252,22 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (string.IsNullOrEmpty(this.ForumIds))
                     {
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: this.PortalId, roleId: this.SocialGroupId);
-
-                        // Create new forum
-                        bool isPrivate = false;
-                        if (!role.IsPublic)
+                        Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).TabModuleSettings;
+                        if (htSettings == null || htSettings.Count == 0)
                         {
-                            isPrivate = true;
+                            htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
                         }
 
-                        Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).TabModuleSettings;
-
-                        DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(this.PortalId, this.ModuleId, this.SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
-                        this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.PortalId, this.ForumModuleId, this.SocialGroupId);
+                        if (htSettings == null || htSettings.Count == 0 || !htSettings.ContainsKey("ForumGroupTemplate"))
+                        {
+                            var ex = new Exception($"Unable to configure forum for Social Group: {this.SocialGroupId}");
+                            DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                        }
+                        else
+                        {
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(this.PortalId, this.ModuleId, this.SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, !role.IsPublic, htSettings["ForumConfig"].ToString());
+                            this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.PortalId, this.ForumModuleId, this.SocialGroupId);
+                        }
                     }
                 }
 
