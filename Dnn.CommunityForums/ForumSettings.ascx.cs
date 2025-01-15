@@ -272,6 +272,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var anonSec = this.txtGroupAnonSec.Value.Split(',');
                 this.SaveForumSecurity("anon", anonSec);
 
+                DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdatePermissionsForSocialGroupForums(this.ModuleId);
+
                 try
                 {
                     if (this.IsFullTextAvailable && this.FullTextSearch && this.FullTextStatus != 1) // Available, selected and not currently installed

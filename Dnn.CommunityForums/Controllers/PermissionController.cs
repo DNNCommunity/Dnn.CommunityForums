@@ -21,10 +21,12 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Xml;
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
@@ -63,6 +65,104 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return this.GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
         }
 
+        internal void UpdateSecurityForSocialGroupForum(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum)
+        {
+            var permissions = this.GetById(forum.PermissionsId, forum.ModuleId);
+            Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: forum.ModuleId, tabId: forum.TabId, ignoreCache: false).TabModuleSettings;
+            if (htSettings == null || htSettings.Count == 0)
+            {
+                htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: forum.ModuleId, tabId: forum.TabId, ignoreCache: false).ModuleSettings;
+            }
+
+            if (htSettings == null || htSettings.Count == 0 || !htSettings.ContainsKey("ForumConfig"))
+            {
+                var ex = new Exception($"Unable to configure forum security for Social Group: {forum.SocialGroupId}");
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+            else
+            {
+                var xDoc = new XmlDocument();
+                xDoc.LoadXml(htSettings["ForumConfig"].ToString());
+                XmlNode xRoot = xDoc.DocumentElement;
+                var roleIdAnon = Convert.ToInt32(Common.Globals.glbRoleUnauthUser);
+                var roleIdAdmin = GetAdministratorsRoleId(forum.PortalId);
+                var roleIdRegUsers = GetRegisteredRoleId(forum.PortalId);
+                var roleIdGroupMember = forum.SocialGroupId;
+                foreach (var sectype in new string[] { "groupadmin", "groupmember", "registereduser", "anon" })
+                {
+                    var xNode = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='" + sectype + "']");
+                    foreach (XmlNode sNode in xNode.ChildNodes)
+                    {
+                        var sPerm = sNode.Name;
+                        var roleId = -1;
+                        switch (sectype)
+                        {
+                            case "groupadmin":
+                                roleId = roleIdAdmin;
+                                break;
+                            case "groupmember":
+                                roleId = roleIdGroupMember;
+                                break;
+                            case "registereduser":
+                                roleId = roleIdRegUsers;
+                                break;
+                            case "anon":
+                                roleId = roleIdAnon;
+                                break;
+                        }
+
+                        if (Convert.ToBoolean(sNode.Attributes["value"].Value))
+                        {
+                            switch (sPerm)
+                            {
+                                case "view":
+                                    permissions.View = AddPermToSet(roleId.ToString(), 0, permissions.View);
+                                    break;
+                                case "read":
+                                    permissions.Read = AddPermToSet(roleId.ToString(), 0, permissions.Read);
+                                    break;
+                                case "create":
+                                    permissions.Create = AddPermToSet(roleId.ToString(), 0, permissions.Create);
+                                    break;
+                                case "reply":
+                                    permissions.Reply = AddPermToSet(roleId.ToString(), 0, permissions.Reply);
+                                    break;
+                                case "edit":
+                                    permissions.Edit = AddPermToSet(roleId.ToString(), 0, permissions.Edit);
+                                    break;
+                                case "delete":
+                                    permissions.Delete = AddPermToSet(roleId.ToString(), 0, permissions.Delete);
+                                    break;
+                                case "lock":
+                                    permissions.Lock = AddPermToSet(roleId.ToString(), 0, permissions.Lock);
+                                    break;
+                                case "pin":
+                                    permissions.Pin = AddPermToSet(roleId.ToString(), 0, permissions.Pin);
+                                    break;
+                                case "attach":
+                                    permissions.Attach = AddPermToSet(roleId.ToString(), 0, permissions.Attach);
+                                    break;
+                                case "subscribe":
+                                    permissions.Subscribe = AddPermToSet(roleId.ToString(), 0, permissions.Subscribe);
+                                    break;
+                                case "moderate":
+                                    permissions.Moderate = AddPermToSet(roleId.ToString(), 0, permissions.Moderate);
+                                    break;
+                                case "move":
+                                    permissions.Move = AddPermToSet(roleId.ToString(), 0, permissions.Move);
+                                    break;
+                                case "ban":
+                                    permissions.Ban = AddPermToSet(roleId.ToString(), 0, permissions.Ban);
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                this.Update(permissions);
+            }
+        }
+
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetById(int permissionId, int moduleId)
         {
             var cachekey = this.GetCacheKey(moduleId: moduleId, id: permissionId);
@@ -71,9 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 permissions = base.GetById(permissionId, moduleId);
                 DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, permissions);
-
             }
-
             return permissions;
         }
 
@@ -684,6 +782,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             string newSet = RemovePermFromSet(objectId, objectType, permissionSet);
             string[] permSet = newSet.Split('|');
+            permSet[objectType] += string.Concat(objectId, ";");
             newSet = string.Concat(permSet[0] + "|" + (permSet.Length > 1 ? permSet[1] : string.Empty) + "|" + (permSet.Length > 2 ? permSet[2] : string.Empty), "|");
             return newSet;
         }

@@ -33,6 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.UI.UserControls;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Collections;
 
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
     {
@@ -512,6 +513,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 Exceptions.LogException(ex);
                 return false;
+            }
+        }
+
+        internal static void UpdatePermissionsForSocialGroupForums(int moduleId)
+        {
+            try
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get().Where(f => f.SocialGroupId != 0).ForEach(forum =>
+                {
+                    new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().UpdateSecurityForSocialGroupForum(forum);
+                });
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
             }
         }
 
