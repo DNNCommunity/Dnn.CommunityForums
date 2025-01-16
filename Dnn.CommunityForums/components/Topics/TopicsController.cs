@@ -1,87 +1,101 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text.RegularExpressions;
-using DotNetNuke.Common.Controls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Search.Entities;
-using log4net;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlTypes;
+    using System.Linq;
+    using System.Runtime.Remoting.Messaging;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Common.Controls;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Search.Entities;
+    using log4net;
+
     #region Topics Controller
     public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
     {
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate()")]
-        public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(PortalId, ModuleId, ForumId, Subject, Body, UserId, DisplayName, IsApproved, IPAddress);
+        public int Topic_QuickCreate(int portalId, int moduleId, int forumId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalId, moduleId, forumId, subject, body, userId, displayName, isApproved, iPAddress);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split()")]
-        public void Replies_Split(int OldTopicId, int NewTopicId, string listreplies, bool isNew) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(OldTopicId, NewTopicId, listreplies, isNew);
+        public void Replies_Split(int oldTopicId, int newTopicId, string listreplies, bool isNew) => throw new NotImplementedException();
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(TopicInfo ti)")]
-        public int TopicSave(int PortalId, TopicInfo ti) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
+        public int TopicSave(int portalId, TopicInfo ti) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
+
         [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(TopicInfo ti)")]
-        public int TopicSave(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
+        public int TopicSave(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
+
         [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(int ModuleId, int ForumId, int TopicId, int LastReplyId)")]
-        public int Topics_SaveToForum(int ForumId, int TopicId, int PortalId, int ModuleId)
+        public int Topics_SaveToForum(int forumId, int topicId, int portalId, int moduleId)
         {
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, ForumId, TopicId, -1);
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, forumId, topicId, -1);
             return -1;
         }
+
         [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(int ModuleId, int ForumId, int TopicId, int LastReplyId)")]
-        public int Topics_SaveToForum(int ForumId, int TopicId, int PortalId, int ModuleId, int LastReplyId)
+        public int Topics_SaveToForum(int forumId, int topicId, int portalId, int moduleId, int lastReplyId)
         {
-            Controllers.TopicController.SaveToForum(ModuleId, ForumId, TopicId, LastReplyId);
+            Controllers.TopicController.SaveToForum(moduleId, forumId, topicId, lastReplyId);
             return -1;
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetById(int TopicId)")]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int PortalId, int ModuleId, int TopicId) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int portalId, int moduleId, int topicId) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetById(int TopicId)")]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int portalId, int moduleId, int topicId, int forumId, int userId, bool withSecurity) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.DeleteById(int TopicId)")]
-        public void Topics_Delete(int PortalId, int ModuleId, int ForumId, int TopicId, int DelBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(TopicId);
-        [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(int TopicId, int NewForumId)")] 
-        public void Topics_Move(int PortalId, int ModuleId, int ForumId, int TopicId) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(TopicId, ForumId);
+        public void Topics_Delete(int portalId, int moduleId, int forumId, int topicId, int delBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).DeleteById(topicId);
+
+        [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(int TopicId, int NewForumId)")]
+        public void Topics_Move(int portalId, int moduleId, int forumId, int topicId) => throw new NotImplementedException();
+
         [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(int TopicId)")]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ApproveTopic(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(TopicId);
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ApproveTopic(int portalId, int tabId, int moduleId, int forumId, int topicId) => throw new NotImplementedException();
+
         [Obsolete("Deprecated in Community Forums. Moved to Utilities and changed to internal in 10.00.00.")]
-        public void UpdateModuleLastContentModifiedOnDate(int ModuleId) => Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
+        public void UpdateModuleLastContentModifiedOnDate(int moduleId) => Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
 
         #region ModuleSearchBase
 
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
-            var ms = new SettingsInfo { MainSettings = moduleInfo.ModuleSettings };
-            /* if not using soft deletes, remove and rebuild entire index; 
-			   note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
-			   and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
-			*/
+            var ms = new SettingsInfo { ModuleId = moduleInfo.ModuleID ,MainSettings = moduleInfo.ModuleSettings };
+            /* if not using soft deletes, remove and rebuild entire index;
+               note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
+               and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
+            */
             if (ms.DeleteBehavior != 1)
             {
                 DotNetNuke.Services.Search.Internals.InternalSearchController.Instance.DeleteSearchDocumentsByModule(moduleInfo.PortalID, moduleInfo.ModuleID, moduleInfo.ModuleDefID);
@@ -93,14 +107,15 @@ namespace DotNetNuke.Modules.ActiveForums
             bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
             string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
 
-            Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
-            Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
+            Dictionary<int, string> authorizedRolesForForum = new Dictionary<int, string>();
+            Dictionary<int, string> forumUrlPrefixes = new Dictionary<int, string>();
 
             List<string> roles = new List<string>();
             foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: moduleInfo.PortalID))
             {
                 roles.Add(r.RoleName);
             }
+
             string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(moduleInfo.PortalID, roles.ToArray());
             string queryString = string.Empty;
             System.Text.StringBuilder qsb = new System.Text.StringBuilder();
@@ -128,29 +143,31 @@ namespace DotNetNuke.Modules.ActiveForums
                     string forumGroupUrlPrefix = dr["ForumGroupUrlPrefix"].ToString();
                     string forumUrlPrefix = dr["ForumUrlPrefix"].ToString();
                     int jumpid = (replyId > 0) ? replyId : topicid;
-                    body = Common.Utilities.HtmlUtils.Clean(body, false);
-                    if (!(string.IsNullOrEmpty(body)))
+                    body = DotNetNuke.Common.Utilities.HtmlUtils.Clean(body, false);
+                    if (!string.IsNullOrEmpty(body))
                     {
                         description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;
-                    };
+                    }
+
                     DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumid, moduleInfo.ModuleID);
 
-                    // NOTE: indexer is called from scheduler and has no httpcontext 
+                    // NOTE: indexer is called from scheduler and has no httpcontext
                     // so any code that relies on HttpContext cannot be used...
-
-                    string link = new ControlUtils().BuildUrl(moduleInfo.TabID, moduleInfo.ModuleID, forumGroupUrlPrefix, forumUrlPrefix, forumGroupId, forumid, topicid, topicURL, -1, -1, string.Empty, 1, contentid, forumInfo.SocialGroupId);
-                    if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")))
+                    string link = new ControlUtils().BuildUrl(moduleInfo.PortalID, moduleInfo.TabID, moduleInfo.ModuleID, forumGroupUrlPrefix, forumUrlPrefix, forumGroupId, forumid, topicid, topicURL, -1, -1, string.Empty, 1, contentid, forumInfo.SocialGroupId);
+                    if (!string.IsNullOrEmpty(link) && !link.StartsWith("http"))
                     {
                         link = (isHttps ? "https://" : "http://") + primaryPortalAlias + link;
                     }
+
                     queryString = qsb.Clear().Append(ParamKeys.ForumId).Append("=").Append(forumid).Append("&").Append(ParamKeys.TopicId).Append("=").Append(topicid).Append("&").Append(ParamKeys.ViewType).Append("=").Append(Views.Topic).Append("&").Append(ParamKeys.ContentJumpId).Append("=").Append(jumpid).ToString();
                     string permittedRolesCanView = string.Empty;
-                    if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
+                    if (!authorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
                     {
                         string canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
                         permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(moduleInfo.PortalID, string.Join(";", canView.Split(":".ToCharArray())));
-                        AuthorizedRolesForForum.Add(forumid, permittedRolesCanView);
+                        authorizedRolesForForum.Add(forumid, permittedRolesCanView);
                     }
+
                     var searchDoc = new SearchDocument
                     {
                         UniqueKey = moduleInfo.ModuleID.ToString() + "-" + contentid.ToString(),
@@ -162,12 +179,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         Url = link,
                         QueryString = queryString,
                         ModifiedTimeUtc = dateupdated,
-                        Tags = (tags.Count > 0 ? tags : null),
+                        Tags = tags.Count > 0 ? tags : null,
                         Permissions = permittedRolesCanView,
-                        IsActive = (isApproved && !isDeleted)
+                        IsActive = isApproved && !isDeleted,
                     };
                     searchDocuments.Add(searchDoc);
-                };
+                }
+
                 dr.Close();
                 return searchDocuments;
             }
@@ -186,7 +204,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
             }
-
         }
         #endregion
 
@@ -203,7 +220,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        LogError(ex.Message, ex);
+                        this.LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }
@@ -216,7 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        LogError(ex.Message, ex);
+                        this.LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }
@@ -229,7 +246,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        LogError(ex.Message, ex);
+                        this.LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }
@@ -246,7 +263,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        LogError(ex.Message, ex);
+                        this.LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }
@@ -261,6 +278,27 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
+                        this.LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                case "08.02.00":
+                    try
+                    {
+                        ForumsConfig.Merge_Permissions_080200();
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
+                        ForumsConfig.Upgrade_EmailNotificationSubjectTokens_080200();
+                        ForumsConfig.Upgrade_RelocateSqlFiles_080200();
+                        ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
+                        ForumsConfig.Install_LikeNotificationType_080200();
+                        ForumsConfig.Install_PinNotificationType_080200();
+                        //ForumsConfig.Sort_PermissionSets_080200();
+                    }
+                    catch (Exception ex)
+                    {
                         LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
@@ -270,8 +308,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 default:
                     break;
             }
+
             return Version;
         }
+
         private void LogError(string message, Exception ex)
         {
             if (ex != null)
@@ -293,4 +333,3 @@ namespace DotNetNuke.Modules.ActiveForums
 
     #endregion
 }
-

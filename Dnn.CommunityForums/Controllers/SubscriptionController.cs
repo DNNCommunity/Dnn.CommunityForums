@@ -1,116 +1,181 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using DotNetNuke.Data;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace DotNetNuke.Modules.ActiveForums.Controllers 
+namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
+
     internal partial class SubscriptionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>
     {
-        public void Subscribe(int portalId, int moduleId, int userId, int forumId)
+        internal void Subscribe(int portalId, int moduleId, int userId, int forumId)
         {
-            if (!Subscribed(portalId, moduleId, userId, forumId))
+            if (!this.Subscribed(portalId, moduleId, userId, forumId))
             {
-                InsertForUser(portalId, moduleId, userId, forumId);
+                this.InsertForUser(portalId, moduleId, userId, forumId);
             }
         }
-        public void Subscribe(int portalId, int moduleId, int userId, int forumId, int topicId)
+
+        internal void Subscribe(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
-            if (!Subscribed(portalId, moduleId, userId, forumId, topicId))
+            if (!this.Subscribed(portalId, moduleId, userId, forumId, topicId))
             {
-                InsertForUser(portalId, moduleId, userId, forumId, topicId);
+                this.InsertForUser(portalId, moduleId, userId, forumId, topicId);
             }
         }
-        public void Unsubscribe(int portalId, int moduleId, int userId, int forumId)
+
+        internal void Unsubscribe(int portalId, int moduleId, int userId, int forumId)
         {
-            if (Subscribed(portalId, moduleId, userId, forumId))
+            if (this.Subscribed(portalId, moduleId, userId, forumId))
             {
-                DeleteForUser(portalId, moduleId, userId, forumId);
+                this.DeleteForUser(portalId, moduleId, userId, forumId);
             }
         }
-        public void Unsubscribe(int portalId, int moduleId, int userId, int forumId, int topicId)
+
+        internal void Unsubscribe(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
-            if (Subscribed(portalId, moduleId, userId, forumId, topicId))
+            if (this.Subscribed(portalId, moduleId, userId, forumId, topicId))
             {
-                DeleteForUser(portalId, moduleId, userId, forumId, topicId);
+                this.DeleteForUser(portalId, moduleId, userId, forumId, topicId);
             }
         }
-        public void DeleteForUser(int portalId, int moduleId, int userId, int forumId)
+
+        internal void DeleteForForum(int moduleId, int forumId)
         {
-            Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId);
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.ForumSubscriberPrefix, moduleId, forumId));
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicSubscriberPrefix, moduleId, forumId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumSubscriberCount, moduleId, forumId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicSubscriberCountPrefix, moduleId, forumId));
+            this.Delete("WHERE ForumId = @0", forumId);
         }
-        public void DeleteForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
+
+        internal bool Subscribed(int portalId, int moduleId, int userId, int forumId)
         {
-            Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId);
+            var cachekey = string.Format(CacheKeys.ForumSubscriber, moduleId, forumId, userId);
+            bool? subscribed = (bool?)DataCache.ContentCacheRetrieve(moduleId, cachekey);
+            if (subscribed == null)
+            {
+                subscribed = this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId).Count() == 1;
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, subscribed);
+            }
+
+            return (bool)subscribed;
         }
-        public bool Subscribed(int portalId, int moduleId, int userId, int forumId)
+
+        internal bool Subscribed(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
-            return Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId).Count() == 1;
+            var cachekey = string.Format(CacheKeys.TopicSubscriber, moduleId, forumId, userId, topicId);
+            bool? subscribed = (bool?)DataCache.ContentCacheRetrieve(moduleId, cachekey);
+            if (subscribed == null)
+            {
+                subscribed = this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId).Count() == 1;
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, subscribed);
+            }
+
+            return (bool)subscribed;
         }
-        public bool Subscribed(int portalId, int moduleId, int userId, int forumId, int topicId)
+
+        internal void InsertForUser(int portalId, int moduleId, int userId, int forumId)
         {
-            return Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId).Count() == 1;
-        }
-        public void InsertForUser(int portalId, int moduleId, int userId, int forumId)
-        {
-            Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
+            this.Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
             {
                 PortalId = portalId,
                 ModuleId = moduleId,
                 UserId = userId,
                 ForumId = forumId,
                 TopicId = 0,
-                Mode = 1
+                Mode = 1,
             });
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumSubscriber, moduleId, forumId, userId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumSubscriberCount, moduleId, forumId));
         }
-        public void InsertForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
+
+        internal void InsertForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
-            Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
+            this.Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
             {
                 PortalId = portalId,
                 ModuleId = moduleId,
                 UserId = userId,
                 ForumId = forumId,
                 TopicId = topicId,
-                Mode = 1
+                Mode = 1,
             });
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicSubscriber, moduleId, forumId, topicId, userId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicSubscriberCount, moduleId, forumId, topicId));
         }
-        public int Count(int portalId, int moduleId, int forumId)
+
+        internal void DeleteForUser(int portalId, int moduleId, int userId, int forumId)
         {
-            return Count("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = 0", portalId, moduleId, forumId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumSubscriber, moduleId, forumId, userId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumSubscriberCount, moduleId, forumId));
+            this.Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId);
         }
-        public int Count(int portalId, int moduleId, int forumId, int topicId)
+
+        internal void DeleteForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
-            return Count("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = @3", portalId, moduleId, forumId, topicId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicSubscriber, moduleId, forumId, topicId, userId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicSubscriberCount, moduleId, forumId, topicId));
+            this.Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId);
         }
-        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedForums(int portalId, int moduleId, int userId)
+
+        internal int Count(int portalId, int moduleId, int forumId)
         {
-            return Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId = 0", portalId, moduleId, userId).ToList();
+            var cachekey = string.Format(CacheKeys.ForumSubscriberCount, moduleId, forumId);
+            var count = (int?)DataCache.ContentCacheRetrieve(moduleId, cachekey);
+            if (count == null)
+            {
+                count = this.Count("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = 0", portalId, moduleId, forumId);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, count);
+            }
+
+            return (int)count;
         }
-        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedTopics(int portalId, int moduleId, int userId)
+
+        internal int Count(int portalId, int moduleId, int forumId, int topicId)
         {
-            return Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId <> 0", portalId, moduleId, userId).ToList();
+            var cachekey = string.Format(CacheKeys.TopicSubscriberCount, moduleId, forumId, topicId);
+            var count = (int?)DataCache.ContentCacheRetrieve(moduleId, cachekey);
+            if (count == null)
+            {
+                count = this.Count("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = @3", portalId, moduleId, forumId, topicId);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, count);
+            }
+
+            return (int)count;
+        }
+
+        internal List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedForums(int portalId, int moduleId, int userId)
+        {
+            return this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId = 0", portalId, moduleId, userId).ToList();
+        }
+
+        internal List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedTopics(int portalId, int moduleId, int userId)
+        {
+            return this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId <> 0", portalId, moduleId, userId).ToList();
         }
     }
 }

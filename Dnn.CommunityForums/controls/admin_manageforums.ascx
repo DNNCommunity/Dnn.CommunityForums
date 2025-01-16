@@ -5,7 +5,7 @@
 	var currObj;
 	var currGroup = 0;
 
-	function af_refreshView(group,forum){
+	function af_refreshView(){
 		LoadView('manageforums_forumeditor',currObj + '|' + currCtl)
 	};
 	function af_setCurrObj(obj,ctl){
@@ -17,7 +17,10 @@
 	};
 
 </script>
-<div class="amcpsubnav"><asp:Literal ID="litButtons" runat="server" /></div>
+<div class="amcpsubnav"><asp:Literal ID="litButtons" runat="server" />
+    <div class="amcplnkbtn dcf-controlpanel-inheritance-heading-settings">[RESX:InheritsSettings]</div>
+    <div class="amcplnkbtn dcf-controlpanel-inheritance-heading-security">[RESX:InheritsSecurity]</div>
+</div>
 <table cellpadding="0" cellspacing="0" width="100%">
 	<tr>
 		<td valign="top" style="border-left:solid 1px #ccc;">

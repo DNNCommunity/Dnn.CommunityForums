@@ -36,12 +36,24 @@
         <asp:checkbox id="chkPrefTopicSubscribe" runat="server" />
     </div>
     <div class="dnnFormItem">
+        <dnn:label controlname="chkLikeNotificationsEnabled" text="[RESX:LikeNotificationsEnabled]" suffix=":" runat="server" />
+        <asp:CheckBox ID="chkLikesNotificationsEnabled" runat="server" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:label controlname="chkPinNotificationsEnabled" text="[RESX:PinNotificationsEnabled]" suffix=":" runat="server" />
+        <asp:CheckBox ID="chkPinNotificationsEnabled" runat="server" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:label controlname="chkEnableNotificationsForOwnContent" text="[RESX:EnableNotificationsForOwnContent]" suffix=":" runat="server" />
+        <asp:CheckBox ID="chkEnableNotificationsForOwnContent" runat="server" />
+    </div>
+    <div class="dnnFormItem">
         <dnn:label controlname="chkPrefBlockAvatars" text="[RESX:PrefBlockAvatars]" suffix=":" runat="server" />
         <asp:checkbox id="chkPrefBlockAvatars" runat="server" />
     </div>
     <div class="dnnFormItem">
         <dnn:label controlname="chkPrefBlockSignatures" text="[RESX:PrefBlockSignatures]" suffix=":" runat="server" />
-        <asp:checkbox id="chkPrefBlockSignatures" runat="server" />
+        <asp:CheckBox ID="chkPrefBlockSignatures" runat="server" />
     </div>
     <div class="dnnFormItem">
         <dnn:label controlname="txtSignature" text="[RESX:Signature]" suffix=":" runat="server" />

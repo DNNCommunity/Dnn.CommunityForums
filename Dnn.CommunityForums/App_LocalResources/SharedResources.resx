@@ -141,9 +141,6 @@
   <data name="ReplyHeader.Text" xml:space="preserve">
     <value>Replies</value>
   </data>
-  <data name="By.Text" xml:space="preserve">
-    <value>by</value>
-  </data>
   <data name="TopicHeader.Text" xml:space="preserve">
     <value>Topics</value>
   </data>
@@ -172,7 +169,7 @@
     <value>You must be logged in to post a reply.</value>
   </data>
   <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve">
-    <value>Please &lt;a href="{0}"{1}&gt;login&lt;/a&gt; to post a reply.</value>
+    <value>&lt;span class="dcf-auth-false-login"&gt;Please &lt;a href="{0}" onclick="return {1};"&gt;login&lt;/a&gt; to post a reply.&lt;/span&gt;</value>
   </data>
   <data name="PostedDate.Text" xml:space="preserve">
     <value>Posted:</value>
@@ -351,29 +348,8 @@
   <data name="[RESX:Website].Text" xml:space="preserve">
     <value>Website</value>
   </data>
-  <data name="[RESX:Occupation].Text" xml:space="preserve">
-    <value>Occupation</value>
-  </data>
-  <data name="[RESX:Location].Text" xml:space="preserve">
-    <value>Location</value>
-  </data>
-  <data name="[RESX:Interests].Text" xml:space="preserve">
-    <value>Interests</value>
-  </data>
   <data name="[RESX:SendMessage].Text" xml:space="preserve">
     <value>Contact</value>
-  </data>
-  <data name="[RESX:Yahoo].Text" xml:space="preserve">
-    <value>Yahoo</value>
-  </data>
-  <data name="[RESX:MSN].Text" xml:space="preserve">
-    <value>MSN</value>
-  </data>
-  <data name="[RESX:ICQ].Text" xml:space="preserve">
-    <value>ICQ</value>
-  </data>
-  <data name="[RESX:AOL].Text" xml:space="preserve">
-    <value>AOL</value>
   </data>
   <data name="EditProfile.Text" xml:space="preserve">
     <value>Edit Profile</value>
@@ -936,9 +912,6 @@
   <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
     <value>Subscribe to Topics</value>
   </data>
-  <data name="[RESX:PrefUseAjax].Text" xml:space="preserve">
-    <value>Use Ajax</value>
-  </data>
   <data name="[RESX:Actions:ProfileUpdated].Text" xml:space="preserve">
     <value>Your profile has been updated.</value>
   </data>
@@ -1135,9 +1108,6 @@ From,
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>This will be your default setting when you are creating a topic or adding a reply.  This does not affect forum level subscriptions.</value>
   </data>
-  <data name="[RESX:Tips:PrefUseAjax].Text" xml:space="preserve">
-    <value>AJAX is programming method to improve the way you interact with the forums.  You can choose whether or not you wish to use this capability.</value>
-  </data>
   <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
     <value>This forum only allows you to edit your post within {0} minutes from the time you created your post.</value>
   </data>
@@ -1157,10 +1127,10 @@ From,
     <value>Toggle Group Display</value>
   </data>
   <data name="[RESX:NotAuthorizedReply].Text" xml:space="preserve">
-    <value>You are not authorized to post a reply.</value>
+    <value>&lt;span class="afnotauthorized"&gt;You are not authorized to post a reply.&lt;/span&gt;</value>
   </data>
   <data name="[RESX:NotAuthorizedTopic].Text" xml:space="preserve">
-    <value>&lt;span class="afnotauthorized"&gt;You are not authorized to create a new topic&lt;/span&gt;</value>
+    <value>&lt;div class="amnormal"&gt;&lt;span class="afnotauthorized"&gt;You are not authorized to create a new topic&lt;/span&gt;&lt;/div&gt;</value>
   </data>
   <data name="[RESX:DateCreated].Text" xml:space="preserve">
     <value>Date Created</value>
@@ -1474,19 +1444,19 @@ From,
   <data name="AlertSubject.Text" xml:space="preserve">
     <value>A post by [DisplayName] has been flagged for review by [FlaggedBy]</value>
   </data>
-  <data name="NotificationBodyReply.Text" xml:space="preserve">
-    <value>&lt;p&gt;[DisplayName] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
-&lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
+  <data name="[RESX:NotificationBodyReply].Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME]&lt;/a&gt;] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
+&lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[FORUM:MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
   </data>
-  <data name="NotificationSubjectReply.Text" xml:space="preserve">
-    <value>[DisplayName] has posted content requiring moderation</value>
+  <data name="[RESX:NotificationSubjectReply].Text" xml:space="preserve">
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] has posted content requiring moderation</value>
   </data>
-  <data name="NotificationBodyTopic.Text" xml:space="preserve">
-    <value>&lt;p&gt;[DisplayName] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
-&lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
+  <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
+&lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[FORUM:MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
   </data>
-  <data name="NotificationSubjectTopic.Text" xml:space="preserve">
-    <value>[DisplayName] has posted content requiring moderation</value>
+  <data name="[RESX:NotificationSubjectTopic].Text" xml:space="preserve">
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] has posted content requiring moderation</value>
   </data>
   <data name="ForumEditor.Text" xml:space="preserve">
     <value>Forum Editor</value>
@@ -1542,31 +1512,25 @@ From,
   <data name="[RESX:SearchTitle].Text" xml:space="preserve">
     <value>Search Results</value>
   </data>
-  <data name="SearchBy.Text" xml:space="preserve">
+  <data name="[RESX:SearchBy].Text" xml:space="preserve">
     <value>By:</value>
   </data>
-  <data name="SearchForum.Text" xml:space="preserve">
+  <data name="[RESX:SearchForum].Text" xml:space="preserve">
     <value>Forum:</value>
   </data>
   <data name="SearchLastPost.Text" xml:space="preserve">
     <value>Last Post:</value>
   </data>
-  <data name="SearchModify.Text" xml:space="preserve">
-    <value>Modify Search</value>
-  </data>
-  <data name="SearchPosted.Text" xml:space="preserve">
-    <value>Posted:</value>
-  </data>
   <data name="SearchPostTime.Text" xml:space="preserve">
     <value>{0} @ {1}</value>
   </data>
-  <data name="SearchReplies.Text" xml:space="preserve">
+  <data name="[RESX:SearchReplies].Text" xml:space="preserve">
     <value>Replies:</value>
   </data>
-  <data name="SearchTopic.Text" xml:space="preserve">
+  <data name="[RESX:SearchTopic].Text" xml:space="preserve">
     <value>Topic:</value>
   </data>
-  <data name="SearchViews.Text" xml:space="preserve">
+  <data name="[RESX:SearchViews].Text" xml:space="preserve">
     <value>Views:</value>
   </data>
   <data name="Started.Text" xml:space="preserve">
@@ -1754,5 +1718,106 @@ From,
   </data>
   <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
     <value>The Permissions {0} for Forum {1} are not found in the database; you will need to repair this in the database, or delete the forum and re-create it. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
+    <value>&lt;span class="dcf-auth-false-login"&gt;Please &lt;a href="{0}" onclick="return {1};"&gt;login&lt;/a&gt; to add a topic.&lt;/span&gt;</value>
+  </data>
+  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
+    <value>No Pending Content</value>
+  </data>
+  <data name="[RESX:ForumMissingForForumTrackingId]" xml:space="preserve">
+    <value>The Forum {0} for Forum Tracking Id {1} is not found in the database; you will need to repair this in the database, or delete the forum tracking record. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:TopicMissingForTopicTrackingId].Text" xml:space="preserve">
+    <value>The Topic {0} for Topic Tracking Id {1} is not found in the database; you will need to repair this in the database, or delete the invalid data.. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:ReplaceObsoleteToken].Text" xml:space="preserve">
+    <value>Template Token: {0} is obsolete. Replace with {1}.</value>
+  </data>
+  <data name="[RESX:RemoveObsoleteToken].Text" xml:space="preserve">
+    <value>Template Token: {0} is obsolete and has no replacement. Remove from template(s).</value>
+  </data>
+  <data name="[RESX:RemoveObsoletePrefixedToken].Text" xml:space="preserve">
+    <value>Template Token starting with: {0} is obsolete and has no replacement. Remove from template(s).</value>
+  </data>
+  <data name="[RESX:UnableToFindReplyToProcess].Text" xml:space="preserve">
+    <value>DNN Community Forums Process Queue could not process reply {0} because it does not exist, and was likely deleted prior to processing. No further action will occur for this item. If you see this message frequently, please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:UnableToFindTopicToProcess].Text" xml:space="preserve">
+    <value>DNN Community Forums Process Queue could not process topic {0} because it does not exist, and was likely deleted prior to processing. No further action will occur for this item. If you see this message frequently, please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:UnableToProcessItem].Text" xml:space="preserve">
+    <value>DNN Community Forums Process Queue could not process item {0} and it has been in the queue for more than 7 days. No further action will occur for this item. If you see this message frequently, please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="SearchBy.Text" xml:space="preserve">
+    <value>By:</value>
+  </data>
+  <data name="SearchPosted.Text" xml:space="preserve">
+    <value>Posted:</value>
+  </data>
+  <data name="SearchReplies.Text" xml:space="preserve">
+    <value>Replies:</value>
+  </data>
+  <data name="SearchViews.Text" xml:space="preserve">
+    <value>Views:</value>
+  </data>
+  <data name="[RESX:SearchModify].Text" xml:space="preserve">
+    <value>Modify Search</value>
+  </data>
+  <data name="[RESX:SearchPosted].Text" xml:space="preserve">
+    <value>Posted:</value>
+  </data>
+  <data name="[RESX:Started].Text" xml:space="preserve">
+    <value>Started</value>
+  </data>
+  <data name="[RESX:Child].Text" xml:space="preserve">
+    <value>Child</value>
+  </data>
+  <data name="[RESX:of].Text" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="[RESX:Tips:Ban].Text" xml:space="preserve">
+    <value>Deletes all posts for this user and unauthorizes the user.</value>
+  </data>
+  <data name="[RESX:Likes].Text" xml:space="preserve">
+    <value>Likes</value>
+  </data>
+  <data name="[RESX:likedby].Text" xml:space="preserve">
+    <value>liked by</value>
+  </data>
+  <data name="[RESX:UnableToFindLikeToProcess].Text" xml:space="preserve">
+    <value>DNN Community Forums Process Queue could not process like for post {0} by user {1} because it does not exist, and was likely deleted prior to processing. No further action will occur for this item. If you see this message frequently, please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Receive Like Notifications</value>
+  </data>
+  <data name="[RESX:LikeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Select this option if you wish to receive notifications when other users 'like' your posts.</value>
+  </data>
+  <data name="[RESX:LikeNotificationBody].Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMLIKE:USERDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMLIKE:USERDISPLAYNAME]&lt;/a&gt;] liked your post on [FORUMPOST:SUBJECTLINK]&lt;/p&gt;
+&lt;p&gt;To see who likes your post, visit [FORUMPOST:LIKESLINK|&lt;a href="{0}"&gt;[FORUMPOST:LIKESLINK]&lt;/a&gt;]&lt;/p&gt;
+</value>
+  </data>
+  <data name="[RESX:LikeNotificationSubject].Text" xml:space="preserve">
+    <value>[FORUMLIKE:USERDISPLAYNAME] liked your post on topic: [FORUMPOST:SUBJECT]</value>
+  </data>
+  <data name="[RESX:PinNotificationsEnabled].Text" xml:space="preserve">
+    <value>Receive Pin Notifications</value>
+  </data>
+  <data name="[RESX:PinNotificationsEnabled].Help" xml:space="preserve">
+    <value>Select this option if you wish to receive notifications when a topic you authored is pinned.</value>
+  </data>
+  <data name="[RESX:PinNotificationSubject].Text" xml:space="preserve">
+    <value>Your topic: [FORUMTOPIC:SUBJECT] has been pinned</value>
+  </data>
+  <data name="[RESX:PinNotificationBody].Text" xml:space="preserve">
+    <value>&lt;p&gt;Your topic: [FORUMTOPIC:SUBJECTLINK] has been pinned.&lt;/p&gt;</value>
+  </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Text" xml:space="preserve">
+    <value>For subscribed forums/topics, send me notifications even for my own posts</value>
+  </data>
+  <data name="[RESX:EnableNotificationsForOwnContent].Help" xml:space="preserve">
+    <value>Select this option if you wish to receive notifications that new content has been posted even though you are the user who posted the content. </value>
   </data>
 </root>

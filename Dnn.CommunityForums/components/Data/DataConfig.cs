@@ -1,99 +1,106 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Data.SqlClient;
-using Microsoft.ApplicationBlocks.Data;
-using System.Configuration;
 
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
-	public class DataConfig
-	{
-#region Private Members
-		internal string _connectionString;
-		internal string _objectQualifier;
-		internal string _databaseOwner;
-		internal string dbPrefix;
-		private DotNetNuke.Framework.Providers.ProviderConfiguration _providerConfiguration = DotNetNuke.Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
-#endregion
-#region Constructors
-		public DataConfig()
-		{
-			_connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
+    using System.Data.SqlClient;
 
-			_objectQualifier = ObjectQualifier;
-			if (_objectQualifier != "" && _objectQualifier.EndsWith("_") == false)
-			{
-				_objectQualifier += "_";
-			}
+    using Microsoft.ApplicationBlocks.Data;
 
-			_databaseOwner = DataBaseOwner;
-			if (_databaseOwner != "" && _databaseOwner.EndsWith(".") == false)
-			{
-				_databaseOwner += ".";
-			}
-			dbPrefix = _databaseOwner + _objectQualifier + "activeforums_";
-		}
-#endregion
-		public static object GetNull(object Field)
-		{
-			return Null.GetNull(Field, DBNull.Value);
-		}
-		public string ObjectQualifier
-		{
-			get
-			{
-				DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)(_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
-				_objectQualifier = objProvider.Attributes["objectQualifier"];
-				if (_objectQualifier != "" && _objectQualifier.EndsWith("_") == false)
-				{
-					_objectQualifier += "_";
-				}
-				return _objectQualifier;
-			}
-			set
-			{
+    public class DataConfig
+    {
+        #region Private Members
+        internal string connectionString;
+        internal string objectQualifier;
+        internal string databaseOwner;
+        internal string dbPrefix;
+        private DotNetNuke.Framework.Providers.ProviderConfiguration providerConfiguration = DotNetNuke.Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
 
-			}
-		}
-		public string DataBaseOwner
-		{
-			get
-			{
-				DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)(_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
-				_databaseOwner = objProvider.Attributes["databaseOwner"];
-				if (_databaseOwner != "" && _databaseOwner.EndsWith(".") == false)
-				{
-					_databaseOwner += ".";
-				}
-				return _databaseOwner;
-			}
-			set
-			{
+        #endregion
+        #region Constructors
+        public DataConfig()
+        {
+            this.connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
 
-			}
-		}
-	}
+            this.objectQualifier = this.ObjectQualifier;
+            if (this.objectQualifier != string.Empty && this.objectQualifier.EndsWith("_") == false)
+            {
+                this.objectQualifier += "_";
+            }
+
+            this.databaseOwner = this.DataBaseOwner;
+            if (this.databaseOwner != string.Empty && this.databaseOwner.EndsWith(".") == false)
+            {
+                this.databaseOwner += ".";
+            }
+
+            this.dbPrefix = this.databaseOwner + this.objectQualifier + "activeforums_";
+        }
+
+        #endregion
+        public static object GetNull(object field)
+        {
+            return Null.GetNull(field, DBNull.Value);
+        }
+
+        public string ObjectQualifier
+        {
+            get
+            {
+                DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)this.providerConfiguration.Providers[this.providerConfiguration.DefaultProvider];
+                this.objectQualifier = objProvider.Attributes["objectQualifier"];
+                if (this.objectQualifier != string.Empty && this.objectQualifier.EndsWith("_") == false)
+                {
+                    this.objectQualifier += "_";
+                }
+
+                return this.objectQualifier;
+            }
+
+            set
+            {
+            }
+        }
+
+        public string DataBaseOwner
+        {
+            get
+            {
+                DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)this.providerConfiguration.Providers[this.providerConfiguration.DefaultProvider];
+                this.databaseOwner = objProvider.Attributes["databaseOwner"];
+                if (this.databaseOwner != string.Empty && this.databaseOwner.EndsWith(".") == false)
+                {
+                    this.databaseOwner += ".";
+                }
+
+                return this.databaseOwner;
+            }
+
+            set
+            {
+            }
+        }
+    }
 }

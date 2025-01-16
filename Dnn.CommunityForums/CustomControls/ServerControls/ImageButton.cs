@@ -1,394 +1,414 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.ComponentModel;
-using System.Web.UI;
+
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	[CLSCompliant(false), DefaultProperty("Text"), ToolboxData("<{0}:ImageButton runat=server></{0}:ImageButton>")]
-	public class ImageButton : System.Web.UI.WebControls.WebControl, IPostBackEventHandler
-	{
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
 
-		public virtual string Text
-		{
-			get
-			{
-				object o = ViewState["Text"];
-				if (o == null)
-				{
-					return string.Empty;
-				}
-			    return Convert.ToString(o);
-			}
-			set
-			{
-				ViewState["Text"] = value;
-			}
-		}
+    [CLSCompliant(false), DefaultProperty("Text"), ToolboxData("<{0}:ImageButton runat=server></{0}:ImageButton>")]
+    public class ImageButton : System.Web.UI.WebControls.WebControl, IPostBackEventHandler
+    {
+        public virtual string Text
+        {
+            get
+            {
+                object o = this.ViewState["Text"];
+                if (o == null)
+                {
+                    return string.Empty;
+                }
 
-	    private int _hSpace;
-		private int _vSpace;
-		private string _imageAlign = "absmiddle";
-		private bool _PostBack = true;
-	    private string _ConfirmMessage = "";
-	    private string _ValidationGroup = "";
-		private string _imageLocation = "LEFT";
-		private string _objectId = "";
-		private string _PostBackScript;
+                return Convert.ToString(o);
+            }
 
+            set
+            {
+                this.ViewState["Text"] = value;
+            }
+        }
 
-	    [Bindable(true), Category("Appearance"), DefaultValue("")]
-	    public string ImageUrl { get; set; }
+        private int hSpace;
+        private int vSpace;
+        private string imageAlign = "absmiddle";
+        private bool postBack = true;
+        private string confirmMessage = string.Empty;
+        private string validationGroup = string.Empty;
+        private string imageLocation = "LEFT";
+        private string objectId = string.Empty;
+        private string postBackScript;
 
-	    [Bindable(true), Category("Appearance"), DefaultValue("")]
-	    public string NavigateUrl { get; set; }
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public string ImageUrl { get; set; }
 
-	    [Bindable(true), Category("Appearance"), DefaultValue("absmiddle")]
-		public string ImageAlign
-		{
-			get
-			{
-				return _imageAlign;
-			}
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public string NavigateUrl { get; set; }
 
-			set
-			{
-				_imageAlign = value;
-			}
-		}
-		[Bindable(true), Category("Appearance"), DefaultValue("")]
-		public string HSpace
-		{
-			get
-			{
-				return _hSpace.ToString();
-			}
+        [Bindable(true), Category("Appearance"), DefaultValue("absmiddle")]
+        public string ImageAlign
+        {
+            get
+            {
+                return this.imageAlign;
+            }
 
-			set
-			{
-				_hSpace = Convert.ToInt32(value);
-			}
-		}
-		[Bindable(true), Category("Appearance"), DefaultValue("")]
-		public string VSpace
-		{
-			get
-			{
-				return _vSpace.ToString();
-			}
+            set
+            {
+                this.imageAlign = value;
+            }
+        }
 
-			set
-			{
-				_vSpace = Convert.ToInt32(value);
-			}
-		}
-		[Bindable(true), Category("Appearance"), DefaultValue("")]
-		public bool PostBack
-		{
-			get
-			{
-				return _PostBack;
-			}
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public string HSpace
+        {
+            get
+            {
+                return this.hSpace.ToString();
+            }
 
-			set
-			{
-				_PostBack = value;
-			}
-		}
+            set
+            {
+                this.hSpace = Convert.ToInt32(value);
+            }
+        }
 
-	    [Bindable(true), Category("Appearance"), DefaultValue("")]
-	    public string ClientSideScript { get; set; }
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public string VSpace
+        {
+            get
+            {
+                return this.vSpace.ToString();
+            }
 
-	    [Bindable(true), Category("Appearance"), DefaultValue("")]
-	    public string Params { get; set; }
+            set
+            {
+                this.vSpace = Convert.ToInt32(value);
+            }
+        }
 
-	    [Bindable(true), Category("Appearance"), DefaultValue("")]
-	    public bool Confirm { get; set; }
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public bool PostBack
+        {
+            get
+            {
+                return this.postBack;
+            }
 
-	    [Bindable(true), Category("Appearance"), DefaultValue("")]
-		public string ConfirmMessage
-		{
-			get
-			{
-				return _ConfirmMessage;
-			}
+            set
+            {
+                this.postBack = value;
+            }
+        }
 
-			set
-			{
-				_ConfirmMessage = value;
-			}
-		}
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public string ClientSideScript { get; set; }
 
-	    [Bindable(true), Category("Appearance"), DefaultValue("")]
-	    public bool EnableClientValidation { get; set; }
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public string Params { get; set; }
 
-	    [Bindable(true), Category("Appearance"), DefaultValue("")]
-		public string ValidationGroup
-		{
-			get
-			{
-				return _ValidationGroup;
-			}
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public bool Confirm { get; set; }
 
-			set
-			{
-				_ValidationGroup = value;
-			}
-		}
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public string ConfirmMessage
+        {
+            get
+            {
+                return this.confirmMessage;
+            }
 
-		[Bindable(true), Category("Appearance"), DefaultValue("")]
-		public string ImageLocation
-		{
-			get
-			{
-				return _imageLocation;
-			}
+            set
+            {
+                this.confirmMessage = value;
+            }
+        }
 
-			set
-			{
-				_imageLocation = value;
-			}
-		}
-		[Bindable(true), Category("Appearance"), DefaultValue("")]
-		public string ObjectId
-		{
-			get
-			{
-				return _objectId;
-			}
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public bool EnableClientValidation { get; set; }
 
-			set
-			{
-				_objectId = value;
-			}
-		}
-		[Bindable(true), Category("Appearance"), DefaultValue("")]
-		public string PostBackScript
-		{
-			get
-			{
-				return _PostBackScript;
-			}
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public string ValidationGroup
+        {
+            get
+            {
+                return this.validationGroup;
+            }
 
-		}
+            set
+            {
+                this.validationGroup = value;
+            }
+        }
 
-		// Defines the Click event.
-		//
-		public event EventHandler Click;
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public string ImageLocation
+        {
+            get
+            {
+                return this.imageLocation;
+            }
 
-		// Invokes delegates registered with the Click event.
-		//
-		protected virtual void OnClick(EventArgs e)
-		{
-			if (Click != null)
-				Click(this, e);
-		}
-		public void RaisePostBackEvent(string eventArgument)
-		{
-			OnClick(new EventArgs());
-		}
+            set
+            {
+                this.imageLocation = value;
+            }
+        }
 
-		protected override void Render(HtmlTextWriter writer)
-		{
-			string sConfirm = "";
-			string sOnClick;
-			if (CssClass == "")
-			{
-				CssClass = "amtoolbaritem";
-			}
-			var outerWriter = new HtmlTextWriter(writer);
-			string sVoid = "javascript:void(0);";
-			string sStatusOver = "";
-			string sStatusOff = "";
-			if (Confirm)
-			{
-				sConfirm = "if (confirm('" + ConfirmMessage + "')){ [FUNCTIONS] };";
-			}
-			sOnClick = ClientSideScript;
-			if (Attributes["onclick"] != null)
-			{
-				sOnClick += Attributes["onclick"];
-			}
-			if (sConfirm != "")
-			{
-				sOnClick = sConfirm.Replace("[FUNCTIONS]", sOnClick);
-			}
-			if (EnableClientValidation)
-			{
-				sOnClick = "if (typeof(Page_ClientValidate) == 'function'){ if (Page_ClientValidate('" + ValidationGroup + "')){" + sOnClick + "};};";
-			}
-			string sPostBack = Page.ClientScript.GetPostBackEventReference(this, string.Empty);
-			_PostBackScript = sPostBack;
-			if (Enabled)
-			{
-				if (PostBack)
-				{
-					if (!string.IsNullOrEmpty(sConfirm))
-					{
-						sPostBack = sConfirm.Replace("[FUNCTIONS]", sPostBack);
-					}
-					if (EnableClientValidation)
-					{
-						sPostBack = "if (typeof(Page_ClientValidate) == 'function'){ if (Page_ClientValidate('" + ValidationGroup + "')){" + sPostBack + "};};";
-					}
-                    if (!string.IsNullOrEmpty(ClientSideScript))
-					{
-						sPostBack = ClientSideScript + sPostBack;
-					}
-					outerWriter.AddAttribute(HtmlTextWriterAttribute.Href, "javascript:" + sPostBack);
-				}
-                else if (!string.IsNullOrEmpty(NavigateUrl))
-				{
-					outerWriter.AddAttribute(HtmlTextWriterAttribute.Href, Page.ResolveUrl(NavigateUrl));
-				}
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public string ObjectId
+        {
+            get
+            {
+                return this.objectId;
+            }
+
+            set
+            {
+                this.objectId = value;
+            }
+        }
+
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public string PostBackScript
+        {
+            get
+            {
+                return this.postBackScript;
+            }
+        }
+
+        // Defines the Click event.
+        public event EventHandler Click;
+
+        // Invokes delegates registered with the Click event.
+        protected virtual void OnClick(EventArgs e)
+        {
+            if (this.Click != null)
+            {
+                this.Click(this, e);
+            }
+        }
+
+        public void RaisePostBackEvent(string eventArgument)
+        {
+            this.OnClick(new EventArgs());
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            string sConfirm = string.Empty;
+            string sOnClick;
+            if (this.CssClass == string.Empty)
+            {
+                this.CssClass = "amtoolbaritem";
+            }
+
+            var outerWriter = new HtmlTextWriter(writer);
+            string sVoid = "javascript:void(0);";
+            string sStatusOver = string.Empty;
+            string sStatusOff = string.Empty;
+            if (this.Confirm)
+            {
+                sConfirm = "if (confirm('" + this.ConfirmMessage + "')){ [FUNCTIONS] };";
+            }
+
+            sOnClick = this.ClientSideScript;
+            if (this.Attributes["onclick"] != null)
+            {
+                sOnClick += this.Attributes["onclick"];
+            }
+
+            if (sConfirm != string.Empty)
+            {
+                sOnClick = sConfirm.Replace("[FUNCTIONS]", sOnClick);
+            }
+
+            if (this.EnableClientValidation)
+            {
+                sOnClick = "if (typeof(Page_ClientValidate) == 'function'){ if (Page_ClientValidate('" + this.ValidationGroup + "')){" + sOnClick + "};};";
+            }
+
+            string sPostBack = this.Page.ClientScript.GetPostBackEventReference(this, string.Empty);
+            this.postBackScript = sPostBack;
+            if (this.Enabled)
+            {
+                if (this.PostBack)
+                {
+                    if (!string.IsNullOrEmpty(sConfirm))
+                    {
+                        sPostBack = sConfirm.Replace("[FUNCTIONS]", sPostBack);
+                    }
+
+                    if (this.EnableClientValidation)
+                    {
+                        sPostBack = "if (typeof(Page_ClientValidate) == 'function'){ if (Page_ClientValidate('" + this.ValidationGroup + "')){" + sPostBack + "};};";
+                    }
+
+                    if (!string.IsNullOrEmpty(this.ClientSideScript))
+                    {
+                        sPostBack = this.ClientSideScript + sPostBack;
+                    }
+
+                    outerWriter.AddAttribute(HtmlTextWriterAttribute.Href, "javascript:" + sPostBack);
+                }
+                else if (!string.IsNullOrEmpty(this.NavigateUrl))
+                {
+                    outerWriter.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ResolveUrl(this.NavigateUrl));
+                }
 
                 if (!string.IsNullOrEmpty(sOnClick))
-				{
-                    if (!string.IsNullOrEmpty(ObjectId))
-					{
-						outerWriter.AddAttribute(HtmlTextWriterAttribute.Id, ObjectId);
-					}
-					outerWriter.AddAttribute(HtmlTextWriterAttribute.Href, sVoid);
-					outerWriter.AddAttribute(HtmlTextWriterAttribute.Onclick, sOnClick);
-				}
-                if (!string.IsNullOrEmpty(NavigateUrl))
-				{
-					outerWriter.RenderBeginTag(HtmlTextWriterTag.A);
-				}
+                {
+                    if (!string.IsNullOrEmpty(this.ObjectId))
+                    {
+                        outerWriter.AddAttribute(HtmlTextWriterAttribute.Id, this.ObjectId);
+                    }
 
-			}
-            if ((!string.IsNullOrEmpty(sOnClick) || !string.IsNullOrEmpty(sPostBack)) && string.IsNullOrEmpty(NavigateUrl))
-			{
-                if (!string.IsNullOrEmpty(ObjectId))
-				{
-					writer.AddAttribute(HtmlTextWriterAttribute.Id, ObjectId);
-				}
-				if (PostBack && Enabled)
-				{
-					writer.AddAttribute("onclick", sPostBack);
-				}
-                else if (!string.IsNullOrEmpty(sOnClick) && Enabled)
-				{
-					writer.AddAttribute(HtmlTextWriterAttribute.Onclick, sOnClick);
-				}
-			}
-			if (!Width.IsEmpty)
-			{
-				writer.AddStyleAttribute(HtmlTextWriterStyle.Width, Width.ToString());
-			}
+                    outerWriter.AddAttribute(HtmlTextWriterAttribute.Href, sVoid);
+                    outerWriter.AddAttribute(HtmlTextWriterAttribute.Onclick, sOnClick);
+                }
 
-			if (!Height.IsEmpty)
-			{
-				writer.AddStyleAttribute(HtmlTextWriterStyle.Height, Height.ToString());
-			}
-            else if (string.IsNullOrEmpty(CssClass))
-			{
-				writer.AddStyleAttribute(HtmlTextWriterStyle.Height, "22px");
-			}
-            if (!string.IsNullOrEmpty(CssClass))
-			{
-				writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClass);
-			}
-			if (Enabled)
-			{
-				writer.AddAttribute("onmouseover", "this.className='" + CssClass + "_over';");
-				writer.AddAttribute("onmouseout", "this.className='" + CssClass + "';");
-			}
+                if (!string.IsNullOrEmpty(this.NavigateUrl))
+                {
+                    outerWriter.RenderBeginTag(HtmlTextWriterTag.A);
+                }
+            }
 
-			writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            if ((!string.IsNullOrEmpty(sOnClick) || !string.IsNullOrEmpty(sPostBack)) && string.IsNullOrEmpty(this.NavigateUrl))
+            {
+                if (!string.IsNullOrEmpty(this.ObjectId))
+                {
+                    writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ObjectId);
+                }
 
-			if (ImageLocation.ToUpper() == "LEFT")
-			{
-				var innerWriter = new HtmlTextWriter(writer);
-				if (ImageUrl != "")
-				{
-					var imageWriter = new HtmlTextWriter(innerWriter);
-					imageWriter.AddAttribute(HtmlTextWriterAttribute.Src, Page.ResolveUrl(ImageUrl));
-					imageWriter.AddAttribute("hspace", HSpace);
-					imageWriter.AddAttribute("vspace", VSpace);
-					imageWriter.AddAttribute("border", "0");
-					//If [PostBack] Then
+                if (this.PostBack && this.Enabled)
+                {
+                    writer.AddAttribute("onclick", sPostBack);
+                }
+                else if (!string.IsNullOrEmpty(sOnClick) && this.Enabled)
+                {
+                    writer.AddAttribute(HtmlTextWriterAttribute.Onclick, sOnClick);
+                }
+            }
 
-					//    imageWriter.AddAttribute("onclick", sPostBack)
-					//End If
-					imageWriter.AddAttribute("align", ImageAlign);
-					imageWriter.RenderBeginTag(HtmlTextWriterTag.Img);
-					imageWriter.RenderEndTag();
-				}
+            if (!this.Width.IsEmpty)
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Width, this.Width.ToString());
+            }
 
-				innerWriter.Write("<span>" + Text + "</span>");
-			}
-			else if (ImageLocation.ToUpper() == "RIGHT")
-			{
-				var innerWriter = new HtmlTextWriter(writer);
-				innerWriter.Write("<span>" + Text + "</span>");
-				if (ImageUrl != "")
-				{
-					var imageWriter = new HtmlTextWriter(innerWriter);
-					imageWriter.AddAttribute(HtmlTextWriterAttribute.Src, Page.ResolveUrl(ImageUrl));
-					imageWriter.AddAttribute("hspace", HSpace);
-					imageWriter.AddAttribute("vspace", VSpace);
-					imageWriter.AddAttribute("border", "0");
-					//If [PostBack] Then
-					//    imageWriter.AddAttribute("onclick", sPostBack)
-					//End If
-					imageWriter.AddAttribute("align", ImageAlign);
-					imageWriter.RenderBeginTag(HtmlTextWriterTag.Img);
-					imageWriter.RenderEndTag();
-				}
-			}
-			else if (ImageLocation.ToUpper() == "TOP")
-			{
-				var innerWriter = new HtmlTextWriter(writer);
-				if (ImageUrl != "")
-				{
-					var imageWriter = new HtmlTextWriter(innerWriter);
-					imageWriter.AddAttribute(HtmlTextWriterAttribute.Src, Page.ResolveUrl(ImageUrl));
-					imageWriter.AddAttribute("hspace", HSpace);
-					imageWriter.AddAttribute("vspace", VSpace);
-					imageWriter.AddAttribute("border", "0");
-					//If [PostBack] Then
-					//    imageWriter.AddAttribute("onclick", sPostBack)
-					//End If
-					imageWriter.AddAttribute("align", ImageAlign);
-					imageWriter.RenderBeginTag(HtmlTextWriterTag.Img);
-					imageWriter.RenderEndTag();
-				}
-				innerWriter.Write("<br />");
-				innerWriter.Write("<span>" + Text + "</span>");
+            if (!this.Height.IsEmpty)
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Height, this.Height.ToString());
+            }
+            else if (string.IsNullOrEmpty(this.CssClass))
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Height, "22px");
+            }
 
-			}
+            if (!string.IsNullOrEmpty(this.CssClass))
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
+            }
 
-			//innerWriter.RenderEndTag()
-			writer.RenderEndTag();
-			if (!string.IsNullOrEmpty(NavigateUrl))
-			{
-				if (Enabled)
-				{
-					outerWriter.RenderEndTag();
-				}
-			}
+            if (this.Enabled)
+            {
+                writer.AddAttribute("onmouseover", "this.className='" + this.CssClass + "_over';");
+                writer.AddAttribute("onmouseout", "this.className='" + this.CssClass + "';");
+            }
 
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-		}
+            if (this.ImageLocation.ToUpper() == "LEFT")
+            {
+                var innerWriter = new HtmlTextWriter(writer);
+                if (this.ImageUrl != string.Empty)
+                {
+                    var imageWriter = new HtmlTextWriter(innerWriter);
+                    imageWriter.AddAttribute(HtmlTextWriterAttribute.Src, this.Page.ResolveUrl(this.ImageUrl));
+                    imageWriter.AddAttribute("hspace", this.HSpace);
+                    imageWriter.AddAttribute("vspace", this.VSpace);
+                    imageWriter.AddAttribute("border", "0");
 
+                    // If [PostBack] Then
 
-	}
+                    // imageWriter.AddAttribute("onclick", sPostBack)
+                    // End If
+                    imageWriter.AddAttribute("align", this.ImageAlign);
+                    imageWriter.RenderBeginTag(HtmlTextWriterTag.Img);
+                    imageWriter.RenderEndTag();
+                }
+
+                innerWriter.Write("<span>" + this.Text + "</span>");
+            }
+            else if (this.ImageLocation.ToUpper() == "RIGHT")
+            {
+                var innerWriter = new HtmlTextWriter(writer);
+                innerWriter.Write("<span>" + this.Text + "</span>");
+                if (this.ImageUrl != string.Empty)
+                {
+                    var imageWriter = new HtmlTextWriter(innerWriter);
+                    imageWriter.AddAttribute(HtmlTextWriterAttribute.Src, this.Page.ResolveUrl(this.ImageUrl));
+                    imageWriter.AddAttribute("hspace", this.HSpace);
+                    imageWriter.AddAttribute("vspace", this.VSpace);
+                    imageWriter.AddAttribute("border", "0");
+
+                    // If [PostBack] Then
+                    //    imageWriter.AddAttribute("onclick", sPostBack)
+                    // End If
+                    imageWriter.AddAttribute("align", this.ImageAlign);
+                    imageWriter.RenderBeginTag(HtmlTextWriterTag.Img);
+                    imageWriter.RenderEndTag();
+                }
+            }
+            else if (this.ImageLocation.ToUpper() == "TOP")
+            {
+                var innerWriter = new HtmlTextWriter(writer);
+                if (this.ImageUrl != string.Empty)
+                {
+                    var imageWriter = new HtmlTextWriter(innerWriter);
+                    imageWriter.AddAttribute(HtmlTextWriterAttribute.Src, this.Page.ResolveUrl(this.ImageUrl));
+                    imageWriter.AddAttribute("hspace", this.HSpace);
+                    imageWriter.AddAttribute("vspace", this.VSpace);
+                    imageWriter.AddAttribute("border", "0");
+
+                    // If [PostBack] Then
+                    //    imageWriter.AddAttribute("onclick", sPostBack)
+                    // End If
+                    imageWriter.AddAttribute("align", this.ImageAlign);
+                    imageWriter.RenderBeginTag(HtmlTextWriterTag.Img);
+                    imageWriter.RenderEndTag();
+                }
+
+                innerWriter.Write("<br />");
+                innerWriter.Write("<span>" + this.Text + "</span>");
+            }
+
+            // innerWriter.RenderEndTag()
+            writer.RenderEndTag();
+            if (!string.IsNullOrEmpty(this.NavigateUrl))
+            {
+                if (this.Enabled)
+                {
+                    outerWriter.RenderEndTag();
+                }
+            }
+        }
+    }
 }

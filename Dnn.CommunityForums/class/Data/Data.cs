@@ -1,57 +1,58 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-
-using System.Configuration;
 
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
-	public class Connection
-	{
-#region Private Members
-		private Framework.Providers.ProviderConfiguration _providerConfiguration = Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
-		internal string connectionString;
-		internal string objectQualifier;
-		internal string databaseOwner;
-		internal string databaseObjectPrefix = "activeforums_";
-		internal string dbPrefix;
-#endregion
-#region Constructors
-		public Connection()
-		{
-			connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
-			var objProvider = (Framework.Providers.Provider)(_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
+    using System.Configuration;
 
-			objectQualifier = objProvider.Attributes["objectQualifier"];
-			if (objectQualifier != "" && objectQualifier.EndsWith("_") == false)
-			{
-				objectQualifier += "_";
-			}
+    public class Connection
+    {
+        #region Private Members
+        private Framework.Providers.ProviderConfiguration providerConfiguration = Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
+        internal string connectionString;
+        internal string objectQualifier;
+        internal string databaseOwner;
+        internal string databaseObjectPrefix = "activeforums_";
+        internal string dbPrefix;
 
-			databaseOwner = objProvider.Attributes["databaseOwner"];
-			if (databaseOwner != "" && databaseOwner.EndsWith(".") == false)
-			{
-				databaseOwner += ".";
-			}
-			dbPrefix = databaseOwner + objectQualifier + databaseObjectPrefix;
-		}
-#endregion
-	}
+        #endregion
+        #region Constructors
+        public Connection()
+        {
+            this.connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
+            var objProvider = (Framework.Providers.Provider)this.providerConfiguration.Providers[this.providerConfiguration.DefaultProvider];
+
+            this.objectQualifier = objProvider.Attributes["objectQualifier"];
+            if (this.objectQualifier != string.Empty && this.objectQualifier.EndsWith("_") == false)
+            {
+                this.objectQualifier += "_";
+            }
+
+            this.databaseOwner = objProvider.Attributes["databaseOwner"];
+            if (this.databaseOwner != string.Empty && this.databaseOwner.EndsWith(".") == false)
+            {
+                this.databaseOwner += ".";
+            }
+
+            this.dbPrefix = this.databaseOwner + this.objectQualifier + this.databaseObjectPrefix;
+        }
+        #endregion
+    }
 }
-

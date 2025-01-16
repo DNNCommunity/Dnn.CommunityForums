@@ -1,33 +1,33 @@
+// Copyright (c) by DNN Community
 //
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+// DNN Community licenses this file to you under the MIT license.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Web.UI.WebControls;
-using System.Text;
-using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Text;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     public partial class admin_manageforums : ActiveAdminBase
     {
         public string imgOn = string.Empty;
@@ -40,23 +40,19 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            cbForumEditor.CallbackEvent += cbForumEditor_Callback;
-
+            this.cbForumEditor.CallbackEvent += this.cbForumEditor_Callback;
         }
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
-            imgOn = Page.ResolveUrl(Globals.ModulePath + "images/admin_check.png");
-            imgOff = Page.ResolveUrl(Globals.ModulePath + "images/admin_stop.png");
+            this.imgOn = this.Page.ResolveUrl(Globals.ModulePath + "images/admin_check.png");
+            this.imgOff = this.Page.ResolveUrl(Globals.ModulePath + "images/admin_stop.png");
 
-            litButtons.Text = "<div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|G');\">[RESX:NewForumGroup]</div><div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|F');\">[RESX:NewForum]</div>";
+            this.litButtons.Text = "<div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|G');\">[RESX:NewForumGroup]</div><div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|F');\">[RESX:NewForum]</div>";
 
-
-            GetControl("admin_manageforums_home", string.Empty);
-
-
+            this.GetControl("admin_manageforums_home", string.Empty);
         }
 
         private void cbForumEditor_Callback(object sender, Controls.CallBackEventArgs e)
@@ -68,17 +64,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     sOptions = e.Parameters[1];
                 }
-                GetControl(e.Parameters[0], sOptions);
+
+                this.GetControl(e.Parameters[0], sOptions);
                 System.IO.StringWriter stringWriter = new System.IO.StringWriter();
                 HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
-                plhForumEditor.RenderControl(e.Output);
+                this.plhForumEditor.RenderControl(e.Output);
             }
             catch (Exception ex)
             {
-
             }
         }
-        
+
         #endregion
 
         #region Private Methods
@@ -86,21 +82,21 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                plhForumEditor.Controls.Clear();
+                this.plhForumEditor.Controls.Clear();
                 string ctlPath = string.Empty;
                 string ctlId = string.Empty;
                 if (view == "admin_manageforums_home")
                 {
-                    ctlPath = Page.ResolveUrl(Globals.ModulePath + "controls/admin_manageforums_home.ascx");
+                    ctlPath = this.Page.ResolveUrl(Globals.ModulePath + "controls/admin_manageforums_home.ascx");
                     ctlId = "admin_manageforums_home";
                 }
                 else
                 {
-                    ctlPath = Page.ResolveUrl(Globals.ModulePath + "controls/admin_manageforums_forumeditor.ascx");
+                    ctlPath = this.Page.ResolveUrl(Globals.ModulePath + "controls/admin_manageforums_forumeditor.ascx");
                     ctlId = "admin_manageforums_forumeditor";
                 }
 
-                ActiveAdminBase ctl = (ActiveAdminBase)(LoadControl(ctlPath));
+                ActiveAdminBase ctl = (ActiveAdminBase)this.LoadControl(ctlPath);
                 ctl.ID = ctlId;
                 ctl.ModuleConfiguration = this.ModuleConfiguration;
 
@@ -108,19 +104,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ctl.Params = options;
                 }
-                if (!(plhForumEditor.Controls.Contains(ctl)))
+
+                if (!this.plhForumEditor.Controls.Contains(ctl))
                 {
-                    plhForumEditor.Controls.Add(ctl);
+                    this.plhForumEditor.Controls.Add(ctl);
                 }
             }
             catch (Exception ex)
             {
                 LiteralControl lit = new LiteralControl();
                 lit.Text = ex.Message;
-                plhForumEditor.Controls.Add(lit);
+                this.plhForumEditor.Controls.Add(lit);
             }
-
-
         }
 
         #endregion

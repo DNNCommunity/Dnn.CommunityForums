@@ -60,7 +60,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <InstallInclude Include="**\*.jpg" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.bmp" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
 		<InstallInclude Include="**\*.xml" Exclude="packages\**;**\node_modules\**;clientApp\**;bin\**;.git\**;.vs\**;*.GhostDoc*" />
-		<InstallInclude Include="**\*.config" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+		<InstallInclude Include="**\*.config" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**;**\app.config;**\packages.config" />
     </ItemGroup>
 
     <CreateItem Include="$(DNNFileName).dnn">

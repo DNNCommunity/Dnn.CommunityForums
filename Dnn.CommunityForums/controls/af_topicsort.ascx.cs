@@ -1,48 +1,49 @@
+﻿// Copyright (c) by DNN Community
 //
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+// DNN Community licenses this file to you under the MIT license.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke;
 
     public partial class af_topicsorter : ForumBase
     {
-        private string _defaultSort = "ASC";
+        private string defaultSort = "ASC";
+
         public string DefaultSort
         {
             get
             {
-                return _defaultSort;
+                return this.defaultSort;
             }
+
             set
             {
-                _defaultSort = value;
+                this.defaultSort = value;
             }
         }
         #region Controls
@@ -50,24 +51,24 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             try
             {
-                //Put user code to initialize the page here
-                if (!Page.IsPostBack)
+                // Put user code to initialize the page here
+                if (!this.Page.IsPostBack)
                 {
-                    string Sort = DefaultSort;
-                    if (Request.Params[ParamKeys.Sort] != null)
+                    string sort = this.DefaultSort;
+                    if (this.Request.Params[ParamKeys.Sort] != null)
                     {
-                        Sort = Request.Params[ParamKeys.Sort];
+                        sort = this.Request.Params[ParamKeys.Sort];
                     }
-                    drpSort.SelectedIndex = drpSort.Items.IndexOf(drpSort.Items.FindByValue(Sort));
-                    drpSort.Items[0].Text = GetSharedResource(drpSort.Items[0].Text);
-                    drpSort.Items[1].Text = GetSharedResource(drpSort.Items[1].Text);
-                }
 
+                    this.drpSort.SelectedIndex = this.drpSort.Items.IndexOf(this.drpSort.Items.FindByValue(sort));
+                    this.drpSort.Items[0].Text = this.GetSharedResource(this.drpSort.Items[0].Text);
+                    this.drpSort.Items[1].Text = this.GetSharedResource(this.drpSort.Items[1].Text);
+                }
             }
             catch (Exception exc)
             {
@@ -78,44 +79,39 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region  Web Form Designer Generated Code
 
-        //This call is required by the Web Form Designer.
+        // This call is required by the Web Form Designer.
         [System.Diagnostics.DebuggerStepThrough()]
         private void InitializeComponent()
         {
         }
 
-        //NOTE: The following placeholder declaration is required by the Web Form Designer.
-        //Do not delete or move it.
-        private object designerPlaceholderDeclaration;
-
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
-            //CODEGEN: This method call is required by the Web Form Designer
-            //Do not modify it using the code editor.
+            // CODEGEN: This method call is required by the Web Form Designer
+            // Do not modify it using the code editor.
             this.LocalResourceFile = Globals.SharedResourceFile;
-            InitializeComponent();
+            this.InitializeComponent();
 
-            drpSort.SelectedIndexChanged += new System.EventHandler(drpSort_SelectedIndexChanged);
-
+            this.drpSort.SelectedIndexChanged += new System.EventHandler(this.drpSort_SelectedIndexChanged);
         }
 
         #endregion
 
         private void drpSort_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            var sort = drpSort.SelectedItem.Value;
-            var dest = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(TabId, "",
+            var sort = this.drpSort.SelectedItem.Value;
+            var dest = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(this.TabId, string.Empty,
                                                              new[]
                                                                  {
                                                                      ParamKeys.ViewType + "=" + Views.Topic,
-                                                                     ParamKeys.ForumId + "=" + ForumId,
-                                                                     ParamKeys.TopicId + "=" + TopicId,
-                                                                     ParamKeys.Sort + "=" + sort
+                                                                     ParamKeys.ForumId + "=" + this.ForumId,
+                                                                     ParamKeys.TopicId + "=" + this.TopicId,
+                                                                     ParamKeys.Sort + "=" + sort,
                                                                  });
-            Response.Redirect(dest);
+            this.Response.Redirect(dest, false);
+            this.Context.ApplicationInstance.CompleteRequest();
         }
     }
-
 }

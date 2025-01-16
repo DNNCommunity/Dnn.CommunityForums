@@ -1,29 +1,28 @@
+﻿// Copyright (c) by DNN Community
 //
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+// DNN Community licenses this file to you under the MIT license.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-// 
-
-using System;
-using System.Web;
-using System.Collections.Generic;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
 
     public partial class af_searchquick : ForumBase
     {
@@ -31,31 +30,32 @@ namespace DotNetNuke.Modules.ActiveForums
         public int FID;
         public int TID;
 
-
         #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             try
             {
-                ForumModuleId = MID;
-                if (ForumId < 1)
+                this.ForumModuleId = this.MID;
+                if (this.ForumId < 1)
                 {
-                    ForumId = FID;
-                }
-                if (ForumTabId < 1)
-                {
-                    ForumTabId = TID;
-                }
-                if (Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["GroupId"]))
-                {
-                    SocialGroupId = Convert.ToInt32(Request.QueryString["GroupId"]);
+                    this.ForumId = this.FID;
                 }
 
-                //Put user code to initialize the page here
-                txtSearch.Attributes.Add("onkeydown", "if(event.keyCode == 13){document.getElementById('" + lnkSearch.ClientID + "').click();}");
+                if (this.ForumTabId < 1)
+                {
+                    this.ForumTabId = this.TID;
+                }
+
+                if (this.Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString["GroupId"]))
+                {
+                    this.SocialGroupId = Convert.ToInt32(this.Request.QueryString["GroupId"]);
+                }
+
+                // Put user code to initialize the page here
+                this.txtSearch.Attributes.Add("onkeydown", "if(event.keyCode == 13){document.getElementById('" + this.lnkSearch.ClientID + "').click();}");
             }
             catch (Exception exc)
             {
@@ -65,34 +65,34 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
 
-
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
-            LocalResourceFile = Globals.SharedResourceFile;
+            this.LocalResourceFile = Globals.SharedResourceFile;
 
-            lnkSearch.Click += lnkSearch_Click;
+            this.lnkSearch.Click += this.lnkSearch_Click;
         }
-
 
         private void lnkSearch_Click(object sender, EventArgs e)
         {
-            if (txtSearch.Text.Trim() != "")
+            if (this.txtSearch.Text.Trim() != string.Empty)
             {
-                var @params = new List<string> { 
-                    $"{ParamKeys.ViewType}={Views.Search}", 
-                    $"{ParamKeys.ForumId}={ForumId}", 
-                    $"{SearchParamKeys.Query}={HttpUtility.UrlEncode(txtSearch.Text.Trim())}" 
+                var @params = new List<string>
+                {
+                    $"{ParamKeys.ViewType}={Views.Search}",
+                    $"{ParamKeys.ForumId}={this.ForumId}",
+                    $"{SearchParamKeys.Query}={System.Net.WebUtility.UrlEncode(this.txtSearch.Text.Trim())}",
                 };
 
-                if (SocialGroupId > 0)
-                    @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                if (this.SocialGroupId > 0)
+                {
+                    @params.Add($"{Literals.GroupId}={this.SocialGroupId}");
+                }
 
-                Response.Redirect(NavigateUrl(ForumTabId, "", @params.ToArray()));
+                this.Response.Redirect(this.NavigateUrl(this.ForumTabId, string.Empty, @params.ToArray()), false);
+                this.Context.ApplicationInstance.CompleteRequest();
             }
-
         }
     }
-
 }

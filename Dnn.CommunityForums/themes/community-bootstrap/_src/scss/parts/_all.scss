@@ -1,6 +1,4 @@
 
-.dnn-community-forums{
-
     .dcf-col-icon{
 
         font-size: $font-xs;
@@ -10,4 +8,9 @@
         @include text-input-border;
     }
 
-}
+    .dcf-table-body-row{
+        .dcf-col{
+            padding-top: $spacer;
+            padding-bottom: $spacer;
+        }
+    }

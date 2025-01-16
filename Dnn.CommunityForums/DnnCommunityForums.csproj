@@ -33,10 +33,14 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -63,6 +67,12 @@
     <DebugType>none</DebugType>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke, Version=9.9.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -109,6 +119,9 @@
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -184,6 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="06.04.00.txt" />
+    <Content Include="08.02.00.txt" />
     <Content Include="08.01.00.txt" />
     <Content Include="08.00.00.txt" />
     <Content Include="07.00.11.txt" />
@@ -205,6 +219,10 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="config\templates\AdminWatchEmail.ascx" />
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
+    <None Include="app.config" />
     <None Include="DnnCommunityForums_Symbols.dnn">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -218,10 +236,14 @@
     <Content Include="config\defaultgroupforums.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="config\templates\Likes.ascx" />
+    <Content Include="config\templates\TopicResults.ascx" />
+    <Content Include="config\templates\SearchResults.ascx" />
     <Content Include="config\templates\ToolbarSearchPopup.ascx" />
+    <Content Include="config\templates\PostActions.ascx" />
+    <Content Include="config\templates\TopicActions.ascx" />
     <Content Include="config\templates\TopicSplitButtons.ascx" />
     <Content Include="config\templates\TopicsView.ascx" />
-    <Content Include="config\templates\BlogList.ascx" />
     <Content Include="config\templates\DailyDigest.ascx" />
     <Content Include="config\templates\ForumView.ascx" />
     <Content Include="config\templates\QuickReply.ascx" />
@@ -236,7 +258,6 @@
     <Content Include="config\templates\TopicView.ascx" />
     <Content Include="config\templates\ForumDirectory.ascx" />
     <Content Include="config\templates\_MemberList.ascx" />
-    <Content Include="config\templates\ForumTracking.ascx" />
     <Content Include="config\templates\ToolBar.ascx" />
     <Content Include="config\templates\_UserProfile.ascx" />
     <Content Include="controls\admin_properties.ascx">
@@ -253,6 +274,7 @@
     </Content>
     <Content Include="controls\af_polls.ascx" />
     <Content Include="controls\af_pollvote.ascx" />
+    <Content Include="controls\af_likes.ascx" />
     <Content Include="controls\profile_mysubscriptions.ascx" />
     <Content Include="controls\af_sendto.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -281,6 +303,9 @@
     <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\ForumSettings.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\Messages.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\LegacyTokenResources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\SharedResources.nl-NL.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -299,7 +324,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\WhatsNew.ascx.es-ES.resx" />
-    <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.de-DE.resx" />
+    <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.de-DE.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\ForumSettings.ascx.de-DE.resx" />
     <EmbeddedResource Include="App_LocalResources\Messages.ascx.de-DE.resx" />
     <EmbeddedResource Include="App_LocalResources\SharedResources.de-DE.resx">
@@ -309,7 +336,9 @@
     <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\ForumSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\Messages.ascx.fr-FR.resx" />
-    <EmbeddedResource Include="App_LocalResources\SharedResources.fr-FR.resx" />
+    <EmbeddedResource Include="App_LocalResources\SharedResources.fr-FR.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\WhatsNew.ascx.fr-FR.resx" />
     <EmbeddedResource Include="CustomControls\Resources\ActiveGrid.js" />
     <EmbeddedResource Include="CustomControls\Resources\asc.gif" />
@@ -374,7 +403,6 @@
     <Content Include="scripts\afattach.js" />
     <Content Include="scripts\afcommon.js" />
     <Content Include="scripts\afdebug.js" />
-    <Content Include="scripts\afmod.js" />
     <Content Include="scripts\amlib.js" />
     <Content Include="scripts\blank.html" />
     <Content Include="scripts\calendar.css" />
@@ -740,19 +768,10 @@
     <Content Include="themes\community-bootstrap\images\yellow_star_03.gif" />
     <Content Include="themes\community-bootstrap\images\yellow_star_04.gif" />
     <Content Include="themes\community-bootstrap\images\yellow_star_05.gif" />
-    <Content Include="themes\community-bootstrap\templates\AdminWatchEmail.ascx" />
     <Content Include="themes\community-bootstrap\templates\ForumView.ascx" />
-    <Content Include="themes\community-bootstrap\templates\ModAlert.ascx" />
-    <Content Include="themes\community-bootstrap\templates\PostApproved.ascx" />
-    <Content Include="themes\community-bootstrap\templates\PostDeleted.ascx" />
-    <Content Include="themes\community-bootstrap\templates\PostMoved.ascx" />
-    <Content Include="themes\community-bootstrap\templates\PostPending.ascx" />
-    <Content Include="themes\community-bootstrap\templates\PostRejected.ascx" />
     <Content Include="themes\community-bootstrap\templates\ProfileInfo.ascx" />
     <Content Include="themes\community-bootstrap\templates\QuickReply.ascx" />
     <Content Include="themes\community-bootstrap\templates\ReplyEditor.ascx" />
-    <Content Include="themes\community-bootstrap\templates\SubscribedEmail.ascx" />
-    <Content Include="themes\community-bootstrap\templates\ToolBar.ascx" />
     <Content Include="themes\community-bootstrap\templates\TopicEditor.ascx" />
     <Content Include="themes\community-bootstrap\templates\TopicsView.ascx" />
     <Content Include="themes\community-bootstrap\templates\TopicView.ascx" />
@@ -901,19 +920,10 @@
     <Content Include="themes\community-default\images\yellow_star_03.gif" />
     <Content Include="themes\community-default\images\yellow_star_04.gif" />
     <Content Include="themes\community-default\images\yellow_star_05.gif" />
-    <Content Include="themes\community-default\templates\AdminWatchEmail.ascx" />
     <Content Include="themes\community-default\templates\ForumView.ascx" />
-    <Content Include="themes\community-default\templates\ModAlert.ascx" />
-    <Content Include="themes\community-default\templates\PostApproved.ascx" />
-    <Content Include="themes\community-default\templates\PostDeleted.ascx" />
-    <Content Include="themes\community-default\templates\PostMoved.ascx" />
-    <Content Include="themes\community-default\templates\PostPending.ascx" />
-    <Content Include="themes\community-default\templates\PostRejected.ascx" />
+    <Content Include="config\templates\PostPending.ascx" />
     <Content Include="themes\community-default\templates\ProfileInfo.ascx" />
     <Content Include="themes\community-default\templates\QuickReply.ascx" />
-    <Content Include="themes\community-default\templates\ReplyEditor.ascx" />
-    <Content Include="themes\community-default\templates\SubscribedEmail.ascx" />
-    <Content Include="themes\community-default\templates\ToolBar.ascx" />
     <Content Include="themes\community-default\templates\TopicEditor.ascx" />
     <Content Include="themes\community-default\templates\TopicsView.ascx" />
     <Content Include="themes\community-default\templates\TopicView.ascx" />
@@ -1244,6 +1254,7 @@
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.10.SqlDataProvider" />
+    <None Include="sql\08.02.00.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\StatsTemplate.ascx" />
     <Content Include="config\defaultsetup.config">
@@ -1309,7 +1320,6 @@
     <Content Include="scripts\afutils.js" />
     <Content Include="config\templates\TopicEditor.ascx" />
     <Content Include="config\templates\ProfileInfo.ascx" />
-    <Content Include="config\templates\BlogView.ascx" />
     <Content Include="config\templates\UsersOnline.ascx" />
     <Content Include="themes\_legacy\theme.css" />
     <Content Include="feeds.aspx">
@@ -1338,6 +1348,8 @@
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\ForumGroupController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
+    <Compile Include="Controllers\ForumTopicController.cs" />
+    <Compile Include="Controllers\ForumTrackingController.cs" />
     <Compile Include="Controllers\ModerationController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\ProcessQueueController.cs" />
@@ -1350,8 +1362,16 @@
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\TopicRatingController.cs" />
     <Compile Include="Controllers\TopicTagController.cs" />
+    <Compile Include="Controllers\TopicTrackingController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\ForumUserController.cs" />
+    <Compile Include="controls\af_likes.ascx.cs">
+      <DependentUpon>af_likes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controls\af_likes.ascx.designer.cs">
+      <DependentUpon>af_likes.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controls\profile_mysubscriptions.ascx.cs">
       <DependentUpon>profile_mysubscriptions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1363,11 +1383,20 @@
     <Compile Include="Deprecated\Cache.cs" />
     <Compile Include="Deprecated\MiniPager.cs" />
     <Compile Include="Deprecated\Utilities.cs" />
+    <Compile Include="Entities\AuthorInfo.cs" />
     <Compile Include="Entities\CategoryInfo.cs" />
     <Compile Include="Entities\ContentInfo.cs" />
+    <Compile Include="Entities\FeatureSettings.cs" />
     <Compile Include="Entities\ForumCollection.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
     <Compile Include="Entities\ForumInfo.cs" />
+    <Compile Include="Enums\ReplyStatus.cs" />
+    <Compile Include="Enums\TopicStatus.cs" />
+    <Compile Include="Enums\ForumStatus.cs" />
+    <Compile Include="Entities\ForumTopicInfo.cs" />
+    <Compile Include="Entities\ForumTrackingInfo.cs" />
+    <Compile Include="Entities\ForumUserInfo.cs" />
+    <Compile Include="Entities\IPostInfo.cs" />
     <Compile Include="Entities\LikeInfo.cs" />
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Entities\FilterInfo.cs" />
@@ -1403,6 +1432,11 @@
     <Compile Include="Entities\PropertyInfo.cs" />
     <Compile Include="Entities\ReplyInfo.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
+    <Compile Include="Entities\TopicTrackingInfo.cs" />
+    <Compile Include="Enums\ForumStatus.cs" />
+    <Compile Include="Enums\PostStatus.cs" />
+    <Compile Include="Enums\ReplyStatus.cs" />
+    <Compile Include="Enums\TopicStatus.cs" />
     <Compile Include="Services\ProcessType.cs" />
     <Compile Include="Entities\ProcessQueueInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -1431,6 +1465,9 @@
     <Compile Include="Services\Controllers\LikeController.cs" />
     <Compile Include="Services\ForumAuthorizeAttribute.cs" />
     <Compile Include="Services\ServicesHelper.cs" />
+    <Compile Include="Services\Tokens\ForumsModuleTokenReplacer.cs" />
+    <Compile Include="Services\Tokens\ResourceStringTokenReplacer.cs" />
+    <Compile Include="Services\Tokens\TokenReplacer.cs" />
     <Compile Include="Services\URLNavigator.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1656,6 +1693,8 @@
       <DependentUpon>ForumSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="ViewModels\Forum.cs" />
+    <Compile Include="ViewModels\Topic.cs" />
     <Compile Include="WhatsNew.ascx.designer.cs">
       <DependentUpon>WhatsNew.ascx</DependentUpon>
     </Compile>
@@ -1991,7 +2030,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="config\templates\BlogsView.ascx" />
     <None Include="sql\05.00.01.SqlDataProvider" />
     <None Include="sql\05.01.00.SqlDataProvider" />
     <None Include="themes\community-bootstrap\custom\README.md" />
@@ -2071,7 +2109,12 @@
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.NetAnalyzers.8.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.NetAnalyzers.8.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.NetAnalyzers.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

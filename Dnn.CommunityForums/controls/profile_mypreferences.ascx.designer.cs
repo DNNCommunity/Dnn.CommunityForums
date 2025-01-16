@@ -60,6 +60,33 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.WebControls.CheckBox chkPrefTopicSubscribe;
 
         /// <summary>
+        /// chkLikesNotificationsEnabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkLikesNotificationsEnabled;
+
+        /// <summary>
+        /// chkPinNotificationsEnabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkPinNotificationsEnabled;
+
+        /// <summary>
+        /// chkEnableNotificationsForOwnContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkEnableNotificationsForOwnContent;
+
+        /// <summary>
         /// chkPrefBlockAvatars control.
         /// </summary>
         /// <remarks>

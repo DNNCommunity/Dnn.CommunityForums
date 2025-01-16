@@ -1,96 +1,105 @@
+// Copyright (c) by DNN Community
 //
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+// DNN Community licenses this file to you under the MIT license.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	public class Tab
-	{
-		private string _text;
-		private string _CSSClass;
-		private string _onClick = string.Empty;
-		private string _controlKey = string.Empty;
-		private TabContent _tabContent;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
 
-		public string Text
-		{
-			get
-			{
-				return _text;
-			}
-			set
-			{
-				_text = value;
-			}
-		}
-		public string CSSClass
-		{
-			get
-			{
-				return _CSSClass;
-			}
-			set
-			{
-				_CSSClass = value;
-			}
-		}
-		public string OnClientClick
-		{
-			get
-			{
-				return _onClick;
-			}
-			set
-			{
-				_onClick = value;
-			}
-		}
-		public string ControlKey
-		{
-			get
-			{
-				return _controlKey;
-			}
-			set
-			{
-				_controlKey = value;
-			}
-		}
+    public class Tab
+    {
+        private string text;
+        private string cSSClass;
+        private string onClick = string.Empty;
+        private string controlKey = string.Empty;
+        private TabContent tabContent;
 
-		public TabContent Content
-		{
-			get
-			{
-				return _tabContent;
-			}
-			set
-			{
-				_tabContent = value;
-			}
-		}
+        public string Text
+        {
+            get
+            {
+                return this.text;
+            }
 
-	}
-	public class TabContent : System.Web.UI.Control
-	{
-	}
+            set
+            {
+                this.text = value;
+            }
+        }
+
+        public string CSSClass
+        {
+            get
+            {
+                return this.cSSClass;
+            }
+
+            set
+            {
+                this.cSSClass = value;
+            }
+        }
+
+        public string OnClientClick
+        {
+            get
+            {
+                return this.onClick;
+            }
+
+            set
+            {
+                this.onClick = value;
+            }
+        }
+
+        public string ControlKey
+        {
+            get
+            {
+                return this.controlKey;
+            }
+
+            set
+            {
+                this.controlKey = value;
+            }
+        }
+
+        public TabContent Content
+        {
+            get
+            {
+                return this.tabContent;
+            }
+
+            set
+            {
+                this.tabContent = value;
+            }
+        }
+    }
+
+    public class TabContent : System.Web.UI.Control
+    {
+    }
 }

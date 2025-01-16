@@ -21,7 +21,7 @@
             <select id="drpForums"></select>
         </div>
         <ul class="dnnActions dnnClear">
-            <li><a href="#" onclick="amaf_moveTopic(); return false;" class="dnnPrimaryAction">[RESX:Save]</a></li>
+            <li><a href="#" onclick="amaf_moveTopic(); return false;" class="dnnPrimaryAction">[RESX:Move]</a></li>
             <li><a href="#" onclick="am.UI.CloseDiv('aftopicmove'); return false;" class="dnnSecondaryAction">
             [RESX:Cancel]</a></li>
         </ul>

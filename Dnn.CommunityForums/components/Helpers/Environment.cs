@@ -1,40 +1,43 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Web.UI;
-using System.Reflection;
-using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Reflection;
+    using System.Web.UI;
+
+    using DotNetNuke.Instrumentation;
+
     public class Environment
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Environment));
 
-        public static bool UpdateBreadCrumb(ControlCollection ctrls, string ForumBread)
+        public static bool UpdateBreadCrumb(ControlCollection ctrls, string forumBread)
         {
-            if (string.IsNullOrEmpty(ForumBread))
+            if (string.IsNullOrEmpty(forumBread))
             {
                 return true;
             }
-            string[] bcText = ForumBread.Split('|');
+
+            string[] bcText = forumBread.Split('|');
             try
             {
                 foreach (Control ctrl in ctrls)
@@ -48,11 +51,12 @@ namespace DotNetNuke.Modules.ActiveForums
                             string css = "SkinObject";
                             if (cssObject != null)
                             {
-                                if (!(string.IsNullOrEmpty(cssObject.ToString())))
+                                if (!string.IsNullOrEmpty(cssObject.ToString()))
                                 {
                                     css = cssObject.ToString();
                                 }
                             }
+
                             string sText = string.Empty;
                             if (o != null)
                             {
@@ -62,21 +66,24 @@ namespace DotNetNuke.Modules.ActiveForums
                             string sBread = string.Empty;
                             foreach (string s in bcText)
                             {
-                                if (!(string.IsNullOrEmpty(s)))
+                                if (!string.IsNullOrEmpty(s))
                                 {
                                     var newValue = s.Replace("<a ", "<a class=\"" + css + "\" ");
                                     sBread += sText + newValue;
                                 }
                             }
-                            ((System.Web.UI.WebControls.Label)(ctrl.FindControl("lblBreadCrumb"))).Text += sBread;
+
+                            ((System.Web.UI.WebControls.Label)ctrl.FindControl("lblBreadCrumb")).Text += sBread;
                             break;
                         }
                     }
+
                     if (ctrl.Controls.Count > 0)
                     {
-                        UpdateBreadCrumb(ctrl.Controls, ForumBread);
+                        UpdateBreadCrumb(ctrl.Controls, forumBread);
                     }
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -85,40 +92,43 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public static bool UpdateMeta(ref DotNetNuke.Framework.CDefault bp, string Title, string Description, string Keywords)
+        public static bool UpdateMeta(ref DotNetNuke.Framework.CDefault bp, string title, string description, string keywords)
         {
             if (bp == null)
             {
                 return false;
             }
+
             try
             {
-                if (!(string.IsNullOrEmpty(Title)))
+                if (!string.IsNullOrEmpty(title))
                 {
-                    if (!(string.IsNullOrEmpty(bp.Title)))
+                    if (!string.IsNullOrEmpty(bp.Title))
                     {
-                        bp.Title = Title.Replace("[VALUE]", bp.Title);
+                        bp.Title = title.Replace("[VALUE]", bp.Title);
                     }
                     else
                     {
-                        bp.Title = Title.Replace("[VALUE]", string.Empty);
+                        bp.Title = title.Replace("[VALUE]", string.Empty);
                     }
                 }
-                if (!(string.IsNullOrEmpty(Description)))
+
+                if (!string.IsNullOrEmpty(description))
                 {
-                    Description = Description.Replace(System.Environment.NewLine, " ");
-                    if (!(string.IsNullOrEmpty(bp.Description)))
+                    description = description.Replace(System.Environment.NewLine, " ");
+                    if (!string.IsNullOrEmpty(bp.Description))
                     {
-                        bp.Description = Description.Replace("[VALUE]", bp.Description);
+                        bp.Description = description.Replace("[VALUE]", bp.Description);
                     }
                     else
                     {
-                        bp.Description = Description.Replace("[VALUE]", string.Empty);
+                        bp.Description = description.Replace("[VALUE]", string.Empty);
                     }
                 }
-                if (!(string.IsNullOrEmpty(Keywords)))
+
+                if (!string.IsNullOrEmpty(keywords))
                 {
-                    if (!(string.IsNullOrEmpty(bp.KeyWords)))
+                    if (!string.IsNullOrEmpty(bp.KeyWords))
                     {
                         string cKey = bp.KeyWords.Trim();
                         if (cKey.StartsWith(","))
@@ -129,19 +139,21 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             cKey = cKey.Substring(0, cKey.Length - 1);
                         }
-                        if (Keywords.StartsWith("[VALUE]"))
+
+                        if (keywords.StartsWith("[VALUE]"))
                         {
                             cKey += ",";
                         }
-                        else if (Keywords.EndsWith("[VALUE]"))
+                        else if (keywords.EndsWith("[VALUE]"))
                         {
                             cKey = "," + cKey;
                         }
-                        bp.KeyWords = Keywords.Replace("[VALUE]", cKey);
+
+                        bp.KeyWords = keywords.Replace("[VALUE]", cKey);
                     }
                     else
                     {
-                        bp.KeyWords = Keywords.Replace("[VALUE]", string.Empty);
+                        bp.KeyWords = keywords.Replace("[VALUE]", string.Empty);
                     }
                 }
             }
@@ -155,6 +167,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         Logger.Error(ex.InnerException.Message, ex.InnerException);
                     }
                 }
+
                 return false;
             }
 

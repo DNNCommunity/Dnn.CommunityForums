@@ -240,60 +240,6 @@
   <data name="ReplyPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Risposta</value>
   </data>
-  <data name="SecGrid:attach.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Allegare</value>
-  </data>
-  <data name="SecGrid:create.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Creare</value>
-  </data>
-  <data name="SecGrid:delete.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Cancellare</value>
-  </data>
-  <data name="SecGrid:edit.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Redigere</value>
-  </data>
-  <data name="SecGrid:lock.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Serratura</value>
-  </data>
-  <data name="SecGrid:modapprove.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Approvare</value>
-  </data>
-  <data name="SecGrid:moddelete.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Cancellare</value>
-  </data>
-  <data name="SecGrid:modedit.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Redigere</value>
-  </data>
-  <data name="SecGrid:modlock.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Serratura</value>
-  </data>
-  <data name="SecGrid:modmove.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Sposta</value>
-  </data>
-  <data name="SecGrid:modpin.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Spilla</value>
-  </data>
-  <data name="SecGrid:moduser.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Utente</value>
-  </data>
-  <data name="SecGrid:pin.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Spilla</value>
-  </data>
-  <data name="SecGrid:read.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Leggere</value>
-  </data>
-  <data name="SecGrid:reply.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Risposta</value>
-  </data>
-  <data name="SecGrid:subscribe.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Abbonarsi</value>
-  </data>
-  <data name="SecGrid:user.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Vista</value>
-  </data>
-  <data name="SecGrid:view.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Vista</value>
-  </data>
   <data name="SignatureDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Disabile</value>
   </data>
@@ -377,5 +323,77 @@
   </data>
   <data name="Yes.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Sì</value>
+  </data>
+  <data name="[RESX:Ban].Text" xml:space="preserve">
+    <value>Vietare</value>
+  </data>
+  <data name="[RESX:SecGrid:pin].Text" xml:space="preserve">
+    <value>Spilla</value>
+  </data>
+  <data name="[RESX:SecGrid:attach].Text" xml:space="preserve">
+    <value>Allegare</value>
+  </data>
+  <data name="[RESX:SecGrid:ban].Text" xml:space="preserve">
+    <value>Vietare</value>
+  </data>
+  <data name="[RESX:SecGrid:create].Text" xml:space="preserve">
+    <value>Creare</value>
+  </data>
+  <data name="[RESX:SecGrid:delete].Text" xml:space="preserve">
+    <value>Cancellare</value>
+  </data>
+  <data name="[RESX:SecGrid:edit].Text" xml:space="preserve">
+    <value>Redigere</value>
+  </data>
+  <data name="[RESX:SecGrid:lock].Text" xml:space="preserve">
+    <value>Serratura</value>
+  </data>
+  <data name="[RESX:SecGrid:moderate].Text" xml:space="preserve">
+    <value>Moderato</value>
+  </data>
+  <data name="[RESX:SecGrid:move].Text" xml:space="preserve">
+    <value>Sposta</value>
+  </data>
+  <data name="[RESX:SecGrid:read].Text" xml:space="preserve">
+    <value>Leggere</value>
+  </data>
+  <data name="[RESX:SecGrid:reply].Text" xml:space="preserve">
+    <value>Risposta</value>
+  </data>
+  <data name="[RESX:SecGrid:subscribe]Text" xml:space="preserve">
+    <value>Abbonarsi</value>
+  </data>
+  <data name="[RESX:SecGrid:view].Text" xml:space="preserve">
+    <value>Vista</value>
+  </data>
+  <data name="[RESX:SecGrid:announce].Text" xml:space="preserve">
+    <value>Annuncio</value>
+  </data>
+  <data name="[RESX:SecGrid:subscribe].Text" xml:space="preserve">
+    <value>Abbonarsi</value>
+  </data>
+  <data name="[RESX:SecGrid:trust].Text" xml:space="preserve">
+    <value>Attendibilità</value>
+  </data>
+  <data name="[RESX:SecGrid:tag].Text" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="[RESX:SecGrid:prioritize].Text" xml:space="preserve">
+    <value>Assegna priorità</value>
+  </data>
+  <data name="[RESX:SecGrid:categorize].Text" xml:space="preserve">
+    <value>Categorizzare</value>
+  </data>
+  <data name="[RESX:SecGrid:poll].Text" xml:space="preserve">
+    <value>Scrutinio</value>
+  </data>
+  <data name="[RESX:SecGrid:split].Text" xml:space="preserve">
+    <value>Diviso</value>
+  </data>
+  <data name="URLPrefixLikes.Text" xml:space="preserve">
+    <value>Mi piace Percorso</value>
+  </data>
+  <data name="URLPrefixLikes.Help" xml:space="preserve">
+    <value>Questo è il testo che verrà utilizzato come parte dell'URL per identificare i Mi piace del forum.</value>
   </data>
 </root>

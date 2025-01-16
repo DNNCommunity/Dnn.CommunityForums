@@ -1,78 +1,78 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.Design;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.Design;
+    using System.Web.UI.WebControls;
+
     [DefaultProperty("Text"), Designer("DotNetNuke.Modules.ActiveForums.Controls.ActiveGridDesigner"), ToolboxData("<{0}:activegrid runat=server><headertemplate></headertemplate><itemtemplate></itemtemplate><footertemplate></footertemplate></{0}:activegrid>")]
     public class ActiveGrid : CompositeControl
     {
-
         #region Declarations
         private Literal lit;
         private System.Web.UI.HtmlControls.HtmlGenericControl div;
         protected Callback cb;
-        private ItemTemplateContents _ItemTemplate;
-        private ItemTemplateContents _HeaderTemplate;
-        private ItemTemplateContents _FooterTemplate;
-        private IDataReader _datasource;
-        private DataView _dataView;
-        private string _rowDelimiter = "^";
-        private string _colDelimiter = "|";
-        private int _PageSize = 10;
-        private string _ItemStyle = "amdatarow";
-        private string _AltItemStyle = "amrowalternating";
-        private string _SelectedStyle = "amrowselected";
-        private bool _ShowPager = true;
-        private string _PagerText = "Page {0} of {1}";
-        private string _ImagePath = "";
-        private int _PagerPages = 10;
-        private string _DefaultColumn;
-        private string _DefaultParams = "";
-        private Sort _DefaultSort = Sort.Descending;
-        private string _CssPagerInfo = "ampagerinfo";
-        private string _CssPagerItem = "amPageritem";
-        private string _CssPagerItem2 = "ampagertem2";
-        private string _CssPagerCurrentNumber = "ampagernumber_current";
-        private string _CssPagerNumber = "ampagernumber";
-        private string _SpacerImage = "";
-        private string _AscImage = "";
-        private string _DescImage = "";
-        private bool _LoadOnRender = true;
-        private string _OnComplete;
+        private ItemTemplateContents itemTemplate;
+        private ItemTemplateContents headerTemplate;
+        private ItemTemplateContents footerTemplate;
+        private IDataReader datasource;
+        private string rowDelimiter = "^";
+        private string colDelimiter = "|";
+        private int pageSize = 10;
+        private string itemStyle = "amdatarow";
+        private string altItemStyle = "amrowalternating";
+        private string selectedStyle = "amrowselected";
+        private bool showPager = true;
+        private string pagerText = "Page {0} of {1}";
+        private string imagePath = string.Empty;
+        private int pagerPages = 10;
+        private string defaultColumn;
+        private string defaultParams = string.Empty;
+        private Sort defaultSort = Sort.Descending;
+        private string cssPagerInfo = "ampagerinfo";
+        private string cssPagerItem = "amPageritem";
+        private string cssPagerItem2 = "ampagertem2";
+        private string cssPagerCurrentNumber = "ampagernumber_current";
+        private string cssPagerNumber = "ampagernumber";
+        private string spacerImage = string.Empty;
+        private string ascImage = string.Empty;
+        private string descImage = string.Empty;
+        private bool loadOnRender = true;
+
         public enum Sort : int
         {
             Ascending,
-            Descending
+            Descending,
         }
+
         public event ItemBoundEventHandler ItemBound;
+
         public delegate void ItemBoundEventHandler(object sender, ItemBoundEventArgs e);
         #endregion
 
@@ -85,13 +85,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ItemTemplate;
+                return this.itemTemplate;
             }
+
             set
             {
-                _ItemTemplate = value;
+                this.itemTemplate = value;
             }
         }
+
         /// <summary>
         /// Header Template - Must include opening table tag and first table row.
         /// </summary>
@@ -101,13 +103,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _HeaderTemplate;
+                return this.headerTemplate;
             }
+
             set
             {
-                _HeaderTemplate = value;
+                this.headerTemplate = value;
             }
         }
+
         /// <summary>
         /// Footer Template - Must include closing table tag.
         /// </summary>
@@ -117,13 +121,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _FooterTemplate;
+                return this.footerTemplate;
             }
+
             set
             {
-                _FooterTemplate = value;
+                this.footerTemplate = value;
             }
         }
+
         /// <summary>
         /// String delimiter to separate row data in callback.  Ensure none of your data will include this string.
         /// </summary>
@@ -132,14 +138,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _rowDelimiter;
+                return this.rowDelimiter;
             }
 
             set
             {
-                _rowDelimiter = value;
+                this.rowDelimiter = value;
             }
         }
+
         /// <summary>
         /// String delimiter to separate column data in callback.  Ensure none of your data will include this string.
         /// </summary>
@@ -148,14 +155,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _colDelimiter;
+                return this.colDelimiter;
             }
 
             set
             {
-                _colDelimiter = value;
+                this.colDelimiter = value;
             }
         }
+
         /// <summary>
         /// Must be an IDataReader.  First SELECT is total row count.  Second is the data we display.
         /// </summary>
@@ -164,14 +172,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _datasource;
+                return this.datasource;
             }
 
             set
             {
-                _datasource = value;
+                this.datasource = value;
             }
         }
+
         /// <summary>
         /// Number of records to show per page.
         /// </summary>
@@ -180,13 +189,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PageSize;
+                return this.pageSize;
             }
+
             set
             {
-                _PageSize = value;
+                this.pageSize = value;
             }
         }
+
         /// <summary>
         /// CSS class name added to Item Template table row.
         /// </summary>
@@ -195,14 +206,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ItemStyle;
+                return this.itemStyle;
             }
 
             set
             {
-                _ItemStyle = value;
+                this.itemStyle = value;
             }
         }
+
         /// <summary>
         /// CSS class name added to Item Template every other table row.
         /// </summary>
@@ -211,14 +223,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _AltItemStyle;
+                return this.altItemStyle;
             }
 
             set
             {
-                _AltItemStyle = value;
+                this.altItemStyle = value;
             }
         }
+
         /// <summary>
         /// CSS class name added to Item Template table row when moused over.
         /// </summary>
@@ -227,27 +240,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _SelectedStyle;
+                return this.selectedStyle;
             }
 
             set
             {
-                _SelectedStyle = value;
+                this.selectedStyle = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue(""), Localizable(true)]
         public bool ShowPager
         {
             get
             {
-                return _ShowPager;
+                return this.showPager;
             }
 
             set
             {
-                _ShowPager = value;
+                this.showPager = value;
             }
         }
+
         /// <summary>
         /// Fires a callback immediately after grid is rendered.  True by default.
         /// </summary>
@@ -256,14 +271,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _LoadOnRender;
+                return this.loadOnRender;
             }
 
             set
             {
-                _LoadOnRender = value;
+                this.loadOnRender = value;
             }
         }
+
         /// <summary>
         /// "Page {0} of {1}".
         /// </summary>
@@ -272,14 +288,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PagerText;
+                return this.pagerText;
             }
 
             set
             {
-                _PagerText = value;
+                this.pagerText = value;
             }
         }
+
         /// <summary>
         /// Path to directory for Pager Images.
         /// </summary>
@@ -288,14 +305,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ImagePath;
+                return this.imagePath;
             }
 
             set
             {
-                _ImagePath = value;
+                this.imagePath = value;
             }
         }
+
         /// <summary>
         /// Number of pages.
         /// </summary>
@@ -304,14 +322,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PagerPages;
+                return this.pagerPages;
             }
 
             set
             {
-                _PagerPages = value;
+                this.pagerPages = value;
             }
         }
+
         /// <summary>
         /// Default Sort for first load.  Default Descending.
         /// </summary>
@@ -319,13 +338,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _DefaultSort;
+                return this.defaultSort;
             }
+
             set
             {
-                _DefaultSort = value;
+                this.defaultSort = value;
             }
         }
+
         /// <summary>
         /// Default Column to sort by.
         /// </summary>
@@ -333,13 +354,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _DefaultColumn;
+                return this.defaultColumn;
             }
+
             set
             {
-                _DefaultColumn = value;
+                this.defaultColumn = value;
             }
         }
+
         /// <summary>
         /// Default Parameters to pass in to the callback on first load.
         /// </summary>
@@ -347,13 +370,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _DefaultParams;
+                return this.defaultParams;
             }
+
             set
             {
-                _DefaultParams = value;
+                this.defaultParams = value;
             }
         }
+
         /// <summary>
         /// CSS class for the pager info.
         /// </summary>
@@ -361,13 +386,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CssPagerInfo;
+                return this.cssPagerInfo;
             }
+
             set
             {
-                _CssPagerInfo = value;
+                this.cssPagerInfo = value;
             }
         }
+
         /// <summary>
         /// CSS class for every page number except the first.
         /// </summary>
@@ -375,13 +402,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CssPagerItem;
+                return this.cssPagerItem;
             }
+
             set
             {
-                _CssPagerItem = value;
+                this.cssPagerItem = value;
             }
         }
+
         /// <summary>
         /// CSS class for the first page number.
         /// </summary>
@@ -389,13 +418,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CssPagerItem2;
+                return this.cssPagerItem2;
             }
+
             set
             {
-                _CssPagerItem2 = value;
+                this.cssPagerItem2 = value;
             }
         }
+
         /// <summary>
         /// CSS class for the current page.
         /// </summary>
@@ -403,13 +434,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CssPagerCurrentNumber;
+                return this.cssPagerCurrentNumber;
             }
+
             set
             {
-                _CssPagerCurrentNumber = value;
+                this.cssPagerCurrentNumber = value;
             }
         }
+
         /// <summary>
         /// CSS class for the page numbers.
         /// </summary>
@@ -417,13 +450,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CssPagerNumber;
+                return this.cssPagerNumber;
             }
+
             set
             {
-                _CssPagerNumber = value;
+                this.cssPagerNumber = value;
             }
         }
+
         /// <summary>
         /// URL to spacer image if not using the built in one.
         /// </summary>
@@ -431,13 +466,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _SpacerImage;
+                return this.spacerImage;
             }
+
             set
             {
-                _SpacerImage = value;
+                this.spacerImage = value;
             }
         }
+
         /// <summary>
         /// URL to the Ascending sort image if not using the built in one.
         /// </summary>
@@ -445,13 +482,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _AscImage;
+                return this.ascImage;
             }
+
             set
             {
-                _AscImage = value;
+                this.ascImage = value;
             }
         }
+
         /// <summary>
         /// URL to the Descending sort image if not using the built in one.
         /// </summary>
@@ -459,23 +498,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _DescImage;
+                return this.descImage;
             }
+
             set
             {
-                _DescImage = value;
+                this.descImage = value;
             }
         }
+
         public string OnComplete
         {
             get
             {
-                return cb.OnCallbackComplete;
+                return this.cb.OnCallbackComplete;
             }
+
             set
             {
-                EnsureChildControls();
-                cb.OnCallbackComplete = value;
+                this.EnsureChildControls();
+                this.cb.OnCallbackComplete = value;
             }
         }
         #endregion
@@ -483,55 +525,61 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Subs/Functions
         protected override void CreateChildControls()
         {
-            div = new System.Web.UI.HtmlControls.HtmlGenericControl();
-            div.ID = this.ClientID;
-            lit = new Literal();
-            lit.ID = "data_" + this.ClientID;
-            cb = new Callback();
+            this.div = new System.Web.UI.HtmlControls.HtmlGenericControl();
+            this.div.ID = this.ClientID;
+            this.lit = new Literal();
+            this.lit.ID = "data_" + this.ClientID;
+            this.cb = new Callback();
             if (HttpContext.Current.Request.Params["amagdebug"] == "true" || HttpContext.Current.Request.Params["amdebug"] == "true")
             {
-                cb.Debug = true;
+                this.cb.Debug = true;
             }
             else
             {
-                cb.Debug = false;
+                this.cb.Debug = false;
             }
-            cb.ID = "CB_" + this.ClientID;
-            cb.Attributes.Add("style", "display:none;");
-            cb.OnCallbackComplete = "function(){" + this.ClientID + ".Build();}";
-            cb.CallbackEvent += new Callback.CallbackEventHandler(RaiseCallback);
-            ChildControlsCreated = true;
+
+            this.cb.ID = "CB_" + this.ClientID;
+            this.cb.Attributes.Add("style", "display:none;");
+            this.cb.OnCallbackComplete = "function(){" + this.ClientID + ".Build();}";
+            this.cb.CallbackEvent += new Callback.CallbackEventHandler(this.RaiseCallback);
+            this.ChildControlsCreated = true;
         }
+
         protected override void Render(HtmlTextWriter output)
         {
             try
             {
                 output = new HtmlTextWriter(output, string.Empty);
                 string sOutput = this.HeaderTemplate.Text + this.ItemTemplate.Text + this.FooterTemplate.Text;
-                div.Controls.Add(Page.ParseControl(sOutput));
-                div.RenderControl(output);
+                this.div.Controls.Add(this.Page.ParseControl(sOutput));
+                this.div.RenderControl(output);
                 if (this.ShowPager)
                 {
                     output.AddAttribute("id", "pager_" + this.ClientID);
                     output.RenderBeginTag(HtmlTextWriterTag.Div);
                     output.RenderEndTag();
                 }
-                cb.RenderControl(output);
+
+                this.cb.RenderControl(output);
                 StringBuilder str = new StringBuilder();
                 str.Append("<script>");
                 str.Append("window." + this.ClientID + "=new ActiveGrid('" + this.ClientID + "');");
-                if (this.SpacerImage == "")
+                if (this.SpacerImage == string.Empty)
                 {
-                    this.SpacerImage = Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.spacer.gif");
+                    this.SpacerImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.spacer.gif");
                 }
-                if (this.AscImage == "")
+
+                if (this.AscImage == string.Empty)
                 {
-                    this.AscImage = Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.asc.gif");
+                    this.AscImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.asc.gif");
                 }
-                if (this.DescImage == "")
+
+                if (this.DescImage == string.Empty)
                 {
-                    this.DescImage = Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.desc.gif");
+                    this.DescImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.desc.gif");
                 }
+
                 str.Append("window." + this.ClientID + ".SpacerImage='" + this.SpacerImage + "';");
                 str.Append("window." + this.ClientID + ".AscImage='" + this.AscImage + "';");
                 str.Append("window." + this.ClientID + ".DescImage='" + this.DescImage + "';");
@@ -547,15 +595,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     str.Append("window." + this.ClientID + ".CssPagerCurrentNumber='" + this.CssPagerCurrentNumber + "';");
                     str.Append("window." + this.ClientID + ".CssPagerNumber='" + this.CssPagerNumber + "';");
                 }
+
                 str.Append("window." + this.ClientID + ".Column='" + this.DefaultColumn + "';");
                 if (this.DefaultSort == Sort.Ascending)
                 {
                     str.Append("window." + this.ClientID + ".Sort='ASC';");
                     str.Append("window." + this.ClientID + ".DefaultSort='ASC';");
                 }
+
                 str.Append("window." + this.ClientID + ".Params='" + this.DefaultParams + "';");
                 str.Append("window." + this.ClientID + ".Width='" + this.Width.ToString() + "';");
-                str.Append("window." + this.ClientID + ".ImagePath='" + Page.ResolveUrl(this.ImagePath) + "';");
+                str.Append("window." + this.ClientID + ".ImagePath='" + this.Page.ResolveUrl(this.ImagePath) + "';");
                 str.Append("window." + this.ClientID + ".ItemStyle='" + this.ItemStyle + "';");
                 str.Append("window." + this.ClientID + ".AltItemStyle='" + this.AltItemStyle + "';");
                 str.Append("window." + this.ClientID + ".SelectedStyle='" + this.SelectedStyle + "';");
@@ -563,11 +613,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 str.Append("window." + this.ClientID + ".RowDelimiter='" + this.RowDelimiter + "';");
                 str.Append("window." + this.ClientID + ".ColDelimiter='" + this.ColDelimiter + "';");
                 str.Append("window." + this.ClientID + ".ShowPager=" + this.ShowPager.ToString().ToLower() + ";");
-                str.Append("window." + this.ClientID + ".CB='" + cb.ClientID + "';");
+                str.Append("window." + this.ClientID + ".CB='" + this.cb.ClientID + "';");
                 if (this.LoadOnRender == true)
                 {
                     str.Append("window." + this.ClientID + ".Callback();");
                 }
+
                 str.Append("</script>");
                 output.Write(str.ToString());
             }
@@ -575,44 +626,51 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
             }
         }
+
         /// <summary>
         /// Call in a callback to refresh the grid.  Pass in e.Output as the parameter.
         /// </summary>
         public void Refresh(HtmlTextWriter data)
         {
-            lit.Text = HandleText();
-            lit.RenderControl(data);
+            this.lit.Text = this.HandleText();
+            this.lit.RenderControl(data);
         }
+
         private string HandleText()
         {
             ArrayList order = new ArrayList();
             string template = this.ItemTemplate.Text;
             while (template.IndexOf("##DataItem(") > -1)
             {
-                int EndIndex = template.IndexOf("')##");
-                int StartIndex = template.IndexOf("##DataItem('") + 12;
-                order.Add(template.Substring(StartIndex, (EndIndex - StartIndex)));
-                template = template.Substring(EndIndex + 4);
+                int endIndex = template.IndexOf("')##");
+                int startIndex = template.IndexOf("##DataItem('") + 12;
+                order.Add(template.Substring(startIndex, endIndex - startIndex));
+                template = template.Substring(endIndex + 4);
             }
-            if (!Page.IsPostBack)
+
+            if (!this.Page.IsPostBack)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.Append("");
-                IDataReader dr = Datasource;
+                sb.Append(string.Empty);
+                IDataReader dr = this.Datasource;
                 dr.Read();
                 int iCount = Convert.ToInt32(dr[0]);
                 int pageCount = Convert.ToInt32(Math.Ceiling(iCount / (double)this.PageSize));
                 dr.NextResult();
                 while (dr.Read())
                 {
-                    ArrayList ItemArray = new ArrayList();
+                    ArrayList itemArray = new ArrayList();
                     foreach (string item in order)
                     {
-                        ItemArray.Add(dr[item].ToString());
+                        itemArray.Add(dr[item].ToString());
                     }
-                    ItemBoundEventArgs e = new ItemBoundEventArgs(ItemArray);
-                    if (ItemBound != null)
-                        ItemBound(this, e);
+
+                    ItemBoundEventArgs e = new ItemBoundEventArgs(itemArray);
+                    if (this.ItemBound != null)
+                    {
+                        this.ItemBound(this, e);
+                    }
+
                     foreach (string item in e.Item)
                     {
                         try
@@ -622,11 +680,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         catch
                         {
                         }
-                        
                     }
-                    sb.Remove((sb.Length - this.ColDelimiter.Length), this.ColDelimiter.Length);
+
+                    sb.Remove(sb.Length - this.ColDelimiter.Length, this.ColDelimiter.Length);
                     sb.Append(this.RowDelimiter);
                 }
+
                 dr.Close();
                 return "<script>window." + this.ClientID + ".data='" + sb.ToString() + "';window." + this.ClientID + ".PageCount=" + pageCount + ";</script>";
             }
@@ -635,37 +694,44 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return string.Empty;
             }
         }
+
         public delegate void CallbackEventHandler(object sender, CallBackEventArgs e);
+
         public event CallbackEventHandler Callback;
+
         public void RaiseCallback(object sender, CallBackEventArgs e) // Implements ICallbackEventHandler.RaiseCallback
         {
-            OnCallback(e);
+            this.OnCallback(e);
         }
+
         protected virtual void OnCallback(CallBackEventArgs e)
         {
-            if (Callback != null)
-                Callback(cb, e);
-        }
-        protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-            if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AMActiveGrid")))
+            if (this.Callback != null)
             {
-                Page.ClientScript.RegisterClientScriptInclude("AMActiveGrid", Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.ActiveGrid.js"));
+                this.Callback(this.cb, e);
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMActiveGrid"))
+            {
+                this.Page.ClientScript.RegisterClientScriptInclude("AMActiveGrid", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.ActiveGrid.js"));
             }
         }
         #endregion
-
 
     }
 
     public class ItemBoundEventArgs : EventArgs
     {
         public ArrayList Item;
+
         internal ItemBoundEventArgs(ArrayList sParam)
         {
-            Item = sParam;
+            this.Item = sParam;
         }
     }
 
@@ -679,10 +745,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (this.Controls.Count > 0 && this.Controls[0] is LiteralControl)
                 {
-                    return ((LiteralControl)(this.Controls[0])).Text;
+                    return ((LiteralControl)this.Controls[0]).Text;
                 }
-                return "";
+
+                return string.Empty;
             }
+
             set
             {
                 this.Controls.Clear();
@@ -690,14 +758,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
     }
+
     public class ActiveGridDesigner : ControlDesigner
     {
-
         public override string GetDesignTimeHtml()
         {
             return "<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td>DNN Community Forums Grid Control<br />Please use source view to make changes</td></tr></table>";
         }
-
     }
-
 }

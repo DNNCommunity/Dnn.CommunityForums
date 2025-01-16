@@ -458,13 +458,7 @@ td.afprop-label {
 /* 26 -> */
 
 
-/* 27 Remove font sizes + styling -> */
-.afhiddenstats,
-.afhiddentime {
-	display: none;
-}
-
-/* /27 */
+/* 27 Remove font sizes + styling -> -- now completely removed */
 
 
 /* 28 ->  */
@@ -1259,15 +1253,41 @@ a.af-markanswer em {
 }
 
 
-/* quick fix for secuirty width */
-.afsecgrid>div>table {
-	table-layout: fixed;
-	width: 100%;
+/* Fix for security width */
+.afsecgrid {
+	padding: 0 1em;
 }
-
-.afsecgrid>div>table>tbody>tr>td:first-child {
+.afsecgrid .dcf-sec-grid{
+	width: 100%;
+	table-layout: fixed;
+}
+.afsecgrid .dcf-sec-grid-roles{
+	vertical-align: top;
 	width: 200px;
 }
+
+.afsecgrid .dcf-sec-grid-roles .afsecobjecthd{
+	
+	padding: 0.6em 0.35em
+}
+
+.afsecgrid .dcf-sec-grid-roles td,
+.afsecgrid .dcf-sec-grid-rights td{
+	border-bottom: solid 1px #ddd;
+	padding: 0.5em 0.1em;
+}
+
+.afsecgrid .dcf-sec-grid-rights{
+	width: calc(100% - 200px);
+}
+.afsecgrid .dcf-sec-grid-rights table{
+	table-layout: fixed;
+}
+
+.afsecgrid .dcf-sec-grid-rights .afsecactionhd{
+	width: 8em;
+}
+
 
 /* /38 */
 
@@ -1294,81 +1314,58 @@ a.af-markanswer em {
 
 /* 41 Styling of Forum view, part fo the classes from ascx > cleanup? */
 
-@media only screen and (max-width: 768px),
-only screen and (max-device-width: 768px) {
+@media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
+    .af-lastpost,
+    .af-colstats,
+    .afgrouprow-m,
+    .afgrouprow-l { display: none; }
 
-	.af-lastpost,
-	.af-colstats,
-	.afgrouprow-m,
-	.afgrouprow-l {
-		display: none;
-	}
+    .af-colstats_responsive { display: inline; }
 
-	.af-colstats_responsive {
-		display: inline;
-	}
+    .af_lastpost_responsive { display: block; }
 
-	.af_lastpost_responsive {
-		display: block;
-	}
+    .afpostinfo_responsive {
+        position: static;
+        width: 100%;
+        margin-right: 0px;
+        clear: both;
+    }
 
-	.afpostinfo_responsive {
-		position: static;
-		width: 100%;
-		margin-right: 0px;
-		clear: both;
-	}
+    .afpostcontent_responsive {
+        position: static;
+        padding-left: 0px;
+        width: 100%;
+        clear: both;
+    }
 
-	.afpostcontent_responsive {
-		position: static;
-		padding-left: 0px;
-		width: 100%;
-		clear: both;
-	}
+    .afpostinfo_responsive .afavatarprofile {
+        float: left;
+        width: 125px; /*position:absolute;*/
+        min-height: 100px;
+        padding-right: 5px;
+    }
 
-	.afpostinfo_responsive .afavatarprofile {
-		float: left;
-		width: 125px;
-		/*position:absolute;*/
-		min-height: 100px;
-		padding-right: 5px;
-	}
+    .afpostinfo_responsive .aftopprofile {
+        float: left; /*padding-left: 130px;*/
+        margin-left: 10px;
+        padding-right: 5px;
+        width: 125px;
+        min-height: 100px; /*position:absolute;*/
+    }
 
-	.afpostinfo_responsive .aftopprofile {
-		float: left;
-		/*padding-left: 130px;*/
-		margin-left: 10px;
-		padding-right: 5px;
-		width: 125px;
-		min-height: 100px;
-		/*position:absolute;*/
-	}
+    .afpostinfo_responsive .afbottomprofile {
+        float: left; /*padding-left: 250px;*/
+        margin-left: 10px;
+        width: 125px;
+        min-height: 100px;
+        padding-right: 5px; /*position:absolute;*/
+    }
 
-	.afpostinfo_responsive .afbottomprofile {
-		float: left;
-		/*padding-left: 250px;*/
-		margin-left: 10px;
-		width: 125px;
-		min-height: 100px;
-		padding-right: 5px;
-		/*position:absolute;*/
-	}
+    /*.afpostinfo_responsive .afavatarprofile *, */
+    .afpostinfo_responsive .aftopprofile *,
+    .afpostinfo_responsive .afbottomprofile * { /*display:block;*/ }
 
-	/*.afpostinfo_responsive .afavatarprofile *, */
-	.afpostinfo_responsive .aftopprofile *,
-	.afpostinfo_responsive .afbottomprofile * {
-		/*display:block;*/
-	}
-
-	ul.af-right {
-		float: left;
-	}
-
-	/*.afhiddenstats,*/
-	.afhiddentime {
-		display: inline-block;
-	}
-
+    ul.af-right { float: left; }
 }
 
 @media only screen and (max-width: 490px),
@@ -1393,19 +1390,18 @@ div.dcf-mod-edit-wrap {
 
 /* /42 */
 
-
 /* 43 collapsible */
 .dcf-collapsible {
-	text-align: center;
-	padding: 0.2em;
-	width: 1.8em;
-	cursor: pointer;
-	float: right;
-	font-size: 1.1em !important;
-	background: #eee;
-	border-radius: 50%;
-	position: relative;
-	z-index: 2;
+    text-align: center;
+    padding: 0.2em;
+    width: 1.8em;
+    cursor: pointer;
+    float: right;
+    font-size: 1.1em !important;
+    background: #eee;
+    border-radius: 50%;
+    position: relative;
+    z-index: 2;
 }
 
 /* not sure these are needed but put them here to use if desired */
@@ -1555,7 +1551,6 @@ div.dcf-mod-edit-wrap {
 .afpollresults {
 	border: solid 1px #333;
 }
-}
 
 /* pin & lock from topic view */
 .dnn-community-forums * .dcf-topic-lock-lock {
@@ -1574,3 +1569,119 @@ div.dcf-mod-edit-wrap {
 .dnn-community-forums * .dcf-topic-reply-unlocked {
 	display:inline-flex;
 }
+
+
+
+/* TB NEW Moderate Buttons #969 */
+.dnn-community-forums .afmodrow .dnnActions > * {
+    margin-left: 0.5em;
+}
+
+/* TB: will need to be redone when the template is further cleaned up #999 */
+.dnn-community-forums .dcf-confirm-action .dcf-confirm-title{
+	display:block;
+	font-size: 1.5em;
+	margin: 0.8em 0 0.5em;
+}
+
+.dnn-community-forums .dcf-confirm-action .dcf-confirm-message{
+	display:block;
+	margin-bottom: 1em;
+}
+	
+
+.dnn-community-forums .dcf-confirm-action .dcf-confirm-buttons td{
+	padding: 0.5em 0;
+}
+
+/* added for likes views and like tooltips */
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header { }
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header .af_pager,
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer .af_pager { padding: 0px 5px; position: relative; top: 0px; right: 0px; }
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header .af_pagernumber,
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer .af_pagernumber {  }
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-header .af_pagernumber a,
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer .af_pagernumber a { margin-left: 3px; margin-right: 3px; }
+
+
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-footer { position: relative; margin: 10px 0px; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-noresults { text-align: center; color: rgba(0, 0, 0, 0.44); padding: 50px 0px; font-size: 20px; letter-spacing: -0.02em; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-results a { font-weight: bold; position: relative; }
+
+.dnn-community-forums .dcf-likes-wrap .dcf-like-header { position: relative; margin: 10px 0px; }
+.dnn-community-forums .dcf-likes-wrap .dcf-like { }
+.dnn-community-forums .dcf-likes-wrap .dcf-likes-title { }
+.dnn-community-forums .dcf-likes-wrap .dcf-postinfo { }
+.dnn-community-forums .dcf-likes-wrap .dcf-like-content { }
+.dnn-community-forums .dcf-likes-wrap .dcf-profile-link { }
+
+
+
+/* Search results : needs cleaning for V9, see #1116 */
+ .dcf-search-results-wrap .afgrid {
+     width: 100%;
+     display: table;
+}
+ .dcf-search-results-wrap .aftopicrow {
+     width: 100%;
+     display: table-row;
+     border-bottom: solid 1px #eee;
+     padding: 0.5em;
+}
+ .dcf-search-results-wrap .aftopicrow .afsubject {
+     width: 60%;
+     display: table-cell;
+}
+ .dcf-search-results-wrap .af-colstats {
+     display: table-cell;
+     width: 10%;
+}
+ .dcf-search-results-wrap .af-lastpost {
+     display: table-cell;
+     width: 20%;
+     white-space: nowrap;
+     font-weight: 400;
+}
+ .dcf-search-results-wrap .af-lastpost div {
+     text-align: left;
+     overflow: hidden;
+     white-space: normal !important;
+}
+ .dcf-search-results-wrap .af-lastpost div a:link, .dcf-search-results-wrap .af-lastpost div a:visited {
+     text-decoration: none;
+     font-weight: 700;
+     color: #333;
+}
+ .dcf-search-results-wrap .aftopictitle, .dcf-search-results-wrap .aftopictitle a {
+    /*display: block;
+    */
+     font-weight: 700;
+     line-height: 1.25;
+}
+ .dcf-search-results-wrap.af-content .afsubject {
+     vertical-align: top;
+     padding-right: 10px;
+}
+ .dcf-search-results-wrap .af-content div.afsubject > a {
+     color: #333;
+     font-weight: 700;
+}
+ .dcf-search-results-wrap .af-content div.afsubject .aftopicstarted a {
+     color: #333;
+     font-weight: 700;
+     display: inline-block;
+     margin-top: 4px;
+     margin-bottom: 4px;
+}
+ .dcf-search-results-wrap .aftopicstarted {
+     display: block;
+}
+ .dcf-search-results-wrap .aftopicsubtitle {
+     font-weight: 400;
+     display: block;
+     word-break: break-word;
+     overflow: hidden;
+}
+ 

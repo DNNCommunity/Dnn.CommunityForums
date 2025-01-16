@@ -1,192 +1,213 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2024
-// by DNN Community
+﻿// Copyright (c) by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     [ParseChildren(true, ""), ToolboxData("<{0}:toggle runat=server></{0}:toggle>")]
     public class Toggle : WebControl
     {
-        private string _key;
-        private string _imagePath;
-        private string _cssClassOn;
-        private string _cssClassOff;
-        private int _toggleBehavior;
-        private bool _isVisible = true;
+        private string key;
+        private string imagePath;
+        private string cssClassOn;
+        private string cssClassOff;
+        private int toggleBehavior;
+        private bool isVisible = true;
+
         public int ToggleBehavior
         {
             get
             {
-                return _toggleBehavior;
+                return this.toggleBehavior;
             }
+
             set
             {
-                _toggleBehavior = value;
+                this.toggleBehavior = value;
             }
         }
+
         public string Key
         {
             get
             {
-                return _key;
+                return this.key;
             }
+
             set
             {
-                _key = value;
+                this.key = value;
             }
         }
+
         public string ImagePath
         {
             get
             {
-                return _imagePath;
+                return this.imagePath;
             }
+
             set
             {
-                _imagePath = value;
+                this.imagePath = value;
             }
         }
+
         public string CssClassOn
         {
             get
             {
-                return _cssClassOn;
+                return this.cssClassOn;
             }
+
             set
             {
-                _cssClassOn = value;
+                this.cssClassOn = value;
             }
         }
+
         public string CssClassOff
         {
             get
             {
-                return _cssClassOff;
+                return this.cssClassOff;
             }
+
             set
             {
-                _cssClassOff = value;
+                this.cssClassOff = value;
             }
         }
+
         public bool IsVisible
         {
             get
             {
-                return _isVisible;
+                return this.isVisible;
             }
+
             set
             {
-                _isVisible = value;
+                this.isVisible = value;
             }
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
-            if (IsVisible)
+            if (this.IsVisible)
             {
-                writer.Write("<div id=\"imgGroup" + Key + "\" class=\"" + CssClassOn + "\" onclick=\"toggleGroup('" + Key + "','" + CssClassOn + "','" + CssClassOff + "');\"></div>");
+                writer.Write("<div id=\"imgGroup" + this.Key + "\" class=\"" + this.CssClassOn + "\" onclick=\"toggleGroup('" + this.Key + "','" + this.CssClassOn + "','" + this.CssClassOff + "');\"></div>");
             }
             else
             {
-                writer.Write("<div id=\"imgGroup" + Key + "\" class=\"" + CssClassOff + "\" onclick=\"toggleGroup('" + Key + "','" + CssClassOn + "','" + CssClassOff + "');\"></div>");
+                writer.Write("<div id=\"imgGroup" + this.Key + "\" class=\"" + this.CssClassOff + "\" onclick=\"toggleGroup('" + this.Key + "','" + this.CssClassOn + "','" + this.CssClassOff + "');\"></div>");
             }
         }
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
-            EnableViewState = false;
+            this.EnableViewState = false;
         }
     }
+
     [ParseChildren(true, ""), ToolboxData("<{0}:toggledisplay runat=server></{0}:toggledisplay>")]
     public class ToggleDisplay : CompositeControl
     {
-        private ToggleContent _content;
-        private string _key;
-        private bool _isVisible = true;
+        private ToggleContent content;
+        private string key;
+        private bool isVisible = true;
+
         public bool IsVisible
         {
             get
             {
-                return _isVisible;
+                return this.isVisible;
             }
+
             set
             {
-                _isVisible = value;
+                this.isVisible = value;
             }
         }
+
         public string Key
         {
             get
             {
-                return _key;
+                return this.key;
             }
+
             set
             {
-                _key = value;
+                this.key = value;
             }
         }
+
         public override System.Web.UI.ControlCollection Controls
         {
             get
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 return base.Controls;
             }
         }
+
         protected override void CreateChildControls()
         {
-            if (Content != null)
+            if (this.Content != null)
             {
-                Controls.Clear();
-                this.Controls.Add(Content);
+                this.Controls.Clear();
+                this.Controls.Add(this.Content);
             }
         }
+
         [Description("Initial content to render."), DefaultValue(null, ""), Browsable(false), NotifyParentProperty(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty)]
         public ToggleContent Content
         {
             get
             {
-                EnsureChildControls();
-                return _content;
+                this.EnsureChildControls();
+                return this.content;
             }
+
             set
             {
-                _content = value;
+                this.content = value;
             }
         }
 
-
         protected override void Render(HtmlTextWriter writer)
         {
-            writer.Write("<div id=\"group" + Key + "\" class=\"" + CssClass + "\" style=\"display:");
-            if (IsVisible)
+            writer.Write("<div id=\"group" + this.Key + "\" class=\"" + this.CssClass + "\" style=\"display:");
+            if (this.IsVisible)
             {
                 writer.Write("block");
             }
@@ -194,45 +215,47 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 writer.Write("none");
             }
+
             writer.Write(";\">");
             try
             {
-                Content.RenderControl(writer);
+                this.Content.RenderControl(writer);
             }
             catch (Exception ex)
             {
-
             }
 
             writer.Write("</div>");
 
-            //  writer.Write(Text)
+            // writer.Write(Text)
         }
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
-            if (Context == null || Page == null)
+            if (this.Context == null || this.Page == null)
             {
                 return;
             }
-            if (Content != null)
+
+            if (this.Content != null)
             {
-                this.Controls.Add(Content);
+                this.Controls.Add(this.Content);
             }
-            //EnableViewState = False
+
+            // EnableViewState = False
         }
     }
+
     [ToolboxItem(false)]
     public class ToggleContent : Control
     {
-
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
-            //EnableViewState = False
+            // EnableViewState = False
         }
     }
 }

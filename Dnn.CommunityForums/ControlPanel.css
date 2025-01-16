@@ -130,15 +130,16 @@ tr.afgroupback td.afgroupback_right{background-image:url(images/groupback_right.
 .afsecgrid{border:solid 1px #333;}
 .afgridrow{background-color:#fff;}
 .afgridrowover{background-color: #87cefa;}
-.afsecobjects{width:165px;overflow:hidden;}
+.afsecobjects{width:200px;overflow:hidden;}
 .afsecobjecttxt{height:18px;overflow:hidden;width:165px;float:left;}
-.afsecobject{width:165px;font-size:11px;font-family:Tahoma;padding:0;overflow:hidden;white-space:nowrap;height:24px;}
+.afsecobject{width:200px;font-size:11px;font-family:Tahoma;padding:0;overflow:hidden;white-space:nowrap;height:24px;}
 .afsecobjecthd{font-weight:bold;font-size:11px;font-family:Tahoma;padding:2px;width:75px;white-space:nowrap; background-color:#dcdcdc;}
 .afsecactions{overflow:hidden;white-space:nowrap;padding-bottom:30px; width:100%; max-width:100%; overflow: auto !important;}
 .afsecactiongrp{width:50px;}
 .afsectoggle{height:18px; cursor:pointer;}
 .afsecactionhd{font-size:11px;font-family:Tahoma;padding:2px;text-align:center;border-bottom:solid 1px #dcdcdc;}
 .afsecactionelem{font-size:11px;font-family:Tahoma;text-align:center;padding:0;border-left:dashed 1px #dcdcdc;height:22px;}
+.afsecactionelem:last-child{border-right:solid 1px #dcdcdc;}
 .amtbwrapper {text-decoration:none;text-align:center !important;display:block;padding:0px;margin:0px;height:60px;}
 .amnavbar {height:61px;text-decoration:none;text-align:center;display:block;padding:0px;margin:0px;background:#eee;}
 .amcpmdtoolbarbtm{display:flex; justify-content: center;}
@@ -418,4 +419,22 @@ ul.amcpformlist li div.amcpradiorow input[type="checkbox"]{font-size:14px;margin
 
 
 #afRankEdit .dnnForm, #afFilterEdit .dnnForm{min-width:inherit;}
+
+
+
+.dcf-controlpanel .dcf-controlpanel-tooltip {
+	--tooltip-color: #fff;
+	--tooltip-bg-color: rgba(0,0,0, .8);
+	--tooltip-icon-color: #ccc;
+	display:block; text-decoration: none; cursor: help; position:relative;}
+.dcf-controlpanel .dcf-controlpanel-tooltip::before { content: attr(data-tooltip); position: absolute; white-space:wrap; top: 1.8em; left: 0; color: var(--tooltip-color); background: var(--tooltip-bg-color); border-radius: 0.3em; padding: 0.2em 0.5em; }
+.dcf-controlpanel .dcf-controlpanel-tooltip::before { opacity: 0; visibility: hidden; transition: opacity .3s ease-in-out; width: 20em; display: inline-block;}
+.dcf-controlpanel .dcf-controlpanel-tooltip:hover::before { opacity: 1; visibility: visible; }
+.dcf-controlpanel .dcf-controlpanel-tooltip::after{content: "?"; display:inline-block; line-height: 1.5em; width: 1.6em; text-align:center; color: var(--tooltip-icon-color); border: solid 1px var(--tooltip-icon-color); border-radius: 50%; margin-left: 0.5em;}
+.dcf-controlpanel .dcf-controlpanel-tooltip:hover::after{ background: var(--tooltip-bg-color); border-color: var(--tooltip-bg-color); color: var(--tooltip-color);}
+
+.dcf-controlpanel .dcf-controlpanel-inheritance-img { width: 16px; height: 16px; }
+.dcf-controlpanel .dcf-controlpanel-inheritance-label { width: 150px; padding-left: 3px; padding-right: 3px; text-align: center; }
+.dcf-controlpanel .dcf-controlpanel-inheritance-heading-security { margin-left: 30px; cursor: auto; }
+.dcf-controlpanel .dcf-controlpanel-inheritance-heading-settings { margin-left: 665px; cursor: auto; }
 

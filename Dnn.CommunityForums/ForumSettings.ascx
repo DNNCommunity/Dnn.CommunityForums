@@ -197,10 +197,14 @@
 						 <dnn:label runat="server" resourcekey="URLPrefixTag" Suffix=":" />
 						 <asp:TextBox ID="txtURLPrefixTags" runat="server" MaxLength="50" />
 					</div>
-					 <div class="dnnFormItem">
-						 <dnn:label runat="server" resourcekey="URLPrefixOther" Suffix=":" />
-						 <asp:TextBox ID="txtURLPrefixOther" runat="server" MaxLength="50" />
-					</div>
+                  <div class="dnnFormItem">
+                      <dnn:label runat="server" resourcekey="URLPrefixLikes" suffix=":" />
+                      <asp:TextBox ID="txtURLPrefixLikes" runat="server" MaxLength="50" />
+                  </div>
+                  <div class="dnnFormItem">
+                      <dnn:label runat="server" resourcekey="URLPrefixOther" suffix=":" />
+                      <asp:TextBox ID="txtURLPrefixOther" runat="server" MaxLength="50" />
+                  </div>
 			  </div>
 
 		</div>
