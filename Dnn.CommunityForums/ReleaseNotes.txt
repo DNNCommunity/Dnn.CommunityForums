@@ -15,16 +15,6 @@
     <hr />
 
     <div class="dnnClear">
-        <h1 class="muy-importante">
-            IMPORTANT: Release Candidate (Not for Production)
-        </h1>
-        <p class="muy-importante">
-            This is a <b>Release Candidate (RC)</b>.  Please do not use this installation/upgrade package for any production 
-            websites of <b>ANY KIND</b>.  This release is not supported and is only provided for test purposes, to allow 
-            others to test their websites first.  
-        </p>
-        <hr />
-
         <h2 class="muy-importante">Important Upgrade Notes</h2>
         <p>
             The release notes will follow, below these <b>important</b> notes.
