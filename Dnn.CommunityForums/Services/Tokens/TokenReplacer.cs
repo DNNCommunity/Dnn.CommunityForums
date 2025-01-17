@@ -947,6 +947,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[MODLINK]", "[FORUM:MODLINK", "[MODLINK]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[LINK]", "[FORUMPOST:LINK", "[LINK]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[HYPERLINK]", "[FORUMPOST:LINK", "[LINK]");
+            template = ReplaceTokenSynonym(template, "[SUBJECT]", "[FORUMPOST:SUBJECT]");
+            template = ReplaceTokenSynonym(template, "[SUBJECTLINK]", "[FORUMPOST:SUBJECTLINK]");
             template = ReplaceTokenSynonym(template, "[LINKURL]", "[FORUMPOST:LINK]");
             template = ReplaceTokenSynonym(template, "[FORUMLINK]", "[FORUM:FORUMLINK]");
 
