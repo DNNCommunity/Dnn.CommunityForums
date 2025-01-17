@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string OptDefaultSort { get; set; }
 
-        public string MetaTemplate { get; set; } = "[META][TITLE][FORUMTOPIC:SUBJECT] - [PORTAL:PORTALNAME] - [TAB:TITLE] - [FORUMGROUP:GROUPNAME] - [FORUM:FORUMNAME][/TITLE][DESCRIPTION][BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
+        public string MetaTemplate { get; set; } = "[META][TITLE][FORUMTOPIC:SUBJECT] - [PORTAL:PORTALNAME] - [TAB:TITLE] - [FORUMGROUP:GROUPNAME] - [FORUM:FORUMNAME][/TITLE][DESCRIPTION][FORUMTOPIC:BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
 
         public string MetaTitle { get; set; } = string.Empty;
 
