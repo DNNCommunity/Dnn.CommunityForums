@@ -300,7 +300,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string DefaultSettingsKey
         {
-            get { return this.MainSettings.GetString(SettingKeys.DefaultSettingsKey); }
+            get
+            {
+                return this.MainSettings.GetString(SettingKeys.DefaultSettingsKey) ?? $"M:{this.ModuleId}";
+            }
         }
 
         public FeatureSettings ForumFeatureSettings

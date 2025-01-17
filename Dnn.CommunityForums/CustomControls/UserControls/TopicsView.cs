@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool isSubscribedForum;
         private bool useListActions;
 
-        public string MetaTemplate { get; set; } = "[META][TITLE][PORTAL:PORTALNAME] - [TAB:TITLE] - [FORUMGROUP:GROUPNAME] - [FORUM:FORUMNAME][/TITLE][DESCRIPTION][BODY][/DESCRIPTION][KEYWORDS][VALUE][/KEYWORDS][/META]";
+        public string MetaTemplate { get; set; } = "[META][TITLE][PORTAL:PORTALNAME] - [TAB:TITLE] - [FORUMGROUP:GROUPNAME] - [FORUM:FORUMNAME][/TITLE][DESCRIPTION][FORUM:FORUMDESCRIPTION][/DESCRIPTION][KEYWORDS][VALUE][/KEYWORDS][/META]";
 
         public string MetaTitle { get; set; } = string.Empty;
 
@@ -229,36 +229,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             {
                                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder( this.MetaTemplate)).ToString();
                                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl).ToString();
-                                this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", string.Empty);
-                                if (this.MetaTemplate.Contains("[TOPICSUBJECT:"))
-                                {
-                                    string pattern = "(\\[TOPICSUBJECT:(.+?)\\])";
-                                    foreach (Match m in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Matches(this.MetaTemplate))
-                                    {
-                                        this.MetaTemplate = this.MetaTemplate.Replace(m.Value, string.Empty);
-                                    }
-                                }
-
-                                this.MetaTemplate = this.MetaTemplate.Replace("[TOPICSUBJECT]", string.Empty);
-                                if (this.MetaTemplate.Contains("[BODY:"))
-                                {
-                                    string pattern = "(\\[BODY:(.+?)\\])";
-                                    foreach (Match m in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Matches(this.MetaTemplate))
-                                    {
-                                        int iLen = Convert.ToInt32(m.Groups[2].Value);
-                                        if (this.ForumInfo.ForumDesc.Length > iLen)
-                                        {
-                                            this.MetaTemplate = this.MetaTemplate.Replace(m.Value, this.ForumInfo.ForumDesc.Substring(0, iLen) + "...");
-                                        }
-                                        else
-                                        {
-                                            this.MetaTemplate = this.MetaTemplate.Replace(m.Value, this.ForumInfo.ForumDesc);
-                                        }
-                                    }
-                                }
-
-                                this.MetaTemplate = this.MetaTemplate.Replace("[BODY]", Utilities.StripHTMLTag(this.ForumInfo.ForumDesc));
-
                                 this.MetaTitle = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[TITLE]", "[/TITLE]").Replace("[TITLE]", string.Empty).Replace("[/TITLE]", string.Empty);
                                 this.MetaTitle = this.MetaTitle.TruncateAtWord(SEOConstants.MaxMetaTitleLength);
                                 this.MetaDescription = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[DESCRIPTION]", "[/DESCRIPTION]").Replace("[DESCRIPTION]", string.Empty).Replace("[/DESCRIPTION]", string.Empty);

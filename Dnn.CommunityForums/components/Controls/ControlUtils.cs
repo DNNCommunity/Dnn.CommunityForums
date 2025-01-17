@@ -163,8 +163,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Utilities.NavigateURL(tabId, portalSettings, string.Empty, @params.ToArray());
             }
 
-            var sURL = string.Empty;
-            if (!string.IsNullOrEmpty(mainSettings.PrefixURLBase))
+            var sURL = Utilities.NavigateURL(tabId, portalSettings, string.Empty, @params.ToArray());
+            var tabInfo = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(tabId, portalId);
+            if (!string.IsNullOrEmpty(mainSettings.PrefixURLBase) && !mainSettings.PrefixURLBase.Trim().Equals(tabInfo.TabName.Trim(), StringComparison.InvariantCultureIgnoreCase))
             {
                 sURL += "/" + mainSettings.PrefixURLBase;
             }
