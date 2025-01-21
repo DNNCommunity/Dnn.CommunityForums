@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             var cachekey = this.GetCacheKey(moduleId: this.moduleId, id: topicId);
             var ti = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
-            if (ti == null)
+            if (ti == null || ti.ContentId < 1)
             {
                 ti = base.GetById(topicId);
             }
@@ -293,7 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void DeleteById(int topicId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = base.GetById(topicId);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.moduleId).GetById(topicId);
             if (ti != null)
             {
                 new Social().DeleteJournalItemForPost(ti.PortalId, ti.ForumId, topicId, 0);
