@@ -242,7 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "07.00.12":
                     try
                     {
-                        ForumsConfig.FillMissingTopicUrls();
+                        ForumsConfig.FillMissingTopicUrls_070012();
                     }
                     catch (Exception ex)
                     {
@@ -256,10 +256,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         var fc = new ForumsConfig();
-                        fc.Install_Or_Upgrade_MoveTemplates();
-                        fc.Install_Or_Upgrade_RenameThemeCssFiles();
-                        fc.Install_Or_Upgrade_RelocateDefaultThemeToLegacy();
-                        ForumsConfig.FillMissingTopicUrls(); /* for anyone upgrading from 07.00.12-> 08.00.00 */
+                        fc.Install_Or_Upgrade_MoveTemplates_080000();
+                        fc.Install_Or_Upgrade_RenameThemeCssFiles_080000();
+                        fc.Install_Or_Upgrade_RelocateDefaultThemeToLegacy_080000();
+                        ForumsConfig.FillMissingTopicUrls_070012(); /* for anyone upgrading from 07.00.12-> 08.00.00 */
                     }
                     catch (Exception ex)
                     {

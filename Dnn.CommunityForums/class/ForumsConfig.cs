@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Add Default Forums
                 this.LoadDefaultForums(portalId, moduleId);
 
-                this.Install_Or_Upgrade_MoveTemplates();
+                this.Install_Or_Upgrade_MoveTemplates_080000();
 
                 // templates are loaded; map new forumview template id
                 this.UpdateForumViewTemplateId(portalId, moduleId);
@@ -281,7 +281,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal void Install_Or_Upgrade_RelocateDefaultThemeToLegacy()
+        internal void Install_Or_Upgrade_RelocateDefaultThemeToLegacy_080000()
         {
             try
             {
@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal void Install_Or_Upgrade_RenameThemeCssFiles()
+        internal void Install_Or_Upgrade_RenameThemeCssFiles_080000()
         {
             try
             {
@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal void Install_Or_Upgrade_MoveTemplates()
+        internal void Install_Or_Upgrade_MoveTemplates_080000()
         {
             if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.TemplatesPath)))
             {
@@ -340,32 +340,43 @@ namespace DotNetNuke.Modules.ActiveForums
             TemplateController tc = new TemplateController();
             foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
             {
-                /* during upgrade, explicitly (re-)load template text from database rather than Template_List  API since API loads template using fallback/default logic and doesn't yet have the upgraded template text */
-                IDataReader dr = DataProvider.Instance().Templates_Get(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId);
-                while (dr.Read())
+                /* during upgrade, explicitly (re-)load template text from database rather than Template_List API since API loads template using fallback/default logic and doesn't yet have the upgraded template text */
+                /* if installing version 8.2 or greater, only convert these specific templates */
+                if ((new Version(DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).Version) < new Version(8, 2)) ||
+                    ((templateInfo.TemplateType == Templates.TemplateTypes.ForumView) ||
+                     (templateInfo.TemplateType == Templates.TemplateTypes.TopicView) ||
+                     (templateInfo.TemplateType == Templates.TemplateTypes.TopicsView) ||
+                     (templateInfo.TemplateType == Templates.TemplateTypes.TopicForm) ||
+                     (templateInfo.TemplateType == Templates.TemplateTypes.Profile) ||
+                     (templateInfo.TemplateType == Templates.TemplateTypes.PostInfo) ||
+                     (templateInfo.TemplateType == Templates.TemplateTypes.QuickReplyForm)))
                 {
-                    try
+                    IDataReader dr = DataProvider.Instance().Templates_Get(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId);
+                    while (dr.Read())
                     {
-                        /* convert only legacy html portion of the template and save without encoding */
-                        string template = Convert.ToString(dr["Template"]).Replace("[TRESX:", "[RESX:");
-                        if (template.Contains("<html>"))
+                        try
                         {
-                            string sHTML;
-                            var xDoc = new System.Xml.XmlDocument();
-                            xDoc.LoadXml(template);
-                            System.Xml.XmlNode xNode;
-                            System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                            xNode = xRoot.SelectSingleNode("/template/html");
-                            sHTML = xNode.InnerText;
-                            template = sHTML;
-                        }
+                            /* convert only legacy html portion of the template and save without encoding */
+                            string template = Convert.ToString(dr["Template"]).Replace("[TRESX:", "[RESX:");
+                            if (template.Contains("<html>"))
+                            {
+                                string sHTML;
+                                var xDoc = new System.Xml.XmlDocument();
+                                xDoc.LoadXml(template);
+                                System.Xml.XmlNode xNode;
+                                System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                                xNode = xRoot.SelectSingleNode("/template/html");
+                                sHTML = xNode.InnerText;
+                                template = sHTML;
+                            }
 
-                        templateInfo.Template = System.Net.WebUtility.HtmlDecode(template);
-                        tc.Template_Save(templateInfo);
-                    }
-                    catch (Exception ex)
-                    {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                            templateInfo.Template = System.Net.WebUtility.HtmlDecode(template);
+                            tc.Template_Save(templateInfo);
+                        }
+                        catch (Exception ex)
+                        {
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                        }
                     }
                 }
             }
@@ -416,7 +427,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static void FillMissingTopicUrls()
+        internal static void FillMissingTopicUrls_070012()
         {
             string connectionString = new Connection().connectionString;
             string dbPrefix = new Connection().dbPrefix;
