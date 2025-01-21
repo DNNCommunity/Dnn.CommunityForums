@@ -75,7 +75,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>07.00.07,07.00.11,07.00.12,08.00.00,08.01.00,08.02.00</upgradeVersionsList>
+              <upgradeVersionsList>07.00.07,07.00.11,07.00.12,08.00.00,08.01.00,08.02.00,08.02.02</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
