@@ -321,7 +321,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, sAnnounce, "[ANNOUNCEMENTS]", "[/ANNOUNCEMENTS]");
             }
-                
+
             StringBuilder stringBuilder = new StringBuilder(sOutput);
             stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl);
             sOutput = stringBuilder.ToString();
@@ -522,6 +522,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         },
                     },
                 };
+                topicInfo.ContentId = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(Convert.ToInt32(drTopic["TopicId"])).ContentId;
+                topicInfo.Content.ContentId = topicInfo.ContentId;
+                if (topicInfo.LastReplyId > 0)
+                {
+                    topicInfo.LastReply.ContentId = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(Convert.ToInt32(drTopic["LastReplyId"])).ContentId;
+                    topicInfo.LastReply.Content.ContentId = topicInfo.LastReply.ContentId;
+                }
+
                 if (!(string.IsNullOrEmpty(topicInfo.Content.Summary)) && (!(Utilities.HasHTML(topicInfo.Content.Summary))))
                 {
                     topicInfo.Content.Summary = topicInfo.Content.Summary.Replace(System.Environment.NewLine, "<br />");
