@@ -46,16 +46,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public AuthorInfo(int portalId, int moduleId, int userId)
         {
             this.forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId);
-            if (this.forumUserInfo == null)
+            if (this.forumUserInfo == null || this.forumUserInfo.UserInfo == null)
             {
+                this.forumUserInfo = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(moduleId);
                 this.AuthorId = userId;
                 this.DisplayName = this.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
             }
-            else
-            {
-                this.forumUserInfo.PortalId = portalId;
-                this.forumUserInfo.ModuleId = moduleId;
-            }
+
+            this.forumUserInfo.PortalId = portalId;
+            this.forumUserInfo.ModuleId = moduleId;
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser { get => this.forumUserInfo; set => this.forumUserInfo = value; }
@@ -68,31 +67,31 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public new string FirstName
         {
-            get => this.forumUserInfo.UserInfo.FirstName;
+            get => this.forumUserInfo.UserInfo?.FirstName;
             set => this.forumUserInfo.UserInfo.FirstName = value;
         }
 
         public new string LastName
         {
-            get => this.forumUserInfo.UserInfo.LastName;
+            get => this.forumUserInfo.UserInfo?.LastName;
             set => this.forumUserInfo.UserInfo.LastName = value;
         }
 
         public new string DisplayName
         {
-            get => this.forumUserInfo.UserInfo.DisplayName;
+            get => this.forumUserInfo.UserInfo?.DisplayName;
             set => this.forumUserInfo.UserInfo.DisplayName = value;
         }
 
         public new string Username
         {
-            get => this.forumUserInfo.UserInfo.Username;
+            get => this.forumUserInfo.UserInfo?.Username;
             set => this.forumUserInfo.UserInfo.Username = value;
         }
 
         public new string Email
         {
-            get => this.forumUserInfo.UserInfo.Email;
+            get => this.forumUserInfo.UserInfo?.Email;
             set => this.forumUserInfo.UserInfo.Email = value;
         }
 

@@ -10,10 +10,10 @@
 			<td colspan="2" align="center">			
 				<table cellpadding="0" cellspacing="4" border="0" width="99%">
 					[AF:UI:MESSAGEREPLY]
-					<%--<tr>
+					<tr>
 						<td style="text-align:left;">[RESX:ReplyToTopic]:</td>
 						<td></td>
-					</tr>--%>
+					</tr>
 					<tr>
 						<td colspan="2" style="text-align:left;">[AF:LABEL:BODYREPLY]</td>
 					</tr>

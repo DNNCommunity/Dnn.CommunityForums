@@ -89,12 +89,12 @@
         <hr />
 
         <h3>
-            08.02.01
+            08.02.02
         </h3>
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a><!--, 
-            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>, and 
-            <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>-->.
+            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>,--> and 
+            <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>.
         </p>
         <p>
             What's to follow are all of the relevant updates that have occurred during the development cycle of this release.
@@ -111,7 +111,9 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>FIXED: Multiple Issues with Email Notifications (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1236">Issue 1236</a>)</li>
+            <li>FIXED: Error on Add Answer (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1241">Issue 1241</a>)</li>
+            <li>FIXED: Error When Deleting a Topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1242">Issue 1242</a>)</li>
+            <li>FIXED: Error on Edit Post (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1243">Issue 1243</a>)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
@@ -120,7 +122,7 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            <li>None at this time.</li>
+            <li>TASK: 8.2.2 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1248">Issue 1248</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>

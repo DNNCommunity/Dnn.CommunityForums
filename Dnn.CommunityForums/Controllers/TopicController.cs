@@ -272,7 +272,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 // TODO: put this in a better place and make it consistent with reply counter
                 DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
-            } 
+            }
 
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(ti.Forum.PortalId, ti.Content.AuthorId);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
@@ -293,7 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void DeleteById(int topicId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = base.GetById(topicId);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = this.GetById(topicId);
             if (ti != null)
             {
                 new Social().DeleteJournalItemForPost(ti.PortalId, ti.ForumId, topicId, 0);
