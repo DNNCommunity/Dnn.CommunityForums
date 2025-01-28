@@ -441,7 +441,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         break;
 
                     case ProfileVisibilities.RegisteredUsers:
-                        canLinkToProfile = HttpContext.Current.Request.IsAuthenticated;
+                        canLinkToProfile = accessingUser.IsRegistered;
                         break;
 
                     case ProfileVisibilities.Moderators:
