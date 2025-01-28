@@ -146,9 +146,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool IsArchived { get; set; }
 
-        public DateTime AnnounceStart { get; set; }
+        public DateTime? AnnounceStart { get; set; }
 
-        public DateTime AnnounceEnd { get; set; }
+        public DateTime? AnnounceEnd { get; set; }
 
         public TopicTypes TopicType { get; set; }
 
