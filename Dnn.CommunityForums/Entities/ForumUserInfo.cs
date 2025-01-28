@@ -154,10 +154,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string Email => string.IsNullOrEmpty(this.UserInfo?.Email) ? string.Empty : this.UserInfo?.Email;
 
         [IgnoreColumn]
-        public bool GetIsMod(int ModuleId)
-        {
-            return (!this.IsAnonymous && !(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.UserRoles, this.PortalId, ModuleId, "CanApprove"))));
-        }
+        public bool IsRegistered => !this.IsAnonymous && this.UserInfo != null && this.UserInfo.Roles.Contains(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleName(this.PortalId));
+
+        [IgnoreColumn]
+        public bool GetIsMod(int ModuleId) => !this.IsAnonymous && !(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.UserRoles, this.PortalId, ModuleId, "CanApprove")));
 
         [IgnoreColumn]
         public bool IsSuperUser => this.UserInfo != null && this.UserInfo.IsSuperUser;
