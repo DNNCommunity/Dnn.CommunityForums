@@ -1516,38 +1516,6 @@ De,
   <data name="NoResults.Text" xml:space="preserve">
     <value>Aucun résultat trouvé</value>
   </data>
-  <data name="[RESX:NotificationBodyReply].Text" xml:space="preserve">
-    <value>&lt;P&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération.&lt;/P&gt;
-&lt;P&gt;&lt;STRONG&gt;Objet&amp;nbsp;:&lt;/STRONG&gt; [FORUMPOST:SUBJECT]&lt;/P&gt;
-&lt;P&gt;Veuillez examiner le contenu et déterminer sa disposition.&lt;/P&gt;
-&lt;P&gt;Vous pouvez&amp;nbsp;: 
-&lt;OL&gt;
-&lt;LI&gt;approuver le sujet,&lt;/LI&gt;
-&lt;LI&gt;le rejeter (en l'envoyant à l'affiche pour révision),&lt;/LI&gt;
-&lt;LI&gt;le supprimer ou&lt;/LI&gt;
-&lt;LI&gt;bannir l'utilisateur, en supprimant ce sujet ainsi que tout autre sujet ou réponse publié par cet utilisateur&lt;/LI&gt;&lt;/OL&gt;
-&lt;P&gt;&lt;/P&gt;
-&lt;P&gt;Si vous ne pouvez pas déterminer si ce contenu est approprié en fonction du seul sujet, utilisez &lt;A href="about:[FORUM:MODLINK]"&gt;ce lien&lt;/A&gt; pour consulter et modérer les sujets.&lt;/P&gt;</value>
-  </data>
-  <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
-    <value>&lt;P&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;&amp;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération.&lt;/P&gt;
-&lt;P&gt;&lt;STRONG&gt;Objet&amp;nbsp;:&lt;/STRONG&gt; [FORUMPOST:SUBJECT]&lt;/P&gt;
-&lt;P&gt;Veuillez examiner le contenu et déterminer sa disposition.&lt;/P&gt;
-&lt;P&gt;Vous pouvez&amp;nbsp;: 
-&lt;OL&gt;
-&lt;LI&gt;approuver le sujet,&lt;/LI&gt;
-&lt;LI&gt;le rejeter (en l'envoyant à l'auteur pour révision),&lt;/LI&gt;
-&lt;LI&gt;le supprimer ou&lt;/LI&gt;
-&lt;LI&gt;bannir l'utilisateur, en supprimant ce sujet ainsi que tout autre sujet ou réponse publié par cet utilisateur&lt;/LI&gt;&lt;/OL&gt;
-&lt;P&gt;&lt;/P&gt;
-&lt;P&gt;Si vous ne pouvez pas déterminer si ce contenu est approprié en fonction du seul sujet, utilisez &lt;A href="about:[FORUM:MODLINK]"&gt;ce lien&lt;/A&gt; pour consulter et modérer les sujets.&lt;/P&gt;</value>
-  </data>
-  <data name="[RESX:NotificationSubjectReply].Text" xml:space="preserve">
-    <value>[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu qui doit être modéré</value>
-  </data>
-  <data name="[RESX:NotificationSubjectTopic].Text" xml:space="preserve">
-    <value>[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu qui doit être modéré</value>
-  </data>
   <data name="NotLoggedIn.Text" xml:space="preserve">
     <value>Veuillez vous connecter pour publier une réponse</value>
   </data>
@@ -1836,5 +1804,19 @@ De,
   </data>
   <data name="[RESX:EnableNotificationsForOwnContent].Help" xml:space="preserve">
     <value>Sélectionnez cette option si vous souhaitez recevoir des notifications indiquant qu’un nouveau contenu a été publié même si vous êtes l’utilisateur qui l’a publié.</value>
+  </data>
+  <data name="[RESX:NotificationBodyReply].Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp ; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;|[FORUMPOST:AUTHORDISPLAYNAME]&lt;/a&gt;] a publié du contenu nécessitant une modération.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Sujet :&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Veuillez examiner le contenu et déterminer son élimination.&lt;/p&gt;
+&lt;p&gt;Vous pouvez:&lt;ol&gt;&lt;li&gt;approuver le sujet,&lt;/li&gt;&lt;li&gt;le rejeter (envoi à l’affiche pour révisions),&lt;/li&gt;&lt;li&gt;le supprimer, ou&lt;/li&gt;&lt;li&gt;bannir l’utilisateur, en supprimant ce sujet et tout autre sujet ou réponse posté par cet utilisateur&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si vous ne parvenez pas à déterminer si ce contenu est approprié en vous basant uniquement sur le sujet, utilisez &lt;a href="[FORUM:MODLINK]"&gt;ce lien&lt;/a&gt; pour examiner et modérer les sujets.&lt;/p&gt;</value>
+  </data>
+  <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp ;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;|[FORUMPOST:AUTHORDISPLAYNAME]] a publié du contenu nécessitant une modération.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Sujet :&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Veuillez examiner le contenu et déterminer son élimination.&lt;/p&gt;
+&lt;p&gt;Vous pouvez:&lt;ol&gt;&lt;li&gt;approuver le sujet,&lt;/li&gt;&lt;li&gt;le rejeter (envoi à l’affiche pour révisions),&lt;/li&gt;&lt;li&gt;le supprimer, ou&lt;/li&gt;&lt;li&gt;bannir l’utilisateur, en supprimant ce sujet et tout autre sujet ou réponse posté par cet utilisateur&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si vous ne parvenez pas à déterminer si ce contenu est approprié en vous basant uniquement sur le sujet, utilisez &lt;a href="[FORUM:MODLINK]"&gt;ce lien&lt;/a&gt; pour examiner et modérer les sujets.&lt;/p&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="[RESX:NotificationSubjectReply].Text" xml:space="preserve">
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération</value>
+  </data>
+  <data name="[RESX:NotificationSubjectTopic].Text" xml:space="preserve">
+    <value>[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération</value>
   </data>
 </root>
