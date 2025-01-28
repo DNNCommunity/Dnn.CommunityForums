@@ -359,58 +359,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name")
-        {
-            if (portalSettings == null)
-            {
-                portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-            }
-
-            if (portalSettings == null)
-            {
-                return null;
-            }
-
-            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
-
-            var outputTemplate = string.IsNullOrWhiteSpace(profileLinkClass) ? "{0}" : string.Concat("<span class='", profileNameClass, "'>{0}</span>");
-
-            if (linkProfile && userId > 0)
-            {
-                var profileVisibility = mainSettings.ProfileVisibility;
-
-                switch (profileVisibility)
-                {
-                    case ProfileVisibilities.Disabled:
-                        linkProfile = false;
-                        break;
-
-                    case ProfileVisibilities.Everyone: // Nothing to do in this case
-                        break;
-
-                    case ProfileVisibilities.RegisteredUsers:
-                        linkProfile = HttpContext.Current.Request.IsAuthenticated;
-                        break;
-
-                    case ProfileVisibilities.Moderators:
-                        linkProfile = isMod || isAdmin;
-                        break;
-
-                    case ProfileVisibilities.Admins:
-                        linkProfile = isAdmin;
-                        break;
-                }
-
-                if (linkProfile && portalSettings.UserTabId != null && portalSettings.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger && portalSettings.UserTabId != -1)
-                    outputTemplate = string.Concat("<a href='", Utilities.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }), "' class='", profileLinkClass, "' rel='nofollow'>{0}</a>");
-            }
-
-            var outputName = GetDisplayName(portalSettings, mainSettings, isMod, isAdmin, userId, username, firstName, lastName, displayName);
-            outputName = System.Net.WebUtility.HtmlEncode(outputName);
-
-            return string.Format(outputTemplate, outputName);
-        }
-
         internal static bool CanLinkToProfile(DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             if (portalSettings == null)
