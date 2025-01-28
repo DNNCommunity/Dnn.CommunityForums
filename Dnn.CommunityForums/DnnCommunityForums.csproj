@@ -1254,8 +1254,8 @@
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.10.SqlDataProvider" />
-    <None Include="sql\08.02.02.SqlDataProvider" />
     <None Include="sql\08.02.00.SqlDataProvider" />
+    <None Include="sql\08.02.03.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\StatsTemplate.ascx" />
     <Content Include="config\defaultsetup.config">
