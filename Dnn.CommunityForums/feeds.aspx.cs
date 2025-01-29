@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -241,7 +242,16 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append(this.WriteElement("title", dr["Subject"].ToString(), indent + 1));
             sb.Append(this.WriteElement("description", body, indent + 1));
             sb.Append(this.WriteElement("link", uRL, indent + 1));
-            sb.Append(this.WriteElement("dc:creator", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.moduleID, false, false, false, -1, dr["AuthorUserName"].ToString(), dr["AuthorFirstName"].ToString(), dr["AuthorLastName"].ToString(), dr["AuthorDisplayName"].ToString(), null), indent + 1));
+            sb.Append(this.WriteElement("dc:creator", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings: this.PortalSettings,
+                                                                                                                                     mainSettings: mainSettings,
+                                                                                                                                     isMod: false,
+                                                                                                                                     isAdmin: false,
+                                                                                                                                     userId: -1,
+                                                                                                                                     username: dr["AuthorUserName"].ToString(),
+                                                                                                                                     firstName: dr["AuthorFirstName"].ToString(),
+                                                                                                                                     lastName: dr["AuthorLastName"].ToString(),
+                                                                                                                                     displayName: dr["AuthorDisplayName"].ToString()),
+                                                                                                                                     indent + 1));
             sb.Append(this.WriteElement("pubDate", Convert.ToDateTime(dr["DateCreated"]).AddMinutes(this.offSet).ToString("r"), indent + 1));
             sb.Append(this.WriteElement("guid", uRL, indent + 1));
             sb.Append(this.WriteElement("slash:comments", dr["ReplyCount"].ToString(), indent + 1));

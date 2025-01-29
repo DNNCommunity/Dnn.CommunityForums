@@ -1028,10 +1028,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             var sOutput = template;
 
-            // most topic values come in first result set and are set in LoadData(); however some, like IP Address and contentId, comes in this result set.
-            this.topic.Content.IPAddress = dr.GetString("IPAddress");
-            this.topic.ContentId = dr.GetInt("ContentId");
-            this.topic.Content.ContentId = dr.GetInt("ContentId");
+            if (dr.GetInt("ReplyId").Equals(0))
+            {
+                // most topic values come in first result set and are set in LoadData(); however some, like IP Address and contentId, comes in this result set.
+                this.topic.Content.IPAddress = dr.GetString("IPAddress");
+                this.topic.ContentId = dr.GetInt("ContentId");
+                this.topic.Content.ContentId = dr.GetInt("ContentId");
+            }
 
             var reply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo
             {
