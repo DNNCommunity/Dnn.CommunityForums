@@ -8,27 +8,33 @@
 	.muy-importante { color:red;font-weight:bold; }
 	div.uv-install-wrapper pre { font-family: Courier New; font-weight: 11pt; margin-bottom: 4px; display: inline; }
 	div.uv-install-wrapper ol { padding-left: 24px; margin-bottom: 6px; }
-    .dcf-oldnews { background-color: #dcdcdc; font-style: italic; border: 1px solid #000000; padding: 1em; margin: 0.5em; }
+    .dcf-oldnews { background-color: #eeecec; font-style: italic; border: 1px solid #000000; padding: 1em; margin: 0.5em; }
 </style>
 <div class="uv-install-wrapper">
     <h3>The Official <strong>Community Forums</strong> Module for DNN CMS</h3>
     <hr />
 
     <div class="dnnClear">
-        <h1 class="muy-importante">
-            IMPORTANT: Release Candidate (Not for Production)
-        </h1>
-        <p class="muy-importante">
-            This is a <b>Release Candidate (RC)</b>.  Please do not use this installation/upgrade package for any production 
-            websites of <b>ANY KIND</b>.  This release is not supported and is only provided for test purposes, to allow 
-            others to test their websites first.  
-        </p>
-        <hr />
-
         <h2 class="muy-importante">Important Upgrade Notes</h2>
         <p>
             The release notes will follow, below these <b>important</b> notes.
         </p>
+
+        <blockquote class="dcf-oldnews">
+
+            <h2 class="muy-importante">
+                Upgrading Through 8.0 & 8.1  (must read)
+            </h2>
+            <p>
+                First, if you're upgrading from a version earlier than 8.0, you NEED to view the important release note FYI wiki articles below. 
+            </p>
+
+            <ul>
+                <li><a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Upgrading-to-Version-8.0" target="_blank">What to Know When Upgrading to Commmunity Forums 8.0</a></li>
+                <li><a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Upgrading-to-Version-8.1" target="_blank">What to Know When Upgrading to Commmunity Forums 8.1</a></li>
+            </ul>
+
+        </blockquote>
 
         <h3>New <strong>&quot;Legacy Token&quot; Replacement</strong></h3>
         <p>
@@ -74,109 +80,6 @@
             template has not been customized from the version shipped with DNN Community Forums,
             the template can be removed from your custom theme if desired.
         </p>
-
-        <blockquote class="dcf-oldnews">
-
-            <h2 class="muy-importante">
-                IMPORTANT: Upgrade Notes Related Recent Major/Minor Releases
-            </h2>
-            <p>
-                The release notes will follow, below these <b>important</b> notes.
-            </p>
-
-            <h3>New <strong>Bootstrap</strong> 4 &amp; 5 Forum Theme</h3>
-            <p>
-                Please be sure to test this and <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/new/choose" target="_blank">report any issues you may find</a>. It's a brand-new feature!
-            </p>
-            <p>
-                When you use the &quot;community-default&quot; or the
-                &quot;community-bootstrap&quot; Theme, make sure to set the Avatar size to 250 x
-                250 pixels in the Module Settings.
-            </p>
-            <p>
-                Also, please note that this version of the community-bootstrap theme will not
-                work with Bootstrap 3 and/or the DNN Xcillion theme.
-            </p>
-
-            <h3>New <strong>Languages</strong> Added!</h3>
-            <p>
-                Dutch already had a language pack, but now there are language packs for German,
-                French, Spanish, and Italian. They were generated though, so we could use your
-                help from the community to make sure the translations are indeed accurate.
-            </p>
-            <p>
-                We recommend that you use Peter Donker's translation software (below) to make
-                things easier for you.
-            </p>
-            <ul>
-                <li>
-                    Blog: <a href="https://dnncommunity.org/blogs/Post/17869/A-Central-Hub-for-Language-Packs"
-                                target="_blank">A Central Hub for Language Packs</a>, by Peter
-                    Donker
-                </li>
-                <li>
-                    Download: <a href="https://github.com/DNN-Connect/DNN-Translator"
-                                    target="_blank">DNN Translator</a>
-                </li>
-                <li>
-                    Related Pull Request: <a href="https://github.com/DNN-Connect/DNN-Translator/pull/15"
-                                                target="_blank">
-                        Add Azure Cognitive Services (Microsoft
-                        Translator v3) as a Translation Service
-                    </a>
-                </li>
-            </ul>
-
-            <h3>Upgrading? <strong>Reindex</strong> Your Search</h3>
-            <p>
-                There have been significant updates in the way the forums module integrates with
-                the DNN search engine. This includes a handful of bug fixes. It's important to
-                reindex your DNN search as soon as possible after the upgrade.
-            </p>
-
-            <h3><strong>NEW</strong> CSS Loading Order</h3>
-            <p>
-                CSS loading has been improved to deliver robust CSS both within the module,
-                across all themes, and then theme-specific with a custom override.
-            </p>
-            <p>
-                New Community Forum's CSS Load order:
-            </p>
-            <ol>
-                <li>
-                    <pre>~/DesktopModules/ActiveForums/module.css</pre> (<em> already existing</em>)
-                </li>
-                <li>
-                    <pre>~/DesktopModules/ActiveForums/themes/themes.css</pre> (<em>
-                        new name and CSS content / used across all themes
-                    </em>)
-                </li>
-                <li>
-                    <pre>~/DesktopModules/ActiveForums/themes/_currenttheme_/theme{.min}.css</pre>
-                    (<em>already existing / new name</em>). Can now have a .min.css variant.
-                </li>
-                <li>
-                    <pre>~/DesktopModules/ActiveForums/themes/_currenttheme_/custom/theme{.min}.css</pre>
-                    (new) has been updated. Can now have a .min.css variant.
-                </li>
-            </ol>
-
-            <h3>Orphaned Web.Config Update</h3>
-            <p>
-                If you have previously installed the Community Forums module --and its URL
-                rewriter in order to use friendly URLs-- that process inserted
-                the attribute <em>runAllManagedModulesForAllRequests="true"</em> into the
-                <em>&lt;configuration&gt;&lt;system.webServer&gt;&lt;modules&gt;</em>
-                tag in the main <em>web.config</em>.
-            </p>
-            <p>
-                Per <a href="https://learn.microsoft.com/en-us/iis/configuration/system.webserver/modules/" target="_blank"> Microsoft documentation</a>, this attribute is obsolete if you are running IIS 7 (plus a patch), or IIS 8+.
-            </p>
-            <p>
-                Since you <em>may</em> have other modules that require it, we have chosen to <strong>NOT</strong> remove it automatically. If you have no other modules that require it, you many remove it manually.
-            </p>
-
-        </blockquote>
     </div>
     <hr />
     <div class="dnnClear">
@@ -186,92 +89,20 @@
         <hr />
 
         <h3>
-            08.02.00
+            08.02.02
         </h3>
         <p>
-            <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, 
-            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>, and 
+            <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a><!--, 
+            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>,--> and 
             <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>.
         </p>
         <p>
             What's to follow are all of the relevant updates that have occurred during the development cycle of this release.
         </p>
-        <p>
-            If you wish to see all of the development work (including updates related to internal testing), you can 
-            <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/milestone/25?closed=1" target="_blank">view the milestone in GitHub</a>.
-        </p>
 
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-            <li><strong>Control Panel &amp; Security Configuration</strong> 
-                <ul>
-                    <li>UX: (Re)Organized the Security in the Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/931">Issue 931</a>)</li>
-                    <li>UPDATE: Allow Default Forum Settings to Be Created &amp; Easily Used by Forum Groups (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/650">Issue 650</a>)</li>
-                    <li>UPDATE: Made Forum Security Configuration Inheritance More Logical (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/62">Issue 62</a>)</li>
-                    <li>UPDATE: Added Inheritance Labels When Forums are Inheriting Security and/or Settings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1161">Issue 1161</a>)</li>
-                    <li>UX: Re-Labeled Security Permission Options After Consolidation for Better UX (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/930">Issue 930</a>)</li>
-                    <li>UX: Added Helpful Explanatory Text to Security Grid Titles (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/862">Issue 862</a>)</li>
-                    <li>UX: Combined (Duplicated) &quot;ModLock&quot; and &quot;Lock&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/926">Issue 926</a>)</li>
-                    <li>UX: Combined (Duplicated) &quot;ModPin&quot; and &quot;Pin&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/927">Issue 927</a>)</li>
-                    <li>UX: Combined (Duplicated) &quot;ModEdit&quot; and &quot;Edit&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/929">Issue 929</a>)</li>
-                    <li>UX: Combined (Duplicated) &quot;ModDelete&quot; and &quot;Delete&quot; Security Permission Options (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/928">Issue 928</a>)</li>
-                    <li>UX: Improved How the Security Grid is Displayed in the Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1115">Issue 1115</a>)</li>
-                    <li>UPDATE: Improved CSS for Control Panel Security Tooltip Position (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1050">Issue 1050</a>)</li>
-                </ul>
-            </li>
-            <li><strong>Notifications, Likes, and Pins</strong> 
-                <ul>
-                    <li>UPDATE: Get Notified When Someone Likes Your Post (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/632">Issue 632</a>)</li>
-                    <li>UPDATE: Allow Authorized Visitors to See Who Likes a Post (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/801">Issue 801</a>)</li>
-                    <li>UPDATE: Send Notification to Original Poster When Topic is Moved (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1008">Issue 1008</a>)</li>
-                    <li>UPDATE: Enable/Disable Option for Email Notification to Posting User (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/263">Issue 263</a>)</li>
-                </ul>
-            </li>
-            <li><strong>Templates &amp; Tokens</strong> 
-                <ul>
-                    <li>UPDATE: Email Notifications Modernized to Use Token Replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1128">Issue 1128</a>)</li>
-                    <li>UPDATE: New Template &amp; Tokens for Search Results (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1101">Issue 1101</a>)</li>
-                    <li>UPDATE: New Template &amp; Tokens for Filtered Topic Results (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1102">Issue 1102</a>)</li>
-                    <li>UPDATE: New Template &amp; Tokens for the Forum Toolbar (Removes Hard-Coded HTML) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1113">Issue 1113</a>)</li>
-                    <li>UPDATE: New Token `[FORUM:LOGINLINK]` Replaces `[ADDREPLY]` When Unauthenticated (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1107">Issue 1107</a>)</li>
-                    <li>UPDATE: Added the `[FORUMPARENTNAME]` Token for Child Forums (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/469">Issue 469</a>)</li>
-                    <li>UPDATE: New Messages &amp; Admin Log Reporting When Using Legacy Tokens in Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1062">Issue 1062</a>)</li>
-                    <li>UPDATE: Refactored Nested Template Insertion &amp; Honor the `[DCF:TEMPLATE-xxxx]` Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1124">Issue 1124</a>)</li>
-                    <li>UPDATE: Use Token Replacement Service for Moderation Notifications (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1112">Issue 1112</a>)</li>
-                    <li>UPDATE: Static Text in Templates Can Now Be Localized (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/470">Issue 470</a>)</li>
-                    <li>UPDATE: Updated `community-*` Templates to Move Markup from Code to a Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1117">Issue 1117</a>)</li>
-                    <li>UPDATE: Use Template Caching Module Setting for Forums Toolbar Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1095">Issue 1095</a>)</li>
-                    <li>UPDATE: Changed Replaced Tokens to Use Classes Instead of Inline Styles (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/467">Issue 467</a>)</li>
-                    <li>UPDATE: Improved the HTML Output of the `[AF:CONTROL:STATUSICON]` Token (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/743">Issue 743</a>)</li>
-                    <li>UPDATE: Added Core Token Replace Support to Some Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/521">Issue 521</a>)</li>
-                    <li>UPDATE: Removed Unnecessary HTML from Token Replacement in Email Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1127">Issue 1127</a>)</li>
-                    <li>UPDATE: Replaced Like Button Hard-Coded HTML with Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1142">Issue 1142</a>)</li>
-                    <li>UPDATE: Moved Email Subject From the Template to Forum Settings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/702">Issue 702</a>)</li>
-                </ul>
-            </li>
-            <li><strong>User Experience &amp; More...</strong> 
-                <ul>
-                    <li>UX: Improved the Scaling of Large Images on All Viewports (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/982">Issue 982</a>)</li>
-                    <li>UX: Many New Mobile User Experience Updates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/932">Issue 932</a>)</li>
-                    <li>UX: Improved How Moderated Forums Are Displayed (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/999">Issue 999</a>)</li>
-                    <li>UX: Improved How IPv6 Addresses Are Displayed (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1118">Issue 1118</a>)</li>
-                    <li>UX: Improved Messaging with No Moderator Content Pending (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/958">Issue 958</a>)</li>
-                    <li>UX: Moderator Button Styling Improved (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/969">Issue 969</a>)</li>
-                    <li>UX: Made Distance Consistent in the `TopicsView` Bootstrap Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1192">Issue 1192</a>)</li>
-                    <li>UX: My Subscriptions &amp; My Settings Cleared Upon Logout (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/981">Issue 981</a>)</li>
-                    <li>UX: Styling for New Like Features (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1189">Issue 1189</a>)</li>
-                    <li>UPDATE: Improved Avatar Image Quality for Forum Users (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/888">Issue 888</a>)</li>
-                    <li>UPDATE: Improved UX on Topics When Not Logged In w/ Login Link (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1001">Issue 1001</a>)</li>
-                    <li>UPDATE: Modernized Statuses for Forums, Topics, Replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/468">Issue 468</a>)</li>
-                    <li>UPDATE: Forums Responses Marked as an Answer to be More Obvious (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1144">Issue 1144</a>)</li>
-                    <li>UPDATE: Moderator Views Now Make it Easier to Navigate to Reported Posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1041">Issue 1041</a>)</li>
-                    <li>UPDATE: Optimized How &amp; What Gets Posted to the Journal (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/748">Issue 748</a>)</li>
-                    <li>UPDATE: User Online Status Now More Accurate (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1083">Issue 1083</a>)</li>
-                    <li>UPDATE: Search Results HTML Output has Newly Added `div` Tags (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/480">Issue 480</a>)</li>
-                    <li>UPDATE: Don't Emit the Signature HTML Output When There Isn't a Signature (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/486">Issue 486</a>)</li>
-                    <li>UPDATE: Adds Exception Logging to Web API Authentication (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1051">Issue 1051</a>)</li>
-                </ul>
-            </li>
+            <li>None at this time.</li>
             <!--
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
@@ -280,32 +111,9 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>FIXED: Images in a Forum Post can Appear to be Oversized &amp; Break the Design (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1105">Issue 1105</a>)</li>
-            <li>FIXED: Editing the Topic Subject Should Update DNN Journal Item (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/821">Issue 821</a>)</li>
-            <li>FIXED: Tokens Such as [RESX:Views] are not Supported in UPPERCASE (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/475">Issue 475</a>)</li>
-            <li>FIXED: False Error When Updating User Profile (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1002">Issue 1002</a>)</li>
-            <li>FIXED: Posts Going Through Moderation Not Updating a User's Post Count (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/983">Issue 983</a>)</li>
-            <li>FIXED: Moderator Buttons not styled correctly (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/995">Issue 995</a>)</li>
-            <li>FIXED: Resolves an Issue When Properly Tracking Forum Reads &amp; Views (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1032">Issue 1032</a>)</li>
-            <li>FIXED: &quot;What's New&quot; Module Showing Topics from Forums Not Selected in Module Settings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/992">Issue 992</a>)</li>
-            <li>FIXED: Using the &quot;Quick Jump&quot; Forum Control Throws an Error (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1034">Issue 1034</a>)</li>
-            <li>FIXED: Splitting a Forum Thread Can Result in an Exception (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1036">Issue 1036</a>)</li>
-            <li>FIXED: Next/Previous Links Not Updated After Deleting Topics (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1043">Issue 1043</a>)</li>
-            <li>FIXED: Exception When Switching Between Tabs with Different Forums Instances (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1075">Issue 1075</a>)</li>
-            <li>FIXED: Updates to Resolve Known Process Queue Errors (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1090">Issue 1090</a>)</li>
-            <li>FIXED: Unable to Move an Existing Topic to a Hidden Forum (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1089">Issue 1089</a>)</li>
-            <li>FIXED: Topic View is Showing an Incorrect Topic Template on a Forum Thread Page with Only Replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1139">Issue 1139</a>)</li>
-            <li>FIXED: Fatal Exception In Getting Started Wizard in Some Cases Due to Serialization (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/857">Issue 857</a>)</li>
-            <li>FIXED: Forum Collapse Broken Due to `[GROUP]` Token Location in the Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1153">Issue 1153</a>)</li>
-            <li>FIXED: URL for a Specific Group of Forums Shows Other Groups (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1152">Issue 1152</a>)</li>
-            <li>FIXED: Subscriptions to Deleted Forums Are Orphaned (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1156">Issue 1156</a>)</li>
-            <li>FIXED: Update `Redirect()` Method Calls for Consistent and Correct Usage (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/970">Issue 970</a>)</li>
-            <li>FIXED: `[SIGNATURE]` Token Not Replaced in Topic Review Section When Creating a Reply (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1177">Issue 1177</a>)</li>
-            <li>FIXED: Forum Posts in Topic View Showing Wrong Signature (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1194">Issue 1194</a>)</li>
-            <li>FIXED: Changed Pin &Amp; Lock to Use ID Instead of Class on Reload (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1209">Issue 1209</a>)</li>
-            <li>FIXED: Updated `TopicController` to Use the Correct `ContentID` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1210">Issue 1210</a>)</li>
-            <li>FIXED: Mutiple `UserProfile` Records Created for the Same User Account (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1210">Issue 1210</a>)</li>
-            <li>FIXED: Exception Loading the What's New Module When Logged in as Superuser on Older Sites (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1226">Issue 1226</a>)</li>
+            <li>FIXED: Error on Add Answer (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1241">Issue 1241</a>)</li>
+            <li>FIXED: Error When Deleting a Topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1242">Issue 1242</a>)</li>
+            <li>FIXED: Error on Edit Post (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1243">Issue 1243</a>)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
@@ -314,47 +122,7 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            <li>TASK: Migrated Features from `afmod.js` to `afcommon.js` to Support Enhanced Moderator Support (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1045">Issue 1045</a>)</li>
-            <li>TASK: Added ViewModels for Primary Forums Objects, Forum &amp; Topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1047">Issue 1047</a>)</li>
-            <li>TASK: Remove Unused/Unneeded Legacy User Profile Preferences (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/761">Issue 761</a>)</li>
-            <li>TASK: Adopt DNN Code Quality Rules (e.g. StyleCop) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/779">Issue 779</a>)</li>
-            <li>TASK: Adopted Code Quality Recommendations from StyleCop (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1018">Issue 1018</a>)</li>
-            <li>TASK: Combined Two Different User-Related Code Classes into One (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/976">Issue 976</a>)</li>
-            <li>TASK: Added `ModuleId` to `activeforums_Permissions` for Improved Database Integrity (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/726">Issue 726</a>)</li>
-            <li>TASK: Related the Orphaned `activeforums_UserProfiles` Table to the `PortalUsers` Table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1006">Issue 1006</a>)</li>
-            <li>TASK: Remove Obsolete Template Files (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/988">Issue 988</a>)</li>
-            <li>TASK: Fixed &amp; Removed Existing Foreign Keys in the Database (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/898">Issue 898</a>)</li>
-            <li>TASK: Removed Unnecessary SQL Database Indexes (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1012">Issue 1012</a>)</li>
-            <li>TASK: Update `csproj` for Invalid `SourceCodeControl` Attributes (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/989">Issue 989</a>)</li>
-            <li>TASK: Updated `TopicInfo` &amp; `ReplyInfo` to Implement `IPostInfo` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1039">Issue 1039</a>)</li>
-            <li>TASK: Updated the Legacy `GetReply()` method calls in `ReplyController` to use DAL2 `GetById()` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1055">Issue 1055</a>)</li>
-            <li>TASK: Added `ModuleId` to `ForumUserInfo` for Enhanced Query Support (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1052">Issue 1052</a>)</li>
-            <li>TASK: Moved Method Used in Token Replacement to `ForumController` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1059">Issue 1059</a>)</li>
-            <li>TASK: Refactored Some URL Methods for Clarity (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1064">Issue 1064</a>)</li>
-            <li>TASK: Updated Method Signatures in the `ForumUserController` Class (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1067">Issue 1067</a>)</li>
-            <li>TASK: Updated Several Classes to Support `IPropertyAccess` to Support Token Replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1069">Issue 1069</a>)</li>
-            <li>TASK: Marked Several Methods as Deprecated to be Removed in a Future Release (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1068">Issue 1068</a>)</li>
-            <li>TASK: Added Indexes in the Database to Support `ContentID` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1100">Issue 1100</a>)</li>
-            <li>TASK: Updated Tokens in Delivered `ProfileInfo` Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1119">Issue 1119</a>)</li>
-            <li>TASK: Refactored the `ForumUserInfo` `CurrentUserType` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1131">Issue 1131</a>)</li>
-            <li>TASK: Removed Duplicate Legacy Templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1126">Issue 1126</a>)</li>
-            <li>TASK: Removed Duplicate `HiddenStats` from HTML Output (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/461">Issue 461</a>)</li>
-            <li>TASK: Move Existing `SqlDataProvider` Files for Existing Installs from `/sql/sql/` to `/sql/` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/247">Issue 247</a>)</li>
-            <li>TASK: Install Packages Shouldn't Install `packages.config` and `app.config` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1149">Issue 1149</a>)</li>
-            <li>TASK: Replaced Forum List &amp; Delete Stored Procedures with DAL2 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1164">Issue 1164</a>)</li>
-            <li>TASK: Replaced Forum Group Delete Stored Procedure with DAL2 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1162">Issue 1162</a>)</li>
-            <li>TASK: Refactored Forum Settings to Use a New Separate Class (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1163">Issue 1163</a>)</li>
-            <li>TASK: Updated Regular Expression Usage to Use DNN `RegExUtils.GetCachedRegex` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1158">Issue 1158</a>)</li>
-            <li>TASK: Refactored Logic that Removes Scripts &amp; Tags (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1159">Issue 1159</a>)</li>
-            <li>TASK: Now using DAL2 for Accessing the `activeforums_Topics_Tracking` Table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1024">Issue 1024</a>)</li>
-            <li>TASK: Now using DAL2 for Accessing the `activeforums_Forums_Tracking` Table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1025">Issue 1025</a>)</li>
-            <li>TASK: Now using DAL2 for Accessing the `activeforums_ForumsTopics` Table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1026">Issue 1026</a>)</li>
-            <li>TASK: Removed the Year from Source Code Copyright Statements (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1214">Issue 1214</a>)</li>
-            <li>TASK: Added `NewtonSoft.Json` package via NuGet (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1085">Issue 1085</a>)</li>
-            <li>TASK: Updated Support for `NUnit` &amp; `Moq` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1087">Issue 1087</a>)</li>
-            <li>TASK: Create 8.2 Release (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/986">Issue 986</a>)</li>
-            <li>TASK: Minor updates for release clean up (csproj, license typo, duplicate file references, etc.) (No Issue)</li>
-            <li>TASK: Updated Release Notes for 8.2 Release (No Issue)</li>
+            <li>TASK: 8.2.2 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1248">Issue 1248</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>

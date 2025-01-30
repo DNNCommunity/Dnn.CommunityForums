@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool isSubscribedForum;
         private bool useListActions;
 
-        public string MetaTemplate { get; set; } = "[META][TITLE][PORTAL:PORTALNAME] - [TAB:TITLE] - [FORUMGROUP:GROUPNAME] - [FORUM:FORUMNAME][/TITLE][DESCRIPTION][BODY][/DESCRIPTION][KEYWORDS][VALUE][/KEYWORDS][/META]";
+        public string MetaTemplate { get; set; } = "[META][TITLE][PORTAL:PORTALNAME] - [TAB:TITLE] - [FORUMGROUP:GROUPNAME] - [FORUM:FORUMNAME][/TITLE][DESCRIPTION][FORUM:FORUMDESCRIPTION][/DESCRIPTION][KEYWORDS][VALUE][/KEYWORDS][/META]";
 
         public string MetaTitle { get; set; } = string.Empty;
 
@@ -229,36 +229,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             {
                                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder( this.MetaTemplate)).ToString();
                                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl).ToString();
-                                this.MetaTemplate = this.MetaTemplate.Replace("[TAGS]", string.Empty);
-                                if (this.MetaTemplate.Contains("[TOPICSUBJECT:"))
-                                {
-                                    string pattern = "(\\[TOPICSUBJECT:(.+?)\\])";
-                                    foreach (Match m in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Matches(this.MetaTemplate))
-                                    {
-                                        this.MetaTemplate = this.MetaTemplate.Replace(m.Value, string.Empty);
-                                    }
-                                }
-
-                                this.MetaTemplate = this.MetaTemplate.Replace("[TOPICSUBJECT]", string.Empty);
-                                if (this.MetaTemplate.Contains("[BODY:"))
-                                {
-                                    string pattern = "(\\[BODY:(.+?)\\])";
-                                    foreach (Match m in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Matches(this.MetaTemplate))
-                                    {
-                                        int iLen = Convert.ToInt32(m.Groups[2].Value);
-                                        if (this.ForumInfo.ForumDesc.Length > iLen)
-                                        {
-                                            this.MetaTemplate = this.MetaTemplate.Replace(m.Value, this.ForumInfo.ForumDesc.Substring(0, iLen) + "...");
-                                        }
-                                        else
-                                        {
-                                            this.MetaTemplate = this.MetaTemplate.Replace(m.Value, this.ForumInfo.ForumDesc);
-                                        }
-                                    }
-                                }
-
-                                this.MetaTemplate = this.MetaTemplate.Replace("[BODY]", Utilities.StripHTMLTag(this.ForumInfo.ForumDesc));
-
                                 this.MetaTitle = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[TITLE]", "[/TITLE]").Replace("[TITLE]", string.Empty).Replace("[/TITLE]", string.Empty);
                                 this.MetaTitle = this.MetaTitle.TruncateAtWord(SEOConstants.MaxMetaTitleLength);
                                 this.MetaDescription = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[DESCRIPTION]", "[/DESCRIPTION]").Replace("[DESCRIPTION]", string.Empty).Replace("[/DESCRIPTION]", string.Empty);
@@ -511,12 +481,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     ModuleId = this.ForumModuleId,
                     PortalId = this.PortalId,
+                    ContentId = Convert.ToInt32(drTopic["ContentId"]),
                     ForumId = Convert.ToInt32(drTopic["ForumId"]),
                     Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Convert.ToInt32(drTopic["ForumId"]), this.ForumModuleId),
                     TopicId = Convert.ToInt32(drTopic["TopicId"]),
                     TopicType = (TopicTypes)Enum.Parse(typeof(TopicTypes), Convert.ToInt32(drTopic["TopicType"]).ToString()),
                     Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
                     {
+                        ContentId = Convert.ToInt32(drTopic["ContentId"]),
                         ModuleId = this.ForumModuleId,
                         Subject = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Subject"])),
                         Summary = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Summary"])),
@@ -530,19 +502,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ViewCount = Convert.ToInt32(drTopic["ViewCount"]),
                     StatusId = Convert.ToInt32(drTopic["StatusId"]),
                     IsLocked = Convert.ToBoolean(drTopic["IsLocked"]),
+                    IsApproved = Convert.ToBoolean(drTopic["IsApproved"]),
+                    IsDeleted = Convert.ToBoolean(drTopic["IsDeleted"]),
+                    IsRejected = Convert.ToBoolean(drTopic["IsRejected"]),
+                    IsArchived = Convert.ToBoolean(drTopic["IsArchived"]),
                     IsPinned = Convert.ToBoolean(drTopic["IsPinned"]),
+                    IsAnnounce = Convert.ToBoolean(drTopic["IsAnnounce"]),
+                    AnnounceStart = Convert.ToDateTime(drTopic["AnnounceStart"]),
+                    AnnounceEnd = Convert.ToDateTime(drTopic["AnnounceEnd"]),
+                    TopicIcon = drTopic["TopicIcon"].ToString(),
                     Rating = Convert.ToInt32(drTopic["TopicRating"]),
+                    Priority = Convert.ToInt32(drTopic["Priority"]),
                     TopicUrl = drTopic["TopicURL"].ToString(),
                     TopicData = drTopic["TopicData"].ToString(),
                     LastReply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo
                     {
+                        ReplyId = Convert.ToInt32(drTopic["LastReplyId"]),
                         ModuleId = this.ForumModuleId,
                         PortalId = this.PortalId,
                         Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, Convert.ToInt32(drTopic["LastReplyAuthorId"])),
-                        ReplyId = Convert.ToInt32(drTopic["LastReplyId"]),
+                        ContentId = Convert.ToInt32(drTopic["LastReplyContentId"]),
                         TopicId = Convert.ToInt32(drTopic["TopicId"]),
                         Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
                         {
+                            ContentId = Convert.ToInt32(drTopic["LastReplyContentId"]),
                             ModuleId = this.ForumModuleId,
                             Subject = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySubject"])),
                             Summary = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySummary"])),
@@ -552,6 +535,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         },
                     },
                 };
+
                 if (!(string.IsNullOrEmpty(topicInfo.Content.Summary)) && (!(Utilities.HasHTML(topicInfo.Content.Summary))))
                 {
                     topicInfo.Content.Summary = topicInfo.Content.Summary.Replace(System.Environment.NewLine, "<br />");
@@ -562,11 +546,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 topicInfo.Author.FirstName = topicInfo.Author?.FirstName?.Replace("&amp;#", "&#");
                 topicInfo.Author.LastName = topicInfo.Author.LastName?.Replace("&amp;#", "&#");
                 topicInfo.Author.DisplayName = topicInfo.Author.DisplayName?.Replace("&amp;#", "&#");
-                topicInfo.LastReplyAuthor.ForumUser.ModuleId = this.ForumModuleId;
-                topicInfo.LastReplyAuthor.ForumUser.PortalId = this.PortalId;
-                topicInfo.LastReplyAuthor.FirstName = topicInfo.Author.FirstName?.Replace("&amp;#", "&#");
-                topicInfo.LastReplyAuthor.LastName = topicInfo.Author.LastName?.Replace("&amp;#", "&#");
-                topicInfo.LastReplyAuthor.DisplayName = topicInfo.Author.DisplayName?.Replace("&amp;#", "&#");
+                if (topicInfo.LastReplyAuthor?.LastName != null)
+                {
+                    topicInfo.LastReplyAuthor.LastName = topicInfo.LastReplyAuthor.LastName.Replace("&amp;#", "&#");
+                }
+
+                if (topicInfo.LastReplyAuthor?.FirstName != null)
+                {
+                    topicInfo.LastReplyAuthor.FirstName = topicInfo.LastReplyAuthor.FirstName.Replace("&amp;#", "&#");
+                }
+
+                if (topicInfo.LastReplyAuthor?.DisplayName != null)
+                {
+                    topicInfo.LastReplyAuthor.DisplayName = topicInfo.LastReplyAuthor.DisplayName.Replace("&amp;#", "&#");
+                }
+
+                if (topicInfo.LastReplyAuthor?.ForumUser != null)
+                {
+                    topicInfo.LastReplyAuthor.ForumUser.ModuleId = this.ForumModuleId;
+                    topicInfo.LastReplyAuthor.ForumUser.PortalId = this.PortalId;
+                }
 
                 int UserLastTopicRead = Convert.ToInt32(drTopic["UserLastTopicRead"]);
                 int UserLastReplyRead = Convert.ToInt32(drTopic["UserLastReplyRead"]);

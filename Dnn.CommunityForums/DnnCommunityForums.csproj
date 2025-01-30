@@ -198,6 +198,7 @@
   <ItemGroup>
     <Content Include="06.04.00.txt" />
     <Content Include="08.02.00.txt" />
+    <Content Include="08.02.02.txt" />
     <Content Include="08.01.00.txt" />
     <Content Include="08.00.00.txt" />
     <Content Include="07.00.11.txt" />
@@ -771,7 +772,6 @@
     <Content Include="themes\community-bootstrap\templates\ForumView.ascx" />
     <Content Include="themes\community-bootstrap\templates\ProfileInfo.ascx" />
     <Content Include="themes\community-bootstrap\templates\QuickReply.ascx" />
-    <Content Include="themes\community-bootstrap\templates\ReplyEditor.ascx" />
     <Content Include="themes\community-bootstrap\templates\TopicEditor.ascx" />
     <Content Include="themes\community-bootstrap\templates\TopicsView.ascx" />
     <Content Include="themes\community-bootstrap\templates\TopicView.ascx" />
@@ -1254,6 +1254,7 @@
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.10.SqlDataProvider" />
+    <None Include="sql\08.02.02.SqlDataProvider" />
     <None Include="sql\08.02.00.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\StatsTemplate.ascx" />

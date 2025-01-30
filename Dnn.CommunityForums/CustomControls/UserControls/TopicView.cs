@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string OptDefaultSort { get; set; }
 
-        public string MetaTemplate { get; set; } = "[META][TITLE][FORUMTOPIC:SUBJECT] - [PORTAL:PORTALNAME] - [TAB:TITLE] - [FORUMGROUP:GROUPNAME] - [FORUM:FORUMNAME][/TITLE][DESCRIPTION][BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
+        public string MetaTemplate { get; set; } = "[META][TITLE][FORUMTOPIC:SUBJECT] - [PORTAL:PORTALNAME] - [TAB:TITLE] - [FORUMGROUP:GROUPNAME] - [FORUM:FORUMNAME][/TITLE][DESCRIPTION][FORUMTOPIC:BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
 
         public string MetaTitle { get; set; } = string.Empty;
 
@@ -288,30 +288,53 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.isTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, this.ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserPermSet));
 
             // TODO: Eventually this will use DAL2 to load from stored procedure into object model, but for now populate topic object model from stored procedure results
-            this.topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
-            this.topic.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-            this.topic.TopicId = this.TopicId;
-            this.topic.ModuleId = this.ForumModuleId;
-            this.topic.PortalId = this.PortalId;
-            this.topic.IsPinned = Utilities.SafeConvertBool(this.drForum["IsPinned"]);
-            this.topic.IsLocked = Utilities.SafeConvertBool(this.drForum["IsLocked"]);
-            this.topic.ViewCount = Utilities.SafeConvertInt(this.drForum["ViewCount"]);
-            this.topic.ReplyCount = Utilities.SafeConvertInt(this.drForum["ReplyCount"]);
-            this.topic.TopicType = Utilities.SafeConvertInt(this.drForum["TopicType"]) < 1
+            this.topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
+            {
+                ModuleId = this.ForumModuleId,
+                PortalId = this.PortalId,
+                TopicId = this.TopicId,
+                IsPinned = Utilities.SafeConvertBool(this.drForum["IsPinned"]),
+                IsLocked = Utilities.SafeConvertBool(this.drForum["IsLocked"]),
+                IsApproved = Utilities.SafeConvertBool(this.drForum["IsApproved"]),
+                IsDeleted = Utilities.SafeConvertBool(this.drForum["IsDeleted"]),
+                IsRejected = Utilities.SafeConvertBool(this.drForum["IsRejected"]),
+                IsArchived = Utilities.SafeConvertBool(this.drForum["IsArchived"]),
+                IsAnnounce = Utilities.SafeConvertBool(this.drForum["IsAnnounce"]),
+                AnnounceStart = Utilities.SafeConvertDateTime(this.drForum["AnnounceStart"]),
+                AnnounceEnd = Utilities.SafeConvertDateTime(this.drForum["AnnounceEnd"]),
+                ViewCount = Utilities.SafeConvertInt(this.drForum["ViewCount"]),
+                ReplyCount = Utilities.SafeConvertInt(this.drForum["ReplyCount"]),
+                TopicType = Utilities.SafeConvertInt(this.drForum["TopicType"]) < 1
                 ? TopicTypes.Topic
-                : TopicTypes.Poll;
-            this.topic.StatusId = Utilities.SafeConvertInt(this.drForum["StatusId"]);
-            this.topic.Rating = Utilities.SafeConvertInt(this.drForum["TopicRating"]);
-            this.topic.TopicUrl = this.drForum["URL"].ToString();
-            this.topic.TopicData = this.drForum["TopicData"].ToString();
-            this.topic.NextTopic = Utilities.SafeConvertInt(this.drForum["NextTopic"]);
-            this.topic.PrevTopic = Utilities.SafeConvertInt(this.drForum["PrevTopic"]);
-            this.topic.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-            this.topic.Content.Subject = System.Net.WebUtility.HtmlDecode(this.drForum["Subject"].ToString());
-            this.topic.Content.Body = System.Net.WebUtility.HtmlDecode(this.drForum["Body"].ToString());
-            this.topic.Content.AuthorId = Utilities.SafeConvertInt(this.drForum["AuthorId"]);
-            this.topic.Content.AuthorName = this.drForum["TopicAuthor"].ToString();
-            this.topic.Content.DateCreated = Utilities.SafeConvertDateTime(this.drForum["DateCreated"]);
+                : TopicTypes.Poll,
+                StatusId = Utilities.SafeConvertInt(this.drForum["StatusId"]),
+                Rating = Utilities.SafeConvertInt(this.drForum["TopicRating"]),
+                TopicIcon = this.drForum["TopicIcon"].ToString(),
+                Priority = Convert.ToInt32(this.drForum["Priority"]),
+                TopicUrl = this.drForum["URL"].ToString(),
+                TopicData = this.drForum["TopicData"].ToString(),
+                NextTopic = Utilities.SafeConvertInt(this.drForum["NextTopic"]),
+                PrevTopic = Utilities.SafeConvertInt(this.drForum["PrevTopic"]),
+                Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
+                {
+                    ModuleId = this.ForumModuleId,
+                    Subject = System.Net.WebUtility.HtmlDecode(this.drForum["Subject"].ToString()),
+                    Summary = System.Net.WebUtility.HtmlDecode(this.drForum["Summary"].ToString()),
+                    Body = System.Net.WebUtility.HtmlDecode(this.drForum["Body"].ToString()),
+                    AuthorId = Utilities.SafeConvertInt(this.drForum["AuthorId"]),
+                    AuthorName = this.drForum["TopicAuthor"].ToString(),
+                    DateCreated = Utilities.SafeConvertDateTime(this.drForum["DateCreated"]),
+                },
+                LastReply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo
+                {
+                    TopicId = this.TopicId,
+                    Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
+                    {
+                        DateCreated = Utilities.SafeConvertDateTime(this.drForum["LastPostDate"]),
+                        AuthorId = Utilities.SafeConvertInt(this.drForum["LastPostAuthorId"]),
+                    },
+                },
+            };
 
             this.topic.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, this.topic.Content.AuthorId);
             this.topic.Author.ForumUser.UserInfo.DisplayName = this.drForum["DisplayName"].ToString();
@@ -323,11 +346,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             this.topic.Forum = this.ForumInfo;
 
-            this.topic.LastReply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
-            this.topic.LastReply.TopicId = this.TopicId;
-            this.topic.LastReply.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-            this.topic.LastReply.Content.DateCreated = Utilities.SafeConvertDateTime(this.drForum["LastPostDate"]);
-            this.topic.LastReply.Content.AuthorId = Utilities.SafeConvertInt(this.drForum["LastPostAuthorId"]);
 
             this.topic.LastReply.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, this.topic.LastReply.Content.AuthorId);
             this.topic.LastReply.Author.ForumUser.UserInfo.DisplayName = this.drForum["LastPostDisplayName"].ToString();
@@ -1017,6 +1035,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var reply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo
             {
+                ModuleId = this.ForumModuleId,
+                PortalId = this.PortalId,
                 ReplyId = dr.GetInt("ReplyId"),
                 TopicId = dr.GetInt("TopicId"),
                 StatusId = dr.GetInt("StatusId"),
@@ -1024,6 +1044,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ContentId = dr.GetInt("ContentId"),
                 Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
                 {
+                    ModuleId = this.ForumModuleId,
                     ContentId = dr.GetInt("ContentId"),
                     Body = System.Net.WebUtility.HtmlDecode(dr.GetString("Body")),
                     Subject = System.Net.WebUtility.HtmlDecode(dr.GetString("Subject")),

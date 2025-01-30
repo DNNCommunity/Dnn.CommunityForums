@@ -143,21 +143,21 @@
 
 		switch (currAction){
 			case 'modulesave':
-				af_setCurrObj(forumId,'M');
+                window.top.af_setCurrObj(forumId,'M');
 				break;
 			case 'forumsave':
-				af_setCurrObj(forumId,'F');
+                window.top.af_setCurrObj(forumId,'F');
 				break;
 			case 'groupsave':
-				af_setCurrObj(forumId,'G');
+                window.top.af_setCurrObj(forumId,'G');
 				break;       
 			case 'delforum':
-				bSaveSettings = false;
-				af_setCurrObj(0,'F');
+				window.top.bSaveSettings = false;
+                window.top.af_setCurrObj(0,'F');
 				break;
 			case 'delgroup':
 				bSaveSettings = false;
-				af_setCurrObj(0,'G');
+                window.top.af_setCurrObj(0,'G');
 				break;   
 
 		}
