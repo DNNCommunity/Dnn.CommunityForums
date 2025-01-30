@@ -29,25 +29,26 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     public class Common : DataConfig
     {
         #region Security
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
-        public void SavePermissionSet(int permissionSetId, string permissionSet) => SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "Permissions_Save", permissionSetId, permissionSet);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
-        public IDataReader GetRoles(int portalId) => SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Permissions_GetRoles", portalId);
+        public void SavePermissionSet(int permissionSetId, string permissionSet) => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPermSet.")]
-        public string GetPermSet(int permissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(-1, permissionsId, requestedAccess);
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
+        public IDataReader GetRoles(int portalId) => throw new NotImplementedException();
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPermSetForRequestedAccess.")]
+        public string GetPermSet(int permissionsId, string requestedAccess) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SavePermSet.")]
-        public string SavePermSet(int permissionsId, string requestedAccess, string permSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(-1, permissionsId, requestedAccess, permSet);
+        public string SavePermSet(int permissionsId, string requestedAccess, string permSet) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateAdminPermissions().")]
-        public int CreatePermSet(string adminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(adminRoleId, -1)).PermissionsId;
+        public int CreatePermSet(string adminRoleId) => throw new NotImplementedException();
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForView().")]
-        public string CheckForumIdsForView(int moduleId, string forumIds, string userRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(moduleId, forumIds, userRoles);
+        public string CheckForumIdsForView(int moduleId, string forumIds, string userRoles) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum().")]
-        public string WhichRolesCanViewForum(int moduleId, int forumId, string userRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(moduleId, forumId, userRoles);
+        public string WhichRolesCanViewForum(int moduleId, int forumId, string userRoles) => throw new NotImplementedException();
 
         #endregion
 

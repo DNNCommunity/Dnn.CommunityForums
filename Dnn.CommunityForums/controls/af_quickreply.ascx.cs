@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     this.btnSubmitLink.OnClientClick = "afQuickSubmit(); return false;";
 
-                    this.AllowSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Subscribe, this.ForumUser.UserPermSet);
+                    this.AllowSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.SubscribeRoleIds, this.ForumUser.UserRoleIds);
                 }
                 else
                 {
@@ -272,9 +272,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 user.TrustLevel = -1;
 
             }
-            bool UserIsTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, user.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserPermSet), this.ForumInfo.FeatureSettings.AutoTrustLevel, user.PostCount);
+            bool UserIsTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, user.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TrustRoleIds, this.ForumUser.UserRoleIds), this.ForumInfo.FeatureSettings.AutoTrustLevel, user.PostCount);
             bool isApproved = Convert.ToBoolean((this.ForumInfo.FeatureSettings.IsModerated == true) ? false : true);
-            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Moderate, this.ForumUser.UserPermSet))
+            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds))
             {
                 isApproved = true;
             }
@@ -317,7 +317,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sBody = string.Empty;
             if (this.AllowHTML)
             {
-                this.AllowHTML = this.IsHtmlPermitted(this.ForumInfo.FeatureSettings.EditorPermittedUsers, this.IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Moderate, this.ForumUser.UserPermSet));
+                this.AllowHTML = this.IsHtmlPermitted(this.ForumInfo.FeatureSettings.EditorPermittedUsers, this.IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds));
             }
 
             sBody = Utilities.CleanString(this.PortalId, this.Request.Form["txtBody"], this.AllowHTML, EditorTypes.TEXTBOX, this.UseFilter, this.AllowScripts, this.ForumModuleId, this.ThemePath, this.ForumInfo.FeatureSettings.AllowEmoticons);

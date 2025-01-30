@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Collections.Specialized;
+
 namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 {
     using System;
@@ -34,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
     [TestFixture]
     public class PermissionControllerTests
     {
+        // Role-related tests
         [Test]
         public void GetNamesForRolesTest()
         {
@@ -66,18 +69,147 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         }
 
         [Test]
-        [TestCase(new string[] { "1", "2", "3" }, new string[] { "1", "2", "3" }, ExpectedResult = true)]
-        [TestCase(new string[] { "1", "2" }, new string[] { "3" }, ExpectedResult = false)]
-        [TestCase(new string[] { "1" }, new string[] { "1", "2", "3" }, ExpectedResult = true)]
-        public bool HasRequiredPermTest(string[] authRoles, string[] userRoles)
+        public void GetAdministratorsRoleIdTest()
         {
             // Arrange
             // Act
-            return PermissionController.HasRequiredPerm(authRoles, userRoles);
-
             // Assert
+            Assert.Fail();
         }
 
+        [Test]
+        public void GetAdministratorsRoleNameTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetRegisteredUsersRoleIdTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetRegisteredUsersRoleNameTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetRolesTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetRoleIdsTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetRoleIdsFromRoleStringTest()
+        {
+            // Arrange
+            var roleString = "1;2;3";
+            var expectedResult = new HashSet<int> { 1, 2, 3 };
+
+            // Act
+            var actualResult = PermissionController.GetRoleIdsFromRoleString(roleString);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void GetRoleIdsFromPermSetTest()
+        {
+            // Arrange
+            var permSet = "-1;3;4|;|";
+            var expectedResult = new HashSet<int> { -1, 3, 4 };
+
+            // Act
+            var actualResult = PermissionController.GetRoleIdsFromPermSet(permSet);
+
+            // Assert
+            Assert.That(actualResult.SetEquals(expectedResult));
+        }
+
+        [Test]
+        public void GetRoleIdsFromRoleIdArrayTest()
+        {
+            // Arrange
+            var roles = new string[] { "1", "2", "3" };
+            var expectedResult = new HashSet<int> { 1, 2, 3 };
+
+            // Act
+            var actualResult = PermissionController.GetRoleIdsFromRoleIdArray(roles);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void GetRoleIdsFromRoleNameArrayTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetRolesNVCTest()
+        {
+            // Arrange
+            var portalId = 0;
+            var roles = new string[] { DotNetNuke.Common.Globals.glbRoleAllUsers, DotNetNuke.Common.Globals.glbRoleUnauthUser };
+            var expectedResult = new NameValueCollection();
+            expectedResult.Add(DotNetNuke.Common.Globals.glbRoleAllUsers, DotNetNuke.Common.Globals.glbRoleAllUsersName);
+            expectedResult.Add(DotNetNuke.Common.Globals.glbRoleUnauthUser, DotNetNuke.Common.Globals.glbRoleUnauthUserName);
+
+
+            // Act
+            var actualResult = PermissionController.GetRolesNVC(portalId, string.Join(";", roles));
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        [TestCase(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 }, ExpectedResult = true)]
+        [TestCase(new int[] { 1, 2 }, new int[] { 3 }, ExpectedResult = false)]
+        [TestCase(new int[] { 1 }, new int[] { 1, 2, 3 }, ExpectedResult = true)]
+        public bool HasRequiredPermTest2(int[] authRoles, int[] userRoles)
+        {
+            // Arrange
+            // Act
+            // Assert
+            return PermissionController.HasRequiredPerm(authRoles.ToHashSet(), userRoles.ToHashSet());
+        }
+
+        [Test]
+        public void HasAccessTest()
+        {
+            Assert.Fail();
+        }
+
+        // Permission set manipulation tests
         [Test]
         [TestCase(arg1: "0;1;-3;-1;38;||", arg2: "0;1;-1;-3;38;||", ExpectedResult = true)]
         [TestCase(arg1: "0;1;-1;-3;38;|||", arg2: "0;1;-1;-3;38;||", ExpectedResult = true)]
@@ -87,7 +219,268 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(permSet).Equals(expectedResults);
+        }
 
+        [Test]
+        public void SortPermissionSetMembersTest1()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void AddPermToSetTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void AddPermToSetTest1()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void RemovePermFromSetTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void RemovePermFromSetTest1()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetPermSetTest1()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void SavePermSetTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetPermSetForRequestedAccessTest1()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetPermSetForRequestedAccessTest2()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void SetPermSetForRequestedAccessTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        // Object-to-permission tests
+        [Test]
+        public void AddObjectToPermissionsTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void AddObjectToPermSetTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void RemoveObjectFromPermissionsTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void RemoveObjectFromAllTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        // Specific permission controller method tests
+        [Test]
+        public void GetDefaultPermissionsTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void CreateDefaultSetsTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetAdminPermissionsTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void CreateAdminPermissionsTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetEmptyPermissionsTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetRoleIdsForRequestedAccessTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        public void UpdateSecurityForSocialGroupForumTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void RemoveUnusedTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void RemoveIfUnusedTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void WhichRolesCanViewForumTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void CheckForumIdsForViewForRSSTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetSecureObjectListTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetObjFromSecObjTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetUsersRoleIdsTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetPortalRoleIdsTest()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
         }
     }
 }

@@ -18,12 +18,11 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
@@ -65,9 +64,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.userInfo = userInfo;
             this.ModuleId = moduleId;
         }
-
-        [IgnoreColumn]
-        public bool IsAuthenticated { get; set; } = false;
 
         public int ProfileId { get; set; }
 
@@ -170,7 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public bool GetIsMod(int ModuleId)
         {
-            return (!this.IsAnonymous && !(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.UserPermSet, this.PortalId, ModuleId, "CanApprove"))));
+            return !this.IsAnonymous && !string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, ModuleId, this, "CanApprove"));
         }
 
         [IgnoreColumn]
@@ -186,27 +182,33 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool IsUserOnline => this.DateLastActivity > DateTime.UtcNow.AddMinutes(-5);
 
         [IgnoreColumn]
+        public bool IsAuthenticated => !this.IsAnonymous;
+
+        [IgnoreColumn] 
+        public bool IsRegistered => this.UserInfo.IsInRole(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleName(this.PortalId));
+
+        [IgnoreColumn]
         public CurrentUserTypes CurrentUserType
         {
             get
             {
-                if (this.UserInfo.IsInRole(this.PortalSettings.RegisteredRoleName))
+                if (this.UserInfo.IsSuperUser)
                 {
-                    if (this.UserInfo.IsSuperUser)
-                    {
-                        return CurrentUserTypes.SuperUser;
-                    }
+                    return CurrentUserTypes.SuperUser;
+                }
 
-                    if (this.UserInfo.IsAdmin)
-                    {
-                        return CurrentUserTypes.Admin;
-                    }
+                if (this.UserInfo.IsAdmin)
+                {
+                    return CurrentUserTypes.Admin;
+                }
 
-                    if (this.GetIsMod(this.ModuleId))
-                    {
-                        return CurrentUserTypes.ForumMod;
-                    }
+                if (this.GetIsMod(this.ModuleId))
+                {
+                    return CurrentUserTypes.ForumMod;
+                }
 
+                if (this.IsAuthenticated)
+                {
                     return CurrentUserTypes.Auth;
                 }
 
@@ -367,8 +369,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (string.IsNullOrEmpty(this.userPermSet))
                 {
-                    var ids = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, this.UserInfo);
-                    this.userPermSet = string.Join(",", this.userRoleIds) + "|" + this.UserId + "|" + string.Empty + "|";
+                    this.userPermSet = string.Join(",", this.UserRoleIds) + "|" + this.UserId + "|" + string.Empty + "|";
                     this.UpdateCache();
                 }
 

@@ -261,7 +261,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             fi.PortalSettings = this.PortalSettings;
                             fi.MainSettings = this.MainSettings;
-                            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security?.View, this.ForumUser.UserPermSet);
+                            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(fi.Security?.ViewRoleIds, this.ForumUser.UserRoleIds);
                             if (this.UserInfo.IsSuperUser || (canView && !fi.ForumGroup.Hidden))
                             {
                                 if (tmpGroup != fi.GroupName)
@@ -396,7 +396,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (templateStringBuilder.ToString().Contains("[AF:CONTROL:TOGGLESUBSCRIBE]"))
             {
-                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, this.ForumUser.UserPermSet))
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(fi.Security.SubscribeRoleIds, this.ForumUser.UserRoleIds))
                 {
                     bool isSubscribed = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId);
                     var subControl = new ToggleSubscribe(this.ForumModuleId, fi.ForumID, -1, 0);
@@ -468,7 +468,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     i += 1;
                     string tmpSubs = TemplateUtils.GetTemplateSection(template, "[SUBFORUMS]", "[/SUBFORUMS]");
 
-                    bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, this.ForumUser.UserPermSet);
+                    bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(fi.Security.ViewRoleIds, this.ForumUser.UserRoleIds);
                     if (canView || (!fi.Hidden) | this.UserInfo.IsSuperUser)
                     {
                         tmpSubs = this.ParseForumRow(tmpSubs, fi, i, subforums.Count());

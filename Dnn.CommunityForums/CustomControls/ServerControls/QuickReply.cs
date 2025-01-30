@@ -192,9 +192,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return;
             }
 
-            bool userIsTrusted = Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, this.ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, this.ForumUser.UserPermSet), forumInfo.FeatureSettings.AutoTrustLevel, this.ControlConfig.User.PostCount);
+            bool userIsTrusted = Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, this.ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.TrustRoleIds, this.ForumUser.UserRoleIds), forumInfo.FeatureSettings.AutoTrustLevel, this.ControlConfig.User.PostCount);
             bool isApproved = Convert.ToBoolean((forumInfo.FeatureSettings.IsModerated == true) ? false : true);
-            if (userIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, this.ForumUser.UserPermSet))
+            if (userIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds))
             {
                 isApproved = true;
             }

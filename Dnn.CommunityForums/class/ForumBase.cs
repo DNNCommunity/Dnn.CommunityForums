@@ -392,7 +392,7 @@ using DotNetNuke.Services.Localization;
                     }
 
                     // Admins and trusted users shall pass!
-                    else if (this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserPermSet))
+                    else if (this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TrustRoleIds, this.ForumUser.UserRoleIds))
                     {
                         this.canCreate = true;
                     }
@@ -432,7 +432,7 @@ using DotNetNuke.Services.Localization;
                     }
 
                     // Admins and trusted users shall pass!
-                    else if (this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserPermSet))
+                    else if (this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TrustRoleIds, this.ForumUser.UserRoleIds))
                     {
                         this.canReply = true;
                     }
@@ -468,8 +468,9 @@ using DotNetNuke.Services.Localization;
             {
                 return false;
             }
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess( this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoleIds);
 
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserPermSet);
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess( this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoleIds);
         }
 
         protected string GetSharedResource(string key)
