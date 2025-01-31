@@ -27,7 +27,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
     using System.Linq;
     using System.Text;
     using System.Web;
-    using System.Web.Services;
     using System.Xml;
 
     using DotNetNuke.Modules.ActiveForums.Data;

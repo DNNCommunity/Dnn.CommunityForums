@@ -26,7 +26,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
     using System.Data;
     using System.Text;
     using System.Web;
-    using System.Web.Services;
 
     public class adminhelper : HandlerBase
     {
