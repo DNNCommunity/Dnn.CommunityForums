@@ -79,3 +79,4 @@ using System.Runtime.CompilerServices;
 [assembly: ComVisibleAttribute(false)]
 
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForumsTests")]
+[assembly: InternalsVisibleTo("TestProject1")]
