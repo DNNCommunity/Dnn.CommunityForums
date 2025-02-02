@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
 
     public partial class admin_manageforums_home : ActiveAdminBase
     {
@@ -58,12 +59,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindForums()
         {
+            var groups = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(this.ModuleId).OrderBy(f => f.SortOrder).ToList();
             var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
-            int totalGroups = forums.ToList().Select(f => f.ForumGroupId).Distinct().Count();
-            int totalGroupForum = 0;
-            int tmpGroupId = -1;
-            int groupCount = 0;
-            int forumCount = 0;
+            var totalGroups = groups.Count;
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.Append("<table width=\"95%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
 
@@ -74,131 +72,131 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("</td><td class=\"afgroupback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
             sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + this.RenderSpacer(2, 100) + "</td></tr>");
 
-            foreach (var forum in forums)
+            int groupCount = 0;
+            foreach (var group in groups)
             {
-                if (tmpGroupId != forum.ForumGroupId)
+                if (groupCount < Globals.GroupCount)
                 {
-                    if (groupCount < Globals.GroupCount)
+                    var sGroupName = group.GroupName;
+                    if (groupCount > 0)
                     {
-                        var sGroupName = forum.GroupName;
-                        if (groupCount > 0)
-                        {
-                            sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + this.RenderSpacer(2, 100) + "</td></tr>");
-                        }
-
-                        sb.Append("<tr class=\"afgroupback\"><td class=\"afgroupback_left\">" + this.RenderSpacer(1, 4) + "</td><td colspan=\"3\" width=\"100%\" onmouseover=\"this.className='agrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + forum.ForumGroupId + "|G');\">");
-                        sb.Append(sGroupName);
-                        sb.Append("</td><td>");
-                        var inheritance = string.Empty;
-                        if (forum.ForumGroup.InheritSettings)
-                        {
-                            inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "admin_check.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsOn]"), forum.ForumGroup.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsOn]"), forum.ForumGroup.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\"/>";
-                        }
-                        else if (forum.ForumGroup.FeatureSettings.EqualSettings(SettingsBase.GetModuleSettings(this.ModuleId).ForumFeatureSettings))
-                        {
-                            inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "info32.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsRecommended]"), forum.ForumGroup.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsRecommended]"), forum.ForumGroup.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" />";
-                        }
-
-                        if (!string.IsNullOrEmpty(inheritance))
-                        {
-                            sb.Append($"<div class=\"amcpnormal dcf-controlpanel-inheritance-label\">{inheritance}</div>");
-                        }
-
-                        sb.Append("</td><td>");
-                        inheritance = string.Empty;
-                        if (forum.ForumGroup.InheritSecurity)
-                        {
-                            inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "admin_check.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityOn]"), forum.ForumGroup.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityOn]"), forum.ForumGroup.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" />";
-                        }
-                        else if (forum.ForumGroup.Security.EqualPermissions(new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId: SettingsBase.GetModuleSettings(this.ModuleId).DefaultPermissionId, moduleId: this.ModuleId)))
-                        {
-                            inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "info32.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityRecommended]"), forum.ForumGroup.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityRecommended]"), forum.ForumGroup.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\"/>";
-                        }
-
-                        if (!string.IsNullOrEmpty(inheritance))
-                        {
-                            sb.Append($"<div class=\"amcpnormal dcf-controlpanel-inheritance-label\">{inheritance}</div>");
-                        }
-
-                        sb.Append("</td>");
-                        sb.Append("<td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + forum.ForumGroupId + "|G');\">" + this.edit + "</div></td><td>");
-                        if (groupCount > 0)
-                        {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + forum.ForumGroupId + ",-1);\">" + this.arrowUp + "</div>");
-                        }
-
-                        groupCount += 1;
-                        sb.Append("</td><td>");
-                        if (groupCount < totalGroups)
-                        {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + forum.ForumGroupId + ",1);\">" + this.arrowDown + "</div>");
-                        }
-
-                        sb.Append("</td><td class=\"afgroupback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
-                        forumCount = 0;
-                        totalGroupForum = forums.Count(f => f.ForumGroupId == forum.ForumGroupId && f.ParentForumId == 0);
-                        tmpGroupId = forum.ForumGroupId;
+                        sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + this.RenderSpacer(2, 100) + "</td></tr>");
                     }
-                }
 
-                if (forum.ParentForumId == 0)
-                {
-                    if (forumCount < Globals.ForumCount)
+                    sb.Append("<tr class=\"afgroupback\"><td class=\"afgroupback_left\">" + this.RenderSpacer(1, 4) + "</td><td colspan=\"3\" width=\"100%\" onmouseover=\"this.className='agrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + group.ForumGroupId + "|G');\">");
+                    sb.Append(sGroupName);
+                    sb.Append("</td><td>");
+                    var inheritance = string.Empty;
+                    if (group.InheritSettings)
                     {
-                        string sForumName = forum.ForumName;
-                        sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + this.RenderSpacer(1, 4) + "</td><td style=\"width:15px;\" width=\"15\">" + this.RenderSpacer(5, 15) + "</td><td colspan=\"2\" width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + forum.ForumID + "|F');\">");
-                        sb.Append(sForumName);
-                        sb.Append("</td><td>");
-                        var inheritance = string.Empty;
-                        if (forum.InheritSettings)
-                        {
-                            inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "admin_check.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsOn]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsOn]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" />";
-                        }
-                        else if (forum.FeatureSettings.EqualSettings(forum.ForumGroup.FeatureSettings))
-                        {
-                            inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "info32.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsRecommended]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsRecommended]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" />";
-                        }
+                        inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "admin_check.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsOn]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsOn]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\"/>";
+                    }
+                    else if (group.FeatureSettings.EqualSettings(SettingsBase.GetModuleSettings(this.ModuleId).ForumFeatureSettings))
+                    {
+                        inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "info32.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsRecommended]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsRecommended]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" />";
+                    }
 
-                        if (!string.IsNullOrEmpty(inheritance))
-                        {
-                            sb.Append($"<div class=\"amcpnormal dcf-controlpanel-inheritance-label\">{inheritance}</div>");
-                        }
+                    if (!string.IsNullOrEmpty(inheritance))
+                    {
+                        sb.Append($"<div class=\"amcpnormal dcf-controlpanel-inheritance-label\">{inheritance}</div>");
+                    }
 
-                        sb.Append("</td><td>");
-                        inheritance = string.Empty;
-                        if (forum.InheritSecurity)
-                        {
-                            inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "admin_check.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityOn]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityOn]"), forum.ForumName, forum.ForumGroup.GroupName) + "\"/>";
-                        }
-                        else if (forum.Security.EqualPermissions(forum.ForumGroup.Security))
-                        {
-                            inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "info32.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityRecommended]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityRecommended]"), forum.ForumName, forum.ForumGroup.GroupName) + "\"/>";
-                        }
+                    sb.Append("</td><td>");
+                    inheritance = string.Empty;
+                    if (group.InheritSecurity)
+                    {
+                        inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "admin_check.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityOn]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityOn]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" />";
+                    }
+                    else if (group.Security.EqualPermissions(new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId: SettingsBase.GetModuleSettings(this.ModuleId).DefaultPermissionId, moduleId: this.ModuleId)))
+                    {
+                        inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "info32.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityRecommended]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityRecommended]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\"/>";
+                    }
 
-                        if (!string.IsNullOrEmpty(inheritance))
-                        {
-                            sb.Append($"<div class=\"amcpnormal dcf-controlpanel-inheritance-label\">{inheritance}</div>");
-                        }
+                    if (!string.IsNullOrEmpty(inheritance))
+                    {
+                        sb.Append($"<div class=\"amcpnormal dcf-controlpanel-inheritance-label\">{inheritance}</div>");
+                    }
 
-                        sb.Append("</td>");
-                        sb.Append("<td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + forum.ForumID + "|F');\">" + this.edit + "</div></td><td>");
-                        if (forumCount > 0)
-                        {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + forum.ForumID + ",-1);\">" + this.arrowUp + "</div>");
-                        }
+                    sb.Append("</td>");
+                    sb.Append("<td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + group.ForumGroupId + "|G');\">" + this.edit + "</div></td><td>");
+                    if (groupCount > 0)
+                    {
+                        sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + group.ForumGroupId + ",-1);\">" + this.arrowUp + "</div>");
+                    }
 
-                        forumCount += 1;
-                        sb.Append("</td><td>");
-                        if (forumCount < totalGroupForum)
-                        {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + forum.ForumID + ",1);\">" + this.arrowDown + "</div>");
-                        }
+                    groupCount += 1;
+                    sb.Append("</td><td>");
+                    if (groupCount < totalGroups)
+                    {
+                        sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + group.ForumGroupId + ",1);\">" + this.arrowDown + "</div>");
+                    }
 
-                        sb.Append("</td><td class=\"afforumback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
+                    sb.Append("</td><td class=\"afgroupback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
+                    int forumCount = 0;
+                    int totalGroupForum = forums.Count(f => f.ForumGroupId == group.ForumGroupId && f.ParentForumId == 0);
 
-                        if (forum.SubForums.Count > 0)
+                    foreach (var forum in forums.Where(f => f.ForumGroupId.Equals(group.ForumGroupId)))
+                    {
+                        if (forum.ParentForumId == 0)
                         {
-                            sb.Append(this.AddSubForums(forum));
+                            if (forumCount < Globals.ForumCount)
+                            {
+                                string sForumName = forum.ForumName;
+                                sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + this.RenderSpacer(1, 4) + "</td><td style=\"width:15px;\" width=\"15\">" + this.RenderSpacer(5, 15) + "</td><td colspan=\"2\" width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + forum.ForumID + "|F');\">");
+                                sb.Append(sForumName);
+                                sb.Append("</td><td>");
+                                inheritance = string.Empty;
+                                if (forum.InheritSettings)
+                                {
+                                    inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "admin_check.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsOn]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsOn]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" />";
+                                }
+                                else if (forum.FeatureSettings.EqualSettings(forum.ForumGroup.FeatureSettings))
+                                {
+                                    inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "info32.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsRecommended]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsRecommended]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" />";
+                                }
+
+                                if (!string.IsNullOrEmpty(inheritance))
+                                {
+                                    sb.Append($"<div class=\"amcpnormal dcf-controlpanel-inheritance-label\">{inheritance}</div>");
+                                }
+
+                                sb.Append("</td><td>");
+                                inheritance = string.Empty;
+                                if (forum.InheritSecurity)
+                                {
+                                    inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "admin_check.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityOn]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityOn]"), forum.ForumName, forum.ForumGroup.GroupName) + "\"/>";
+                                }
+                                else if (forum.Security.EqualPermissions(forum.ForumGroup.Security))
+                                {
+                                    inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "info32.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityRecommended]"), forum.ForumName, forum.ForumGroup.GroupName) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityRecommended]"), forum.ForumName, forum.ForumGroup.GroupName) + "\"/>";
+                                }
+
+                                if (!string.IsNullOrEmpty(inheritance))
+                                {
+                                    sb.Append($"<div class=\"amcpnormal dcf-controlpanel-inheritance-label\">{inheritance}</div>");
+                                }
+
+                                sb.Append("</td>");
+                                sb.Append("<td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + forum.ForumID + "|F');\">" + this.edit + "</div></td><td>");
+                                if (forumCount > 0)
+                                {
+                                    sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + forum.ForumID + ",-1);\">" + this.arrowUp + "</div>");
+                                }
+
+                                forumCount += 1;
+                                sb.Append("</td><td>");
+                                if (forumCount < totalGroupForum)
+                                {
+                                    sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + forum.ForumID + ",1);\">" + this.arrowDown + "</div>");
+                                }
+
+                                sb.Append("</td><td class=\"afforumback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
+
+                                if (forum.SubForums.Count > 0)
+                                {
+                                    sb.Append(this.AddSubForums(forum));
+                                }
+                            }
                         }
                     }
                 }
