@@ -20,21 +20,18 @@
 
 namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using DotNetNuke.Modules.ActiveForums.Controllers;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using Moq;
     using NUnit.Framework;
 
-    [TestFixture()]
+    [TestFixture]
     public class TopicPropertyControllerTests
     {
-        [Test()]
+        [Test]
         public void SerializeTest()
         {
             // Arrange
@@ -63,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
-        [Test()]
+        [Test]
         public void DeserializeTest()
         {
             // Arrange

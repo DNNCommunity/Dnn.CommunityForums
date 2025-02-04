@@ -22,10 +22,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
     using System.Globalization;
-    using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
-    using DotNetNuke.Modules.ActiveForums.API;
 
     [TableName("activeforums_Subscriptions")]
     [PrimaryKey("Id", AutoIncrement = true)]

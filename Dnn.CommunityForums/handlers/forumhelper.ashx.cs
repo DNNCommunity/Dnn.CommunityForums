@@ -21,19 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
-    using System.Text;
     using System.Web;
-    using System.Web.Services;
-    using System.Xml;
-
-    using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Journal;
 
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used. ")]
     public class forumhelper : HandlerBase
@@ -43,20 +31,20 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             None,
             UserPing, /* no longer used */
-            GetUsersOnline,/* no longer used */
-            TopicSubscribe,/* no longer used */
-            ForumSubscribe,/* no longer used */
-            RateTopic,/* no longer used */
-            DeleteTopic,/* no longer used */
-            MoveTopic,/* no longer used */
-            PinTopic,/* no longer used */
-            LockTopic,/* no longer used */
-            MarkAnswer,/* no longer used */
-            TagsAutoComplete,/* no longer used */
-            DeletePost,/* no longer used */
+            GetUsersOnline, /* no longer used */
+            TopicSubscribe, /* no longer used */
+            ForumSubscribe, /* no longer used */
+            RateTopic, /* no longer used */
+            DeleteTopic, /* no longer used */
+            MoveTopic, /* no longer used */
+            PinTopic, /* no longer used */
+            LockTopic, /* no longer used */
+            MarkAnswer, /* no longer used */
+            TagsAutoComplete, /* no longer used */
+            DeletePost, /* no longer used */
             LoadTopic, /* no longer used */
-            SaveTopic,/* no longer used */
-            ForumList,/* no longer used */
+            SaveTopic, /* no longer used */
+            ForumList, /* no longer used */
             LikePost, /*no longer used*/
         }
 

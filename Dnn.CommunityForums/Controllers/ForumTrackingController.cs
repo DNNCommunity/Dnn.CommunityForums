@@ -20,7 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -28,16 +27,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo GetByUserIdForumId(int moduleId, int userId, int forumId)
         {
-                string cachekey = string.Format(CacheKeys.ForumTrackingInfo, moduleId, forumId, userId);
-                DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo forumTrackingInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo;
-                if (forumTrackingInfo == null)
-                {
-                    // this accommodates duplicates which may exist since currently no uniqueness applied in database
-                    forumTrackingInfo = this.Find("WHERE UserId = @0 AND ForumId = @1", userId, forumId).OrderBy(t => t.LastAccessDateTime).FirstOrDefault();
-                    DataCache.ContentCacheStore(moduleId, cachekey, forumTrackingInfo);
-                }
+            string cachekey = string.Format(CacheKeys.ForumTrackingInfo, moduleId, forumId, userId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo forumTrackingInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo;
+            if (forumTrackingInfo == null)
+            {
+                // this accommodates duplicates which may exist since currently no uniqueness applied in database
+                forumTrackingInfo = this.Find("WHERE UserId = @0 AND ForumId = @1", userId, forumId).OrderBy(t => t.LastAccessDateTime).FirstOrDefault();
+                DataCache.ContentCacheStore(moduleId, cachekey, forumTrackingInfo);
+            }
 
-                return forumTrackingInfo;
+            return forumTrackingInfo;
         }
 
         internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo> GetForumsTrackingForUser(int userId)

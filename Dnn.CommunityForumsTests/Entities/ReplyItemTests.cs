@@ -77,7 +77,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
-
         }
     }
 }

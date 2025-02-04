@@ -29,15 +29,12 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
-    using System.Web.UI;
     using System.Web.UI.WebControls;
-    using System.Xml;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Controls;
-    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;
 
@@ -114,6 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ForumUser.RewardPoints = 0;
                 this.ForumUser.TrustLevel = -1;
             }
+
             this.userIsTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, this.ForumUser.TrustLevel, this.canTrust, this.ForumInfo.FeatureSettings.AutoTrustLevel, this.ForumUser.PostCount);
             this.themePath = this.Page.ResolveUrl(this.MainSettings.ThemeLocation);
             this.Spinner = this.Page.ResolveUrl(this.themePath + "/images/loading.gif");
@@ -285,6 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Error:FloodControl]"), this.MainSettings.FloodInterval) + "</div>" });
                 return;
             }
+
             if (!this.Page.IsValid || !Utilities.InputIsValid(this.ctlForm.Body.Trim()) || !Utilities.InputIsValid(this.ctlForm.Subject))
             {
                 return;
@@ -530,11 +529,11 @@ namespace DotNetNuke.Modules.ActiveForums
             this.ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
             string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ReplyEditor", this.ForumInfo.FeatureSettings.ReplyFormId);
-            
-#region "Backward compatilbility -- remove in v10.00.00"
+
+            #region "Backward compatilbility -- remove in v10.00.00"
             template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
-#endregion "Backward compatilbility -- remove in v10.00.00"
+            #endregion "Backward compatilbility -- remove in v10.00.00"
 
             if (this.isEdit)
             {
@@ -615,7 +614,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             userDisplay = "none";
                         }
-                        
+
                         DotNetNuke.Modules.ActiveForums.Entities.ContentInfo ci;
                         if (postId == TopicId)
                         {
@@ -890,7 +889,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 DataCache.ContentCacheClearForForum(this.ModuleId, this.ForumId);
                 DataCache.ContentCacheClearForTopic(this.ModuleId, ti.TopicId);
 
-
                 if (!ti.IsApproved)
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: 0, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: this.ForumUser.UserId);
@@ -1058,7 +1056,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (!this.isEdit)
                     {
-                        DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: tmpReplyId, contentId:ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: tmpReplyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
                     }
 
                     var fullURL = new ControlUtils().BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, this.SocialGroupId);

@@ -20,8 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    using DotNetNuke.ComponentModel.DataAnnotations;
-    using DotNetNuke.Services.Tokens;
     using System;
 
     public interface IPostInfo : DotNetNuke.Services.Tokens.IPropertyAccess
@@ -33,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         int PostId { get; }
 
         int ReplyId { get; }
-        
+
         int PortalId { get; }
 
         int StatusId { get; }

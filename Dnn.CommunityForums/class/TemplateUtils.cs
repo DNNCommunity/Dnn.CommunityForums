@@ -25,23 +25,21 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Configuration;
     using System.Data;
     using System.Globalization;
-    using System.IO;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
+    using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using Microsoft.ApplicationBlocks.Data;
 
     public class TemplateUtils
     {
         public static List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> lstSubscriptionInfo { get; set; }
-        
+
         #region "Deprecated Methods"
 
         [Obsolete("Deprecated in Community Forums. Remove in 10.00.00. Not Used.")]
@@ -368,7 +366,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     pt = ParseRoles(pt, (author.ForumUser.UserId == -1) ? string.Empty : author.ForumUser.UserRoles);
                 }
 
-#region "Backward compatilbility -- remove in v09.00.00"
+                #region "Backward compatilbility -- remove in v09.00.00"
                 var pmUrl = string.Empty;
                 var pmLink = string.Empty;
                 if (pt.Contains("[AF:PROFILE:PMURL]") && mainSettings.PMType == PMTypes.Ventrian)
@@ -382,7 +380,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 pt = pt.Replace("[AF:PROFILE:PMLINK]", pmLink);
                 pt = pt.Replace("[AF:PROFILE:PMURL]", pmUrl);
-#endregion "Backward compatilbility -- remove in v09.00.00"
+                #endregion "Backward compatilbility -- remove in v09.00.00"
 
                 return pt;
             }
@@ -525,7 +523,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion  "Deprecated Methods"
 
-        internal static string PreviewTopic(int topicTemplateID, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string body, string imagePath,DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset)
+        internal static string PreviewTopic(int topicTemplateID, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string body, string imagePath, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset)
         {
             var sTemplate = TemplateCache.GetCachedTemplate(forumInfo.ModuleId, "TopicView", topicTemplateID);
             try

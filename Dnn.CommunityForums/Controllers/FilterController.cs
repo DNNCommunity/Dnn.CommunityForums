@@ -21,17 +21,12 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Data;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
     using System.Text.RegularExpressions;
-    using System.Web;
 
     using DotNetNuke.Collections;
-    using DotNetNuke.Modules.ActiveForums.Entities;
 
     internal class FilterController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.FilterInfo>
     {

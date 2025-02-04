@@ -20,15 +20,15 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-using System;
+    using System;
 
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Services.Log.EventLog;
 
-[TableName("activeforums_Forums_Tracking")]
-[PrimaryKey("TrackingId", AutoIncrement = true)]
+    [TableName("activeforums_Forums_Tracking")]
+    [PrimaryKey("TrackingId", AutoIncrement = true)]
 
-internal class ForumTrackingInfo
+    internal class ForumTrackingInfo
     {
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser;
@@ -48,7 +48,7 @@ internal class ForumTrackingInfo
 
         public int MaxReplyRead { get; set; } = 0;
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
             get => this.forum ?? (this.forum = this.LoadForum());
@@ -74,7 +74,7 @@ internal class ForumTrackingInfo
             return this.forum;
         }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
         {
             get => this.forumUser ?? (this.forumUser = this.GetForumUser());

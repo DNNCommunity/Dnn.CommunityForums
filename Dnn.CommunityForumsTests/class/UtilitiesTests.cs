@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         [TestCase(200, 25, false, ExpectedResult = false)] // interval is 200, last post is 25, expect false
         public bool HasFloodIntervalPassedTest1(int floodInterval, int secondsSinceLastPost, bool isSuperUser)
         {
-            //Arrange
+            // Arrange
             var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>();
             mockUser.Object.UserInfo = new DotNetNuke.Entities.Users.UserInfo();
             mockUser.Object.UserInfo.IsSuperUser = isSuperUser;
@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             mockForum.Object.Security = mockPermissions.Object;
 
             // Act
-            bool actualResult = Utilities.HasFloodIntervalPassed(floodInterval, mockUser.Object, mockForum.Object);
+            bool actualResult = DotNetNuke.Modules.ActiveForums.Utilities.HasFloodIntervalPassed(floodInterval, mockUser.Object, mockForum.Object);
 
             // Assert
             return actualResult;

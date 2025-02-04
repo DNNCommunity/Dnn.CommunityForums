@@ -21,7 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-
     #region Enumerations
 
     public enum AttachStores
@@ -495,7 +494,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string UserRoles = "AF-userroles-{0}";
         public const string CultureInfoForUser = "AF-usercultureinfo-{0}";
         public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
-        
     }
 
     public class SortColumns

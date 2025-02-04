@@ -21,14 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Web;
-    using System.Web.UI;
-    using System.Web.UI.WebControls;
-
-    using DotNetNuke;
 
     public partial class af_topicsorter : ForumBase
     {
@@ -80,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region  Web Form Designer Generated Code
 
         // This call is required by the Web Form Designer.
-        [System.Diagnostics.DebuggerStepThrough()]
+        [System.Diagnostics.DebuggerStepThrough]
         private void InitializeComponent()
         {
         }

@@ -18,17 +18,15 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
 {
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Controllers;
     using Moq;
     using NUnit.Framework;
+
     using System.Text;
-    
+
     [TestFixture]
     public class TokenReplacerTests
     {
@@ -69,9 +67,11 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
             var templateStringBuilder = new StringBuilder("blah blah [SPLITBUTTONS1] blah [SPLITBUTTONS2] [TOPICSUBJECT] blah");
 
             var expectedResult = "blah blah [SPLITBUTTONS1] blah  [TOPICSUBJECT] blah";
+
             // Act
 
             var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, null, null, navigationManager, mockUser.Object, requestUri, rawUrl).ToString();
+
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
@@ -82,7 +82,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
             // Arrange
             var requestUri = new Uri("https://localhost/forums");
             var rawUrl = "/forums";
-
 
             var mockForum = new Mock<Modules.ActiveForums.Entities.ForumInfo>();
             mockForum.Object.ForumID = 1;
@@ -106,10 +105,11 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
 
             // Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, mockForum.Object, null, null, navigationManager, mockUser.Object, 0, CurrentUserTypes.Auth, requestUri, rawUrl).ToString();
-            
+
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
+
         [Test]
         public void RemovePrefixedToken1()
         {
@@ -117,13 +117,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
             var templateStringBuilder = new StringBuilder("blah blah [TOKENTOREMOVE:5] blah blah");
             var tokenPrefix = "TOKENTOREMOVE";
             var expectedResult = "blah blah  blah blah";
-            
+
             // Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemovePrefixedToken(templateStringBuilder, tokenPrefix).ToString();
-            
+
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
+
         [Test]
         public void RemovePrefixedToken2()
         {
@@ -131,10 +132,10 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.TOkens
             var templateStringBuilder = new StringBuilder("blah blah [TOKENTOREMOVE] blah blah");
             var tokenPrefix = "[TOKENTOREMOVE";
             var expectedResult = "blah blah  blah blah";
-            
+
             // Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemovePrefixedToken(templateStringBuilder, tokenPrefix).ToString();
-            
+
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }

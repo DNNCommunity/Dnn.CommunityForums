@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Linq;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
@@ -131,16 +129,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (string.IsNullOrEmpty(this.BaseURL))
                         {
-                            //if (this.ContentId > 0)
-                            //{
+                            // if (this.ContentId > 0)
+                            // {
                             //    sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, 1, this.TopicId, this.ContentId)) + "\" title=\"First Page\"> &lt;&lt; </a></td>");
                             //    sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.CurrentPage - 1, this.TopicId, this.ContentId)) + "\" title=\"Previous Page\"> &lt; </a></td>");
-                            //}
-                            //else
-                            //{
-                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, 1, this.TopicId)) + "\" title=\"First Page\"> &lt;&lt; </a></td>");
-                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.CurrentPage - 1, this.TopicId)) + "\" title=\"Previous Page\"> &lt; </a></td>");
-//                            }
+                            // }
+                            // else
+                            // {
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, 1, this.TopicId)) + "\" title=\"First Page\"> &lt;&lt; </a></td>");
+                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + Utilities.NavigateURL(this.TabID, string.Empty, this.BuildParams(this.View, this.ForumID, this.CurrentPage - 1, this.TopicId)) + "\" title=\"Previous Page\"> &lt; </a></td>");
+
+                            // }
                         }
                         else
                         {

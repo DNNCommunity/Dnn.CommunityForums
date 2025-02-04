@@ -20,11 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
 {
-    using System;
-    using System.Web.Caching;
-
-    using DotNetNuke.ComponentModel.DataAnnotations;
-
     public enum ProcessType
     {
         ApprovedTopicCreated = 1,

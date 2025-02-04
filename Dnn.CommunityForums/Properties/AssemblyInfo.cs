@@ -20,9 +20,9 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Web.UI;
 using System.Security;
 using System.Runtime.CompilerServices;
+using System.Web.UI;
 
 [assembly: SecurityRules(SecurityRuleSet.Level1)]
 
@@ -79,4 +79,3 @@ using System.Runtime.CompilerServices;
 [assembly: ComVisibleAttribute(false)]
 
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForumsTests")]
-[assembly: InternalsVisibleTo("TestProject1")]

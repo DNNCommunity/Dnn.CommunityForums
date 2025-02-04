@@ -25,7 +25,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;
 

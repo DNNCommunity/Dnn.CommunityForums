@@ -24,23 +24,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Net.Mail;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
-    using System.Security.AccessControl;
-    using System.Threading;
     using System.Web;
-    using System.Xml.Linq;
+    using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Collections;
-    using DotNetNuke.Common.Controls;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security.Roles;
 
     public class EmailController
     {

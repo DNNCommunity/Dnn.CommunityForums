@@ -22,7 +22,6 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.UI.Design;
 
     public class Topic
     {

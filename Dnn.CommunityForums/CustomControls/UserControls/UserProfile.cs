@@ -21,14 +21,8 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
-    using System.Reflection;
-    using System.Text;
     using System.Text.RegularExpressions;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -373,7 +367,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         user.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
                     }
-
                 }
 
                 DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Save(user);

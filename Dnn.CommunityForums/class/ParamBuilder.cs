@@ -23,14 +23,13 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
 
     [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
     public class ParamBuilder
     {
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public Dictionary<string, object> Params { get; set; }
-        
+
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string[] ParamArray
         {

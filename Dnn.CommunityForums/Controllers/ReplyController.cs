@@ -63,7 +63,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     ri.Author = ri.GetAuthor(ri.PortalId, ri.ModuleId, ri.Content.AuthorId);
                 }
-
             }
 
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, ri);
@@ -272,7 +271,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (fullURL.EndsWith("/"))
                 {
                     fullURL += Utilities.UseFriendlyURLs(moduleId) ? $"#{replyId}" : $"{ParamKeys.ContentJumpId}={replyId}";
-
                 }
 
                 new Social().AddReplyToJournal(portalId, moduleId, tabId, forumId, topicId, replyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, reply.Forum.Security.Read, reply.Forum.SocialGroupId);
@@ -299,6 +297,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(portalId, tabId, moduleId, forumGroupId, forumId, topicId, replyId, authorId, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery);
         }
-
     }
 }

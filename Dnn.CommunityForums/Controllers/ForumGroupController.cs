@@ -20,12 +20,10 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    using System.Collections;
     using System.Linq;
 
     using DotNetNuke.Data;
     using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
 
     internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>
     {

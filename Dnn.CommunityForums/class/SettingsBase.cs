@@ -21,14 +21,10 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Reflection;
-    using System.Web;
 
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Security.Permissions;
 
     public class SettingsBase : PortalModuleBase
     {
@@ -89,7 +85,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-
         public int PageId
         {
             get
@@ -135,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public CurrentUserTypes CurrentUserType => this.ForumUser.CurrentUserType;
-        
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public bool UserIsMod => this.ForumUser.GetIsMod(this.ForumModuleId);
 

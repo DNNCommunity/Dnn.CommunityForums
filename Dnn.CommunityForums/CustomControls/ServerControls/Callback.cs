@@ -21,11 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
-    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -33,11 +29,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI;
     using System.Web.UI.Design;
     using System.Web.UI.WebControls;
-    using System.Xml;
-    using System.Xml.XPath;
+
     using DotNetNuke.Common.Utilities;
 
-    [SupportsEventValidation(), DefaultProperty("Text"), Designer("DotNetNuke.Modules.ActiveForums.Controls.ActiveCallbackDesigner"), ParseChildren(true, ""), ToolboxData("<{0}:Callback runat=server></{0}:Callback>")]
+    [SupportsEventValidation, DefaultProperty("Text"), Designer("DotNetNuke.Modules.ActiveForums.Controls.ActiveCallbackDesigner"), ParseChildren(true, ""), ToolboxData("<{0}:Callback runat=server></{0}:Callback>")]
     public class Callback : WebControl
     {
         #region Declarations

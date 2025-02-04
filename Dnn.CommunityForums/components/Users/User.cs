@@ -21,11 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
-
 
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Replaced by DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ")]
-    public class User : DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo {}
+    public class User : DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo { }
 }

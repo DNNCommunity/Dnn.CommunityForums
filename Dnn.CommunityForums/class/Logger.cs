@@ -20,8 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    using System.Web;
-
     public abstract class Logger
     {
         public static void Log(string msg)

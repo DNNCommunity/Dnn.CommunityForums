@@ -24,8 +24,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-    using System.Reflection;
-    using System.Web;
 
     #region Templates
     public class Templates

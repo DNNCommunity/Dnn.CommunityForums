@@ -25,8 +25,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Common.Utilities;
-
     [ToolboxData("<{0}:ForumLoader runat=server></{0}:ForumLoader>")]
     public class ForumLoader : ForumBase
     {

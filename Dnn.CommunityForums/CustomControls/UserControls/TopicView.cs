@@ -32,13 +32,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Xml;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.ActiveForums.Constants;
-    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
-    using DotNetNuke.Services.Authentication;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicView runat=server></{0}:TopicView>")]
@@ -345,7 +340,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.Author.ForumUser.ModuleId = this.ForumModuleId;
 
             this.topic.Forum = this.ForumInfo;
-
 
             this.topic.LastReply.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, this.topic.LastReply.Content.AuthorId);
             this.topic.LastReply.Author.ForumUser.UserInfo.DisplayName = this.drForum["LastPostDisplayName"].ToString();
@@ -772,8 +766,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[TOPICSUBSCRIBE]", string.Empty);
             }
 
-// TODO: remove in v10.00.00
-#region "TODO: Backward compatibility -- remove in v10.00.00"
+            // TODO: remove in v10.00.00
+            #region "TODO: Backward compatibility -- remove in v10.00.00"
 
             // Topic and post actions
             // for backward compatibility, this needs to map to post actions, not topic actions
@@ -800,7 +794,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostActionTokenSynonyms(sbOutput, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale, this.useListActions);
-#endregion "Backward compatibility -- remove in v10.00.00"
+            #endregion "Backward compatibility -- remove in v10.00.00"
 
             // Quick Reply
             if (this.CanReply)
@@ -959,14 +953,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var sTopicTemplate = TemplateUtils.GetTemplateSection(sOutput, "[TOPIC]", "[/TOPIC]");
             var sReplyTemplate = TemplateUtils.GetTemplateSection(sOutput, "[REPLIES]", "[/REPLIES]");
 
-#region "Backward compatilbility -- remove in v10.00.00"
+            #region "Backward compatilbility -- remove in v10.00.00"
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyUserTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sReplyTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(sReplyTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
 
-#endregion "Backward compatilbility -- remove in v10.00.00"
+            #endregion "Backward compatilbility -- remove in v10.00.00"
 
             var sTemp = string.Empty;
             var i = 0;
@@ -1053,7 +1047,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DateUpdated = dr.GetDateTime("DateUpdated"),
                     IPAddress = dr.GetString("IPAddress"),
                 },
-                Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId,  dr.GetInt("AuthorId")),
+                Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, dr.GetInt("AuthorId")),
             };
 
             var tags = dr.GetString("Tags");

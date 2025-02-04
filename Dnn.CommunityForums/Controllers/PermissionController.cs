@@ -24,7 +24,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Collections;
     using System.Collections.Specialized;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Xml;
 
     using DotNetNuke.Abstractions.Portals;
@@ -170,6 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 permissions = base.GetById(permissionId, moduleId);
                 DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, permissions);
             }
+
             return permissions;
         }
 
@@ -357,7 +357,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModuleId = moduleId,
             };
         }
-
 
         public static bool HasAccess(string authorizedRoles, string userRoles)
         {
@@ -563,7 +562,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var permission = this.GetById(permissionsId, moduleId);
             if (permission != null)
             {
-                //permSet = SortPermissionSetMembers(permSet);
+                // permSet = SortPermissionSetMembers(permSet);
                 SetRolesForRequestedAccess(permission, requestedAccess, permSet);
                 this.Update(permission);
             }

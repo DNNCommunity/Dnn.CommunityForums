@@ -22,13 +22,6 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
-    using System.Data;
-    using System.Threading;
-    using System.Web;
-
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.UI.UserControls;
 
     [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
 

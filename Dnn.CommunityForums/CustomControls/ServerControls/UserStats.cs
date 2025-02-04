@@ -21,17 +21,11 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
-    using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Framework;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:UserStats runat=server></{0}:UserStats>")]
     public class UserStats : WebControl
@@ -122,6 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                     }
                 }
+
                 var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalId, this.ModuleId, this.UserId);
                 output = TemplateUtils.ParseProfileTemplate(this.ModuleId, tmp, author, string.Empty, CurrentUserTypes.Anon, false, false, string.Empty, cu.UserID, Utilities.GetTimeZoneOffsetForUser(portalId, this.UserId));
                 output = Utilities.LocalizeControl(output);

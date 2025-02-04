@@ -20,11 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
-
     public class Tab
     {
         private string text;

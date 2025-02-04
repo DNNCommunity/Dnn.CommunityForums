@@ -21,10 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
-    using System.Xml;
 
     using Microsoft.ApplicationBlocks.Data;
 
@@ -71,6 +68,5 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "TopicWithReplies", portalId, topicId, pageIndex, pageSize);
         }
-
     }
 }

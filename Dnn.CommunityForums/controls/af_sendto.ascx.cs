@@ -21,14 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Web.UI;
-
-    using DotNetNuke.Modules.ActiveForums.Entities;
-
-    using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
     public partial class af_sendto : ForumBase
     {

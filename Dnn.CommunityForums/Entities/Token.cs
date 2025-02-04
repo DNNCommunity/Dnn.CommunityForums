@@ -20,11 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
-
     internal class Token
     {
         internal string Group { get; set; }

@@ -21,9 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
 
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
     public class PropertiesInfo

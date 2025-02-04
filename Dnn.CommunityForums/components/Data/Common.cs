@@ -43,6 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateAdminPermissions().")]
         public int CreatePermSet(string adminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(adminRoleId, -1)).PermissionsId;
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForView().")]
         public string CheckForumIdsForView(int moduleId, string forumIds, string userRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(moduleId, forumIds, userRoles);
 

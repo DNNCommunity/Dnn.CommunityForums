@@ -25,13 +25,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Collections.Specialized;
     using System.Text;
 
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
     public class SecurityGrid
     {
         private const int permCount = 21;
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public DotNetNuke.Entities.Portals.PortalSettings PortalSettings { get; set; }
 
@@ -103,38 +101,36 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pl.Add(pi);
             }
 
-			//Users
-			string users = GetSecureObjectList(Security, 1);
-			string userNames = string.Empty;
-			if (! (string.IsNullOrEmpty(users)))
-			{ 
-				foreach (string uid in users.Split(';'))
-				{
-					if (! (string.IsNullOrEmpty(uid)))
-					{
-						DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
-						if (u != null)
-						{
-							DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
-							pi.ObjectId = u.UserID.ToString();
-							pi.ObjectName = u.DisplayName;
-							pi.Type = ObjectType.UserId;
-							pl.Add(pi);
-						}
-
-					}
-				}
-			}
-			
+            // Users
+            string users = GetSecureObjectList(Security, 1);
+            string userNames = string.Empty;
+            if (!(string.IsNullOrEmpty(users)))
+            {
+                foreach (string uid in users.Split(';'))
+                {
+                    if (!(string.IsNullOrEmpty(uid)))
+                    {
+                        DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
+                        if (u != null)
+                        {
+                            DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
+                            pi.ObjectId = u.UserID.ToString();
+                            pi.ObjectName = u.DisplayName;
+                            pi.Type = ObjectType.UserId;
+                            pl.Add(pi);
+                        }
+                    }
+                }
+            }
 
             // NOTE: These need to be presented in same order as they are in "SecureActions" enum.
-			string[,] grid = new string[pl.Count + 1, permCount+3];
-			i = 0;
-			foreach (DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi in pl)
-			{
-				grid[i, 0] = pi.ObjectId;
-				grid[i, 1] = pi.ObjectName;
-				grid[i, 2] = Convert.ToString(pi.Type);
+            string[,] grid = new string[pl.Count + 1, permCount + 3];
+            i = 0;
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi in pl)
+            {
+                grid[i, 0] = pi.ObjectId;
+                grid[i, 1] = pi.ObjectName;
+                grid[i, 2] = Convert.ToString(pi.Type);
                 grid[i, 3] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, this.Security.View));
                 grid[i, 4] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, this.Security.Read));
                 grid[i, 5] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, this.Security.Create));
@@ -182,46 +178,47 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sb.Append("</table></div></td><td valign=\"top\" width=\"94%\"><div class=\"afsecactions\" style=\"overflow-x:auto;overflow-y:hidden;\">");
 
-			sb.Append("<table cellpadding=0 cellspacing=0 border=0 width=\"100%\" id=\"tblSecGrid\">");
-			sb.Append("<tr>");
-			string keyText = string.Empty;
-			for (int td = 3; td <= permCount+2; td++)
-			{
-				keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(td - 3).ToString()));
-				if (keyText.ToLowerInvariant() == "block")
-				{
-					sb.Append("<td class=\"afsecactionhd\" style=\"display:none;\">");
-				}
-				else
-				{
-					sb.Append("<td class=\"afsecactionhd\">");
-				}
+            sb.Append("<table cellpadding=0 cellspacing=0 border=0 width=\"100%\" id=\"tblSecGrid\">");
+            sb.Append("<tr>");
+            string keyText = string.Empty;
+            for (int td = 3; td <= permCount + 2; td++)
+            {
+                keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(td - 3).ToString()));
+                if (keyText.ToLowerInvariant() == "block")
+                {
+                    sb.Append("<td class=\"afsecactionhd\" style=\"display:none;\">");
+                }
+                else
+                {
+                    sb.Append("<td class=\"afsecactionhd\">");
+                }
 
+                sb.Append(Utilities.LocalizeControl($"[RESX:SecGrid:{keyText}]", isAdmin: true));
+                sb.Append("</td>");
+            }
 
-                sb.Append(Utilities.LocalizeControl($"[RESX:SecGrid:{keyText}]", isAdmin:true));
-				sb.Append("</td>");
-			}
-			sb.Append("</tr>");
-			for (int x = 0; x < pl.Count; x++)
-			{
-				sb.Append("<tr onmouseover=\"this.className='afgridrowover'\" onmouseout=\"this.className='afgridrow'\">");
-				for (int r = 3; r <= permCount+2; r++)
-				{
-					keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(r - 3).ToString()));
-					bool bState = Convert.ToBoolean(grid[x, r]); //DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
-					string sState = "<img src=\"" + ImagePath + "admin_stop.png\" alt=\"Disabled\" />";
-					if (bState)
-					{
-						sState = "<img src=\"" + ImagePath + "admin_check.png\" alt=\"Enabled\" />";
-					}
-					if (keyText.ToLowerInvariant() == "block")
-					{
-						sb.Append("<td class=\"afsecactionelem\" style=\"text-align:center;display:none;\">");
-					}
-					else
-					{
-						sb.Append("<td class=\"afsecactionelem\" style=\"text-align:center;\">");
-					}
+            sb.Append("</tr>");
+            for (int x = 0; x < pl.Count; x++)
+            {
+                sb.Append("<tr onmouseover=\"this.className='afgridrowover'\" onmouseout=\"this.className='afgridrow'\">");
+                for (int r = 3; r <= permCount + 2; r++)
+                {
+                    keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(r - 3).ToString()));
+                    bool bState = Convert.ToBoolean(grid[x, r]); // DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
+                    string sState = "<img src=\"" + ImagePath + "admin_stop.png\" alt=\"Disabled\" />";
+                    if (bState)
+                    {
+                        sState = "<img src=\"" + ImagePath + "admin_check.png\" alt=\"Enabled\" />";
+                    }
+
+                    if (keyText.ToLowerInvariant() == "block")
+                    {
+                        sb.Append("<td class=\"afsecactionelem\" style=\"text-align:center;display:none;\">");
+                    }
+                    else
+                    {
+                        sb.Append("<td class=\"afsecactionelem\" style=\"text-align:center;\">");
+                    }
 
                     sb.Append("<div class=\"afsectoggle\" id=\"" + grid[x, 0] + grid[x, 2] + keyText + "\" ");
                     if (!this.ReadOnly)

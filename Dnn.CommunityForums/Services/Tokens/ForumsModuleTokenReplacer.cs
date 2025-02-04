@@ -21,13 +21,8 @@
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 {
     using System;
-    using System.Net;
-    using System.Web;
-    using System.Web.UI;
 
-    using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Tokens;
@@ -115,13 +110,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 case "loginlink":
                     {
-                        //[DCF:LOGINLINK|Please <a href="{0}">login</a> to join the conversation.]
+                        // [DCF:LOGINLINK|Please <a href="{0}">login</a> to join the conversation.]
                         return accessingUser.UserID < 0 ? PropertyAccess.FormatString(GetLoginUrl(), format) : string.Empty;
                     }
 
                 case "loginpopuplink":
                     {
-                        //[DCF:LOGINPOPUPLINK|Please <a href="[DCF:LOGINLINK]" onclick="return `{0}`;">login</a> to join the conversation|Please <a href="[DCF:LOGINLINK]">login</a> to join the conversation.].
+                        // [DCF:LOGINPOPUPLINK|Please <a href="[DCF:LOGINLINK]" onclick="return `{0}`;">login</a> to join the conversation|Please <a href="[DCF:LOGINLINK]">login</a> to join the conversation.].
                         return accessingUser.UserID < 0 &&
                                this.PortalSettings.EnablePopUps &&
                                this.PortalSettings.LoginTabId == DotNetNuke.Common.Utilities.Null.NullInteger &&

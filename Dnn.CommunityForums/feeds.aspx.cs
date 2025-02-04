@@ -21,15 +21,9 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
     using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Web;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
 
     public class af_rss : DotNetNuke.Framework.PageBase
@@ -285,7 +279,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region  Web Form Designer Generated Code
 
         // This call is required by the Web Form Designer.
-        [System.Diagnostics.DebuggerStepThrough()]
+        [System.Diagnostics.DebuggerStepThrough]
         private void InitializeComponent()
         {
         }

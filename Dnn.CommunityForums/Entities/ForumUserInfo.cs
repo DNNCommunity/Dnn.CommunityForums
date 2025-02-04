@@ -21,15 +21,12 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
-    using System.Web;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Tokens;
-    using DotNetNuke.UI.UserControls;
 
     [TableName("activeforums_UserProfiles")]
     [PrimaryKey("ProfileId", AutoIncrement = true)]
@@ -38,6 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     {
         [IgnoreColumn]
         private string cacheKeyTemplate => CacheKeys.ForumUser;
+
         private DotNetNuke.Entities.Users.UserInfo userInfo;
         private PortalSettings portalSettings;
         private SettingsInfo mainSettings;
@@ -126,7 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool EnableNotificationsForOwnContent { get; set; } = false;
 
-        [IgnoreColumn] 
+        [IgnoreColumn]
         public string RawUrl { get; set; }
 
         [IgnoreColumn]
@@ -403,7 +401,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return 0;
 
             // from stored procedure
-            // CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
+            // CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead,
         }
 
         internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)

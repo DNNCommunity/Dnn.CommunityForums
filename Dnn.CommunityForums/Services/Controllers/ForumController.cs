@@ -74,7 +74,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [HttpGet]
         [DnnAuthorize]
         public HttpResponseMessage SubscriberCount(int forumId)
-        { try
+        {
+            try
             {
                 if (forumId > 0)
                 {

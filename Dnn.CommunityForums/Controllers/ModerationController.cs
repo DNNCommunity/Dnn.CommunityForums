@@ -23,7 +23,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using System.Web;
 
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Social.Notifications;
@@ -60,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     subject = Utilities.GetSharedResource("[RESX:NotificationSubjectReply]");
                     subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUri, rawUrl).ToString();
                     body = Utilities.GetSharedResource("[RESX:NotificationBodyReply]");
-                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUri,  rawUrl).ToString();
+                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUri, rawUrl).ToString();
                     authorId = reply.Content.AuthorId;
                 }
                 else

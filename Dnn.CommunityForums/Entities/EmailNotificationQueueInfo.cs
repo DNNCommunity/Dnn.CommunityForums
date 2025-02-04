@@ -21,10 +21,8 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
-    using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
-    using DotNetNuke.Modules.ActiveForums;
 
     [TableName("activeforums_EmailNotificationQueue")]
     [PrimaryKey("Id", AutoIncrement = true)]
