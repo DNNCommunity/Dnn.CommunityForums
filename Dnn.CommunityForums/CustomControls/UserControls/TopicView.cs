@@ -1028,40 +1028,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             var sOutput = template;
 
-            if (dr.GetInt("ReplyId").Equals(0))
+            bool isReply = !dr.GetInt("ReplyId").Equals(0);
+
+            // most topic values come in first result set and are set in LoadData(); however some, like IP Address and contentId, comes in this result set.
+            if (!isReply)
             {
-                // most topic values come in first result set and are set in LoadData(); however some, like IP Address and contentId, comes in this result set.
                 this.topic.Content.IPAddress = dr.GetString("IPAddress");
                 this.topic.ContentId = dr.GetInt("ContentId");
                 this.topic.Content.ContentId = dr.GetInt("ContentId");
             }
 
-            var reply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo
-            {
-                ModuleId = this.ForumModuleId,
-                PortalId = this.PortalId,
-                ReplyId = dr.GetInt("ReplyId"),
-                TopicId = dr.GetInt("TopicId"),
-                StatusId = dr.GetInt("StatusId"),
-                Topic = this.topic,
-                ContentId = dr.GetInt("ContentId"),
-                Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
-                {
-                    ModuleId = this.ForumModuleId,
-                    ContentId = dr.GetInt("ContentId"),
-                    Body = System.Net.WebUtility.HtmlDecode(dr.GetString("Body")),
-                    Subject = System.Net.WebUtility.HtmlDecode(dr.GetString("Subject")),
-                    AuthorId = dr.GetInt("AuthorId"),
-                    DateCreated = dr.GetDateTime("DateCreated"),
-                    DateUpdated = dr.GetDateTime("DateUpdated"),
-                    IPAddress = dr.GetString("IPAddress"),
-                },
-                Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId,  dr.GetInt("AuthorId")),
-            };
-
-            var tags = dr.GetString("Tags");
-
             // Replace Tags Control
+            var tags = dr.GetString("Tags");
             if (string.IsNullOrWhiteSpace(tags))
             {
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, string.Empty, "[AF:CONTROL:TAGS]", "[/AF:CONTROL:TAGS]");
@@ -1085,19 +1063,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             var sbOutput = new StringBuilder(sOutput);
-
-            #region "split checkbox"
-
-            if (reply.ReplyId > 0 && this.bSplit && (this.bModerate || this.topic.Content.AuthorId == this.UserId))
-            {
-                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input id=\"dcf-split-checkbox-" + reply.ReplyId + "\" type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + reply.ReplyId + "\" /><label for=\"dcf-split-checkbox-" + reply.ReplyId + "\" class=\"dcf-split-checkbox-label\">[RESX:SplitCreate]</label></div>");
-            }
-            else
-            {
-                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", string.Empty);
-            }
-
-            #endregion "split checkbox"
 
             // Row CSS Classes
             if (rowcount % 2 == 0)
@@ -1127,15 +1092,40 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            // Attachments
-            sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments(reply.ReplyId > 0 ? reply.ContentId : this.topic.ContentId, true, this.PortalId, this.ForumModuleId));
-
-            if (reply.ReplyId > 0)
+            if (isReply)
             {
+                var reply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo
+                {
+                    ModuleId = this.ForumModuleId,
+                    PortalId = this.PortalId,
+                    ReplyId = dr.GetInt("ReplyId"),
+                    TopicId = dr.GetInt("TopicId"),
+                    StatusId = dr.GetInt("StatusId"),
+                    IsApproved = dr.GetBoolean("IsApproved"),
+                    IsDeleted = false,
+                    Topic = this.topic,
+                    ContentId = dr.GetInt("ContentId"),
+                    Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
+                    {
+                        ModuleId = this.ForumModuleId,
+                        ContentId = dr.GetInt("ContentId"),
+                        Body = System.Net.WebUtility.HtmlDecode(dr.GetString("Body")),
+                        Subject = System.Net.WebUtility.HtmlDecode(dr.GetString("Subject")),
+                        AuthorId = dr.GetInt("AuthorId"),
+                        DateCreated = dr.GetDateTime("DateCreated"),
+                        DateUpdated = dr.GetDateTime("DateUpdated"),
+                        IPAddress = dr.GetString("IPAddress"),
+                    },
+                    Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId,  dr.GetInt("AuthorId")),
+                };
+                sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments(reply.ContentId, true, this.PortalId, this.ForumModuleId));
+                sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input id=\"dcf-split-checkbox-" + reply.ReplyId + "\" type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + reply.ReplyId + "\" /><label for=\"dcf-split-checkbox-" + reply.ReplyId + "\" class=\"dcf-split-checkbox-label\">[RESX:SplitCreate]</label></div>");
                 sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, reply, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl);
             }
             else
             {
+                sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments(this.topic.ContentId, true, this.PortalId, this.ForumModuleId));
+                sbOutput.Replace("[SPLITCHECKBOX]", string.Empty);
                 sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbOutput, this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl);
             }
 
