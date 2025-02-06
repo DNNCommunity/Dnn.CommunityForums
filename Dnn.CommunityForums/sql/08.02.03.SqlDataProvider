@@ -1,6 +1,71 @@
 SET NOCOUNT ON 
 GO
 
+/* issues 1242 - error deleting post when removing reply */
+
+/* activeforums_Reply_Delete */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Reply_Delete]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Reply_Delete]
+GO
+
+/*activeforums_Reply_Delete*/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Reply_Delete]
+@ForumId int,
+@TopicId int,
+@ReplyId int,
+@DelBehavior int
+AS
+DECLARE @ContentId int
+SELECT @ContentId = ContentId FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId AND ReplyId = @ReplyId
+BEGIN
+SELECT     
+	v.ForumGroupId, 
+	v.ModuleId, 
+	v.GroupName, 
+	v.GroupActive, 
+	v.GroupHidden, 
+	v.ForumId, 
+	v.ParentForumId, 
+	v.ForumName, 
+	v.ForumDesc, 
+	v.ForumActive, 
+	v.ForumHidden, 
+	v.TotalTopics, 
+	ISNULL(v.TotalReplies, 0) AS TotalReplies,
+	v.LastPostId,
+	v.GroupSettingsKey,
+	v.ForumSettingsKey,
+	TopicTemplateId = IsNull((SELECT SettingValue FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'TOPICTEMPLATEID' and GroupKey = v.ForumSettingsKey),0),
+
+DECLARE @LastTopicReply int
+SET @LastTopicReply = (SELECT MAX(ReplyId) from {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId AND IsApproved = 1 AND IsDeleted = 0 AND ReplyId <> @ReplyId)
+UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics SET LastReplyId = @LastTopicReply WHERE ForumId = @ForumId and TopicId = @TopicId
+
+IF @DelBehavior = 1
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Replies SET IsDeleted = 1 WHERE TopicId = @TopicId AND ReplyId = @ReplyId
+	END
+ELSE
+	BEGIN
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId AND ReplyId = @ReplyId
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Content WHERE ContentId = @ContentId 
+	END
+END
+UPDATE {databaseOwner}{objectQualifier}activeforums_Topics
+SET ReplyCount = ISNULL((Select Count(ReplyId) from {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId AND IsDeleted = 0 AND IsApproved = 1),0)
+WHERE TopicId = @TopicId
+exec {databaseOwner}{objectQualifier}activeforums_Forums_LastUpdates @ForumId
+
+-- reset thread order
+EXEC {databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev @ForumId
+GO
+
+/* issues 1242 - error deleting post when removing reply */
+
+
+/* --------------------- */
+
+
 /* issues 1240 - begin - issues with editing post */
 
 /*activeforums_UI_TopicView*/
