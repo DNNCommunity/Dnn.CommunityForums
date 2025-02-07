@@ -534,6 +534,52 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
+        internal static string GetUsersRoleIds(int PortalId, DotNetNuke.Entities.Users.UserInfo u)
+        {
+            var roles = new System.Collections.Generic.List<int>();
+            if (u != null && u.Roles != null)
+            {
+                {
+                    foreach (var r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
+                    {
+                        foreach (string role in u?.Roles)
+                        {
+                            if (!string.IsNullOrEmpty(role))
+                            {
+                                if (r.RoleName == role)
+                                {
+                                    if (!roles.Contains(r.RoleID))
+                                    {
+                                        roles.Add(r.RoleID);
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (u != null && u.Social.Roles != null && u.Social.Roles != null)
+                    {
+                        foreach (DotNetNuke.Entities.Users.UserRoleInfo r in u?.Social?.Roles)
+                        {
+                            if (!roles.Contains(r.RoleID))
+                            {
+                                roles.Add(r.RoleID);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return string.Join(";", roles.ToArray());
+        }
+
+        public static bool HasPerm(string authorizedRoles, DotNetNuke.Entities.Users.UserInfo user)
+        {
+            return HasPerm(authorizedRoles, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(user.PortalID, user));
+        }
+
         public static bool HasPerm(string authorizedRoles, int portalId, int moduleId, int userId)
         {
             return HasPerm(authorizedRoles, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId).UserRoles);

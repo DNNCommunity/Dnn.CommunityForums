@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.Read, accessingUser.PortalID, this.Forum.ModuleId, accessingUser.UserID))
+            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.Read, accessingUser))
             {
                 return string.Empty;
             }
