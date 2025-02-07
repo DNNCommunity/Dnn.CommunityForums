@@ -89,7 +89,7 @@
         <hr />
 
         <h3>
-            08.02.02
+            08.02.03
         </h3>
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a><!--, 
@@ -111,9 +111,12 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>FIXED: Error on Add Answer (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1241">Issue 1241</a>)</li>
-            <li>FIXED: Error When Deleting a Topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1242">Issue 1242</a>)</li>
-            <li>FIXED: Error on Edit Post (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1243">Issue 1243</a>)</li>
+            <li>FIXED: Filtered Topics View Showing Incorrect &quot;Started By&quot; User (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1254">Issue 1254</a>)</li>
+            <li>FIXED: Exception Occurs When Sending Email Notifications Due to HttpContext (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1258">Issue 1258</a>)</li>
+            <li>FIXED: Reversal of Approval for Posts After Moderation (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1240">Issue 1240</a>)</li>
+            <li>FIXED: Unable to Add a Forum Group After Deleting Sample Groups (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1264">Issue 1264</a>)</li>
+            <li>FIXED: Exception Logged When Displaying TopicsView (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1253">Issue 1253</a>)</li>
+            <li>FIXED: HTML Output Mangled Due to Token Replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1252">Issue 1252</a>)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
@@ -122,7 +125,7 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            <li>TASK: 8.2.2 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1248">Issue 1248</a>)</li>
+            <li>TASK: 8.2.3 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1266">Issue 1266</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>

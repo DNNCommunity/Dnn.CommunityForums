@@ -104,9 +104,9 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
 
         public bool IsArchived { get => this.topic.IsArchived; set => this.topic.IsArchived = value; }
 
-        public DateTime AnnounceStart { get => this.topic.AnnounceStart; set => this.topic.AnnounceStart = value; }
+        public DateTime? AnnounceStart { get => this.topic.AnnounceStart; set => this.topic.AnnounceStart = value; }
 
-        public DateTime AnnounceEnd { get => this.topic.AnnounceEnd; set => this.topic.AnnounceEnd = value; }
+        public DateTime? AnnounceEnd { get => this.topic.AnnounceEnd; set => this.topic.AnnounceEnd = value; }
 
         public TopicTypes TopicType { get => this.topic.TopicType; set => this.topic.TopicType = value; }
 
