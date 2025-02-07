@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
     using NUnit.Framework;
 
     [TestFixture()]
-    public class TopicPropertyControllerTests
+    public class TopicPropertyControllerTests : DotNetNuke.Modules.ActiveForumsTests.TestBase
     {
         [Test()]
         public void SerializeTest()

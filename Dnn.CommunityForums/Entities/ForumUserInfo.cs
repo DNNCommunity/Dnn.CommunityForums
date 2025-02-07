@@ -21,15 +21,11 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
-    using System.Web;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Tokens;
-    using DotNetNuke.UI.UserControls;
 
     [TableName("activeforums_UserProfiles")]
     [PrimaryKey("ProfileId", AutoIncrement = true)]
@@ -51,6 +47,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public ForumUserInfo(int moduleId)
         {
             this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
+            this.ModuleId = moduleId;
+        }
+
+        public ForumUserInfo(DotNetNuke.Entities.Users.UserInfo userInfo)
+        {
+            this.userInfo = userInfo;
+        }
+
+        public ForumUserInfo(int moduleId, DotNetNuke.Entities.Users.UserInfo userInfo)
+        {
+            this.userInfo = userInfo;
             this.ModuleId = moduleId;
         }
 
@@ -126,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool EnableNotificationsForOwnContent { get; set; } = false;
 
-        [IgnoreColumn] 
+        [IgnoreColumn]
         public string RawUrl { get; set; }
 
         [IgnoreColumn]
@@ -332,7 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (string.IsNullOrEmpty(this.userRoles))
                 {
-                    var ids = this.GetRoleIds(this.UserInfo, this.PortalId);
+                    var ids = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalId, this.UserInfo);
                     if (string.IsNullOrEmpty(ids))
                     {
                         ids = Globals.DefaultAnonRoles + "|-1;||";
@@ -355,33 +362,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 this.userRoles = value;
             }
-        }
-
-        private string GetRoleIds(UserInfo u, int PortalId)
-        {
-            string RoleIds = string.Empty;
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
-            {
-                string roleName = r.RoleName;
-                foreach (string role in u?.Roles)
-                {
-                    if (!string.IsNullOrEmpty(role))
-                    {
-                        if (roleName == role)
-                        {
-                            RoleIds += r.RoleID.ToString() + ";";
-                            break;
-                        }
-                    }
-                }
-            }
-
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in u?.Social?.Roles)
-            {
-                RoleIds += r.RoleID.ToString() + ";";
-            }
-
-            return RoleIds;
         }
 
         internal int GetLastReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
@@ -627,7 +607,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return string.Empty;
         }
 
-        [IgnoreColumn]
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.PortalId, this.UserId);
 
         [IgnoreColumn]

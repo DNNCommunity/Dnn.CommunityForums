@@ -293,8 +293,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 cc.ForumModuleId = this.ForumModuleId;
                 cc.User = this.ForumUser;
                 string authorizedViewRoles = this.ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(this.TabId, this.PortalId).ToString("VIEW") : this.ModuleConfiguration.ModulePermissions.ToString("VIEW");
-                cc.DefaultViewRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, authorizedViewRoles.Split(';'));
-                cc.AdminRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'));
+                cc.DefaultViewRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.PortalId, authorizedViewRoles.Split(';'));
+                cc.AdminRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.PortalId, this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'));
                 cc.ProfileLink = string.Empty; // GetProfileLink()
                 cc.MembersLink = string.Empty; // GetMembersLink()
                 this.ControlConfig = cc;

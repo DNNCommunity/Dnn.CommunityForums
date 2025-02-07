@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
         {
             try
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
+DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
                 string roles;
                 switch (permissionRequired)
                 {
@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                         return false;
                 }
 
-                return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, portalId, moduleId, userInfo.UserID);
+                return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, userInfo);
             }
             catch (Exception ex)
             {

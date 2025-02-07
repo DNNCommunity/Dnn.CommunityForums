@@ -1468,6 +1468,7 @@
     <Compile Include="Services\ServicesHelper.cs" />
     <Compile Include="Services\Tokens\ForumsModuleTokenReplacer.cs" />
     <Compile Include="Services\Tokens\ResourceStringTokenReplacer.cs" />
+    <Compile Include="Services\Tokens\ForumsModuleTokenProvider.cs" />
     <Compile Include="Services\Tokens\TokenReplacer.cs" />
     <Compile Include="Services\URLNavigator.cs">
       <SubType>ASPXCodeBehind</SubType>

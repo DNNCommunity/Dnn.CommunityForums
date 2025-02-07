@@ -255,7 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         new DotNetNuke.Entities.Modules.ModuleController();
                     DotNetNuke.Entities.Modules.ModuleInfo objM = objMC.GetModule(this.ModuleId, this.TabId);
                     string roleIds =
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId,
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.PortalId,
                             objM.ModulePermissions.ToString("EDIT").Split(';'));
                     this._isValid =
                         DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(roleIds,

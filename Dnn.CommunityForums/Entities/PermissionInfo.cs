@@ -149,4 +149,5 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.PermissionsId);
     }
+
 }

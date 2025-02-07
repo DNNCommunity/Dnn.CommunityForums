@@ -157,12 +157,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     {
                         if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
                                 ti.Forum.Security.Pin, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
                                         this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
                             this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin || this.UserInfo.IsSuperUser || 
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
                                 ti.Forum.Security.Moderate, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
                                         this.ActiveModule.PortalID, this.UserInfo.Roles))))
                         {
                             ti.IsPinned = !ti.IsPinned;
@@ -224,14 +224,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     {
                         if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
                                 ti.Forum.Security.Lock, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
                                         this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
                             this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin ||
                             this.UserInfo.IsSuperUser ||
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
                                 ti.Forum.Security.Moderate,
                                 string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
                                         this.ActiveModule.PortalID,
                                         this.UserInfo.Roles))))
                         {
@@ -278,13 +278,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     {
                         if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
                                 ti.Forum.Security.Move, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
                                         this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
                             this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin || 
                             this.UserInfo.IsSuperUser || 
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
                                 ti.Forum.Security.Moderate, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
                                         this.ActiveModule.PortalID, this.UserInfo.Roles))))
                         {
                             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(moduleId: this.ForumModuleId, userId: this.UserInfo.UserID, topicId: topicId, newForumId: forumId);
@@ -374,13 +374,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     {
                         if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
                                 ti.Forum.Security.Delete, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
                                         this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
                             this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin || 
                             this.UserInfo.IsSuperUser || 
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
                                 ti.Forum.Security.Moderate, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
                                         this.ActiveModule.PortalID, this.UserInfo.Roles))))
                         {
                             tc.DeleteById(topicId);
@@ -451,13 +451,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 {
                     if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
                             originalTopic.Forum.Security.Edit, string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
                                     this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
                         this.UserInfo.UserID == originalTopic.Content.AuthorId || this.UserInfo.IsAdmin || 
                         this.UserInfo.IsSuperUser || 
                         DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
                             originalTopic.Forum.Security.Moderate, string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
                                     this.ActiveModule.PortalID, this.UserInfo.Roles))))
                     {
                         string subject = Utilities.XSSFilter(dto.Topic.Subject, true);
@@ -465,7 +465,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         originalTopic.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrlSegment(portalId: this.ActiveModule.PortalID, moduleId: this.ForumModuleId, topicId: topicId, subject: subject, forumInfo: originalTopic.Forum);
 
                         if (dto.Topic.IsLocked != originalTopic.IsLocked &&
-                            (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Lock, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))) 
+                            (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Lock, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))) 
                             )
                             )
                         {
@@ -473,7 +473,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         }
 
                         if (dto.Topic.IsPinned != originalTopic.IsPinned &&
-                            (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Pin, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))) 
+                            (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Pin, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))) 
                             )
                             )
                         {
@@ -516,7 +516,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(originalTopic);
                         Utilities.UpdateModuleLastContentModifiedOnDate(this.ForumModuleId);
 
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Tag, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Tag, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
                         {
                             if (!string.IsNullOrEmpty(dto.Topic.Tags))
                             {
@@ -531,7 +531,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             }
                         }
 
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Categorize, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Categorize, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
                         {
                             if (!string.IsNullOrEmpty(dto.Topic.SelectedCategoriesAsString))
                             {
