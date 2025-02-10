@@ -1,0 +1,76 @@
+SET NOCOUNT ON 
+GO
+
+/* issues 1277 - begin - issues with hard-deleting a topic */
+
+/*activeforums_Topics_Tracking_UpdateUser*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tracking_UpdateUser]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking_UpdateUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking_UpdateUser]
+	@ForumId int,
+	@TopicId int,
+	@LastReplyId int,
+	@UserId int
+	
+AS
+IF EXISTS (SELECT TopicId FROM {databaseOwner}{objectQualifier}activeforums_Topics WHERE TopicId = @TopicId) AND EXISTS(SELECT ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId) 
+BEGIN 
+    IF EXISTS(SELECT TrackingId FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking WHERE UserId = @UserId AND ForumId = @ForumId AND TopicId = @TopicId)
+	    UPDATE {databaseOwner}{objectQualifier}activeforums_Topics_Tracking
+		    SET DateAdded = GETUTCDATE(), LastReplyId = @LastReplyId
+		    WHERE UserId = @UserId AND ForumId = @ForumID AND TopicId = @TopicId
+    ELSE
+	    INSERT INTO {databaseOwner}{objectQualifier}activeforums_Topics_Tracking
+		    (ForumId, TopicId, LastReplyId, UserId,DateAdded)
+		    VALUES
+		    (@ForumId, @TopicId, @LastReplyId, @UserId, GETUTCDATE())
+END            
+
+IF  EXISTS(SELECT ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId) 
+BEGIN
+    IF EXISTS(SELECT TrackingId FROM {databaseOwner}{objectQualifier}activeforums_Forums_Tracking WHERE UserId = @UserId AND ForumId = @ForumId)
+	    UPDATE {databaseOwner}{objectQualifier}activeforums_Forums_Tracking
+        SET LastAccessDate = GETUTCDATE(), MaxTopicRead = CASE WHEN MaxTopicRead > @TopicId THEN MaxTopicRead ELSE @TopicId END, MaxReplyRead = CASE WHEN MaxReplyRead > @LastReplyId THEN MaxReplyRead ELSE @LastReplyId END 
+	    WHERE UserId = @UserId AND ForumId = @ForumID AND (MaxTopicRead < @TopicId OR MaxReplyRead < @LastReplyId)
+    ELSE
+	    INSERT INTO {databaseOwner}{objectQualifier}activeforums_Forums_Tracking
+	    (ModuleId, UserId, ForumId, LastAccessDate, MaxTopicRead, MaxReplyRead)
+	    SELECT ModuleId, @UserId, @ForumId, GETUTCDATE(), @TopicId, @LastReplyId 
+        FROM {databaseOwner}{objectQualifier}activeforums_Forums 
+        WHERE ForumId = @ForumId
+END
+
+GO
+
+
+/*activeforums_Forums_Tracking_UpdateUser*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_Tracking_UpdateUser]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forums_Tracking_UpdateUser]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forums_Tracking_UpdateUser]
+	@ModuleId int,
+	@UserId int,
+	@ForumId int
+AS
+IF EXISTS(SELECT ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId) 
+BEGIN 
+    IF EXISTS(SELECT TrackingId FROM {databaseOwner}{objectQualifier}activeforums_Forums_Tracking WHERE UserId = @UserId AND ForumId = @ForumId)
+	    UPDATE {databaseOwner}{objectQualifier}activeforums_Forums_Tracking
+		    SET LastAccessDate = GETUTCDATE()
+		    WHERE UserId = @UserId AND ForumId = @ForumID
+    ELSE
+	    INSERT INTO {databaseOwner}{objectQualifier}activeforums_Forums_Tracking
+		    (ModuleId, UserId, ForumId, LastAccessDate)
+		    VALUES
+		    (@ModuleId, @UserId, @ForumId, GETUTCDATE())
+END
+
+GO
+
+/* issues 1277 - end - issues with hard-deleting a topic */
+
+
+/* --------------------- */
+

@@ -473,7 +473,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static int Forum_GetByTopicId(int moduleId, int topicId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(moduleId).GetForumForTopic(topicId).ForumId;
+            try
+            {
+                var forumTopic = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(moduleId).GetForumForTopic(topicId);
+                if (forumTopic != null)
+                {
+                    return forumTopic.ForumId;
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+
+            return DotNetNuke.Common.Utilities.Null.NullInteger;
         }
 
         public static DateTime Forum_GetLastReadTopicByUser(int forumId, int userId)
