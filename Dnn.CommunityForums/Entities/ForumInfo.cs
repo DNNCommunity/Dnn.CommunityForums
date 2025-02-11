@@ -784,7 +784,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Security.View, accessingUser.PortalID, this.ModuleId, accessingUser.UserID))
+            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Security.View, accessingUser))
             {
                 return string.Empty;
             }
