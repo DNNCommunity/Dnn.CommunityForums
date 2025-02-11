@@ -64,7 +64,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         private const string PropertySource_forumpost = "forumpost";
         private const string PropertySource_forumtopicaction = "forumtopicaction";
         private const string PropertySource_forumpostaction = "forumpostaction";
+        
+        public TokenReplacer(DotNetNuke.Services.Tokens.TokenContext context)
+        {
+            this.TokenContext = context;
 
+        }
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, ForumInfo forumInfo, Uri requestUri, string rawUrl)
         {
             forumInfo.RawUrl = rawUrl;
@@ -74,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             forumInfo.ForumGroup.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumInfo.TabId, forumInfo.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? forumInfo.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? forumInfo.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumInfo.TabId, forumInfo.ModuleId, GetTabId(portalSettings, forumInfo), GetModuleId(portalSettings, forumInfo), requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = forumInfo;
             this.PropertySource[PropertySource_forumgroup] = forumInfo.ForumGroup;
             this.PropertySource[PropertySource_forumuser] = forumUser;
@@ -84,7 +89,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
             this.PropertySource[PropertySource_module] = forumInfo.ModuleInfo;
             this.PropertySource[PropertySource_portal] = portalSettings;
-            this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+
+            try
+            {
+                this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            }
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
+            {
+            }
+
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
@@ -95,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             forumGroupInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumGroupInfo.TabId, forumGroupInfo.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? forumGroupInfo.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? forumGroupInfo.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumGroupInfo.TabId, forumGroupInfo.ModuleId, GetTabId(portalSettings, forumGroupInfo), GetModuleId(portalSettings, forumGroupInfo), requestUri, rawUrl);
             this.PropertySource[PropertySource_forumgroup] = forumGroupInfo;
             this.PropertySource[PropertySource_forumuser] = forumUser;
             this.PropertySource[PropertySource_user] = forumUser.UserInfo;
@@ -104,8 +118,35 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
             this.PropertySource[PropertySource_module] = forumGroupInfo.ModuleInfo;
             this.PropertySource[PropertySource_portal] = portalSettings;
-            this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            try
+            {
+                this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            }
+            catch 
+            {
+            }
+
             this.CurrentAccessLevel = Scope.DefaultSettings;
+        }
+
+        private static int GetModuleId(PortalSettings portalSettings, ForumInfo forumInfo)
+        {
+            return portalSettings?.ActiveTab == null || portalSettings?.ActiveTab?.ModuleID == -1 ? forumInfo.ModuleId : portalSettings.ActiveTab.ModuleID;
+        }
+
+        private static int GetTabId(PortalSettings portalSettings, ForumInfo forumInfo)
+        {
+            return portalSettings?.ActiveTab == null || portalSettings?.ActiveTab?.TabID == -1 || portalSettings?.ActiveTab?.TabID == portalSettings?.HomeTabId ? forumInfo.TabId : portalSettings.ActiveTab.TabID;
+        }
+
+        private static int GetModuleId(PortalSettings portalSettings, ForumGroupInfo forumGroupInfo)
+        {
+            return portalSettings?.ActiveTab == null || portalSettings?.ActiveTab?.ModuleID == -1 ? forumGroupInfo.ModuleId : portalSettings.ActiveTab.ModuleID;
+        }
+
+        private static int GetTabId(PortalSettings portalSettings, ForumGroupInfo forumGroupInfo)
+        {
+            return portalSettings?.ActiveTab == null || portalSettings.ActiveTab.TabID == -1 || portalSettings?.ActiveTab?.TabID == portalSettings.HomeTabId ? forumGroupInfo.TabId : portalSettings.ActiveTab.TabID;
         }
 
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, TopicInfo topicInfo, Uri requestUri, string rawUrl)
@@ -119,7 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             topicInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.TabId, topicInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? topicInfo.Forum.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? topicInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.TabId, topicInfo.Forum.ModuleId, GetTabId(portalSettings, topicInfo.Forum),  GetModuleId(portalSettings, topicInfo.Forum), requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = topicInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = topicInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = topicInfo;
@@ -135,7 +176,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
             this.PropertySource[PropertySource_module] = topicInfo.Forum.ModuleInfo;
             this.PropertySource[PropertySource_portal] = portalSettings;
-            this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            try
+            {
+                this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            }
+            catch 
+            {
+            }
+
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
@@ -152,7 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             postInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, postInfo.Forum.TabId, postInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? postInfo.Forum.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? postInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, postInfo.Forum.TabId, postInfo.Forum.ModuleId, GetTabId(portalSettings, postInfo.Forum),  GetModuleId(portalSettings, postInfo.Forum), requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = postInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = postInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = postInfo.Topic;
@@ -169,7 +217,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
             this.PropertySource[PropertySource_module] = postInfo.Forum.ModuleInfo;
             this.PropertySource[PropertySource_portal] = portalSettings;
-            this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            try
+            {
+                this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            }
+            catch 
+            {
+            }
+
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
@@ -220,7 +275,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
             this.PropertySource[PropertySource_module] = forumUser.ModuleInfo;
             this.PropertySource[PropertySource_portal] = portalSettings;
-            this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            try
+            {
+                this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            }
+            catch 
+            {
+            }
+
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
@@ -240,7 +302,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
             this.PropertySource[PropertySource_module] = forumUser.ModuleInfo;
             this.PropertySource[PropertySource_portal] = portalSettings;
-            this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            try
+            {
+                this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            }
+            catch 
+            {
+            }
+
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
@@ -250,7 +319,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumTabId, forumModuleId, tabId, moduleId, requestUri, rawUrl);
             this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
             this.PropertySource[PropertySource_portal] = portalSettings;
-            this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            try
+            {
+                this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            }
+            catch 
+            {
+            }
+
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
 
@@ -1052,11 +1128,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             if (template.ToString().Contains(fromToken))
             {
-                var log = new LogInfo { LogTypeKey = Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
-                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                var message = string.Format(Utilities.GetSharedResource("[RESX:ReplaceObsoleteToken]"), fromToken, toToken);
-                log.AddProperty("Message", message);
-                LogController.Instance.AddLog(log);
+                // log controller not available when running unit tests
+                if (LogController.Instance != null)
+                {
+                    var log = new LogInfo { LogTypeKey = Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                    log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                    var message = string.Format(Utilities.GetSharedResource("[RESX:ReplaceObsoleteToken]"), fromToken, toToken);
+                    log.AddProperty("Message", message);
+                    LogController.Instance.AddLog(log);
+                }
+
                 return template.Replace(fromToken, toToken);
             }
 
@@ -1067,11 +1148,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             if (template.Contains(fromToken))
             {
-                var log = new LogInfo { LogTypeKey = Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
-                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                var message = string.Format(Utilities.GetSharedResource("[RESX:ReplaceObsoleteToken]"), fromToken, toToken);
-                log.AddProperty("Message", message);
-                LogController.Instance.AddLog(log);
+                // log controller not available when running unit tests
+                if (LogController.Instance != null)
+                {
+                    var log = new LogInfo { LogTypeKey = Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                    log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                    var message = string.Format(Utilities.GetSharedResource("[RESX:ReplaceObsoleteToken]"), fromToken, toToken);
+                    log.AddProperty("Message", message);
+                    LogController.Instance.AddLog(log);
+                }
+
                 template = template.Replace(fromToken, toToken);
                 return template;
             }
@@ -1083,11 +1169,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             if (template.ToString().Contains(token))
             {
-                var log = new LogInfo { LogTypeKey = Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
-                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                var message = string.Format(Utilities.GetSharedResource("[RESX:RemoveObsoleteToken]"), token);
-                log.AddProperty("Message", message);
-                LogController.Instance.AddLog(log);
+                // log controller not available when running unit tests
+                if (LogController.Instance != null)
+                {
+                    var log = new LogInfo { LogTypeKey = Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                    log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                    var message = string.Format(Utilities.GetSharedResource("[RESX:RemoveObsoleteToken]"), token);
+                    log.AddProperty("Message", message);
+                    LogController.Instance.AddLog(log);
+                }
+
                 return template.Replace(token, string.Empty);
             }
 
@@ -1098,11 +1189,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             if (template.ToString().Contains(tokenPrefix))
             {
-                var log = new LogInfo { LogTypeKey = Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
-                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                var message = string.Format(Utilities.GetSharedResource("[RESX:RemoveObsoletePrefixedToken]"), tokenPrefix);
-                log.AddProperty("Message", message);
-                LogController.Instance.AddLog(log);
+                // log controller not available when running unit tests
+                if (LogController.Instance != null)
+                {
+                    var log = new LogInfo { LogTypeKey = Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                    log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                    var message = string.Format(Utilities.GetSharedResource("[RESX:RemoveObsoletePrefixedToken]"), tokenPrefix);
+                    log.AddProperty("Message", message);
+                    LogController.Instance.AddLog(log);
+                }
+
                 return RemovePrefixedToken(template, tokenPrefix);
             }
 
