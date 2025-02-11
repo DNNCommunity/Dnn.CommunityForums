@@ -24,7 +24,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Text;
     using System.Web.UI.WebControls;
-
     using DotNetNuke.Security.Roles;
 
     using AFSettings = DotNetNuke.Modules.ActiveForums.Settings;
@@ -694,29 +693,22 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindGroups()
         {
+            var groups = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(this.ModuleId).OrderBy(f => f.SortOrder).ToList();
             var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
 
             this.drpGroups.Items.Add(new ListItem(Utilities.GetSharedResource("DropDownSelect"), "-1"));
 
-            var tmpGroupId = -1;
-            foreach (var forum in forums)
+            foreach (var group in groups)
             {
-                var groupId = forum.ForumGroupId;
-                if (tmpGroupId != groupId)
+                var groupId = group.ForumGroupId;
+                this.drpGroups.Items.Add(new ListItem(group.GroupName, "GROUP" + groupId));
+                foreach (var forum in forums.Where(f => f.ForumGroupId == group.ForumGroupId))
                 {
-                    this.drpGroups.Items.Add(new ListItem(forum.GroupName, "GROUP" + groupId));
-                    tmpGroupId = groupId;
-                }
-
-                var forumId = forum.ForumID;
-                if (forumId == 0)
-                {
-                    continue;
-                }
-
-                if (forum.ParentForumId == 0)
-                {
-                    this.drpGroups.Items.Add(new ListItem(" - " + forum.ForumName, "FORUM" + forumId));
+                    var forumId = forum.ForumID;
+                    if (forum.ParentForumId == 0)
+                    {
+                        this.drpGroups.Items.Add(new ListItem(" - " + forum.ForumName, "FORUM" + forumId));
+                    }
                 }
             }
         }

@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                 },
             };
 
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
             {
                 Object =
                 {
@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                 },
             };
 
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
             {
                 Object =
                 {
@@ -242,7 +242,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
             var rawUrl = "/forums";
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.mainSettings.Object, navigationManager, mockUser.Object, requestUri, rawUrl).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.MainSettings.Object, navigationManager, mockUser.Object, requestUri, rawUrl).ToString();
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -283,7 +283,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                 },
             };
 
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
             {
                 Object =
                 {
@@ -369,7 +369,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                 },
             };
 
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
             {
                 Object =
                 {
@@ -422,7 +422,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
             // Act
 
 
-            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, mockForum.Object, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.mainSettings.Object, navigationManager, mockUser.Object, 0, CurrentUserTypes.Auth, requestUri, rawUrl).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, mockForum.Object, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.MainSettings.Object, navigationManager, mockUser.Object, 0, CurrentUserTypes.Auth, requestUri, rawUrl).ToString();
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));

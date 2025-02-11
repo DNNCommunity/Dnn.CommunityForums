@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             };
 
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
             {
                 Object =
                 {

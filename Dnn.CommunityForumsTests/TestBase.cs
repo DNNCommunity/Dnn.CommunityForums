@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Modules.ActiveForumsTests.Services.Tokens;
+
 namespace DotNetNuke.Modules.ActiveForumsTests
 {
     using System;
@@ -46,13 +48,13 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     {
         private Mock<CachingProvider> mockCacheProvider;
         private Mock<IPortalController> portalController;
-        //private Mock<DotNetNuke.Data.DataProvider> _dataProvider;
-        private Mock<RoleProvider> _mockRoleProvider;
+        private Mock<RoleProvider> mockRoleProvider;
         private Mock<IModuleController> moduleController;
         private Mock<IUserController> userController;
         private Mock<IRoleController> roleController;
         private Mock<IHostController> mockHostController;
-        internal Mock<DotNetNuke.Modules.ActiveForums.SettingsInfo> mainSettings;
+        internal Mock<DotNetNuke.Modules.ActiveForums.SettingsInfo> MainSettings;
+
         [SetUp]
 
         public void SetUp()
@@ -63,34 +65,20 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            //DotNetNuke.Common.Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             ComponentFactory.Container = new SimpleContainer();
-            this._mockRoleProvider = MockComponentProvider.CreateRoleProvider();
+            this.mockRoleProvider = MockComponentProvider.CreateRoleProvider();
 
-            //ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider());
-            //this._dataProvider = MockComponentProvider.CreateDataProvider();
-            //ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>()
-            //{
-            //    { "name", "SqlDataProvider" },
-            //    { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
-            //    { "connectionStringName", "SiteSqlServer" },
-            //    { "objectQualifier", string.Empty },
-            //    { "databaseOwner", "dbo." },
-            //});
             this.mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
             this.SetupCachingProvider();
-            
-            //MockComponentProvider.CreateNew<TokenProvider>();
-            MockComponentProvider.CreateNew<DotNetNuke.Modules.ActiveForums.Services.Tokens.ForumsModuleTokenProvider>();
-            
-            //ComponentFactory.RegisterComponentInstance<TokenProvider>(new CoreTokenProvider());
-            ComponentFactory.RegisterComponentInstance<TokenProvider>(new DotNetNuke.Modules.ActiveForums.Services.Tokens.ForumsModuleTokenProvider());
+
+            // this is needed to mock the TokenProvider when running unit tests
+            ComponentFactory.RegisterComponentInstance<TokenProvider>(new ForumsModuleTokenProvider());
 
             MockComponentProvider.CreateNew<LoggingProvider>();
             MockComponentProvider.CreateEventLogController();
 
-            this.mainSettings = new Mock<DotNetNuke.Modules.ActiveForums.SettingsInfo>();
+            this.MainSettings = new Mock<DotNetNuke.Modules.ActiveForums.SettingsInfo>();
             this.SetupMainSettings();
 
             this.mockHostController = new Mock<IHostController>();
@@ -115,14 +103,12 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             this.SetupUserRoleInfo();
 
-            //this.SetupDataProvider();
             this.SetupRoleProvider();
         }
 
         [TearDown]
         public void TearDown()
         {
-            //DotNetNuke.Common.Globals.DependencyProvider = null;
             DotNetNuke.Entities.Portals.PortalController.ClearInstance();
             DotNetNuke.Entities.Modules.ModuleController.ClearInstance();
             DotNetNuke.Entities.Users.UserController.ClearInstance();
@@ -139,11 +125,11 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var userFirstSocialGroupOwner = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_FirstSocialGroup, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_FirstSocialGroup, UserID = DotNetNuke.Tests.Utilities.Constants.UserID_FirstSocialGroupOwner, IsOwner = true };
             var anonymousRoleInfo = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser), UserID = -1 };
 
-            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_Admin), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { adminRoleInfoForAdministrators, adminRoleInfoforRegisteredUsers });
-            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_User12), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user12RoleInfoforRegisteredUsers });
-            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_FirstSocialGroupOwner), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { userFirstSocialGroupOwner });
-            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.USER_TenId), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user10RoleInfoforRegisteredUsers });
-            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == -1), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { anonymousRoleInfo });
+            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_Admin), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { adminRoleInfoForAdministrators, adminRoleInfoforRegisteredUsers });
+            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_User12), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user12RoleInfoforRegisteredUsers });
+            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_FirstSocialGroupOwner), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { userFirstSocialGroupOwner });
+            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.USER_TenId), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user10RoleInfoforRegisteredUsers });
+            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == -1), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { anonymousRoleInfo });
         }
 
         private void SetupUserInfo()
@@ -265,25 +251,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             this.portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
         }
 
-        //private void SetupDataProvider()
-        //{
-        //    // Standard DataProvider Path for Logging
-        //    this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
-
-        //    var dataTable = new DataTable("Languages");
-        //    var pkId = dataTable.Columns.Add("LanguageID", typeof(int));
-        //    dataTable.Columns.Add("CultureCode", typeof(string));
-        //    dataTable.Columns.Add("CultureName", typeof(string));
-        //    dataTable.Columns.Add("FallbackCulture", typeof(string));
-        //    dataTable.Columns.Add("CreatedByUserID", typeof(int));
-        //    dataTable.Columns.Add("CreatedOnDate", typeof(DateTime));
-        //    dataTable.Columns.Add("LastModifiedByUserID", typeof(int));
-        //    dataTable.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-        //    dataTable.PrimaryKey = new[] { pkId };
-        //    dataTable.Rows.Add(1, "en-US", "English (United States)", null, -1, "2011-05-04 09:42:11.530", -1, "2011-05-04 09:42:11.530");
-
-        //    this._dataProvider.Setup(x => x.GetLanguages()).Returns(dataTable.CreateDataReader());
-        //}
         private void SetupCachingProvider()
         {
             this.mockCacheProvider.Setup(c => c.GetItem(It.IsAny<string>())).Returns<string>(key =>
@@ -317,7 +284,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
         private void SetupMainSettings()
         {
-            this.mainSettings.Object.MainSettings = new Hashtable
+            this.MainSettings.Object.MainSettings = new Hashtable
             {
                 { SettingKeys.AllowAvatarLinks, true },
                 { SettingKeys.AllowAvatars, true },

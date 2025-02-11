@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
         public void GetForumStatusForUserTest1()
         {
             // Arrange
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
             {
                 Object =
                 {
@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
         public void GetForumStatusForUserTest2()
         {
             // Arrange
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
             {
                 Object =
                 {

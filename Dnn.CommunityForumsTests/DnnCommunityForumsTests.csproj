@@ -117,6 +117,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Services\Tokens\ForumsModuleTokenProvider.cs" />
     <Compile Include="Services\Tokens\TokenReplacerTests.cs" />
     <Compile Include="class\UtilitiesTests.cs" />
     <Compile Include="Controllers\PermissionControllerTests.cs" />

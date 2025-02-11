@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 // TODO : clean this up to use DAL2
                 if (this.forumId < 1 && this.TopicId > 0)
                 {
-                    this.forumId = Controllers.ForumController.Forum_GetByTopicId(-1, this.TopicId);
+                    this.forumId = Controllers.ForumController.Forum_GetByTopicId(this.ModuleId, this.TopicId);
                     this.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.forumId, this.ModuleId);
                     this.UpdateCache();
                 }
@@ -146,9 +146,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool IsArchived { get; set; }
 
-        public DateTime AnnounceStart { get; set; }
+        public DateTime? AnnounceStart { get; set; }
 
-        public DateTime AnnounceEnd { get; set; }
+        public DateTime? AnnounceEnd { get; set; }
 
         public TopicTypes TopicType { get; set; }
 

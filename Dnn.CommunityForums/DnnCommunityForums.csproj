@@ -1254,8 +1254,11 @@
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.10.SqlDataProvider" />
+    <None Include="sql\08.02.04.SqlDataProvider" />
+    <None Include="sql\08.02.03.SqlDataProvider" />
     <None Include="sql\08.02.02.SqlDataProvider" />
     <None Include="sql\08.02.00.SqlDataProvider" />
+    <None Include="sql\08.02.03.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\StatsTemplate.ascx" />
     <Content Include="config\defaultsetup.config">
@@ -1468,7 +1471,6 @@
     <Compile Include="Services\ServicesHelper.cs" />
     <Compile Include="Services\Tokens\ForumsModuleTokenReplacer.cs" />
     <Compile Include="Services\Tokens\ResourceStringTokenReplacer.cs" />
-    <Compile Include="Services\Tokens\ForumsModuleTokenProvider.cs" />
     <Compile Include="Services\Tokens\TokenReplacer.cs" />
     <Compile Include="Services\URLNavigator.cs">
       <SubType>ASPXCodeBehind</SubType>
