@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -147,7 +148,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumId <= 0 ? null : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
         }
 
-        public static string GetForumsForUser(string userRoles, int portalId, int moduleId, string permissionType = "CanView", bool strict = false)
+        public static string GetForumsForUser(int portalId, int moduleId, ForumUserInfo forumUser, string permissionType = "CanView", bool strict = false)
         {
             // Setting strict to true enforces the actual permission
             // If strict is false, forums will show up in the list if they are not hidden for users
@@ -156,27 +157,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId);
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
             {
-                string roles;
+                var roles = new HashSet<int>();
                 switch (permissionType)
                 {
                     case "CanView":
-                        roles = f.Security?.View;
+                        roles = f.Security?.ViewRoleIds;
                         break;
                     case "CanRead":
-                        roles = f.Security?.Read;
+                        roles = f.Security?.ReadRoleIds;
                         break;
                     case "CanApprove":
-                        roles = f.Security?.Moderate;
+                        roles = f.Security?.ModerateRoleIds;
                         break;
                     case "CanEdit":
-                        roles = f.Security?.Edit;
+                        roles = f.Security?.EditRoleIds;
                         break;
                     default:
-                        roles = f.Security?.View;
+                        roles = f.Security?.ViewRoleIds;
                         break;
                 }
 
-                var hasPermissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, userRoles);
+                var hasPermissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(roles, forumUser.UserRoleIds);
 
                 if ((hasPermissions || (!strict && !f.Hidden && (permissionType == "CanView" || permissionType == "CanRead"))) && f.Active)
                 {
@@ -198,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             var sb = new StringBuilder();
             int index = 1;
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId).Where(f => (includeHiddenForums || !f.Hidden) && (f.ForumGroup != null) && (includeHiddenForums || !f.ForumGroup.Hidden) && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles)));
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId).Where(f => (includeHiddenForums || !f.Hidden) && (f.ForumGroup != null) && (includeHiddenForums || !f.ForumGroup.Hidden) && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security?.ViewRoleIds, currentUser.UserRoleIds)));
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums.ToList(), currentUser, fi =>
                 {
                     sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", fi.GroupName);
@@ -319,7 +320,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             bool includeHiddenForums)
         {
             string tmpGroupKey = string.Empty;
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => (includeHiddenForums || !f.Hidden) && f.ForumGroup != null && (includeHiddenForums || !f.ForumGroup.Hidden) && (forumUserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, forumUserInfo.UserRoles))))
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => (includeHiddenForums || !f.Hidden) && f.ForumGroup != null && (includeHiddenForums || !f.ForumGroup.Hidden) && (forumUserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security?.ViewRoleIds, forumUserInfo.UserRoleIds))))
             {
                 string groupKey = $"{fi.GroupName}{fi.ForumGroupId}";
                 if (tmpGroupKey != groupKey)
@@ -331,7 +332,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (fi.ParentForumId == 0)
                 {
                     forumAction(fi);
-                    foreach (var subforum in forums.Where(f => f.ParentForumId == fi.ForumID && (!f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (forumUserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, forumUserInfo.UserRoles)))))
+                    foreach (var subforum in forums.Where(f => f.ParentForumId == fi.ForumID && (!f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (forumUserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security?.ViewRoleIds, forumUserInfo.UserRoleIds)))))
                     {
                         subForumAction(subforum);
                     }
@@ -433,7 +434,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                     continue;
                                 }
 
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: requestedAccess, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString(), 0);
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: requestedAccess, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleId(portalId).ToString(), 0);
                             }
                         }
 

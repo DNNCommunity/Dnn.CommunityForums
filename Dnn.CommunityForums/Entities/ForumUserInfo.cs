@@ -21,6 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
@@ -41,7 +42,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private PortalSettings portalSettings;
         private SettingsInfo mainSettings;
         private ModuleInfo moduleInfo;
-        private string userRoles;
+        private HashSet<int> userRoleIds;
+        private string userPermSet;
 
         public ForumUserInfo()
         {
@@ -66,6 +68,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn]
         public bool IsAuthenticated { get; set; } = false;
+
+        public ForumUserInfo(int moduleId, DotNetNuke.Entities.Users.UserInfo userInfo)
+        {
+            this.userInfo = userInfo;
+            this.ModuleId = moduleId;
+        }
 
         public int ProfileId { get; set; }
 
@@ -143,6 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public Uri RequestUri { get; set; }
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string[] Roles => this.UserInfo?.Roles;
 
         [IgnoreColumn]
@@ -152,6 +161,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string LastName => string.IsNullOrEmpty(this.UserInfo?.LastName) ? string.Empty : this.UserInfo?.LastName;
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string FullName => string.Concat(this.UserInfo?.FirstName, " ", this.UserInfo?.LastName);
 
         [IgnoreColumn]
@@ -164,10 +174,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string Email => string.IsNullOrEmpty(this.UserInfo?.Email) ? string.Empty : this.UserInfo?.Email;
 
         [IgnoreColumn]
-        public bool IsRegistered => !this.IsAnonymous && this.UserInfo != null && this.UserInfo.Roles.Contains(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleName(this.PortalId));
-
-        [IgnoreColumn]
-        public bool GetIsMod(int ModuleId) => !this.IsAnonymous && !(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.UserRoles, this.PortalId, ModuleId, "CanApprove")));
+        public bool GetIsMod(int ModuleId)
+        {
+            return !this.IsAnonymous && !string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, ModuleId, this, "CanApprove"));
+        }
 
         [IgnoreColumn]
         public bool IsSuperUser => this.UserInfo != null && this.UserInfo.IsSuperUser;
@@ -182,27 +192,33 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool IsUserOnline => this.DateLastActivity > DateTime.UtcNow.AddMinutes(-5);
 
         [IgnoreColumn]
+        public bool IsAuthenticated => !this.IsAnonymous;
+
+        [IgnoreColumn] 
+        public bool IsRegistered => this.UserInfo.IsInRole(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleName(this.PortalId));
+
+        [IgnoreColumn]
         public CurrentUserTypes CurrentUserType
         {
             get
             {
-                if (this.UserInfo.IsInRole(this.PortalSettings.RegisteredRoleName))
+                if (this.UserInfo.IsSuperUser)
                 {
-                    if (this.UserInfo.IsSuperUser)
-                    {
-                        return CurrentUserTypes.SuperUser;
-                    }
+                    return CurrentUserTypes.SuperUser;
+                }
 
-                    if (this.UserInfo.IsAdmin)
-                    {
-                        return CurrentUserTypes.Admin;
-                    }
+                if (this.UserInfo.IsAdmin)
+                {
+                    return CurrentUserTypes.Admin;
+                }
 
-                    if (this.GetIsMod(this.ModuleId))
-                    {
-                        return CurrentUserTypes.ForumMod;
-                    }
+                if (this.GetIsMod(this.ModuleId))
+                {
+                    return CurrentUserTypes.ForumMod;
+                }
 
+                if (this.IsAuthenticated)
+                {
                     return CurrentUserTypes.Auth;
                 }
 
@@ -223,6 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public DotNetNuke.Entities.Profile.ProfilePropertyDefinitionCollection Properties => this.UserInfo?.Profile?.ProfileProperties;
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         [IgnoreColumn]
         TimeSpan TimeZoneOffsetForUser => Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
 
@@ -336,35 +353,51 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        public string UserRoles
+        public HashSet<int> UserRoleIds
         {
             get
             {
-                if (string.IsNullOrEmpty(this.userRoles))
+                if (this.userRoleIds == null)
                 {
-                    var ids = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalId, this.UserInfo);
-                    if (string.IsNullOrEmpty(ids))
-                    {
-                        ids = Globals.DefaultAnonRoles + "|-1;||";
-                    }
-
-                    if (this.IsSuperUser)
-                    {
-                        ids += Globals.DefaultAnonRoles + this.PortalSettings.AdministratorRoleId + ";";
-                    }
-
-                    ids += "|" + this.UserId + "|" + string.Empty + "|";
-                    this.userRoles = ids;
+                    this.userRoleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, this.UserInfo);
                     this.UpdateCache();
                 }
 
-                return this.userRoles;
+                return this.userRoleIds;
             }
 
             set
             {
-                this.userRoles = value;
+                this.userRoleIds = value;
             }
+        }
+
+        [IgnoreColumn]
+        public string UserPermSet
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.userPermSet))
+                {
+                    this.userPermSet = string.Join(",", this.UserRoleIds) + "|" + this.UserId + "|" + string.Empty + "|";
+                    this.UpdateCache();
+                }
+
+                return this.userPermSet;
+            }
+
+            set
+            {
+                this.userPermSet = value;
+            }
+        }
+
+        [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
+        public string UserRoles
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         internal int GetLastReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
