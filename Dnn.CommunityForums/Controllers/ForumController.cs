@@ -357,10 +357,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var socialGroup = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: portalId, roleId: socialGroupId);
                 var groupAdmin = string.Concat(socialGroupId.ToString(), ":0");
                 var groupMember = socialGroupId.ToString();
+                var portalSettings = Utilities.GetPortalSettings(portalId);
+                int permissionsId = pc.CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalSettings).ToString(), moduleId).PermissionsId;
 
-                int permissionsId = pc.CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), moduleId).PermissionsId;
-
-                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(portalId)
+                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(portalSettings)
                 {
                     ForumDesc = forumDescription,
                     Active = true,
@@ -400,7 +400,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 continue;
                             }
 
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId: permissionsId, requestedAccess: requestedAccess, objectId: groupAdmin, objectType: 2);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId: permissionsId, requestedAccess: (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), requestedAccess), objectId: groupAdmin, objectType: DotNetNuke.Modules.ActiveForums.ObjectType.GroupId);
                         }
                     }
 
@@ -416,7 +416,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 continue;
                             }
 
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: requestedAccess, groupMember, 0);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), requestedAccess), groupMember, DotNetNuke.Modules.ActiveForums.ObjectType.RoleId);
                         }
                     }
 
@@ -434,7 +434,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                     continue;
                                 }
 
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: requestedAccess, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleId(portalId).ToString(), 0);
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), requestedAccess), DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleId(portalSettings).ToString(), DotNetNuke.Modules.ActiveForums.ObjectType.RoleId);
                             }
                         }
 
@@ -450,7 +450,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                     continue;
                                 }
 
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: requestedAccess, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), requestedAccess), DotNetNuke.Common.Globals.glbRoleAllUsers, DotNetNuke.Modules.ActiveForums.ObjectType.RoleId);
                             }
                         }
                     }

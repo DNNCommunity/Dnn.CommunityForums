@@ -55,10 +55,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private List<PropertyInfo> properties;
         private string lastPostSubject;
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Entities.Portals.PortalSettings)")]
         public ForumInfo()
         {
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Entities.Portals.PortalSettings)")]
         public ForumInfo(int portalId)
         {
             this.PortalId = portalId;

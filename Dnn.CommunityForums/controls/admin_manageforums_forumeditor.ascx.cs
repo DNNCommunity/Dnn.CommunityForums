@@ -242,7 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 case "forumsave":
                     {
-                        var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(this.PortalId);
+                        var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(this.PortalSettings);
                         var bIsNew = false;
                         int forumGroupId;
 
@@ -529,7 +529,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId: this.MainSettings.DefaultPermissionId, moduleId: this.ModuleId);
                 if (permissions == null)
                 {
-                    permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(this.PortalId).ToString(), this.ModuleId);
+                    permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(this.PortalSettings).ToString(), this.ModuleId);
                     DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(this.PortalId, this.ModuleId, permissions.PermissionsId);
                     DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, SettingKeys.DefaultPermissionId, permissions.PermissionsId.ToString());
                 }

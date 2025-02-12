@@ -218,6 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
 
                     Install_Upgrade_ForumDefaultSettingsAndSecurity_080200(portalId: portalId, moduleId: moduleId);
+                    var portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId: portalId);
                     for (int i = 0; i < xNodeList.Count; i++)
                     {
                         var gi = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
@@ -242,7 +243,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 System.Xml.XmlNodeList cNodes = xNodeList[i].ChildNodes;
                                 for (int c = 0; c < cNodes.Count; c++)
                                 {
-                                    var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(portalId)
+                                    var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(portalSettings)
                                     {
                                         ForumID = -1,
                                         ModuleId = moduleId,
@@ -724,7 +725,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                var permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), moduleId);
+                var portalSettings = Utilities.GetPortalSettings(portalId);
+                var permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalSettings).ToString(), moduleId);
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, moduleId, permissions.PermissionsId);
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.DefaultPermissionId, permissions.PermissionsId.ToString());
 

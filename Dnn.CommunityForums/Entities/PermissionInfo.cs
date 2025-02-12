@@ -187,7 +187,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                    this.EqualPermissionMembers(this.Announce, other.Announce) &&
                    this.EqualPermissionMembers(this.Attach, other.Attach) &&
                    this.EqualPermissionMembers(this.Ban, other.Ban) &&
-                   //EqualPermissionMembers(this.Block, other.Block) &&
+                   // EqualPermissionMembers(this.Block, other.Block) &&
                    this.EqualPermissionMembers(this.Categorize, other.Categorize) &&
                    this.EqualPermissionMembers(this.Create, other.Create) &&
                    this.EqualPermissionMembers(this.Delete, other.Delete) &&
@@ -215,7 +215,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         bool EqualPermissionMembers(string thisPermissions, string otherPermissions)
         {
-            if (thisPermissions.Equals("||") && string.IsNullOrEmpty(otherPermissions) || string.IsNullOrEmpty(thisPermissions) && otherPermissions.Equals("||"))
+            if (string.IsNullOrEmpty(otherPermissions) && string.IsNullOrEmpty(thisPermissions))
+            {
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(otherPermissions) || string.IsNullOrEmpty(thisPermissions))
             {
                 return true;
             }

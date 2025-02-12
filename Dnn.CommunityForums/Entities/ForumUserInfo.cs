@@ -49,6 +49,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
         }
 
+        public ForumUserInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo userInfo)
+        {
+            this.portalSettings = portalSettings;
+            this.PortalId = portalSettings.PortalId;
+            this.userInfo = userInfo;
+        }
+        public ForumUserInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        {
+            this.portalSettings = portalSettings;
+            this.PortalId = portalSettings.PortalId;
+        }
+
         public ForumUserInfo(int moduleId)
         {
             this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
@@ -59,15 +71,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             this.userInfo = userInfo;
         }
-
-        public ForumUserInfo(int moduleId, DotNetNuke.Entities.Users.UserInfo userInfo)
-        {
-            this.userInfo = userInfo;
-            this.ModuleId = moduleId;
-        }
-
-        [IgnoreColumn]
-        public bool IsAuthenticated { get; set; } = false;
 
         public ForumUserInfo(int moduleId, DotNetNuke.Entities.Users.UserInfo userInfo)
         {
@@ -195,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool IsAuthenticated => !this.IsAnonymous;
 
         [IgnoreColumn] 
-        public bool IsRegistered => this.UserInfo.IsInRole(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleName(this.PortalId));
+        public bool IsRegistered => this.UserInfo.IsInRole(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleName(this.PortalSettings));
 
         [IgnoreColumn]
         public CurrentUserTypes CurrentUserType

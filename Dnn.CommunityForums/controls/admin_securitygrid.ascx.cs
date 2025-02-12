@@ -321,7 +321,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo s, int objectType)
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(this.PortalSettings, s, objectType);
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(this.PortalSettings, s, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), objectType.ToString()));
         }
 
         private void cbSecurityToggle_Callback(object sender, CallBackEventArgs e)
@@ -335,7 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sOut = string.Empty;
             if (action == "delete")
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(this.ModuleId, secId, secType, pId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(this.ModuleId, secId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), secType.ToString()), pId);
             }
             else if (action == "addobject")
             {
@@ -361,18 +361,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (!string.IsNullOrEmpty(secId))
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, "View", secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, DotNetNuke.Modules.ActiveForums.SecureActions.View, secId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), secType.ToString()));
                 }
             }
             else
             {
                 if (action == "remove")
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(this.ModuleId, pId, key, secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(this.ModuleId, pId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), key), secId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), secType.ToString()));
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, key, secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), key), secId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), secType.ToString()));
                 }
 
                 sOut = action + "|" + returnId;
