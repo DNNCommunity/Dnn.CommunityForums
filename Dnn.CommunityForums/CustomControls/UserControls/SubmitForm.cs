@@ -519,7 +519,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             sList = "<select id=\"afprop-" + p.PropertyId.ToString() + "\" class=\"NormalTextBox afprop-select\" name=\"afprop-" + p.PropertyId.ToString() + "\">";
 
                             string lName = p.DataType.Substring(p.DataType.IndexOf("|") + 1);
-                            var lc = lists.GetListEntryInfoCollection(lName, string.Empty);
+                            var lc = lists.GetListEntryInfoItems(lName, string.Empty);
                             foreach (DotNetNuke.Common.Lists.ListEntryInfo l in lc)
                             {
                                 if (pValue == l.Value)
@@ -539,7 +539,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             sList = "<div class=\"afprop-chklist\">";
                             sList += "<ul>";
                             string lName = p.DataType.Substring(p.DataType.IndexOf("|") + 1);
-                            var lc = lists.GetListEntryInfoCollection(lName, string.Empty);
+                            var lc = lists.GetListEntryInfoItems(lName, string.Empty);
                             string[] pValues = null;
                             if (!string.IsNullOrEmpty(pValue))
                             {
