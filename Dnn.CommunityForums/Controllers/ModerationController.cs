@@ -48,6 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static bool SendModerationNotification(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int AuthorId, Uri requestUri, string rawUrl)
         {
             var portalSettings = Utilities.GetPortalSettings(portalId);
+            var adminUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, portalSettings.AdministratorId);
             var mainSettings = SettingsBase.GetModuleSettings(moduleId);
             try
             {
@@ -58,18 +59,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).GetById(replyId);
                     subject = Utilities.GetSharedResource("[RESX:NotificationSubjectReply]");
-                    subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUri, rawUrl).ToString();
+                    subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), adminUser, requestUri, rawUrl).ToString();
                     body = Utilities.GetSharedResource("[RESX:NotificationBodyReply]");
-                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUri,  rawUrl).ToString();
+                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), adminUser, requestUri,  rawUrl).ToString();
                     authorId = reply.Content.AuthorId;
                 }
                 else
                 {
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
                     subject = Utilities.GetSharedResource("[RESX:NotificationSubjectTopic]");
-                    subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), topic, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUri, rawUrl).ToString();
+                    subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), topic, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), adminUser, requestUri, rawUrl).ToString();
                     body = Utilities.GetSharedResource("[RESX:NotificationBodyTopic]");
-                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), topic, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId), requestUri, rawUrl).ToString();
+                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), topic, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), adminUser, requestUri, rawUrl).ToString();
                     authorId = topic.Content.AuthorId;
                 }
 
