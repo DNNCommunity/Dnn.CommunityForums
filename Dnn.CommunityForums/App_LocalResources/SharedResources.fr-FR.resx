@@ -1805,18 +1805,18 @@ De,
   <data name="[RESX:EnableNotificationsForOwnContent].Help" xml:space="preserve">
     <value>Sélectionnez cette option si vous souhaitez recevoir des notifications indiquant qu’un nouveau contenu a été publié même si vous êtes l’utilisateur qui l’a publié.</value>
   </data>
-  <data name="[RESX:NotificationBodyReply].Text" xml:space="preserve">
-    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp ; &lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;|[FORUMPOST:AUTHORDISPLAYNAME]&lt;/a&gt;] a publié du contenu nécessitant une modération.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Sujet :&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Veuillez examiner le contenu et déterminer son élimination.&lt;/p&gt;
-&lt;p&gt;Vous pouvez:&lt;ol&gt;&lt;li&gt;approuver le sujet,&lt;/li&gt;&lt;li&gt;le rejeter (envoi à l’affiche pour révisions),&lt;/li&gt;&lt;li&gt;le supprimer, ou&lt;/li&gt;&lt;li&gt;bannir l’utilisateur, en supprimant ce sujet et tout autre sujet ou réponse posté par cet utilisateur&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si vous ne parvenez pas à déterminer si ce contenu est approprié en vous basant uniquement sur le sujet, utilisez &lt;a href="[FORUM:MODLINK]"&gt;ce lien&lt;/a&gt; pour examiner et modérer les sujets.&lt;/p&gt;</value>
-  </data>
-  <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
-    <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp ;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;|[FORUMPOST:AUTHORDISPLAYNAME]] a publié du contenu nécessitant une modération.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Sujet :&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Veuillez examiner le contenu et déterminer son élimination.&lt;/p&gt;
-&lt;p&gt;Vous pouvez:&lt;ol&gt;&lt;li&gt;approuver le sujet,&lt;/li&gt;&lt;li&gt;le rejeter (envoi à l’affiche pour révisions),&lt;/li&gt;&lt;li&gt;le supprimer, ou&lt;/li&gt;&lt;li&gt;bannir l’utilisateur, en supprimant ce sujet et tout autre sujet ou réponse posté par cet utilisateur&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si vous ne parvenez pas à déterminer si ce contenu est approprié en vous basant uniquement sur le sujet, utilisez &lt;a href="[FORUM:MODLINK]"&gt;ce lien&lt;/a&gt; pour examiner et modérer les sujets.&lt;/p&gt;&lt;/a&gt;</value>
-  </data>
   <data name="[RESX:NotificationSubjectReply].Text" xml:space="preserve">
     <value>[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération</value>
   </data>
   <data name="[RESX:NotificationSubjectTopic].Text" xml:space="preserve">
     <value>[FORUMPOST:AUTHORDISPLAYNAME] a publié du contenu nécessitant une modération</value>
+  </data>
+  <data name="[RESX:NotificationBodyReply].Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMPOST :AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp ;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;&lt;/a&gt;|[FORUMPOST :AUTHORDISPLAYNAME]] a publié du contenu nécessitant une modération.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Sujet :&lt;/strong&gt; [FORUMPOST :SUJET]&lt;/p&gt;&lt;p&gt;Veuillez examiner le contenu et déterminer son élimination.&lt;/p&gt;
+&lt;p&gt;Vous pouvez:&lt;ol&gt;&lt;li&gt;approuver le sujet,&lt;/li&gt;&lt;li&gt;le rejeter (envoi à l’affiche pour révisions),&lt;/li&gt;&lt;li&gt;le supprimer, ou&lt;/li&gt;&lt;li&gt;bannir l’utilisateur, en supprimant ce sujet et tout autre sujet ou réponse posté par cet utilisateur&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si vous ne parvenez pas à déterminer si ce contenu est approprié en vous basant uniquement sur le sujet, utilisez &lt;a href="[FORUM:MODLINK]"&gt;ce lien&lt;/a&gt; pour examiner et modérer les sujets.&lt;/p&gt;</value>
+  </data>
+  <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
+    <value>&lt;p&gt;[FORUMPOST :AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp ;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;&lt;/a&gt;|[FORUMPOST :AUTHORDISPLAYNAME]] a publié du contenu nécessitant une modération.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Sujet :&lt;/strong&gt; [FORUMPOST :SUJET]&lt;/p&gt;&lt;p&gt;Veuillez examiner le contenu et déterminer son élimination.&lt;/p&gt;
+&lt;p&gt;Vous pouvez:&lt;ol&gt;&lt;li&gt;approuver le sujet,&lt;/li&gt;&lt;li&gt;le rejeter (envoi à l’affiche pour révisions),&lt;/li&gt;&lt;li&gt;le supprimer, ou&lt;/li&gt;&lt;li&gt;bannir l’utilisateur, en supprimant ce sujet et tout autre sujet ou réponse posté par cet utilisateur&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si vous ne parvenez pas à déterminer si ce contenu est approprié en vous basant uniquement sur le sujet, utilisez &lt;a href="[FORUM:MODLINK]"&gt;ce lien&lt;/a&gt; pour examiner et modérer les sujets.&lt;/p&gt;</value>
   </data>
 </root>
