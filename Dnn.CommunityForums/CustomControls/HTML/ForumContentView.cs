@@ -21,8 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
     using System.Text;
 
@@ -34,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Categories,
             Forums,
         }
-
 
         public int PortalId { get; set; } = -1;
 

@@ -22,7 +22,6 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Linq;
-    using System.Linq;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Modules;

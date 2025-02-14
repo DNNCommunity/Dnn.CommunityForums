@@ -21,13 +21,10 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Data;
     using System.Text;
     using System.Web.UI;
-    using System.Web.UI.WebControls;
 
     using DotNetNuke.Security.Roles;
 
@@ -35,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
         public string imgOn;
         public string imgOff;
+
         public bool ReadOnly { get; set; } = false;
 
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Perms { get; set; }

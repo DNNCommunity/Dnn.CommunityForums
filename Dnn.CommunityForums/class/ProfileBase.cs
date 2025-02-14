@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         private int uID = -1;
 
-		public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUserInfo { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUserInfo { get; set; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer Used.")]
         public UserProfileInfo UserProfile { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

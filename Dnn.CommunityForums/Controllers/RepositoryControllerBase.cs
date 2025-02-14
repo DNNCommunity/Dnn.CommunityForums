@@ -22,14 +22,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
-    using System.Web.UI;
 
     using DotNetNuke.Collections;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Data;
-    using DotNetNuke.Modules.ActiveForums.Entities;
 
     internal class RepositoryControllerBase<T> where T : class
     {

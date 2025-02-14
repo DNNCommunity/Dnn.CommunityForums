@@ -9,6 +9,28 @@
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+	using System;
+using System.Reflection;
+using System.Data;
+using System.Collections;
+using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
+using System.Text;
+using System.Web.UI;
+using System.Web;
+using System.Linq;
+using System.Collections.Generic;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.Design;
+    using System.Web.UI.WebControls;
+    using System.Web.UI.HtmlControls;
 
 
     public partial class profile_mysubscriptions

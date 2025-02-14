@@ -24,8 +24,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
 
-    using DotNetNuke.Modules.ActiveForums.Data;
-
     public partial class af_modtopics_new : ForumBase
     {
         #region Private Members
@@ -148,6 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         }
                                     }
                                 }
+
                                 DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
                             }
 
@@ -222,7 +221,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     }
 
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
-                                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId:this.PortalId, tabId: this.ForumTabId, moduleId: this.ForumModuleId, forumGroupId: fi.ForumGroupId, forumId: tmpForumId, topicId: tmpTopicId, replyId: tmpReplyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: this.PortalId, tabId: this.ForumTabId, moduleId: this.ForumModuleId, forumGroupId: fi.ForumGroupId, forumId: tmpForumId, topicId: tmpTopicId, replyId: tmpReplyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
                                 }
                             }
 
@@ -294,18 +293,22 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             sb.Append("<span class=\"dnnPrimaryAction\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\">[RESX:Approve]</span>");
                         }
+
                         if (this.bModEdit)
                         {
                             sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\">[RESX:Reject]</span>");
                         }
+
                         if (this.bModDelete)
                         {
                             sb.Append("<span class=\"dnnTertiaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\">[RESX:Delete]</span>");
                         }
+
                         if (this.bModEdit)
                         {
                             sb.Append("<span class=\"dnnTertiaryAction\" onclick=\"afmodEdit('" + this.TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\">[RESX:Edit]</span>");
                         }
+
                         if (this.bModBan)
                         {
                             var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ReplyId + "=" + Convert.ToInt32(dr["ReplyId"]), ParamKeys.AuthorId + "=" + Convert.ToInt32(dr["AuthorId"]), };
@@ -355,6 +358,7 @@ namespace DotNetNuke.Modules.ActiveForums
             bModEdit = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.EditRoleIds, ForumUser?.UserRoleIds));
             bModBan = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.BanRoleIds, ForumUser?.UserRoleIds));
         }
+
         private string GetAttachments(int contentId, int portalID, int moduleID, DataTable dtAttach)
         {
             string strHost = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(this.Request)) + "/";

@@ -23,7 +23,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Data;
     using System.Text;
     using System.Web;
 
@@ -459,13 +458,11 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 {
                     this.UserId = -1;
                 }
-
             }
             catch (Exception ex)
             {
                 this._isValid = false;
                 Exceptions.LogException(ex);
-
             }
         }
 

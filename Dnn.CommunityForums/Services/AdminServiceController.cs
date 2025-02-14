@@ -24,10 +24,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Net;
     using System.Net.Http;
     using System.Text;
-    using System.Web;
     using System.Web.Http;
 
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security;
     using DotNetNuke.Web.Api;
 
@@ -74,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public HttpResponseMessage RunMaintenance(RunMaintenanceDTO dto)
         {
-            var moduleSettings = new SettingsInfo { ModuleId =  dto.ModuleId, MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: dto.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, true).ModuleSettings };
+            var moduleSettings = new SettingsInfo { ModuleId = dto.ModuleId, MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: dto.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, true).ModuleSettings };
             var rows = DataProvider.Instance().Forum_Maintenance(dto.ForumId, dto.OlderThan, dto.LastActive, dto.ByUserId, dto.WithNoReplies, dto.DryRun, moduleSettings.DeleteBehavior);
             if (dto.DryRun)
             {

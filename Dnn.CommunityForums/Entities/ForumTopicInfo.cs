@@ -20,10 +20,7 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    using System;
-
     using DotNetNuke.ComponentModel.DataAnnotations;
-    using DotNetNuke.Services.Log.EventLog;
 
     [TableName("activeforums_ForumTopics")]
     [PrimaryKey("ForumTopicId", AutoIncrement = true)]

@@ -20,7 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    using System;
     using System.Linq;
 
     internal class ForumTopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo>

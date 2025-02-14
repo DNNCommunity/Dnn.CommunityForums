@@ -21,6 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
+
     using DotNetNuke.Abstractions;
 
     internal static class UrlController

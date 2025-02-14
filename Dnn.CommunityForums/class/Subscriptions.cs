@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Modules.ActiveForums.Entities;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -27,9 +25,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Globalization;
-    using System.Reflection;
-
-    using DotNetNuke.Services.Scheduling;
 
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
     public class SubscriptionInfo : DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo

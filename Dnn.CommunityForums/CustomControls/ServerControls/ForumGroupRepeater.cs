@@ -23,8 +23,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System;
     using System.ComponentModel;
     using System.Linq;
-    using System.Linq;
     using System.Web.UI;
+    using System.Web.UI.WebControls;
 
     [ToolboxData("<{0}:ForumGroupRepeater runat=server></{0}:ForumGroupRepeater>")]
     public class ForumGroupRepeater : ControlsBase

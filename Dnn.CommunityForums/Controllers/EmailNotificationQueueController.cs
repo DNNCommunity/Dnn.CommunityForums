@@ -23,10 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using DotNetNuke.Data;
-    using DotNetNuke.Services.Scheduling;
-    using DotNetNuke.UI.UserControls;
+    using System.Web.UI.WebControls;
 
     internal class EmailNotificationQueueController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueueInfo>
     {

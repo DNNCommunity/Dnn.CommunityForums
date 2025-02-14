@@ -18,26 +18,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -64,6 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
             }
+
             this.SetupPage();
 
 #if DEBUG
@@ -428,7 +421,6 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.AppendLine("$(document).ready(function () { $('.aftb-search').afSearchPopup(); });");
 
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "afscripts", sb.ToString(), true);
-
         }
 
         #endregion

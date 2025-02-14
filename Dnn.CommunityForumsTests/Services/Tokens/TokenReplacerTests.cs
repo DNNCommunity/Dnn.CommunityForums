@@ -18,23 +18,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Globalization;
-using System.Web;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.Tests.Utilities.Mocks;
-
 namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
 {
     using System;
-    using System.Reflection;
+    using System.Globalization;
     using System.Text;
-    using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Entities.Portals;
+
+    using DotNetNuke.Services.Tokens;
     using DotNetNuke.Modules.ActiveForums;
-    using DotNetNuke.Modules.ActiveForums.Entities;
     using Moq;
     using NUnit.Framework;
 

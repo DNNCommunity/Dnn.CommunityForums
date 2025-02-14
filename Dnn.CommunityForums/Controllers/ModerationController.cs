@@ -23,7 +23,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using System.Web;
 
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Social.Notifications;

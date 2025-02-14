@@ -30,16 +30,11 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Formatting;
-    using System.Net.Http.Headers;
-    using System.Reflection;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.Script.Serialization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
-    using DotNetNuke.Modules.ActiveForums.DAL2;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Api;
@@ -204,8 +199,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     var sExtOut = ".jpg";
                     ImageFormat imf, imfout = ImageFormat.Jpeg;
 
-                    Image img = Image.FromFile(file.LocalFileName);
-                    Image nimg;
+                    var img = System.Drawing.Image.FromFile(file.LocalFileName);
+                    System.Drawing.Image nimg;
 
                     var maxWidth = forum.FeatureSettings.MaxAttachWidth;
                     var maxHeight = forum.FeatureSettings.MaxAttachHeight;
@@ -467,6 +462,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
             }
+
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 

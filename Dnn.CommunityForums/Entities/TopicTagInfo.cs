@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int TagId { get; set; }
 
-        [IgnoreColumn()]
+        [IgnoreColumn]
         internal DotNetNuke.Modules.ActiveForums.Entities.TagInfo Tag
         {
             get
@@ -50,6 +50,5 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return this.tagInfo;
             }
         }
-
     }
 }

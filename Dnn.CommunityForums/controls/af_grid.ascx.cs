@@ -463,7 +463,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public string GetForumUrl() => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetThreadUrl() => throw new NotImplementedException();  
+        public string GetThreadUrl() => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string GetLastRead() => throw new NotImplementedException();
@@ -471,7 +471,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string GetPostTime() => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string GetAuthor() => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]

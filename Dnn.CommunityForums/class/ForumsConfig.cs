@@ -23,28 +23,14 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Globalization;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.Http.Results;
-    using System.Web.Profile;
-    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
-    using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Collections;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
     using Microsoft.ApplicationBlocks.Data;
@@ -509,7 +495,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
             }
-
         }
 
         private static string Merge_PermSet_080200(string tempSet)
@@ -522,17 +507,16 @@ namespace DotNetNuke.Modules.ActiveForums
                     string oldSet1 = tempSet.Split("::::".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
                     string oldSet2 = tempSet.Split("::::".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[1];
 
-
                     List<string> oldSet1permSet = oldSet1.Split('|').ToList();
                     List<string> oldSet1authRoles = oldSet1permSet[0].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
                     List<string> oldSet1authUsers = new List<string>();
                     List<string> oldSet1authGroups = new List<string>();
 
-
                     if (!(string.IsNullOrEmpty(oldSet1permSet[1])) && oldSet1permSet[1].Contains(";"))
                     {
                         oldSet1authUsers = oldSet1permSet[1].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
                     }
+
                     if (!(string.IsNullOrEmpty(oldSet1permSet[2])) && oldSet1permSet[2].Contains(";"))
                     {
                         oldSet1authGroups = oldSet1permSet[2].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -547,6 +531,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         oldSet2authUsers = oldSet2permSet[1].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
                     }
+
                     if (!(string.IsNullOrEmpty(oldSet2permSet[2])) && oldSet2permSet[2].Contains(";"))
                     {
                         oldSet2authGroups = oldSet2permSet[2].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -585,7 +570,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         newRoles += ";";
                     }
 
-                    //newRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newRoles);
+                    // newRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newRoles);
 
                     string newUsers = string.Join(";", newAuthUsers);
                     if (!string.IsNullOrEmpty(newUsers))
@@ -593,7 +578,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         newUsers += ";";
                     }
 
-                   // newUsers = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newUsers);
+                    // newUsers = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newUsers);
 
                     string newGroups = string.Join(";", newAuthGroups);
                     if (!string.IsNullOrEmpty(newGroups))
@@ -601,7 +586,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         newGroups += ";";
                     }
 
-                    //newGroups = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newGroups);
+                    // newGroups = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(newGroups);
 
                     newSet = string.Concat(newRoles, "|", newUsers, "|", newGroups, "|");
                 }
@@ -682,7 +667,6 @@ namespace DotNetNuke.Modules.ActiveForums
                             log.AddProperty("Message", message);
                             DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
                         }
-
                     }
 
                     di.Delete();
@@ -692,7 +676,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     log.AddProperty("Message", message);
                     DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
                 }
-
             }
             catch (Exception ex)
             {
@@ -794,7 +777,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
-
         }
 
         internal static void Install_LikeNotificationType_080200()
@@ -823,8 +805,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        //internal static void Sort_PermissionSets_080200()
-        //{
+        // internal static void Sort_PermissionSets_080200()
+        // {
         //    foreach (var perms in new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Get())
         //    {
         //        perms.Announce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Announce);
@@ -850,9 +832,8 @@ namespace DotNetNuke.Modules.ActiveForums
         //        perms.View = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.View);
         //        new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
 
-        //    }
+        // }
 
-        //}
-
+        // }
     }
 }

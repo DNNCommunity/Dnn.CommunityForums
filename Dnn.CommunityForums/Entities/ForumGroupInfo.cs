@@ -274,7 +274,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(this.GroupName, format);
                 case "groupcollapse":
                     return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{this.ForumGroupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")), format);
-
             }
 
             propertyNotFound = true;

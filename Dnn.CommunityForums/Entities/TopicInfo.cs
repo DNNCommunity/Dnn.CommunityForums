@@ -18,28 +18,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Collections;
+
 #pragma warning disable SA1403 // File may only contain a single namespace
 namespace DotNetNuke.Modules.ActiveForums.Entities
 #pragma warning restore SA1403 // File may only contain a single namespace
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Drawing.Printing;
     using System.Linq;
-    using System.Reflection;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
-    using Collections;
-    using ComponentModel.DataAnnotations;
-    using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
+    using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Services.Tokens;
 
     [TableName("activeforums_Topics")]
@@ -67,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private List<Category> categories;
 
         [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.TopicInfo;
+
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo lastReply;
@@ -350,6 +341,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     {
                         this.tags = string.Empty;
                     }
+
                     this.UpdateCache();
                 }
 
@@ -1141,7 +1133,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             .GetByUserId(accessingUser.PortalID, accessingUser.UserID);
                         return PropertyAccess.FormatString(this.GetTopicStatusIconCss(forumUser),
                         format);
-                    } 
+                    }
 
                 case "iconpinned":
                     return this.IsPinned
@@ -1410,6 +1402,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 Utilities.NavigateURL(GetTabId(), string.Empty, @params.ToArray()),
                                 format);
                         }
+
                         return string.Empty;
                     }
 

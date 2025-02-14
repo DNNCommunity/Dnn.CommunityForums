@@ -22,16 +22,11 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Controls;
-    using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Services.Social.Notifications;
-    using DotNetNuke.UI.UserControls;
 
     public partial class af_quickreplyform : ForumBase
     {
@@ -239,7 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (!Utilities.HasFloodIntervalPassed(floodInterval: this.MainSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: forumInfo))
             {
                 var upi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UserId);
-                if (upi?.DateLastPost!=null)
+                if (upi?.DateLastPost != null)
                 {
                     if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)upi.DateLastPost, DateTime.UtcNow) < this.MainSettings.FloodInterval)
                     {
@@ -270,8 +265,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 user.ReplyCount = 0;
                 user.RewardPoints = 0;
                 user.TrustLevel = -1;
-
             }
+
             bool UserIsTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, user.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TrustRoleIds, this.ForumUser.UserRoleIds), this.ForumInfo.FeatureSettings.AutoTrustLevel, user.PostCount);
             bool isApproved = Convert.ToBoolean((this.ForumInfo.FeatureSettings.IsModerated == true) ? false : true);
             if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds))
@@ -365,7 +360,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: ri.Forum.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: replyId, contentId: ri.ContentId , authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: ri.Forum.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: replyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
 
                 var @params = new List<string> { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
                 if (this.SocialGroupId > 0)

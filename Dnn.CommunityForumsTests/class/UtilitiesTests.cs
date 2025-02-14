@@ -21,12 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForumsTests
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
-    using System.Runtime.InteropServices.WindowsRuntime;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using DotNetNuke.Modules.ActiveForums;
     using Moq;
@@ -132,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             };
 
             // Act
-            bool actualResult = Utilities.HasFloodIntervalPassed(floodInterval, mockUser.Object, mockForum.Object);
+            bool actualResult = DotNetNuke.Modules.ActiveForums.Utilities.HasFloodIntervalPassed(floodInterval, mockUser.Object, mockForum.Object);
 
             // Assert
             return actualResult;

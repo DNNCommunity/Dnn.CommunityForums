@@ -26,10 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Text;
     using System.Web;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
-
-    using DotNetNuke.Modules.ActiveForums.Data;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:SubmitForm runat=server></{0}:SubmitForm>")]
     public class SubmitForm : TopicBase
@@ -605,8 +602,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     "</td>" +
                     "</tr>" +
                     "<tr>" +
-                    "<td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionSummary\" style=\"display:none;\">"
-                    );
+                    "<td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionSummary\" style=\"display:none;\">");
 
                 template = template.Replace("[/AF:UI:SECTION:SUMMARY]", "</td></tr></table>");
             }

@@ -21,11 +21,9 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
-    using System.Collections.Generic;
     using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Tokens;
 
     [TableName("activeforums_Likes")]
@@ -34,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     internal class LikeInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
         [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.LikeInfo;
+
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo;
 
@@ -252,7 +251,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.LastName) ? this.ForumUser.Username : this.ForumUser.LastName, format);
                 case "useremail":
                     return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.Email) ? string.Empty : this.ForumUser.Email, format);
-
             }
 
             propertyNotFound = true;

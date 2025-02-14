@@ -25,7 +25,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Data;
     using System.Linq;
     using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -113,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string keywords;
 
                 // Note: Filter out any keywords that are not at least 3 characters in length
-                if (this.SearchType == 2 && !string.IsNullOrWhiteSpace(this.SearchText) && this.SearchText.Trim().Length >= 3) //Exact Match
+                if (this.SearchType == 2 && !string.IsNullOrWhiteSpace(this.SearchText) && this.SearchText.Trim().Length >= 3) // Exact Match
                 {
                     keywords = this.SearchText.Trim();
                 }

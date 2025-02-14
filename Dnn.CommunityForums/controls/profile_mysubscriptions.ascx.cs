@@ -21,21 +21,12 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Data;
-    using System.Data.Common;
     using System.Linq;
-    using System.Security.Cryptography;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Collections;
-    using DotNetNuke.Entities.Profile;
-    using DotNetNuke.Security;
-    using DotNetNuke.Services.Social.Subscriptions.Entities;
-    using DotNetNuke.UI.UserControls;
-    using DotNetNuke.UI.WebControls;
 
     public partial class profile_mysubscriptions : ForumBase
     {

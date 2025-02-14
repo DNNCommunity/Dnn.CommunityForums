@@ -21,10 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Text;
-
-    using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Entities.Portals;
 
     [Obsolete("Deprecated in Community Forums 09.0.00.Not Used.")]
 
@@ -35,5 +31,5 @@ namespace DotNetNuke.Modules.ActiveForums
 
         [Obsolete("Deprecated in Community Forums 09.0.00.Not Used.")]
         public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.User user) => throw new NotImplementedException();
-	}
+    }
 }

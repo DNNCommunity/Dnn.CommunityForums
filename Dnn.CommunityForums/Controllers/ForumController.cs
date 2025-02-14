@@ -18,23 +18,19 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    using DotNetNuke.Data;
-    using DotNetNuke.Modules.ActiveForums.Enums;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Text;
-    using System.Web;
+    using System.Web.UI.WebControls;
     using System.Xml;
-    using System.Web;
-    using DotNetNuke.UI.UserControls;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Modules.ActiveForums.Entities;
+
     using DotNetNuke.Collections;
+    using DotNetNuke.Data;
+    using DotNetNuke.Modules.ActiveForums.Entities;
 
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
     {
@@ -215,8 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     sb.AppendFormat("<option value=\"{0}\">----{1}</option>", fi.ForumID.ToString(), fi.ForumName);
                     index += 1;
                 },
-                includeHiddenForums
-                );
+                includeHiddenForums);
             return sb.ToString();
         }
 
@@ -564,6 +559,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 sURL = Utilities.NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.TopicId}={fi.LastPostTopicId}", fi.LastPostIsReply ? $"{ParamKeys.ContentJumpId}={fi.LastReplyId}" : string.Empty });
             }
+
             if (sURL.EndsWith("/") && fi.LastPostIsReply)
             {
                 sURL += Utilities.UseFriendlyURLs(fi.ModuleId) ? $"#{fi.LastPostID}" : $"?{ParamKeys.ContentJumpId}={fi.LastPostID}";

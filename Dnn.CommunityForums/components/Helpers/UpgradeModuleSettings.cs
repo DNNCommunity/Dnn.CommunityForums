@@ -20,17 +20,11 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Helpers
 {
-    using System;
-    using System.Reflection;
-    using System.Web.UI;
     using System.Xml;
-    using System.Xml.Linq;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Web.Models;
 
     internal static class UpgradeModuleSettings
     {
@@ -173,7 +167,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 {
                                     string xpath = $"//defaultforums/forum/security[@type='{secType}']";
 
-
                                     if (xDoc.DocumentElement.SelectSingleNode(xpath).ChildNodes.Count == 16)
                                     {
                                         xDoc.DocumentElement.SelectSingleNode(xpath).AddElement("moduser", string.Empty);
@@ -266,7 +259,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             {
                 foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
                 {
-                    if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName, StringComparison.InvariantCultureIgnoreCase))
+                    if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName, System.StringComparison.InvariantCultureIgnoreCase))
                     {
                         DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.PrefixURLLikes, module.ModuleSettings.GetString(SettingKeys.PrefixURLLikes, Views.Likes));
                     }

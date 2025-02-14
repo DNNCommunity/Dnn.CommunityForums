@@ -25,18 +25,11 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Data;
     using System.Data.SqlTypes;
     using System.Linq;
-    using System.Runtime.Remoting.Messaging;
-    using System.Text.RegularExpressions;
+    using System.Web.UI.WebControls;
 
-    using DotNetNuke.Common.Controls;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Search.Entities;
-    using log4net;
 
     #region Topics Controller
     public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
@@ -91,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
-            var ms = new SettingsInfo { ModuleId = moduleInfo.ModuleID ,MainSettings = moduleInfo.ModuleSettings };
+            var ms = new SettingsInfo { ModuleId = moduleInfo.ModuleID, MainSettings = moduleInfo.ModuleSettings };
             /* if not using soft deletes, remove and rebuild entire index;
                note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
                and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
@@ -295,7 +288,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
                         ForumsConfig.Install_LikeNotificationType_080200();
                         ForumsConfig.Install_PinNotificationType_080200();
-                        //ForumsConfig.Sort_PermissionSets_080200();
+
+                        // ForumsConfig.Sort_PermissionSets_080200();
                     }
                     catch (Exception ex)
                     {

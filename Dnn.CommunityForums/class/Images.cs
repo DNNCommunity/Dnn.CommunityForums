@@ -31,13 +31,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static int GetHeightFromStream(Stream sFile)
         {
-            var g = Image.FromStream(sFile, true);
+            var g = System.Drawing.Image.FromStream(sFile, true);
             return g.Height;
         }
 
         public static int GetWidthFromStream(Stream sFile)
         {
-            var g = Image.FromStream(sFile, true);
+            var g = System.Drawing.Image.FromStream(sFile, true);
             return g.Width;
         }
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             File.Copy(sFile, tmp);
-            var g = Image.FromFile(tmp);
+            var g = System.Drawing.Image.FromFile(tmp);
             int newHeight;
             int newWidth;
             newHeight = intHeight;
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static MemoryStream CreateImageForDB(Stream sFile, int intHeight, int intWidth)
         {
             var newStream = new MemoryStream();
-            var g = Image.FromStream(sFile);
+            var g = System.Drawing.Image.FromStream(sFile);
 
             if (intHeight > 0 & intWidth > 0)
             {

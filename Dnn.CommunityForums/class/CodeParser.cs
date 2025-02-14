@@ -1,4 +1,4 @@
-// Copyright (c) by DNN Community
+﻿// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -21,7 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System.Text.RegularExpressions;
-    using System.Web;
 
     public class CodeParser
     {

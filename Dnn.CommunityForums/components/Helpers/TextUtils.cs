@@ -20,15 +20,9 @@
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Text.RegularExpressions;
-    using System.Web;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Security;
 
     public partial class Utilities
     {

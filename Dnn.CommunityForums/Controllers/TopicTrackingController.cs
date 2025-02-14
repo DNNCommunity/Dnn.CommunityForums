@@ -20,16 +20,9 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
-    using System.Xml;
 
     using DotNetNuke.Data;
-    using DotNetNuke.Data;
-    using DotNetNuke.Modules.ActiveForums.Entities;
 
     internal class TopicTrackingController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo>
     {

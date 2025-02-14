@@ -9,12 +9,33 @@
 
 
 using System;
+using System.Reflection;
+using System.Data;
+using System.Collections;
+using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
+using System.Text;
+using System.Web.UI;
+using System.Web;
+using System.Linq;
+using System.Collections.Generic;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+	using System;
+using System.Reflection;
+using System.Data;
+using System.Collections;
+using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
+using System.Text;
+using System.Web.UI;
+using System.Web;
+using System.Linq;
+using System.Collections.Generic;
 
 	public partial class admin_manageforums_home
 	{

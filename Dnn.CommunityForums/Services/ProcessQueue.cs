@@ -21,11 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
 {
     using System;
-    using System.Collections.Generic;
-    using System.Reflection;
 
-    using DotNetNuke.Modules.ActiveForums.DAL2;
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Scheduling;
 
@@ -65,16 +61,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                     switch (item.ProcessType)
                     {
                         case ProcessType.ApprovedTopicCreated:
-                            completed = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.ProcessApprovedTopicAfterAction(portalId: item.PortalId, tabId: item.TabId, moduleId: item.ModuleId, forumGroupId: item.ForumGroupId, forumId: item.ForumId, topicId: item.TopicId, replyId:item.ReplyId, contentId:item.ContentId, userId: item.UserId, authorId: item.AuthorId,  requestUrl:item.RequestUrl);
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.ProcessApprovedTopicAfterAction(portalId: item.PortalId, tabId: item.TabId, moduleId: item.ModuleId, forumGroupId: item.ForumGroupId, forumId: item.ForumId, topicId: item.TopicId, replyId: item.ReplyId, contentId: item.ContentId, userId: item.UserId, authorId: item.AuthorId, requestUrl: item.RequestUrl);
                             break;
                         case ProcessType.ApprovedReplyCreated:
-                            completed = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.ProcessApprovedReplyAfterAction(portalId: item.PortalId, tabId: item.TabId, moduleId: item.ModuleId, forumGroupId: item.ForumGroupId, forumId: item.ForumId, topicId: item.TopicId, replyId:item.ReplyId, contentId:item.ContentId, userId: item.UserId, authorId: item.AuthorId,  requestUrl:item.RequestUrl);
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.ProcessApprovedReplyAfterAction(portalId: item.PortalId, tabId: item.TabId, moduleId: item.ModuleId, forumGroupId: item.ForumGroupId, forumId: item.ForumId, topicId: item.TopicId, replyId: item.ReplyId, contentId: item.ContentId, userId: item.UserId, authorId: item.AuthorId, requestUrl: item.RequestUrl);
                             break;
                         case ProcessType.UnapprovedTopicCreated:
-                            completed = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.ProcessUnapprovedTopicAfterAction(portalId: item.PortalId, tabId: item.TabId, moduleId: item.ModuleId, forumGroupId: item.ForumGroupId, forumId: item.ForumId, topicId: item.TopicId, replyId:item.ReplyId, contentId:item.ContentId, userId: item.UserId, authorId: item.AuthorId,  requestUrl:item.RequestUrl);
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.ProcessUnapprovedTopicAfterAction(portalId: item.PortalId, tabId: item.TabId, moduleId: item.ModuleId, forumGroupId: item.ForumGroupId, forumId: item.ForumId, topicId: item.TopicId, replyId: item.ReplyId, contentId: item.ContentId, userId: item.UserId, authorId: item.AuthorId, requestUrl: item.RequestUrl);
                             break;
                         case ProcessType.UnapprovedReplyCreated:
-                            completed = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.ProcessUnapprovedReplyAfterAction(portalId: item.PortalId, tabId: item.TabId, moduleId: item.ModuleId, forumGroupId: item.ForumGroupId, forumId: item.ForumId, topicId: item.TopicId, replyId:item.ReplyId, contentId:item.ContentId, userId: item.UserId, authorId: item.AuthorId,  requestUrl:item.RequestUrl);
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.ProcessUnapprovedReplyAfterAction(portalId: item.PortalId, tabId: item.TabId, moduleId: item.ModuleId, forumGroupId: item.ForumGroupId, forumId: item.ForumId, topicId: item.TopicId, replyId: item.ReplyId, contentId: item.ContentId, userId: item.UserId, authorId: item.AuthorId, requestUrl: item.RequestUrl);
                             break;
                         case ProcessType.PostLiked:
                             completed = DotNetNuke.Modules.ActiveForums.Controllers.LikeController.ProcessPostLiked(portalId: item.PortalId, tabId: item.TabId, moduleId: item.ModuleId, forumGroupId: item.ForumGroupId, forumId: item.ForumId, topicId: item.TopicId, replyId: item.ReplyId, contentId: item.ContentId, userId: item.UserId, authorId: item.AuthorId, requestUrl: item.RequestUrl);
@@ -119,7 +115,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                         {
                             intQueueCount = intQueueCount - 1;
                         }
-
                     }
                 });
                 return intQueueCount;

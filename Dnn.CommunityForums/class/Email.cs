@@ -22,20 +22,8 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Net.Mail;
-    using System.Reflection;
-    using System.Threading;
-    using System.Web;
-    using System.Xml.Linq;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security.Roles;
 
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.Email.")]
     public class Email : DotNetNuke.Modules.ActiveForums.Entities.EmailInfo

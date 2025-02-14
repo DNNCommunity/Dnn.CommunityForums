@@ -21,11 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Data;
-    using System.Text;
-    using System.Web;
 
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Using DotNetNuke.Modules.ActiveModules.Controllers.PropertyController.")]
     public class PropertiesController
