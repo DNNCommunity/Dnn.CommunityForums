@@ -52,9 +52,9 @@ using System.Web.UI;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("08.02.02")]
+[assembly: AssemblyVersion("08.02.04")]
 
-[assembly: AssemblyFileVersion("08.02.02")]
+[assembly: AssemblyFileVersion("08.02.04")]
 
 [assembly: WebResource("DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js", "text/javascript")]
 [assembly: WebResource("DotNetNuke.Modules.ActiveForums.scripts.afadmin.properties.js", "text/javascript")]
@@ -79,3 +79,4 @@ using System.Web.UI;
 [assembly: ComVisibleAttribute(false)]
 
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForumsTests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */

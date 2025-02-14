@@ -80,7 +80,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             PortalId = portalId,
                             TopicCount = 0,
                             ReplyCount = 0,
-                            DateCreated = DateTime.UtcNow,
                             DateLastActivity = DateTime.UtcNow,
                             PrefBlockSignatures = false,
                             PrefBlockAvatars = false,
@@ -94,12 +93,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         };
                         if (user.UserInfo != null)
                         {
-                            user.DateCreated = user.UserInfo.CreatedOnDate;
-                            if (user.DateCreated < System.Data.SqlTypes.SqlDateTime.MinValue.Value)
-                            {
-                                user.DateCreated = System.Data.SqlTypes.SqlDateTime.MinValue.Value;
-                            }
-
                             this.Insert(user);
                         }
                     }
@@ -112,7 +105,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         PortalId = portalId,
                         TopicCount = 0,
                         ReplyCount = 0,
-                        DateCreated = DateTime.UtcNow,
                         DateLastActivity = DateTime.UtcNow,
                         UserInfo = new DotNetNuke.Entities.Users.UserInfo { UserID = -1, Username = "guest", },
                         PrefBlockSignatures = false,
@@ -146,10 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetUserFromHttpContext() [renamed method]")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId)
-        {
-            return this.GetUserFromHttpContext(portalId, moduleId);
-        }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId) => throw new NotImplementedException();
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUserFromHttpContext(int portalId, int moduleId)
         {
@@ -180,7 +169,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     PortalId = portalId,
                     TopicCount = 0,
                     ReplyCount = 0,
-                    DateCreated = DateTime.UtcNow,
                     UserInfo = new DotNetNuke.Entities.Users.UserInfo
                     {
                         UserID = -1,
@@ -223,7 +211,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user)
         {
-            user.DateUpdated = DateTime.UtcNow;
             var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(user.ModuleId).Save<int>(user, user.ProfileId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(user.PortalId, user.UserId);
             return forumUser.UserId;
@@ -363,58 +350,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name")
-        {
-            if (portalSettings == null)
-            {
-                portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-            }
-
-            if (portalSettings == null)
-            {
-                return null;
-            }
-
-            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
-
-            var outputTemplate = string.IsNullOrWhiteSpace(profileLinkClass) ? "{0}" : string.Concat("<span class='", profileNameClass, "'>{0}</span>");
-
-            if (linkProfile && userId > 0)
-            {
-                var profileVisibility = mainSettings.ProfileVisibility;
-
-                switch (profileVisibility)
-                {
-                    case ProfileVisibilities.Disabled:
-                        linkProfile = false;
-                        break;
-
-                    case ProfileVisibilities.Everyone: // Nothing to do in this case
-                        break;
-
-                    case ProfileVisibilities.RegisteredUsers:
-                        linkProfile = HttpContext.Current.Request.IsAuthenticated;
-                        break;
-
-                    case ProfileVisibilities.Moderators:
-                        linkProfile = isMod || isAdmin;
-                        break;
-
-                    case ProfileVisibilities.Admins:
-                        linkProfile = isAdmin;
-                        break;
-                }
-
-                if (linkProfile && portalSettings.UserTabId != null && portalSettings.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger && portalSettings.UserTabId != -1)
-                    outputTemplate = string.Concat("<a href='", Utilities.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }), "' class='", profileLinkClass, "' rel='nofollow'>{0}</a>");
-            }
-
-            var outputName = GetDisplayName(portalSettings, mainSettings, isMod, isAdmin, userId, username, firstName, lastName, displayName);
-            outputName = System.Net.WebUtility.HtmlEncode(outputName);
-
-            return string.Format(outputTemplate, outputName);
-        }
-
         internal static bool CanLinkToProfile(DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             if (portalSettings == null)
@@ -445,7 +380,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         break;
 
                     case ProfileVisibilities.RegisteredUsers:
-                        canLinkToProfile = HttpContext.Current.Request.IsAuthenticated;
+                        canLinkToProfile = accessingUser.IsRegistered;
                         break;
 
                     case ProfileVisibilities.Moderators:

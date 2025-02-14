@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     using NUnit.Framework;
 
     [TestFixture]
-    public partial class UtilitiesTests
+    public partial class UtilitiesTests : DotNetNuke.Modules.ActiveForumsTests.TestBase
     {
         [Test]
         [TestCase(-1, 0)]
@@ -70,26 +70,56 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test]
-        [TestCase(0, 0, false, ExpectedResult = true)] // flood interval disables
-        [TestCase(20, 25, false, ExpectedResult = true)]
-        [TestCase(200, 25, true, ExpectedResult = true)] // user is an admin
-        [TestCase(200, 25, false, ExpectedResult = false)] // interval is 200, last post is 25, expect false
-        public bool HasFloodIntervalPassedTest1(int floodInterval, int secondsSinceLastPost, bool isSuperUser)
+        [TestCase(0, 0, false, false, ExpectedResult = true)] // flood interval disables
+        [TestCase(20, 25, false, false, ExpectedResult = true)]
+        [TestCase(200, 25, false, true, ExpectedResult = true)] // user is an admin
+        [TestCase(200, 25, true, false, ExpectedResult = true)] // interval is 200, anonymous, last post is 25, expect true
+        [TestCase(200, 25, false, false, ExpectedResult = false)] // interval is 200, not anonymous, last post is 25, expect false
+        public bool HasFloodIntervalPassedTest1(int floodInterval, int secondsSinceLastPost, bool isAnonymous, bool isSuperUser)
         {
-            // Arrange
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>();
-            mockUser.Object.UserInfo = new DotNetNuke.Entities.Users.UserInfo();
-            mockUser.Object.UserInfo.IsSuperUser = isSuperUser;
-            mockUser.Object.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
-            mockUser.Object.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
+            //Arrange
+            var mockUserInfo = new Mock<DotNetNuke.Entities.Users.UserInfo>
+            {
+                Object =
+                {
+                    UserID = isAnonymous ? -1 : DotNetNuke.Tests.Utilities.Constants.UserID_User12,
+                    IsSuperUser = isSuperUser,
+                }
+            };
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
+            {
+                Object =
+                {
+                    UserId = mockUserInfo.Object.UserID,
+                    IsAuthenticated = !isAnonymous,
+                    UserInfo = mockUserInfo.Object,
+                    DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost),
+                    DateLastReply = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost),
+                },
+            };
+
             var featureSettings = new System.Collections.Hashtable
             {
-                { ForumSettingKeys.DefaultTrustLevel, TrustTypes.NotTrusted }
+                { ForumSettingKeys.DefaultTrustLevel, TrustTypes.NotTrusted },
             };
-            mockForum.Object.FeatureSettings = new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(featureSettings);
+
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
-            mockForum.Object.Security = mockPermissions.Object;
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
+            {
+                Object =
+                {
+                    PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
+                    ForumID = 1,
+                    ForumName = "Test Forum",
+                    TotalTopics = 0,
+                    Security = mockPermissions.Object,
+                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
+                    {
+                        GroupName = "Test Forum Group",
+                    },
+                    FeatureSettings = new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(featureSettings),
+                },
+            };
 
             // Act
             bool actualResult = DotNetNuke.Modules.ActiveForums.Utilities.HasFloodIntervalPassed(floodInterval, mockUser.Object, mockForum.Object);

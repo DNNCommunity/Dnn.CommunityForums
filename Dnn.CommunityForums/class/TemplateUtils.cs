@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Entities.Users;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -485,15 +487,15 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sResource = string.Format(sResource, match.Groups[2].Value);
 
-                        if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.AdminOnly && (currentUserType != CurrentUserTypes.Anon || currentUserType != CurrentUserTypes.Auth))
+                        if (profprop.ProfileVisibility.VisibilityMode == DotNetNuke.Entities.Users.UserVisibilityMode.AdminOnly && (currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.SuperUser))
                         {
                             sReplace = profprop.PropertyValue;
                         }
-                        else if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.MembersOnly && currentUserType != CurrentUserTypes.Anon)
+                        else if (profprop.ProfileVisibility.VisibilityMode == DotNetNuke.Entities.Users.UserVisibilityMode.MembersOnly && currentUserType != CurrentUserTypes.Anon)
                         {
                             sReplace = profprop.PropertyValue;
                         }
-                        else if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.AllUsers)
+                        else if (profprop.ProfileVisibility.VisibilityMode == UserVisibilityMode.AllUsers)
                         {
                             sReplace = profprop.PropertyValue;
                         }

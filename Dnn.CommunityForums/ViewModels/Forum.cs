@@ -26,15 +26,10 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
     {
         private readonly DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum;
 
-        public Forum()
-        {
-            this.forum = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
-            this.forum.Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
-        }
-
         public Forum(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum)
         {
             this.forum = forum;
+            this.forum.Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
         }
 
         public int ForumId { get => this.forum.ForumID; set => this.forum.ForumID = value; }

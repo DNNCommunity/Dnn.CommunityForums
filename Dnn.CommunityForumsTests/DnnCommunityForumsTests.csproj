@@ -1,13 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <AssemblyName>DotNetNuke.Modules.ActiveForums.Tests</AssemblyName>
-        <RootNamespace>DotNetNuke.Modules.ActiveForums.Tests</RootNamespace>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <AssemblyName>DotNetNuke.Modules.ActiveForumsTests</AssemblyName>
+        <RootNamespace>DotNetNuke.Modules.ActiveForumsTests</RootNamespace>
+        <TargetFramework>net472</TargetFramework>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <IsPublishable>False</IsPublishable>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <IsPublishable>False</IsPublishable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,6 +22,9 @@
         <PackageReference Include="coverlet.collector" Version="6.0.0" />
         <PackageReference Include="DotNetNuke.Abstractions" Version="9.9.0" />
         <PackageReference Include="DotNetNuke.DependencyInjection" Version="9.9.0" />
+        <PackageReference Include="DotNetNuke.Abstractions" Version="9.9.0" />
+        <PackageReference Include="DotNetNuke.DependencyInjection" Version="9.9.0" />
+        <PackageReference Include="DotNetNuke.Web" Version="9.9.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -43,7 +50,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="NUnit.Framework" />
+      <Reference Include="DotNetNuke.Tests.Utilities">
+        <HintPath>ReferencedAssemblies\DotNetNuke.Tests.Utilities.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

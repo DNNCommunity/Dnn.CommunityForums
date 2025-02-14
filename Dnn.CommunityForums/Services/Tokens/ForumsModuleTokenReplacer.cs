@@ -27,7 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Tokens;
 
-    internal class ForumsModuleTokenReplacer : BaseCustomTokenReplace, DotNetNuke.Services.Tokens.IPropertyAccess
+    internal class ForumsModuleTokenReplacer : DotNetNuke.Services.Tokens.BaseCustomTokenReplace, DotNetNuke.Services.Tokens.IPropertyAccess
     {
         public int ForumTabId { get; set; }
 
@@ -54,7 +54,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.PropertySource[PropertySource_dcf] = this;
             this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
             this.PropertySource[PropertySource_portal] = portalSettings;
-            this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            try
+            {
+                this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            }
+            catch 
+            {
+            }
+
             this.CurrentAccessLevel = Scope.DefaultSettings;
             this.PortalSettings = portalSettings;
             this.ModuleId = moduleId;

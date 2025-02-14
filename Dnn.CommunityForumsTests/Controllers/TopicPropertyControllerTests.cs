@@ -28,14 +28,15 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
     using Moq;
     using NUnit.Framework;
 
-    [TestFixture]
-    public class TopicPropertyControllerTests
+    [TestFixture()]
+    public class TopicPropertyControllerTests : DotNetNuke.Modules.ActiveForumsTests.TestBase
     {
         [Test]
         public void SerializeTest()
         {
             // Arrange
-            var mockForum = new Mock<ForumInfo>();
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
+
             mockForum.Object.ForumID = 1;
             mockForum.Object.ForumName = "Test Forum";
             mockForum.Object.Properties = new List<PropertyInfo>();

@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Linq;
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
@@ -52,6 +54,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.ModuleId = moduleId;
         }
 
+        public ForumUserInfo(DotNetNuke.Entities.Users.UserInfo userInfo)
+        {
+            this.userInfo = userInfo;
+        }
+
+        public ForumUserInfo(int moduleId, DotNetNuke.Entities.Users.UserInfo userInfo)
+        {
+            this.userInfo = userInfo;
+            this.ModuleId = moduleId;
+        }
+
         [IgnoreColumn]
         public bool IsAuthenticated { get; set; } = false;
 
@@ -76,9 +89,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string UserCaption { get; set; }
 
-        public DateTime? DateCreated { get; set; } = DateTime.UtcNow;
+        [IgnoreColumn]
+        public DateTime? DateCreated => this.UserInfo?.CreatedOnDate;
 
-        public DateTime? DateUpdated { get; set; }
+        [IgnoreColumn]
+        public DateTime? DateUpdated => this.UserInfo?.LastModifiedOnDate;
 
         public DateTime? DateLastActivity { get; set; }
 
@@ -152,10 +167,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string Email => string.IsNullOrEmpty(this.UserInfo?.Email) ? string.Empty : this.UserInfo?.Email;
 
         [IgnoreColumn]
-        public bool GetIsMod(int ModuleId)
-        {
-            return (!this.IsAnonymous && !(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.UserRoles, this.PortalId, ModuleId, "CanApprove"))));
-        }
+        public bool IsRegistered => !this.IsAnonymous && this.UserInfo != null && this.UserInfo.Roles.Contains(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleName(this.PortalId));
+
+        [IgnoreColumn]
+        public bool GetIsMod(int ModuleId) => !this.IsAnonymous && !(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.UserRoles, this.PortalId, ModuleId, "CanApprove")));
 
         [IgnoreColumn]
         public bool IsSuperUser => this.UserInfo != null && this.UserInfo.IsSuperUser;
@@ -330,7 +345,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (string.IsNullOrEmpty(this.userRoles))
                 {
-                    var ids = this.GetRoleIds(this.UserInfo, this.PortalId);
+                    var ids = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalId, this.UserInfo);
                     if (string.IsNullOrEmpty(ids))
                     {
                         ids = Globals.DefaultAnonRoles + "|-1;||";
@@ -353,33 +368,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 this.userRoles = value;
             }
-        }
-
-        private string GetRoleIds(UserInfo u, int PortalId)
-        {
-            string RoleIds = string.Empty;
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
-            {
-                string roleName = r.RoleName;
-                foreach (string role in u?.Roles)
-                {
-                    if (!string.IsNullOrEmpty(role))
-                    {
-                        if (roleName == role)
-                        {
-                            RoleIds += r.RoleID.ToString() + ";";
-                            break;
-                        }
-                    }
-                }
-            }
-
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in u?.Social?.Roles)
-            {
-                RoleIds += r.RoleID.ToString() + ";";
-            }
-
-            return RoleIds;
         }
 
         internal int GetLastReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
@@ -625,10 +613,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return string.Empty;
         }
 
-        [IgnoreColumn]
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.PortalId, this.UserId);
 
-        [IgnoreColumn]
         internal void UpdateCache() => DataCache.UserCacheStore(this.GetCacheKey(), this);
     }
 }

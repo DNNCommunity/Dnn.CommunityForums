@@ -26,14 +26,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
     using NUnit.Framework;
 
     [TestFixture]
-    public class PermissionControllerTests
+    public class PermissionControllerTests : DotNetNuke.Modules.ActiveForumsTests.TestBase
     {
         [Test]
         public void GetNamesForRolesTest()
         {
             // Arrange
             var roles = $"{Common.Globals.glbRoleAllUsers};{Common.Globals.glbRoleUnauthUser}";
-            var portalId = 1;
+            var portalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
             var expectedResult = $"{Common.Globals.glbRoleAllUsersName};{Common.Globals.glbRoleUnauthUserName};";
 
             // Act
@@ -47,16 +47,17 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetRoleNameTest()
         {
             // Arrange
-            var roles = $"{Common.Globals.glbRoleAllUsers}";
-            var portalId = 1;
-            var expectedResult = $"{Common.Globals.glbRoleAllUsersName};";
+            var role = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}";
+            var portalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
+            var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers}";
 
             // Act
-            // string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(portalId, roles);
+            string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(portalId, role);
 
             // we can't actually test this method because internally it is using caching, so we can at least test that the method throws an exception
             // Assert
-            Assert.Throws<NullReferenceException>(() => PermissionController.GetRoleName(portalId, roles));
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+            //Assert.Throws<NullReferenceException>(() => PermissionController.GetRoleName(portalId, roles));
         }
 
         [Test]
