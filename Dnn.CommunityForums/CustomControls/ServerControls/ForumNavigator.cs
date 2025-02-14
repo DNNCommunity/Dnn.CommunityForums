@@ -45,8 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            UserController uc = new UserController();
-            this.forumUser = uc.GetUser(this.PortalId, this.ModuleId);
+            this.forumUser = (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetUserFromHttpContext(this.PortalId, this.ModuleId);
             Controls.ForumDirectory fd = new Controls.ForumDirectory();
             fd.ModuleId = this.ModuleId;
             fd.TabId = this.TabId;

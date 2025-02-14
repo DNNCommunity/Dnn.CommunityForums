@@ -81,7 +81,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             PortalId = portalId,
                             TopicCount = 0,
                             ReplyCount = 0,
-                            DateCreated = DateTime.UtcNow,
                             DateLastActivity = DateTime.UtcNow,
                             PrefBlockSignatures = false,
                             PrefBlockAvatars = false,
@@ -95,11 +94,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         };
                         if (user.UserInfo != null)
                         {
-                            user.DateCreated = user.UserInfo.CreatedOnDate;
-                            if (user.DateCreated < System.Data.SqlTypes.SqlDateTime.MinValue.Value)
-                            {
-                                user.DateCreated = System.Data.SqlTypes.SqlDateTime.MinValue.Value;
-                            }
                             this.Insert(user);
                         }
                     }
@@ -112,7 +106,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         PortalId = portalId,
                         TopicCount = 0,
                         ReplyCount = 0,
-                        DateCreated = DateTime.UtcNow,
                         DateLastActivity = DateTime.UtcNow,
                         UserInfo = new DotNetNuke.Entities.Users.UserInfo { UserID = -1, Username = "guest", },
                         PrefBlockSignatures = false,
@@ -146,10 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetUserFromHttpContext() [renamed method]")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId)
-        {
-            return this.GetUserFromHttpContext(portalId, moduleId);
-        }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId) => throw new NotImplementedException();
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUserFromHttpContext(int portalId, int moduleId)
         {
@@ -180,7 +170,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     PortalId = portalId,
                     TopicCount = 0,
                     ReplyCount = 0,
-                    DateCreated = DateTime.UtcNow,
                     UserInfo = new DotNetNuke.Entities.Users.UserInfo
                     {
                         UserID = -1,
@@ -223,7 +212,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user)
         {
-            user.DateUpdated = DateTime.UtcNow;
             var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(user.ModuleId).Save<int>(user, user.ProfileId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(user.PortalId, user.UserId);
             return forumUser.UserId;

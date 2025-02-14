@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System;
 
     using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public partial class af_attach : ForumBase
@@ -36,8 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             base.OnInit(e);
 
             this.LocalResourceFile = Globals.SharedResourceFile;
-
-            jQuery.RegisterFileUpload(this.Page);
+            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
 
             ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/jquery.afFileUpload.js", 102);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
