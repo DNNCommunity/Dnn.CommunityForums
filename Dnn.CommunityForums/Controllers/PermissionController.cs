@@ -647,6 +647,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
             }
 
+            roles.Add(int.Parse(DotNetNuke.Common.Globals.glbRoleAllUsers));
+            if (u.UserID < 0)
+            {
+                roles.Add(int.Parse(DotNetNuke.Common.Globals.glbRoleUnauthUser));
+            }
+
+            if (u.IsSuperUser)
+            {
+                roles.Add(int.Parse(DotNetNuke.Common.Globals.glbRoleUnauthUser));
+                roles.Add(DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(PortalId).AdministratorRoleId);
+            }
+
             return string.Join(";", roles.ToArray());
         }
 
