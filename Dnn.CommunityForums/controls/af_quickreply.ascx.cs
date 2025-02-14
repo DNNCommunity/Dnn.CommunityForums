@@ -338,7 +338,6 @@ namespace DotNetNuke.Modules.ActiveForums
             var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId);
             int replyId = rc.Reply_Save(this.PortalId, this.ModuleId, ri);
             ri = rc.GetById(replyId);
-            DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: ri.Forum.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: replyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
             DataCache.ContentCacheClearForForum(this.ModuleId, this.ForumId);
             DataCache.ContentCacheClearForReply(this.ModuleId, replyId);
             DataCache.ContentCacheClearForTopic(this.ModuleId, ri.TopicId);
@@ -358,6 +357,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (isApproved)
             {
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: ri.Forum.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: replyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
+
                 // Redirect to show post
                 this.Response.Redirect(fullURL, false);
                 this.Context.ApplicationInstance.CompleteRequest();

@@ -99,9 +99,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string UserCaption { get; set; }
 
-        public DateTime? DateCreated { get; set; } = DateTime.UtcNow;
+        [IgnoreColumn]
+        public DateTime? DateCreated => this.UserInfo?.CreatedOnDate;
 
-        public DateTime? DateUpdated { get; set; }
+        [IgnoreColumn]
+        public DateTime? DateUpdated => this.UserInfo?.LastModifiedOnDate;
 
         public DateTime? DateLastActivity { get; set; }
 

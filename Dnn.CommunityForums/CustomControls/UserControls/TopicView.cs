@@ -324,6 +324,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     AuthorId = Utilities.SafeConvertInt(this.drForum["AuthorId"]),
                     AuthorName = this.drForum["TopicAuthor"].ToString(),
                     DateCreated = Utilities.SafeConvertDateTime(this.drForum["DateCreated"]),
+                    DateUpdated = Utilities.SafeConvertDateTime(this.drForum["DateUpdated"]),
                 },
                 LastReply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo
                 {
