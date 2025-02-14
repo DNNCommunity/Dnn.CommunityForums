@@ -89,7 +89,7 @@
         <hr />
 
         <h3>
-            08.02.02
+            08.02.04
         </h3>
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a><!--, 
@@ -111,9 +111,13 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>FIXED: Error on Add Answer (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1241">Issue 1241</a>)</li>
-            <li>FIXED: Error When Deleting a Topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1242">Issue 1242</a>)</li>
-            <li>FIXED: Error on Edit Post (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1243">Issue 1243</a>)</li>
+            <li>FIXED: Quick Replies Sending Notifications Before Going Through Moderation (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1289">Issue 1289</a>!)</li>
+            <li>FIXED: Unable to Delete a Topic After Creating It (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1277">Issue 1277</a>!)</li>
+            <li>FIXED: `MODEDITEDATE` Token Incorrectly Being Updated on Every Refresh (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1282">Issue 1282</a>!)</li>
+            <li>FIXED: &quot;Forums not available&quot; Exception in Topics View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1273">Issue 1273</a>!)</li>
+            <li>FIXED: User Accounts Without a `UserPortals` Record Throws Exceptions (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1283">Issue 1283</a>!)</li>
+            <li>FIXED: Moderation HTML Output Issues (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1288">Issue 1288</a>!)</li>
+            <li>FIXED: No Longer Getting Current User Accounts from `HttpContext` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1290">Issue 1290</a>)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
@@ -122,7 +126,9 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            <li>TASK: 8.2.2 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1248">Issue 1248</a>)</li>
+            <li>TASK: Replaced Obsolete DNN API Methods (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1294">Issue 1294</a>)</li>
+            <li>TASK: Updates to Unit Test Project to Better Integrate and Mock DNN objects (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1275">Issue 1275</a>)</li>
+            <li>TASK: 8.2.4 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1296">Issue 1296</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>

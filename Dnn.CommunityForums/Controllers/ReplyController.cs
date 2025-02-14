@@ -112,6 +112,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(ri.ModuleId, ri.ReplyId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(ri.ModuleId, ri.TopicId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(ri.ModuleId, ri.ContentId);
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ri.ModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ri.ModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ri.ModuleId));
 
             new Social().DeleteJournalItemForPost(portalId, forumId, topicId, replyId);
 
