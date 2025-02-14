@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("<option value=\"\">[RESX:DropDownDefault]</option>");
             sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleAllUsers}\">{DotNetNuke.Common.Globals.glbRoleAllUsersName}</option>");
             sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleUnauthUser}\">{DotNetNuke.Common.Globals.glbRoleUnauthUserName}</option>");
-            foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(this.PortalId))
+            foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(this.PortalSettings))
             {
                 sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
             }
@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo> pl = new List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
 
-            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(this.PortalId, tmp);
+            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(this.PortalSettings, tmp);
             foreach (string key in nvc.AllKeys)
             {
                 DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();

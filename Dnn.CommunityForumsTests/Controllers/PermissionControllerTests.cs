@@ -44,12 +44,12 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var expectedResult = $"{Common.Globals.glbRoleAllUsersName};{Common.Globals.glbRoleUnauthUserName};";
 
             // Act
-            var actualResult = PermissionController.GetNamesForRoles(portalId, roles);
+            var actualResult = PermissionController.GetNamesForRoles(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), roles);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
-
+        
         [Test]
         public void GetRoleNameTest()
         {
@@ -59,7 +59,22 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers}";
 
             // Act
-            string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(portalId, role);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), role);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void GetRoleIDTest()
+        {
+            // Arrange
+            var roleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers;
+            var portalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
+            var expectedResult = Convert.ToInt32(DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers);
+
+            // Act
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleId(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), roleName);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -162,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             };
 
             // Act
-            var actualResult = PermissionController.GetRoles(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId);
+            var actualResult = PermissionController.GetRoles(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
 
             // Assert
             Assert.That(actualResult.Count.Equals(expectedResult.Count));
@@ -242,7 +257,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             };
 
             // Act
-            var actualResult = PermissionController.GetRolesNVC(portalId, string.Join(";", roles));
+            var actualResult = PermissionController.GetRolesNVC(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), string.Join(";", roles));
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));

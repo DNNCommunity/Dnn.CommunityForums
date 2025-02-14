@@ -18,7 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Runtime.CompilerServices;
+using DotNetNuke.Collections;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -383,13 +383,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return userRoleIds.Intersect(authorizedRoleIds).Any();
         }
 
-        internal static System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> GetRoles(int portalId)
+        internal static System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> GetRoles(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
-            object obj = DataCache.SettingsCacheRetrieve(moduleId: -1, cacheKey: string.Format(CacheKeys.Roles, portalId));
+            object obj = DataCache.SettingsCacheRetrieve(moduleId: -1, cacheKey: string.Format(CacheKeys.Roles, portalSettings.PortalId));
             System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> roles;
             if (obj == null)
             {
-                roles = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: portalId);
+                roles = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: portalSettings.PortalId);
 
                 // add pseudo-roles for anon/unauth and all users
                 if (!roles.Any(r => r.RoleID == int.Parse(DotNetNuke.Common.Globals.glbRoleUnauthUser)))
@@ -401,7 +401,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     roles.Add(new DotNetNuke.Security.Roles.RoleInfo { RoleID = int.Parse(DotNetNuke.Common.Globals.glbRoleAllUsers), RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName });
                 }
-                DataCache.SettingsCacheStore(moduleId: -1, cacheKey: string.Format(CacheKeys.Roles, portalId), cacheObj: roles);
+                DataCache.SettingsCacheStore(moduleId: -1, cacheKey: string.Format(CacheKeys.Roles, portalSettings.PortalId), cacheObj: roles);
             }
             else
             {
@@ -411,7 +411,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return roles;
         }
 
-        internal static string GetNamesForRoles(int portalId, string roles)
+        internal static string GetNamesForRoles(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string roles)
         {
             try
             {
@@ -430,7 +430,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 roleNames = string.Concat(roleNames + DotNetNuke.Common.Globals.glbRoleUnauthUserName, ";");
                                 break;
                             default:
-                                roleName = GetRoleName(portalId: portalId, role: role);
+                                roleName = GetRoleName(portalSettings: portalSettings, role: role);
                                 if (roleName != null)
                                 {
                                     roleNames = string.Concat(roleNames + roleName, ";");
@@ -450,9 +450,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static string GetRoleName(int portalId, string role)
+        internal static string GetRoleName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string role)
         {
-            return GetRoles(portalId).Where(r => r.RoleID == Utilities.SafeConvertInt(role)).Select(r => r.RoleName).FirstOrDefault();
+            return GetRoles(portalSettings).Where(r => r.RoleID == Utilities.SafeConvertInt(role)).Select(r => r.RoleName).FirstOrDefault();
+        }
+
+        internal static int GetRoleId(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string roleName)
+        {
+            return GetRoles(portalSettings).Where(r => r.RoleName.Equals(roleName)).Select(r => r.RoleID).FirstOrDefault();
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use GetPortalRoleIds(int PortalId, string[] Roles).")]
@@ -486,7 +491,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return roleIds;
         }
 
-        internal static NameValueCollection GetRolesNVC(int portalId, string roles)
+        internal static NameValueCollection GetRolesNVC(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string roles)
         {
             try
             {
@@ -505,7 +510,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 nvc.Add(Common.Globals.glbRoleUnauthUser, DotNetNuke.Common.Globals.glbRoleUnauthUserName);
                                 break;
                             default:
-                                roleName = GetRoleName(portalId, role);
+                                roleName = GetRoleName(portalSettings, role);
                                 if (roleName != null)
                                 {
                                     nvc.Add(role, roleName);
@@ -525,58 +530,33 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static HashSet<int> GetUsersRoleIds(PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo u)
+        internal static HashSet<int> GetUsersRoleIds(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo u)
         {
-            var roleIds = new HashSet<int>();
-            if (u != null && u.Roles != null)
+            var roleIds = new HashSet<int>
             {
+                Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers),
+            };
+
+            if (u != null)
+            {
+                if (u.UserID < 0)
                 {
-                    foreach (var r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: portalSettings.PortalId))
-                    {
-                        foreach (string role in u?.Roles)
-                        {
-                            if (!string.IsNullOrEmpty(role))
-                            {
-                                if (r.RoleName == role)
-                                {
-                                    if (!roleIds.Contains(r.RoleID))
-                                    {
-                                        roleIds.Add(r.RoleID);
-                                    }
+                    roleIds.Add(Convert.ToInt32(Common.Globals.glbRoleUnauthUser));
+                }
 
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                if (u.IsSuperUser)
+                {
+                    roleIds.Add(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser));
+                    roleIds.Add(portalSettings.AdministratorRoleId);
+                }
 
-                    if (u != null && u.Social.Roles != null && u.Social.Roles != null)
+                if (u.Roles != null)
+                {
                     {
-                        foreach (DotNetNuke.Entities.Users.UserRoleInfo r in u?.Social?.Roles)
-                        {
-                            if (!roleIds.Contains(r.RoleID))
-                            {
-                                roleIds.Add(r.RoleID);
-                            }
-                        }
+                        u.Roles.ForEach(roleName => roleIds.Add(GetRoleId(portalSettings: portalSettings, roleName: roleName)));
+                        u.Social?.Roles?.ForEach(r => roleIds.Add(r.RoleID));
                     }
                 }
-            }
-
-            if (roleIds.Count < 1)
-            {
-                return new HashSet<int>
-                {
-                    Convert.ToInt32(Common.Globals.glbRoleAllUsers),
-                    Convert.ToInt32(Common.Globals.glbRoleUnauthUser),
-                };
-            }
-
-            if (u.IsSuperUser)
-            {
-                roleIds.Add(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers));
-                roleIds.Add(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser));
-                roleIds.Add(portalSettings.AdministratorRoleId);
             }
 
             return roleIds.Distinct().OrderBy(r => r).ToHashSet();
