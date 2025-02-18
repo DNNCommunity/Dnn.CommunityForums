@@ -35,7 +35,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="coverlet.collector" Version="6.0.0" />
         <PackageReference Include="DotNetNuke.Abstractions" Version="9.13.7" />
         <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web.Client" Version="9.11.0" />
@@ -46,7 +45,6 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
@@ -57,7 +55,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="System.ComponentModel" Version="4.3.0" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.1" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     </ItemGroup>
 
     <ItemGroup>
