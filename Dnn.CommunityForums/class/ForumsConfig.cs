@@ -709,8 +709,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 var portalSettings = Utilities.GetPortalSettings(portalId);
-                var permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalSettings).ToString(), moduleId);
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, moduleId, permissions.PermissionsId);
+                var permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateDefaultPermissions(portalSettings, moduleId);
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.DefaultPermissionId, permissions.PermissionsId.ToString());
 
                 string sKey = $"M:{moduleId}";

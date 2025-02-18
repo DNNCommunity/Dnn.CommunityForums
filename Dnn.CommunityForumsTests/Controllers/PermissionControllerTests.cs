@@ -230,11 +230,16 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         {
             // Arrange
             var portalId = 0;
-            var roles = new string[] { DotNetNuke.Common.Globals.glbRoleAllUsers, DotNetNuke.Common.Globals.glbRoleUnauthUser };
-            var expectedResult = new NameValueCollection();
-            expectedResult.Add(DotNetNuke.Common.Globals.glbRoleAllUsers, DotNetNuke.Common.Globals.glbRoleAllUsersName);
-            expectedResult.Add(DotNetNuke.Common.Globals.glbRoleUnauthUser, DotNetNuke.Common.Globals.glbRoleUnauthUserName);
-
+            var roles = new string[]
+            {
+                DotNetNuke.Common.Globals.glbRoleAllUsers,
+                DotNetNuke.Common.Globals.glbRoleUnauthUser,
+            };
+            var expectedResult = new NameValueCollection
+            {
+                { DotNetNuke.Common.Globals.glbRoleAllUsers, DotNetNuke.Common.Globals.glbRoleAllUsersName },
+                { DotNetNuke.Common.Globals.glbRoleUnauthUser, DotNetNuke.Common.Globals.glbRoleUnauthUserName },
+            };
 
             // Act
             var actualResult = PermissionController.GetRolesNVC(portalId, string.Join(";", roles));
@@ -256,9 +261,15 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         }
 
         [Test]
-        public void HasAccessTest()
+        [TestCase("1;2;3", "1;2;3", ExpectedResult = true)]
+        [TestCase("1;2", "3", ExpectedResult = false)]
+        [TestCase("1", "1;2;3", ExpectedResult = true)]
+        public bool HasAccessTest(string authRoles, string userRoles)
         {
-            Assert.Fail();
+            // Arrange
+            // Act
+            // Assert
+            return PermissionController.HasAccess(authRoles, userRoles);
         }
 
         // Permission set manipulation tests
@@ -271,15 +282,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(permSet).Equals(expectedResults);
-        }
-
-        [Test]
-        public void SortPermissionSetMembersTest1()
-        {
-            // Arrange
-            // Act
-            // Assert
-            Assert.Fail();
         }
 
         [Test]
@@ -416,26 +418,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Arrange
             // Act
             // Assert
-            Assert.Fail();
-        }
-
-        [Test]
-        public void SetPermSetForRequestedAccessTest()
-        {
-            // Arrange
-            // Act
-            // Assert
-            Assert.Fail();
-        }
-
-        [Test]
-        public void AddObjectToPermissionSetTest()
-        {
-          
-            // Arrange
-            // Act
-            // Assert
-            Assert.Fail();
+            /* not testable without DI for permissions Controller */
+            Assert.Throws<NullReferenceException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(this.mockModule.Object.ModuleID, -1, string.Empty, string.Empty));
         }
 
         [Test]
@@ -447,7 +431,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             {
                 Object =
                 {
-                    View = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}{emptyPermissions}",
+                    View = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers};{emptyPermissions}",
                     Read = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}{emptyPermissions}",
                     Create = emptyPermissions,
                     Reply = emptyPermissions,
@@ -468,35 +452,111 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Ban = emptyPermissions,
                 },
             };
-
+            var requestedAction = mockPermissions.Object.View;
             var objType = DotNetNuke.Modules.ActiveForums.ObjectType.RoleId;
             var objId = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators;
 
-            var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}";
+            var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
+                {
+                    Object =
+                    {
+                        View = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                        Read = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}{emptyPermissions}",
+                        Create = emptyPermissions,
+                        Reply = emptyPermissions,
+                        Edit = emptyPermissions,
+                        Delete = emptyPermissions,
+                        Lock = emptyPermissions,
+                        Pin = emptyPermissions,
+                        Attach = emptyPermissions,
+                        Poll = emptyPermissions,
+                        Block = emptyPermissions,
+                        Trust = emptyPermissions,
+                        Subscribe = emptyPermissions,
+                        Announce = emptyPermissions,
+                        Prioritize = emptyPermissions,
+                        Moderate = emptyPermissions,
+                        Move = emptyPermissions,
+                        Split = emptyPermissions,
+                        Ban = emptyPermissions,
+                    },
+                };
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(mockPermissions.Object, SecureActions.Delete, objId.ToString(), objType).Delete;
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(mockPermissions.Object, SecureActions.View, objId.ToString(), objType);
 
             // Assert
-            Assert.That(actualResult, Is.EqualTo(expectedResult));
-        }
-
-        [Test]
-        public void RemoveObjectFromPermissionsTest()
-        {
-            // Arrange
-            // Act
-            // Assert
-            Assert.Fail();
+            Assert.That(actualResult.EqualPermissions(expectedResult.Object), Is.True);
         }
 
         [Test]
         public void RemoveObjectFromAllTest()
         {
             // Arrange
+            const string emptyPermissions = ";|||";
+            var registeredUsersRoleId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleId(portalSettings: DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings()).ToString();
+            var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
+            {
+                Object =
+                {
+                    ModuleId = this.mockModule.Object.ModuleID,
+                    View = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Read = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Create = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Edit = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Delete = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Reply = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Subscribe = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Attach = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Lock = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Pin = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Poll = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Block = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Trust = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Announce = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Prioritize = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Moderate = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Move = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Split = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Ban = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                },
+            };
+
+            var objType = DotNetNuke.Modules.ActiveForums.ObjectType.RoleId;
+            var objId = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators;
+
+            var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
+                {
+                    Object =
+                    {
+                         ModuleId = this.mockModule.Object.ModuleID,
+                         View = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{emptyPermissions}",
+                         Read = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{emptyPermissions}",
+                         Create = $"{registeredUsersRoleId};{emptyPermissions}",
+                         Edit = $"{registeredUsersRoleId};{emptyPermissions}",
+                         Delete = $"{registeredUsersRoleId};{emptyPermissions}",
+                         Reply = $"{registeredUsersRoleId};{emptyPermissions}",
+                         Subscribe = $"{registeredUsersRoleId};{emptyPermissions}",
+                         Attach = $"{registeredUsersRoleId};{emptyPermissions}",
+                         Lock = $"{emptyPermissions}",
+                         Pin = $"{emptyPermissions}",
+                         Poll = $"{emptyPermissions}",
+                         Block = $"{emptyPermissions}",
+                         Trust = $"{emptyPermissions}",
+                         Announce = $"{emptyPermissions}",
+                         Prioritize = $"{emptyPermissions}",
+                         Moderate = $"{emptyPermissions}",
+                         Move = $"{emptyPermissions}",
+                         Split = $"{emptyPermissions}",
+                         Ban = $"{emptyPermissions}",
+                    },
+                };
+
             // Act
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(mockPermissions.Object, objId.ToString(), objType);
+
             // Assert
-            Assert.Fail();
+            Assert.That(actualResult.EqualPermissions(expectedResult.Object), Is.True);
         }
 
         // Specific permission controller method tests
@@ -504,18 +564,41 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetDefaultPermissionsTest()
         {
             // Arrange
-            // Act
-            // Assert
-            Assert.Fail();
-        }
+            const string emptyPermissions = ";|||";
+            var registeredUsersRoleId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleId(portalSettings: DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings()).ToString();
+            var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
+            {
+                Object =
+                {
+                    ModuleId = this.mockModule.Object.ModuleID,
+                    View = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Read = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Create = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Edit = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Delete = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Reply = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Subscribe = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Attach = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Lock = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Pin = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Poll = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Block = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Trust = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Announce = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Prioritize = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Moderate = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Move = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Split = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Ban = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                },
+            };
 
-        [Test]
-        public void CreateDefaultSetsTest()
-        {
-            // Arrange
             // Act
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetDefaultPermissions(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.mockModule.Object.ModuleID);
+
             // Assert
-            Assert.Fail();
+            Assert.That(actualResult.EqualPermissions(expectedResult.Object), Is.True);
+            Assert.That(actualResult.ModuleId, Is.EqualTo(expectedResult.Object.ModuleId));
         }
 
         [Test]
@@ -523,7 +606,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         {
             // Arrange
             const string emptyPermissions = ";|||";
-            var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
+            var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
             {
                 Object =
                 {
@@ -550,32 +633,52 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                 },
             };
 
-            var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}";
-
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdminPermissions(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleId.ToString(), this.mockModule.Object.ModuleID);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdminPermissions(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.mockModule.Object.ModuleID);
 
             // Assert
-            Assert.That(actualResult.ModuleId, Is.EqualTo(mockPermissions.Object.ModuleId));
-            Assert.That(actualResult.EqualPermissions(mockPermissions.Object), Is.True);
-        }
-
-        [Test]
-        public void CreateAdminPermissionsTest()
-        {
-            // Arrange
-            // Act
-            // Assert
-            Assert.Fail();
+            Assert.That(actualResult.ModuleId, Is.EqualTo(expectedResult.Object.ModuleId));
+            Assert.That(actualResult.EqualPermissions(expectedResult.Object), Is.True);
         }
 
         [Test]
         public void GetEmptyPermissionsTest()
         {
             // Arrange
+            const string emptyPermissions = ";|||";
+            var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
+            {
+                Object =
+                {
+                    ModuleId = this.mockModule.Object.ModuleID,
+                    View = $"{emptyPermissions}",
+                    Read = $"{emptyPermissions}",
+                    Create = $"{emptyPermissions}",
+                    Reply = $"{emptyPermissions}",
+                    Edit = $"{emptyPermissions}",
+                    Delete = $"{emptyPermissions}",
+                    Lock = $"{emptyPermissions}",
+                    Pin = $"{emptyPermissions}",
+                    Attach = $"{emptyPermissions}",
+                    Poll = $"{emptyPermissions}",
+                    Block = $"{emptyPermissions}",
+                    Trust = $"{emptyPermissions}",
+                    Subscribe = $"{emptyPermissions}",
+                    Announce = $"{emptyPermissions}",
+                    Prioritize = $"{emptyPermissions}",
+                    Moderate = $"{emptyPermissions}",
+                    Move = $"{emptyPermissions}",
+                    Split = $"{emptyPermissions}",
+                    Ban = $"{emptyPermissions}",
+                },
+            };
+
             // Act
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.mockModule.Object.ModuleID);
+
             // Assert
-            Assert.Fail();
+            Assert.That(actualResult.EqualPermissions(expectedResult.Object), Is.True);
+            Assert.That(actualResult.ModuleId, Is.EqualTo(expectedResult.Object.ModuleId));
         }
 
         [Test]
@@ -584,7 +687,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Arrange
             // Act
             // Assert
-            Assert.Fail();
+            /* not yet testable */
+            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess(this.mockModule.Object.ModuleID, -1, SecureActions.View));
         }
 
         public void UpdateSecurityForSocialGroupForumTest()
@@ -601,7 +705,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Arrange
             // Act
             // Assert
-            Assert.Fail();
+            /* not yet testable */
+            Assert.Throws<NullReferenceException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveUnused(this.mockModule.Object.ModuleID));
         }
 
         [Test]
@@ -610,7 +715,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Arrange
             // Act
             // Assert
-            Assert.Fail();
+            /* not yet testable */
+            Assert.Throws<NullReferenceException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveIfUnused(-1, this.mockModule.Object.ModuleID));
         }
 
         [Test]
@@ -619,8 +725,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Arrange
             // Act
             // Assert
-            Assert.Fail();
-        }
+            /* not yet testable */
+            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(this.mockModule.Object.ModuleID, -1, string.Empty));        }
 
         [Test]
         public void CheckForumIdsForViewForRSSTest()
@@ -628,7 +734,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Arrange
             // Act
             // Assert
-            Assert.Fail();
+            /* not yet testable */
+            Assert.That(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.mockModule.Object.ModuleID, string.Empty, string.Empty), Is.EqualTo(string.Empty));
+            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.mockModule.Object.ModuleID, "1", "1;2;3|||"));
         }
 
         [Test]
@@ -673,15 +781,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         }
 
         [Test]
-        public void GetObjFromSecObjTest()
-        {
-            // Arrange
-            // Act
-            // Assert
-            Assert.Fail();
-        }
-
-        [Test]
+        [TestCase(DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId, false, new object[] { DotNetNuke.Common.Globals.glbRoleUnauthUser, DotNetNuke.Common.Globals.glbRoleAllUsers })]
         [TestCase(DotNetNuke.Tests.Utilities.Constants.UserID_User12, false, new object[] { DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers, DotNetNuke.Common.Globals.glbRoleAllUsers })]
         [TestCase(DotNetNuke.Tests.Utilities.Constants.UserID_Admin, false, new object[] { DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers, DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators, DotNetNuke.Common.Globals.glbRoleUnauthUser, DotNetNuke.Common.Globals.glbRoleAllUsers })]
         public void GetUsersRoleIdsTest(int userId, bool isSuperUser, object[] expectedRoles)

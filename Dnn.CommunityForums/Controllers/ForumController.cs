@@ -353,7 +353,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var groupAdmin = string.Concat(socialGroupId.ToString(), ":0");
                 var groupMember = socialGroupId.ToString();
                 var portalSettings = Utilities.GetPortalSettings(portalId);
-                int permissionsId = pc.CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalSettings).ToString(), moduleId).PermissionsId;
+                int permissionsId = pc.CreateAdminPermissions(portalSettings, moduleId).PermissionsId;
 
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(portalSettings)
                 {

@@ -140,8 +140,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var userFirstSocialGroupOwner = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_FirstSocialGroup, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_FirstSocialGroup, UserID = DotNetNuke.Tests.Utilities.Constants.UserID_FirstSocialGroupOwner, IsOwner = true };
             this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_FirstSocialGroupOwner), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { userFirstSocialGroupOwner });
 
-            var anonymousRoleInfo = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser), UserID = DotNetNuke.Common.Utilities.Null.NullInteger };
-            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Common.Utilities.Null.NullInteger), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { anonymousRoleInfo });
+            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { });
         }
 
         private void SetupUserInfo()
@@ -165,6 +164,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             };
             this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_TenId), It.IsAny<int>())).Returns(user10Info);
             this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_TenId))).Returns(user10Info);
+
             var user12Info = new UserInfo
             {
                 PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
@@ -178,6 +178,20 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             };
             this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_User12), It.IsAny<int>())).Returns(user12Info);
             this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_User12))).Returns(user12Info);
+
+            var anonUserInfo = new UserInfo
+            {
+                PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
+                UserID = DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId,
+                Username = "Guest",
+                DisplayName = "Unauthenticated User",
+                Profile = new UserProfile
+                {
+                    PreferredLocale = "en-US",
+                },
+            };
+            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId), It.IsAny<int>())).Returns(anonUserInfo);
+            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId))).Returns(anonUserInfo);
         }
 
         private void SetupRoleInfo()
@@ -304,6 +318,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             this.roleController.Setup(rc => rc.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.USER_TenId), true)).Returns(roles.Where(r => r.UserID == DotNetNuke.Tests.Utilities.Constants.USER_TenId).ToList());
             this.roleController.Setup(rc => rc.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_User12), true)).Returns(roles.Where(r => r.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_User12).ToList());
             this.roleController.Setup(rc => rc.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_Admin), true)).Returns(roles.Where(r => r.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_Admin).ToList());
+            this.roleController.Setup(rc => rc.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId), true)).Returns(roles.Where(r => r.UserID == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId).ToList());
         }
 
         private void SetupPortalSettings()
