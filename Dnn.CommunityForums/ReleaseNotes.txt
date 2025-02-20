@@ -92,8 +92,8 @@
             08.02.05
         </h3>
         <p>
-            <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a><!--, 
-            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>,--> and 
+            <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, 
+            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>, and 
             <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>.
         </p>
         <p>
