@@ -370,7 +370,7 @@
   cursor: pointer;
 }
 .dnn-community-forums .dcf-forum-view .dcf-forums-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   padding: 1rem 0;
 }
 .dnn-community-forums .dcf-forum-view .dcf-forums-group .dcf-forum-title {
@@ -390,6 +390,10 @@
   font-size: 1.1em;
   margin: 0;
   color: black;
+  padding-left: 1.5rem;
+}
+.dnn-community-forums .dcf-forum-view .dcf-forums-group .dcf-sub-forums .dcf-col-text {
+  padding-left: 2rem;
 }
 .dnn-community-forums .dcf-topics-view .dcf-forum-title-wrap {
   flex-grow: 1;
