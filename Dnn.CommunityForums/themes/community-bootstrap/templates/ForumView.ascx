@@ -48,7 +48,7 @@
 						<tr class="dcf-table-body-row">
 							<td class="dcf-col dcf-col-text">
 								<div class="d-flex">
-                                    [FORUM:FORUMICONCSS|<div class="dcf-forum-icon pe-2"><i class="fa {0} fa-2x"></i></div>
+                                    [FORUM:FORUMICONCSS|<div class="dcf-forum-icon pr-2 pe-2"><i class="fa {0} fa-2x"></i></div>
                                     ]
 									<div class="dcf-forum-title-text">
 										<h4 class="dcf-forum-title h5 mt-0 mb-2">[FORUM:FORUMLINK|
@@ -80,7 +80,7 @@
 					[SUBFORUMS]
 					 <tr class="dcf-table-body-row dcf-sub-forums">
 						<td class="dcf-col pl-5 px-5" colspan="5">
-							<h5 class="dcf-sub-forum-title">[RESX:Child] [RESX:FORUMS]</h5>
+							<h5 class="dcf-sub-forum-title h6 my-1">[RESX:Child] [RESX:FORUMS]</h5>
 						</td>
 					</tr> 
 						<tr class="dcf-table-body-row dcf-sub-forums">
