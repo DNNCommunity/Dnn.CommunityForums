@@ -51,14 +51,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            this.SocialGroupId = -1;
-            if (this.Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.GroupId]))
-            {
-                this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
-            }
-
-            this.SetupPage();
-
 #if DEBUG
             //ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
             //new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveUnused(this.ForumModuleId);
@@ -77,6 +69,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.ForumModuleId = this.ModuleId;
                     }
 
+                    this.SocialGroupId = -1;
+                    if (this.Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.GroupId]))
+                    {
+                        this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
+                    }
                     string ctl = this.DefaultView;
                     string opts = string.Empty;
 
@@ -123,6 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     this.currView = ctl;
+                    this.SetupPage();
                     this.GetControl(ctl, opts);
 
                     if (this.Request.IsAuthenticated)
@@ -135,6 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
+                    this.ShowToolbar = false;
                     string ctlPath = Globals.ModulePath + "controls/_default.ascx";
                     ForumBase ctlDefault = (ForumBase)this.LoadControl(ctlPath);
                     ctlDefault.ID = "ctlConfig";
