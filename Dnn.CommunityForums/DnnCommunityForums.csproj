@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" >
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <AssemblyName>DotNetNuke.Modules.ActiveForums</AssemblyName>
@@ -32,6 +32,10 @@
         <None Remove="CustomControls\Views\**" />
         <None Remove="Legacy\**" />
         <None Remove="Properties\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="packages.config" />
     </ItemGroup>
 
     <ItemGroup>
