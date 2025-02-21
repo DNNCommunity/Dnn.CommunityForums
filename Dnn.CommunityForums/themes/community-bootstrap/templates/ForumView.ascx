@@ -78,15 +78,14 @@
 						</tr>
 
 					[SUBFORUMS]
-						 <tr class="dcf-table-body-row dcf-sub-forums">
-						<td class="dcf-col dcf-col-icon"></td>
-						<td class="dcf-col" colspan="5">
+					 <tr class="dcf-table-body-row dcf-sub-forums">
+						<td class="dcf-col pl-5 px-5" colspan="5">
 							<h5 class="dcf-sub-forum-title">[RESX:Child] [RESX:FORUMS]</h5>
 						</td>
 					</tr> 
 						<tr class="dcf-table-body-row dcf-sub-forums">
 							
-							<td class="dcf-col dcf-col-text">
+							<td class="dcf-col dcf-col-text pl-5 ps-5">
 								<span class="dcf-forum-title h6">[FORUM:FORUMLINK|
                                     <a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>
                                     ]</span>
