@@ -23,7 +23,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using Microsoft.Extensions.DependencyInjection;
 
     internal class URLNavigator : PortalModuleBase /*, INavigationManager*/

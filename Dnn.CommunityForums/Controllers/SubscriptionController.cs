@@ -20,14 +20,9 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using DotNetNuke.Data;
-    using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
+    using System.Web.UI.WebControls;
 
     internal partial class SubscriptionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>
     {

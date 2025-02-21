@@ -20,13 +20,8 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
-    using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 

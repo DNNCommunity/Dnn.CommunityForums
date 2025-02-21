@@ -21,13 +21,8 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Data;
-    using System.Web;
 
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Services.Journal;
-    using DotNetNuke.Web.Models;
-    using Microsoft.ApplicationBlocks.Data;
 
     public class Social
     {

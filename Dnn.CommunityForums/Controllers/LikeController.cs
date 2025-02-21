@@ -26,7 +26,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Text;
 
     using DotNetNuke.Collections;
-    using DotNetNuke.Modules.ActiveForums.API;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;

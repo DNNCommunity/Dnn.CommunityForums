@@ -27,28 +27,17 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
-    using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.UI.WebControls;
-    using System.Xml.Linq;
 
-    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
-    using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Modules.ActiveForums.Queue;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Localization;
-    using Microsoft.SqlServer.Server;
-
-    using static log4net.Appender.RollingFileAppender;
 
     public abstract partial class Utilities
     {
@@ -163,7 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Search popup
             templateStringBuilder.Replace("[AF:TB:SearchURL]", System.Net.WebUtility.HtmlEncode(NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search", $"f={forumId}" })));
-            templateStringBuilder.Replace("[AF:TB:AdvancedSearchURL]", System.Net.WebUtility.HtmlEncode( NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" })));
+            templateStringBuilder.Replace("[AF:TB:AdvancedSearchURL]", System.Net.WebUtility.HtmlEncode(NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" })));
             templateStringBuilder.Replace("[AF:TB:SearchText]", forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]");
             templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId, requestUri, rawUrl);
             return Utilities.LocalizeControl(templateStringBuilder.ToString());

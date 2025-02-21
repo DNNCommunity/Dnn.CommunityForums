@@ -21,7 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
 {
     using System;
-    using System.Collections.Generic;
 
     using DotNetNuke.Services.Scheduling;
 

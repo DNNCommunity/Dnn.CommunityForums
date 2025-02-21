@@ -22,10 +22,6 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
 
-    using DotNetNuke.Modules.ActiveForums.Entities;
-
-    using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
-
     public class URL
     {
         public static string ForumLink(int tabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)

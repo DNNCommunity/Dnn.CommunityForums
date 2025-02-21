@@ -23,21 +23,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     using System;
     using System.Data.SqlTypes;
     using System.Linq;
-    using System.Net;
-    using System.Runtime.CompilerServices;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
 
@@ -542,6 +537,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             // no longer using this
             template = RemoveObsoleteTokenByPrefix(template, "[SPLITBUTTONS2");
+
             // Add This -- obsolete so just remove
             template = RemoveObsoleteTokenByPrefix(template, "[AF:CONTROL:ADDTHIS");
 

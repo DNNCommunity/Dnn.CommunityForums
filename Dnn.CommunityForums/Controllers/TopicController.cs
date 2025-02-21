@@ -203,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.FeatureSettings.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, topicId, 0, ti.Author);
             }
 
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: ti.PortalId, tabId: ti.Forum.TabId, moduleId: ti.Forum.ModuleId, forumGroupId: ti.Forum.ForumGroupId, forumId: ti.ForumId, topicId: topicId,  replyId: -1,  contentId: ti.ContentId, userId: userId, authorId: ti.Content.AuthorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: ti.PortalId, tabId: ti.Forum.TabId, moduleId: ti.Forum.ModuleId, forumGroupId: ti.Forum.ForumGroupId, forumId: ti.ForumId, topicId: topicId, replyId: -1, contentId: ti.ContentId, userId: userId, authorId: ti.Content.AuthorId);
             return ti;
         }
 
@@ -298,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 new Social().DeleteJournalItemForPost(ti.PortalId, ti.ForumId, topicId, 0);
 
-                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(ti.ModuleId, ti.ForumId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(ti.ModuleId, ti.TopicId);

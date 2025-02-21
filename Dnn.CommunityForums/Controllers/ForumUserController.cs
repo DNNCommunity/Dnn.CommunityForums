@@ -18,22 +18,21 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Runtime.CompilerServices;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI.WebControls;
+
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
-    using DotNetNuke.UI.UserControls;
-    using System;
-    using System.Linq;
-    using System.Text;
-    using System.Threading;
-    using System.Web;
 
     internal class ForumUserController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
     {
@@ -262,6 +261,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     sSubject = topic.Content.Subject;
                     authorName = topic.Author.DisplayName;
                 }
+
                 string notificationSubject = Utilities.GetSharedResource("[RESX:BanAlertSubject]");
                 notificationSubject = notificationSubject.Replace("[Username]", bannedUser.Username);
                 notificationSubject = notificationSubject.Replace("[DisplayName]", bannedUser.DisplayName);
@@ -280,6 +280,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     {
                         JournalController.Instance.DeleteJournalItemByKey(portalId, objectKey);
                     }
+
                     postsRemoved.AppendLine($"{Utilities.GetUserFriendlyDateTimeString(c.DateUpdated, moduleId, bannedBy)}\t{c.Subject}");
                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(tabId, moduleId, c.ForumId, c.TopicId, c.ReplyId);
                 });
@@ -335,10 +336,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             sRank = string.Format("<img src='{0}{1}' border='0' alt='{2}' />", strHost, ri.Display.Replace("activeforums/Ranks", "ActiveForums/images/Ranks"), ri.RankName);
                             break;
                         }
+
                         sRank = ri.RankName;
                         break;
                     }
                 }
+
                 return sRank;
             }
             catch (Exception ex)
@@ -399,6 +402,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             }
+
             if (portalSettings == null)
             {
                 return null;
@@ -518,7 +522,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             sSql += "WHERE UserId = @1 AND PortalId = @0";
             DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, portalId, userId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, userId);
-
         }
 
         internal string GetUsersOnline(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)

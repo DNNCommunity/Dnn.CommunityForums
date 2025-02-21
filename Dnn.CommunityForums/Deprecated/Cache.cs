@@ -21,9 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Data;
-    using System.Web;
 
     public partial class DataCache
     {

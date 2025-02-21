@@ -21,10 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
     using System.Web;
     using System.Web.UI;
 
@@ -88,6 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.parseTemplate = value;
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int DataPageId
         {

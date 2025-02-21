@@ -21,11 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Data;
-
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.UI.UserControls;
 
     #region "Deprecated"
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo.")]

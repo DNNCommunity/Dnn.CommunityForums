@@ -21,7 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Reflection;
 
     [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo.")]
     public class ReplyInfo : DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo { }

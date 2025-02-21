@@ -21,10 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
-    using System.Data.SqlClient;
 
     using DotNetNuke.Common.Utilities;
     using Microsoft.ApplicationBlocks.Data;
@@ -708,7 +705,7 @@ namespace DotNetNuke.Modules.ActiveForums
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_UpdateActivity", PortalId, UserId);
         }
 
-       public override IDataReader Profiles_GetStats(int PortalId, int Interval)
+        public override IDataReader Profiles_GetStats(int PortalId, int Interval)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_Stats", PortalId, Interval);
         }

@@ -21,8 +21,8 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
+
     using DotNetNuke.ComponentModel.DataAnnotations;
-    using DotNetNuke.Services.Log.EventLog;
 
     [TableName("activeforums_Topics_Tracking")]
     [PrimaryKey("TrackingId", AutoIncrement = true)]
@@ -43,6 +43,5 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int UserId { get; set; }
 
         public DateTime DateAdded { get; set; } = DateTime.UtcNow;
-
     }
 }

@@ -21,15 +21,8 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
     using System.Linq;
     using System.Web.UI.WebControls;
-
-    using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
 
     public partial class admin_manageforums_home : ActiveAdminBase
     {

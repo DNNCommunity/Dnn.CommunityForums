@@ -23,13 +23,10 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Runtime.InteropServices;
     using System.Web.Http;
 
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
-    using global::DotNetNuke.Entities.Portals;
 
     [ValidateAntiForgeryToken]
     public class ModerationServiceController : DnnApiController
@@ -195,13 +192,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
                 }
+
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.moduleId).DeleteById(this.topicId);
                 if (fi.FeatureSettings.ModDeleteTemplateId > 0 && ti?.Content?.AuthorId > 0)
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.FeatureSettings.ModDeleteTemplateId, fi.PortalId, fi.ModuleId, fi.TabId, fi.ForumID, this.topicId, this.replyId, ti.Author);
                 }
             }
-
 
             NotificationsController.Instance.DeleteNotification(dto.NotificationId);
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
