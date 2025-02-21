@@ -1,7 +1,7 @@
 <div class="dcf-quick-search aftb-search" data-searchurl="[AF:TB:SearchURL]">
     <span class="dcf-search-link aftb-search-link">
         <span>
-            <i class="fa fa-search fa-fw fa-blue"></i>&nbsp;[AF:TB:SearchText]
+            <i class="fa fa-search fa-fw fa-blue"></i><span class="dcf-search-link-text">[AF:TB:SearchText]</span>
         </span>
         <span class="ui-icon ui-icon-triangle-1-s"></span>
     </span>
