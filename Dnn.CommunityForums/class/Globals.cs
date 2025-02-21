@@ -173,6 +173,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string LikeNotificationTypeDescription = Globals.ModuleFriendlyName + " Like Notification";
         public const string PinNotificationType = "DCF-PinNotification";
         public const string PinNotificationTypeDescription = Globals.ModuleFriendlyName + " Pin Notification";
+
+        public static Version ModuleVersion => new Version(DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).Version);
     }
 
     public class SettingKeys
