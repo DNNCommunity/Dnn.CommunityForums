@@ -1447,19 +1447,3 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
     }
 }
-
-#pragma warning disable SA1403 // File may only contain a single namespace
-namespace DotNetNuke.Modules.ActiveForums
-#pragma warning restore SA1403 // File may only contain a single namespace
-{
-    using System;
-
-    [Obsolete("Deprecated in Community Forums. Scheduled for removal in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.TopicInfo")]
-#pragma warning disable SA1600 // Elements should be documented
-#pragma warning disable SA1402 // File may only contain a single type
-    public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
-#pragma warning restore SA1600 // Elements should be documented
-#pragma warning restore SA1402 // File may only contain a single type
-    {
-    }
-}

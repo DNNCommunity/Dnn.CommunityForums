@@ -73,9 +73,10 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         [TestCase(0, 0, false, false, ExpectedResult = true)] // flood interval disables
         [TestCase(20, 25, false, false, ExpectedResult = true)]
         [TestCase(200, 25, false, true, ExpectedResult = true)] // user is an admin
+        [TestCase(200, null, false, false, ExpectedResult = true)] // user is an admin
         [TestCase(200, 25, true, false, ExpectedResult = true)] // interval is 200, anonymous, last post is 25, expect true
         [TestCase(200, 25, false, false, ExpectedResult = false)] // interval is 200, not anonymous, last post is 25, expect false
-        public bool HasFloodIntervalPassedTest1(int floodInterval, int secondsSinceLastPost, bool isAnonymous, bool isSuperUser)
+        public bool HasFloodIntervalPassedTest1(int floodInterval, object secondsSinceLastPost, bool isAnonymous, bool isSuperUser)
         {
             //Arrange
             var mockUserInfo = new Mock<DotNetNuke.Entities.Users.UserInfo>
@@ -98,10 +99,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                     PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
                     UserId = mockUserInfo.Object.UserID,
                     UserInfo = mockUserInfo.Object,
-                    DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost),
-                    DateLastReply = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost),
                 },
             };
+
+            if (secondsSinceLastPost != null)
+            {
+                mockUser.Object.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * (int)secondsSinceLastPost);
+                mockUser.Object.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * (int)secondsSinceLastPost);
+            }
 
             var featureSettings = new System.Collections.Hashtable
             {

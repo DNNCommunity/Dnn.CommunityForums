@@ -21,6 +21,8 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
+	using System.Runtime.CompilerServices;
+	using System.Web.UI;
 
     [Obsolete("Deprecated in Community Forums. Remove in 10.00.00. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
 
