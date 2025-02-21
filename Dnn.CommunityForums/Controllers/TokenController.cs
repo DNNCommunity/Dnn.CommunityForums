@@ -18,12 +18,12 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Runtime.CompilerServices;
-using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
+	using System.Runtime.CompilerServices;
+	using System.Web.UI;
 
     [Obsolete("Deprecated in Community Forums. Remove in 10.00.00. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
 

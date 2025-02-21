@@ -1402,7 +1402,6 @@
     <Compile Include="Entities\ForumUserInfo.cs" />
     <Compile Include="Entities\IPostInfo.cs" />
     <Compile Include="Entities\LikeInfo.cs" />
-    <Compile Include="Entities\Like.cs" />
     <Compile Include="Entities\FilterInfo.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
@@ -1573,7 +1572,6 @@
     <Compile Include="CustomControls\HTML\ForumContentView.cs" />
     <Compile Include="CustomControls\HTML\ForumDirectory.cs" />
     <Compile Include="CustomControls\HTML\Rating.cs" />
-    <Compile Include="CustomControls\HTML\SecurityGrid.cs" />
     <Compile Include="CustomControls\HTML\ToggleSubscribe.cs" />
     <Compile Include="CustomControls\HTML\TopicBrowser.cs" />
     <Compile Include="CustomControls\HTML\TopicViewer.cs" />
@@ -1716,7 +1714,6 @@
     <Compile Include="class\Author.cs" />
     <Compile Include="class\Rewards.cs" />
     <Compile Include="class\Templates.cs" />
-    <Compile Include="class\UsersOnline.cs" />
     <Compile Include="controls\admin_categories.ascx.designer.cs">
       <DependentUpon>admin_categories.ascx</DependentUpon>
     </Compile>
@@ -1843,9 +1840,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="class\ActiveAdminBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Deprecated\AMPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="class\CodeParser.cs">

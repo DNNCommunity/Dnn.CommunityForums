@@ -18,20 +18,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Text;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Social.Notifications;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     using DotNetNuke.Collections;
     using DotNetNuke.Modules.ActiveForums.API;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Social.Notifications;
 
     internal partial class LikeController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>
     {
@@ -221,30 +219,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return $"{tabId}:{moduleId}:{contentId}:{userId}";
         }
-    }
-}
-
-#pragma warning disable SA1403 // File may only contain a single namespace
-namespace DotNetNuke.Modules.ActiveForums
-#pragma warning restore SA1403 // File may only contain a single namespace
-{
-    using System;
-    using System.Collections.Generic;
-
-    using DotNetNuke.Data;
-
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController")]
-#pragma warning disable SA1400 // Access modifier should be declared
-    class LikesController : DotNetNuke.Modules.ActiveForums.Controllers.LikeController
-#pragma warning restore SA1400 // Access modifier should be declared
-    {
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController.GetForPost()")]
-#pragma warning disable SA1600 // Elements should be documented
-        public new List<DotNetNuke.Modules.ActiveForums.Likes> GetForPost(int postId) => throw new NotImplementedException();
-#pragma warning restore SA1600 // Elements should be documented
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Like()")]
-#pragma warning disable SA1600 // Elements should be documented
-        public new void Like(int contentId, int userId) => throw new NotImplementedException();
-#pragma warning restore SA1600 // Elements should be documented
     }
 }

@@ -47,9 +47,6 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use ForumUserController.")]
         public void Profiles_Save(UserProfileInfo upi) => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ForumUserController.ClearCache(int UserId)")]
-        public static void Profiles_ClearCache(int UserID) => throw new NotImplementedException();
-
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use ForumUserController.ClearCache(int UserId)")]
         public static void Profiles_ClearCache(int ModuleId, int UserId) => throw new NotImplementedException();
     }

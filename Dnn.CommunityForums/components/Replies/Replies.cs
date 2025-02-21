@@ -35,9 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
         public int Reply_QuickCreate(int portalId, int moduleId, int forumId, int topicId, int replyToId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).Reply_QuickCreate(portalId, moduleId, forumId, topicId, replyToId, subject, body, userId, displayName, isApproved, iPAddress);
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
-        public int Reply_Save(int portalId, ReplyInfo ri) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(-1).Reply_Save(portalId, -1, ri);
-
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
         public int Reply_Save(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.ReplyInfo ri) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).Reply_Save(portalId, moduleId, ri);
 
