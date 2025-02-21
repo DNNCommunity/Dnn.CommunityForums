@@ -26,17 +26,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public abstract partial class Utilities
     {
-        [Obsolete("Deprecated in Community Forums. To be removed in 09.00.00. Use ManageImagePath(string sHTML, Uri hostUri)")]
-        public static string ManageImagePath(string sHTML)
-        {
-            return ManageImagePath(sHTML, HttpContext.Current.Request.Url);
-        }
-
-        [Obsolete("Deprecated in Community Forums. To be removed in 09.00.00. Use ManageImagePath(string sHTML, Uri hostUri)")]
-        public static string ManageImagePath(string sHTML, string hostWithScheme)
-        {
-            return ManageImagePath(sHTML, new Uri(hostWithScheme));
-        }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int ModuleId, int forumId).")]
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int forumId)
@@ -203,12 +192,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 return dateStr;
             }
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlEncode.")]
-        public static string HtmlEncode(string strMessage = "") => System.Net.WebUtility.HtmlEncode(strMessage);
-
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlDecode.")]
-        public static string HtmlDecode(string strMessage) => System.Net.WebUtility.HtmlDecode(strMessage);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId) [Note URL in NavigateURL() is uppercase]")]
         public static string NavigateUrl(int tabId)

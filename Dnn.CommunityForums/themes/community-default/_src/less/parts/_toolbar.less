@@ -70,6 +70,15 @@
             cursor: pointer;
         }
 
+        // Hide search text on mobile
+        .dcf-search-link-text{
+            display:none;
+            @media screen and (min-width: @break-tablet){
+                display:inline;
+                margin-left: 0.2em;
+            }
+        }
+
         .dcf-search-popup {
             background: white;
             border: solid 1px #eee;

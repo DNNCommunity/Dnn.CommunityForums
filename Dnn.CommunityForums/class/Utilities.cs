@@ -43,24 +43,6 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
 
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, removeHTML, HttpContext.Current.Request.Url);
-        }
-
-        [Obsolete(message: "Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, true, true, HttpContext.Current.Request.Url);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string ImportFilter(int portalID, int moduleID)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(portalID, moduleID);
-        }
-
         internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
             if (string.IsNullOrEmpty(template))
@@ -180,8 +162,8 @@ namespace DotNetNuke.Modules.ActiveForums
             3) user is an admin or superuser
             4) user is designated as a trusted user for the forum
             5) user has moderator (edit, delete, approve) permissions for the forum
-            6) time span for since user's last post or reply exceeds flood interval
-            */
+            6) user has never posted
+            7) time span for since user's last post or reply exceeds flood interval*/
             return floodInterval <= 0
                    || forumUser == null
                    || forumUser.IsAnonymous
@@ -189,6 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums
                    || forumUser.IsSuperUser
                    || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.TrustRoleIds, forumUser.UserRoleIds), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
                    || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.ModerateRoleIds, forumUser.UserRoleIds)
+                   || (forumUser.DateLastPost == null)
                    || (forumUser.DateLastPost != null && SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)forumUser.DateLastPost, DateTime.UtcNow) > floodInterval)
                    || (forumUser.DateLastReply != null && SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)forumUser.DateLastReply, DateTime.UtcNow) > floodInterval);
         }
