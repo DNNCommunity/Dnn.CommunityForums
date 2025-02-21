@@ -10,6 +10,11 @@
 ------------ */
 
 
+/* Module Init screen */
+.dcf-init-screen img{
+	max-width: 300px;
+}
+
 /* #1 New wrapper class */
 .dnn-community-forums input[type=checkbox],
 .dnn-community-forums input[type=radio] {
