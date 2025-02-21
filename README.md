@@ -35,7 +35,8 @@ We don't have every single feature documented, but what we have is [currently ma
 
 ## Minimum DNN Version  
 
-- DNN Platform 9.9 or newer  
+- DNN Community Forums 8.x requires DNN Platform 9.9 or newer
+- DNN Community Forums 9.x requires DNN Platform 9.11 or newer  
 
 ## Get Involved  
 
