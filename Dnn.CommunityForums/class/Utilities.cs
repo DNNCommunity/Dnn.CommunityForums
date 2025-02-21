@@ -191,8 +191,8 @@ namespace DotNetNuke.Modules.ActiveForums
             3) user is an admin or superuser
             4) user is designated as a trusted user for the forum
             5) user has moderator (edit, delete, approve) permissions for the forum
-            6) time span for since user's last post or reply exceeds flood interval
-            */
+            6) user has never posted
+            7) time span for since user's last post or reply exceeds flood interval*/
             return floodInterval <= 0
                    || forumUser == null
                    || forumUser.IsAnonymous
@@ -200,6 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums
                    || forumUser.IsSuperUser
                    || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, forumUser.UserRoles), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
                    || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, forumUser.UserRoles)
+                   || (forumUser.DateLastPost == null)
                    || (forumUser.DateLastPost != null && SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)forumUser.DateLastPost, DateTime.UtcNow) > floodInterval)
                    || (forumUser.DateLastReply != null && SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)forumUser.DateLastReply, DateTime.UtcNow) > floodInterval);
         }
