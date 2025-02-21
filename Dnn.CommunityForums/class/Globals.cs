@@ -21,6 +21,9 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
+
+    using DotNetNuke.Entities.Modules;
+
     #region Enumerations
 
     public enum AttachStores
