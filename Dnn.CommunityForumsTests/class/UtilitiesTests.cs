@@ -134,60 +134,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
-        public void HtmlEncodeTestEmptyTag()
-        {
-            // Arrange
-            // Act
-            string actualResult = Utilities.HtmlEncode(string.Empty);
-
-            // Assert
-            Assert.That(actualResult, Is.Empty);
-        }
-
-        [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlEncode.")]
-        public void HtmlEncodeTest()
-        {
-            // Arrange
-            string tag = "<p>";
-            string expectedResult = "&lt;p&gt;";
-
-            // Act
-            string actualResult = Utilities.HtmlEncode(tag);
-
-            // Assert
-            Assert.That(actualResult, Is.EqualTo(expectedResult));
-        }
-
-        [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlDecode.")]
-        public void HtmlDecodeTestEmptyTag()
-        {
-            // Arrange
-            // Act
-            string actualResult = Utilities.HtmlDecode(string.Empty);
-
-            // Assert
-            Assert.That(actualResult, Is.Empty);
-        }
-
-        [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlDecode.")]
-        public void HtmlDecodeTest()
-        {
-            // Arrange
-            string tag = "&lt;p&gt;";
-            string expectedResult = "<p>";
-
-            // Act
-            string actualResult = Utilities.HtmlDecode(tag);
-
-            // Assert
-            Assert.That(actualResult, Is.EqualTo(expectedResult));
-        }
-
-        [Test]
         [TestCase("", ExpectedResult = false)]
         [TestCase("<p>test<p>", ExpectedResult = true)]
         [TestCase("<p>test</p>", ExpectedResult = true)]

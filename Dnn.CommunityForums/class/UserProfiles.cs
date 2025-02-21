@@ -26,20 +26,11 @@ namespace DotNetNuke.Modules.ActiveForums
     public class UserProfiles
     {
         #region "Deprecated Methods"
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Not used.")]
-        public static string GetAvatar(int userID, int avatarWidth, int avatarHeight) => throw new NotImplementedException();
-
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use method with PortalSettings as a parameter.")]
         public static string GetDisplayName(int moduleId, int userID, string username, string firstName = "", string lastName = "", string displayName = "", string profileNameClass = "af-profile-name") => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use method with PortalSettings as a parameter.")]
         public static string GetDisplayName(int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name") => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Not used.")]
-        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name") => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Not used.")]
-        public static string UserStatus(string themePath, bool isUserOnline, int userID, int moduleID, string altOnlineText = "User is Online", string altOfflineText = "User is Offline") => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank()")]
         public static string GetUserRank(int portalId, int moduleID, int userID, int posts, int returnType) => throw new NotImplementedException();
