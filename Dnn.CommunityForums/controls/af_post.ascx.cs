@@ -375,7 +375,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                 this.Context.ApplicationInstance.CompleteRequest();
             }
-            else if (!this.canModEdit && ti.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ti.Content.DateCreated, DateTime.UtcNow) > this.MainSettings.EditInterval)
+            else if (!this.canModEdit && ti.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 && DateTime.UtcNow.Subtract(ti.Content.DateCreated).TotalMinutes > this.MainSettings.EditInterval)
             {
                 var im = new InfoMessage
                 {
@@ -461,7 +461,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                 this.Context.ApplicationInstance.CompleteRequest();
             }
-            else if (!this.canModEdit && ri.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ri.Content.DateCreated, DateTime.UtcNow) > this.MainSettings.EditInterval)
+            else if (!this.canModEdit && ri.Content.AuthorId == this.UserId && this.canEdit && !Utilities.HasEditIntervalPassed(editInterval: this.ForumInfo.MainSettings.EditInterval, forumUser: this.ForumUser, forumInfo: this.ForumInfo, postInfo: ri))
             {
                 var im = new Controls.InfoMessage
                 {

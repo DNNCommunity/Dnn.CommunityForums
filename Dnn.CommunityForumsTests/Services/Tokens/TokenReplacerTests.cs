@@ -111,7 +111,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                 {
                     PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
                     UserId = mockUserInfo.Object.UserID,
-                    IsAuthenticated = true,
                     UserInfo = mockUserInfo.Object,
                     UserRoles = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}{emptyPermissions}",
                 },
@@ -210,7 +209,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                 {
                     PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
                     UserId = mockUserInfo.Object.UserID,
-                    IsAuthenticated = true,
                     UserInfo = mockUserInfo.Object,
                     UserRoles = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}{emptyPermissions}",
                 },
@@ -318,7 +316,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                 {
                     PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
                     UserId = mockUserInfo.Object.UserID,
-                    IsAuthenticated = true,
                     UserInfo = mockUserInfo.Object,
                     UserRoles = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}{emptyPermissions}",
                 },
@@ -405,7 +402,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                 {
                     PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
                     UserId = mockUserInfo.Object.UserID,
-                    IsAuthenticated = true,
                     UserInfo = mockUserInfo.Object,
                     UserRoles = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}{emptyPermissions}",
                 },

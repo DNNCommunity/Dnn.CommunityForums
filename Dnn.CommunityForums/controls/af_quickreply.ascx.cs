@@ -236,19 +236,12 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SaveQuickReply()
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.PortalId, this.ForumModuleId, this.ForumId, false, this.TopicId);
-            if (!Utilities.HasFloodIntervalPassed(floodInterval: this.MainSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: forumInfo))
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: this.ForumInfo.MainSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: forumInfo))
             {
-                var upi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UserId);
-                if (upi?.DateLastPost!=null)
-                {
-                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)upi.DateLastPost, DateTime.UtcNow) < this.MainSettings.FloodInterval)
-                    {
-                        Controls.InfoMessage im = new Controls.InfoMessage();
-                        im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), this.MainSettings.FloodInterval) + "</div>";
-                        this.plhMessage.Controls.Add(im);
-                        return;
-                    }
-                }
+                Controls.InfoMessage im = new Controls.InfoMessage();
+                im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), this.MainSettings.FloodInterval) + "</div>";
+                this.plhMessage.Controls.Add(im);
+                return;
             }
 
             if (!this.Request.IsAuthenticated)
