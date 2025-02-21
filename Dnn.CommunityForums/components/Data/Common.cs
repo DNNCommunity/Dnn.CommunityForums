@@ -29,12 +29,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     public class Common : DataConfig
     {
         #region Security
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
-        public void SavePermissionSet(int permissionSetId, string permissionSet) => SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "Permissions_Save", permissionSetId, permissionSet);
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
-        public IDataReader GetRoles(int portalId) => SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Permissions_GetRoles", portalId);
-
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPermSet.")]
         public string GetPermSet(int permissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(-1, permissionsId, requestedAccess);
 

@@ -132,5 +132,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.currentView = value;
             }
         }
+        protected override void Render(HtmlTextWriter writer)
+        {
+            var stringWriter = new System.IO.StringWriter();
+            var htmlWriter = new HtmlTextWriter(stringWriter);
+            base.Render(htmlWriter);
+            string html = stringWriter.ToString();
+            html = this.LocalizeControl(html);
+            writer.Write(html);
+        }
     }
 }

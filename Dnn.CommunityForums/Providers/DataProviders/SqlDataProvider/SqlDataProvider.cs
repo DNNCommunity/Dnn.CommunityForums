@@ -226,12 +226,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Groups_Get", ModuleId, ForumGroupID);
         }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Used by Cache but only Cleared but never Set so not needed.")]
-        public override IDataReader Groups_List(int ModuleId)
-        {
-            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Groups_List", ModuleId);
-        }
-
         public override void Groups_Move(int ModuleId, int ForumGroupId, int SortDirection)
         {
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Groups_MoveGroup", ModuleId, ForumGroupId, SortDirection);
