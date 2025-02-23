@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <AssemblyName>DotNetNuke.Modules.ActiveForums</AssemblyName>
-        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
         <OutputType>Library</OutputType>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <TargetFramework>net472</TargetFramework>
@@ -14,11 +13,15 @@
         <Description>Discussion Forum Module for DNN</Description>
         <Company>dnncommunity.org</Company>
         <Authors>dnncommunity.org</Authors>
-        <FileVersion>08.02.04.00</FileVersion>
-        <AssemblyVersion>08.02.04.00</AssemblyVersion>
         <IncludeSymbols>False</IncludeSymbols>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <AnalysisLevel>latest</AnalysisLevel>
+        <FileVersion>09.00.00.00</FileVersion>
+        <AssemblyVersion>09.00.00.00</AssemblyVersion>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -35,8 +38,17 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="packages.config" />
+      <None Remove="CustomControls\Resources\TextSuggest.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0" />
-        <PackageReference Include="DotNetNuke.Abstractions" Version="9.13.7" />
+        <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web.Client" Version="9.11.0" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
