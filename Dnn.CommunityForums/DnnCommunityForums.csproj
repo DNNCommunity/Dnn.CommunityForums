@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <AssemblyName>DotNetNuke.Modules.ActiveForums</AssemblyName>
-        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
         <OutputType>Library</OutputType>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <TargetFramework>net472</TargetFramework>
@@ -14,11 +13,15 @@
         <Description>Discussion Forum Module for DNN</Description>
         <Company>dnncommunity.org</Company>
         <Authors>dnncommunity.org</Authors>
-        <FileVersion>08.02.04.00</FileVersion>
-        <AssemblyVersion>08.02.04.00</AssemblyVersion>
         <IncludeSymbols>False</IncludeSymbols>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <AnalysisLevel>latest</AnalysisLevel>
+        <FileVersion>09.00.00.00</FileVersion>
+        <AssemblyVersion>09.00.00.00</AssemblyVersion>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -75,6 +78,16 @@
     <ItemGroup>
         <InternalsVisibleTo Include="DotNetNuke.Modules.ActiveForumsTests" /> <!-- [assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForums.Tests")] -->
         <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
+        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" /> <!-- [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] for Moq -->
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\LICENSE">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
+        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" /> <!-- [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] for Moq -->
     </ItemGroup>
 
     <Import Project="Module.build" />
