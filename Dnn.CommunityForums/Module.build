@@ -1,4 +1,4 @@
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ModulePath>ActiveForums</ModulePath>
     <DNNFileName>DnnCommunityForums</DNNFileName>
@@ -33,8 +33,8 @@
   </ItemGroup>
   <Target Name="CopyBin">
     <ItemGroup>
-      <BinSourceInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.dll" />
-      <BinSourceInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.pdb" />
+      <BinSourceInclude Include="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).dll" />
+      <BinSourceInclude Include="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).pdb" />
     </ItemGroup>
     <Copy SourceFiles="@(BinSourceInclude)" DestinationFolder="$(WebsitePath)\bin" />
   </Target>
