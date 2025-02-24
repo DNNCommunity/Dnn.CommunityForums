@@ -19,7 +19,6 @@
         <FileVersion>09.00.00.00</FileVersion>
         <AssemblyVersion>09.00.00.00</AssemblyVersion>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
     </PropertyGroup>
@@ -38,7 +37,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DotNetNuke.Abstractions" Version="9.13.7" />
+        <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web.Client" Version="9.11.0" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
@@ -78,16 +77,6 @@
     <ItemGroup>
         <InternalsVisibleTo Include="DotNetNuke.Modules.ActiveForumsTests" /> <!-- [assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForums.Tests")] -->
         <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
-        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" /> <!-- [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] for Moq -->
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="..\LICENSE">
-        <Pack>True</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
-        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
-        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" /> <!-- [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] for Moq -->
     </ItemGroup>
 
     <Import Project="Module.build" />
