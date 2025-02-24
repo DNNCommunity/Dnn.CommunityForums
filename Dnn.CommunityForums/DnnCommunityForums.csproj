@@ -39,6 +39,7 @@
 
     <ItemGroup>
       <None Remove="packages.config" />
+      <None Remove="CustomControls\Resources\TextSuggest.js" />
     </ItemGroup>
 
     <ItemGroup>
@@ -100,3 +101,9 @@
     <Import Project="Module.build" />
 </Project>
  
+
+    <ItemGroup>
+        <EmbeddedResource Include="sql\FullTextInstallPart1.sql" />
+        <EmbeddedResource Include="sql\FullTextInstallPart2.sql" />
+    </ItemGroup>
+</Project>

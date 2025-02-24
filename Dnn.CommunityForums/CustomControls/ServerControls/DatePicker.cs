@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Threading;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     [DefaultProperty("Text"), ValidationProperty("SelectedDate"), ToolboxData("<{0}:datepicker runat=server></{0}:datepicker>")]
     public class DatePicker : CompositeControl
@@ -535,7 +536,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 writer.RenderBeginTag(HtmlTextWriterTag.Td);
                 if (this.ImageUrl == string.Empty)
                 {
-                    this.ImageUrl = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.calendar.gif");
+                    this.ImageUrl = this.Page.ResolveUrl(Globals.ModulePath + "/CustomControls/Resources/calendar.gif");
                 }
 
                 if (this.Enabled)
@@ -631,7 +632,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 str.Append("window." + this.ClientID + ".SelectedTime='" + sTime + "';");
                 if (string.IsNullOrEmpty(this.ImgNext))
                 {
-                    str.Append("window." + this.ClientID + ".ImgNext='" + this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cal_nextMonth.gif") + "';");
+                    str.Append("window." + this.ClientID + ".ImgNext='" + this.Page.ResolveUrl(Globals.ModulePath + "/CustomControls/Resources/cal_nextMonth.gif") + "';");
                 }
                 else
                 {
@@ -640,7 +641,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (string.IsNullOrEmpty(this.ImgPrev))
                 {
-                    str.Append("window." + this.ClientID + ".ImgPrev='" + this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cal_prevMonth.gif") + "';");
+
+                    str.Append("window." + this.ClientID + ".ImgPrev='" + this.Page.ResolveUrl(Globals.ModulePath + "/CustomControls/Resources/cal_prevMonth.gif") + "';");
                 }
                 else
                 {
@@ -754,17 +756,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMDatePicker"))
-            {
-#if DEBUG
-                this.Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", this.Page.ResolveUrl("~/DesktopModules/activeforums/customcontrols/resources/datepicker.js"));
-
-#else
-                this.Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.datepicker.js"));
-#endif
-
-            }
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/datepicker.js", 102);
 
             try
             {
