@@ -53,7 +53,7 @@
                                 ]</td>
 							<td class="dcf-col dcf-col-subject" title="[FORUMTOPIC:BODYTITLE]">
 								<div class="dcf-subject">
-										<h4 class="dcf-title dcf-title-4">[FORUMTOPIC:SUBJECTLINK]</h4>
+										<h4 class="dcf-title dcf-title-4">[FORUMTOPIC:SUBJECTLINK|<a href="{0}" class="dcf-topic-link">[FORUMTOPIC:SUBJECT]</a>]</h4>
 										<div class="dcf-topic-started">[RESX:StartedHeader] <i class="fa fa-user fa-blue"></i>&nbsp;[FORUMTOPIC:AUTHORDISPLAYNAMELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>|[FORUMTOPIC:AUTHORDISPLAYNAME]][AF:UI:MINIPAGER]</div>
 
 									<div class="dcf-forum-description">[FORUMTOPIC:BODYTITLE]</div>
@@ -133,7 +133,7 @@
 					<td class="dcf-col dcf-col-subject">
 						<div class="dcf-subject" title="[FORUMTOPIC:BODYTITLE]">
 
-							<h4 class="dcf-title dcf-title-4">[FORUMTOPIC:SUBJECTLINK]
+							<h4 class="dcf-title dcf-title-4">[FORUMTOPIC:SUBJECTLINK|<a href="{0}" title="[FORUMTOPIC:BODYTITLE]" class="dcf-topic-link">[FORUMTOPIC:SUBJECT]</a>]
                                 [FORUMTOPIC:ICONPINNED|&nbsp;&nbsp;<i id="af-topicsview-pin-{0}" class="fa fa-thumb-tack fa-fw fa-red"></i>]
                                 [FORUMTOPIC:ICONUNPINNED|&nbsp;&nbsp;<i id="af-topicsview-pin-{0}" class="fa fa-fw fa-red"></i>]
                                 [FORUMTOPIC:ICONLOCKED|&nbsp;&nbsp;<i id="af-topicsview-lock-{0}" class="fa fa-lock fa-fw fa-red"></i>]

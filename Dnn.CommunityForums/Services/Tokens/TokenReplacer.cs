@@ -931,7 +931,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = ReplaceTokenSynonym(template, "[AF:URL:LASTREPLY]", "[FORUMTOPIC:LASTREPLYURL]");
 
             template = ReplaceTokenSynonym(template, "[SUBJECT]", "[FORUMTOPIC:SUBJECT]");
-            template = ReplaceTokenSynonym(template, "[SUBJECTLINK]", "[FORUMTOPIC:SUBJECTLINK]");
 
             template = ReplaceTokenSynonymPrefix(template, "[BODY", "[FORUMTOPIC:BODY");
             template = ReplaceTokenSynonymPrefix(template, "[SUMMARY", "[FORUMTOPIC:SUMMARY");
@@ -951,6 +950,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[ICONUNPINNED]", "[FORUMTOPIC:ICONUNPINNED", "[ICONPIN]-HideIcon");
             }
 
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[SUBJECTLINK]", "[FORUMTOPIC:SUBJECTLINK", "[SUBJECTLINK]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[POSTICON]", "[FORUMTOPIC:POSTICON", "[POSTICON]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[POSTRATINGDISPLAY]", "[FORUMTOPIC:RATING", "[POSTRATING]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[NEXTTOPIC]", "[FORUMTOPIC:NEXTTOPICLINK", "[NEXTTOPICLINK]");
@@ -1024,7 +1024,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[LINK]", "[FORUMPOST:LINK", "[LINK]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[HYPERLINK]", "[FORUMPOST:LINK", "[LINK]");
             template = ReplaceTokenSynonym(template, "[SUBJECT]", "[FORUMPOST:SUBJECT]");
-            template = ReplaceTokenSynonym(template, "[SUBJECTLINK]", "[FORUMPOST:SUBJECTLINK]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[SUBJECTLINK]", "[FORUMTOPIC:SUBJECTLINK", "[SUBJECTLINK]");
             template = ReplaceTokenSynonym(template, "[LINKURL]", "[FORUMPOST:LINK]");
             template = ReplaceTokenSynonym(template, "[FORUMLINK]", "[FORUM:FORUMLINK]");
 

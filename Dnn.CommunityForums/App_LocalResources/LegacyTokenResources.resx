@@ -417,4 +417,7 @@
   <data name="[LIKESx3].Text" xml:space="preserve">
     <value>&lt;i id="af-topicview-likes-[FORUMPOST:CONTENTID]" class="fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-3x" style="cursor: pointer" onclick="{0}"&gt; [FORUMPOST:LIKECOUNT]&lt;/i&gt;|&lt;i id="af-topicview-likes" class="fa [FORUMPOST:ISLIKED|fa-thumbs-o-up|fa-thumbs-up] fa-2x"&gt; [FORUMPOST:LIKECOUNT]&lt;/i&gt;</value>
   </data>
+  <data name="[SUBJECTLINK].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" class="dcf-topic-link"&gt;[FORUMTOPIC:SUBJECT]&lt;/a&gt;</value>
+  </data>
 </root>
