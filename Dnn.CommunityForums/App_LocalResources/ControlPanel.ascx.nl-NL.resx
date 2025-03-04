@@ -1630,4 +1630,7 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:Tips:EmailSubjectTemplate].Text" xml:space="preserve">
     <value>Voer de sjabloon in die als onderwerpregel moet worden gebruikt bij het verzenden van meldingen. De sjabloon kan tokens bevatten. Ga naar de Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums) van de DNN-communityforums en bekijk de wiki voor documentatie over tokens.</value>
   </data>
+  <data name="[RESX:Tips:AllowLikes].Text" xml:space="preserve">
+    <value>Laat kijkers berichten en antwoorden op onderwerpen 'liken'.</value>
+  </data>
 </root>

@@ -982,7 +982,7 @@
     <value>Allow users to subscribe to this forum with RSS.  Only security roles with Read access can subscribe.</value>
   </data>
   <data name="[RESX:Tips:Scripts].Text" xml:space="preserve">
-    <value>Allow users to insert javascript with their posts.  Not recommended.</value>
+    <value>Allow users to insert javascript with their posts. Not recommended.</value>
   </data>
   <data name="[RESX:Tips:SiteURL].Text" xml:space="preserve">
     <value>This should be the default website address for your portal.</value>
@@ -995,6 +995,9 @@
   </data>
   <data name="[RESX:Tips:Tags].Text" xml:space="preserve">
     <value>Allow authors to enter tags when creating posts.</value>
+  </data>
+  <data name="[RESX:Tips:AllowLikes].Text" xml:space="preserve">
+    <value>Allow viewers to 'like' topic posts and replies.</value>
   </data>
   <data name="[RESX:EditTimeLimit].Text" xml:space="preserve">
     <value>Edit Interval</value>

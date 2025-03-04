@@ -1483,4 +1483,7 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:EmailSubjectTemplate].Text" xml:space="preserve">
     <value>Entrez le modèle à utiliser comme ligne d’objet lors de l’envoi de notifications. Le modèle peut inclure des jetons. Veuillez visiter le référentiel Github des forums de la communauté DNN (https://github.com/DNNCommunity/Dnn.CommunityForums) et consulter le wiki pour obtenir de la documentation sur les jetons.</value>
   </data>
+  <data name="[RESX:Tips:AllowLikes].Text" xml:space="preserve">
+    <value>Permettez aux spectateurs d’aimer les publications et les réponses des sujets.</value>
+  </data>
 </root>
