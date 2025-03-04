@@ -40,6 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public partial class af_post : ForumBase
     {
@@ -169,10 +170,10 @@ namespace DotNetNuke.Modules.ActiveForums
             switch (this.editorType)
             {
                 case EditorTypes.TEXTBOX:
-                    this.Page.ClientScript.RegisterClientScriptInclude("afeditor", this.Page.ResolveUrl(Globals.ModulePath + "scripts/text_editor.js"));
+                    ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/text_editor.js", 102);
                     break;
                 case EditorTypes.ACTIVEEDITOR:
-                    this.Page.ClientScript.RegisterClientScriptInclude("afeditor", this.Page.ResolveUrl(Globals.ModulePath + "scripts/active_editor.js"));
+                    ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/active_editor.js", 102);
                     break;
                 default:
                     {
@@ -180,15 +181,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         if (prov.DefaultProvider.Contains("CKHtmlEditorProvider") || prov.DefaultProvider.Contains("DNNConnect.CKE"))
                         {
-                            this.Page.ClientScript.RegisterClientScriptInclude("afeditor", this.Page.ResolveUrl(Globals.ModulePath + "scripts/ck_editor.js"));
+                            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/ck_editor.js", 102);
                         }
                         else if (prov.DefaultProvider.Contains("FckHtmlEditorProvider"))
                         {
-                            this.Page.ClientScript.RegisterClientScriptInclude("afeditor", this.Page.ResolveUrl(Globals.ModulePath + "scripts/fck_editor.js"));
+                            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/fck_editor.js", 102);
                         }
                         else
                         {
-                            this.Page.ClientScript.RegisterClientScriptInclude("afeditor", this.Page.ResolveUrl(Globals.ModulePath + "scripts/other_editor.js"));
+                            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/other_editor.js", 102);
                         }
                     }
 
