@@ -60,9 +60,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         objModule.ForumInfo = this.fi;
                         objModule.ForumId = this.ForumId;
                         objModule.ForumGroupId = this.ForumGroupId;
-                        objModule.DefaultForumViewTemplateId = this.DefaultForumViewTemplateId;
-                        objModule.DefaultTopicsViewTemplateId = this.DefaultTopicsViewTemplateId;
-                        objModule.DefaultTopicViewTemplateId = this.DefaultTopicViewTemplateId;
                         objModule.ParentForumId = this.ParentForumId;
                         objModule.ForumIds = this.ForumIds;
                         this.Controls.Add(objModule);

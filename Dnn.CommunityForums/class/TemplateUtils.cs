@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Modules.ActiveForums.Enums;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -91,7 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion "Deprecated Methods"
 
-        internal static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, bool topicSubscriber, INavigationManager navigationManager, Uri requestUrl, string rawUrl)
+        internal static string ParseEmailTemplate(string template, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, bool topicSubscriber, INavigationManager navigationManager, Uri requestUrl, string rawUrl)
         {
             if (navigationManager == null)
             {
@@ -103,17 +104,6 @@ namespace DotNetNuke.Modules.ActiveForums
             if (author == null)
             {
                 author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalID, moduleID, accessingUser.UserId);
-            }
-
-            // If we have a template name, load the template into sOut
-            if (templateName != string.Empty)
-            {
-                if (templateName.Contains("_Subject_"))
-                {
-                    templateName = templateName.Replace(string.Concat("_Subject_", moduleID), string.Empty);
-                }
-
-                template = TemplateCache.GetCachedTemplate(moduleID, templateName, -1);
             }
 
             var templateStringbuilder = new StringBuilder(template);
@@ -250,7 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var myTemplate = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey));
             if (string.IsNullOrEmpty(myTemplate))
             {
-                myTemplate = TemplateCache.GetCachedTemplate(moduleId, "ProfileInfo", -1);
+                myTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.ProfileInfo, SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
                 if (cacheKey != string.Empty)
                 {
                     DataCache.SettingsCacheStore(moduleId, cacheKey, myTemplate);
@@ -524,7 +514,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string PreviewTopic(int topicTemplateID, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string body, string imagePath, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset)
         {
-            var sTemplate = TemplateCache.GetCachedTemplate(forumInfo.ModuleId, "TopicView", topicTemplateID);
+            var sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumInfo.ModuleId, Enums.TemplateType.TopicView, forumInfo.FeatureSettings.TemplateFileNameSuffix);
             try
             {
                 var mainSettings = SettingsBase.GetModuleSettings(forumInfo.ModuleId);
