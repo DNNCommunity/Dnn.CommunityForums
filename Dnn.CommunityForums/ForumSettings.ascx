@@ -31,11 +31,6 @@
 			</asp:DropDownList>
 	   </div>
 		<div class="dnnFormItem">
-			<dnn:Label ID="lblTemplate" resourcekey="ForumTemplate" runat="server" Suffix=":" /> 
-			<asp:DropDownList ID="drpTemplates" runat="server" />
-
-	   </div>
-		<div class="dnnFormItem">
 			<dnn:label ID="lblDefaultPageSize" runat="server" resourcekey="DefaultPageSize" Suffix=":" />
             <asp:DropDownList ID="drpPageSize" runat="server">
                 <asp:ListItem>5</asp:ListItem>

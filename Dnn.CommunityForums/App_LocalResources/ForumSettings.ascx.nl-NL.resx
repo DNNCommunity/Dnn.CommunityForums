@@ -129,12 +129,6 @@
   <data name="ForumGroupTemplate.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Forumgroep voor nieuwe forums</value>
   </data>
-  <data name="ForumTemplate.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Selecteer de sjabloon voor de pagina waarop al je forums worden weergegeven.</value>
-  </data>
-  <data name="ForumTemplate.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Sjabloon</value>
-  </data>
   <data name="ForumTheme.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Selecteer het grafische thema voor je forum.</value>
   </data>

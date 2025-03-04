@@ -95,18 +95,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public int TemplateId
-        {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.ForumTemplateId);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.ForumTemplateId, value.ToString());
-            }
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public int TemplateId => throw new NotImplementedException();
 
         public int PageSize
         {

@@ -129,12 +129,6 @@
   <data name="ForumGroupTemplate.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Groupe de Forum pour les nouveaux forums</value>
   </data>
-  <data name="ForumTemplate.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Sélectionnez le modèle de la page qui affichera tous vos forums.</value>
-  </data>
-  <data name="ForumTemplate.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Modèle</value>
-  </data>
   <data name="ForumTheme.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Sélectionnez le thème graphique de votre forum.</value>
   </data>
