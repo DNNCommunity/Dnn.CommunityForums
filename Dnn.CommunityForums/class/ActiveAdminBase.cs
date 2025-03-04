@@ -99,15 +99,8 @@ namespace DotNetNuke.Modules.ActiveForums
             return template;
         }
 
-        public void BindTemplateDropDown(DropDownList drp, Templates.TemplateTypes templateType, string defaultText, string defaultValue)
-        {
-            var tc = new TemplateController();
-            drp.DataTextField = "Title";
-            drp.DataValueField = "TemplateID";
-            drp.DataSource = tc.Template_List(this.PortalId, this.ModuleId, templateType);
-            drp.DataBind();
-            drp.Items.Insert(0, new ListItem(defaultText, defaultValue));
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public void BindTemplateDropDown(DropDownList drp, DotNetNuke.Modules.ActiveForums.Templates.TemplateTypes templateType, string defaultText, string defaultValue) => throw new NotImplementedException();
 
         public string CurrentView
         {
@@ -131,6 +124,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Session[ViewKey] = value;
                 this.currentView = value;
             }
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            var stringWriter = new System.IO.StringWriter();
+            var htmlWriter = new HtmlTextWriter(stringWriter);
+            base.Render(htmlWriter);
+            string html = stringWriter.ToString();
+            html = this.LocalizeControl(html);
+            writer.Write(html);
         }
     }
 }

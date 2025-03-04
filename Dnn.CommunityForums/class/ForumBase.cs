@@ -60,10 +60,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string ForumIds { get; set; } = string.Empty;
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
         public int DefaultForumViewTemplateId { get; set; } = -1;
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int DefaultTopicsViewTemplateId { get; set; } = -1;
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int DefaultTopicViewTemplateId { get; set; } = -1;
 
         public string DefaultView { get; set; } = Views.ForumView;
