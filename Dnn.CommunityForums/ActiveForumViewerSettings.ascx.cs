@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public void LoadForumGroups(int forumModuleID)
         {
             this.drpForum.Items.Insert(0, new ListItem("-- Select a Group or Forum --", "-1"));
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(forumModuleID).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
 
             int i = 1;
             string groupName = string.Empty;

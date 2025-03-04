@@ -302,6 +302,14 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "FORUMTEMPLATEID");
                     }
+
+                    if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName + " Viewer".Trim(), StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        foreach (var settingName in new string[] { "AFTopicsTemplate", "AFForumViewTemplate", "AFTopicTemplate", })
+                        {
+                            DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, settingName);
+                        }
+                    }
                 }
             }
         }

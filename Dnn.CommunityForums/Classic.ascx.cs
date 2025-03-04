@@ -230,9 +230,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ctl.ForumTabId = this.ForumTabId;
                 ctl.ForumGroupId = this.ForumGroupId;
-                ctl.DefaultForumViewTemplateId = this.DefaultForumViewTemplateId;
-                ctl.DefaultTopicsViewTemplateId = this.DefaultTopicsViewTemplateId;
-                ctl.DefaultTopicViewTemplateId = this.DefaultTopicViewTemplateId;
                 ctl.ParentForumId = this.ParentForumId;
                 if (string.IsNullOrEmpty(this.ForumIds))
                 {

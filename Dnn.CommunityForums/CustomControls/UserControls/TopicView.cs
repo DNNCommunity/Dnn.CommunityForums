@@ -444,7 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sOutput = TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicView", this.topicTemplateId);
+                sOutput = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicView, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
             }
 
             sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(sOutput)).ToString();
@@ -791,7 +791,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (sbOutput.ToString().Contains("[DCF:TEMPLATE-POSTACTIONS]"))
             {
                 this.useListActions = true;
-                sbOutput.Replace("[DCF:TEMPLATE-POSTACTIONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "PostActions"));
+                sbOutput.Replace("[DCF:TEMPLATE-POSTACTIONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.PostActions, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix));
             }
 
             sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostActionTokenSynonyms(sbOutput, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale, this.useListActions);
@@ -838,7 +838,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (sOutput.Contains("[SPLITBUTTONS]") && (this.bSplit && (this.bModerate || (this.topic.Author.AuthorId == this.UserId))) && (this.topic.ReplyCount > 0))
             {
-                sbOutput.Replace("[SPLITBUTTONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicSplitButtons"));
+                sbOutput.Replace("[SPLITBUTTONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicSplitButtons, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix));
                 sbOutput.Replace("[TOPICID]", this.TopicId.ToString());
             }
             else

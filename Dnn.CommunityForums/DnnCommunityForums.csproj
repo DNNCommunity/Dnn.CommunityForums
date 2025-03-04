@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-
     <PropertyGroup>
+        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
         <AssemblyName>DotNetNuke.Modules.ActiveForums</AssemblyName>
         <OutputType>Library</OutputType>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -14,8 +14,11 @@
         <Description>Discussion Forum Module for DNN</Description>
         <Company>dnncommunity.org</Company>
         <Authors>dnncommunity.org</Authors>
-        <FileVersion>08.02.02.00</FileVersion>
-        <AssemblyVersion>08.02.02.00</AssemblyVersion>
+        <IncludeSymbols>False</IncludeSymbols>
+        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
         <FileVersion>09.00.00.00</FileVersion>
         <AssemblyVersion>09.00.00.00</AssemblyVersion>
         <IncludeSymbols>False</IncludeSymbols>
@@ -27,6 +30,7 @@
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -40,22 +44,22 @@
         <None Remove="CustomControls\Views\**" />
         <None Remove="Legacy\**" />
         <None Remove="Properties\**" />
+        <None Remove="CustomControls\Resources\TextSuggest.js" />
+        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+        <None Remove="packages.config" />
+        <None Remove="CustomControls\Resources\TextSuggest.js" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DotNetNuke.Abstractions" Version="9.13.7" />
-        <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
-        <PackageReference Include="DotNetNuke.Web.Client" Version="9.11.0" />
-      <None Remove="packages.config" />
-      <None Remove="CustomControls\Resources\TextSuggest.js" />
+        <EmbeddedResource Include="sql\FullTextInstallPart1.sql" />
+        <EmbeddedResource Include="sql\FullTextInstallPart2.sql" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0" />
-        <PackageReference Include="DotNetNuke.Abstractions" Version="9.9.0" />
-        <PackageReference Include="DotNetNuke.DependencyInjection" Version="9.9.0" />
-        <PackageReference Include="DotNetNuke.Web" Version="9.9.0" />
-        <PackageReference Include="DotNetNuke.Web.Client" Version="9.9.0" />
+        <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
+        <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
+        <PackageReference Include="DotNetNuke.Web.Client" Version="9.11.0" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
         <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.3.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
@@ -76,6 +80,7 @@
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     </ItemGroup>
 
+
     <ItemGroup>
         <Reference Include="System.Design" />
         <Reference Include="System.Web" />
@@ -89,28 +94,13 @@
         <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
         <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
     </ItemGroup>
-
+    
     <ItemGroup>
         <InternalsVisibleTo Include="DotNetNuke.Modules.ActiveForumsTests" /> <!-- [assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForums.Tests")] -->
         <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
-        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" /> <!-- [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] for Moq -->
     </ItemGroup>
 
-    <ItemGroup>
-      <None Include="..\LICENSE">
-        <Pack>True</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
-        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
-        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" /> <!-- [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] for Moq -->
-    </ItemGroup>
 
     <Import Project="Module.build" />
 </Project>
  
-
-    <ItemGroup>
-        <EmbeddedResource Include="sql\FullTextInstallPart1.sql" />
-        <EmbeddedResource Include="sql\FullTextInstallPart2.sql" />
-    </ItemGroup>
-</Project>

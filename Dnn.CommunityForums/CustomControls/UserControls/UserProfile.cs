@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Text.RegularExpressions;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+    using DotNetNuke.Modules.ActiveForums.Enums;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:UserProfile runat=server></{0}:UserProfile>")]
     public class UserProfile : ProfileBase
@@ -115,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            string sTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "_userprofile", 0);
+            string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType._userProfile, SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
 
             if (this.ProfileMode == ProfileModes.Edit)
             {
@@ -225,7 +226,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ForumView ctlForums = new ForumView();
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
-                ctlForums.DisplayTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ForumTracking", 0);
+                ctlForums.DisplayTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, (Enums.TemplateType)Enum.Parse(typeof(Enums.TemplateType),  "ForumTracking", true), SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
                 ctlForums.CurrentUserId = this.UID;
                 ctlForums.ForumIds = user.UserForums;
                 this.plhTracker.Controls.Add(ctlForums);
