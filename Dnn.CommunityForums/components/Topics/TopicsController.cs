@@ -250,7 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         var fc = new ForumsConfig();
-                        fc.Install_Or_Upgrade_MoveTemplates_080000();
+                        fc.Upgrade_Templates_080000();
                         fc.Install_Or_Upgrade_RenameThemeCssFiles_080000();
                         fc.Install_Or_Upgrade_RelocateDefaultThemeToLegacy_080000();
                         ForumsConfig.FillMissingTopicUrls_070012(); /* for anyone upgrading from 07.00.12-> 08.00.00 */
@@ -291,6 +291,19 @@ namespace DotNetNuke.Modules.ActiveForums
                         ForumsConfig.Install_PinNotificationType_080200();
 
                         // ForumsConfig.Sort_PermissionSets_080200();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                case "09.00.00":
+                    try
+                    {
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
                     }
                     catch (Exception ex)
                     {

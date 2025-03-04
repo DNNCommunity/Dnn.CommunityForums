@@ -20,9 +20,11 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Helpers
 {
+    using System;
     using System.Xml;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Instrumentation;
 
@@ -68,12 +70,10 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.AvatarHeight, currSettings.AvatarHeight.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.AvatarWidth, currSettings.AvatarWidth.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.AllowSignatures, currSettings.AllowSignatures.ToString());
-            DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.ForumTemplateId, currSettings.ForumTemplateID.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.InstallDate, currSettings.InstallDate.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.IsInstalled, currSettings.IsInstalled.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.Theme, currSettings.Theme);
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.FullText, currSettings.FullText.ToString());
-            DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.MailQueue, currSettings.MailQueue.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.FloodInterval, currSettings.FloodInterval.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.EditInterval, currSettings.EditInterval.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.DeleteBehavior, currSettings.DeleteBehavior.ToString());
@@ -262,6 +262,45 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName, System.StringComparison.InvariantCultureIgnoreCase))
                     {
                         DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.PrefixURLLikes, module.ModuleSettings.GetString(SettingKeys.PrefixURLLikes, Views.Likes));
+                    }
+                }
+            }
+        }
+
+        internal static void DeleteObsoleteModuleSettings_090000()
+        {
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+            {
+                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                {
+                    if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName.Trim(), StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var modTemplateIds = new string[] { "MODAPPROVETEMPLATEID", "MODREJECTTEMPLATEID", "MODMOVETEMPLATEID", "MODDELETETEMPLATEID", "MODNOTIFYTEMPLATEID", };
+                        var modTemplateToggles = new string[] { "MODAPPROVENOTIFY", "MODREJECTNOTIFY", "MODMOVENOTIFY", "MODDELETENOTIFY", "MODNOTIFYNOTIFY", };
+                        for (int i = 0; i < modTemplateIds.Length -1; i++)
+                        {
+                            DataContext.Instance().Execute(System.Data.CommandType.Text, "INSERT INTO {databaseOwner}{objectQualifier}activeforums_Settings SELECT [ModuleId],[GroupKey],'@2', CASE WHEN [SettingValue] <> '0' THEN 1 ELSE 0 END FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND [SettingName] = '@1'", module.ModuleID, modTemplateIds[i], modTemplateToggles[i]);
+                        }
+
+                        foreach (var settingName in new string[]
+                        {
+                            "MODAPPROVETEMPLATEID",
+                            "MODREJECTTEMPLATEID",
+                            "MODMOVETEMPLATEID",
+                            "MODDELETETEMPLATEID",
+                            "MODNOTIFYTEMPLATEID",
+                            "TOPICSTEMPLATEID",
+                            "TOPICTEMPLATEID",
+                            "TOPICFORMID",
+                            "REPLYFORMID",
+                            "QUICKREPLYFORMID",
+                            "PROFILETEMPLATEID",
+                        })
+                        {
+                            DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
+                        }
+
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "FORUMTEMPLATEID");
                     }
                 }
             }
