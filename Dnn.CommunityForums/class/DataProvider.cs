@@ -254,14 +254,19 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Templates
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public abstract void Templates_Delete(int templateId, int portalId, int moduleId);
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public abstract IDataReader Templates_Get(int templateId, int portalId, int moduleId);
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public abstract IDataReader Templates_List(int portalId, int moduleId, int templateType);
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public abstract IDataReader Templates_List(int portalId, int moduleId, int templateType, int rowIndex, int pageSize);
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public abstract int Templates_Save(int templateId, int portalId, int moduleId, int templateType, bool isSystem, string title, string subject, string template);
         #endregion
 

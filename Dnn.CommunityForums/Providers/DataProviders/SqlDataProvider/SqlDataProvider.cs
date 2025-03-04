@@ -497,26 +497,31 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
         #region Templates
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public override void Templates_Delete(int TemplateId, int PortalId, int ModuleId)
         {
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Templates_Delete", TemplateId, PortalId, ModuleId);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public override IDataReader Templates_Get(int TemplateId, int PortalId, int ModuleId)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Templates_Get", TemplateId, PortalId, ModuleId);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public override IDataReader Templates_List(int PortalId, int ModuleId, int TemplateType)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Templates_List", PortalId, ModuleId, TemplateType, 0, 10000);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public override IDataReader Templates_List(int PortalId, int ModuleId, int TemplateType, int RowIndex, int PageSize)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Templates_List", PortalId, ModuleId, TemplateType, RowIndex, PageSize);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public override int Templates_Save(int TemplateId, int PortalId, int ModuleId, int TemplateType, bool IsSystem, string Title, string Subject, string Template)
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Templates_Save", TemplateId, PortalId, ModuleId, TemplateType, IsSystem, Title, Subject, Template));
