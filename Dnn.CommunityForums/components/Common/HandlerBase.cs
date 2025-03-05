@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                if (HttpContext.Current.Request.QueryString["PortalId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["PortalId"]))
+                if (HttpContext.Current.Request.QueryString["PortalId"] != null && Utilities.IsNumeric(HttpContext.Current.Request.QueryString["PortalId"]))
                 {
                     return int.Parse(HttpContext.Current.Request.QueryString["PortalId"]);
                 }
@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                if (HttpContext.Current.Request.QueryString["ModuleId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["ModuleId"]))
+                if (HttpContext.Current.Request.QueryString["ModuleId"] != null && Utilities.IsNumeric(HttpContext.Current.Request.QueryString["ModuleId"]))
                 {
                     return int.Parse(HttpContext.Current.Request.QueryString["ModuleId"]);
                 }
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                if (HttpContext.Current.Request.QueryString["TabId"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["TabId"]))
+                if (HttpContext.Current.Request.QueryString["TabId"] != null && Utilities.IsNumeric(HttpContext.Current.Request.QueryString["TabId"]))
                 {
                     return int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
                 }
@@ -166,7 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                if (HttpContext.Current.Request.QueryString["opt"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["opt"]))
+                if (HttpContext.Current.Request.QueryString["opt"] != null && Utilities.IsNumeric(HttpContext.Current.Request.QueryString["opt"]))
                 {
                     return int.Parse(HttpContext.Current.Request.QueryString["opt"]);
                 }

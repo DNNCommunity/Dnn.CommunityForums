@@ -341,17 +341,17 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\WhatsNew.ascx.fr-FR.resx" />
-    <EmbeddedResource Include="CustomControls\Resources\ActiveGrid.js" />
-    <EmbeddedResource Include="CustomControls\Resources\asc.gif" />
-    <EmbeddedResource Include="CustomControls\Resources\calendar.gif" />
-    <EmbeddedResource Include="CustomControls\Resources\cal_nextMonth.gif" />
-    <EmbeddedResource Include="CustomControls\Resources\cal_prevMonth.gif" />
-    <EmbeddedResource Include="CustomControls\Resources\cb.js" />
-    <EmbeddedResource Include="CustomControls\Resources\datepicker.js" />
-    <EmbeddedResource Include="CustomControls\Resources\desc.gif" />
-    <EmbeddedResource Include="CustomControls\Resources\MenuButton.js" />
-    <EmbeddedResource Include="CustomControls\Resources\Validation.js" />
-    <EmbeddedResource Include="CustomControls\Resources\spacer.gif" />
+    <Content Include="CustomControls\Resources\ActiveGrid.js" />
+    <Content Include="CustomControls\Resources\asc.gif" />
+    <Content Include="CustomControls\Resources\calendar.gif" />
+    <Content Include="CustomControls\Resources\cal_nextMonth.gif" />
+    <Content Include="CustomControls\Resources\cal_prevMonth.gif" />
+    <Content Include="CustomControls\Resources\cb.js" />
+    <Content Include="CustomControls\Resources\datepicker.js" />
+    <Content Include="CustomControls\Resources\desc.gif" />
+    <Content Include="CustomControls\Resources\MenuButton.js" />
+    <Content Include="CustomControls\Resources\Validation.js" />
+    <Content Include="CustomControls\Resources\spacer.gif" />
     <EmbeddedResource Include="sql\FullTextInstallPart2.sql" />
     <Content Include="handlers\adminhelper.ashx" />
     <Content Include="images\add-circle.png" />

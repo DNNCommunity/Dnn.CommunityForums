@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static string BuildTopicUrlSegment(int portalId, int moduleId, int topicId, string subject, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             var cleanSubject = Utilities.CleanName(subject).ToLowerInvariant();
-            if (SimulateIsNumeric.IsNumeric(cleanSubject))
+            if (Utilities.IsNumeric(cleanSubject))
             {
                 cleanSubject = "Topic-" + cleanSubject;
             }

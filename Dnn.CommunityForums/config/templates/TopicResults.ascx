@@ -40,7 +40,7 @@
                 <div class="aftopicrow af-content">
                     <div class="aftopicrow afsubject">
                         <span class="aftopictitle">
-                            [FORUMTOPIC:SUBJECTLINK|<a href="{0}" class="dcf-topic-link">[FORUMTOPIC:SUBJECT]</a>]
+                            [FORUMTOPIC:SUBJECTLINK|<a href="{0}" title="[FORUMTOPIC:BODYTITLE]" class="dcf-topic-link">[FORUMTOPIC:SUBJECT]</a>]
                         </span> 
                         <span class="aftopicsubtitle">[FORUMTOPIC:DATECREATED|[RESX:Started] {0}] [FORUMTOPIC:AUTHORDISPLAYNAMELINK|[RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>]</span>
                     </div>

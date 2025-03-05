@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     value = ((char)34).ToString() + ((char)34).ToString();
                 }
-                else if (!SimulateIsNumeric.IsNumeric(value) & !(value.ToLower() == "true" || value.ToLower() == "false") && isObject == false)
+                else if (!Utilities.IsNumeric(value) & !(value.ToLower() == "true" || value.ToLower() == "false") && isObject == false)
                 {
                     value = ((char)34).ToString() + JSON.EscapeJsonString(value) + ((char)34).ToString();
                 }

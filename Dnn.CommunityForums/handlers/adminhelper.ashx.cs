@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 if (this.Params != null)
                 {
-                    if (this.Params["action"] != null && SimulateIsNumeric.IsNumeric(this.Params["action"]))
+                    if (this.Params["action"] != null && Utilities.IsNumeric(this.Params["action"]))
                     {
                         action = (Actions)Convert.ToInt32(this.Params["action"].ToString());
                     }

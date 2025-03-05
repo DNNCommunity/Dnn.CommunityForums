@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System;
 
     using DotNetNuke.Framework;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public partial class af_topicscripts : SettingsBase
     {
@@ -32,11 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
-            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AFUserEditor"))
-            {
-                this.Page.ClientScript.RegisterClientScriptInclude("AFUserEditor", this.Page.ResolveUrl("~/DesktopModules/ActiveForums/scripts/usereditor.js"));
-            }
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/usereditor.js");
         }
     }
 }
