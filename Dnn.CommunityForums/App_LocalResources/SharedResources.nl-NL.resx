@@ -483,13 +483,13 @@
   <data name="SearchPosts.Text" xml:space="preserve">
     <value>Zoek berichten</value>
   </data>
-  <data name="SearchRangeAll.Text" xml:space="preserve">
+  <data name="[RESX:SearchRangeAll].Text" xml:space="preserve">
     <value>Alle</value>
   </data>
-  <data name="SearchRangeDays.Text" xml:space="preserve">
+  <data name="[RESX:SearchRangeDays].Text" xml:space="preserve">
     <value>Afgelopen {0} dagen</value>
   </data>
-  <data name="SearchRangeHours.Text" xml:space="preserve">
+  <data name="[RESX:SearchRangeHours].Text" xml:space="preserve">
     <value>Afgelopen {0} uren</value>
   </data>
   <data name="SearchUser.Text" xml:space="preserve">
@@ -501,13 +501,13 @@
   <data name="MoveText.Text" xml:space="preserve">
     <value>Verplaats bericht</value>
   </data>
-  <data name="drpSearchType.AllKeywords.Text" xml:space="preserve">
+  <data name="[RESX:SearchTypeAllKeywords].Text" xml:space="preserve">
     <value>ALLE sleutelwoorden</value>
   </data>
-  <data name="drpSearchType.ANYKeywords.Text" xml:space="preserve">
+  <data name="[RESX:SearchTypeANYKeywords].Text" xml:space="preserve">
     <value>ELK sleutelwoord</value>
   </data>
-  <data name="drpSearchType.ExactMatch.Text" xml:space="preserve">
+  <data name="[RESX:SearchTypeExactMatch].Text" xml:space="preserve">
     <value>Exacte match</value>
   </data>
   <data name="SearchType.Text" xml:space="preserve">
@@ -1465,9 +1465,6 @@ Van,
   <data name="[RESX:SearchKeywords].Text" xml:space="preserve">
     <value>Trefwoord (en):</value>
   </data>
-  <data name="[RESX:Reset].Text" xml:space="preserve">
-    <value>Reset</value>
-  </data>
   <data name="[RESX:SearchAllForums].Text" xml:space="preserve">
     <value>Doorzoek forums</value>
   </data>
@@ -1857,5 +1854,23 @@ Van,
   <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
     <value>&lt;p&gt;[FORUMPOST:AUTEURDISPLAYNAAMLINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;&lt;/a&gt;|[FORUMPOST:AUTHORDISPLAYNAME]] heeft inhoud geplaatst die moderatie vereist.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Onderwerp:&lt;/strong&gt; [FORUMPOST:SUBJECT]&lt;/p&gt;&lt;p&gt;Controleer de inhoud en bepaal de dispositie.&lt;/p&gt;
 &lt;p&gt;U kunt:&lt;ol&gt;&lt;li&gt;keur het onderwerp goed,&lt;/li&gt;&lt;li&gt;Weiger het (stuur het naar de poster voor revisies),&lt;/li&gt;&lt;li&gt;te verwijderen, of&lt;/li&gt;&lt;li&gt;de gebruiker verbannen, dit en alle andere onderwerpen of antwoorden die door deze gebruiker zijn geplaatst, verwijderen&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Als u niet alleen op basis van het onderwerp kunt bepalen of deze inhoud geschikt is, gebruik &lt;a href="[FORUM:MODLINK]"&gt;dan deze link&lt;/a&gt; om onderwerpen te bekijken en te modereren.&lt;/p&gt;</value>
+  </data>
+  <data name="[RESX:Reset].Text" xml:space="preserve">
+    <value>Terugstellen</value>
+  </data>
+  <data name="[RESX:SearchSubjectAndTopic].Text" xml:space="preserve">
+    <value>Onderwerp en onderwerp</value>
+  </data>
+  <data name="[RESX:SearchSubjectOnly].Text" xml:space="preserve">
+    <value>Alleen onderwerp</value>
+  </data>
+  <data name="[RESX:SearchTopicOnly].Text" xml:space="preserve">
+    <value>Alleen onderwerp</value>
+  </data>
+  <data name="[RESX:SearchSortTypeRelevance].Text" xml:space="preserve">
+    <value>Relevantie</value>
+  </data>
+  <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
+    <value>Publicatiedatum</value>
   </data>
 </root>
