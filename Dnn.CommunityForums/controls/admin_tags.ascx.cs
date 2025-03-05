@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         case "DELETE":
                             {
                                 int tagId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
-                                if (SimulateIsNumeric.IsNumeric(tagId))
+                                if (Utilities.IsNumeric(tagId))
                                 {
                                     new DotNetNuke.Modules.ActiveForums.Controllers.TagController().DeleteById(tagId);
                                 }

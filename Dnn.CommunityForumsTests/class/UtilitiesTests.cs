@@ -219,5 +219,27 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
+
+        [Test]
+        [TestCase(0, ExpectedResult = true)]
+        [TestCase("abc", ExpectedResult = false)]
+        [TestCase(false, ExpectedResult = true)]
+        [TestCase(true, ExpectedResult = true)]
+        [TestCase(null, ExpectedResult = false)]
+        [TestCase(-10, ExpectedResult = true)]
+        [TestCase(01E1, ExpectedResult = true)]
+        [TestCase("0", ExpectedResult = true)]
+        public bool IsNumericTest(object obj)
+        {
+            // Arrange
+
+            var expectedResult = true;
+
+            // Act
+            var actualResult = DotNetNuke.Modules.ActiveForums.Utilities.IsNumeric(obj);
+
+            // Assert
+            return actualResult;
+        }
     }
 }

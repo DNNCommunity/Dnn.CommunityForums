@@ -27,8 +27,12 @@
 //  This class simulates the behavior of the classic VB 'IsNumeric' function.
 //----------------------------------------------------------------------------------------
 */
+using System;
+
+[Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
 public static class SimulateIsNumeric
 {
+    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
     public static bool IsNumeric(object expression)
     {
         if (expression == null)

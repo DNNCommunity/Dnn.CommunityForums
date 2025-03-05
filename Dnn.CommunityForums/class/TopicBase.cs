@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (this.Request.Params[ParamKeys.TopicId] != null)
                     {
-                        if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.TopicId]))
+                        if (Utilities.IsNumeric(this.Request.Params[ParamKeys.TopicId]))
                         {
                             this.topicId = Convert.ToInt32(this.Request.Params[ParamKeys.TopicId]);
                             return this.topicId;

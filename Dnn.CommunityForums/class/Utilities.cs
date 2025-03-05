@@ -1746,5 +1746,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return DotNetNuke.Services.Localization.Localization.GetString(key, resourceFile, (DotNetNuke.Entities.Portals.PortalSettings)portalSettings, language);
         }
+
+        public static bool IsNumeric(object expression)
+        {
+            return expression != null && (double.TryParse(expression.ToString(), out _) || bool.TryParse(expression.ToString(), out _));
+        }
     }
 }
