@@ -133,14 +133,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return new WhatsNewModuleSettings
             {
-                Rows = SimulateIsNumeric.IsNumeric(moduleSettings[RowsSettingsKey]) ? Convert.ToInt32(moduleSettings[RowsSettingsKey]) : DefaultRows,
+                Rows = Utilities.IsNumeric(moduleSettings[RowsSettingsKey]) ? Convert.ToInt32(moduleSettings[RowsSettingsKey]) : DefaultRows,
                 Forums = (moduleSettings[ForumsSettingsKey] != null) ? Convert.ToString(moduleSettings[ForumsSettingsKey]) : DefaultForums,
-                RSSEnabled = SimulateIsNumeric.IsNumeric(moduleSettings[RSSEnabledSettingsKey]) ? Convert.ToBoolean(moduleSettings[RSSEnabledSettingsKey]) : DefaultRSSEnabled,
-                RSSIgnoreSecurity = SimulateIsNumeric.IsNumeric(moduleSettings[RSSIgnoreSecuritySettingsKey]) ? Convert.ToBoolean(moduleSettings[RSSIgnoreSecuritySettingsKey]) : DefaultRSSIgnoreSecurity,
-                RSSIncludeBody = SimulateIsNumeric.IsNumeric(moduleSettings[RSSIncludeBodySettingsKey]) ? Convert.ToBoolean(moduleSettings[RSSIncludeBodySettingsKey]) : DefaultRSSIncludeBody,
-                RSSCacheTimeout = SimulateIsNumeric.IsNumeric(moduleSettings[RSSCacheTimeoutSettingsKey]) ? Convert.ToInt32(moduleSettings[RSSCacheTimeoutSettingsKey]) : DefaultRSSCacheTimeout,
-                TopicsOnly = SimulateIsNumeric.IsNumeric(moduleSettings[TopicsOnlySettingsKey]) ? Convert.ToBoolean(moduleSettings[TopicsOnlySettingsKey]) : DefaultTopicsOnly,
-                RandomOrder = SimulateIsNumeric.IsNumeric(moduleSettings[RandomOrderSettingsKey]) ? Convert.ToBoolean(moduleSettings[RandomOrderSettingsKey]) : DefaultRandomOrder,
+                RSSEnabled = Utilities.IsNumeric(moduleSettings[RSSEnabledSettingsKey]) ? Convert.ToBoolean(moduleSettings[RSSEnabledSettingsKey]) : DefaultRSSEnabled,
+                RSSIgnoreSecurity = Utilities.IsNumeric(moduleSettings[RSSIgnoreSecuritySettingsKey]) ? Convert.ToBoolean(moduleSettings[RSSIgnoreSecuritySettingsKey]) : DefaultRSSIgnoreSecurity,
+                RSSIncludeBody = Utilities.IsNumeric(moduleSettings[RSSIncludeBodySettingsKey]) ? Convert.ToBoolean(moduleSettings[RSSIncludeBodySettingsKey]) : DefaultRSSIncludeBody,
+                RSSCacheTimeout = Utilities.IsNumeric(moduleSettings[RSSCacheTimeoutSettingsKey]) ? Convert.ToInt32(moduleSettings[RSSCacheTimeoutSettingsKey]) : DefaultRSSCacheTimeout,
+                TopicsOnly = Utilities.IsNumeric(moduleSettings[TopicsOnlySettingsKey]) ? Convert.ToBoolean(moduleSettings[TopicsOnlySettingsKey]) : DefaultTopicsOnly,
+                RandomOrder = Utilities.IsNumeric(moduleSettings[RandomOrderSettingsKey]) ? Convert.ToBoolean(moduleSettings[RandomOrderSettingsKey]) : DefaultRandomOrder,
                 Tags = (moduleSettings[TagsSettingsKey] != null) ? Convert.ToString(moduleSettings[TagsSettingsKey]) : DefaultTags,
                 Header = (moduleSettings[HeaderSettingsKey] != null) ? Convert.ToString(moduleSettings[HeaderSettingsKey]) : DefaultHeader,
                 Footer = (moduleSettings[FooterSettingsKey] != null) ? Convert.ToString(moduleSettings[FooterSettingsKey]) : DefaultFooter,
