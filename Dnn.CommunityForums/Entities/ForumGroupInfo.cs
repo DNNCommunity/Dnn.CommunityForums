@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string RawUrl { get; set; }
 
         [IgnoreColumn]
-        public int TabId => this.ModuleInfo.TabID;
+        public int TabId => this.GetTabId();
 
         [IgnoreColumn]
         public string ThemeLocation => Utilities.ResolveUrl(SettingsBase.GetModuleSettings(this.ModuleId).ThemeLocation);
