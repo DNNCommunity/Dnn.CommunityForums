@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (!string.IsNullOrEmpty(up))
                     {
-                        if (!SimulateIsNumeric.IsNumeric(up))
+                        if (!Utilities.IsNumeric(up))
                         {
                             newSearchURL += up + "/";
                         }
@@ -441,7 +441,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         urlTail = urlTail.Substring(0, urlTail.IndexOf("/") - 1);
                     }
 
-                    if (SimulateIsNumeric.IsNumeric(urlTail))
+                    if (Utilities.IsNumeric(urlTail))
                     {
                         this.page = Convert.ToInt32(urlTail);
                     }

@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     switch (sAction.ToUpper())
                     {
                         case "DELETE":
-                            if (SimulateIsNumeric.IsNumeric(filterId))
+                            if (Utilities.IsNumeric(filterId))
                             {
                                 new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(filterId);
                             }

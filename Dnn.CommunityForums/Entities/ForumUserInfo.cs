@@ -64,8 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.ModuleId = moduleId;
         }
 
-        [IgnoreColumn]
-        public bool IsAuthenticated { get; set; } = false;
+        [IgnoreColumn] public bool IsAuthenticated => this.UserId > DotNetNuke.Common.Utilities.Null.NullInteger;
 
         public int ProfileId { get; set; }
 
