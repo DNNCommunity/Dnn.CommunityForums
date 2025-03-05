@@ -125,12 +125,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 tb.ForumIds = this.UserForumsList;
             }
 
-            if (this.Request.QueryString["atg"] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString["atg"]))
+            if (this.Request.QueryString["atg"] != null && Utilities.IsNumeric(this.Request.QueryString["atg"]))
             {
                 tb.TagId = int.Parse(this.Request.QueryString["atg"]);
             }
 
-            if (this.Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[ParamKeys.Category]))
+            if (this.Request.QueryString[ParamKeys.Category] != null && Utilities.IsNumeric(this.Request.QueryString[ParamKeys.Category]))
             {
                 tb.CategoryId = int.Parse(this.Request.QueryString[ParamKeys.Category]);
             }

@@ -589,21 +589,21 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (this.Request.Params[ParamKeys.QuoteId] != null)
                     {
                         isQuote = true;
-                        if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.QuoteId]))
+                        if (Utilities.IsNumeric(this.Request.Params[ParamKeys.QuoteId]))
                         {
                             postId = Convert.ToInt32(this.Request.Params[ParamKeys.QuoteId]);
                         }
                     }
                     else if (this.Request.Params[ParamKeys.ReplyId] != null)
                     {
-                        if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.ReplyId]))
+                        if (Utilities.IsNumeric(this.Request.Params[ParamKeys.ReplyId]))
                         {
                             postId = Convert.ToInt32(this.Request.Params[ParamKeys.ReplyId]);
                         }
                     }
                     else if (this.Request.Params[ParamKeys.PostId] != null)
                     {
-                        if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.PostId]))
+                        if (Utilities.IsNumeric(this.Request.Params[ParamKeys.PostId]))
                         {
                             postId = Convert.ToInt32(this.Request.Params[ParamKeys.PostId]);
                         }
@@ -844,7 +844,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DataProvider.Instance().Tags_DeleteTopicToCategory(this.PortalId, this.ForumModuleId, -1, this.TopicId);
                     foreach (var c in cats)
                     {
-                        if (string.IsNullOrEmpty(c) || !SimulateIsNumeric.IsNumeric(c))
+                        if (string.IsNullOrEmpty(c) || !Utilities.IsNumeric(c))
                         {
                             continue;
                         }
