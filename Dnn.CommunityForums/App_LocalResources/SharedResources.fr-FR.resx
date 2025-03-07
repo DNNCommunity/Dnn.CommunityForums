@@ -1456,13 +1456,13 @@ De,
   <data name="DropDownSelect.Text" xml:space="preserve">
     <value>&lt; SÉLECTIONNEZ UN GROUPE OU FORUM &gt;</value>
   </data>
-  <data name="drpSearchType.AllKeywords.Text" xml:space="preserve">
+  <data name="[RESX:SearchTypeAllKeywords].Text" xml:space="preserve">
     <value>Tous les mots-clés</value>
   </data>
-  <data name="drpSearchType.ANYKeywords.Text" xml:space="preserve">
+  <data name="[RESX:SearchTypeANYKeywords].Text" xml:space="preserve">
     <value>N'importe quel mot-clé</value>
   </data>
-  <data name="drpSearchType.ExactMatch.Text" xml:space="preserve">
+  <data name="[RESX:SearchTypeExactMatch].Text" xml:space="preserve">
     <value>Concordance exacte</value>
   </data>
   <data name="EditProfile.Text" xml:space="preserve">
@@ -1564,13 +1564,13 @@ De,
   <data name="SearchPostTime.Text" xml:space="preserve">
     <value>{0} @ {1}</value>
   </data>
-  <data name="SearchRangeAll.Text" xml:space="preserve">
+  <data name="[RESX:SearchRangeAll].Text" xml:space="preserve">
     <value>Tous</value>
   </data>
-  <data name="SearchRangeDays.Text" xml:space="preserve">
+  <data name="[RESX:SearchRangeDays].Text" xml:space="preserve">
     <value>Les derniers {0} jours</value>
   </data>
-  <data name="SearchRangeHours.Text" xml:space="preserve">
+  <data name="[RESX:SearchRangeHours].Text" xml:space="preserve">
     <value>Les dernières {0} heures</value>
   </data>
   <data name="SearchReplies.Text" xml:space="preserve">
@@ -1818,5 +1818,20 @@ De,
   <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
     <value>&lt;p&gt;[FORUMPOST :AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp ;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;&lt;/a&gt;|[FORUMPOST :AUTHORDISPLAYNAME]] a publié du contenu nécessitant une modération.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Sujet :&lt;/strong&gt; [FORUMPOST :SUJET]&lt;/p&gt;&lt;p&gt;Veuillez examiner le contenu et déterminer son élimination.&lt;/p&gt;
 &lt;p&gt;Vous pouvez:&lt;ol&gt;&lt;li&gt;approuver le sujet,&lt;/li&gt;&lt;li&gt;le rejeter (envoi à l’affiche pour révisions),&lt;/li&gt;&lt;li&gt;le supprimer, ou&lt;/li&gt;&lt;li&gt;bannir l’utilisateur, en supprimant ce sujet et tout autre sujet ou réponse posté par cet utilisateur&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si vous ne parvenez pas à déterminer si ce contenu est approprié en vous basant uniquement sur le sujet, utilisez &lt;a href="[FORUM:MODLINK]"&gt;ce lien&lt;/a&gt; pour examiner et modérer les sujets.&lt;/p&gt;</value>
+  </data>
+  <data name="[RESX:SearchSubjectAndTopic].Text" xml:space="preserve">
+    <value>Sujet et sujet</value>
+  </data>
+  <data name="[RESX:SearchSubjectOnly].Text" xml:space="preserve">
+    <value>Sujet seulement</value>
+  </data>
+  <data name="[RESX:SearchTopicOnly].Text" xml:space="preserve">
+    <value>Sujet uniquement</value>
+  </data>
+  <data name="[RESX:SearchSortTypeRelevance].Text" xml:space="preserve">
+    <value>Pertinence</value>
+  </data>
+  <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
+    <value>Date de publication</value>
   </data>
 </root>
