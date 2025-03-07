@@ -259,11 +259,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return string.Empty;
         }
 
-        private int GetTabId()
-        {
-            return this.Forum.PortalSettings.ActiveTab.TabID == -1 || this.Forum.PortalSettings.ActiveTab.TabID == this.Forum.PortalSettings.HomeTabId ? this.Forum.TabId : this.Forum.PortalSettings.ActiveTab.TabID;
-        }
-
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ContentId);
 
         internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
