@@ -42,7 +42,7 @@
                         <span class="aftopictitle">
                             [FORUMTOPIC:SUBJECTLINK|<a href="{0}" title="[FORUMTOPIC:BODYTITLE]" class="dcf-topic-link">[FORUMTOPIC:SUBJECT]</a>]
                         </span> 
-                        <span class="aftopicsubtitle">[RESX:Started] [FORUMTOPIC:DATECREATED] [FORUMTOPIC:AUTHORDISPLAYNAMELINK|[RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>]</span>
+                        <span class="aftopicsubtitle">[FORUMTOPIC:DATECREATED|[RESX:Started] {0}] [FORUMTOPIC:AUTHORDISPLAYNAMELINK|[RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>]</span>
                     </div>
                     <div class="aftopicrow af-colstats af-colstats-replies">[FORUMTOPIC:REPLYCOUNT]</div>
                     <div class="aftopicrow af-colstats af-colstats-views">[FORUMTOPIC:VIEWCOUNT]</div>
