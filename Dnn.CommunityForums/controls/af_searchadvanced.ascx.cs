@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                if (this.Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.GroupId]))
+                if (this.Request.QueryString[Literals.GroupId] != null && Utilities.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                 {
                     this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
                 }
@@ -209,14 +209,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     return;
                 }
 
-                // Bind the intial values for the forum
-
-                // Options
-                this.litInputError.Text = this.GetSharedResource("[RESX:SearchInputError]");
-
-                this.litOptions.Text = this.GetSharedResource("[RESX:SearchOptions]");
-
-                this.lblSearch.Text = this.GetSharedResource("[RESX:SearchKeywords]");
                 this.txtSearch.Text = this.SearchText;
 
                 ListItem selectedItem = this.drpSearchColumns.Items.FindByValue(this.SearchColumns.ToString());
@@ -231,41 +223,26 @@ namespace DotNetNuke.Modules.ActiveForums
                     selectedItem.Selected = true;
                 }
 
-                this.lblUserName.Text = this.GetSharedResource("[RESX:SearchByUser]");
                 this.txtUserName.Text = this.AuthorUsername;
 
-                this.lblTags.Text = this.GetSharedResource("[RESX:SearchByTag]");
                 this.txtTags.Text = this.Tags;
 
                 // Additional Options
-                this.litAdditionalOptions.Text = this.GetSharedResource("[RESX:SearchOptionsAdditional]");
 
-                this.lblForums.Text = this.GetSharedResource("[RESX:SearchInForums]");
                 this.BindForumList();
-
-                this.lblSearchDays.Text = this.GetSharedResource("[RESX:SearchTimeFrame]");
                 this.BindSearchRange();
 
-                this.lblResultType.Text = this.GetSharedResource("[RESX:SearchResultType]");
                 selectedItem = this.drpResultType.Items.FindByValue(this.ResultType.ToString());
                 if (selectedItem != null)
                 {
                     selectedItem.Selected = true;
                 }
 
-                this.lblSortType.Text = this.GetSharedResource("[RESX:SearchSort]");
                 selectedItem = this.drpSort.Items.FindByValue(this.Sort.ToString());
                 if (selectedItem != null)
                 {
                     selectedItem.Selected = true;
                 }
-
-                // Buttons
-                this.btnSearch.Text = this.GetSharedResource("[RESX:Search]");
-                this.btnSearch2.Text = this.GetSharedResource("[RESX:Search]");
-
-                this.btnReset.InnerText = this.GetSharedResource("[RESX:Reset]");
-                this.btnReset2.InnerText = this.GetSharedResource("[RESX:Reset]");
 
                 // Update Meta Data
                 var basePage = this.BasePage;
@@ -404,9 +381,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindSearchRange()
         {
-            var sHours = this.GetSharedResource("SearchRangeHours.Text");
-            var sDays = this.GetSharedResource("SearchRangeDays.Text");
-            var sAll = this.GetSharedResource("SearchRangeAll.Text");
+            var sHours = this.GetSharedResource("[RESX:SearchRangeHours]");
+            var sDays = this.GetSharedResource("[RESX:SearchRangeDays]");
+            var sAll = this.GetSharedResource("[RESX:SearchRangeAll]");
 
             this.drpSearchDays.Items.Clear();
             this.drpSearchDays.Items.Add(new ListItem(sAll, "0"));

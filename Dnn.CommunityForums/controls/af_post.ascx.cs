@@ -375,7 +375,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                 this.Context.ApplicationInstance.CompleteRequest();
             }
-            else if (!this.canModEdit && ti.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ti.Content.DateCreated, DateTime.UtcNow) > this.MainSettings.EditInterval)
+            else if (!this.canModEdit && ti.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 && DateTime.UtcNow.Subtract(ti.Content.DateCreated).TotalMinutes > this.MainSettings.EditInterval)
             {
                 var im = new InfoMessage
                 {
@@ -461,7 +461,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                 this.Context.ApplicationInstance.CompleteRequest();
             }
-            else if (!this.canModEdit && ri.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ri.Content.DateCreated, DateTime.UtcNow) > this.MainSettings.EditInterval)
+            else if (!this.canModEdit && ri.Content.AuthorId == this.UserId && this.canEdit && !Utilities.HasEditIntervalPassed(editInterval: this.ForumInfo.MainSettings.EditInterval, forumUser: this.ForumUser, forumInfo: this.ForumInfo, postInfo: ri))
             {
                 var im = new Controls.InfoMessage
                 {
@@ -588,21 +588,21 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (this.Request.Params[ParamKeys.QuoteId] != null)
                     {
                         isQuote = true;
-                        if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.QuoteId]))
+                        if (Utilities.IsNumeric(this.Request.Params[ParamKeys.QuoteId]))
                         {
                             postId = Convert.ToInt32(this.Request.Params[ParamKeys.QuoteId]);
                         }
                     }
                     else if (this.Request.Params[ParamKeys.ReplyId] != null)
                     {
-                        if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.ReplyId]))
+                        if (Utilities.IsNumeric(this.Request.Params[ParamKeys.ReplyId]))
                         {
                             postId = Convert.ToInt32(this.Request.Params[ParamKeys.ReplyId]);
                         }
                     }
                     else if (this.Request.Params[ParamKeys.PostId] != null)
                     {
-                        if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.PostId]))
+                        if (Utilities.IsNumeric(this.Request.Params[ParamKeys.PostId]))
                         {
                             postId = Convert.ToInt32(this.Request.Params[ParamKeys.PostId]);
                         }
@@ -843,7 +843,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DataProvider.Instance().Tags_DeleteTopicToCategory(this.PortalId, this.ForumModuleId, -1, this.TopicId);
                     foreach (var c in cats)
                     {
-                        if (string.IsNullOrEmpty(c) || !SimulateIsNumeric.IsNumeric(c))
+                        if (string.IsNullOrEmpty(c) || !Utilities.IsNumeric(c))
                         {
                             continue;
                         }

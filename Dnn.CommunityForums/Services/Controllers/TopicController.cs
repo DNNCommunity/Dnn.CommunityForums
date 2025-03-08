@@ -537,7 +537,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                                     foreach (string c in cats)
                                     {
                                         int cid = -1;
-                                        if (!string.IsNullOrEmpty(c) && SimulateIsNumeric.IsNumeric(c))
+                                        if (!string.IsNullOrEmpty(c) && Utilities.IsNumeric(c))
                                         {
                                             cid = Convert.ToInt32(c);
                                             if (cid > 0)

@@ -180,7 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void SaveQuickReply()
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.portalId, this.moduleId, this.ForumId, false, this.TopicId);
-            if (!Utilities.HasFloodIntervalPassed(floodInterval: this.MainSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: forumInfo))
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: this.ForumInfo.MainSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: forumInfo))
             {
                 this.plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Error:FloodControl]"), this.MainSettings.FloodInterval) + "</div>" });
                 return;
