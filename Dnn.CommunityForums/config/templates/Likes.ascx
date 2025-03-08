@@ -10,7 +10,7 @@
             <HeaderTemplate>
                 <div class="dcf-likes-header">
                     <h1 class="dcf-likes-title">[RESX:Likes] [RESX:For]</h1>
-                    <h2>[FORUMPOST:SUBJECTLINK]</h2>
+                    <h2>[FORUMPOST:SUBJECTLINK|<a href="{0}" class="dcf-topic-link">[FORUMPOST:SUBJECT]</a>]</h2>
                     <label>[FORUMPOST:SUMMARY:50]</label>
                     <div class="dcf-postinfo">
                         <label>[RESX:posted] [FORUMPOST:DATECREATED] [RESX:BY] [FORUMPOST:AUTHORDISPLAYNAMELINK|<a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUMPOST:AUTHORDISPLAYNAME]</a></label>]
