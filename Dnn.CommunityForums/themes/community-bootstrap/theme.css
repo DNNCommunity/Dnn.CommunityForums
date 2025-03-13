@@ -222,6 +222,16 @@
   font-size: 0.8em;
   margin: 0 0.5em;
 }
+.dnn-community-forums .afpager td {
+  padding: 0.25rem;
+}
+.dnn-community-forums .afpager .af_pager {
+  padding: 0.25rem;
+}
+.dnn-community-forums .af-search-recordCount {
+  display: block;
+  padding-top: 0.25rem;
+}
 .dnn-community-forums .dcf-forum-view .dcf-col-icon {
   width: 0;
 }
