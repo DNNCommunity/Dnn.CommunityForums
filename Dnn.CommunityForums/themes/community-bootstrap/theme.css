@@ -320,4 +320,14 @@
 .dnn-community-forums .af-adv-search .af-adv-search-row label, .dnn-community-forums .af-adv-search .af-adv-search-footer label {
   min-width: 20em;
 }
+.dnn-community-forums .afpager td {
+  padding: 0.25rem;
+}
+.dnn-community-forums .afpager .af_pager {
+  padding: 0.25rem;
+}
+.dnn-community-forums .af-search-recordCount {
+  display: block;
+  padding-top: 0.25rem;
+}
 /*# sourceMappingURL=theme.css.map */
