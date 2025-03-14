@@ -531,7 +531,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
             string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ReplyEditor", this.ForumInfo.FeatureSettings.ReplyFormId);
-            
+
 #region "Backward compatilbility -- remove in v10.00.00"
             template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
@@ -569,11 +569,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                     this.Context.ApplicationInstance.CompleteRequest();
                 }
-                else
-                {
-                    this.ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
-                    this.ctlForm.TopicSubject = System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
-                    var body = string.Empty;
+
+                this.ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
+                this.ctlForm.TopicSubject = System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
+                var body = string.Empty;
 
                 if (ti.IsLocked && (this.ForumUser.CurrentUserType == CurrentUserTypes.Anon || this.ForumUser.CurrentUserType == CurrentUserTypes.Auth))
                 {
@@ -586,7 +585,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     // Setup form for Quote or Reply with body display
                     var isQuote = false;
                     var postId = 0;
-                    var sPostedBy = Utilities.GetSharedResource("[RESX:PostedBy]") + " {0} {1} {2}";
                     if (this.Request.Params[ParamKeys.QuoteId] != null)
                     {
                         isQuote = true;
@@ -610,19 +608,17 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
 
-                            if (postId != 0)
-                            {
-                                var post = postId == this.TopicId ? ti : (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(postId);
-                                if (post != null)
-                                {
-                                    sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, post.Author.AuthorId, post.Author.Username, post.Author.FirstName, post.Author.LastName, post.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(post.Content.DateCreated, this.PortalId, this.UserId));
-                                    body = post.Content.Body;
-                                }
-                            }
-
+                    if (postId != 0)
+                    {
+                        var post = postId == this.TopicId ? ti : (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(postId);
+                        if (post != null)
+                        {
+                            var sPostedBy = Utilities.GetSharedResource("[RESX:PostedBy]") + " {0} {1} {2}";
+                            sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, post.Author.AuthorId, post.Author.Username, post.Author.FirstName, post.Author.LastName, post.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(post.Content.DateCreated, this.PortalId, this.UserId));
+                            body = post.Content.Body;
                             if (this.allowHTML && this.editorType != EditorTypes.TEXTBOX)
                             {
-                                if (body.ToUpper().Contains("<CODE") | body.ToUpper().Contains("[CODE]"))
+                                if (body.ToUpperInvariant().Contains("<CODE") || body.ToUpperInvariant().Contains("[CODE]"))
                                 {
                                     body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
                                 }
@@ -651,12 +647,22 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
 
                             this.ctlForm.Body = body;
+
+                            if (this.ctlForm.EditorMode != SubmitForm.EditorModes.EditReply && this.canModApprove)
+                            {
+                                this.ctlForm.ShowModOptions = false;
+                            }
+                        }
+                        else
+                        {
+                            var im = new InfoMessage { Message = this.GetSharedResource("[RESX:Message:LoadTopicFailed]") };
+                            this.plhContent.Controls.Add(im);
                         }
                     }
-
-                    if (this.ctlForm.EditorMode != SubmitForm.EditorModes.EditReply && this.canModApprove)
+                    else
                     {
-                        this.ctlForm.ShowModOptions = false;
+                        var im = new InfoMessage { Message = this.GetSharedResource("[RESX:Message:LoadTopicFailed]") };
+                        this.plhContent.Controls.Add(im);
                     }
                 }
             }
