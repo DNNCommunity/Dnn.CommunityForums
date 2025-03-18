@@ -66,10 +66,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal void UpdateSecurityForSocialGroupForum(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum)
         {
             var permissions = this.GetById(forum.PermissionsId, forum.ModuleId);
-            Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: forum.ModuleId, tabId: forum.TabId, ignoreCache: false).TabModuleSettings;
+            Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: forum.ModuleId, tabId: forum.GetTabId(), ignoreCache: false).TabModuleSettings;
             if (htSettings == null || htSettings.Count == 0)
             {
-                htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: forum.ModuleId, tabId: forum.TabId, ignoreCache: false).ModuleSettings;
+                htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: forum.ModuleId, tabId: forum.GetTabId(), ignoreCache: false).ModuleSettings;
             }
 
             if (htSettings == null || htSettings.Count == 0 || !htSettings.ContainsKey("ForumConfig"))

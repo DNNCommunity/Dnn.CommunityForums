@@ -42,6 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
         private PortalSettings portalSettings;
         private ModuleInfo moduleInfo;
+        private int? tabId;
 
         public int ForumGroupId { get; set; }
 
@@ -66,9 +67,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn]
         public string RawUrl { get; set; }
-
+        
         [IgnoreColumn]
-        public int TabId => this.GetTabId();
+        public int TabId
+        {
+            set => this.tabId = value;
+        }
 
         [IgnoreColumn]
         public string ThemeLocation => Utilities.ResolveUrl(SettingsBase.GetModuleSettings(this.ModuleId).ThemeLocation);
@@ -223,10 +227,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
         {
-            get
-            {
-                return DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
-            }
+            get => DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
         }
 
         /// <inheritdoc/>
@@ -281,9 +282,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return string.Empty;
         }
 
-        private int GetTabId()
+        internal int GetTabId()
         {
-            return this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId ? this.TabId : this.PortalSettings.ActiveTab.TabID;
+            return this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId ? !this.tabId.Equals(null) ? (int)this.tabId : DotNetNuke.Common.Utilities.Null.NullInteger : this.PortalSettings.ActiveTab.TabID;
         }
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ForumGroupId);
