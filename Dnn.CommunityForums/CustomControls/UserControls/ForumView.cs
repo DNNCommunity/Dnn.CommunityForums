@@ -356,11 +356,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (template.Contains("[SUBFORUMS]") && template.Contains("[/SUBFORUMS]"))
             {
-                template = this.GetSubForums(template, fi.ForumID, fi.TabId);
+                template = this.GetSubForums(template, fi.ForumID, fi.GetTabId());
             }
             else
             {
-                template = template.Replace("[SUBFORUMS]", this.GetSubForums(template: string.Empty, forumId: fi.ForumID, tabId: fi.TabId));
+                template = template.Replace("[SUBFORUMS]", this.GetSubForums(template: string.Empty, forumId: fi.ForumID, tabId: fi.GetTabId()));
             }
 
             string[] css = null;

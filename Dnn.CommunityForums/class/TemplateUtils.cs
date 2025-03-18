@@ -127,6 +127,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Load Subject and body from topic or reply
             var postInfo = (topicId > 0 && replyId > 0) ? (IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleID).GetById(replyId) : new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleID).GetById(topicId);
+            postInfo.Forum.TabId = tabID;
+            postInfo.Forum.ForumGroup.TabId = tabID;
             string subject = postInfo.Content.Subject;
             templateStringbuilder.Replace("[POSTEDORREPLIEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:posted]") : Utilities.GetSharedResource("[RESX:repliedto]")));
             templateStringbuilder.Replace("[POSTEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:postedto]") : string.Empty));
