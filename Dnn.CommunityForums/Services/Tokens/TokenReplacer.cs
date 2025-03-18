@@ -408,8 +408,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         internal static StringBuilder ReplaceTopicTokens(StringBuilder template, TopicInfo topic, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
-            topic.Content.Body = ReplaceBody(topic.Content.Body, mainSettings, requestUri).Replace("<br />", "  ");
-            topic.Content.Summary = topic.Content.Summary.Replace("<br />", "  ");
+            topic.Content.Body = ReplaceBody(topic.Content.Body, mainSettings, requestUri);
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, topic, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
@@ -474,7 +473,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 template.Replace("[POSTINFO]", sPostInfo);
             }
 
-            post.Content.Body = ReplaceBody(post.Content.Body, mainSettings, requestUri).Replace("<br />", "  ");
+            post.Content.Body = ReplaceBody(post.Content.Body, mainSettings, requestUri);
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, post, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
