@@ -114,6 +114,7 @@
         <h4>Bug Fixes</h4>
         <ul>
             <li>FIXED: Posts &amp; Reply Display Issues in the Search Results View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1336">Issue 1336</a>!)</li>
+            <li>FIXED: Exceptions When Banning a User Account (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1334">Issue 1334</a>!)</li>
             <li>FIXED: Intermittent Exception can Happen on Replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1333">Issue 1333</a>!)</li>
             <li>FIXED: Conflict Between Processing Keystrokes on the Forum Search and Quick Reply (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1360">Issue 1360</a>!)</li>
             <li>FIXED: Token Replacement Removing `&lt;br /&gt;` Tags from Content (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1359">Issue 1359</a>!)</li>
