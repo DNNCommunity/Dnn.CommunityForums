@@ -171,7 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             {
                                 new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.TopicPinned,
                                     portalId: ti.PortalId,
-                                    tabId: ti.Forum.TabId,
+                                    tabId: ti.Forum.GetTabId(),
                                     moduleId: ti.ModuleId,
                                     forumGroupId: ti.Forum.ForumGroupId,
                                     forumId: ti.ForumId,
@@ -531,26 +531,26 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             }
                         }
 
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Categorize, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
-                        {
-                            if (!string.IsNullOrEmpty(dto.Topic.SelectedCategoriesAsString))
+                            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Categorize, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
                             {
-                                string[] cats = dto.Topic.SelectedCategoriesAsString.Split(';');
-                                DataProvider.Instance().Tags_DeleteTopicToCategory(this.ActiveModule.PortalID, this.ForumModuleId, -1, topicId);
-                                foreach (string c in cats)
+                                if (!string.IsNullOrEmpty(dto.Topic.SelectedCategoriesAsString))
                                 {
-                                    int cid = -1;
-                                    if (!string.IsNullOrEmpty(c) && SimulateIsNumeric.IsNumeric(c))
+                                    string[] cats = dto.Topic.SelectedCategoriesAsString.Split(';');
+                                    DataProvider.Instance().Tags_DeleteTopicToCategory(this.ActiveModule.PortalID, this.ForumModuleId, -1, topicId);
+                                    foreach (string c in cats)
                                     {
-                                        cid = Convert.ToInt32(c);
-                                        if (cid > 0)
+                                        int cid = -1;
+                                        if (!string.IsNullOrEmpty(c) && Utilities.IsNumeric(c))
                                         {
-                                            DataProvider.Instance().Tags_AddTopicToCategory(this.ActiveModule.PortalID, this.ForumModuleId, cid, topicId);
+                                            cid = Convert.ToInt32(c);
+                                            if (cid > 0)
+                                            {
+                                                DataProvider.Instance().Tags_AddTopicToCategory(this.ActiveModule.PortalID, this.ForumModuleId, cid, topicId);
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
                         DotNetNuke.Modules.ActiveForums.Entities.TopicInfo updatedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                         return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.ViewModels.Topic(updatedTopic));

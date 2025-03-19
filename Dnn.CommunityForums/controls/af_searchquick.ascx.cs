@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.ForumTabId = this.TID;
                 }
 
-                if (this.Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString["GroupId"]))
+                if (this.Request.QueryString["GroupId"] != null && Utilities.IsNumeric(this.Request.QueryString["GroupId"]))
                 {
                     this.SocialGroupId = Convert.ToInt32(this.Request.QueryString["GroupId"]);
                 }

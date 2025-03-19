@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             forumInfo.ForumGroup.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumInfo.TabId, forumInfo.ModuleId, GetTabId(portalSettings, forumInfo), GetModuleId(portalSettings, forumInfo), requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumInfo.GetTabId(), forumInfo.ModuleId, GetTabId(portalSettings, forumInfo), GetModuleId(portalSettings, forumInfo), requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = forumInfo;
             this.PropertySource[PropertySource_forumgroup] = forumInfo.ForumGroup;
             this.PropertySource[PropertySource_forumuser] = forumUser;
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             forumGroupInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumGroupInfo.TabId, forumGroupInfo.ModuleId, GetTabId(portalSettings, forumGroupInfo), GetModuleId(portalSettings, forumGroupInfo), requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, forumGroupInfo.GetTabId(), forumGroupInfo.ModuleId, GetTabId(portalSettings, forumGroupInfo), GetModuleId(portalSettings, forumGroupInfo), requestUri, rawUrl);
             this.PropertySource[PropertySource_forumgroup] = forumGroupInfo;
             this.PropertySource[PropertySource_forumuser] = forumUser;
             this.PropertySource[PropertySource_user] = forumUser.UserInfo;
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         private static int GetTabId(PortalSettings portalSettings, ForumInfo forumInfo)
         {
-            return portalSettings?.ActiveTab == null || portalSettings?.ActiveTab?.TabID == -1 || portalSettings?.ActiveTab?.TabID == portalSettings?.HomeTabId ? forumInfo.TabId : portalSettings.ActiveTab.TabID;
+            return portalSettings?.ActiveTab == null || portalSettings?.ActiveTab?.TabID == -1 || portalSettings?.ActiveTab?.TabID == portalSettings?.HomeTabId ? forumInfo.GetTabId() : portalSettings.ActiveTab.TabID;
         }
 
         private static int GetModuleId(PortalSettings portalSettings, ForumGroupInfo forumGroupInfo)
@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         private static int GetTabId(PortalSettings portalSettings, ForumGroupInfo forumGroupInfo)
         {
-            return portalSettings?.ActiveTab == null || portalSettings.ActiveTab.TabID == -1 || portalSettings?.ActiveTab?.TabID == portalSettings.HomeTabId ? forumGroupInfo.TabId : portalSettings.ActiveTab.TabID;
+            return portalSettings?.ActiveTab == null || portalSettings.ActiveTab.TabID == -1 || portalSettings?.ActiveTab?.TabID == portalSettings.HomeTabId ? forumGroupInfo.GetTabId() : portalSettings.ActiveTab.TabID;
         }
 
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, TopicInfo topicInfo, Uri requestUri, string rawUrl)
@@ -160,7 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             topicInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.TabId, topicInfo.Forum.ModuleId, GetTabId(portalSettings, topicInfo.Forum),  GetModuleId(portalSettings, topicInfo.Forum), requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.GetTabId(), topicInfo.Forum.ModuleId, GetTabId(portalSettings, topicInfo.Forum),  GetModuleId(portalSettings, topicInfo.Forum), requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = topicInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = topicInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = topicInfo;
@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             postInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, postInfo.Forum.TabId, postInfo.Forum.ModuleId, GetTabId(portalSettings, postInfo.Forum),  GetModuleId(portalSettings, postInfo.Forum), requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, postInfo.Forum.GetTabId(), postInfo.Forum.ModuleId, GetTabId(portalSettings, postInfo.Forum),  GetModuleId(portalSettings, postInfo.Forum), requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = postInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = postInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = postInfo.Topic;
@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             likeInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, likeInfo.Forum.TabId, likeInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? likeInfo.Forum.TabId : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? likeInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, likeInfo.Forum.GetTabId(), likeInfo.Forum.ModuleId, portalSettings.ActiveTab.TabID == -1 || portalSettings.ActiveTab.TabID == portalSettings.HomeTabId ? likeInfo.Forum.GetTabId() : portalSettings.ActiveTab.TabID, portalSettings.ActiveTab.ModuleID == -1 ? likeInfo.Forum.ModuleId : portalSettings.ActiveTab.ModuleID, requestUri, rawUrl);
             this.PropertySource[PropertySource_like] = likeInfo;
             this.PropertySource[PropertySource_forum] = likeInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = likeInfo.Forum.ForumGroup;
@@ -408,8 +408,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         internal static StringBuilder ReplaceTopicTokens(StringBuilder template, TopicInfo topic, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
-            topic.Content.Body = ReplaceBody(topic.Content.Body, mainSettings, requestUri).Replace("<br />", "  ");
-            topic.Content.Summary = topic.Content.Summary.Replace("<br />", "  ");
+            topic.Content.Body = ReplaceBody(topic.Content.Body, mainSettings, requestUri);
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, topic, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
@@ -474,7 +473,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 template.Replace("[POSTINFO]", sPostInfo);
             }
 
-            post.Content.Body = ReplaceBody(post.Content.Body, mainSettings, requestUri).Replace("<br />", "  ");
+            post.Content.Body = ReplaceBody(post.Content.Body, mainSettings, requestUri);
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, post, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
@@ -931,7 +930,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = ReplaceTokenSynonym(template, "[AF:URL:LASTREPLY]", "[FORUMTOPIC:LASTREPLYURL]");
 
             template = ReplaceTokenSynonym(template, "[SUBJECT]", "[FORUMTOPIC:SUBJECT]");
-            template = ReplaceTokenSynonym(template, "[SUBJECTLINK]", "[FORUMTOPIC:SUBJECTLINK]");
 
             template = ReplaceTokenSynonymPrefix(template, "[BODY", "[FORUMTOPIC:BODY");
             template = ReplaceTokenSynonymPrefix(template, "[SUMMARY", "[FORUMTOPIC:SUMMARY");
@@ -951,6 +949,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[ICONUNPINNED]", "[FORUMTOPIC:ICONUNPINNED", "[ICONPIN]-HideIcon");
             }
 
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[SUBJECTLINK]", "[FORUMTOPIC:SUBJECTLINK", "[SUBJECTLINK]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[POSTICON]", "[FORUMTOPIC:POSTICON", "[POSTICON]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[POSTRATINGDISPLAY]", "[FORUMTOPIC:RATING", "[POSTRATING]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[NEXTTOPIC]", "[FORUMTOPIC:NEXTTOPICLINK", "[NEXTTOPICLINK]");
@@ -1024,7 +1023,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[LINK]", "[FORUMPOST:LINK", "[LINK]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[HYPERLINK]", "[FORUMPOST:LINK", "[LINK]");
             template = ReplaceTokenSynonym(template, "[SUBJECT]", "[FORUMPOST:SUBJECT]");
-            template = ReplaceTokenSynonym(template, "[SUBJECTLINK]", "[FORUMPOST:SUBJECTLINK]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[SUBJECTLINK]", "[FORUMTOPIC:SUBJECTLINK", "[SUBJECTLINK]");
             template = ReplaceTokenSynonym(template, "[LINKURL]", "[FORUMPOST:LINK]");
             template = ReplaceTokenSynonym(template, "[FORUMLINK]", "[FORUM:FORUMLINK]");
 

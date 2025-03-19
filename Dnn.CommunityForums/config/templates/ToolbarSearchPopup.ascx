@@ -1,7 +1,7 @@
 <script type="text/javascript">
     //prevent submit from Enter key
     $(document).ready(function () {
-        $(window).keydown(function (event) {
+        $('.dcf-search-input').keydown(function (event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
                 return false;
@@ -25,7 +25,7 @@
     <div class="dcf-search-popup aftb-search-popup">
         <div class="dcf-search-input">
             <input class="dcf-search-input" type="text" placeholder="[RESX:SearchFor]" maxlength="50" onkeydown="CheckEnterPressed(this, event)">
-            <button id="btnSearch" class="dcf-search-button">[RESX:Search]</button>
+            <button id="btnSearch" type="submit" class="dcf-search-button">[RESX:Search]</button>
         </div>
         <div class="dcf-search-options">
             <a class="dcf-search-option-advanced" href="[AF:TB:AdvancedSearchURL]">[RESX:SearchAdvanced]</a>
