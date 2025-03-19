@@ -350,7 +350,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     message = Utilities.CleanString(this.PortalId, message, this.allowHTML, this.editorType, this.ForumInfo.FeatureSettings.UseFilter, this.ForumInfo.FeatureSettings.AllowScript, this.ForumModuleId, this.ImagePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
                     message = Utilities.ManageImagePath(message, HttpContext.Current.Request.Url);
                     var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UserId);
-                    message = TemplateUtils.PreviewTopic(topicTemplateID, this.ForumInfo, user, message, this.ImagePath, DateTime.UtcNow, this.ForumUser.CurrentUserType, this.UserId, this.TimeZoneOffset);
+                    message = TemplateUtils.PreviewTopic(topicTemplateID, this.ForumInfo, user, message, this.ImagePath, DateTime.UtcNow, this.ForumUser.CurrentUserType, this.UserId, this.TimeZoneOffset, this.Request.Url, this.Request.RawUrl);
                     this.hidPreviewText.Value = message;
                     break;
             }
