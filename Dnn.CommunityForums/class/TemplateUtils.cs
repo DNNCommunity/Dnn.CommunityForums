@@ -529,21 +529,36 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion  "Deprecated Methods"
 
-        internal static string PreviewTopic(int topicTemplateID, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string body, string imagePath,DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset)
+        internal static string PreviewTopic(int topicTemplateID, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string body, string imagePath, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset, Uri requestUri, string rawUrl)
         {
             var sTemplate = TemplateCache.GetCachedTemplate(forumInfo.ModuleId, "TopicView", topicTemplateID);
             try
             {
-                var mainSettings = SettingsBase.GetModuleSettings(forumInfo.ModuleId);
-                var sTopic = GetTemplateSection(sTemplate, "[TOPIC]", "[/TOPIC]");
-                sTopic = sTopic.Replace("[ACTIONS:ALERT]", string.Empty);
-                sTopic = sTopic.Replace("[ACTIONS:EDIT]", string.Empty);
-                sTopic = sTopic.Replace("[ACTIONS:DELETE]", string.Empty);
-                sTopic = sTopic.Replace("[ACTIONS:QUOTE]", string.Empty);
-                sTopic = sTopic.Replace("[ACTIONS:REPLY]", string.Empty);
-                sTopic = sTopic.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(postDate, forumInfo.PortalId, user.UserId));
-                sTopic = sTopic.Replace("[POSTINFO]", GetPostInfo(forumInfo.ModuleId, user, imagePath, false, HttpContext.Current.Request.UserHostAddress, true, currentUserType, currentUserId, false, timeZoneOffset));
-                sTemplate = ParsePreview(forumInfo.PortalId, sTopic, body, forumInfo.ModuleId);
+                var sbTopicTemplate = new StringBuilder(GetTemplateSection(sTemplate, "[TOPIC]", "[/TOPIC]"));
+                sbTopicTemplate = ReplaceSubSection(sbTopicTemplate, string.Empty, "[AF:CONTROL:TAGS]", "[/AF:CONTROL:TAGS]");
+
+#region "Backward compatibility -- remove in v10.00.00"
+                sbTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyUserTokenSynonyms(sbTopicTemplate, forumInfo.PortalSettings, forumInfo.MainSettings, user.UserInfo?.Profile?.PreferredLocale);
+                sbTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(sbTopicTemplate, forumInfo.PortalSettings, forumInfo.MainSettings, user.UserInfo?.Profile?.PreferredLocale);
+                sbTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(sbTopicTemplate, forumInfo.PortalSettings, user.UserInfo?.Profile?.PreferredLocale);
+                sbTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(sbTopicTemplate, forumInfo.PortalSettings, user.UserInfo?.Profile?.PreferredLocale);
+#endregion "Backward compatibility -- remove in v10.00.00"
+
+                sbTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveControlTokensForDnnPrintMode(sbTopicTemplate);
+
+                var topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
+                {
+                    Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
+                    {
+                        Body = body,
+                        DateCreated = postDate,
+                        DateUpdated = postDate,
+                    },
+                    Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(user),
+                    Forum = forumInfo,
+                };
+                sbTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(sbTopicTemplate, topic, forumInfo.PortalSettings, forumInfo.MainSettings, new Services.URLNavigator().NavigationManager(), user, requestUri, rawUrl);
+                sTemplate = ParsePreview(forumInfo.PortalId, sbTopicTemplate.ToString(), body, forumInfo.ModuleId);
                 sTemplate = string.Concat("<table class=\"afgrid\" width=\"100%\" cellspacing=\"0\" cellpadding=\"4\" border=\"1\">", sTemplate);
                 sTemplate = string.Concat(sTemplate, "</table>");
                 sTemplate = Utilities.LocalizeControl(sTemplate);
