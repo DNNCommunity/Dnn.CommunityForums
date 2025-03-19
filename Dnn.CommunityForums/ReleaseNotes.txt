@@ -89,7 +89,7 @@
         <hr />
 
         <h3>
-            08.02.06
+            08.02.07
         </h3>
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, 
@@ -102,7 +102,9 @@
 
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-            <li>UPDATE: Removed Search Text from Views on Mobile Browsers (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1281">Issue 1281</a>)</li>
+            <li>UPDATE: Improved the Usability of the Advanced Search View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1340">Issue 1340</a>)</li>
+            <li>UPDATE: Improved the Usability of the Pager for Mobile Visitors (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1331">Issue 1331</a>)</li>
+            <li>UPDATE: Search Pages Now Completely Using Localized Values (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1347">Issue 1347</a>)</li>
             <!--
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
@@ -111,11 +113,11 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>FIXED: Module Intitilization Overwrites Bootstrap Theme (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1312">Issue 1312</a>!)</li>
-            <li>FIXED: New Users Unable to Create New Posts Due to Flood Control (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1319">Issue 1319</a>!)</li>
-            <li>FIXED: Unable to Press Enter to Start Searching (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1311">Issue 1311</a>!)</li>
-            <li>FIXED: Child Forums Not Aligned with Other Forums (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1303">Issue 1303</a>!)</li>
-            <li>FIXED: Icons Not Aligned Properly in the Forum View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1322">Issue 1322</a>!)</li>
+            <li>FIXED: Posts &amp; Reply Display Issues in the Search Results View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1336">Issue 1336</a>!)</li>
+            <li>FIXED: Intermittent Exception can Happen on Replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1333">Issue 1333</a>!)</li>
+            <li>FIXED: Conflict Between Processing Keystrokes on the Forum Search and Quick Reply (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1360">Issue 1360</a>!)</li>
+            <li>FIXED: Token Replacement Removing `&lt;br /&gt;` Tags from Content (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1359">Issue 1359</a>!)</li>
+            <li>FIXED: Extra Empty Rows Displayed in the Filter Results View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1335">Issue 1335</a>!)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
@@ -124,7 +126,11 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            <li>Release Prep: 08.02.06 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1327">Issue 1327</a>)</li>
+            <li>TASK: Use the DNN ClientResourceManagement API Instead of Embedding Resources (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1341">Issue 1341</a>)</li>
+            <li>TASK: Update URL Construction to Better Handle the Viewer Module (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1343">Issue 1343</a>)</li>
+            <li>TASK: Removed the Legacy Dependency to `SimulateIsNumeric` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1309">Issue 1309</a>)</li>
+            <li>TASK: Removed the Legacy Dependency to `SimulateDateDiff` (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1286">Issue 1286</a>)</li>
+            <li>Release Prep: 08.02.07 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1369">Issue 1369</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
