@@ -89,11 +89,11 @@
         <hr />
 
         <h3>
-            08.02.06
+            08.02.08
         </h3>
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, 
-            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>, and 
+            <!--<a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>, and -->
             <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>.
         </p>
         <p>
@@ -102,7 +102,7 @@
 
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-            <li>UPDATE: Removed Search Text from Views on Mobile Browsers (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1281">Issue 1281</a>)</li>
+            <li>None at this time.</li>
             <!--
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
@@ -111,11 +111,8 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>FIXED: Module Intitilization Overwrites Bootstrap Theme (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1312">Issue 1312</a>!)</li>
-            <li>FIXED: New Users Unable to Create New Posts Due to Flood Control (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1319">Issue 1319</a>!)</li>
-            <li>FIXED: Unable to Press Enter to Start Searching (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1311">Issue 1311</a>!)</li>
-            <li>FIXED: Child Forums Not Aligned with Other Forums (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1303">Issue 1303</a>!)</li>
-            <li>FIXED: Icons Not Aligned Properly in the Forum View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1322">Issue 1322</a>!)</li>
+            <li>FIXED: Fatal Exception on Attempts to Load the Reply View When There are Unexpected Post Count in the Pager (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1333">Issue 1333</a>!)</li>
+            <li>FIXED: Topic Edit Preview Not Using Token Replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1369">Issue 1369</a>!)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
@@ -124,7 +121,7 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            <li>Release Prep: 08.02.06 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1327">Issue 1327</a>)</li>
+            <li>Release Prep: 08.02.08 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1372">Issue 1372</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>

@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             {
                                 new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.TopicPinned,
                                     portalId: ti.PortalId,
-                                    tabId: ti.Forum.TabId,
+                                    tabId: ti.Forum.GetTabId(),
                                     moduleId: ti.ModuleId,
                                     forumGroupId: ti.Forum.ForumGroupId,
                                     forumId: ti.ForumId,
@@ -537,7 +537,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                                     foreach (string c in cats)
                                     {
                                         int cid = -1;
-                                        if (!string.IsNullOrEmpty(c) && SimulateIsNumeric.IsNumeric(c))
+                                        if (!string.IsNullOrEmpty(c) && Utilities.IsNumeric(c))
                                         {
                                             cid = Convert.ToInt32(c);
                                             if (cid > 0)

@@ -6,11 +6,11 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-namespace DotNetNuke.Modules.ActiveForums {
+namespace DotNetNuke.Modules.ActiveForums
+{
     
-    
-    public partial class af_searchquick {
+    public partial class af_searchquick 
+    {
         
         /// <summary>
         /// tblSearch control.

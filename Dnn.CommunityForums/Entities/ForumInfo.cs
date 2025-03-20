@@ -52,6 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private ModuleInfo moduleInfo;
         private int? subscriberCount;
         private int? lastPostTopicId;
+        private int? tabId;
         private string lastPostTopicUrl;
         private string rssLink;
         private List<PropertyInfo> properties;
@@ -392,10 +393,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string ParentForumUrlPrefix => this.ParentForumId > 0 ? new Controllers.ForumController().GetById(this.ParentForumId, this.ModuleId).PrefixURL : string.Empty;
 
         [IgnoreColumn]
-        public int TabId => this.ModuleInfo.TabID;
+        public int TabId
+        {
+            set => this.tabId = value;
+        }
 
         [IgnoreColumn]
-        public string ForumURL => URL.ForumLink(this.TabId, this);
+        public string ForumURL => URL.ForumLink(this.GetTabId(), this);
 
         [IgnoreColumn]
         public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> SubForums
@@ -652,9 +656,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     if (this.FeatureSettings.AllowRSS)
                     {
-                        var url = new Uri(Utilities.NavigateURL(this.TabId));
+                        var url = new Uri(Utilities.NavigateURL(this.GetTabId()));
                         this.rssLink =
-                            $"{url.Scheme}://{url.Host}:{url.Port}/DesktopModules/ActiveForums/feeds.aspx?portalid={this.PortalId}&forumid={this.ForumID}&tabid={this.TabId}&moduleid={this.ModuleId}" +
+                            $"{url.Scheme}://{url.Host}:{url.Port}/DesktopModules/ActiveForums/feeds.aspx?portalid={this.PortalId}&forumid={this.ForumID}&tabid={this.GetTabId()}&moduleid={this.ModuleId}" +
                             (this.SocialGroupId > 0 ? $"&GroupId={this.SocialGroupId}" : string.Empty);
                     }
                     else
@@ -823,7 +827,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "forumgroupid":
                     return PropertyAccess.FormatString(this.ForumGroupId.ToString(), format);
                 case "forummainlink":
-                    return PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId), format);
+                    return PropertyAccess.FormatString(Utilities.NavigateURL(this.GetTabId()), format);
                 case "grouplink":
                 case "forumgrouplink":
                     return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
@@ -985,9 +989,23 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return string.Empty;
         }
 
-        private int GetTabId()
+        internal int GetTabId()
         {
-            return this.ModuleInfo.TabID > 0 ? this.ModuleInfo.TabID : this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId ? this.TabId : this.PortalSettings.ActiveTab.TabID;
+            if (this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId)
+            {
+                if (!this.tabId.Equals(null))
+                {
+                    return (int)this.tabId;
+                }
+                else
+                {
+                    return this.ModuleInfo.TabID;
+                }
+            }
+            else
+            {
+                return this.PortalSettings.ActiveTab.TabID;
+            }
         }
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ForumID);
