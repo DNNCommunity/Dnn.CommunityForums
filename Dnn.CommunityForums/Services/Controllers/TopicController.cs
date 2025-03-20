@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             {
                                 new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.TopicPinned,
                                     portalId: ti.PortalId,
-                                    tabId: ti.Forum.TabId,
+                                    tabId: ti.Forum.GetTabId(),
                                     moduleId: ti.ModuleId,
                                     forumGroupId: ti.Forum.ForumGroupId,
                                     forumId: ti.ForumId,
