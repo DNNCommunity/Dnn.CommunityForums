@@ -38,13 +38,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DotNetNuke.Abstractions" Version="9.13.7" />
-      <None Remove="packages.config" />
       <None Remove="CustomControls\Resources\TextSuggest.js" />
     </ItemGroup>
 
     <ItemGroup>
         <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+        <AdditionalFiles Include="..\.editorconfig" Link=".editorconfig" />
     </ItemGroup>
 
     <ItemGroup>

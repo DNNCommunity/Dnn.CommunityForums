@@ -16,9 +16,11 @@
 
     <ItemGroup>
         <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+        <AdditionalFiles Include="..\.editorconfig" Link=".editorconfig" />
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
         <PackageReference Include="coverlet.collector" Version="6.0.0" />
         <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
