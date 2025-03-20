@@ -19,7 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DotNetNuke.Abstractions" Version="9.13.7" />
+        <PackageReference Include="coverlet.collector" Version="6.0.0" />
+        <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
             <PrivateAssets>all</PrivateAssets>

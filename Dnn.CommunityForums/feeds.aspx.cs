@@ -22,7 +22,6 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Data;
-    using System.Reflection;
     using System.Text;
 
     using DotNetNuke.Entities.Portals;
@@ -54,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int intPortalId = -1;
             if (this.Request.QueryString["portalid"] != null)
             {
-                if (SimulateIsNumeric.IsNumeric(this.Request.QueryString["portalid"]))
+                if (Utilities.IsNumeric(this.Request.QueryString["portalid"]))
                 {
                     intPortalId = Convert.ToInt32(this.Request.QueryString["portalid"]);
                 }
@@ -65,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.Request.QueryString["tabid"] != null)
             {
-                if (SimulateIsNumeric.IsNumeric(this.Request.QueryString["tabid"]))
+                if (Utilities.IsNumeric(this.Request.QueryString["tabid"]))
                 {
                     intTabId = Convert.ToInt32(this.Request.QueryString["tabid"]);
                 }
@@ -73,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.Request.QueryString["moduleid"] != null)
             {
-                if (SimulateIsNumeric.IsNumeric(this.Request.QueryString["moduleid"]))
+                if (Utilities.IsNumeric(this.Request.QueryString["moduleid"]))
                 {
                     this.moduleID = Convert.ToInt32(this.Request.QueryString["moduleid"]);
                 }
@@ -85,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int forumID = -1;
             if (this.Request.QueryString["ForumID"] != null)
             {
-                if (SimulateIsNumeric.IsNumeric(this.Request.QueryString["ForumId"]))
+                if (Utilities.IsNumeric(this.Request.QueryString["ForumId"]))
                 {
                     forumID = Int32.Parse(this.Request.QueryString["ForumID"]);
                 }

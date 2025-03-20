@@ -18,37 +18,36 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForumsTests
 {
     using System;
 
-    public class ProfileBase : SettingsBase
+    using NUnit.Framework;
+
+    [TestFixture]
+    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
+    public class SimulateIsNumericTests
     {
-        private int uID = -1;
-
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUserInfo { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer Used.")]
-        public UserProfileInfo UserProfile { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public int UID
+        [Test]
+        [TestCase(0, ExpectedResult = true)]
+        [TestCase("abc", ExpectedResult = false)]
+        [TestCase(false, ExpectedResult = true)]
+        [TestCase(true, ExpectedResult = true)]
+        [TestCase(null, ExpectedResult = false)]
+        [TestCase(-10, ExpectedResult = true)]
+        [TestCase(01E1, ExpectedResult = true)]
+        [TestCase("0", ExpectedResult = true)]
+        public bool IsNumericTest(object obj)
         {
-            get
-            {
-                if (this.Request.Params[ParamKeys.UserId] != null)
-                {
-                    if (Utilities.IsNumeric(this.Request.Params[ParamKeys.UserId]))
-                    {
-                        this.uID = Convert.ToInt32(this.Request.Params[ParamKeys.UserId]);
-                    }
-                }
-                else
-                {
-                    this.uID = this.UserId;
-                }
+            // Arrange
 
-                return this.uID;
-            }
+            var expectedResult = true;
+
+            // Act
+            var actualResult = SimulateIsNumeric.IsNumeric(obj);
+
+            // Assert
+            return actualResult;
         }
     }
 }

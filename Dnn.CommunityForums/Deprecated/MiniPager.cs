@@ -23,9 +23,10 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections.Generic;
     using System.Data;
-
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
     internal static class MiniPager
     {
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string GetMiniPager(DataRow currentRow, int tabId, int socialGroupId, int pageSize)
         {
             if (currentRow == null)

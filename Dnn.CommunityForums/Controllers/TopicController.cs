@@ -200,10 +200,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (ti.Forum.FeatureSettings.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.FeatureSettings.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, topicId, 0, ti.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.FeatureSettings.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.GetTabId(), ti.ForumId, topicId, 0, ti.Author);
             }
 
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: ti.PortalId, tabId: ti.Forum.TabId, moduleId: ti.Forum.ModuleId, forumGroupId: ti.Forum.ForumGroupId, forumId: ti.ForumId, topicId: topicId, replyId: -1, contentId: ti.ContentId, userId: userId, authorId: ti.Content.AuthorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: ti.PortalId, tabId: ti.Forum.GetTabId(), moduleId: ti.Forum.ModuleId, forumGroupId: ti.Forum.ForumGroupId, forumId: ti.ForumId, topicId: topicId, replyId: -1, contentId: ti.ContentId, userId: userId, authorId: ti.Content.AuthorId);
             return ti;
         }
 
@@ -240,7 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (oldForum.FeatureSettings.ModMoveTemplateId > 0 & ti?.Author?.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(oldForum.FeatureSettings.ModMoveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, forumId: ti.Forum.ForumID, topicId: ti.TopicId, replyId: -1, author: ti.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(oldForum.FeatureSettings.ModMoveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.GetTabId(), forumId: ti.Forum.ForumID, topicId: ti.TopicId, replyId: -1, author: ti.Author);
             }
 
             new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: topicId, replyId: -1, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: userId, requestUrl: null);
@@ -283,8 +283,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // if existing topic, update associated journal item
             if (ti.TopicId > 0)
             {
-                string sUrl = new ControlUtils().BuildUrl(ti.PortalId, ti.Forum.TabId, ti.ModuleId, ti.Forum.ForumGroup.PrefixURL, ti.Forum.PrefixURL, ti.Forum.ForumGroupId, ti.ForumId, ti.TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, ti.Forum.SocialGroupId);
-                new Social().UpdateJournalItemForPost(ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, ti.TopicId, 0, ti.Author.AuthorId, sUrl, ti.Content.Subject, string.Empty, ti.Content.Body);
+                string sUrl = new ControlUtils().BuildUrl(ti.PortalId, ti.Forum.GetTabId(), ti.ModuleId, ti.Forum.ForumGroup.PrefixURL, ti.Forum.PrefixURL, ti.Forum.ForumGroupId, ti.ForumId, ti.TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, ti.Forum.SocialGroupId);
+                new Social().UpdateJournalItemForPost(ti.PortalId, ti.ModuleId, ti.Forum.GetTabId(), ti.ForumId, ti.TopicId, 0, ti.Author.AuthorId, sUrl, ti.Content.Subject, string.Empty, ti.Content.Body);
             }
 
             // TODO: convert to use DAL2?
@@ -298,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 new Social().DeleteJournalItemForPost(ti.PortalId, ti.ForumId, topicId, 0);
 
-                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(ti.ModuleId, ti.ForumId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(ti.ModuleId, ti.TopicId);
