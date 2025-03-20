@@ -6,25 +6,11 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-	using System;
-using System.Reflection;
-using System.Data;
-using System.Collections;
-using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
-using System.Text;
-using System.Web.UI;
-using System.Web;
-using System.Linq;
-using System.Collections.Generic;
-
-
+	
     public partial class profile_adminsettings
     {
-
         /// <summary>
         /// adminrow1 control.
         /// </summary>
@@ -33,7 +19,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableRow adminrow1;
-
         /// <summary>
         /// txtRewardPoints control.
         /// </summary>
@@ -42,7 +27,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRewardPoints;
-
         /// <summary>
         /// txtUserCaption control.
         /// </summary>
@@ -51,7 +35,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUserCaption;
-
         /// <summary>
         /// chkDisableSignature control.
         /// </summary>
@@ -60,7 +43,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDisableSignature;
-
         /// <summary>
         /// chkDisableAvatar control.
         /// </summary>
@@ -69,7 +51,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDisableAvatar;
-
         /// <summary>
         /// drpDefaultTrust control.
         /// </summary>
@@ -78,7 +59,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpDefaultTrust;
-
         /// <summary>
         /// chkMonitor control.
         /// </summary>
@@ -87,7 +67,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkMonitor;
-
         /// <summary>
         /// chkDisableAttachments control.
         /// </summary>
@@ -96,7 +75,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDisableAttachments;
-
         /// <summary>
         /// btnAdminSave control.
         /// </summary>
@@ -105,7 +83,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnAdminSave;
-
         /// <summary>
         /// btnAdminCancel control.
         /// </summary>
@@ -114,7 +91,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnAdminCancel;
-
         /// <summary>
         /// cbAdmin control.
         /// </summary>

@@ -52,6 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private ModuleInfo moduleInfo;
         private int? subscriberCount;
         private int? lastPostTopicId;
+        private int? tabId;
         private string lastPostTopicUrl;
         private string rssLink;
         private List<PropertyInfo> properties;
@@ -392,7 +393,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string ParentForumUrlPrefix => this.ParentForumId > 0 ? new Controllers.ForumController().GetById(this.ParentForumId, this.ModuleId).PrefixURL : string.Empty;
 
         [IgnoreColumn]
-        public int TabId => this.GetTabId();
+        public int TabId
+        {
+            set => this.tabId = value;
+        }
 
         [IgnoreColumn]
         public string ForumURL => URL.ForumLink(this.GetTabId(), this);
@@ -985,9 +989,23 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return string.Empty;
         }
 
-        private int GetTabId()
+        internal int GetTabId()
         {
-            return this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId ? this.TabId : this.PortalSettings.ActiveTab.TabID;
+            if (this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId)
+            {
+                if (!this.tabId.Equals(null))
+                {
+                    return (int)this.tabId;
+                }
+                else
+                {
+                    return this.ModuleInfo.TabID;
+                }
+            }
+            else
+            {
+                return this.PortalSettings.ActiveTab.TabID;
+            }
         }
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ForumID);

@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                             if (!string.IsNullOrEmpty(itemTemplate) && itemTemplate.Contains("["))
                             {
-                              
+
                                 itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
                                 if (control.GetType().FullName == "System.Web.UI.LiteralControl")
                                 {

@@ -22,7 +22,6 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Data;
-    using System.Reflection;
     using System.Text;
 
     using DotNetNuke.Entities.Portals;
