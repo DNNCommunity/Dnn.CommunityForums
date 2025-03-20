@@ -20,8 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    using System;
-
     /// <summary>
     /// Author is really the same as a user. Just separated out to make code more understandable.
     /// </summary>
@@ -94,6 +92,5 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get => this.forumUserInfo.UserInfo?.Email;
             set => this.forumUserInfo.UserInfo.Email = value;
         }
-
     }
 }

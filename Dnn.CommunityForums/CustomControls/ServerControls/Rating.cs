@@ -21,17 +21,10 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Net;
     using System.Text;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
-
-    using DotNetNuke.UI.UserControls;
 
     [ToolboxData("<{0}:Rating runat=server></{0}:Rating>")]
     public class Rating : WebControl

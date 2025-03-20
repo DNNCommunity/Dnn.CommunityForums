@@ -21,15 +21,11 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
     using System.Text.RegularExpressions;
     using System.Web;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Common.Utilities.Internal;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
 
     public class ForumsReWriter : IHttpModule
@@ -176,7 +172,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     newSearchURL = newSearchURL.Replace(pageSegment.Value, string.Empty);
                 }
-
             }
             else
             {

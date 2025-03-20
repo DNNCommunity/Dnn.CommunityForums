@@ -6,14 +6,12 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
-
+	
+    
     public partial class admin_ranks_new
     {
-
         /// <summary>
         /// agRanks control.
         /// </summary>
@@ -22,7 +20,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid agRanks;
-
         /// <summary>
         /// drpRankImages control.
         /// </summary>

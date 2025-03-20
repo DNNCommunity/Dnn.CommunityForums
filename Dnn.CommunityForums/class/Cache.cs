@@ -23,8 +23,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections;
     using System.Data;
-    using System.Reflection;
-    using System.Web;
 
     public partial class DataCache
     {
@@ -146,6 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
+
             return null;
         }
 
@@ -162,6 +161,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
             }
+
             return null;
         }
 
@@ -187,6 +187,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
+
             return null;
         }
 

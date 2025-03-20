@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web.UI.WebControls;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
@@ -40,6 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     {
         [IgnoreColumn]
         private string cacheKeyTemplate => CacheKeys.ForumInfo;
+
         private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
         private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
@@ -153,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public bool LastPostIsReply => this.LastReplyId != 0;
 
-        [IgnoreColumn] 
+        [IgnoreColumn]
         public bool LastPostIsTopic => this.LastReplyId == 0;
 
         public string LastPostSubject
@@ -213,8 +215,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 var ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetById(this.LastReplyId);
                 this.lastPostInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)ri;
             }
+
             return this.lastPostInfo;
-            //return this.lastPostInfo = this.LastReplyId == 0 ? (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.LastTopicId) : new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetById(this.LastReplyId);
+
+            // return this.lastPostInfo = this.LastReplyId == 0 ? (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.LastTopicId) : new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetById(this.LastReplyId);
         }
 
         [ColumnName("LastPostAuthorName")]
@@ -382,7 +386,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-
         [IgnoreColumn]
         public string ParentForumName => this.ParentForumId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ParentForumId, this.ModuleId).ForumName : string.Empty;
 
@@ -430,7 +433,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return this.subforums;
         }
-
 
         [IgnoreColumn]
         public List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties
@@ -562,7 +564,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-
         internal SettingsInfo LoadMainSettings()
         {
             return this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
@@ -664,6 +665,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     {
                         this.rssLink = string.Empty;
                     }
+
                     this.UpdateCache();
                 }
 
@@ -783,7 +785,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// <inheritdoc/>
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability => DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
-
 
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)

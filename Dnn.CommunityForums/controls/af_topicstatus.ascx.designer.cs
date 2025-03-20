@@ -6,19 +6,11 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
+	
 	public partial class af_topicstatus
 	{
-
 		///<summary>
 		///drpStatus control.
 		///</summary>

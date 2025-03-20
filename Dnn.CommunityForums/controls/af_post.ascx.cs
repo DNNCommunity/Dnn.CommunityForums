@@ -396,7 +396,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ctlForm.Summary = System.Net.WebUtility.HtmlDecode(ti.Content.Summary);
                 this.ctlForm.Body = sBody;
                 this.ctlForm.AnnounceEnd = ti.AnnounceEnd ?? Utilities.NullDate();
-                this.ctlForm.AnnounceStart =  ti.AnnounceStart ?? Utilities.NullDate();
+                this.ctlForm.AnnounceStart = ti.AnnounceStart ?? Utilities.NullDate();
                 this.ctlForm.Locked = ti.IsLocked;
                 this.ctlForm.Pinned = ti.IsPinned;
                 this.ctlForm.TopicIcon = ti.TopicIcon;

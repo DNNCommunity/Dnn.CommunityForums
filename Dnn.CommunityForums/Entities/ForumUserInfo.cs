@@ -18,10 +18,11 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Linq;
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
-    using System.Linq;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
@@ -387,7 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return 0;
 
             // from stored procedure
-            // CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
+            // CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead,
         }
 
         internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)

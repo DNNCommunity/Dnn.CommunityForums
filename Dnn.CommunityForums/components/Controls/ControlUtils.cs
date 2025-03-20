@@ -24,12 +24,12 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Text;
-    using DotNetNuke.Modules.ActiveForums.Queue;
 
     public class ControlUtils
     {
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string BuildPager(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int pageCount) => throw new NotImplementedException();
+
         public string BuildPager(int portalId, int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int pageCount)
         {
             if (pageCount == 1)
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var @params = new List<string>();
 
             if (!mainSettings.URLRewriteEnabled || (((string.IsNullOrEmpty(forumPrefix) && forumID > 0 && string.IsNullOrEmpty(groupPrefix)) || (string.IsNullOrEmpty(forumPrefix) && string.IsNullOrEmpty(groupPrefix) && forumGroupId > 0)) && string.IsNullOrEmpty(otherPrefix)))
-            { 
+            {
                 if (forumID > 0 && topicId == -1)
                 {
                     @params.Add($"{ParamKeys.ForumId}={forumID}");
@@ -201,6 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sURL += "/" + mainSettings.PrefixURLOther + "/" + otherPrefix;
             }
+
             if (topicId > 0 && string.IsNullOrEmpty(topicURL))
             {
                 return Utilities.NavigateURL(tabId, portalSettings, string.Empty, ParamKeys.TopicId + "=" + topicId);

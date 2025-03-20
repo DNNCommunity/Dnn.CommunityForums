@@ -21,16 +21,10 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
-    using System.Text;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
-    using DotNetNuke.Modules.ActiveForums.API;
-    using DotNetNuke.Modules.ActiveForums.Data;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:QuickReply runat=server></{0}:QuickReply>")]
     public class QuickReply : ControlsBase
@@ -67,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             base.OnInit(e);
 
             this.ambtnSubmit.Click += new System.EventHandler(this.ambtnSubmit_Click);
-            
+
             this.moduleId = this.ControlConfig.ModuleId;
             this.ForumModuleId = this.ControlConfig.ForumModuleId;
             this.portalId = this.ControlConfig.PortalId;

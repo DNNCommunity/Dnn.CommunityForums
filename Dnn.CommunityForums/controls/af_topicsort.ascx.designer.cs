@@ -7,25 +7,11 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
+	
 	public partial class af_topicsorter
 	{
-
 		///<summary>
 		///drpSort control.
 		///</summary>

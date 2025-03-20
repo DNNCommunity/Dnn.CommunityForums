@@ -21,7 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Queue
 {
     using System;
-    using System.Collections.Generic;
 
     using DotNetNuke.Services.Scheduling;
 

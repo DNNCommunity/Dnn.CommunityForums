@@ -21,12 +21,9 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
-    using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -127,6 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sRow = sAltRow;
                         }
+
                         var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, up.UserId);
                         sRow = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sRow, author, this.ImagePath, this.ForumUser.CurrentUserType, false, false, string.Empty, -1, this.TimeZoneOffset);
                         sb.Append(sRow);

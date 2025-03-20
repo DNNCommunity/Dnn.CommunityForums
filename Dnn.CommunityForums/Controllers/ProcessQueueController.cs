@@ -23,11 +23,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web.UI.WebControls;
 
-    using DotNetNuke.Data;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
-    using DotNetNuke.Services.Scheduling;
-    using DotNetNuke.UI.UserControls;
 
     internal class ProcessQueueController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo>
     {

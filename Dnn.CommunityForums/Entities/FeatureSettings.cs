@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
+
     using DotNetNuke.ComponentModel.DataAnnotations;
 
     public class FeatureSettings

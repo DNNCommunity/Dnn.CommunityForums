@@ -20,10 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Policy;
-
     internal partial class TagController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TagInfo>
     {
         public void DeleteForTagId(int tagId)

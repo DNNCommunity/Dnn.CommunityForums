@@ -21,7 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
-    using System.Collections.Generic;
     using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
@@ -121,7 +120,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                    EqualPermissionMembers(this.Announce, other.Announce) &&
                    EqualPermissionMembers(this.Attach, other.Attach) &&
                    EqualPermissionMembers(this.Ban, other.Ban) &&
-                   //EqualPermissionMembers(this.Block, other.Block) &&
+
+                   // EqualPermissionMembers(this.Block, other.Block) &&
                    EqualPermissionMembers(this.Categorize, other.Categorize) &&
                    EqualPermissionMembers(this.Create, other.Create) &&
                    EqualPermissionMembers(this.Delete, other.Delete) &&

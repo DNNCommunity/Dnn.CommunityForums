@@ -78,6 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     {
                         return this.Request.CreateResponse(HttpStatusCode.OK, matchingTags);
                     }
+
                     return this.Request.CreateResponse(HttpStatusCode.NoContent);
                 }
             }

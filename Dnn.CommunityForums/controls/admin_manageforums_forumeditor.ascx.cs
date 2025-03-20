@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public string imgOn;
         public string imgOff;
-        public string editorType = string.Empty; //"G"; // "F"
+        public string editorType = string.Empty; // "G"; // "F"
         public int recordId = 0;
         protected Controls.admin_securitygrid ctlSecurityGrid = new Controls.admin_securitygrid();
 
@@ -518,6 +518,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.chkInheritModuleFeatures.Checked = true;
                 this.trTemplates.Attributes.Add("style", "display:none;");
             }
+
             this.LoadFeatureSettings(gi.FeatureSettings);
         }
 

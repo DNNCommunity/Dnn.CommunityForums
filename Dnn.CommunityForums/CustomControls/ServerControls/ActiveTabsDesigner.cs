@@ -1,4 +1,4 @@
-// Copyright (c) by DNN Community
+﻿// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -20,11 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
-
     public class ActiveTabsDesigner : System.Web.UI.Design.ControlDesigner
     {
         private ActiveTabs m_ControlInstance;

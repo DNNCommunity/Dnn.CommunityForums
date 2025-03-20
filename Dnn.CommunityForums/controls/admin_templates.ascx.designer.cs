@@ -6,14 +6,12 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
-
+	
+    
     public partial class admin_templates_new
     {
-
         /// <summary>
         /// txtThemeName control.
         /// </summary>
@@ -22,7 +20,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtThemeName;
-
         /// <summary>
         /// txtTemplateFolder control.
         /// </summary>
@@ -31,7 +28,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtTemplateFolder;
-
         /// <summary>
         /// agTemplates control.
         /// </summary>

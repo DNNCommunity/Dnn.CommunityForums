@@ -21,14 +21,8 @@
 namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    using Castle.Components.DictionaryAdapter;
     using DotNetNuke.Modules.ActiveForums.Controllers;
-    using Moq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -88,7 +82,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(permSet).Equals(expectedResults);
-
         }
     }
 }

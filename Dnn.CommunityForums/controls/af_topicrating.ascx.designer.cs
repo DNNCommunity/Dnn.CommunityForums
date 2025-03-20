@@ -7,20 +7,11 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
+	
 	public partial class af_topicrating
 	{
-
 		///<summary>
 		///cbRating control.
 		///</summary>
@@ -29,7 +20,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbRating;
-
 		///<summary>
 		///plhRating control.
 		///</summary>

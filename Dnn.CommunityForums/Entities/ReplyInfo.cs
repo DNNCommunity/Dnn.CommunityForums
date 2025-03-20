@@ -21,25 +21,18 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Web;
-    using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Tokens;
-    using global::DotNetNuke.ComponentModel.DataAnnotations;
 
     [TableName("activeforums_Replies")]
     [PrimaryKey("ReplyId")]
     public partial class ReplyInfo : DotNetNuke.Modules.ActiveForums.Entities.IPostInfo
     {
-        [IgnoreColumn] 
+        [IgnoreColumn]
         private string cacheKeyTemplate => CacheKeys.ReplyInfo;
+
         private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author;

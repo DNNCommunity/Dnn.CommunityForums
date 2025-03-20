@@ -6,14 +6,12 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
-
+	
+    
     public partial class af_members
     {
-
         /// <summary>
         /// lblHeader control.
         /// </summary>
@@ -22,7 +20,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblHeader;
-
         /// <summary>
         /// plhMembers control.
         /// </summary>

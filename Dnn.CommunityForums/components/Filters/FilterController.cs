@@ -21,10 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Web;
 
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController")]
     public class FilterController

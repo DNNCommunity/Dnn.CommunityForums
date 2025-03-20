@@ -25,7 +25,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Data;
     using System.Linq;
     using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -113,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string keywords;
 
                 // Note: Filter out any keywords that are not at least 3 characters in length
-                if (this.SearchType == 2 && !string.IsNullOrWhiteSpace(this.SearchText) && this.SearchText.Trim().Length >= 3) //Exact Match
+                if (this.SearchType == 2 && !string.IsNullOrWhiteSpace(this.SearchText) && this.SearchText.Trim().Length >= 3) // Exact Match
                 {
                     keywords = this.SearchText.Trim();
                 }
@@ -242,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                             if (!string.IsNullOrEmpty(itemTemplate) && itemTemplate.Contains("["))
                             {
-                              
+
                                 itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
                                 if (control.GetType().FullName == "System.Web.UI.LiteralControl")
                                 {

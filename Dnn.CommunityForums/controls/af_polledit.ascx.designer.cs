@@ -7,20 +7,12 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
+	
+    
 	public partial class af_polledit
 	{
-
 		///<summary>
 		///txtPollQuestion control.
 		///</summary>
@@ -29,7 +21,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.TextBox txtPollQuestion;
-
 		///<summary>
 		///rdPollType control.
 		///</summary>
@@ -38,7 +29,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.RadioButtonList rdPollType;
-
 		///<summary>
 		///txtPollOptions control.
 		///</summary>

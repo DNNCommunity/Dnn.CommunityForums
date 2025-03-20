@@ -20,7 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums.ViewModels
 {
-    using System;
     using System.Collections.Generic;
 
     public class Forum

@@ -23,21 +23,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     using System;
     using System.Data.SqlTypes;
     using System.Linq;
-    using System.Net;
-    using System.Runtime.CompilerServices;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
 
@@ -64,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         private const string PropertySource_forumpost = "forumpost";
         private const string PropertySource_forumtopicaction = "forumtopicaction";
         private const string PropertySource_forumpostaction = "forumpostaction";
-        
+
         public TokenReplacer(DotNetNuke.Services.Tokens.TokenContext context)
         {
             this.TokenContext = context;
@@ -122,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+            catch
             {
             }
 
@@ -160,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             topicInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.GetTabId(), topicInfo.Forum.ModuleId, GetTabId(portalSettings, topicInfo.Forum),  GetModuleId(portalSettings, topicInfo.Forum), requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.GetTabId(), topicInfo.Forum.ModuleId, GetTabId(portalSettings, topicInfo.Forum), GetModuleId(portalSettings, topicInfo.Forum), requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = topicInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = topicInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = topicInfo;
@@ -180,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+            catch
             {
             }
 
@@ -200,7 +195,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             postInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, postInfo.Forum.GetTabId(), postInfo.Forum.ModuleId, GetTabId(portalSettings, postInfo.Forum),  GetModuleId(portalSettings, postInfo.Forum), requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, postInfo.Forum.GetTabId(), postInfo.Forum.ModuleId, GetTabId(portalSettings, postInfo.Forum), GetModuleId(portalSettings, postInfo.Forum), requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = postInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = postInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = postInfo.Topic;
@@ -221,7 +216,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+            catch
             {
             }
 
@@ -279,7 +274,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+            catch
             {
             }
 
@@ -306,7 +301,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+            catch
             {
             }
 
@@ -323,7 +318,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+            catch
             {
             }
 
@@ -541,6 +536,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             // no longer using this
             template = RemoveObsoleteTokenByPrefix(template, "[SPLITBUTTONS2");
+
             // Add This -- obsolete so just remove
             template = RemoveObsoleteTokenByPrefix(template, "[AF:CONTROL:ADDTHIS");
 

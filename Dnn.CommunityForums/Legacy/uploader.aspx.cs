@@ -17,16 +17,24 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 
-using System.IO;
-using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+	using System;
+using System.Collections.Generic;
+    using System.Collections;
+    using System.ComponentModel;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+using System.IO;
+    using System.Web.UI.WebControls;
+    
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+
     public partial class uploader : AMPageBase
     {
 
@@ -36,10 +44,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                UserController uc = new UserController();
-                User ui = uc.GetUser(PortalSettings.PortalId, -1);
-                ForumController fc = new ForumController();
-                Forum fi = fc.Forums_Get(Convert.ToInt32(Request.Params["ForumId"]), ui.UserId, true);
+                var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalSettings.PortalId, -1);
+                var fi =  new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Convert.ToInt32(Request.Params["ForumId"]));
 
                 if (fi != null)
                 {

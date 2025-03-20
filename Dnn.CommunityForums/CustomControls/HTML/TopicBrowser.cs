@@ -21,8 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
 
     public class TopicBrowser
@@ -71,7 +69,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private SettingsInfo _mainSettings = null;
         private bool _canEdit = false;
-
 
         public string Render()
         {

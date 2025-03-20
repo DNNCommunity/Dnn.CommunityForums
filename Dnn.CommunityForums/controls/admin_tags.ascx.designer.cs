@@ -6,14 +6,12 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
-
+	
+    
     public partial class admin_tags
     {
-
         /// <summary>
         /// txtTag control.
         /// </summary>
@@ -22,7 +20,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTag;
-
         /// <summary>
         /// imgSave control.
         /// </summary>
@@ -31,7 +28,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton imgSave;
-
         /// <summary>
         /// agTags control.
         /// </summary>

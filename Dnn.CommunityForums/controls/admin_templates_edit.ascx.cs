@@ -21,11 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
-
-    using static DotNetNuke.Modules.ActiveForums.Templates;
 
     public partial class admin_templates_edit : ActiveAdminBase
     {

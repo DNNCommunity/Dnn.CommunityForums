@@ -22,7 +22,6 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections.Generic;
-    using System.Web;
 
     public partial class af_searchquick : ForumBase
     {

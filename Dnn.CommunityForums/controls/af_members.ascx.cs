@@ -21,10 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Web.UI;
 
     public partial class af_members : ForumBase
     {
@@ -47,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
                     this.Context.ApplicationInstance.CompleteRequest();
                 }
-                else if (this.Request.IsAuthenticated && sMode == "ENABLEDMOD" && ! this.ForumUser.GetIsMod(this.ForumModuleId))
+                else if (this.Request.IsAuthenticated && sMode == "ENABLEDMOD" && !this.ForumUser.GetIsMod(this.ForumModuleId))
                 {
                     this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
                     this.Context.ApplicationInstance.CompleteRequest();

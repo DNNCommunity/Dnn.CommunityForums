@@ -203,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.FeatureSettings.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.GetTabId(), ti.ForumId, topicId, 0, ti.Author);
             }
 
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: ti.PortalId, tabId: ti.Forum.GetTabId(), moduleId: ti.Forum.ModuleId, forumGroupId: ti.Forum.ForumGroupId, forumId: ti.ForumId, topicId: topicId,  replyId: -1,  contentId: ti.ContentId, userId: userId, authorId: ti.Content.AuthorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: ti.PortalId, tabId: ti.Forum.GetTabId(), moduleId: ti.Forum.ModuleId, forumGroupId: ti.Forum.ForumGroupId, forumId: ti.ForumId, topicId: topicId, replyId: -1, contentId: ti.ContentId, userId: userId, authorId: ti.Content.AuthorId);
             return ti;
         }
 
