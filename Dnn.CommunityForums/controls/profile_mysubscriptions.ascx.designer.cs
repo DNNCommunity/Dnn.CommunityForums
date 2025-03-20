@@ -6,36 +6,11 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-	using System;
-using System.Reflection;
-using System.Data;
-using System.Collections;
-using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
-using System.Text;
-using System.Web.UI;
-using System.Web;
-using System.Linq;
-using System.Collections.Generic;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.UI;
-    using System.Web.UI.Design;
-    using System.Web.UI.WebControls;
-    using System.Web.UI.HtmlControls;
-
-
+	
     public partial class profile_mysubscriptions
     {
-
         /// <summary>
         /// lblThreadsTracked control.
         /// </summary>
@@ -44,7 +19,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblThreadsTracked;
-
         /// <summary>
         /// upOptions1 control.
         /// </summary>
@@ -53,7 +27,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upOptions1;
-
         /// <summary>
         /// dgrdTopicSubs control.
         /// </summary>
@@ -62,7 +35,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView dgrdTopicSubs;
-
         /// <summary>
         /// lblForumsTracked control.
         /// </summary>
@@ -71,7 +43,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblForumsTracked;
-
         /// <summary>
         /// UpdatePanel2 control.
         /// </summary>
@@ -80,7 +51,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
-
         /// <summary>
         /// dgrdForumSubs control.
         /// </summary>
@@ -89,7 +59,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView dgrdForumSubs;
-
         /// <summary>
         /// btnSubscribeAll control.
         /// </summary>

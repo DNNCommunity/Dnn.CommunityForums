@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:RequiredFieldValidator runat=server></{0}:RequiredFieldValidator>")]
     public class RequiredFieldValidator : WebControl
@@ -114,11 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMValidation"))
-            {
-                this.Page.ClientScript.RegisterClientScriptInclude("AMValidation", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.Validation.js"));
-            }
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/Validation.js", 102);
         }
     }
 }

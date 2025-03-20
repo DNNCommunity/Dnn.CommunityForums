@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int tUid = -1;
             if (this.Request.Params[ParamKeys.UserId] != null)
             {
-                if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.UserId]))
+                if (Utilities.IsNumeric(this.Request.Params[ParamKeys.UserId]))
                 {
                     tUid = Convert.ToInt32(this.Request.Params[ParamKeys.UserId]);
                     DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, tUid);

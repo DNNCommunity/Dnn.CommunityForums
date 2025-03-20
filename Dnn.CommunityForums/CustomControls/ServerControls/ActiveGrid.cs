@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI;
     using System.Web.UI.Design;
     using System.Web.UI.WebControls;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     [DefaultProperty("Text"), Designer("DotNetNuke.Modules.ActiveForums.Controls.ActiveGridDesigner"), ToolboxData("<{0}:activegrid runat=server><headertemplate></headertemplate><itemtemplate></itemtemplate><footertemplate></footertemplate></{0}:activegrid>")]
     public class ActiveGrid : CompositeControl
@@ -566,17 +567,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 str.Append("window." + this.ClientID + "=new ActiveGrid('" + this.ClientID + "');");
                 if (this.SpacerImage == string.Empty)
                 {
-                    this.SpacerImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.spacer.gif");
+                    this.SpacerImage = this.Page.ResolveUrl(Globals.ModulePath + "/CustomControls/Resources/spacer.gif");
                 }
 
                 if (this.AscImage == string.Empty)
                 {
-                    this.AscImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.asc.gif");
+                    this.ascImage = this.Page.ResolveUrl(Globals.ModulePath + "/CustomControls/Resources/asc.gif");
                 }
 
                 if (this.DescImage == string.Empty)
                 {
-                    this.DescImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.desc.gif");
+                    this.DescImage = this.Page.ResolveUrl(Globals.ModulePath + "/CustomControls/Resources/desc.gif");
                 }
 
                 str.Append("window." + this.ClientID + ".SpacerImage='" + this.SpacerImage + "';");
@@ -714,11 +715,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMActiveGrid"))
-            {
-                this.Page.ClientScript.RegisterClientScriptInclude("AMActiveGrid", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.ActiveGrid.js"));
-            }
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/ActiveGrid.js", 102);
         }
         #endregion
 

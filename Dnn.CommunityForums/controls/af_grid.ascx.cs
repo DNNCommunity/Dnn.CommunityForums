@@ -220,7 +220,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     case GridTypes.Tags:
 
                         var tagId = -1;
-                        if (this.Request.QueryString[ParamKeys.Tags] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[ParamKeys.Tags]))
+                        if (this.Request.QueryString[ParamKeys.Tags] != null && Utilities.IsNumeric(this.Request.QueryString[ParamKeys.Tags]))
                         {
                             tagId = int.Parse(this.Request.QueryString[ParamKeys.Tags]);
                         }

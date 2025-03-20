@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+            catch
             {
             }
 

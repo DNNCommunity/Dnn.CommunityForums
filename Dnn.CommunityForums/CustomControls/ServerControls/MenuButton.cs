@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.ComponentModel;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:MenuButton runat=server></{0}:MenuButton>")]
     public class MenuButton : WebControl
@@ -136,11 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMMenu"))
-            {
-                this.Page.ClientScript.RegisterClientScriptInclude("AMMenu", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.MenuButton.js"));
-            }
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/MenuButton.js", 102);
         }
 
         public class MenuContent : Control { }
