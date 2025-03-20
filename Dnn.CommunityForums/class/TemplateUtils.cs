@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -42,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public class TemplateUtils
     {
         public static List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> lstSubscriptionInfo { get; set; }
-
+        
         #region "Deprecated Methods"
 
         [Obsolete("Deprecated in Community Forums. Remove in 10.00.00. Not Used.")]

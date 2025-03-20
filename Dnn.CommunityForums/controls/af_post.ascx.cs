@@ -1049,7 +1049,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (!this.isEdit)
                     {
-                        DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: tmpReplyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: tmpReplyId, contentId:ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
                     }
 
                     var fullURL = new ControlUtils().BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, this.SocialGroupId);
