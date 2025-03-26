@@ -38,12 +38,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="packages.config" />
       <None Remove="CustomControls\Resources\TextSuggest.js" />
     </ItemGroup>
 
     <ItemGroup>
         <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+        <AdditionalFiles Include="..\.editorconfig" Link=".editorconfig" />
     </ItemGroup>
 
     <ItemGroup>
@@ -58,7 +58,6 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
@@ -69,7 +68,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="System.ComponentModel" Version="4.3.0" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.1" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     </ItemGroup>
 
     <ItemGroup>
