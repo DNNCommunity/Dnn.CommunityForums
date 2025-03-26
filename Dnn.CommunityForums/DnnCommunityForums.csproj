@@ -43,11 +43,14 @@
     </ItemGroup>
 
     <ItemGroup>
+        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0" />
-        <PackageReference Include="DotNetNuke.Abstractions" Version="9.9.0" />
-        <PackageReference Include="DotNetNuke.DependencyInjection" Version="9.9.0" />
-        <PackageReference Include="DotNetNuke.Web" Version="9.9.0" />
-        <PackageReference Include="DotNetNuke.Web.Client" Version="9.9.0" />
+        <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
+        <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
+        <PackageReference Include="DotNetNuke.Web.Client" Version="9.11.0" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
         <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.3.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
