@@ -92,6 +92,16 @@ namespace DotNetNuke.Modules.ActiveForums
             return Utilities.LocalizeControl(controlText, true);
         }
 
+        protected override void Render(HtmlTextWriter writer)
+        {
+            var stringWriter = new System.IO.StringWriter();
+            var htmlWriter = new HtmlTextWriter(stringWriter);
+            base.Render(htmlWriter);
+            string html = stringWriter.ToString();
+            html = this.LocalizeControl(html);
+            writer.Write(html);
+        }
+
         public Controls.ClientTemplate GetLoadingTemplateSmall()
         {
             var template = new Controls.ClientTemplate { ID = "LoadingTemplate" };
@@ -131,15 +141,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Session[ViewKey] = value;
                 this.currentView = value;
             }
-        }
-        protected override void Render(HtmlTextWriter writer)
-        {
-            var stringWriter = new System.IO.StringWriter();
-            var htmlWriter = new HtmlTextWriter(stringWriter);
-            base.Render(htmlWriter);
-            string html = stringWriter.ToString();
-            html = this.LocalizeControl(html);
-            writer.Write(html);
         }
     }
 }
