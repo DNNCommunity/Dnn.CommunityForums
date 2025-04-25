@@ -92,6 +92,16 @@ namespace DotNetNuke.Modules.ActiveForums
             return Utilities.LocalizeControl(controlText, true);
         }
 
+        protected override void Render(HtmlTextWriter writer)
+        {
+            var stringWriter = new System.IO.StringWriter();
+            var htmlWriter = new HtmlTextWriter(stringWriter);
+            base.Render(htmlWriter);
+            string html = stringWriter.ToString();
+            html = this.LocalizeControl(html);
+            writer.Write(html);
+        }
+
         public Controls.ClientTemplate GetLoadingTemplateSmall()
         {
             var template = new Controls.ClientTemplate { ID = "LoadingTemplate" };
@@ -132,14 +142,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.currentView = value;
             }
         }
-        protected override void Render(HtmlTextWriter writer)
+<<<<<<<<< Temporary merge branch 1
+        
+=========
+
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
+        public string ProductEditon
         {
-            var stringWriter = new System.IO.StringWriter();
-            var htmlWriter = new HtmlTextWriter(stringWriter);
-            base.Render(htmlWriter);
-            string html = stringWriter.ToString();
-            html = this.LocalizeControl(html);
-            writer.Write(html);
+            get
+            {
+                return string.Empty;
+            }
         }
+>>>>>>>>> Temporary merge branch 2
     }
 }
