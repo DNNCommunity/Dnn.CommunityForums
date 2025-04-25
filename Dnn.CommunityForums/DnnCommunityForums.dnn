@@ -14,7 +14,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">09.09.00</dependency>
+        <dependency type="CoreVersion">09.11.00</dependency>
       </dependencies>
       <components>
         <component type="Module">
@@ -481,7 +481,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">09.09.00</dependency>
+        <dependency type="CoreVersion">09.11.00</dependency>
       </dependencies>
       <components>
         <component type="Module">
@@ -550,7 +550,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">09.09.00</dependency>
+        <dependency type="CoreVersion">09.11.00</dependency>
       </dependencies>
       <components>
         <component type="Module">
