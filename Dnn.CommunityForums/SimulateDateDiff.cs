@@ -27,8 +27,13 @@
 //  This class simulates the behavior of the classic VB 'DateDiff' function.
 //----------------------------------------------------------------------------------------
 */
+
+using System;
+
+[Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
 public static class SimulateDateDiff
 {
+    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
     public enum DateInterval
     {
         Day,
@@ -43,6 +48,7 @@ public static class SimulateDateDiff
         Year,
     }
 
+    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
     public static long DateDiff(DateInterval intervalType, System.DateTime dateOne, System.DateTime dateTwo)
     {
         switch (intervalType)

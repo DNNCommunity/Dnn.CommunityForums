@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     subject = Utilities.GetSharedResource("[RESX:NotificationSubjectReply]");
                     subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), adminUser, requestUri, rawUrl).ToString();
                     body = Utilities.GetSharedResource("[RESX:NotificationBodyReply]");
-                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), adminUser, requestUri,  rawUrl).ToString();
+                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), adminUser, requestUri, rawUrl).ToString();
                     authorId = reply.Content.AuthorId;
                 }
                 else

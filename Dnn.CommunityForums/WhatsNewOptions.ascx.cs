@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public partial class WhatsNewOptions : PortalModuleBase
     {
@@ -39,8 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.lnkCancel.Click += this.lnkCancel_Click;
 
             this.chkRSS.CheckedChanged += this.chkRSS_Change;
-
-            this.Page.ClientScript.RegisterClientScriptInclude("afutils", this.Page.ResolveUrl(Globals.ModulePath + "scripts/afutils.js"));
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afutils.js", 102);
 
             if (!this.Page.IsPostBack)
             {

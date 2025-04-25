@@ -6,25 +6,11 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-	using System;
-using System.Reflection;
-using System.Data;
-using System.Collections;
-using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
-using System.Text;
-using System.Web.UI;
-using System.Web;
-using System.Linq;
-using System.Collections.Generic;
-
-
+	
     public partial class profile_mypreferences
     {
-
         /// <summary>
         /// lblHeader control.
         /// </summary>
@@ -33,7 +19,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblHeader;
-
         /// <summary>
         /// drpPrefDefaultSort control.
         /// </summary>
@@ -42,7 +27,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpPrefDefaultSort;
-
         /// <summary>
         /// drpPrefPageSize control.
         /// </summary>
@@ -51,7 +35,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpPrefPageSize;
-
         /// <summary>
         /// chkPrefJumpToLastPost control.
         /// </summary>
@@ -60,7 +43,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkPrefJumpToLastPost;
-
         /// <summary>
         /// chkPrefTopicSubscribe control.
         /// </summary>
@@ -69,7 +51,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkPrefTopicSubscribe;
-
         /// <summary>
         /// chkLikesNotificationsEnabled control.
         /// </summary>
@@ -78,7 +59,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkLikesNotificationsEnabled;
-
         /// <summary>
         /// chkPinNotificationsEnabled control.
         /// </summary>
@@ -87,7 +67,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkPinNotificationsEnabled;
-
         /// <summary>
         /// chkEnableNotificationsForOwnContent control.
         /// </summary>
@@ -96,7 +75,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkEnableNotificationsForOwnContent;
-
         /// <summary>
         /// chkPrefBlockAvatars control.
         /// </summary>
@@ -105,7 +83,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkPrefBlockAvatars;
-
         /// <summary>
         /// chkPrefBlockSignatures control.
         /// </summary>
@@ -114,7 +91,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkPrefBlockSignatures;
-
         /// <summary>
         /// txtSignature control.
         /// </summary>
@@ -123,7 +99,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSignature;
-
         /// <summary>
         /// btnSave control.
         /// </summary>
