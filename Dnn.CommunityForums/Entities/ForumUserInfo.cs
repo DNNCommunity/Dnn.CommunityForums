@@ -534,7 +534,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         sSignature = this?.Signature ?? string.Empty;
                         if (!string.IsNullOrEmpty(sSignature))
                         {
-                            sSignature = Utilities.ManageImagePath(sSignature);
+                            sSignature = Utilities.ManageImagePath(sSignature, this.RequestUri);
 
                             switch (this.MainSettings.AllowSignatures)
                             {

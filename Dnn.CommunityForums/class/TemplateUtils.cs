@@ -49,9 +49,6 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Remove in 10.00.00. Not Used.")]
         public static string ShowIcon(bool canView, int forumID, int userId, DateTime dateAdded, DateTime lastRead, int lastPostId) => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public static void LoadTemplateCache(int moduleID) => throw new NotImplementedException();
-
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, int timeZoneOffset) => throw new NotImplementedException();
 

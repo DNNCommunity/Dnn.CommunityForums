@@ -26,12 +26,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class Social
     {
-        [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]
-        public void AddTopicToJournal(int portalId, int moduleId, int forumId, int topicId, int userId, string uRL, string subject, string summary, string body, int securityOption, string readRoles, int socialGroupId)
-        {
-            this.AddTopicToJournal(portalId: portalId, moduleId: moduleId, tabId: -1, forumId: forumId, topicId: topicId, userId: userId, uRL: uRL, subject: subject, summary: summary, body: body, readRoles: readRoles, socialGroupId: socialGroupId);
-        }
-
         internal void AddTopicToJournal(int portalId, int moduleId, int tabId, int forumId, int topicId, int userId, string uRL, string subject, string summary, string body, string readRoles, int socialGroupId)
         {
             try

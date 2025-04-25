@@ -43,24 +43,6 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
 
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, removeHTML, HttpContext.Current.Request.Url);
-        }
-
-        [Obsolete(message: "Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, true, true, HttpContext.Current.Request.Url);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string ImportFilter(int portalID, int moduleID)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(portalID, moduleID);
-        }
-
         internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
             if (string.IsNullOrEmpty(template))

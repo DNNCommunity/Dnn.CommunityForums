@@ -43,6 +43,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string ImageURL { get; set; } = string.Empty;
 
+        public ToggleSubscribe(int moduleId, int forumId, int topicId, int toggleMode)
+        {
+            this.ToggleMode = toggleMode;
+            this.ModuleId = moduleId;
+            this.ForumId = forumId;
+            this.TopicId = topicId;
+        }
+
         // amaf_topicSubscribe
         public string Render()
         {

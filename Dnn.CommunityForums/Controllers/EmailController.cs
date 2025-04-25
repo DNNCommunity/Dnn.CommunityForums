@@ -69,15 +69,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             });
         }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        internal static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments, UserInfo user) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs, Uri requestUrl)")]
-        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<DotNetNuke.Modules.ActiveForums.SubscriptionInfo> subs) => throw new NotImplementedException();
-
         internal static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs, Uri requestUrl, string rawUrl)
         {
             var navigationManager = (INavigationManager)new Services.URLNavigator().NavigationManager();
