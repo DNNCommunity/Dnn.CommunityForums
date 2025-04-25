@@ -35,7 +35,69 @@ namespace DotNetNuke.Modules.ActiveForums
     public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
     {
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
+        public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
+		{
+			int topicId = -1;
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+			ti.AnnounceEnd = Utilities.NullDate();
+			ti.AnnounceStart = Utilities.NullDate();
+			ti.Content.AuthorId = UserId;
+			ti.Content.AuthorName = DisplayName;
+			ti.Content.Subject = Subject;
+			ti.Content.Body = Body;
+			ti.Content.Summary = string.Empty;
 
+			ti.Content.IPAddress = IPAddress;
+
+			DateTime dt = DateTime.Now;
+			ti.Content.DateCreated = dt;
+			ti.Content.DateUpdated = dt;
+			ti.IsAnnounce = false;
+			ti.IsApproved = IsApproved;
+			ti.IsArchived = false;
+			ti.IsDeleted = false;
+			ti.IsLocked = false;
+			ti.IsPinned = false;
+			ti.ReplyCount = 0;
+			ti.StatusId = -1;
+			ti.TopicIcon = string.Empty;
+			ti.TopicType = TopicTypes.Topic;
+			ti.ViewCount = 0;
+			topicId = TopicSave(PortalId, ModuleId, ti);
+
+			UpdateModuleLastContentModifiedOnDate(ModuleId);
+
+            if (topicId > 0)
+			{
+				Topics_SaveToForum(ForumId, topicId, PortalId, ModuleId);
+				if (UserId > 0)
+				{
+					Data.Profiles uc = new Data.Profiles();
+					uc.Profile_UpdateTopicCount(PortalId, UserId);
+				}
+			}
+			return topicId;
+		}
+
+		public void Replies_Split(int OldTopicId, int NewTopicId, string listreplies, bool isNew)
+		{
+			Regex rgx = new Regex(@"^\d+(\|\d+)*$");
+			if (OldTopicId > 0 && NewTopicId > 0 && rgx.IsMatch(listreplies))
+			{
+				if (isNew)
+				{
+					string[] slistreplies = listreplies.Split("|".ToCharArray(), 2);
+					string str = "";
+					if (slistreplies.Length > 1) str = slistreplies[1];
+					DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, str, DateTime.Now, Convert.ToInt32(slistreplies[0]));
+				}
+				else
+				{
+					DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, listreplies, DateTime.Now, 0);
+				}
+			}
+		}
+       
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate()")]
         public int Topic_QuickCreate(int portalId, int moduleId, int forumId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalId, moduleId, forumId, subject, body, userId, displayName, isApproved, iPAddress);
 

@@ -20,16 +20,4 @@
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    using System;
-
-    [Obsolete("Deprecated in Community Forums 09.0.00.Not Used.")]
-
-    public class UsersOnline
-    {
-        [Obsolete("Deprecated in Community Forums 09.0.00.Not Used.")]
-        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Entities.Users.UserInfo user) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums 09.0.00.Not Used.")]
-        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.User user) => throw new NotImplementedException();
-    }
 }

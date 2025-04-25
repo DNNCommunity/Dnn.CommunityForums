@@ -18,7 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Collections;
 
 #pragma warning disable SA1403 // File may only contain a single namespace
 namespace DotNetNuke.Modules.ActiveForums.Entities
@@ -29,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Linq;
     using System.Web.UI.WebControls;
 
+	using DotNetNuke.Collections;
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Services.Tokens;
 
