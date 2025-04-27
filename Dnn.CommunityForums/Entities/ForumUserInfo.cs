@@ -193,13 +193,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool IsAdmin => this.UserInfo != null && this.UserInfo.IsAdmin;
 
         [IgnoreColumn]
-        public bool IsAnonymous => this.UserId == -1;
+        public bool IsAuthenticated => !this.IsAnonymous;
+
+        [IgnoreColumn]
+        public bool IsAnonymous => this.UserId.Equals(DotNetNuke.Common.Utilities.Null.NullInteger);
 
         [IgnoreColumn]
         public bool IsUserOnline => this.DateLastActivity > DateTime.UtcNow.AddMinutes(-5);
-
-        [IgnoreColumn]
-        public bool IsAuthenticated => !this.IsAnonymous;
 
         [IgnoreColumn] 
         public bool IsRegistered => this.UserInfo.IsInRole(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleName(this.PortalSettings));

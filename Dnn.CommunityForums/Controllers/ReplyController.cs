@@ -193,11 +193,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // if existing topic, update associated journal item
             if (ri.ReplyId > 0)
             {
-                string fullURL = new ControlUtils().BuildUrl(portalId, ri.Forum.TabId, moduleId, ri.Forum.ForumGroup.PrefixURL, ri.Forum.PrefixURL, ri.Forum.ForumGroupId, ri.ForumId, ri.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, ri.ReplyId, ri.Forum.SocialGroupId);
+                string fullURL = new ControlUtils().BuildUrl(portalId, ri.Forum.GetTabId(), moduleId, ri.Forum.ForumGroup.PrefixURL, ri.Forum.PrefixURL, ri.Forum.ForumGroupId, ri.ForumId, ri.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, ri.ReplyId, ri.Forum.SocialGroupId);
 
                 if (fullURL.Contains("~/"))
                 {
-                    fullURL = Utilities.NavigateURL(ri.Forum.TabId, string.Empty, new string[] { $"{ParamKeys.TopicId}={ri.TopicId}", $"{ParamKeys.ContentJumpId}={ri.ReplyId}", });
+                    fullURL = Utilities.NavigateURL(ri.Forum.GetTabId(), string.Empty, new string[] { $"{ParamKeys.TopicId}={ri.TopicId}", $"{ParamKeys.ContentJumpId}={ri.ReplyId}", });
                 }
 
                 if (fullURL.EndsWith("/"))
@@ -205,7 +205,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     fullURL += Utilities.UseFriendlyURLs(moduleId) ? $"#{ri.ReplyId}" : $"{ParamKeys.ContentJumpId}={ri.ReplyId}";
                 }
 
-                new Social().UpdateJournalItemForPost(ri.PortalId, ri.ModuleId, ri.Forum.TabId, ri.ForumId, ri.TopicId, ri.ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, ri.Content.Body);
+                new Social().UpdateJournalItemForPost(ri.PortalId, ri.ModuleId, ri.Forum.GetTabId(), ri.ForumId, ri.TopicId, ri.ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, ri.Content.Body);
             }
 
             int replyId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Save(portalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));

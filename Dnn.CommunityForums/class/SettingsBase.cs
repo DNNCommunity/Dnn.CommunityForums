@@ -92,14 +92,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 int tempPageId = 0;
                 if (this.Request.QueryString[ParamKeys.PageId] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(this.Request.QueryString[ParamKeys.PageId]))
+                    if (Utilities.IsNumeric(this.Request.QueryString[ParamKeys.PageId]))
                     {
                         tempPageId = Convert.ToInt32(this.Request.QueryString[ParamKeys.PageId]);
                     }
                 }
                 else if (this.Request.QueryString[Literals.Page] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.Page]))
+                    if (Utilities.IsNumeric(this.Request.QueryString[Literals.Page]))
                     {
                         tempPageId = Convert.ToInt32(this.Request.QueryString[Literals.Page]);
                     }
@@ -360,7 +360,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (this.Request.Params[Literals.ForumId] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(this.Request.Params[Literals.ForumId]))
+                    if (Utilities.IsNumeric(this.Request.Params[Literals.ForumId]))
                     {
                         sParams = $"{ParamKeys.ForumId}={this.Request.Params[Literals.ForumId]}";
                     }
@@ -368,7 +368,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (this.Request.Params[Literals.PostId] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(this.Request.Params[Literals.PostId]))
+                    if (Utilities.IsNumeric(this.Request.Params[Literals.PostId]))
                     {
                         sParams += $"|{ParamKeys.TopicId}={this.Request.Params[Literals.PostId]}";
                     }

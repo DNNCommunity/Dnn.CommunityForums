@@ -172,8 +172,28 @@ namespace DotNetNuke.Modules.ActiveForums
                    || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.TrustRoleIds, forumUser.UserRoleIds), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
                    || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.ModerateRoleIds, forumUser.UserRoleIds)
                    || (forumUser.DateLastPost == null)
-                   || (forumUser.DateLastPost != null && SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)forumUser.DateLastPost, DateTime.UtcNow) > floodInterval)
-                   || (forumUser.DateLastReply != null && SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)forumUser.DateLastReply, DateTime.UtcNow) > floodInterval);
+                   || (forumUser.DateLastPost != null && DateTime.UtcNow.Subtract((DateTime)forumUser.DateLastPost).TotalSeconds > floodInterval)
+                   || (forumUser.DateLastReply != null && DateTime.UtcNow.Subtract((DateTime)forumUser.DateLastReply).TotalSeconds > floodInterval);
+        }
+
+        internal static bool HasEditIntervalPassed(int editInterval, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.IPostInfo postInfo)
+        {
+            /* edit interval check passes if
+            1) edit interval <= 0 (disabled)
+            2) user is unauthenticated; if not, captcha is enabled for anonymous users
+            3) user is an admin or superuser
+            4) user is designated as a trusted user for the forum
+            5) user has moderator (edit, delete, approve) permissions for the forum
+            6) time span since post exceeds edit interval
+            */
+
+            return editInterval <= 0
+                   || forumUser == null
+                   || forumUser.IsAdmin
+                   || forumUser.IsSuperUser
+                   || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, forumUser.UserRoles), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.ModerateRoleIds, forumUser.UserRoleIds)
+                   || (postInfo?.Content?.DateCreated != null && DateTime.UtcNow.Subtract(postInfo.Content.DateCreated).TotalMinutes > editInterval);
         }
 
         public static bool IsTrusted(int forumTrustLevel, int userTrustLevel, bool isTrustedRole, int autoTrustLevel = 0, int userPostCount = 0)
@@ -1690,6 +1710,11 @@ namespace DotNetNuke.Modules.ActiveForums
         internal static string LocalizeString(string key, string resourceFile, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, string language = "en-US")
         {
             return DotNetNuke.Services.Localization.Localization.GetString(key, resourceFile, (DotNetNuke.Entities.Portals.PortalSettings)portalSettings, language);
+        }
+
+        public static bool IsNumeric(object expression)
+        {
+            return expression != null && (double.TryParse(expression.ToString(), out _) || bool.TryParse(expression.ToString(), out _));
         }
     }
 }

@@ -171,7 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb.HeaderTemplate = this.HeaderTemplate.Text;
             tb.FooterTemplate = this.FooterTemplate.Text;
             tb.CSSClass = this.CssClass;
-            if (HttpContext.Current.Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString[ParamKeys.Category]))
+            if (HttpContext.Current.Request.QueryString[ParamKeys.Category] != null && Utilities.IsNumeric(HttpContext.Current.Request.QueryString[ParamKeys.Category]))
             {
                 tb.SelectedCategory = int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.Category]);
             }

@@ -31,6 +31,8 @@
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -53,6 +55,12 @@
     <ItemGroup>
         <EmbeddedResource Include="sql\FullTextInstallPart1.sql" />
         <EmbeddedResource Include="sql\FullTextInstallPart2.sql" />
+      <None Remove="CustomControls\Resources\TextSuggest.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+        <AdditionalFiles Include="..\.editorconfig" Link=".editorconfig" />
     </ItemGroup>
 
     <ItemGroup>

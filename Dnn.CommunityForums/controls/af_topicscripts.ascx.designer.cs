@@ -6,22 +6,9 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	using System;
-using System.Reflection;
-using System.Data;
-using System.Collections;
-using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
-using System.Text;
-using System.Web.UI;
-using System.Web;
-using System.Linq;
-using System.Collections.Generic;
-
-
+	
     public partial class af_topicscripts
     {
     }

@@ -6,25 +6,10 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	using System;
-using System.Reflection;
-using System.Data;
-using System.Collections;
-using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
-using System.Text;
-using System.Web.UI;
-using System.Web;
-using System.Linq;
-using System.Collections.Generic;
-
-
     public partial class ForumSettings
     {
-
         /// <summary>
         /// lblMode control.
         /// </summary>
@@ -33,7 +18,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblMode;
-
         /// <summary>
         /// drpMode control.
         /// </summary>
@@ -42,7 +26,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpMode;
-
         /// <summary>
         /// drpForumGroupTemplate control.
         /// </summary>
@@ -51,7 +34,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpForumGroupTemplate;
-
         /// <summary>
         /// litForumSecurity control.
         /// </summary>
@@ -60,7 +42,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litForumSecurity;
-
         /// <summary>
         /// lblForumTheme control.
         /// </summary>
@@ -69,7 +50,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblForumTheme;
-
         /// <summary>
         /// drpThemes control.
         /// </summary>
@@ -78,7 +58,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpThemes;
-
         /// <summary>
         /// lblDefaultPageSize control.
         /// </summary>
@@ -87,7 +66,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblDefaultPageSize;
-
         /// <summary>
         /// drpPageSize control.
         /// </summary>
@@ -96,7 +74,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpPageSize;
-
         /// <summary>
         /// lblUseSkinBreadCrumb control.
         /// </summary>
@@ -105,7 +82,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblUseSkinBreadCrumb;
-
         /// <summary>
         /// rdUseSkinBreadCrumb control.
         /// </summary>
@@ -114,7 +90,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdUseSkinBreadCrumb;
-
         /// <summary>
         /// lblTimeFormat control.
         /// </summary>
@@ -123,7 +98,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblTimeFormat;
-
         /// <summary>
         /// txtTimeFormat control.
         /// </summary>
@@ -132,7 +106,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTimeFormat;
-
         /// <summary>
         /// lblDateFormat control.
         /// </summary>
@@ -141,7 +114,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblDateFormat;
-
         /// <summary>
         /// txtDateFormat control.
         /// </summary>
@@ -150,7 +122,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDateFormat;
-
         /// <summary>
         /// lblFloodInterval control.
         /// </summary>
@@ -159,7 +130,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblFloodInterval;
-
         /// <summary>
         /// txtFloodInterval control.
         /// </summary>
@@ -168,7 +138,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFloodInterval;
-
         /// <summary>
         /// lblEditInterval control.
         /// </summary>
@@ -177,7 +146,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblEditInterval;
-
         /// <summary>
         /// txtEditInterval control.
         /// </summary>
@@ -186,7 +154,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEditInterval;
-
         /// <summary>
         /// lblAutoLinks control.
         /// </summary>
@@ -195,7 +162,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblAutoLinks;
-
         /// <summary>
         /// rdAutoLinks control.
         /// </summary>
@@ -204,7 +170,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdAutoLinks;
-
         /// <summary>
         /// lblDeleteBehavior control.
         /// </summary>
@@ -213,7 +178,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblDeleteBehavior;
-
         /// <summary>
         /// drpDeleteBehavior control.
         /// </summary>
@@ -222,7 +186,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpDeleteBehavior;
-
         /// <summary>
         /// lblProfileVisibility control.
         /// </summary>
@@ -231,7 +194,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblProfileVisibility;
-
         /// <summary>
         /// drpProfileVisibility control.
         /// </summary>
@@ -240,7 +202,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpProfileVisibility;
-
         /// <summary>
         /// lblMessagingType control.
         /// </summary>
@@ -249,7 +210,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblMessagingType;
-
         /// <summary>
         /// drpMessagingType control.
         /// </summary>
@@ -258,7 +218,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpMessagingType;
-
         /// <summary>
         /// lblMessagingTab control.
         /// </summary>
@@ -267,7 +226,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblMessagingTab;
-
         /// <summary>
         /// drpMessagingTab control.
         /// </summary>
@@ -276,7 +234,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpMessagingTab;
-
         /// <summary>
         /// lblAvatarSize control.
         /// </summary>
@@ -285,7 +242,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblAvatarSize;
-
         /// <summary>
         /// txtAvatarHeight control.
         /// </summary>
@@ -294,7 +250,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAvatarHeight;
-
         /// <summary>
         /// txtAvatarWidth control.
         /// </summary>
@@ -303,7 +258,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAvatarWidth;
-
         /// <summary>
         /// lblSignatures control.
         /// </summary>
@@ -312,7 +266,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblSignatures;
-
         /// <summary>
         /// drpSignatures control.
         /// </summary>
@@ -321,7 +274,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpSignatures;
-
         /// <summary>
         /// lblUserDisplayMode control.
         /// </summary>
@@ -330,7 +282,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblUserDisplayMode;
-
         /// <summary>
         /// drpUserDisplayMode control.
         /// </summary>
@@ -339,7 +290,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpUserDisplayMode;
-
         /// <summary>
         /// lblUsersOnline control.
         /// </summary>
@@ -348,7 +298,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblUsersOnline;
-
         /// <summary>
         /// rdUsersOnline control.
         /// </summary>
@@ -357,7 +306,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdUsersOnline;
-
         /// <summary>
         /// lblPoints control.
         /// </summary>
@@ -366,7 +314,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblPoints;
-
         /// <summary>
         /// rdPoints control.
         /// </summary>
@@ -375,7 +322,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdPoints;
-
         /// <summary>
         /// txtTopicPointValue control.
         /// </summary>
@@ -384,7 +330,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTopicPointValue;
-
         /// <summary>
         /// txtReplyPointValue control.
         /// </summary>
@@ -393,7 +338,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtReplyPointValue;
-
         /// <summary>
         /// txtAnswerPointValue control.
         /// </summary>
@@ -402,7 +346,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAnswerPointValue;
-
         /// <summary>
         /// txtMarkAnswerPointValue control.
         /// </summary>
@@ -411,7 +354,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMarkAnswerPointValue;
-
         /// <summary>
         /// txtModPointValue control.
         /// </summary>
@@ -420,7 +362,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtModPointValue;
-
         /// <summary>
         /// lblEnableURLRewriter control.
         /// </summary>
@@ -429,7 +370,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblEnableURLRewriter;
-
         /// <summary>
         /// rdEnableURLRewriter control.
         /// </summary>
@@ -438,7 +378,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdEnableURLRewriter;
-
         /// <summary>
         /// litToggleConfig control.
         /// </summary>
@@ -447,7 +386,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litToggleConfig;
-
         /// <summary>
         /// lblUrlPrefix control.
         /// </summary>
@@ -456,7 +394,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblUrlPrefix;
-
         /// <summary>
         /// txtURLPrefixBase control.
         /// </summary>
@@ -465,7 +402,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtURLPrefixBase;
-
         /// <summary>
         /// txtURLPrefixCategory control.
         /// </summary>
@@ -474,7 +410,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtURLPrefixCategory;
-
         /// <summary>
         /// txtURLPrefixTags control.
         /// </summary>
@@ -483,7 +418,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtURLPrefixTags;
-
         /// <summary>
         /// txtURLPrefixLikes control.
         /// </summary>
@@ -492,7 +426,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtURLPrefixLikes;
-
         /// <summary>
         /// txtURLPrefixOther control.
         /// </summary>
@@ -501,7 +434,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtURLPrefixOther;
-
         /// <summary>
         /// lblFullTextSearch control.
         /// </summary>
@@ -510,7 +442,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblFullTextSearch;
-
         /// <summary>
         /// rdFullTextSearch control.
         /// </summary>
@@ -519,7 +450,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdFullTextSearch;
-
         /// <summary>
         /// ltrFullTextMessage control.
         /// </summary>
@@ -528,7 +458,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltrFullTextMessage;
-
         /// <summary>
         /// lblCacheTemplates control.
         /// </summary>
@@ -537,7 +466,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblCacheTemplates;
-
         /// <summary>
         /// rdCacheTemplates control.
         /// </summary>
@@ -546,7 +474,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdCacheTemplates;
-
         /// <summary>
         /// txtGroupModSec control.
         /// </summary>
@@ -555,7 +482,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField txtGroupModSec;
-
         /// <summary>
         /// txtGroupMemSec control.
         /// </summary>
@@ -564,7 +490,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField txtGroupMemSec;
-
         /// <summary>
         /// txtGroupRegSec control.
         /// </summary>
@@ -573,7 +498,6 @@ using System.Collections.Generic;
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField txtGroupRegSec;
-
         /// <summary>
         /// txtGroupAnonSec control.
         /// </summary>
