@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Web.Client.ClientResourceManagement;
+
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
@@ -541,43 +543,40 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnLoad(e);
 
-            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMCallback"))
+            bool cbloaded = false;
+            if (HttpContext.Current.Items["cbld"] != null)
             {
-                bool cbloaded = false;
-                if (HttpContext.Current.Items["cbld"] != null)
-                {
-                    cbloaded = bool.Parse(HttpContext.Current.Items["cbld"].ToString());
-                }
+                cbloaded = bool.Parse(HttpContext.Current.Items["cbld"].ToString());
+            }
 
-                if (!this.IsCallback && !this.Page.IsPostBack)
+            if (!this.IsCallback && !this.Page.IsPostBack)
+            {
+                if (cbloaded == false && HttpContext.Current.Request.Params["hidreq"] == null)
                 {
-                    if (cbloaded == false && HttpContext.Current.Request.Params["hidreq"] == null)
+                    DotNetNuke.Security.PortalSecurity dnn = new DotNetNuke.Security.PortalSecurity();
+                    string ticket = dnn.Encrypt("afexp41", HttpContext.Current.Session.SessionID);
+
+                    HttpCookie myCookie = new HttpCookie("amcit");
+                    if (HttpContext.Current.Request.Cookies["amcit"] != null)
                     {
-                        DotNetNuke.Security.PortalSecurity dnn = new DotNetNuke.Security.PortalSecurity();
-                        string ticket = dnn.Encrypt("afexp41", HttpContext.Current.Session.SessionID);
-
-                        HttpCookie myCookie = new HttpCookie("amcit");
-                        if (HttpContext.Current.Request.Cookies["amcit"] != null)
-                        {
-                            HttpContext.Current.Response.Cookies["amcit"].Value = string.Empty;
-                            HttpContext.Current.Response.Cookies["amcit"].Expires = DateTime.UtcNow.AddYears(-1);
-                            HttpContext.Current.Response.Cookies["amcit"].Domain = string.Empty;
-                            HttpContext.Current.Response.Cookies["amcit"].HttpOnly = true;
-                        }
-
-                        myCookie.HttpOnly = true;
-
-                        // myCookie.Path = "/"
-                        // myCookie.Domain = HttpContext.Current.Request.Url.Host
-                        myCookie.Expires = DateTime.UtcNow.AddHours(2);
-                        myCookie.Value = ticket;
-                        HttpContext.Current.Response.Cookies.Add(myCookie);
-                        this.Page.ClientScript.RegisterHiddenField("amcbid", ticket);
-                        HttpContext.Current.Items.Add("cbld", "True");
+                        HttpContext.Current.Response.Cookies["amcit"].Value = string.Empty;
+                        HttpContext.Current.Response.Cookies["amcit"].Expires = DateTime.UtcNow.AddYears(-1);
+                        HttpContext.Current.Response.Cookies["amcit"].Domain = string.Empty;
+                        HttpContext.Current.Response.Cookies["amcit"].HttpOnly = true;
                     }
-                }
 
-                this.Page.ClientScript.RegisterClientScriptInclude("AMCallback", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js"));
+                    myCookie.HttpOnly = true;
+
+                    // myCookie.Path = "/"
+                    // myCookie.Domain = HttpContext.Current.Request.Url.Host
+                    myCookie.Expires = DateTime.UtcNow.AddHours(2);
+                    myCookie.Value = ticket;
+                    HttpContext.Current.Response.Cookies.Add(myCookie);
+                    this.Page.ClientScript.RegisterHiddenField("amcbid", ticket);
+                    HttpContext.Current.Items.Add("cbld", "True");
+
+                    ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/cb.js", 102);
+                }
             }
         }
         #endregion

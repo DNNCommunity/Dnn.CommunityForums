@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                if (this.Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.GroupId]))
+                if (this.Request.QueryString[Literals.GroupId] != null && Utilities.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                 {
                     this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
                 }
@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post = null;
                     int topicId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["TopicId"].ToString(), 1);
                     int contentId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["ContentId"].ToString(), 1);
-                    var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).Find("WHERE ContentId = @0", contentId).FirstOrDefault();
+                    var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetByContentId(contentId);
                     if (reply != null)
                     {
                         post = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)reply;
@@ -214,33 +214,34 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
 
-                    foreach (Control control in repeaterItemEventArgs.Item.Controls)
+                    if (post != null)
                     {
-                        string itemTemplate = string.Empty;
-                        try
+                        foreach (Control control in repeaterItemEventArgs.Item.Controls)
                         {
-                            if (control.GetType().FullName == "System.Web.UI.LiteralControl")
+                            string itemTemplate = string.Empty;
+                            try
                             {
-                                itemTemplate = ((System.Web.UI.LiteralControl)control).Text;
+                                if (control.GetType().FullName == "System.Web.UI.LiteralControl")
+                                {
+                                    itemTemplate = ((System.Web.UI.LiteralControl)control).Text;
+                                }
+                                else if (control.GetType().FullName == "System.Web.UI.HtmlControls.HtmlGenericControl")
+                                {
+                                    itemTemplate = ((System.Web.UI.HtmlControls.HtmlGenericControl)control).InnerText;
+                                }
+                                else
+                                {
+                                    Exceptions.LogException(new KeyNotFoundException($"Unexpected control type: {control.GetType().FullName}"));
+                                }
                             }
-                            else if (control.GetType().FullName == "System.Web.UI.HtmlControls.HtmlGenericControl")
+                            catch (Exception ex)
                             {
-                                itemTemplate = ((System.Web.UI.HtmlControls.HtmlGenericControl)control).InnerText;
+                                Exceptions.LogException(ex);
                             }
-                            else
-                            {
-                                Exceptions.LogException(new KeyNotFoundException($"Unexpected control type: {control.GetType().FullName}"));
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Exceptions.LogException(ex);
-                        }
 
-                        if (!string.IsNullOrEmpty(itemTemplate) && itemTemplate.Contains("["))
-                        {
-                            if (post != null)
+                            if (!string.IsNullOrEmpty(itemTemplate) && itemTemplate.Contains("["))
                             {
+
                                 itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
                                 if (control.GetType().FullName == "System.Web.UI.LiteralControl")
                                 {

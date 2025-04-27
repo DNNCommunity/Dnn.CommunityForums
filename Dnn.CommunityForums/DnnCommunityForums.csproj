@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+
     <PropertyGroup>
         <AssemblyName>DotNetNuke.Modules.ActiveForums</AssemblyName>
         <OutputType>Library</OutputType>
@@ -37,6 +38,16 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="CustomControls\Resources\TextSuggest.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+        <AdditionalFiles Include="..\.editorconfig" Link=".editorconfig" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.0" />
         <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web.Client" Version="9.11.0" />

@@ -310,9 +310,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 TopicData = this.drForum["TopicData"].ToString(),
                 NextTopic = Utilities.SafeConvertInt(this.drForum["NextTopic"]),
                 PrevTopic = Utilities.SafeConvertInt(this.drForum["PrevTopic"]),
+                ContentId = Utilities.SafeConvertInt(this.drForum["ContentId"]),
                 Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
                 {
                     ModuleId = this.ForumModuleId,
+                    ContentId = Utilities.SafeConvertInt(this.drForum["ContentId"]),
+                    IPAddress = this.drForum["IPAddress"].ToString(),
                     Subject = System.Net.WebUtility.HtmlDecode(this.drForum["Subject"].ToString()),
                     Summary = System.Net.WebUtility.HtmlDecode(this.drForum["Summary"].ToString()),
                     Body = System.Net.WebUtility.HtmlDecode(this.drForum["Body"].ToString()),
@@ -349,6 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.LastReply.Author.ForumUser.UserInfo.Username = this.drForum["LastPostUserName"].ToString();
             this.topic.LastReply.Author.ForumUser.PortalId = this.PortalId;
             this.topic.LastReply.Author.ForumUser.ModuleId = this.ForumModuleId;
+            this.topic.UpdateCache();
 
             this.topicTemplateId = Utilities.SafeConvertInt(this.drForum["TopicTemplateId"]);
             this.tags = this.drForum["Tags"].ToString();
@@ -1025,13 +1029,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             bool isReply = !dr.GetInt("ReplyId").Equals(0);
 
-            // most topic values come in first result set and are set in LoadData(); however some, like IP Address and contentId, comes in this result set.
-            if (!isReply)
-            {
-                this.topic.Content.IPAddress = dr.GetString("IPAddress");
-                this.topic.ContentId = dr.GetInt("ContentId");
-                this.topic.Content.ContentId = dr.GetInt("ContentId");
-            }
 
             // Replace Tags Control
             var tags = dr.GetString("Tags");
@@ -1111,7 +1108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         DateUpdated = dr.GetDateTime("DateUpdated"),
                         IPAddress = dr.GetString("IPAddress"),
                     },
-                    Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId,  dr.GetInt("AuthorId")),
+                    Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, dr.GetInt("AuthorId")),
                 };
                 sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments(reply.ContentId, true, this.PortalId, this.ForumModuleId));
                 sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input id=\"dcf-split-checkbox-" + reply.ReplyId + "\" type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + reply.ReplyId + "\" /><label for=\"dcf-split-checkbox-" + reply.ReplyId + "\" class=\"dcf-split-checkbox-label\">[RESX:SplitCreate]</label></div>");

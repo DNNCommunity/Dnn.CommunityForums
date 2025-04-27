@@ -29,15 +29,8 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     public class Common : DataConfig
     {
         #region Security
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
-        public void SavePermissionSet(int permissionSetId, string permissionSet) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
-        public IDataReader GetRoles(int portalId) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPermSetForRequestedAccess.")]
-        public string GetPermSet(int permissionsId, string requestedAccess) => throw new NotImplementedException();
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPermSet.")]
+        public string GetPermSet(int permissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(-1, permissionsId, requestedAccess);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SavePermSet.")]
         public string SavePermSet(int permissionsId, string requestedAccess, string permSet) => throw new NotImplementedException();

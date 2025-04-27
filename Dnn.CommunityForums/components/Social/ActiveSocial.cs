@@ -145,13 +145,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
-
-        [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]
-        public void AddReplyToJournal(int portalId, int moduleId, int forumId, int topicId, int replyId, int userId, string uRL, string subject, string summary, string body, int securityOption, string readRoles, int socialGroupId)
-        {
-            this.AddReplyToJournal(portalId: portalId, moduleId: moduleId, tabId: -1, forumId: forumId, topicId: topicId, replyId: replyId, userId: userId, uRL: uRL, subject: subject, summary: summary, body: body, readRoles: readRoles, socialGroupId: socialGroupId);
-        }
-
         internal void AddReplyToJournal(int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, int userId, string uRL, string subject, string summary, string body, string readRoles, int socialGroupId)
         {
             try

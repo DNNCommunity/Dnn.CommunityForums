@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System;
     using System.ComponentModel;
     using System.Web.UI;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:ScriptLoader runat=server></{0}:ScriptLoader>")]
     public class ScriptLoader : Control
@@ -55,35 +56,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            /*if (TextSuggest && !(Page.ClientScript.IsClientScriptIncludeRegistered("AMTextSuggest")))
-            {
-                Page.ClientScript.RegisterClientScriptInclude("AMTextSuggest", Page.ClientScript.GetWebResourceUrl(Me.GetType, "TextSuggest.js"))
-            }*/
-            if (this.ActiveGrid && !this.Page.ClientScript.IsClientScriptIncludeRegistered("AMActiveGrid"))
-            {
-                this.Page.ClientScript.RegisterClientScriptInclude("AMActiveGrid", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.ActiveGrid.js"));
-            }
-
-            if (this.Callback && !this.Page.ClientScript.IsClientScriptIncludeRegistered("AMCallback"))
-            {
-                this.Page.ClientScript.RegisterClientScriptInclude("AMCallback", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js"));
-            }
-
-            if (this.DatePicker && !this.Page.ClientScript.IsClientScriptIncludeRegistered("AMDatePicker"))
-            {
-                this.Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.DatePicker.js"));
-            }
-
-            if (this.RequiredFieldValidator && !this.Page.ClientScript.IsClientScriptIncludeRegistered("AMValidation"))
-            {
-                this.Page.ClientScript.RegisterClientScriptInclude("AMValidation", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.Validation.js"));
-            }
-
-            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMMenu"))
-            {
-                this.Page.ClientScript.RegisterClientScriptInclude("AMMenu", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.MenuButton.js"));
-            }
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/ActiveGrid.js", 102);
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/cb.js", 102);
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/datepicker.js", 102);
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/Validation.js", 102);
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/MenuButton.js", 102);
         }
 
         #endregion

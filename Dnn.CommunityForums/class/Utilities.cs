@@ -43,24 +43,6 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
 
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, removeHTML, HttpContext.Current.Request.Url);
-        }
-
-        [Obsolete(message: "Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, true, true, HttpContext.Current.Request.Url);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string ImportFilter(int portalID, int moduleID)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(portalID, moduleID);
-        }
-
         internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
             if (string.IsNullOrEmpty(template))
@@ -190,8 +172,28 @@ namespace DotNetNuke.Modules.ActiveForums
                    || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, forumUser.UserRoles), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
                    || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, forumUser.UserRoles)
                    || (forumUser.DateLastPost == null)
-                   || (forumUser.DateLastPost != null && SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)forumUser.DateLastPost, DateTime.UtcNow) > floodInterval)
-                   || (forumUser.DateLastReply != null && SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, (DateTime)forumUser.DateLastReply, DateTime.UtcNow) > floodInterval);
+                   || (forumUser.DateLastPost != null && DateTime.UtcNow.Subtract((DateTime)forumUser.DateLastPost).TotalSeconds > floodInterval)
+                   || (forumUser.DateLastReply != null && DateTime.UtcNow.Subtract((DateTime)forumUser.DateLastReply).TotalSeconds > floodInterval);
+        }
+
+        internal static bool HasEditIntervalPassed(int editInterval, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.IPostInfo postInfo)
+        {
+            /* edit interval check passes if
+            1) edit interval <= 0 (disabled)
+            2) user is unauthenticated; if not, captcha is enabled for anonymous users
+            3) user is an admin or superuser
+            4) user is designated as a trusted user for the forum
+            5) user has moderator (edit, delete, approve) permissions for the forum
+            6) time span since post exceeds edit interval
+            */
+
+            return editInterval <= 0
+                   || forumUser == null
+                   || forumUser.IsAdmin
+                   || forumUser.IsSuperUser
+                   || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, forumUser.UserRoles), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, forumUser.UserRoles)
+                   || (postInfo?.Content?.DateCreated != null && DateTime.UtcNow.Subtract(postInfo.Content.DateCreated).TotalMinutes > editInterval);
         }
 
         public static bool IsTrusted(int forumTrustLevel, int userTrustLevel, bool isTrustedRole, int autoTrustLevel = 0, int userPostCount = 0)
@@ -1734,6 +1736,11 @@ namespace DotNetNuke.Modules.ActiveForums
         internal static string LocalizeString(string key, string resourceFile, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, string language = "en-US")
         {
             return DotNetNuke.Services.Localization.Localization.GetString(key, resourceFile, (DotNetNuke.Entities.Portals.PortalSettings)portalSettings, language);
+        }
+
+        public static bool IsNumeric(object expression)
+        {
+            return expression != null && (double.TryParse(expression.ToString(), out _) || bool.TryParse(expression.ToString(), out _));
         }
     }
 }
