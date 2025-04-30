@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                     if (topic != null)
                     {
-                        itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
+                        itemTemplate = Utilities.DecodeBrackets(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString());
                         ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text = itemTemplate;
                     }
                 }

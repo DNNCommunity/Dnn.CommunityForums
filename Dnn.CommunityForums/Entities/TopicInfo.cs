@@ -602,7 +602,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "subject":
                     {
                         string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
-                        return PropertyAccess.FormatString(length > 0 && this.Subject.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93"), "...") : Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage, format);
+                        return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Subject.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93"), "...") : Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage), format);
                     }
 
                 case "subjectlink":
@@ -734,14 +734,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                     return string.Empty;
                 case "bodytitle":
-                    return PropertyAccess.FormatString(GetTopicTitle(this.Content.Body), format);
+                    return PropertyAccess.FormatString(Utilities.EncodeBrackets(GetTopicTitle(this.Content.Body)), format);
                 case "summary":
                     return PropertyAccess.FormatString(
+                        Utilities.EncodeBrackets(
                         !string.IsNullOrEmpty(this.Summary)
                         ? length > 0 && this.Summary.Length > length ? this.Summary.Substring(0, length) : this.Summary
-                        : length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, format);
+                        : length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body), format);
                 case "body":
-                    return PropertyAccess.FormatString(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, format);
+                    return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body), format);
                 case "lastreplyid":
                     return PropertyAccess.FormatString(this.LastReplyId.ToString(), format);
                 case "replycount":
