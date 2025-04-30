@@ -14,7 +14,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">09.09.00</dependency>
+        <dependency type="CoreVersion">09.11.00</dependency>
       </dependencies>
       <components>
         <component type="Module">
@@ -419,10 +419,15 @@
                 <name>08.02.08.SqlDataProvider</name>
                 <version>08.02.08</version>
             </script>
+            <script type="Install">
+                <path>sql</path>
+                <name>09.00.00.SqlDataProvider</name>
+                <version>09.00.00</version>
+            </script>
             <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version>08.02.08</version>
+              <version>09.00.00</version>
             </script>
           </scripts>
         </component>
@@ -481,7 +486,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">09.09.00</dependency>
+        <dependency type="CoreVersion">09.11.00</dependency>
       </dependencies>
       <components>
         <component type="Module">
@@ -550,7 +555,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">09.09.00</dependency>
+        <dependency type="CoreVersion">09.11.00</dependency>
       </dependencies>
       <components>
         <component type="Module">
