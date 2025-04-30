@@ -1,0 +1,9 @@
+/* issue 1397 begin - remove already-replaced schedule */
+SET NOCOUNT ON
+GO 
+/* remove old scheduler -- note that was to have been removed in 8.1, but there was a typo in the sql */
+IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Queue.Scheduler, DotNetNuke.Modules.ActiveForums')
+	DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Queue.Scheduler, DotNetNuke.Modules.ActiveForums'
+GO
+/* issue 1397 end - remove already-replaced schedule */
+/* ---------------- */
