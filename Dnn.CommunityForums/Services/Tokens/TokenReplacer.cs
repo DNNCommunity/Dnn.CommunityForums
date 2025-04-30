@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     using System;
     using System.Data.SqlTypes;
     using System.Linq;
+    using System.Security.AccessControl;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web.UI.WebControls;
@@ -65,6 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.TokenContext = context;
 
         }
+
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, ForumInfo forumInfo, Uri requestUri, string rawUrl)
         {
             forumInfo.RawUrl = rawUrl;
@@ -153,6 +155,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             topicInfo.Forum.RequestUri = requestUri;
             topicInfo.Forum.ForumGroup.RequestUri = requestUri;
             topicInfo.RequestUri = requestUri;
+            topicInfo.Author.ForumUser.RawUrl = rawUrl;
+            topicInfo.Author.ForumUser.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
             this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.GetTabId(), topicInfo.Forum.ModuleId, GetTabId(portalSettings, topicInfo.Forum), GetModuleId(portalSettings, topicInfo.Forum), requestUri, rawUrl);
@@ -187,11 +191,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             postInfo.Forum.RawUrl = rawUrl;
             postInfo.Forum.ForumGroup.RawUrl = rawUrl;
             postInfo.Topic.RawUrl = rawUrl;
+            postInfo.Author.ForumUser.RawUrl = rawUrl;
             postInfo.RawUrl = rawUrl;
             forumUser.RawUrl = rawUrl;
             postInfo.Forum.RequestUri = requestUri;
             postInfo.Forum.ForumGroup.RequestUri = requestUri;
             postInfo.Topic.RequestUri = requestUri;
+            postInfo.Author.ForumUser.RequestUri = requestUri;
             postInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
@@ -228,11 +234,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             likeInfo.Forum.RawUrl = rawUrl;
             likeInfo.Forum.ForumGroup.RawUrl = rawUrl;
             likeInfo.Topic.RawUrl = rawUrl;
+            likeInfo.Author.ForumUser.RawUrl = rawUrl;
             likeInfo.RawUrl = rawUrl;
             forumUser.RawUrl = rawUrl;
             likeInfo.Forum.RequestUri = requestUri;
             likeInfo.Forum.ForumGroup.RequestUri = requestUri;
             likeInfo.Topic.RequestUri = requestUri;
+            likeInfo.Author.ForumUser.RequestUri = requestUri;
             likeInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
