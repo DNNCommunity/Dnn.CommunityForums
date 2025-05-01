@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (ctrl is Controls.Link)
                 {
-                    ((Controls.Link)ctrl).UserRoles = this.ForumUser.UserRoles;
+                    ((Controls.Link)ctrl).UserPermSet = this.ForumUser.UserPermSet;
                 }
 
                 if (ctrl.Controls.Count > 0)

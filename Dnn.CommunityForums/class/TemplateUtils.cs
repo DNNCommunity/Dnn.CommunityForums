@@ -363,7 +363,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Parse Roles
                 if (pt.Contains("[ROLES:"))
                 {
-                    pt = ParseRoles(pt, (author.ForumUser.UserId == -1) ? string.Empty : author.ForumUser.UserRoles);
+                    pt = ParseRoles(pt, (author.ForumUser.UserId == -1) ? string.Empty : author.ForumUser.UserPermSet);
                 }
 
 #region "Backward compatilbility -- remove in v09.00.00"

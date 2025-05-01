@@ -258,7 +258,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // first make sure we have read permissions, otherwise we need to redirect
-            this.bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanRead"].ToString(), this.ForumUser.UserRoles);
+            this.bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanRead"].ToString()), this.ForumUser.UserRoleIds);
 
             if (!this.bRead)
             {
@@ -274,13 +274,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            this.bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanEdit"].ToString(), this.ForumUser.UserRoles);
-            this.bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanSubscribe"].ToString(), this.ForumUser.UserRoles);
-            this.bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanModerate"].ToString(), this.ForumUser.UserRoles);
-            this.bSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanSplit"].ToString(), this.ForumUser.UserRoles);
-            this.bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanTrust"].ToString(), this.ForumUser.UserRoles);
+            this.bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanEdit"].ToString()), this.ForumUser.UserRoleIds);
+            this.bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanSubscribe"].ToString()), this.ForumUser.UserRoleIds);
+            this.bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanModerate"].ToString()), this.ForumUser.UserRoleIds);
+            this.bSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanSplit"].ToString()), this.ForumUser.UserRoleIds);
+            this.bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanTrust"].ToString()), this.ForumUser.UserRoleIds);
 
-            this.isTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, this.ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles));
+            this.isTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, this.ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TrustRoleIds, this.ForumUser.UserRoleIds));
 
             // TODO: Eventually this will use DAL2 to load from stored procedure into object model, but for now populate topic object model from stored procedure results
             this.topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo

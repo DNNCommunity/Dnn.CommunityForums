@@ -64,9 +64,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     var r = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(replyId);
                     if (r != null)
                     {
-                        if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.Moderate, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                        if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.Moderate, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
                         {
-                            DataProvider.Instance().Reply_UpdateStatus(this.ActiveModule.PortalID, this.ForumModuleId, r.TopicId, replyId, this.UserInfo.UserID, 1, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.Moderate, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))));
+                            DataProvider.Instance().Reply_UpdateStatus(this.ActiveModule.PortalID, this.ForumModuleId, r.TopicId, replyId, this.UserInfo.UserID, 1, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.Moderate, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))));
                             DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, this.ForumModuleId));
                             return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                         }
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
                                 r.Topic.Forum.Security.Moderate,
                                 string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(
+                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
                                         this.ActiveModule.PortalID,
                                         this.UserInfo.Roles))))
                         {
