@@ -341,7 +341,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "subject":
                     {
                         string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
-                        return PropertyAccess.FormatString(length > 0 && this.Subject.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93"), "...") : Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage, format);
+                        return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Subject.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93"), "...") : Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage), format);
                     }
 
                 case "subjectlink":
@@ -399,11 +399,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     }
 
                 case "summary":
-                    return PropertyAccess.FormatString(length > 0 && this.Summary.Length > length ? this.Summary.Substring(0, length) : this.Summary, format);
+                    return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Summary.Length > length ? this.Summary.Substring(0, length) : this.Summary), format);
                 case "body":
-                    return PropertyAccess.FormatString(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, format);
+                    return PropertyAccess.FormatString(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, Utilities.EncodeBrackets(format));
                 case "bodytitle":
-                    return PropertyAccess.FormatString(GetTopicTitle(this.Content.Body), format);
+                    return PropertyAccess.FormatString(Utilities.EncodeBrackets(GetTopicTitle(this.Content.Body)), format);
                 case "link":
                     {
                         string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, this.GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
