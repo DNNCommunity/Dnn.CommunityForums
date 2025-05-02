@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     using System;
     using System.Data.SqlTypes;
     using System.Linq;
+    using System.Security.AccessControl;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web.UI.WebControls;
@@ -65,6 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             this.TokenContext = context;
 
         }
+
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, ForumInfo forumInfo, Uri requestUri, string rawUrl)
         {
             forumInfo.RawUrl = rawUrl;
@@ -232,6 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             likeInfo.Forum.RawUrl = rawUrl;
             likeInfo.Forum.ForumGroup.RawUrl = rawUrl;
             likeInfo.Topic.RawUrl = rawUrl;
+            likeInfo.Author.ForumUser.RawUrl = rawUrl;
             likeInfo.RawUrl = rawUrl;
             forumUser.RawUrl = rawUrl;
             likeInfo.Forum.RequestUri = requestUri;

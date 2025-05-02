@@ -561,12 +561,12 @@ namespace DotNetNuke.Modules.ActiveForums
             return RegexUtils.GetCachedRegex(System.Environment.NewLine).Replace(text, " <br /> ");
         }
 
-        private static string EncodeBrackets(string text)
+        internal static string EncodeBrackets(string text)
         {
             return text.Replace("[", "&#91;").Replace("]", "&#93;");
         }
 
-        private static string DecodeBrackets(string text)
+        internal static string DecodeBrackets(string text)
         {
             return text.Replace("&#91;", "[").Replace("&#93;", "]");
         }

@@ -577,7 +577,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, "<asp:placeholder id=\"plhTopic\" runat=\"server\" />", "[AF:CONTROL:CALLBACK]", "[/AF:CONTROL:CALLBACK]");
                 sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sOutput), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(sOutput), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
-
+                sOutput = Utilities.DecodeBrackets(sOutput);
                 sOutput = Utilities.LocalizeControl(sOutput);
                 sOutput = Utilities.StripTokens(sOutput);
 

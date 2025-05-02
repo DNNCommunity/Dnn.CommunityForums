@@ -630,7 +630,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     stringBuilder.Replace("[AF:UI:MINIPAGER]", this.GetSubPages(this.TabId, topicInfo.ReplyCount, this.ForumId, topicInfo.TopicId));
                 }
 
-                sTopics += stringBuilder.ToString();
+                sTopics += Utilities.DecodeBrackets(stringBuilder.ToString());
                 rowcount += 1;
             }
 
