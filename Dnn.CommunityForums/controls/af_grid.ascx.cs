@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                     if (topic != null)
                     {
-                        itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
+                        itemTemplate = Utilities.DecodeBrackets(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString());
                         ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text = itemTemplate;
                     }
                 }
@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.rowIndex = (this.PageId - 1) * this.pageSize;
 
             var db = new Data.Common();
-            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ForumModuleId, "CanRead");
+            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ForumModuleId, this.ForumUser, "CanRead");
 
             if (this.Request.Params[ParamKeys.GridType] != null)
             {

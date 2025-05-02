@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Collections.Generic;
+
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
     using System;
@@ -31,77 +33,77 @@ namespace DotNetNuke.Modules.ActiveForums.Services
             try
             {
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
-                string roles;
+                var roles = new HashSet<int>();
                 switch (permissionRequired)
                 {
                     case SecureActions.View:
-                        roles = fi.Security.View;
+                        roles = fi.Security.ViewRoleIds;
                         break;
                     case SecureActions.Read:
-                        roles = fi.Security.Read;
+                        roles = fi.Security.ReadRoleIds;
                         break;
                     case SecureActions.Create:
-                        roles = fi.Security.Create;
+                        roles = fi.Security.CreateRoleIds;
                         break;
                     case SecureActions.Reply:
-                        roles = fi.Security.Reply;
+                        roles = fi.Security.ReplyRoleIds;
                         break;
                     case SecureActions.Edit:
-                        roles = fi.Security.Edit;
+                        roles = fi.Security.EditRoleIds;
                         break;
                     case SecureActions.Delete:
-                        roles = fi.Security.Delete;
+                        roles = fi.Security.DeleteRoleIds;
                         break;
                     case SecureActions.Lock:
-                        roles = fi.Security.Lock;
+                        roles = fi.Security.LockRoleIds;
                         break;
                     case SecureActions.Pin:
-                        roles = fi.Security.Pin;
+                        roles = fi.Security.PinRoleIds;
                         break;
                     case SecureActions.Attach:
-                        roles = fi.Security.Attach;
+                        roles = fi.Security.AttachRoleIds;
                         break;
                     case SecureActions.Poll:
-                        roles = fi.Security.Poll;
+                        roles = fi.Security.PollRoleIds;
                         break;
                     case SecureActions.Block:
-                        roles = fi.Security.Block;
+                        roles = fi.Security.BlockRoleIds;
                         break;
                     case SecureActions.Trust:
-                        roles = fi.Security.Trust;
+                        roles = fi.Security.TrustRoleIds;
                         break;
                     case SecureActions.Subscribe:
-                        roles = fi.Security.Subscribe;
+                        roles = fi.Security.SubscribeRoleIds;
                         break;
                     case SecureActions.Announce:
-                        roles = fi.Security.Announce;
+                        roles = fi.Security.AnnounceRoleIds;
                         break;
                     case SecureActions.Tag:
-                        roles = fi.Security.Tag;
+                        roles = fi.Security.TagRoleIds;
                         break;
                     case SecureActions.Categorize:
-                        roles = fi.Security.Categorize;
+                        roles = fi.Security.CategorizeRoleIds;
                         break;
                     case SecureActions.Prioritize:
-                        roles = fi.Security.Prioritize;
+                        roles = fi.Security.PrioritizeRoleIds;
                         break;
                     case SecureActions.Moderate:
-                        roles = fi.Security.Moderate;
+                        roles = fi.Security.ModerateRoleIds;
                         break;
                     case SecureActions.Move:
-                        roles = fi.Security.Move;
+                        roles = fi.Security.MoveRoleIds;
                         break;
                     case SecureActions.Split:
-                        roles = fi.Security.Split;
+                        roles = fi.Security.SplitRoleIds;
                         break;
                     case SecureActions.Ban:
-                        roles = fi.Security.Ban;
+                        roles = fi.Security.BanRoleIds;
                         break;
                     default:
                         return false;
                 }
 
-                return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, portalId, moduleId, userInfo.UserID);
+                return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(roles, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleNameArray(portalId: portalId, roles: userInfo.Roles));
             }
             catch (Exception ex)
             {

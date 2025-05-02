@@ -27,31 +27,27 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class ForumController
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetById.")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId, bool ignoreCache) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(moduleId, forumId);
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId, bool ignoreCache) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetById.")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(moduleId, forumId);
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateGroupForum.")]
-        public int CreateGroupForum(int portalId, int moduleId, int socialGroupId, int forumGroupId, string forumName, string forumDescription, bool isPrivate, string forumConfig) => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(portalId, moduleId, socialGroupId, forumGroupId, forumName, forumDescription, isPrivate, forumConfig);
+        public int CreateGroupForum(int portalId, int moduleId, int socialGroupId, int forumGroupId, string forumName, string forumDescription, bool isPrivate, string forumConfig) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList().")]
-        public string GetForumsHtmlOption(int portalId, int moduleId, User currentUser)
-        {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, currentUser.UserId);
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(moduleId, user, includeHiddenForums: true);
-        }
+        public string GetForumsHtmlOption(int portalId, int moduleId, User currentUser) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save.")]
-        public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroup) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, isNew, useGroup, useGroup);
+        public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroup) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup.")]
-        public string GetForumIdsBySocialGroup(int portalId, int socialGroupId) => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(portalId, -1, socialGroupId);
+        public string GetForumIdsBySocialGroup(int portalId, int socialGroupId) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser.")]
-        public string GetForumsForUser(string userRoles, int portalId, int moduleId, string permissionType = "CanView", bool strict = false) => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(userRoles, portalId, moduleId, permissionType, strict);
+        public string GetForumsForUser(string userRoles, int portalId, int moduleId, string permissionType = "CanView", bool strict = false) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
-        public DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds) => DataProvider.Instance().UI_ForumView(portalId, moduleId, currentUserId, isSuperUser, forumIds).Tables[0];
+        public DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds) => throw new NotImplementedException();
     }
 }

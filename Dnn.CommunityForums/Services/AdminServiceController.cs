@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 case "delete":
                     {
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(dto.ModuleId, dto.SecurityId, dto.SecurityType, dto.PermissionsId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(dto.ModuleId, dto.SecurityId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), dto.SecurityType.ToString()), dto.PermissionsId);
                         return this.Request.CreateResponse(HttpStatusCode.OK);
                     }
 
@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         if (!string.IsNullOrEmpty(dto.SecurityId))
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, "View", dto.SecurityId, dto.SecurityType);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, DotNetNuke.Modules.ActiveForums.SecureActions.View, dto.SecurityId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), dto.SecurityType.ToString()));
                         }
 
                         return this.Request.CreateResponse(HttpStatusCode.OK);
@@ -208,11 +208,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (dto.Action == "remove")
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(dto.ModuleId, dto.PermissionsId, dto.SecurityAccessRequested, dto.SecurityId, dto.SecurityType);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(dto.ModuleId, dto.PermissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), dto.SecurityAccessRequested), dto.SecurityId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), dto.SecurityType.ToString()));
                         }
                         else
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, dto.SecurityAccessRequested, dto.SecurityId, dto.SecurityType);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), dto.SecurityAccessRequested), dto.SecurityId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), dto.SecurityType.ToString()));
                         }
 
                         return this.Request.CreateResponse(HttpStatusCode.OK, dto.Action + "|" + dto.ReturnId);

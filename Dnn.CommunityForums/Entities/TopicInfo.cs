@@ -391,7 +391,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         internal Enums.TopicStatus GetTopicStatusForUser(ForumUserInfo forumUser)
         {
-            if (!Controllers.PermissionController.HasPerm(this.Forum.Security.View, forumUser?.UserRoles))
+            if (!Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ViewRoleIds, forumUser?.UserRoleIds))
             {
                 return Enums.TopicStatus.Forbidden;
             }
@@ -565,7 +565,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Forum.Security.Read, accessingUser))
+            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ReadRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser)))
             {
                 return string.Empty;
             }
@@ -602,7 +602,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "subject":
                     {
                         string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
-                        return PropertyAccess.FormatString(length > 0 && this.Subject.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93"), "...") : Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage, format);
+                        return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Subject.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93"), "...") : Utilities.StripHTMLTag(this.Subject).Replace("[", "&#91").Replace("]", "&#93") + sPollImage), format);
                     }
 
                 case "subjectlink":
@@ -734,14 +734,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                     return string.Empty;
                 case "bodytitle":
-                    return PropertyAccess.FormatString(GetTopicTitle(this.Content.Body), format);
+                    return PropertyAccess.FormatString(Utilities.EncodeBrackets(GetTopicTitle(this.Content.Body)), format);
                 case "summary":
                     return PropertyAccess.FormatString(
+                        Utilities.EncodeBrackets(
                         !string.IsNullOrEmpty(this.Summary)
                         ? length > 0 && this.Summary.Length > length ? this.Summary.Substring(0, length) : this.Summary
-                        : length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, format);
+                        : length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body), format);
                 case "body":
-                    return PropertyAccess.FormatString(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, format);
+                    return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body), format);
                 case "lastreplyid":
                     return PropertyAccess.FormatString(this.LastReplyId.ToString(), format);
                 case "replycount":
@@ -756,9 +757,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return !this.Forum.FeatureSettings.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.LikeCount.ToString(), format);
                 case "likeonclick":
                     {
-                        var bReply = Controllers.PermissionController.HasPerm(this.Forum.Security.Reply,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ReplyRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if (this.Forum.FeatureSettings.AllowLikes)
                         {
                             return PropertyAccess.FormatString(bReply ?
@@ -770,15 +769,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return string.Empty;
                 case "status":
                     {
-                        var bRead = Controllers.PermissionController.HasPerm(this.Forum.Security.Read,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bEdit = Controllers.PermissionController.HasPerm(this.Forum.Security.Edit,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ReadRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.EditRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if (((bRead && this.Content.AuthorId == accessingUser.UserID) || (bModerate && bEdit)) & this.StatusId >= 0)
                         {
                             return this.StatusId == -1
@@ -943,9 +936,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         format);
                 case "modipaddress":
                     {
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         return bModerate
                         ? PropertyAccess.FormatString(this.Content.IPAddress, format)
                         : string.Empty;
@@ -953,9 +944,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "modeditdate":
                     {
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         return bModerate &&
                                this.Content.DateUpdated != this.Content.DateCreated
                             ? PropertyAccess.FormatString(Utilities.GetUserFormattedDateTime(
@@ -1006,9 +995,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     {
                         var forumUserController = new Controllers.ForumUserController(this.ModuleId);
                         var forumUser = forumUserController.GetByUserId(accessingUser.PortalID, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         return PropertyAccess.FormatString(
                         string.IsNullOrEmpty(this.Author?.DisplayName)
                             ? this.Content.AuthorName
@@ -1101,9 +1088,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         format);
                 case "lastpostauthordisplayname":
                     {
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         var forumUserController = new Controllers.ForumUserController(this.ModuleId);
                         var forumUser = forumUserController.GetByUserId(accessingUser.PortalID, accessingUser.UserID);
                         return PropertyAccess.FormatString(
@@ -1169,12 +1154,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return string.Empty;
                 case "actioneditonclick":
                     {
-                        var bEdit = Controllers.PermissionController.HasPerm(this.Forum.Security.Edit,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.EditRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if (bEdit &&
                             (bModerate ||
                              ((this.Author.AuthorId == accessingUser.UserID) && (this.Forum.MainSettings.EditInterval == 0 || DateTime.UtcNow.Subtract(this.Content.DateCreated).TotalMinutes > this.Forum.MainSettings.EditInterval))))
@@ -1202,23 +1183,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "actionreplyonclick":
                     {
-                        var bReply = Controllers.PermissionController.HasPerm(this.Forum.Security.Reply,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bTrust = Controllers.PermissionController.HasPerm(this.Forum.Security.Trust,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ReplyRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.TrustRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if (bReply &&
                             (bTrust ||
                              bModerate ||
                              ((!this.Topic.IsLocked) &&
                               (this.Forum.FeatureSettings.ReplyPostCount <= 0 ||
-                                 new Controllers.ForumUserController(this.ModuleId).GetByUserId(
-                                     accessingUser.PortalID,
-                                     accessingUser.UserID).PostCount >= this.Forum.FeatureSettings.ReplyPostCount))))
+                               new Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                   accessingUser.PortalID,
+                                   accessingUser.UserID).PostCount >= this.Forum.FeatureSettings.ReplyPostCount))))
                         {
                             var @params = new List<string>()
                             {
@@ -1243,15 +1218,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "actionquoteonclick":
                     {
-                        var bReply = Controllers.PermissionController.HasPerm(this.Forum.Security.Reply,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bTrust = Controllers.PermissionController.HasPerm(this.Forum.Security.Trust,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ReplyRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.TrustRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if (bReply &&
                             (bTrust ||
                              bModerate ||
@@ -1284,12 +1253,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "actionquickeditonclick":
                     {
-                        var bEdit = Controllers.PermissionController.HasPerm(this.Forum.Security.Edit,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.EditRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if (bEdit &&
                             (bModerate ||
                              ((this.Author.AuthorId == accessingUser.UserID) && (this.Forum.MainSettings.EditInterval == 0 || DateTime.UtcNow.Subtract(this.Content.DateCreated).TotalMinutes > this.Forum.MainSettings.EditInterval))))
@@ -1304,12 +1269,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "actiondeleteonclick":
                     {
-                        var bDelete = Controllers.PermissionController.HasPerm(this.Forum.Security.Delete,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.DeleteRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if (bDelete && (bModerate ||
                                         (this.Author.AuthorId == accessingUser.UserID && !this.Topic.IsLocked)))
                         {
@@ -1323,12 +1284,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "actionmoveonclick":
                     {
-                        var bMove = Controllers.PermissionController.HasPerm(this.Forum.Security.Move,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.MoveRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if (bMove && (bModerate ||
                                       this.Author.AuthorId == accessingUser.UserID))
                         {
@@ -1342,12 +1299,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "actionlockonclick":
                     {
-                        var bLock = Controllers.PermissionController.HasPerm(this.Forum.Security.Lock,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.LockRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if (!this.IsLocked && bLock && (bModerate || this.Author.AuthorId == accessingUser.UserID))
                         {
                             return PropertyAccess.FormatString(
@@ -1360,12 +1313,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "actionunlockonclick":
                     {
-                        var bLock = Controllers.PermissionController.HasPerm(this.Forum.Security.Lock,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.LockRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if (this.IsLocked && bLock && (bModerate ||
                                                        this.Author.AuthorId == accessingUser.UserID))
                         {
@@ -1379,12 +1328,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "actionpinonclick":
                     {
-                        var bPin = Controllers.PermissionController.HasPerm(this.Forum.Security.Pin,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.PinRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+
                         if (!this.IsPinned && bPin && (bModerate ||
                                                        this.Author.AuthorId == accessingUser.UserID))
                         {
@@ -1398,12 +1344,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "actionunpinonclick":
                     {
-                        var bPin = Controllers.PermissionController.HasPerm(this.Forum.Security.Pin,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
-                        var bModerate = Controllers.PermissionController.HasPerm(this.Forum.Security.Moderate,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.PinRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                        var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if (this.IsPinned && bPin && (bModerate ||
                                                       this.Author.AuthorId == accessingUser.UserID))
                         {
@@ -1442,9 +1384,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 case "actionbanonclick":
                     {
                         // (Note: can't ban yourself or a superuser/admin)
-                        var bBan = Controllers.PermissionController.HasPerm(this.Forum.Security.Ban,
-                            accessingUser.PortalID,
-                            this.Forum.ModuleId, accessingUser.UserID);
+                        var bBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.PinRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                         if ((bBan || accessingUser.IsAdmin || accessingUser.IsSuperUser) &&
                             (this.Author != null) && (this.Author.AuthorId != -1) && (this.Author.AuthorId != accessingUser.UserID) && (!this.Author.ForumUser.IsSuperUser) && (!this.Author.ForumUser.IsAdmin))
                         {

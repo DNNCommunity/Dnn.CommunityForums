@@ -33,16 +33,15 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         public string GetPermSet(int permissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(-1, permissionsId, requestedAccess);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SavePermSet.")]
-        public string SavePermSet(int permissionsId, string requestedAccess, string permSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(-1, permissionsId, requestedAccess, permSet);
+        public string SavePermSet(int permissionsId, string requestedAccess, string permSet) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateAdminPermissions().")]
-        public int CreatePermSet(string adminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(adminRoleId, -1)).PermissionsId;
-
+        public int CreatePermSet(string adminRoleId) => throw new NotImplementedException();
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForView().")]
-        public string CheckForumIdsForView(int moduleId, string forumIds, string userRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(moduleId, forumIds, userRoles);
+        public string CheckForumIdsForView(int moduleId, string forumIds, string userRoles) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum().")]
-        public string WhichRolesCanViewForum(int moduleId, int forumId, string userRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(moduleId, forumId, userRoles);
+        public string WhichRolesCanViewForum(int moduleId, int forumId, string userRoles) => throw new NotImplementedException();
 
         #endregion
 

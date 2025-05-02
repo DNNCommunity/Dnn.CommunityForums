@@ -353,10 +353,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(fId, this.ForumModuleId);
 
-            bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Moderate, ForumUser?.UserRoles);
-            bModDelete = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Delete, ForumUser?.UserRoles));
-            bModEdit = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Edit, ForumUser?.UserRoles));
-            bModBan = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Ban, ForumUser?.UserRoles));
+            bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.ModerateRoleIds, ForumUser?.UserRoleIds);
+            bModDelete = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.DeleteRoleIds, ForumUser?.UserRoleIds));
+            bModEdit = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.EditRoleIds, ForumUser?.UserRoleIds));
+            bModBan = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.BanRoleIds, ForumUser?.UserRoleIds));
         }
 
         private string GetAttachments(int contentId, int portalID, int moduleID, DataTable dtAttach)

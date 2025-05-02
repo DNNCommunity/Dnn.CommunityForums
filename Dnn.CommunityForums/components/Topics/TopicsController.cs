@@ -109,7 +109,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 roles.Add(r.RoleName);
             }
 
-            string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(moduleInfo.PortalID, roles.ToArray());
+            var portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(moduleInfo.PortalID);
+            string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(moduleInfo.PortalID, roles.ToArray());
             string queryString = string.Empty;
             System.Text.StringBuilder qsb = new System.Text.StringBuilder();
             List<SearchDocument> searchDocuments = new List<SearchDocument>();
@@ -157,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (!authorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
                     {
                         string canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
-                        permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(moduleInfo.PortalID, string.Join(";", canView.Split(":".ToCharArray())));
+                        permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(portalSettings, string.Join(";", canView.Split(":".ToCharArray())));
                         authorizedRolesForForum.Add(forumid, permittedRolesCanView);
                     }
 

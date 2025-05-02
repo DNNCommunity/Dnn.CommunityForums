@@ -20,7 +20,6 @@
         <FileVersion>09.00.00.00</FileVersion>
         <AssemblyVersion>09.00.00.00</AssemblyVersion>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
     </PropertyGroup>

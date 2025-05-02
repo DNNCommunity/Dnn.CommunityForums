@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
     [TestFixture]
     public class ForumInfoTests : DotNetNuke.Modules.ActiveForumsTests.TestBase
     {
+
         [Test]
         public void GetForumStatusForUserTest1()
         {
@@ -40,18 +41,33 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
                     ForumID = 1,
                     ForumName = "Test Forum",
                     TotalTopics = 0,
-                    Security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(-1),
+                    Security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.mockModule.Object.ModuleID),
                     ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo { GroupName = "Test Forum Group" }
                 }
             };
 
-            var mockUser = new Mock<ForumUserInfo>();
-            mockUser.Object.UserId = 1;
-            mockUser.Object.UserRoles = Globals.DefaultAnonRoles + "|-1;||";
-            mockUser.Object.UserInfo = new DotNetNuke.Entities.Users.UserInfo();
-            mockUser.Object.UserInfo.DisplayName = "Test User";
-            mockUser.Object.UserInfo.Profile = new DotNetNuke.Entities.Users.UserProfile();
-            mockUser.Object.UserInfo.Profile.PreferredLocale = "en-US";
+            var mockUserInfo = new Mock<DotNetNuke.Entities.Users.UserInfo>
+            {
+                Object =
+                {
+                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
+                    UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12,
+                    IsSuperUser = false,
+                    Profile = new DotNetNuke.Entities.Users.UserProfile()
+                    {
+                        PreferredLocale = "en-US",
+                    },
+                }
+            };
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+            {
+                Object =
+                {
+                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
+                    UserId = mockUserInfo.Object.UserID,
+                    UserInfo = mockUserInfo.Object,
+                },
+            };
 
             var expectedResult = DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.Forbidden;
 
@@ -85,20 +101,26 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
                 },
             };
 
-            var mockUser = new Mock<ForumUserInfo>
+            var mockUserInfo = new Mock<DotNetNuke.Entities.Users.UserInfo>
             {
                 Object =
                 {
-                    UserId = 1,
-                    UserRoles = Globals.DefaultAnonRoles + "|-1;||",
-                    UserInfo = new DotNetNuke.Entities.Users.UserInfo
+                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
+                    UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12,
+                    IsSuperUser = false,
+                    Profile = new DotNetNuke.Entities.Users.UserProfile()
                     {
-                        DisplayName = "Test User",
-                        Profile = new DotNetNuke.Entities.Users.UserProfile
-                        {
-                            PreferredLocale = "en-US",
-                        },
+                        PreferredLocale = "en-US",
                     },
+                }
+            };
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+            {
+                Object =
+                {
+                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
+                    UserId = mockUserInfo.Object.UserID,
+                    UserInfo = mockUserInfo.Object,
                 },
             };
 

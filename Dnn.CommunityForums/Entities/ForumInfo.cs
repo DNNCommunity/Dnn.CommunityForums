@@ -58,12 +58,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private List<PropertyInfo> properties;
         private string lastPostSubject;
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Entities.Portals.PortalSettings)")]
         public ForumInfo()
         {
-            this.PortalSettings = Utilities.GetPortalSettings(this.PortalId);
-            this.UpdateCache();
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Entities.Portals.PortalSettings)")]
         public ForumInfo(int portalId)
         {
             this.PortalId = portalId;
@@ -464,7 +464,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public bool GetIsMod(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
-            return (!(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, this.PortalId, this.ModuleId, "CanApprove"))));
+            return (!(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ModuleId, forumUser, "CanApprove"))));
         }
 
         [IgnoreColumn]
@@ -473,7 +473,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         internal DotNetNuke.Modules.ActiveForums.Enums.ForumStatus GetForumStatusForUser(ForumUserInfo forumUser)
         {
-            var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Security.View, forumUser?.UserRoles);
+            var canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.ViewRoleIds, forumUser?.UserRoleIds);
 
             if (!canView)
             {
@@ -789,7 +789,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.Security.View, accessingUser))
+            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.ViewRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleNameArray(this.PortalId, accessingUser.Roles)))
             {
                 return string.Empty;
             }
@@ -978,9 +978,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             accessingUser.UserID)),
                         format);
                 case "rsslink":
-                    return this.FeatureSettings.AllowRSS && Controllers.PermissionController.HasPerm(this.Security.Read,
-                            new Controllers.ForumUserController(this.ModuleId)
-                                .GetByUserId(accessingUser.PortalID, accessingUser.UserID).UserRoles)
+                    return this.FeatureSettings.AllowRSS && Controllers.PermissionController.HasRequiredPerm(this.Security.ReadRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleNameArray(this.PortalId, accessingUser.Roles))
                         ? PropertyAccess.FormatString(this.RssLink, format)
                         : string.Empty;
             }
