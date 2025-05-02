@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string text;
         private string navigateUrl;
         private string enabledRoles;
-        private string userRoles;
+        private string userPermSet;
         private bool authRequired;
         private int pageId;
         private string @params;
@@ -64,16 +64,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        public string UserRoles
+        public string UserPermSet
         {
             get
             {
-                return this.userRoles;
+                return this.userPermSet;
             }
 
             set
             {
-                this.userRoles = value;
+                this.userPermSet = value;
             }
         }
 
@@ -147,13 +147,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (!string.IsNullOrEmpty(this.EnabledRoles))
             {
-                if (string.IsNullOrEmpty(this.UserRoles))
+                if (string.IsNullOrEmpty(this.UserPermSet))
                 {
                     this.Visible = false;
                 }
                 else
                 {
-                    this.Visible = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(this.EnabledRoles, this.UserRoles);
+                    this.Visible = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(this.EnabledRoles, this.UserPermSet);
                 }
             }
 

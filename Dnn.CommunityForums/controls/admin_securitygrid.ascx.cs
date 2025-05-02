@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("<option value=\"\">[RESX:DropDownDefault]</option>");
             sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleAllUsers}\">{DotNetNuke.Common.Globals.glbRoleAllUsersName}</option>");
             sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleUnauthUser}\">{DotNetNuke.Common.Globals.glbRoleUnauthUserName}</option>");
-            foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(this.PortalId))
+            foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(this.PortalSettings))
             {
                 sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
             }
@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo> pl = new List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
 
-            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(this.PortalId, tmp);
+            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(this.PortalSettings, tmp);
             foreach (string key in nvc.AllKeys)
             {
                 DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
@@ -319,7 +319,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo s, int objectType)
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(this.PortalSettings, s, objectType);
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(this.PortalSettings, s, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), objectType.ToString()));
         }
 
         private void cbSecurityToggle_Callback(object sender, CallBackEventArgs e)
@@ -333,7 +333,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sOut = string.Empty;
             if (action == "delete")
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(this.ModuleId, secId, secType, pId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(this.ModuleId, secId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), secType.ToString()), pId);
             }
             else if (action == "addobject")
             {
@@ -359,18 +359,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (!string.IsNullOrEmpty(secId))
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, "View", secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, DotNetNuke.Modules.ActiveForums.SecureActions.View, secId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), secType.ToString()));
                 }
             }
             else
             {
                 if (action == "remove")
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(this.ModuleId, pId, key, secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(this.ModuleId, pId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), key), secId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), secType.ToString()));
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, key, secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), key), secId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), secType.ToString()));
                 }
 
                 sOut = action + "|" + returnId;

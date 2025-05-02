@@ -108,14 +108,20 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             {
                 Object =
                 {
-                    UserID = isAnonymous ? -1 : DotNetNuke.Tests.Utilities.Constants.UserID_User12,
-                    IsSuperUser = isSuperUser && !isAnonymous,
-                },
+                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
+                    UserID = isAnonymous ? DotNetNuke.Common.Utilities.Null.NullInteger : DotNetNuke.Tests.Utilities.Constants.UserID_User12,
+                    IsSuperUser = isSuperUser,
+                    Profile = new DotNetNuke.Entities.Users.UserProfile()
+                    {
+                        PreferredLocale = "en-US",
+                    },
+                }
             };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {
+                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
                     UserId = mockUserInfo.Object.UserID,
                     UserInfo = mockUserInfo.Object,
                 },

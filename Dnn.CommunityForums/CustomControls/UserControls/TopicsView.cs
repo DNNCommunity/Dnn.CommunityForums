@@ -191,8 +191,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             this.dtAnnounce = ds.Tables[4];
                         }
 
-                        this.bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanView"].ToString(), this.ForumUser.UserRoles);
-                        this.bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanSubscribe"].ToString(), this.ForumUser.UserRoles);
+                        this.bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanView"].ToString()), this.ForumUser.UserRoleIds);
+                        this.bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanSubscribe"].ToString()), this.ForumUser.UserRoleIds);
 
                         if (this.bView)
                         {
@@ -635,7 +635,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     stringBuilder.Replace("[AF:UI:MINIPAGER]", this.GetSubPages(this.TabId, topicInfo.ReplyCount, this.ForumId, topicInfo.TopicId));
                 }
 
-                sTopics += stringBuilder.ToString();
+                sTopics += Utilities.DecodeBrackets(stringBuilder.ToString());
                 rowcount += 1;
             }
 

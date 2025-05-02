@@ -48,27 +48,26 @@ namespace DotNetNuke.Modules.ActiveForums
     public class SubscriptionController
     {
         // TODO: move to new DAL2 subscription controller
-        public int Subscription_Update(int portalId, int moduleId, int forumId, int topicId, int mode, int userId, string userRoles = "")
+        internal int Subscription_Update(int portalId, int moduleId, int forumId, int topicId, int mode, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
-            if (userId == -1)
+            if (forumUser == null || forumUser.UserId == -1)
             {
                 return -1;
             }
 
-            if (string.IsNullOrEmpty(userRoles))
-            {
-                userRoles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId).UserRoles;
-            }
 
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId, moduleId, forumId, false, -1);
 
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, userRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(fi.Security.SubscribeRoleIds, forumUser.UserRoleIds))
             {
-                return Convert.ToInt32(DataProvider.Instance().Subscription_Update(portalId, moduleId, forumId, topicId, mode, userId));
+                return Convert.ToInt32(DataProvider.Instance().Subscription_Update(portalId, moduleId, forumId, topicId, mode, forumUser.UserId));
             }
 
             return -1;
         }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Subscription_Update(int portalId, int moduleId, int forumId, int topicId, int mode, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser).")]
+        public int Subscription_Update(int portalId, int moduleId, int forumId, int topicId, int mode, int userId, string userPermSet = "") => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Subscription_GetSubscribers(int portalId, int moduleId, int forumId, int topicId, SubscriptionTypes mode, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, string canSubscribe).")]
         public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(int portalId, int forumId, int topicId, SubscriptionTypes mode, int authorId, string canSubscribe) => throw new NotImplementedException();
@@ -94,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!sl.Contains(si))
                     {
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.Subscribe, forum.PortalId, forum.ModuleId, si.UserId))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security.SubscribeRoleIds, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(forum.ModuleId).GetByUserId(forum.PortalId, si.UserId).UserRoleIds))
                         {
                             sl.Add(si);
                         }
