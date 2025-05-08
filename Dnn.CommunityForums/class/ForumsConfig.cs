@@ -255,62 +255,59 @@ namespace DotNetNuke.Modules.ActiveForums
                 System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.DefaultTemplatePath));
             }
 
-            //////// TODO: This needs a rewrite to use direct SQL queries when upgrading v9
-            //////if (Globals.ModuleVersion < new Version(9, 0))
-            //////{
-            //////    var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath));
-            //////    System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
-            //////    foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
-            //////    {
-            //////        if (!System.IO.Directory.Exists(themeFolder.FullName + "/templates"))
-            //////        {
-            //////            System.IO.Directory.CreateDirectory(themeFolder.FullName + "/templates");
-            //////            TemplateController tc = new TemplateController();
-            //////            foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
-            //////            {
-            //////                /* during upgrade, explicitly (re-)load template text from database rather than Template_List API since API loads template using fallback/default logic and doesn't yet have the upgraded template text */
-            //////                /* if installing version 8.2 or greater, only convert these specific templates */
-            //////                if ((Globals.ModuleVersion < new Version(8, 2)) ||
-            //////                    ((templateInfo.TemplateType == Enums.TemplateType.ForumView) ||
-            //////                     (templateInfo.TemplateType == Enums.TemplateType.TopicView) ||
-            //////                     (templateInfo.TemplateType == Enums.TemplateType.TopicsView) ||
-            //////                     (templateInfo.TemplateType == Enums.TemplateType.TopicEditor) ||
-            //////                     (templateInfo.TemplateType == Enums.TemplateType.ProfileInfo) ||
-            //////                     (templateInfo.TemplateType == Enums.TemplateType.PostInfo) ||
-            //////                     (templateInfo.TemplateType == Enums.TemplateType.QuickReply)))
-            //////                {
-            //////                    IDataReader dr = DataProvider.Instance().Templates_Get(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId);
-            //////                    while (dr.Read())
-            //////                    {
-            //////                        try
-            //////                        {
-            //////                            /* convert only legacy html portion of the template and save without encoding */
-            //////                            string template = Convert.ToString(dr["Template"]).Replace("[TRESX:", "[RESX:");
-            //////                            if (template.Contains("<html>"))
-            //////                            {
-            //////                                string sHTML;
-            //////                                var xDoc = new System.Xml.XmlDocument();
-            //////                                xDoc.LoadXml(template);
-            //////                                System.Xml.XmlNode xNode;
-            //////                                System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-            //////                                xNode = xRoot.SelectSingleNode("/template/html");
-            //////                                sHTML = xNode.InnerText;
-            //////                                template = sHTML;
-            //////                            }
+            var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath));
+            System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
+            foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
+            {
+                if (!System.IO.Directory.Exists(themeFolder.FullName + "/templates"))
+                {
+                    System.IO.Directory.CreateDirectory(themeFolder.FullName + "/templates");
+                    TemplateController tc = new TemplateController();
+                    foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
+                    {
+                        /* during upgrade, explicitly (re-)load template text from database rather than Template_List API since API loads template using fallback/default logic and doesn't yet have the upgraded template text */
+                        /* if installing version 8.2 or greater, only convert specific templates */
+                        if ((Globals.ModuleVersion < new Version(8, 2)) ||
+                            ((templateInfo.TemplateType == Templates.TemplateTypes.ForumView) ||
+                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicView) ||
+                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicsView) ||
+                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicForm) ||
+                             (templateInfo.TemplateType == Templates.TemplateTypes.ReplyForm) ||
+                             (templateInfo.TemplateType == Templates.TemplateTypes.Profile) ||
+                             (templateInfo.TemplateType == Templates.TemplateTypes.PostInfo) ||
+                             (templateInfo.TemplateType == Templates.TemplateTypes.QuickReplyForm)))
+                        {
+                            IDataReader dr = DataProvider.Instance().Templates_Get(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId);
+                            while (dr.Read())
+                            {
+                                try
+                                {
+                                    /* convert only legacy html portion of the template and save without encoding */
+                                    string template = Convert.ToString(dr["Template"]).Replace("[TRESX:", "[RESX:");
+                                    if (template.Contains("<html>"))
+                                    {
+                                        string sHTML;
+                                        var xDoc = new System.Xml.XmlDocument();
+                                        xDoc.LoadXml(template);
+                                        System.Xml.XmlNode xNode;
+                                        System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                                        xNode = xRoot.SelectSingleNode("/template/html");
+                                        sHTML = xNode.InnerText;
+                                        template = sHTML;
+                                    }
 
-            //////                            templateInfo.Template = System.Net.WebUtility.HtmlDecode(template);
-            //////                            tc.Template_Save(templateInfo);
-            //////                        }
-            //////                        catch (Exception ex)
-            //////                        {
-            //////                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            //////                        }
-            //////                    }
-            //////                }
-            //////            }
-            //////        }
-            //////    }
-            //////}
+                                    templateInfo.Template = System.Net.WebUtility.HtmlDecode(template);
+                                    tc.Template_Save(templateInfo);
+                                }
+                                catch (Exception ex)
+                                {
+                                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         internal void ArchiveOrphanedAttachments()
@@ -553,31 +550,30 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         try
                         {
-                            //////// TODO: This needs a rewrite to use direct SQL queries when upgrading v9
-                            ////////TemplateController tc = new TemplateController();
-                            ////////foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
-                            ////////{
-                            ////////    if (templateInfo.TemplateType == Enums.TemplateType.Email)
-                            ////////    {
-                            ////////        try
-                            ////////        {
-                            ////////            var portalSettings = PortalSettings.Current;
-                            ////////            if (portalSettings == null)
-                            ////////            {
-                            ////////                portalSettings = Utilities.GetPortalSettings(portal.PortalId);
-                            ////////            }
+                            TemplateController tc = new TemplateController();
+                            foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
+                            {
+                                if (templateInfo.TemplateType == Templates.TemplateTypes.Email)
+                                {
+                                    try
+                                    {
+                                        var portalSettings = PortalSettings.Current;
+                                        if (portalSettings == null)
+                                        {
+                                            portalSettings = Utilities.GetPortalSettings(portal.PortalId);
+                                        }
 
-                            ////////            templateInfo.Subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(templateInfo.Subject), portalSettings, portalSettings.DefaultLanguage).ToString();
-                            ////////            tc.Template_Save(module.ModuleID, templateInfo);
-                            ////////            Settings.SaveSetting(module.ModuleID, $"M:{module.ModuleID}", ForumSettingKeys.EmailNotificationSubjectTemplate, templateInfo.Subject);
-                            ////////            DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
-                            ////////        }
-                            ////////        catch (Exception ex)
-                            ////////        {
-                            ////////            Logger.Error(ex.Message, ex);
-                            ////////            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                            ////////        }
-                            ////////    }
+                                        templateInfo.Subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(templateInfo.Subject), portalSettings, portalSettings.DefaultLanguage).ToString();
+                                        Settings.SaveSetting(module.ModuleID, $"M:{module.ModuleID}", ForumSettingKeys.EmailNotificationSubjectTemplate, templateInfo.Subject);
+                                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Logger.Error(ex.Message, ex);
+                                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                                    }
+                                }
+                            }
                         }
                         catch (Exception ex)
                         {

@@ -1633,4 +1633,10 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:Tips:AllowLikes].Text" xml:space="preserve">
     <value>Laat kijkers berichten en antwoorden op onderwerpen 'liken'.</value>
   </data>
+  <data name="[RESX:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Sjabloon Bestandsnaam Achtervoegsel</value>
+  </data>
+  <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Voer een tekenreeks in die moet worden gebruikt bij het ophalen van sjablonen. Als u bijvoorbeeld aparte sjabloonbestanden wilt hebben voor gemodereerde forums, voert u 'gemodereerd' in, waarna sjablonen worden opgehaald met 'gemodereerd' als onderdeel van de bestandsnaam, bijvoorbeeld 'TopicsView-moderated.ascx' in plaats van alleen 'TopicsView.ascx' wanneer het TopicsView-sjabloon wordt opgehaald.</value>
+  </data>
 </root>

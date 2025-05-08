@@ -1483,4 +1483,10 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:Tips:AllowLikes].Text" xml:space="preserve">
     <value>Permita que los espectadores le den "Me gusta" a las publicaciones y respuestas de los temas.</value>
   </data>
+  <data name="[RESX:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Sufijo de nombre de archivo de plantilla</value>
+  </data>
+  <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Introduzca una cadena que se utilizará al recuperar plantillas. Por ejemplo, si desea tener archivos de plantilla separados para foros moderados, escriba 'moderados' y luego las plantillas se recuperarán usando 'moderados' como parte del nombre del archivo, por ejemplo, 'TopicsView-moderated.ascx' en lugar de solo 'TopicsView.ascx' cuando se recupere la plantilla TopicsView.</value>
+  </data>
 </root>

@@ -1588,4 +1588,10 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:Tips:EmailSubjectTemplate].Text" xml:space="preserve">
     <value>Enter the template to be used as the subject line when sending notifications. The template can include tokens. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums) and review the wiki for documentation on tokens.</value>
   </data>
+  <data name="[RESX:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Template Filename Suffix</value>
+  </data>
+  <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Enter a string to be used when retrieving templates. For example, if you want to have separate template files for moderated forums, enter 'moderated', and then templates will be retrieved using 'moderated' as part of the filename, e.g. 'TopicsView-moderated.ascx' rather than just 'TopicsView.ascx' when the TopicsView template is retrieved.</value>
+  </data>
 </root>

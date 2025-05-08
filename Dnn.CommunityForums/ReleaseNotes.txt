@@ -23,63 +23,18 @@
         <blockquote class="dcf-oldnews">
 
             <h2 class="muy-importante">
-                Upgrading Through 8.0 & 8.1  (must read)
+                Upgrading to 9.0 if you have customized templates (must read)
             </h2>
             <p>
-                First, if you're upgrading from a version earlier than 8.0, you NEED to view the important release note FYI wiki articles below. 
+                First, if you're upgrading to version 9.0 AND you have customized templates, you NEED to view the important release note FYI wiki article below. 
             </p>
 
             <ul>
-                <li><a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Upgrading-to-Version-8.0" target="_blank">What to Know When Upgrading to Commmunity Forums 8.0</a></li>
-                <li><a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Upgrading-to-Version-8.1" target="_blank">What to Know When Upgrading to Commmunity Forums 8.1</a></li>
+                <li><a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Upgrading-to-Version-9.0" target="_blank">What to Know When Upgrading to Commmunity Forums 9.0</a></li>
             </ul>
 
         </blockquote>
 
-        <h3>New <strong>&quot;Legacy Token&quot; Replacement</strong></h3>
-        <p>
-            Tokens are used in various templates to insert content from a forum, topic, reply, etc.
-            into a page.
-            However, in previous versions, HTML was injected from code for certain tokens, which
-            made it impossible for a designer to tailor the HTML markup without customizing the
-            code.
-            DNN Community Forums 08.02.00 introduces new token replacement features that inject only
-            the data associated with the token, allowing the designer to create whatever HTML markup
-            is desired.
-            The community-default and community-bootstrap themes and templates have been updated to
-            include the markup that used to be generated in the module's code.
-            However, for installed sites that have other themes and templates, DNN Community Forums
-            08.02.00 will replace a legacy token--on-the-fly--with its modern replacement, including
-            the previously-injected markup.
-            <br />
-            <br />
-            For example, [GROUPNAME] will now be replaced by [FORUMGROUP:FORUMGROUPLINK|&lt;a
-            href="{0}" class="dcf-forumgroup-link"&gt;[FORUMGROUP:GROUPNAME]&lt;/a&gt;]
-            <br />
-            <br />
-            <b>
-                IMPORTANT! The legacy token replacement feature will be supported through version
-                10.00.00, and will then be removed.
-            </b>
-            <br /><br />
-            If you use your own themes and templates, please visit <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki"
-                                                                        target="_blank">our wiki</a> to
-            read more and see which legacy tokens are replaced by which updated tokens.
-
-        </p>
-
-
-        <h3>Removed <strong>Duplicated Templates</strong></h3>
-        <p>
-            In 08.00.00, template loading was enhanced to fallback/default from theme templates to
-            module default templates, making it no longer necessary to duplicate all templates into
-            a theme folder if not specifically customizing a template for a particular theme.
-            Several templates shipped with the community themes have been removed in 08.02.00 since
-            they
-            are the same as the defaults in /config/templates. If you have a custom theme and a
-            template has not been customized from the version shipped with DNN Community Forums,
-            the template can be removed from your custom theme if desired.
-        </p>
     </div>
     <hr />
     <div class="dnnClear">
@@ -89,11 +44,12 @@
         <hr />
 
         <h3>
-            08.02.08
+            09.00.00
         </h3>
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, 
-            <!--<a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>, and -->
+           <a href="https://github.com/nvsai" target="_blank">@nvsai</a>, 
+           <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>, and
             <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>.
         </p>
         <p>
