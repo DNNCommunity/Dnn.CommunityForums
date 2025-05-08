@@ -473,14 +473,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     ModuleId = this.ForumModuleId,
                     PortalId = this.PortalId,
-                    ContentId = Convert.ToInt32(drTopic["ContentId"]),
+                    ContentId = Convert.ToInt32(drTopic["TopicContentId"]),
                     ForumId = Convert.ToInt32(drTopic["ForumId"]),
                     Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Convert.ToInt32(drTopic["ForumId"]), this.ForumModuleId),
                     TopicId = Convert.ToInt32(drTopic["TopicId"]),
                     TopicType = (TopicTypes)Enum.Parse(typeof(TopicTypes), Convert.ToInt32(drTopic["TopicType"]).ToString()),
                     Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
                     {
-                        ContentId = Convert.ToInt32(drTopic["ContentId"]),
+                        ContentId = Convert.ToInt32(drTopic["TopicContentId"]),
                         ModuleId = this.ForumModuleId,
                         Subject = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Subject"])),
                         Summary = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Summary"])),
