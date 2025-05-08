@@ -467,6 +467,7 @@
         <component type="Cleanup" version="08.01.00" fileName="08.01.00.txt" />
         <component type="Cleanup" version="08.02.00" fileName="08.02.00.txt" />
         <component type="Cleanup" version="08.02.02" fileName="08.02.02.txt" />
+        <component type="Cleanup" version="09.00.00" fileName="09.00.00.txt" />
       </components>
     </package>
 
