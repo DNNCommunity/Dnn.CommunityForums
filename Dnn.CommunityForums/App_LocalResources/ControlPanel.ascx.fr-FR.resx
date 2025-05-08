@@ -1486,4 +1486,10 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:AllowLikes].Text" xml:space="preserve">
     <value>Permettez aux spectateurs d’aimer les publications et les réponses des sujets.</value>
   </data>
+  <data name="[RESX:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Suffixe du nom de fichier du modèle</value>
+  </data>
+  <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Entrez une chaîne à utiliser lors de la récupération des modèles. Par exemple, si vous souhaitez disposer de fichiers de modèle distincts pour les forums modérés, entrez « modéré », puis les modèles seront récupérés à l’aide de « modéré » dans le nom de fichier, par exemple « TopicsView-moderated.ascx » plutôt que simplement « TopicsView.ascx » lorsque le modèle TopicsView est récupéré.</value>
+  </data>
 </root>
