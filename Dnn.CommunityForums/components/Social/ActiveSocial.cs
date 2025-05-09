@@ -145,6 +145,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
+
         internal void AddReplyToJournal(int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, int userId, string uRL, string subject, string summary, string body, string readRoles, int socialGroupId)
         {
             try

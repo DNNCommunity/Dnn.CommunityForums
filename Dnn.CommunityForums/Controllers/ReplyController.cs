@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Modules.ActiveForums.Enums;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
@@ -226,9 +228,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             rc.Reply_Save(portalId, moduleId, reply);
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, forumId, topicId, replyId);
 
-            if (forum.FeatureSettings.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
+            if (forum.FeatureSettings.ModApproveNotify && reply.Author.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(forum.FeatureSettings.ModApproveTemplateId, portalId, moduleId, tabId, forumId, topicId, replyId, reply.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(TemplateType.ModApprove, tabId, forum, topicId, replyId, reply.Author);
             }
 
             DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forum.ForumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: reply.ContentId, authorId: reply.Content.AuthorId, userId: userId);

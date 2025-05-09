@@ -13,8 +13,8 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
       <IsPublishable>False</IsPublishable>
     </PropertyGroup>
-
     <ItemGroup>
+      <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
         <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
         <AdditionalFiles Include="..\.editorconfig" Link=".editorconfig" />
     </ItemGroup>

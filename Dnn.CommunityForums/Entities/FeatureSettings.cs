@@ -153,21 +153,30 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool IsModerated => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.IsModerated]);
 
         [IgnoreColumn]
+        public string TemplateFileNameSuffix => Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.TemplateFileNameSuffix], string.Empty);
+
+        [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int TopicsTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.TopicsTemplateId]);
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int TopicTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.TopicTemplateId]);
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int TopicFormId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.TopicFormId]);
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ReplyFormId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ReplyFormId]);
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int QuickReplyFormId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.QuickReplyFormId]);
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ProfileTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ProfileTemplateId]);
 
         [IgnoreColumn]
@@ -189,19 +198,39 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ModApproveTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModApproveTemplateId]);
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ModRejectTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModRejectTemplateId]);
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ModMoveTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModMoveTemplateId]);
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ModDeleteTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModDeleteTemplateId]);
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ModNotifyTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModNotifyTemplateId]);
+        
+        [IgnoreColumn]
+        public bool ModApproveNotify => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.ModApproveNotify]);
+
+        [IgnoreColumn]
+        public bool ModRejectNotify => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.ModRejectNotify]);
+
+        [IgnoreColumn]
+        public bool ModMoveNotify => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.ModMoveNotify]);
+
+        [IgnoreColumn]
+        public bool ModDeleteNotify => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.ModDeleteNotify]);
+
+        [IgnoreColumn]
+        public bool ModAlertNotify => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.ModAlertNotify]);
 
         [IgnoreColumn]
         public bool AllowTags => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.AllowTags]);
@@ -257,55 +286,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool EqualSettings(FeatureSettings other)
         {
-            return !(other is null) &&
-                   this.AllowAttach == other.AllowAttach &&
-                   this.AllowEmoticons == other.AllowEmoticons &&
-                   this.AllowHTML == other.AllowHTML &&
-                   this.AllowLikes == other.AllowLikes &&
-                   this.AllowPostIcon == other.AllowPostIcon &&
-                   this.AllowRSS == other.AllowRSS &&
-                   this.AllowScript == other.AllowScript &&
-                   this.AllowSubscribe == other.AllowSubscribe &&
-                   this.AttachCount == other.AttachCount &&
-                   this.AttachMaxSize == other.AttachMaxSize &&
-                   this.AttachTypeAllowed == other.AttachTypeAllowed &&
-                   this.AttachAllowBrowseSite == other.AttachAllowBrowseSite &&
-                   this.MaxAttachWidth == other.MaxAttachWidth &&
-                   this.MaxAttachHeight == other.MaxAttachHeight &&
-                   this.AttachInsertAllowed == other.AttachInsertAllowed &&
-                   this.ConvertingToJpegAllowed == other.ConvertingToJpegAllowed &&
-                   this.EditorHeight == other.EditorHeight &&
-                   this.EditorMobile == other.EditorMobile &&
-                   this.EditorType == other.EditorType &&
-                   this.EditorPermittedUsers == other.EditorPermittedUsers &&
-                   this.EditorWidth == other.EditorWidth &&
-                   this.EmailAddress == other.EmailAddress &&
-                   this.IndexContent == other.IndexContent &&
-                   this.IsModerated == other.IsModerated &&
-                   this.TopicsTemplateId == other.TopicsTemplateId &&
-                   this.TopicTemplateId == other.TopicTemplateId &&
-                   this.TopicFormId == other.TopicFormId &&
-                   this.ReplyFormId == other.ReplyFormId &&
-                   this.QuickReplyFormId == other.QuickReplyFormId &&
-                   this.ProfileTemplateId == other.ProfileTemplateId &&
-                   this.UseFilter == other.UseFilter &&
-                   this.AutoTrustLevel == other.AutoTrustLevel &&
-                   this.DefaultTrustValue == other.DefaultTrustValue &&
-                   this.ModApproveTemplateId == other.ModApproveTemplateId &&
-                   this.ModRejectTemplateId == other.ModRejectTemplateId &&
-                   this.ModMoveTemplateId == other.ModMoveTemplateId &&
-                   this.ModDeleteTemplateId == other.ModDeleteTemplateId &&
-                   this.ModNotifyTemplateId == other.ModNotifyTemplateId &&
-                   this.AllowTags == other.AllowTags &&
-                   this.AutoSubscribeEnabled == other.AutoSubscribeEnabled &&
-                   this.AutoSubscribeRoles == other.AutoSubscribeRoles &&
-                   this.AutoSubscribeNewTopicsOnly == other.AutoSubscribeNewTopicsOnly &&
-                   this.CreatePostCount == other.CreatePostCount &&
-                   this.ReplyPostCount == other.ReplyPostCount /*&&*/
-                   /*this.AttachMaxHeight == other.AttachMaxHeight &&*/
-                   /*this.AttachMaxWidth == other.AttachMaxWidth &&*/
-                   /*this.EditorStyle == other.EditorStyle &&*/
-                   /*this.EditorToolBar == other.EditorToolBar*/;
+            return !(other is null) && this.AllowAttach == other.AllowAttach && this.AllowEmoticons == other.AllowEmoticons && this.AllowHTML == other.AllowHTML && this.AllowLikes == other.AllowLikes && this.AllowPostIcon == other.AllowPostIcon && this.AllowRSS == other.AllowRSS && this.AllowScript == other.AllowScript && this.AllowSubscribe == other.AllowSubscribe && this.AttachCount == other.AttachCount && this.AttachMaxSize == other.AttachMaxSize && this.AttachTypeAllowed == other.AttachTypeAllowed && this.AttachAllowBrowseSite == other.AttachAllowBrowseSite && this.MaxAttachWidth == other.MaxAttachWidth && this.MaxAttachHeight == other.MaxAttachHeight && this.AttachInsertAllowed == other.AttachInsertAllowed && this.ConvertingToJpegAllowed == other.ConvertingToJpegAllowed && this.EditorHeight == other.EditorHeight && this.EditorMobile == other.EditorMobile && this.EditorType == other.EditorType && this.EditorPermittedUsers == other.EditorPermittedUsers && this.EditorWidth == other.EditorWidth && this.EmailAddress == other.EmailAddress && this.IndexContent == other.IndexContent && this.IsModerated == other.IsModerated && this.UseFilter == other.UseFilter && this.AutoTrustLevel == other.AutoTrustLevel && this.DefaultTrustValue == other.DefaultTrustValue && this.ModApproveNotify == other.ModApproveNotify && this.ModRejectNotify == other.ModRejectNotify && this.ModMoveNotify == other.ModMoveNotify && this.ModDeleteNotify == other.ModDeleteNotify && this.ModAlertNotify == other.ModAlertNotify && this.AllowTags == other.AllowTags && this.AutoSubscribeEnabled == other.AutoSubscribeEnabled && this.AutoSubscribeRoles == other.AutoSubscribeRoles && this.AutoSubscribeNewTopicsOnly == other.AutoSubscribeNewTopicsOnly && this.CreatePostCount == other.CreatePostCount && this.ReplyPostCount == other.ReplyPostCount;
         }
     }
 }

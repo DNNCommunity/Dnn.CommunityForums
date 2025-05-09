@@ -66,12 +66,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string template = string.Empty;
                 try
                 {
-                    int defaultTemplateId = this.MainSettings.ForumTemplateID;
-                    if (this.DefaultForumViewTemplateId >= 0)
-                    {
-                        defaultTemplateId = this.DefaultForumViewTemplateId;
-                    }
-
                     template = this.BuildForumView();
                 }
                 catch (Exception ex)
@@ -148,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-                string sTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ForumView", 0);
+                string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ForumView, SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
 
                 StringBuilder stringBuilder = new StringBuilder(sTemplate);
                 #region "Backward compatilbility -- remove in v10.00.00"

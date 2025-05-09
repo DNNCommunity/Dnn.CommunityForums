@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "Likes", -1);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.Likes, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
 
             try
             {

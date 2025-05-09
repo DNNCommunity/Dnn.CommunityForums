@@ -404,13 +404,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
 
             Controls.ControlPanel cpControls = new Controls.ControlPanel(this.PortalId, this.ModuleId);
-            sFile = sFile.Replace("[AF:CONTROLS:SELECTTOPICSTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.TopicsView));
-            sFile = sFile.Replace("[AF:CONTROLS:SELECTTOPICTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.TopicView));
-            sFile = sFile.Replace("[AF:CONTROLS:SELECTTOPICFORMTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.TopicForm));
-            sFile = sFile.Replace("[AF:CONTROLS:SELECTREPLYFORMTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.ReplyForm));
-            sFile = sFile.Replace("[AF:CONTROLS:SELECTPROFILETEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.Profile));
-            sFile = sFile.Replace("[AF:CONTROLS:SELECTEMAILTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.Email));
-            sFile = sFile.Replace("[AF:CONTROLS:SELECTMODEMAILTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.ModEmail));
             sFile = sFile.Replace("[AF:CONTROLS:GROUPFORUMS]", cpControls.ForumGroupOptions());
             sFile = sFile.Replace("[AF:CONTROLS:SECGRID:ROLES]", cpControls.BindRolesForSecurityGrid(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/")));
 

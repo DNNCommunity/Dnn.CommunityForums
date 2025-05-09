@@ -496,7 +496,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void PrepareTopic()
         {
-            string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicEditor", this.ForumInfo.FeatureSettings.TopicFormId);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicEditor, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
             if (this.isEdit)
             {
                 template = template.Replace("[RESX:CreateNewTopic]", "[RESX:EditingExistingTopic]");
@@ -530,7 +530,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
-            string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ReplyEditor", this.ForumInfo.FeatureSettings.ReplyFormId);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ReplyEditor, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
 
 #region "Backward compatilbility -- remove in v10.00.00"
             template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();

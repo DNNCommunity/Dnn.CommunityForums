@@ -93,14 +93,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 this.AppRelativeVirtualPath = "~/";
-                int defaultTemplateId = this.ForumInfo.FeatureSettings.TopicsTemplateId;
-                if (this.DefaultTopicsViewTemplateId >= 0)
-                {
-                    defaultTemplateId = this.DefaultTopicsViewTemplateId;
-                }
 
                 string topicsTemplate = string.Empty;
-                topicsTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicsView", defaultTemplateId);
+                topicsTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicsView, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
                 if (topicsTemplate.Contains("[NOTOOLBAR]"))
                 {
                     if (HttpContext.Current.Items.Contains("ShowToolbar"))
@@ -128,7 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (topicsTemplate.Contains("[DCF:TEMPLATE-TOPICACTIONS]"))
                 {
                     this.useListActions = true;
-                    topicsTemplate = topicsTemplate.Replace("[DCF:TEMPLATE-TOPICACTIONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicActions"));
+                    topicsTemplate = topicsTemplate.Replace("[DCF:TEMPLATE-TOPICACTIONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicActions, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix));
                 }
 
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(topicsTemplate)).ToString();

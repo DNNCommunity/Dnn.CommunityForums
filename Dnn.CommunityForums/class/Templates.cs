@@ -22,12 +22,11 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
 
-    #region Templates
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
     public class Templates
     {
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public enum TemplateTypes : int
         {
             All, // 0
@@ -45,249 +44,69 @@ namespace DotNetNuke.Modules.ActiveForums
         }
     }
 
-    #endregion
-    #region TemplateInfo
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
     public class TemplateInfo
     {
-        #region Private Members
-
-        #endregion
-        #region Public Properties
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int TemplateId { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int PortalId { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int ModuleId { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public Templates.TemplateTypes TemplateType { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public bool IsSystem { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string Subject { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string Title { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string Template { get; set; }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Template property.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string TemplateHTML { get; set; }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Template property.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string TemplateText { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public DateTime DateCreated { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public DateTime DateUpdated { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string FileName { get; set; }
 
-        #endregion
-
     }
 
-    #endregion
-    #region Template Controller
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
     public class TemplateController
     {
-        #region Public Methods
-        // '<summary>
-        // 'Function to save template.</summary>
-        // '<param name="info">TemplateInfo object</param>
-        public int Template_Save(TemplateInfo templateInfo)
-        {
-            // save updated template to database; will return TemplateId which is critical if new template
-            int templateId = Convert.ToInt32(DataProvider.Instance().Templates_Save(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId, (int)templateInfo.TemplateType, templateInfo.IsSystem, templateInfo.Title, templateInfo.Subject, templateInfo.Template));
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public int Template_Save(TemplateInfo templateInfo) => throw new NotImplementedException();
 
-            // retrieve the template from the database, which will return the filename but will also get the template text from the file which has not been updated yet
-            TemplateInfo TemplateInfo = this.Template_Get(templateId);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public List<TemplateInfo> Template_List(int portalId, int moduleId) => throw new NotImplementedException();
 
-            // override the template text with what is being saved
-            TemplateInfo.Template = templateInfo.Template;
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public List<TemplateInfo> Template_List(int portalId, int moduleId, Templates.TemplateTypes templateType) => throw new NotImplementedException();
 
-            // now save to the template file
-            try
-            {
-                string templatePathFileName = Globals.TemplatesPath + TemplateInfo.FileName;
-                if (templateInfo.ModuleId > 0)
-                {
-                    SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId);
-                    templatePathFileName = moduleSettings.TemplatePath + TemplateInfo.FileName;
-                    if (!System.IO.Directory.Exists(Utilities.MapPath(moduleSettings.TemplatePath)))
-                    {
-                        System.IO.Directory.CreateDirectory(Utilities.MapPath(moduleSettings.TemplatePath));
-                    }
-                }
-                else
-                {
-                    if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.TemplatesPath)))
-                    {
-                        System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.TemplatesPath));
-                    }
-                }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public void Template_Delete(int templateId, int portalId, int moduleId) => throw new NotImplementedException();
 
-                System.IO.File.WriteAllText(Utilities.MapPath(templatePathFileName), TemplateInfo.Template);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public TemplateInfo Template_Get(string templateName, int portalId, int moduleId) => throw new NotImplementedException();
 
-            return templateId;
-        }
-
-        public List<TemplateInfo> Template_List(int portalId, int moduleId)
-        {
-            return this.GetTemplateList(portalId, moduleId, Templates.TemplateTypes.All);
-        }
-
-        public List<TemplateInfo> Template_List(int portalId, int moduleId, Templates.TemplateTypes templateType)
-        {
-            return this.GetTemplateList(portalId, moduleId, templateType);
-        }
-
-        public void Template_Delete(int templateId, int portalId, int moduleId)
-        {
-            TemplateInfo templateInfo = this.Template_Get(templateId);
-            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId);
-            string templateFile = Utilities.MapPath(moduleSettings.TemplatePath + templateInfo.FileName);
-            try
-            {
-                if (System.IO.File.Exists(templateFile))
-                {
-                    System.IO.File.Delete(templateFile);
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-
-            DataProvider.Instance().Templates_Delete(templateId, portalId, moduleId);
-        }
-
-        public TemplateInfo Template_Get(string templateName, int portalId, int moduleId)
-        {
-            string templateFileName = string.Empty;
-            string templateFilePathFileName = string.Empty;
-            TemplateInfo ti = this.Template_List(portalId, moduleId).Where(t => t.Title.ToUpperInvariant() == templateName.ToUpperInvariant() && t.ModuleId == moduleId).FirstOrDefault();
-
-            if (ti != null && !string.IsNullOrEmpty(ti.FileName))
-            {
-                templateFileName = ti.FileName;
-            }
-            else
-            {
-                templateFileName = templateName;
-                ti = new TemplateInfo { PortalId = portalId, ModuleId = moduleId, FileName = templateName, Template = string.Empty };
-            }
-
-            templateFilePathFileName = Utilities.MapPath(SettingsBase.GetModuleSettings(moduleId).TemplatePath + templateFileName);
-            if (!System.IO.File.Exists(templateFilePathFileName))
-            {
-                templateFilePathFileName = Utilities.MapPath(Globals.TemplatesPath + templateFileName);
-                if (!System.IO.File.Exists(templateFilePathFileName))
-                {
-                    templateFilePathFileName = Utilities.MapPath(Globals.DefaultTemplatePath + templateFileName);
-                }
-            }
-
-            ti.Template = Utilities.GetFileContent(templateFilePathFileName).Replace("[TRESX:", "[RESX:");
-            return ti;
-        }
-
-        public TemplateInfo Template_Get(int templateId)
-        {
-            var ti = new TemplateInfo();
-            try
-            {
-                using (IDataReader dr = DataProvider.Instance().Templates_Get(templateId, -1, -1))
-                {
-                    while (dr.Read())
-                    {
-                        ti = FillTemplateInfo(dr);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-
-            return ti;
-        }
-        #endregion
-
-        #region Private Methods
-        private List<TemplateInfo> GetTemplateList(int portalId, int moduleId, Templates.TemplateTypes templateType)
-        {
-            var tl = new List<TemplateInfo>();
-            try
-            {
-                using (IDataReader dr = templateType == Templates.TemplateTypes.All ? DataProvider.Instance().Templates_List(portalId, moduleId, -1) : DataProvider.Instance().Templates_List(portalId, moduleId, (int)templateType))
-                {
-                    dr.Read();
-                    dr.NextResult();
-                    while (dr.Read())
-                    {
-                        TemplateInfo ti = FillTemplateInfo(dr);
-                        tl.Add(ti);
-                    }
-
-                    dr.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-
-            return tl;
-        }
-
-        private static TemplateInfo FillTemplateInfo(IDataReader dr)
-        {
-            try
-            {
-                var ti = new TemplateInfo
-                {
-                    TemplateId = Convert.ToInt32(dr["TemplateId"]),
-                    DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]),
-                    DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]),
-                    IsSystem = Convert.ToBoolean(dr["IsSystem"]),
-                    ModuleId = Convert.ToInt32(dr["ModuleID"]),
-                    PortalId = Convert.ToInt32(dr["PortalId"]),
-                    Subject = Convert.ToString(dr["Subject"]),
-                    Title = Convert.ToString(dr["Title"]),
-                    FileName = Convert.ToString(dr["FileName"]),
-                    TemplateType = (Templates.TemplateTypes)dr["TemplateType"],
-                };
-                SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
-                string templateFilePathFileName = Utilities.MapPath(moduleSettings.TemplatePath + ti.FileName);
-                if (!System.IO.File.Exists(templateFilePathFileName))
-                {
-                    templateFilePathFileName = Utilities.MapPath(Globals.TemplatesPath + ti.FileName);
-                    if (!System.IO.File.Exists(templateFilePathFileName))
-                    {
-                        templateFilePathFileName = Utilities.MapPath(Globals.DefaultTemplatePath + ti.FileName);
-                    }
-                }
-
-                ti.Template = Utilities.GetFileContent(templateFilePathFileName);
-                if (string.IsNullOrEmpty(ti.Template))
-                {
-                    ti.Template = Convert.ToString(dr["Template"]);
-                }
-
-                ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-                return ti;
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                return null;
-            }
-        }
-        #endregion
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public TemplateInfo Template_Get(int templateId) => throw new NotImplementedException();
     }
-    #endregion
 }

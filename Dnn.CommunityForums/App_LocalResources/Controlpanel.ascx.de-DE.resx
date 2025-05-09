@@ -1585,4 +1585,13 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:Tips:EmailSubjectTemplate].Text" xml:space="preserve">
     <value>Geben Sie die Vorlage ein, die beim Senden von Benachrichtigungen als Betreffzeile verwendet werden soll. Die Vorlage kann Token enthalten. Bitte besuchen Sie das Github-Repository der DNN-Community-Foren (https://github.com/DNNCommunity/Dnn.CommunityForums) und überprüfen Sie das Wiki auf Dokumentation zu Token.</value>
   </data>
+  <data name="[RESX:Tips:AllowLikes].Text" xml:space="preserve">
+    <value>Erlauben Sie Zuschauern, Themenbeiträge und -antworten mit "Gefällt mir" zu markieren.</value>
+  </data>
+  <data name="[RESX:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Vorlage Dateiname Suffix</value>
+  </data>
+  <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Geben Sie eine Zeichenfolge ein, die beim Abrufen von Vorlagen verwendet werden soll. Wenn Sie z. B. separate Vorlagendateien für moderierte Foren haben möchten, geben Sie "moderiert" ein, und dann werden die Vorlagen mit "moderiert" als Teil des Dateinamens abgerufen, z. B. "TopicsView-moderated.ascx" und nicht nur "TopicsView.ascx", wenn die TopicsView-Vorlage abgerufen wird.</value>
+  </data>
 </root>

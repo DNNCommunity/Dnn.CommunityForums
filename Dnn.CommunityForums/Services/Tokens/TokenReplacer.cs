@@ -151,11 +151,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             topicInfo.Forum.RawUrl = rawUrl;
             topicInfo.Forum.ForumGroup.RawUrl = rawUrl;
             topicInfo.RawUrl = rawUrl;
+            topicInfo.Author.ForumUser.RawUrl = rawUrl;
             forumUser.RawUrl = rawUrl;
             topicInfo.Forum.RequestUri = requestUri;
             topicInfo.Forum.ForumGroup.RequestUri = requestUri;
             topicInfo.RequestUri = requestUri;
-            topicInfo.Author.ForumUser.RawUrl = rawUrl;
             topicInfo.Author.ForumUser.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
@@ -240,6 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             likeInfo.Forum.RequestUri = requestUri;
             likeInfo.Forum.ForumGroup.RequestUri = requestUri;
             likeInfo.Topic.RequestUri = requestUri;
+            likeInfo.Topic.Author.ForumUser.RequestUri = requestUri;
             likeInfo.Author.ForumUser.RequestUri = requestUri;
             likeInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;

@@ -300,6 +300,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
+
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ForumGroupId);
 
         internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(this.ModuleId, this.GetCacheKey(), this);

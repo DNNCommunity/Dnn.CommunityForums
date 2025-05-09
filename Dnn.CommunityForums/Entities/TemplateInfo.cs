@@ -18,27 +18,17 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    using System;
-    using System.Text;
-    using System.Text.RegularExpressions;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Modules.ActiveForums.Enums;
-
-    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-    internal static class TemplateCache
+    public class TemplateInfo
     {
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static string GetCachedTemplate(int moduleId, string TemplateType, int TemplateId)
-        {
-            if (TemplateId < 1)
-            {
-                return DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, (Enums.TemplateType)Enum.Parse(typeof(Enums.TemplateType), TemplateType, true), string.Empty);
-            }
+        public int TemplateId { get; set; }
 
-            return DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, (DotNetNuke.Modules.ActiveForums.Enums.TemplateType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.Enums.TemplateType), TemplateId.ToString()), string.Empty);
-        }
+        public Enums.TemplateType TemplateType { get; set; }
+
+        public string Template { get; set; }
+
+        public string FileName { get; set; }
     }
 }

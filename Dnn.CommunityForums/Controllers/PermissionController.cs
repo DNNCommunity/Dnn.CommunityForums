@@ -558,6 +558,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
             }
+            
             return roleIds.Distinct().OrderBy(r => r).ToHashSet();
         }
 

@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : string.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
-                sToolbar = TemplateCache.GetCachedTemplate(forumModuleId, "ToolBar", 0);
+                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser, requestUri: requestUri, rawUrl: rawUrl);
                 if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
                 {
@@ -169,8 +169,8 @@ namespace DotNetNuke.Modules.ActiveForums
                    || forumUser.IsAnonymous
                    || forumUser.IsAdmin
                    || forumUser.IsSuperUser
-                   || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, forumUser.UserRoles), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
-                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, forumUser.UserRoles)
+                   || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.TrustRoleIds, forumUser.UserRoleIds), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.ModerateRoleIds, forumUser.UserRoleIds)
                    || (forumUser.DateLastPost == null)
                    || (forumUser.DateLastPost != null && DateTime.UtcNow.Subtract((DateTime)forumUser.DateLastPost).TotalSeconds > floodInterval)
                    || (forumUser.DateLastReply != null && DateTime.UtcNow.Subtract((DateTime)forumUser.DateLastReply).TotalSeconds > floodInterval);
@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums
                    || forumUser.IsAdmin
                    || forumUser.IsSuperUser
                    || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, forumUser.UserRoles), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
-                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, forumUser.UserRoles)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.ModerateRoleIds, forumUser.UserRoleIds)
                    || (postInfo?.Content?.DateCreated != null && DateTime.UtcNow.Subtract(postInfo.Content.DateCreated).TotalMinutes > editInterval);
         }
 
@@ -941,32 +941,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return sHTML;
-        }
-
-        internal static string GetFileContent(string filePath)
-        {
-            var sPath = filePath;
-            if (!sPath.Contains(@":\") && !sPath.Contains(@"\\"))
-            {
-                sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(sPath);
-            }
-
-            var sContents = string.Empty;
-            if (File.Exists(sPath))
-            {
-                try
-                {
-                    var objStreamReader = File.OpenText(sPath);
-                    sContents = objStreamReader.ReadToEnd();
-                    objStreamReader.Close();
-                }
-                catch (Exception exc)
-                {
-                    sContents = exc.Message;
-                }
-            }
-
-            return sContents;
         }
 
         internal static string GetUserFriendlyDateTimeString(DateTime datetime, int moduleId, UserInfo userInfo)

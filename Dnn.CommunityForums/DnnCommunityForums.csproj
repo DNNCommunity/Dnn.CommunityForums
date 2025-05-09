@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-
     <PropertyGroup>
+        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
         <AssemblyName>DotNetNuke.Modules.ActiveForums</AssemblyName>
         <OutputType>Library</OutputType>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -17,9 +17,20 @@
         <IncludeSymbols>False</IncludeSymbols>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <AnalysisLevel>latest</AnalysisLevel>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
+        <FileVersion>09.00.00.00</FileVersion>
+        <AssemblyVersion>09.00.00.00</AssemblyVersion>
+        <IncludeSymbols>False</IncludeSymbols>
+        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+        <AnalysisLevel>latest</AnalysisLevel>
         <FileVersion>09.00.00.00</FileVersion>
         <AssemblyVersion>09.00.00.00</AssemblyVersion>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
     </PropertyGroup>
@@ -35,9 +46,15 @@
         <None Remove="CustomControls\Views\**" />
         <None Remove="Legacy\**" />
         <None Remove="Properties\**" />
+        <None Remove="CustomControls\Resources\TextSuggest.js" />
+        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+        <None Remove="packages.config" />
+        <None Remove="CustomControls\Resources\TextSuggest.js" />
     </ItemGroup>
 
     <ItemGroup>
+        <EmbeddedResource Include="sql\FullTextInstallPart1.sql" />
+        <EmbeddedResource Include="sql\FullTextInstallPart2.sql" />
       <None Remove="CustomControls\Resources\TextSuggest.js" />
     </ItemGroup>
 
@@ -71,6 +88,7 @@
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     </ItemGroup>
 
+
     <ItemGroup>
         <Reference Include="System.Design" />
         <Reference Include="System.Web" />
@@ -84,11 +102,12 @@
         <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
         <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
     </ItemGroup>
-
+    
     <ItemGroup>
         <InternalsVisibleTo Include="DotNetNuke.Modules.ActiveForumsTests" /> <!-- [assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForums.Tests")] -->
         <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
     </ItemGroup>
+
 
     <Import Project="Module.build" />
 </Project>

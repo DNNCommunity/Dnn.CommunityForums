@@ -60,30 +60,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.LoadForumGroups(Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]));
                     }
 
-                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicsTemplate]) == null))
-                    {
-                        this.BindTemplates(Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]));
-                        this.drpTopicsTemplate.SelectedIndex = this.drpTopicsTemplate.Items.IndexOf(this.drpTopicsTemplate.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicsTemplate])));
-                    }
-
-                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumViewTemplate]) == null))
-                    {
-                        this.drpForumViewTemplate.SelectedIndex = this.drpForumViewTemplate.Items.IndexOf(this.drpForumViewTemplate.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumViewTemplate])));
-                    }
-
-                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicTemplate]) == null))
-                    {
-                        this.drpTopicTemplate.SelectedIndex = this.drpTopicTemplate.Items.IndexOf(this.drpTopicTemplate.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicTemplate])));
-                    }
-
                     if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumGroup]) == null))
                     {
                         this.drpForum.SelectedIndex = this.drpForum.Items.IndexOf(this.drpForum.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumGroup])));
                     }
 
-                    // If Not CType(Settings["AFEnableToolbar"], String) Is Nothing Then
-                    //    chkEnableToolbar.Checked = CType(Settings["AFEnableToolbar"], Boolean)
-                    // End If
                 }
             }
             catch (Exception exc)
@@ -99,9 +80,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 var objModules = new DotNetNuke.Entities.Modules.ModuleController();
 
                 // Update ModuleSettings
-                objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFTopicsTemplate, this.drpTopicsTemplate.SelectedItem.Value);
-                objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFTopicTemplate, this.drpTopicTemplate.SelectedItem.Value);
-                objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumViewTemplate, this.drpForumViewTemplate.SelectedItem.Value);
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumModuleId, this.drpForumInstance.SelectedItem.Value);
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumGroup, this.drpForum.SelectedItem.Value);
 
@@ -161,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public void LoadForumGroups(int forumModuleID)
         {
             this.drpForum.Items.Insert(0, new ListItem("-- Select a Group or Forum --", "-1"));
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(forumModuleID).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
 
             int i = 1;
             string groupName = string.Empty;
@@ -184,28 +162,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private void BindTemplates(int forumModuleID)
-        {
-            string sDefault = Utilities.GetSharedResource("[RESX:Default]", true);
-            this.BindTemplateDropDown(forumModuleID, this.drpTopicsTemplate, Templates.TemplateTypes.TopicsView, sDefault, "0");
-            this.BindTemplateDropDown(forumModuleID, this.drpTopicTemplate, Templates.TemplateTypes.TopicView, sDefault, "0");
-            this.BindTemplateDropDown(forumModuleID, this.drpForumViewTemplate, Templates.TemplateTypes.ForumView, sDefault, "0");
-        }
-
         private void drpForumInstance_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.BindTemplates(Convert.ToInt32(this.drpForumInstance.SelectedItem.Value));
             this.LoadForumGroups(Convert.ToInt32(this.drpForumInstance.SelectedItem.Value));
-        }
-
-        public void BindTemplateDropDown(int forumModuleId, DropDownList drp, Templates.TemplateTypes templateType, string defaultText, string defaultValue)
-        {
-            var tc = new TemplateController();
-            drp.DataTextField = "Title";
-            drp.DataValueField = "TemplateID";
-            drp.DataSource = tc.Template_List(this.PortalId, forumModuleId, templateType);
-            drp.DataBind();
-            drp.Items.Insert(0, new ListItem(defaultText, defaultValue));
         }
     }
 }

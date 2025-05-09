@@ -130,10 +130,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public int ForumTemplateID
-        {
-            get { return this.MainSettings.GetInt(SettingKeys.ForumTemplateId); }
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public int ForumTemplateID => throw new NotImplementedException();
 
         public DateTime InstallDate
         {
