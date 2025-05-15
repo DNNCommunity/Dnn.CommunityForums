@@ -396,7 +396,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     {
                         PreferredLocale = "en-US",
                     },
-                }
+                },
             };
             var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {

@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return this.authorizedForums ??
                        (this.authorizedForums =
-                       DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, this.Settings.Forums, this.CurrentUser.UserPermSet));
+                       DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, this.Settings.Forums, this.CurrentUser.UserRoleIds));
             }
         }
 
