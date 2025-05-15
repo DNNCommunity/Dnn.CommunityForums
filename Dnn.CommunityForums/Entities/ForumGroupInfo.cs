@@ -283,23 +283,23 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal int GetTabId()
         {
-            if (this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId)
+            if (this.PortalSettings.ActiveTab?.TabID == -1 || this.PortalSettings.ActiveTab?.TabID == this.PortalSettings.HomeTabId)
             {
-                if (!this.tabId.Equals(null))
+                if (this.tabId.HasValue)
                 {
                     return (int)this.tabId;
                 }
-                else
-                {
-                    return this.ModuleInfo.TabID;
-                }
-            }
-            else
-            {
-                return this.PortalSettings.ActiveTab.TabID;
-            }
-        }
 
+                return this.ModuleInfo.TabID;
+            }
+
+            if (this.PortalSettings.ActiveTab != null)
+            {
+                return (int)this.PortalSettings.ActiveTab.TabID;
+            }
+
+            return DotNetNuke.Common.Utilities.Null.NullInteger;
+        }
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ForumGroupId);
 

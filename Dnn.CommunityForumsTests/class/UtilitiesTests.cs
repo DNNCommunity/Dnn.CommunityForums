@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                     {
                         PreferredLocale = "en-US",
                     },
-                }
+                },
             };
             var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
@@ -194,14 +194,15 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             {
                 Object =
                 {
+                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
                     UserID = isAnonymous ? -1 : DotNetNuke.Tests.Utilities.Constants.UserID_User12,
                     IsSuperUser = isSuperUser && !isAnonymous,
                 },
-            };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
+            }; var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {
+                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
                     UserId = mockUserInfo.Object.UserID,
                     UserInfo = mockUserInfo.Object,
                 },

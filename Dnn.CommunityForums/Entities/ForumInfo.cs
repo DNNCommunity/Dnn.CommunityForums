@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
@@ -989,21 +991,22 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal int GetTabId()
         {
-            if (this.PortalSettings.ActiveTab.TabID == -1 || this.PortalSettings.ActiveTab.TabID == this.PortalSettings.HomeTabId)
+            if (this.PortalSettings.ActiveTab?.TabID == -1 || this.PortalSettings.ActiveTab?.TabID == this.PortalSettings.HomeTabId)
             {
-                if (!this.tabId.Equals(null))
+                if (this.tabId.HasValue)
                 {
                     return (int)this.tabId;
                 }
-                else
-                {
-                    return this.ModuleInfo.TabID;
-                }
+
+                return this.ModuleInfo.TabID;
             }
-            else
+
+            if (this.PortalSettings.ActiveTab != null)
             {
-                return this.PortalSettings.ActiveTab.TabID;
+                return (int)this.PortalSettings.ActiveTab.TabID;
             }
+
+            return DotNetNuke.Common.Utilities.Null.NullInteger;
         }
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ForumID);

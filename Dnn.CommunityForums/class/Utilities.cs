@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums
                    || forumUser == null
                    || forumUser.IsAdmin
                    || forumUser.IsSuperUser
-                   || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, forumUser.UserRoles), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
+                   || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.TrustRoleIds, forumUser.UserRoleIds), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
                    || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.ModerateRoleIds, forumUser.UserRoleIds)
                    || (postInfo?.Content?.DateCreated != null && DateTime.UtcNow.Subtract(postInfo.Content.DateCreated).TotalMinutes > editInterval);
         }
