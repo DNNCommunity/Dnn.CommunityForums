@@ -954,7 +954,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return sRoles;
         }
 
-        public static string CheckForumIdsForViewForRSS(int moduleId, string forumIds, string userPermSet)
+        public static string CheckForumIdsForViewForRSS(int moduleId, string forumIds, HashSet<int> userRoleIds)
         {
             string cacheKey = string.Format(CacheKeys.ViewRolesForForumList, moduleId, forumIds);
             string sForums = (string)DataCache.SettingsCacheRetrieve(moduleId, cacheKey);
@@ -966,7 +966,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     foreach (string forumId in forumIds.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
                     {
                         DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Convert.ToInt32(forumId), moduleId);
-                        if (forum.FeatureSettings.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security?.ViewRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(userPermSet)))
+                        if (forum.FeatureSettings.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security?.ViewRoleIds, userRoleIds))
                         {
                             sForums += forum.ForumID.ToString() + ":";
                         }

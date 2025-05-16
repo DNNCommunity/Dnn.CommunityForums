@@ -750,8 +750,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             /* not yet testable */
-            Assert.That(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.mockModule.Object.ModuleID, string.Empty, string.Empty), Is.EqualTo(string.Empty));
-            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.mockModule.Object.ModuleID, "1", "1;2;3|||"));
+            Assert.That(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.mockModule.Object.ModuleID, string.Empty, new HashSet<int>()), Is.EqualTo(string.Empty));
+            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.mockModule.Object.ModuleID, "1",  new HashSet<int>() { 1, 2, 3 }));
         }
 
         [Test]
