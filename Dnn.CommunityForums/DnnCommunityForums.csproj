@@ -8,61 +8,57 @@
         <TargetFramework>net472</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Title>DNN Community Forums</Title>
-        <Copyright>Copyright © DNN Community</Copyright>
-        <PackageProjectUrl>dnncommunity.org</PackageProjectUrl>
-        <Title>DNN Community Forums</Title>
         <Description>Discussion Forum Module for DNN</Description>
+        <Copyright>Copyright © DNN Community</Copyright>
         <Company>dnncommunity.org</Company>
         <Authors>dnncommunity.org</Authors>
+        <PackageProjectUrl>dnncommunity.org</PackageProjectUrl>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <IncludeSymbols>False</IncludeSymbols>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <AnalysisLevel>latest</AnalysisLevel>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
         <FileVersion>09.00.00.00</FileVersion>
         <AssemblyVersion>09.00.00.00</AssemblyVersion>
-        <IncludeSymbols>False</IncludeSymbols>
-        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-        <AnalysisLevel>latest</AnalysisLevel>
-        <FileVersion>09.00.00.00</FileVersion>
-        <AssemblyVersion>09.00.00.00</AssemblyVersion>
-        <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
     </PropertyGroup>
 
+    <!-- ===== Pre-build Cleanup ===== -->
     <ItemGroup>
         <Compile Remove="CustomControls\Views\**" />
-        <Compile Include="CustomControls\Views\ForumDisplay.cs" />
         <Compile Remove="Legacy\**" />
         <Compile Remove="Properties\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <EmbeddedResource Remove="CustomControls\Views\**" />
         <EmbeddedResource Remove="Legacy\**" />
         <EmbeddedResource Remove="Properties\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Remove="CustomControls\Views\**" />
         <None Remove="Legacy\**" />
         <None Remove="Properties\**" />
         <None Remove="CustomControls\Resources\TextSuggest.js" />
-        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-        <None Remove="packages.config" />
-        <None Remove="CustomControls\Resources\TextSuggest.js" />
+    </ItemGroup>
+
+    <!-- ===== Build Inputs ===== -->
+    <ItemGroup>
+        <Compile Include="CustomControls\Views\ForumDisplay.cs" />
     </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource Include="sql\FullTextInstallPart1.sql" />
         <EmbeddedResource Include="sql\FullTextInstallPart2.sql" />
-      <None Remove="CustomControls\Resources\TextSuggest.js" />
     </ItemGroup>
 
+    <!-- ===== Configuration & Style ===== -->
     <ItemGroup>
-        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
         <AdditionalFiles Include="..\.editorconfig" Link=".editorconfig" />
+        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
     </ItemGroup>
 
+    <!-- ===== NuGet Package References ===== -->
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0" />
         <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
@@ -70,45 +66,27 @@
         <PackageReference Include="DotNetNuke.Web.Client" Version="9.11.0" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
         <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.3.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
+        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" PrivateAssets="all" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
         <PackageReference Include="System.ComponentModel" Version="4.3.0" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     </ItemGroup>
 
-
+    <!-- ===== .NET Framework References ===== -->
     <ItemGroup>
         <Reference Include="System.Design" />
         <Reference Include="System.Web" />
         <Reference Include="System.Web.Extensions" />
         <Reference Include="System.Web.RegularExpressions " />
     </ItemGroup>
-    
-    <ItemGroup>
-        <Analyzer Include="..\packages\Microsoft.CodeAnalysis.NetAnalyzers.8.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll" />
-        <Analyzer Include="..\packages\Microsoft.CodeAnalysis.NetAnalyzers.8.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.NetAnalyzers.dll" />
-        <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-        <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-    </ItemGroup>
-    
-    <ItemGroup>
-        <InternalsVisibleTo Include="DotNetNuke.Modules.ActiveForumsTests" /> <!-- [assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForums.Tests")] -->
-        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
-    </ItemGroup>
 
+    <!-- ===== Internal Visibility for Tests ===== -->
+    <ItemGroup>
+        <InternalsVisibleTo Include="DotNetNuke.Modules.ActiveForumsTests" />
+        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+    </ItemGroup>
 
     <Import Project="Module.build" />
 </Project>
- 
