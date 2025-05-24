@@ -1139,7 +1139,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append(" return;};");
             sb.Append(" args.IsValid = true;};");
             this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "bodyval", sb.ToString(), true);
-            this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "ampost", "<script type=\"text/javascript\">function amPostback(){" + this.Page.ClientScript.GetPostBackEventReference(this.btnPost, string.Empty) + "};</script>", false);
+
+            // PostBack script for Submit button (btnPost)
+            string amPostbackScript = @"
+                <script type='text/javascript'>
+                    var isSubmitted = false;
+
+                    function amPostback() {
+                        if (isSubmitted) return; // Prevent double-click
+                        isSubmitted = true;      // Submit button has been clicked
+                        " + this.Page.ClientScript.GetPostBackEventReference(this.btnPost, string.Empty) + // __doPostBack('btnPost', '');
+                        @"
+                    }
+                </script>";
+            this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "ampost", amPostbackScript, false);
 
             this.btnPost.Click += this.btnPost_Click;
             this.btnSubmit.Click += this.btnSubmit_Click;
