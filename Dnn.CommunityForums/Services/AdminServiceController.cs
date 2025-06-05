@@ -163,8 +163,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             public string SecurityId { get; set; }
 
-            public int SecurityType { get; set; }
-
             public string SecurityAccessRequested { get; set; }
 
             public string ReturnId { get; set; }
@@ -177,28 +175,15 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 case "delete":
                     {
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(dto.ModuleId, dto.SecurityId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), dto.SecurityType.ToString()), dto.PermissionsId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(dto.ModuleId, dto.SecurityId, dto.PermissionsId);
                         return this.Request.CreateResponse(HttpStatusCode.OK);
                     }
 
                 case "addobject":
                     {
-                        if (dto.SecurityType == 1)
-                        {
-                            var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).GetByUserId(this.ActiveModule.PortalID, Convert.ToInt32(dto.SecurityId));
-                            dto.SecurityId = ui != null ? ui.UserId.ToString() : string.Empty;
-                        }
-                        else
-                        {
-                            if (dto.SecurityId.Contains(":"))
-                            {
-                                dto.SecurityType = 2;
-                            }
-                        }
-
                         if (!string.IsNullOrEmpty(dto.SecurityId))
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, DotNetNuke.Modules.ActiveForums.SecureActions.View, dto.SecurityId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), dto.SecurityType.ToString()));
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, DotNetNuke.Modules.ActiveForums.SecureActions.View, dto.SecurityId);
                         }
 
                         return this.Request.CreateResponse(HttpStatusCode.OK);
@@ -208,11 +193,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (dto.Action == "remove")
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(dto.ModuleId, dto.PermissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), dto.SecurityAccessRequested), dto.SecurityId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), dto.SecurityType.ToString()));
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(dto.ModuleId, dto.PermissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), dto.SecurityAccessRequested), dto.SecurityId);
                         }
                         else
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), dto.SecurityAccessRequested), dto.SecurityId, (DotNetNuke.Modules.ActiveForums.ObjectType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.ObjectType), dto.SecurityType.ToString()));
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), dto.SecurityAccessRequested), dto.SecurityId);
                         }
 
                         return this.Request.CreateResponse(HttpStatusCode.OK, dto.Action + "|" + dto.ReturnId);

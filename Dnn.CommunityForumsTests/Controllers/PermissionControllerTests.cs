@@ -1,4 +1,20 @@
-﻿// Copyright (c) by DNN Community
+﻿using NUnit.Framework;
+using DotNetNuke.Modules.ActiveForums.Controllers;
+
+namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
+{
+    [TestFixture()]
+    public class PermissionControllerTests
+    {
+        [Test()]
+        public void GetRoleIdsTest()
+        {
+            Assert.Fail();
+        }
+    }
+}
+
+// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -202,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetRoleIdsFromPermSetTest()
         {
             // Arrange
-            var permSet = "-1;3;4|;|";
+            var permSet = "-1;3;4";
             var expectedResult = new HashSet<int> { -1, 3, 4 };
 
             // Act
@@ -289,8 +305,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 
         // Permission set manipulation tests
         [Test]
-        [TestCase(arg1: "0;1;-3;-1;38;||", arg2: "0;1;-1;-3;38;||", ExpectedResult = true)]
-        [TestCase(arg1: "0;1;-1;-3;38;|||", arg2: "0;1;-1;-3;38;||", ExpectedResult = true)]
+        [TestCase(arg1: "0;1;-3;-1;38", arg2: "0;1;-1;-3;38;", ExpectedResult = true)]
+        [TestCase(arg1: "0;1;-1;-3;38;", arg2: "0;1;-1;-3;38;", ExpectedResult = true)]
         public bool SortPermissionSetMembersTest(string permSet, string expectedResults)
         {
             // Arrange
@@ -303,7 +319,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void AddPermToSetTest()
         {
             // Arrange
-            const string emptyPermissions = ";|||";
+            const string emptyPermissions = "";
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
             {
                 Object =
@@ -331,13 +347,12 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             };
 
             var permSet = mockPermissions.Object.View;
-            var objType = DotNetNuke.Modules.ActiveForums.ObjectType.RoleId;
             var objId = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators;
 
-            var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}";
+            var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators};{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}";
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(objId.ToString(), objType, permSet);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(objId.ToString(), permSet);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -347,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void RemovePermFromSetTest()
         {
             // Arrange
-            const string emptyPermissions = ";|||";
+            const string emptyPermissions = "";
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
             {
                 Object =
@@ -375,13 +390,12 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             };
 
             var permSet = mockPermissions.Object.View;
-            var objType = DotNetNuke.Modules.ActiveForums.ObjectType.RoleId;
             var objId = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators;
 
             var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}{emptyPermissions}";
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemovePermFromSet(objId.ToString(), objType, permSet);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemovePermFromSet(objId.ToString(), permSet);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -391,7 +405,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetPermSetForRequestedAccessTest()
         {
             // Arrange
-            const string emptyPermissions = ";|||";
+            const string emptyPermissions = "";
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
             {
                 Object =
@@ -441,7 +455,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void AddObjectToPermSetTest()
         {
             // Arrange
-            const string emptyPermissions = ";|||";
+            const string emptyPermissions = "";
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
             {
                 Object =
@@ -468,7 +482,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                 },
             };
             var requestedAction = mockPermissions.Object.View;
-            var objType = DotNetNuke.Modules.ActiveForums.ObjectType.RoleId;
             var objId = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators;
 
             var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
@@ -498,7 +511,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                 };
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(mockPermissions.Object, SecureActions.View, objId.ToString(), objType);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(mockPermissions.Object, SecureActions.View, objId.ToString());
 
             // Assert
             Assert.That(actualResult.EqualPermissions(expectedResult.Object), Is.True);
@@ -508,7 +521,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void RemoveObjectFromAllTest()
         {
             // Arrange
-            const string emptyPermissions = ";|||";
+            const string emptyPermissions = "";
             var registeredUsersRoleId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleId(portalSettings: DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings()).ToString();
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
             {
@@ -537,7 +550,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                 },
             };
 
-            var objType = DotNetNuke.Modules.ActiveForums.ObjectType.RoleId;
             var objId = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators;
 
             var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
@@ -568,7 +580,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                 };
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(mockPermissions.Object, objId.ToString(), objType);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(mockPermissions.Object, objId.ToString());
 
             // Assert
             Assert.That(actualResult.EqualPermissions(expectedResult.Object), Is.True);
@@ -579,7 +591,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetDefaultPermissionsTest()
         {
             // Arrange
-            const string emptyPermissions = ";|||";
+            const string emptyPermissions = "";
             var registeredUsersRoleId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredUsersRoleId(portalSettings: DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings()).ToString();
             var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
             {
@@ -620,7 +632,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetAdminPermissionsTest()
         {
             // Arrange
-            const string emptyPermissions = ";|||";
+            const string emptyPermissions = "";
             var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
             {
                 Object =
@@ -660,7 +672,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetEmptyPermissionsTest()
         {
             // Arrange
-            const string emptyPermissions = ";|||";
+            const string emptyPermissions = "";
             var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
             {
                 Object =
@@ -758,7 +770,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetSecureObjectListTest()
         {
             // Arrange
-            const string emptyPermissions = ";|||";
+            const string emptyPermissions = "";
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
             {
                 Object =
@@ -789,7 +801,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators};";
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockPermissions.Object, DotNetNuke.Modules.ActiveForums.ObjectType.RoleId);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockPermissions.Object);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -848,6 +860,60 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 
             // Act
             var actualResult = PermissionController.GetPortalRoleIds(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, roles);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void GetRoleIdsTest()
+        {
+            // Arrange
+            var roles = new HashSet<int>
+            {
+                DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers,
+                DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators,
+                Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser),
+                Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers),
+            };
+
+            var expectedResult = string.Join(";", new List<int>
+            {
+                DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers,
+                DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators,
+                Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser),
+                Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers),
+
+            }.OrderBy(r => r));
+
+            // Act
+            var actualResult = PermissionController.GetRoleIds(roles);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+        
+        [Test]
+        public void RemoveRoleIdFromRoleIdsTest()
+        {
+            // Arrange
+            var roles = new HashSet<int>
+            {
+                DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers,
+                DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators,
+                Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser),
+                Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers),
+            };
+
+            var expectedResult = new HashSet<int>
+            {
+                DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers,
+                Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser),
+                Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers),
+            };
+
+            // Act
+            var actualResult = PermissionController.RemoveRoleIdFromRoleIds(DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators, roles);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
