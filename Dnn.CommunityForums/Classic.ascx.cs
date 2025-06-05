@@ -58,6 +58,9 @@ namespace DotNetNuke.Modules.ActiveForums
             //ForumsConfig.Install_LikeNotificationType_080200();
             //ForumsConfig.Install_PinNotificationType_080200();
             //ForumsConfig.Sort_PermissionSets_080200();
+            //ForumsConfig.Upgrade_PermissionSets_090000();
+            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
+
 #endif
 
             try
