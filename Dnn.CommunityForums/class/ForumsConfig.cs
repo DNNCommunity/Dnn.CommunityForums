@@ -267,15 +267,16 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         /* during upgrade, explicitly (re-)load template text from database rather than Template_List API since API loads template using fallback/default logic and doesn't yet have the upgraded template text */
                         /* if installing version 8.2 or greater, only convert specific templates */
-                        if ((Globals.ModuleVersion < new Version(8, 2)) ||
-                            ((templateInfo.TemplateType == Templates.TemplateTypes.ForumView) ||
-                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicView) ||
-                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicsView) ||
-                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicForm) ||
-                             (templateInfo.TemplateType == Templates.TemplateTypes.ReplyForm) ||
-                             (templateInfo.TemplateType == Templates.TemplateTypes.Profile) ||
-                             (templateInfo.TemplateType == Templates.TemplateTypes.PostInfo) ||
-                             (templateInfo.TemplateType == Templates.TemplateTypes.QuickReplyForm)))
+                        if ((Globals.ModuleVersion < new Version(8, 2)) || 
+                            ((templateInfo.TemplateType == Templates.TemplateTypes.ForumView) || 
+                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicView) || 
+                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicsView) || 
+                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicForm) || 
+                             (templateInfo.TemplateType == Templates.TemplateTypes.ReplyForm) || 
+                             (templateInfo.TemplateType == Templates.TemplateTypes.Profile) || 
+                             (templateInfo.TemplateType == Templates.TemplateTypes.PostInfo) || 
+                             (templateInfo.TemplateType == Templates.TemplateTypes.QuickReplyForm))
+                            )
                         {
                             IDataReader dr = DataProvider.Instance().Templates_Get(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId);
                             while (dr.Read())
@@ -739,35 +740,34 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        // internal static void Sort_PermissionSets_080200()
-        // {
-        //    foreach (var perms in new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Get())
-        //    {
-        //        perms.Announce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Announce);
-        //        perms.Attach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Attach);
-        //        perms.Ban = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Ban);
-        //        perms.Block = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Block);
-        //        perms.Categorize = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Categorize);
-        //        perms.Create = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Create);
-        //        perms.Delete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Delete);
-        //        perms.Edit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Edit);
-        //        perms.Lock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Lock);
-        //        perms.Moderate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Moderate);
-        //        perms.Move = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Move);
-        //        perms.Pin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Pin);
-        //        perms.Poll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Poll);
-        //        perms.Prioritize = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Prioritize);
-        //        perms.Read = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Read);
-        //        perms.Reply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Reply);
-        //        perms.Split = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Split);
-        //        perms.Subscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Subscribe);
-        //        perms.Tag = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Tag);
-        //        perms.Trust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.Trust);
-        //        perms.View = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(perms.View);
-        //        new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
+        internal static void Upgrade_PermissionSets_090000()
+        {
+            foreach (var perms in new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Get())
+            {
+                perms.Announce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Announce).ToString();
+                perms.Attach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Attach).ToString();
+                perms.Ban = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Ban).ToString();
+                perms.Block = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Block).ToString();
+                perms.Categorize = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Categorize).ToString();
+                perms.Create = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Create).ToString();
+                perms.Delete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Delete).ToString();
+                perms.Edit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Edit).ToString();
+                perms.Lock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Lock).ToString();
+                perms.Moderate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Moderate).ToString();
+                perms.Move = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Move).ToString();
+                perms.Pin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Pin).ToString().ToString();
+                perms.Poll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Poll).ToString();
+                perms.Prioritize = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Prioritize).ToString();
+                perms.Read = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Read).ToString();
+                perms.Reply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Reply).ToString();
+                perms.Split = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Split).ToString();
+                perms.Subscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Subscribe).ToString();
+                perms.Tag = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Tag).ToString();
+                perms.Trust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.Trust).ToString();
+                perms.View = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(perms.View).ToString();
+                new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
 
-        // }
-
-        // }
+            }
+        }
     }
 }

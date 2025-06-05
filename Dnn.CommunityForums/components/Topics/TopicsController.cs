@@ -289,8 +289,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
                         ForumsConfig.Install_LikeNotificationType_080200();
                         ForumsConfig.Install_PinNotificationType_080200();
-
-                        // ForumsConfig.Sort_PermissionSets_080200();
                     }
                     catch (Exception ex)
                     {
@@ -304,6 +302,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
+                        ForumsConfig.Upgrade_PermissionSets_090000();
                     }
                     catch (Exception ex)
                     {
