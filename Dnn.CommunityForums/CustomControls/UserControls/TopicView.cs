@@ -210,7 +210,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (ds == null)
             {
                 ds = DotNetNuke.Modules.ActiveForums.DataProvider.Instance().UI_TopicView(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, this.UserId, this.rowIndex, this.pageSize, this.UserInfo.IsSuperUser, this.defaultSort);
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, cacheKey, ds);
+                // DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, cacheKey, ds);
+                // NOTE: Caching is disabled during testing to reproduce the duplicate tracking records issue
             }
 
             // Test for a proper dataset
