@@ -20,6 +20,7 @@
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
+        <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
         <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
     </PropertyGroup>
 
