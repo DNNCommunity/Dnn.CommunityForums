@@ -2,40 +2,31 @@
 <%@ Register TagPrefix="am" Namespace="DotNetNuke.Modules.ActiveForums.Controls" Assembly="DotNetNuke.Modules.ActiveForums" %>
 <script type="text/javascript">
     
-    function addObject(type){
+    function addObject(){
         currAction = 'addobject';
-        if (type == 0){
-            var ddlRole = document.getElementById("drpSecRoles");
-            var objectName = ddlRole.options[ddlRole.selectedIndex].text;
-            var objectId = ddlRole.options[ddlRole.selectedIndex].value;
-            if (objectId !=''){
-                ddlRole.selectedIndex = 0;
-                securityAddObject(<%=PermissionsId%>,objectId,objectName,0);
-            };
-
-        }else if (type == 1){
-            var objectName = document.getElementById("<%=txtUserName.ClientID%>").value;
-            if (objectName != ''){
-                securityAddObject(-1,objectName,objectName,1);
-
-            };
+        var ddlRole = document.getElementById("drpSecRoles");
+        var objectName = ddlRole.options[ddlRole.selectedIndex].text;
+        var objectId = ddlRole.options[ddlRole.selectedIndex].value;
+        if (objectId !=''){
+            ddlRole.selectedIndex = 0;
+            securityAddObject(<%=PermissionsId%>,objectId,objectName,0);
         };
-};
+    };
 
 var rebuild = false;
 
-function securityDelObject(obj,oid,otype,pid){
+function securityDelObject(obj,oid,pid){
     if(confirm('[RESX:Actions:DeleteConfirm]')){
         rebuild = true;
         af_showLoad();
-        securityCallback('delete', -1, pid, oid, '', otype, '', securityToggleComplete);
+        securityCallback('delete', -1, pid, oid, '', '', securityToggleComplete);
     };
 };
 
-function securityAddObject(pid,secId,secName,secType){
+function securityAddObject(pid,secId,secName){
     af_showLoad();
     selectedTab = 'divSecurity';
-    securityCallback('addobject', -1, pid, secId, secName, secType, '', securityToggleComplete);      
+    securityCallback('addobject', -1, pid, secId, secName, '', securityToggleComplete);      
     rebuild = true;
 };
 
@@ -64,13 +55,12 @@ function secGridComplete(){
     af_clearLoad();
 };
 
-function securityCallback(action, returnId, pid, secId,secName, secType, accessReq, callback) {
+function securityCallback(action, returnId, pid, secId,secName, accessReq, callback) {
     var data = {};
     data.ModuleId = <%=ModuleId%>;
     data.Action = action;
     data.PermissionsId = pid;
     data.SecurityId = secId;
-    data.SecurityType = secType;
     data.SecurityAccessRequested = accessReq;
     data.ReturnId = returnId;
     var sf = $.ServicesFramework(<%=ModuleId%>);
@@ -90,7 +80,7 @@ function securityCallback(action, returnId, pid, secId,secName, secType, accessR
     });
 };
 
-function securityToggle(obj,pid,secId,secName,secType,key) {
+function securityToggle(obj,pid,secId,secName,key) {
     var returnId = obj.id;
     var img = obj.firstChild;
     if (img.src == imgOn.src){
@@ -100,7 +90,7 @@ function securityToggle(obj,pid,secId,secName,secType,key) {
     };
     img.src = imgSpin.src;
     img.setAttribute('alt','Please Wait');
-    securityCallback(currAction, returnId, pid, secId, secName, secType, key, securityToggleComplete);           
+    securityCallback(currAction, returnId, pid, secId, secName, key, securityToggleComplete);           
 };
 
 </script>
@@ -123,27 +113,6 @@ function securityToggle(obj,pid,secId,secName,secType,key) {
                         </td>
                     </tr>
                 </table>
-            </td>
-            <!-- Note: this is an artifact from where there used to be user-specific security -- leaving this here for now  but setting display:none to remove ugly gap -->
-            <td style="display: none; width: 5%"></td>
-            <td style="display: none;" class="amroles" align="right">
-                <div style="display: none;">
-                    <table cellpadding="0" cellspacing="2">
-                        <tr>
-                            <td style="width: 12px;">
-                                <img id="Img44" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AddUser]');" onmouseout="amHideTip(this);" /></td>
-                            <td>[RESX:UserName]:</td>
-                            <td style="width: 150px;">
-                                <asp:TextBox ID="txtUserName" runat="server" CssClass="amcptxtbx" Width="150" /></td>
-                            <td style="width: 16px;">
-                                <div class="amcplnkbtn" style="width: 16px;" onclick="addObject(1);">
-                                    <img id="Img42" src="~/DesktopModules/ActiveForums/images/add.png" runat="server" alt="[RESX:AddUserName]" />
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
             </td>
         </tr>
     </table>
