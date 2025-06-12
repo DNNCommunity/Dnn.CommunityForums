@@ -19,7 +19,6 @@
         <AnalysisLevel>latest</AnalysisLevel>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
         <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
     </PropertyGroup>
 
