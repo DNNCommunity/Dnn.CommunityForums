@@ -17,7 +17,10 @@
     <div class="dnnClear">
         <h2 class="muy-importante">Important Upgrade Notes</h2>
         <p>
-            The release notes will follow, below these <b>important</b> notes.
+            <strong>VERY IMPORTANT:</strong>The MINIMUM DNN Platform version for this release is now <strong>DNN 9.11</strong>.
+            <br />
+            The release notes will follow, below this <b>important</b> note.
+
         </p>
 
         <blockquote class="dcf-oldnews">
@@ -47,10 +50,10 @@
             09.00.00
         </h3>
         <p>
-            <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, 
-           <a href="https://github.com/nvsai" target="_blank">@nvsai</a>, 
+            <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, and
+           <a href="https://github.com/nvsai" target="_blank">@nvsai</a><!--, 
            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>, and
-            <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>.
+            <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>-->.
         </p>
         <p>
             What's to follow are all of the relevant updates that have occurred during the development cycle of this release.
@@ -58,7 +61,12 @@
 
         <h4>New Features &amp; Enhancements</h4>
         <ul>
+              <li>NEW: Convention-based template names (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/477">Issue 477</a>)</li>
+              <li>NEW: Moderators can now see attachments on unapproved topics (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1386">Issue 1386</a>)</li>
+              
+              <!--
             <li>None at this time.</li>
+            -->
             <!--
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
@@ -67,8 +75,10 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>FIXED: Fatal Exception on Attempts to Load the Reply View When There are Unexpected Post Count in the Pager (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1333">Issue 1333</a>!)</li>
-            <li>FIXED: Topic Edit Preview Not Using Token Replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1369">Issue 1369</a>!)</li>
+            <li>FIXED: Unauthenticated users should not see direct-messaging icon (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1403">Issue 1403</a>)</li>
+            <li>FIXED: Brackets in content interfering with token replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1384">Issue 1384</a>)</li>
+            <li>FIXED: 'Edit' link in topics view loading latest reply rather than the originating topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1396">Issue 1396</a>)</li>
+            <li>FIXED: Scheduler item not correctly removed in 8.1 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1397">Issue 1397</a>)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
@@ -77,7 +87,19 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            <li>Release Prep: 08.02.08 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1372">Issue 1372</a>)</li>
+            <li>Remove template editor from control panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1354">Issue 1354</a>)</li>
+            <li>Refactor/modernize template caching and controller methods (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/465">Issue 465</a>)</li>
+            <li>Refactor/modernize permissions checking (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/950">Issue 950</a>)</li>
+            <li>Convert NTEXT database columns to NVARCHAR(MAX) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1184">Issue 1184</a>)</li>
+            <li>Update minimum DNN Platform dependency to 9.11 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1224">Issue 1224</a>)</li>
+            <li>Migrate csproj to SDK format (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1274">Issue 1274</a>)</li>
+            <li>Update third-party dependencies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1307">Issue 1307</a>)</li>
+            <li>Update code files to use explicit <emphasis>using</emphasis> statements (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1350">Issue 1350</a>)</li>
+            <li>Duplicated tags in csproj file (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1421">Issue 1421</a>)</li>
+            <li>Remove unused images (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1310">Issue 1310</a>)</li>
+            <li>Remove deprecated methods (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/377">Issue 377</a>)</li>
+            <li>Update wiki documentation for v8-v9 upgrade path for anyone using customized templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1352">Issue 1352</a>)</li>
+            <li>Release Prep: 09.00.00 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1423">Issue 1423</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
