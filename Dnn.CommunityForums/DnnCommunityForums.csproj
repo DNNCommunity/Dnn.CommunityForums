@@ -1,37 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
         <AssemblyName>DotNetNuke.Modules.ActiveForums</AssemblyName>
         <OutputType>Library</OutputType>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <TargetFramework>net472</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
-        <Title>DNN Community Forums</Title>
         <Copyright>Copyright © DNN Community</Copyright>
         <PackageProjectUrl>dnncommunity.org</PackageProjectUrl>
         <Title>DNN Community Forums</Title>
         <Description>Discussion Forum Module for DNN</Description>
         <Company>dnncommunity.org</Company>
         <Authors>dnncommunity.org</Authors>
-        <IncludeSymbols>False</IncludeSymbols>
-        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-        <AnalysisLevel>latest</AnalysisLevel>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
         <FileVersion>09.00.00.00</FileVersion>
         <AssemblyVersion>09.00.00.00</AssemblyVersion>
         <IncludeSymbols>False</IncludeSymbols>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <AnalysisLevel>latest</AnalysisLevel>
-        <FileVersion>09.00.00.00</FileVersion>
-        <AssemblyVersion>09.00.00.00</AssemblyVersion>
-        <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
         <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
     </PropertyGroup>
 
