@@ -1855,4 +1855,7 @@ Da
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Per gestire le notifiche dei forum, visita:</value>
   </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar aggiornato per l'utente {0}</value>
+  </data>
 </root>

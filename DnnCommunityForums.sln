@@ -36,6 +36,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_AutoApplyExistingTranslations = False
 		SolutionGuid = {DACD6BD0-773E-403D-A41B-38957EE5F01D}
 	EndGlobalSection
 EndGlobal

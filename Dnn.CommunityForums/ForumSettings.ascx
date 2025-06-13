@@ -112,6 +112,13 @@
 			<dnn:label ID="lblAvatarSize" runat="server" resourcekey="AvatarSize" Suffix=":" />
 			<ul class="afavatarform"><li><%=LocalizeString("Height")%>: <asp:TextBox ID="txtAvatarHeight" runat="server" Width="75" MaxLength="3" /></li><li><%=LocalizeString("Width")%>: <asp:TextBox ID="txtAvatarWidth" runat="server" Width="75" MaxLength="3" /></li></ul>
 		</div>
+        <div class="dnnFormItem">
+            <dnn:label id="lblAvatarRefreshType" runat="server" resourcekey="AvatarRefreshType" suffix=":" />
+            <asp:dropdownlist id="drpAvatarRefreshType" runat="server">
+                <asp:listitem value="DISABLED" resourcekey="AvatarRefreshDisabled" />
+                <asp:listitem value="GRAVATAR" resourcekey="AvatarRefreshGravatar" />
+            </asp:dropdownlist>
+        </div>
 		<div class="dnnFormItem">
 			<dnn:label ID="lblSignatures" runat="server" resourcekey="UserSignatures" Suffix=":" />
 			  <asp:DropDownList ID="drpSignatures" runat="server">
