@@ -96,6 +96,16 @@ namespace DotNetNuke.Modules.ActiveForums
             get { return this.MainSettings.GetInt(SettingKeys.AvatarWidth, 80); }
         }
 
+        public bool AvatarRefreshEnabled
+        {
+            get { return this.MainSettings.GetString(SettingKeys.AvatarRefresh) == Globals.AvatarRefreshGravatar; }
+        }
+        
+        public string AvatarRefreshType
+        {
+            get { return this.MainSettings.GetString(SettingKeys.AvatarRefresh); }
+        }
+
         public int AllowSignatures
         {
             get { return this.MainSettings.GetInt(SettingKeys.AllowSignatures); }

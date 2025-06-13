@@ -153,9 +153,6 @@
   <data name="[RESX:AutoTrustLevel].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Nivel de confianza automática</value>
   </data>
-  <data name="[RESX:AvatarDefault].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Avatar predeterminado habilitado</value>
-  </data>
   <data name="[RESX:AvatarDimensions].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Dimensiones del avatar</value>
   </data>
@@ -975,9 +972,6 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   </data>
   <data name="[RESX:Tips:AutoSubscribe].Text" xml:space="preserve" lastModified="2024-05-27 10:56:14">
     <value>Seleccione los roles que se suscribirán automáticamente y recibirán notificaciones por correo para el nuevo contenido publicado en este foro.</value>
-  </data>
-  <data name="[RESX:Tips:AvatarDefault].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Habilite esta opción para mostrar el avatar predeterminado del directorio de temas cuando un usuario aún no haya especificado un avatar.</value>
   </data>
   <data name="[RESX:Tips:AvatarDimensions].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Seleccione el alto y ancho máximos de los avatares</value>

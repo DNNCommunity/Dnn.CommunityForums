@@ -57,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
         Administrators,
     }
 
+    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
     public enum AvatarTypes
     {
         LocalFile,
@@ -149,6 +150,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ModuleImagesPath = Globals.ModulePath + "images/";
         public const string TemplatesPath = Globals.ModulePath + "templates/";
         public const string ThemesPath = Globals.ModulePath + "themes/";
+        
+        public const string AvatarRefreshGravatar = "GRAVATAR";
 
         public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
@@ -189,10 +192,14 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string UserNameDisplay = "USERNAMEDISPLAY";
         public const string DisableUserProfiles = "DISABLEUSERPROFILES";
         public const string ProfileTabId = "PROFILETABID";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string AllowAvatars = "ALLOWAVATARS";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string AllowAvatarLinks = "ALLOWAVATARLINKS";
+        public const string AvatarRefresh = "AVATARREFRESH";
         public const string AvatarHeight = "AVATARHEIGHT";
         public const string AvatarWidth = "AVATARWIDTH";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string AvatarDefault = "AVATARDEFAULT";
         public const string AllowSignatures = "ALLOWSIGNATURES";
         public const string StatsEnabled = "STATSENABLED";

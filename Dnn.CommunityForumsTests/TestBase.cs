@@ -376,8 +376,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         {
             this.MainSettings.Object.MainSettings = new Hashtable
             {
-                { SettingKeys.AllowAvatarLinks, true },
-                { SettingKeys.AllowAvatars, true },
+                { SettingKeys.AvatarRefresh, "DISABLED" },
                 { SettingKeys.AllowSignatures, true },
                 { SettingKeys.AllowSubscribe, true },
                 { SettingKeys.AnswerPointValue, 1 },

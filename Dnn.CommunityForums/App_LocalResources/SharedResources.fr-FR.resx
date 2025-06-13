@@ -1834,4 +1834,7 @@ De,
   <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
     <value>Date de publication</value>
   </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar actualisé pour le {0} utilisateur</value>
+  </data>
 </root>

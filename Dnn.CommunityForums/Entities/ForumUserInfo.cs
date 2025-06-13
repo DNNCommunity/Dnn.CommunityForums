@@ -101,6 +101,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string UserCaption { get; set; }
 
+        public DateTime? AvatarLastRefresh { get; set; }
+
+        public DateTime? AvatarSourceLastModified { get; set; }
+
+        public int? AvatarFileId { get; set; }
+
         [IgnoreColumn]
         public DateTime? DateCreated => this.UserInfo?.CreatedOnDate;
 
@@ -123,8 +129,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool AttachDisabled { get; set; }
 
+        [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string Avatar { get; set; }
 
+        [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public AvatarTypes AvatarType { get; set; }
 
         public bool AvatarDisabled { get; set; }

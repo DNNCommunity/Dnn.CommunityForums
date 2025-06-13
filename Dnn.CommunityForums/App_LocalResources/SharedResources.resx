@@ -1834,4 +1834,7 @@ From,
   <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
     <value>Post Date</value>
   </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar refreshed for user {0}</value>
+  </data>
 </root>
