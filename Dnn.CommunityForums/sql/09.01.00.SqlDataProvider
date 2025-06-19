@@ -1,0 +1,31 @@
+SET NOCOUNT ON 
+GO
+
+/* issue 792 begin -  activeforums_Forums -- remove columns no longer used */
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}activeforums_Forums_LastPostId]') AND type = 'D')
+ALTER TABLE {databaseOwner}{objectQualifier}activeforums_Forums DROP CONSTRAINT DF_{objectQualifier}activeforums_Forums_LastPostId
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostId' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostId
+GO 
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}activeforums_Forums_LastPostAuthorId]') AND type = 'D')
+ALTER TABLE {databaseOwner}{objectQualifier}activeforums_Forums DROP CONSTRAINT DF_{objectQualifier}activeforums_Forums_LastPostAuthorId
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostAuthorId' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostAuthorId
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostAuthorName' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostAuthorName
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostSubject' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostSubject
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostDate' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostDate
+GO 
+
+/* issue 792 end -  activeforums_Forums -- remove columns no longer used */
+
+/* --------------------- */
+
