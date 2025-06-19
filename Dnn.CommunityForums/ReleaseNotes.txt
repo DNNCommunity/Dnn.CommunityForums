@@ -98,6 +98,7 @@
             <li>Duplicated tags in csproj file (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1421">Issue 1421</a>)</li>
             <li>Remove unused images (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1310">Issue 1310</a>)</li>
             <li>Remove deprecated methods (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/377">Issue 377</a>)</li>
+            <li>Update MSBuild.Community.Tasks to 1.5.0.235 (no longer require .NET Framework 3.5/2.0 for build) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1418">Issue 1418</a>)</li>
             <li>Remove legacy Analyzer tags from project file (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1425">Issue 1425</a>)</li>
             <li>Update wiki documentation for v8-v9 upgrade path for anyone using customized templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1352">Issue 1352</a>)</li>
             <li>Release Prep: 09.00.00 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1423">Issue 1423</a>)</li>
