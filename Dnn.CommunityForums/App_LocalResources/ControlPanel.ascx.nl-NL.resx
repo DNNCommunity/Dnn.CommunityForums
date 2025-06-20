@@ -1063,10 +1063,7 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:System].Text" xml:space="preserve">
     <value>Systeem</value>
   </data>
-  <data name="[RESX:TagClicks].Text" xml:space="preserve">
-    <value>Kliks</value>
-  </data>
-  <data name="[RESX:TagItems].Text" xml:space="preserve">
+  <data name="[RESX:Items].Text" xml:space="preserve">
     <value>Items</value>
   </data>
   <data name="[RESX:TagName].Text" xml:space="preserve">

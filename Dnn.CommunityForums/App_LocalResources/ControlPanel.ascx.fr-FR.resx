@@ -916,10 +916,7 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:System].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Système</value>
   </data>
-  <data name="[RESX:TagClicks].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Clics</value>
-  </data>
-  <data name="[RESX:TagItems].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
+  <data name="[RESX:Items].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Articles</value>
   </data>
   <data name="[RESX:TagName].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">

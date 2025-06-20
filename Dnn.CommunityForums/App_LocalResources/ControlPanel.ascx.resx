@@ -777,10 +777,7 @@
   <data name="[RESX:RestoreDefaults].Text" xml:space="preserve">
     <value>Load Default Filters</value>
   </data>
-  <data name="[RESX:TagClicks].Text" xml:space="preserve">
-    <value>Clicks</value>
-  </data>
-  <data name="[RESX:TagItems].Text" xml:space="preserve">
+  <data name="[RESX:Items].Text" xml:space="preserve">
     <value>Items</value>
   </data>
   <data name="[RESX:TagName].Text" xml:space="preserve">

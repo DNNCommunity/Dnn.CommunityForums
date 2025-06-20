@@ -38,16 +38,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string TagName { get; set; }
 
-        public int Clicks { get; set; }
-
         public int Items { get; set; }
-
-        public int Priority { get; set; }
-
-        public bool IsCategory { get; set; } = false;  /* CategoryInfo is stored as TagInfo, but with IsCategory = true */
-
-        public int ForumId { get; set; }
-
-        public int ForumGroupId { get; set; }
     }
 }

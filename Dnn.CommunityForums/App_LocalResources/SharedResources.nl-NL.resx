@@ -699,9 +699,6 @@
   <data name="[RESX:PostIcons:Note].Text" xml:space="preserve">
     <value>Selecteer een icoon voor dit bericht om uw bericht te classificeren.</value>
   </data>
-  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>Een label is een sleutelwoord welke geassocieerd wordt met de inhoud van uw bericht.</value>
-  </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Labels</value>
   </data>
@@ -1885,9 +1882,6 @@ Van,
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Bedankt</value>
   </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Verzonden:</value>
-  </data>
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Om de meldingen van je forum te beheren, ga je naar:</value>
   </data>
@@ -1908,5 +1902,8 @@ Van,
   </data>
   <data name="[RESX:RestoreAll].Text" xml:space="preserve">
     <value>Alles herstellen</value>
+  </data>
+  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
+    <value>Een tag is een trefwoord of term die is gekoppeld aan de inhoud die u indient. Wanneer u meerdere tags invoert, scheidt u deze met een komma.</value>
   </data>
 </root>

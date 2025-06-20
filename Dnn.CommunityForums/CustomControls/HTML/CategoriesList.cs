@@ -25,170 +25,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class CategoriesList
     {
-        private int portalId = -1;
+        public int PortalId { get; set; } = -1;
 
-        public int PortalId
-        {
-            get
-            {
-                return this.portalId;
-            }
+        public int ModuleId { get; set; } = -1;
 
-            set
-            {
-                this.portalId = value;
-            }
-        }
+        public int TabId { get; set; } = -1;
 
-        private int moduleId = -1;
+        public int ForumId { get; set; } = -1;
 
-        public int ModuleId
-        {
-            get
-            {
-                return this.moduleId;
-            }
+        public int ForumGroupId { get; set; } = -1;
 
-            set
-            {
-                this.moduleId = value;
-            }
-        }
+        public string SelectedValues { get; set; } = string.Empty;
 
-        private int tabId = -1;
+        public string Template { get; set; } = string.Empty;
 
-        public int TabId
-        {
-            get
-            {
-                return this.tabId;
-            }
+        public string HeaderTemplate { get; set; } = string.Empty;
 
-            set
-            {
-                this.tabId = value;
-            }
-        }
+        public string FooterTemplate { get; set; } = string.Empty;
 
-        private int forumId = -1;
+        public int SelectedCategory { get; set; } = -1;
 
-        public int ForumId
-        {
-            get
-            {
-                return this.forumId;
-            }
-
-            set
-            {
-                this.forumId = value;
-            }
-        }
-
-        private int forumGroupId = -1;
-
-        public int ForumGroupId
-        {
-            get
-            {
-                return this.forumGroupId;
-            }
-
-            set
-            {
-                this.forumGroupId = value;
-            }
-        }
-
-        private string selectedValues = string.Empty;
-
-        public string SelectedValues
-        {
-            get
-            {
-                return this.selectedValues;
-            }
-
-            set
-            {
-                this.selectedValues = value;
-            }
-        }
-
-        private string template = string.Empty;
-
-        public string Template
-        {
-            get
-            {
-                return this.template;
-            }
-
-            set
-            {
-                this.template = value;
-            }
-        }
-
-        private string headerTemplate = string.Empty;
-
-        public string HeaderTemplate
-        {
-            get
-            {
-                return this.headerTemplate;
-            }
-
-            set
-            {
-                this.headerTemplate = value;
-            }
-        }
-
-        private string footerTemplate = string.Empty;
-
-        public string FooterTemplate
-        {
-            get
-            {
-                return this.footerTemplate;
-            }
-
-            set
-            {
-                this.footerTemplate = value;
-            }
-        }
-
-        private int selectedCategory = -1;
-
-        public int SelectedCategory
-        {
-            get
-            {
-                return this.selectedCategory;
-            }
-
-            set
-            {
-                this.selectedCategory = value;
-            }
-        }
-
-        private string cSSClass = "afn-category";
-
-        public string CSSClass
-        {
-            get
-            {
-                return this.cSSClass;
-            }
-
-            set
-            {
-                this.cSSClass = value;
-            }
-        }
+        public string CSSClass { get; set; } = "afn-category";
 
         public CategoriesList(int portalId, int moduleId)
         {
@@ -221,16 +78,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             ControlUtils cUtils = new ControlUtils();
-            using (IDataReader dr = DataProvider.Instance().Tags_List(this.PortalId, this.ModuleId, true, 0, 200, "ASC", "TagName", this.ForumId, this.ForumGroupId))
+            using (IDataReader dr = DataProvider.Instance().Categories_List(this.PortalId, this.ModuleId, 0, 200, "ASC", "CategoryName", this.ForumId, this.ForumGroupId))
             {
                 dr.NextResult();
                 while (dr.Read())
                 {
                     string tmp = this.Template;
-                    string categoryName = dr["TagName"].ToString();
-                    tmp = tmp.Replace("[CATEGORYURL]", cUtils.BuildUrl(this.PortalId, this.TabId, this.ModuleId, groupPrefix, forumPrefix, this.ForumGroupId, this.ForumId, -1, int.Parse(dr["TagId"].ToString()), Utilities.CleanName(categoryName), 1, -1, -1));
+                    string categoryName = dr["CategoryName"].ToString();
+                    tmp = tmp.Replace("[CATEGORYURL]", cUtils.BuildUrl(this.PortalId, this.TabId, this.ModuleId, groupPrefix, forumPrefix, this.ForumGroupId, this.ForumId, -1, int.Parse(dr["CategoryId"].ToString()), Utilities.CleanName(categoryName), 1, -1, -1));
                     tmp = tmp.Replace("[CATEGORYNAME]", categoryName);
-                    if (int.Parse(dr["TagId"].ToString()) == this.SelectedCategory)
+                    if (int.Parse(dr["CategoryId"].ToString()) == this.SelectedCategory)
                     {
                         tmp = tmp.Replace("[CSSCLASS]", this.CSSClass + "-selected");
                     }
@@ -258,21 +115,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             StringBuilder sb = new StringBuilder();
             string sSelected = string.Empty;
-            using (IDataReader dr = DataProvider.Instance().Tags_List(this.PortalId, this.ModuleId, true, 0, 200, "ASC", "TagName", this.ForumId, this.ForumGroupId))
+            using (IDataReader dr = DataProvider.Instance().Categories_List(this.PortalId, this.ModuleId, 0, 200, "ASC", "CategoryName", this.ForumId, this.ForumGroupId))
             {
                 dr.NextResult();
                 while (dr.Read())
                 {
                     sb.Append("<li>");
                     sb.Append("<input type=\"checkbox\"");
-                    if (this.IsSelected(Utilities.SafeConvertInt(dr["TagId"].ToString())))
+                    if (this.IsSelected(Utilities.SafeConvertInt(dr["CategoryId"].ToString())))
                     {
                         sb.Append(" checked=\"checked\" ");
-                        sSelected += dr["TagId"].ToString() + ";";
+                        sSelected += dr["CategoryId"].ToString() + ";";
                     }
 
-                    sb.Append(" onclick=\"amaf_catSelect(this);\" value=\"" + dr["TagId"].ToString() + "\" id=\"amaf_cat_" + dr["TagId"].ToString() + "\" />");
-                    sb.Append(dr["TagName"].ToString());
+                    sb.Append(" onclick=\"amaf_catSelect(this);\" value=\"" + dr["CategoryId"].ToString() + "\" id=\"amaf_cat_" + dr["CategoryId"].ToString() + "\" />");
+                    sb.Append(dr["CategoryName"].ToString());
                     sb.Append("</li>");
                 }
 
@@ -289,13 +146,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return sb.ToString();
         }
 
-        private bool IsSelected(int categoryId) /* Category is stored in Tag table with 'isCategory' = true */
+        private bool IsSelected(int categoryId)
         {
-            if (string.IsNullOrEmpty(this.SelectedValues))
-            {
-                return false;
-            }
-            else
+            if (!string.IsNullOrEmpty(this.SelectedValues))
             {
                 foreach (string s in this.SelectedValues.Split(';'))
                 {

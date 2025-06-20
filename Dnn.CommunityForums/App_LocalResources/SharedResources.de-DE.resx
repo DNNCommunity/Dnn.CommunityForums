@@ -1123,9 +1123,6 @@ Von
   <data name="[RESX:Summary].Text" xml:space="preserve">
     <value>Zusammenfassung</value>
   </data>
-  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>Ein Tag ist ein Schlüsselwort oder ein Begriff, der mit dem von Ihnen eingereichten Inhalt verknüpft ist.</value>
-  </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Tags</value>
   </data>
@@ -1850,9 +1847,6 @@ Von
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Vielen Dank</value>
   </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Verschickt:</value>
-  </data>
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Um Ihre Forenbenachrichtigungen zu verwalten, besuchen Sie bitte:</value>
   </data>
@@ -1873,5 +1867,8 @@ Von
   </data>
   <data name="[RESX:RestoreAll].Text" xml:space="preserve">
     <value>Alle wiederherstellen</value>
+  </data>
+  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
+    <value>Ein Tag ist ein Schlüsselwort oder ein Begriff, der mit dem Inhalt verknüpft ist, den Sie einreichen. Wenn Sie mehrere Tags eingeben, trennen Sie diese durch ein Komma.</value>
   </data>
 </root>

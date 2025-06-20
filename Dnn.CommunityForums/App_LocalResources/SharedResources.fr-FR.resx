@@ -1120,9 +1120,6 @@ De,
   <data name="[RESX:Summary].Text" xml:space="preserve">
     <value>Résumé</value>
   </data>
-  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>Une étiquette est un mot clé ou terme associé avec le contenu que vous soumettez</value>
-  </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Étiquettes</value>
   </data>
@@ -1846,9 +1843,6 @@ De,
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Merci</value>
   </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Publié:</value>
-  </data>
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Pour gérer les notifications de vos forums, rendez-vous sur :</value>
   </data>
@@ -1869,5 +1863,8 @@ De,
   </data>
   <data name="[RESX:RestoreAll].Text" xml:space="preserve">
     <value>Restaurer tout</value>
+  </data>
+  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
+    <value>Une balise est un mot-clé ou un terme associé au contenu que vous soumettez. Lorsque vous saisissez plusieurs balises, séparez-les par une virgule.</value>
   </data>
 </root>
