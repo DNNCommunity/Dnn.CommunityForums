@@ -1142,12 +1142,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // PostBack script for Submit button (btnPost)
             string amPostbackScript = @"
-                <script type='text/javascript'>
-                    let submitted = false;
+                <script>
+                    let dcnSubmitted = false;
 
                     function amPostback() {
-                        if (submitted) return; // Prevent double-click
-                        submitted = true;      // Submit button has been clicked
+                        if (dcnSubmitted) return; // Prevent double-click
+                        dcnSubmitted = true;      // Submit button has been clicked
                         " + this.Page.ClientScript.GetPostBackEventReference(this.btnPost, string.Empty) + // __doPostBack('btnPost', '');
                         @"
                     }
