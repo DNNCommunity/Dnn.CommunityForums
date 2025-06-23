@@ -736,7 +736,6 @@ function amaf_splitCancel() {
     amaf_splitButtons(false);
 };
 
-/* Uncomment this block for potential fix
 // Prevent double-clicks on topic and forum links, which can create duplicate tracking records
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.dcf-topic-link, .dcf-forum-link').forEach(link => {
@@ -745,4 +744,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-*/

@@ -22,15 +22,10 @@ BEGIN
 		    SET DateAdded = GETUTCDATE(), LastReplyId = @LastReplyId
 		    WHERE UserId = @UserId AND ForumId = @ForumID AND TopicId = @TopicId
     ELSE
-	BEGIN
-		-- Simulated latency to reproduce duplicate tracking record issue
-		WAITFOR DELAY '00:00:00:250'
-
 	    INSERT INTO {databaseOwner}{objectQualifier}activeforums_Topics_Tracking
 		    (ForumId, TopicId, LastReplyId, UserId,DateAdded)
 		    VALUES
 		    (@ForumId, @TopicId, @LastReplyId, @UserId, GETUTCDATE())
-	END
 END            
 
 IF  EXISTS(SELECT ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId) 
