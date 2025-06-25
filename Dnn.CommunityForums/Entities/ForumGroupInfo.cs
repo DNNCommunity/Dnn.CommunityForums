@@ -244,37 +244,45 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
 
             propertyName = propertyName.ToLowerInvariant();
-
-            switch (propertyName)
+            try
             {
-                case "themelocation":
-                    return PropertyAccess.FormatString(this.ThemeLocation.ToString(), format);
-                case "groupid":
-                case "forumgroupid":
-                    return PropertyAccess.FormatString(this.ForumGroupId.ToString(), format);
-                case "grouplink":
-                case "forumgrouplink":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
-                            this.PortalSettings.PortalId,
-                            this.GetTabId(),
-                            this.ModuleId,
-                            this.PrefixURL,
-                            string.Empty,
-                            this.ForumGroupId,
-                            -1,
-                            -1,
-                            -1,
-                            string.Empty,
-                            1,
-                            -1,
-                            -1),
-                        format);
-                case "forumgroupname":
-                case "groupname":
-                case "name":
-                    return PropertyAccess.FormatString(this.GroupName, format);
-                case "groupcollapse":
-                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{this.ForumGroupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")), format);
+                switch (propertyName)
+                {
+                    case "themelocation":
+                        return PropertyAccess.FormatString(this.ThemeLocation.ToString(), format);
+                    case "groupid":
+                    case "forumgroupid":
+                        return PropertyAccess.FormatString(this.ForumGroupId.ToString(), format);
+                    case "grouplink":
+                    case "forumgrouplink":
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
+                                this.PortalSettings.PortalId,
+                                this.GetTabId(),
+                                this.ModuleId,
+                                this.PrefixURL,
+                                string.Empty,
+                                this.ForumGroupId,
+                                -1,
+                                -1,
+                                -1,
+                                string.Empty,
+                                1,
+                                -1,
+                                -1),
+                            format);
+                    case "forumgroupname":
+                    case "groupname":
+                    case "name":
+                        return PropertyAccess.FormatString(this.GroupName, format);
+                    case "groupcollapse":
+                        return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{this.ForumGroupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")), format);
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(new ArgumentException(string.Format(Utilities.GetSharedResource("[RESX:TokenReplacementException]"), "ForumGroupInfo", this.ForumGroupId, propertyName, format)));
+                return string.Empty;
             }
 
             propertyNotFound = true;

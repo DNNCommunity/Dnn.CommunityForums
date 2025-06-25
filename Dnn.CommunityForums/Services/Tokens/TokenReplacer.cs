@@ -91,6 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
+
             /* this allows unit tests to complete */
             catch (System.ArgumentNullException)
             {
@@ -119,7 +120,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
@@ -179,7 +182,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
@@ -222,7 +227,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
@@ -283,7 +290,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
@@ -310,7 +319,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
@@ -327,7 +338,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
