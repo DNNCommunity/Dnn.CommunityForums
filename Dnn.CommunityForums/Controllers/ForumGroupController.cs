@@ -131,6 +131,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             // TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
             forumGroupInfo.ForumGroupId = DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Groups_Save(portalId, forumGroupInfo.ModuleId, forumGroupInfo.ForumGroupId, forumGroupInfo.GroupName, forumGroupInfo.SortOrder, forumGroupInfo.Active, forumGroupInfo.Hidden, forumGroupInfo.PermissionsId, forumGroupInfo.PrefixURL, forumGroupInfo.GroupSettingsKey);
+            /* refresh to get computed values such as SortOrder */
+            forumGroupInfo = this.GetById(forumGroupInfo.ForumGroupId, forumGroupInfo.ModuleId);
             if (string.IsNullOrEmpty(forumGroupInfo.GroupSettingsKey))
             {
                 forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";

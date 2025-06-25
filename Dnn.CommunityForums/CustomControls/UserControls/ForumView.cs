@@ -218,11 +218,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (this.Request.QueryString[ParamKeys.GroupId] != null)
                     {
-                        this.Forums = this.Forums.Where(f => f.ForumGroupId == Convert.ToInt32(this.Request.QueryString[ParamKeys.GroupId])).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList();
+                        this.Forums = this.Forums.Where(f => f.ForumGroupId == Convert.ToInt32(this.Request.QueryString[ParamKeys.GroupId])).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).ToList();
                     }
                     else
                     {
-                        this.Forums = this.Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList();
+                        this.Forums = this.Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).ToList();
                     }
 
                     string sGroupName = (this.ForumGroupId != -1 && this.Forums?.Count > 0) ? this.Forums?.FirstOrDefault().GroupName : string.Empty;
@@ -250,7 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     int tmpGroupCount = 0;
                     if (this.Forums != null)
                     {
-                        foreach (var fi in this.Forums.Where(f => !this.SubsOnly || f.ParentForumId > 0).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).Take(Globals.ForumCount))
+                        foreach (var fi in this.Forums.Where(f => !this.SubsOnly || f.ParentForumId > 0).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).Take(Globals.ForumCount))
                         {
                             fi.PortalSettings = this.PortalSettings;
                             fi.MainSettings = this.MainSettings;
