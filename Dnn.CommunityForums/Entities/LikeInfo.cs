@@ -155,102 +155,111 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
 
             propertyName = propertyName.ToLowerInvariant();
-            switch (propertyName)
+            try
             {
-                case "postid":
-                    return PropertyAccess.FormatString(this.PostId.ToString(), format);
-                case "replyid":
-                    return PropertyAccess.FormatString(this.PostId.ToString(), format);
-                case "topicid":
-                    return PropertyAccess.FormatString(this.TopicId.ToString(), format);
-                case "contentid":
-                    return PropertyAccess.FormatString(this.ContentId.ToString(), format);
-                case "forumid":
-                    return PropertyAccess.FormatString(this.ForumId.ToString(), format);
-                case "isliked":
-                    return !this.Forum.FeatureSettings.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.Content.Post.IsLikedByUser(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)) ? true.ToString() : string.Empty, format);
-                case "likecount":
-                    return !this.Forum.FeatureSettings.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.Content.Post.LikeCount.ToString(), format);
-                case "authorid":
-                    return PropertyAccess.FormatString(this.Content.AuthorId.ToString(), format);
-                case "authorname":
-                    return PropertyAccess.FormatString(this.Content.AuthorName, format);
-                case "authordisplaynamelink":
-                    {
-                        return PropertyAccess.FormatString(
-                            Controllers.ForumUserController.CanLinkToProfile(
+                switch (propertyName)
+                {
+                    case "postid":
+                        return PropertyAccess.FormatString(this.PostId.ToString(), format);
+                    case "replyid":
+                        return PropertyAccess.FormatString(this.PostId.ToString(), format);
+                    case "topicid":
+                        return PropertyAccess.FormatString(this.TopicId.ToString(), format);
+                    case "contentid":
+                        return PropertyAccess.FormatString(this.ContentId.ToString(), format);
+                    case "forumid":
+                        return PropertyAccess.FormatString(this.ForumId.ToString(), format);
+                    case "isliked":
+                        return !this.Forum.FeatureSettings.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.Content.Post.IsLikedByUser(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)) ? true.ToString() : string.Empty, format);
+                    case "likecount":
+                        return !this.Forum.FeatureSettings.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.Content.Post.LikeCount.ToString(), format);
+                    case "authorid":
+                        return PropertyAccess.FormatString(this.Content.AuthorId.ToString(), format);
+                    case "authorname":
+                        return PropertyAccess.FormatString(this.Content.AuthorName, format);
+                    case "authordisplaynamelink":
+                        {
+                            return PropertyAccess.FormatString(
+                                Controllers.ForumUserController.CanLinkToProfile(
+                                    this.Forum.PortalSettings,
+                                    this.Forum.MainSettings,
+                                    this.ModuleId,
+                                    new Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                        accessingUser.PortalID,
+                                        accessingUser.UserID),
+                                    this.Author.ForumUser)
+                                    ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
+                                        string.Empty,
+                                        $"userId={this.Content.AuthorId}")
+                                    : string.Empty,
+                                format);
+                        }
+
+                    case "authordisplayname":
+                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName :
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
                                 this.Forum.PortalSettings,
                                 this.Forum.MainSettings,
-                                this.ModuleId,
-                                new Controllers.ForumUserController(this.ModuleId).GetByUserId(
-                                    accessingUser.PortalID,
-                                    accessingUser.UserID),
-                                this.Author.ForumUser)
-                                ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
-                                    string.Empty,
-                                    $"userId={this.Content.AuthorId}")
-                                : string.Empty,
-                            format);
-                    }
+                                isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId),
+                                isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
+                                this.Author.AuthorId,
+                                this.Author.Username,
+                                this.Author.FirstName,
+                                this.Author.LastName,
+                                this.Author.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.Content.AuthorName), format);
+                    case "authorfirstname":
+                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.FirstName) ? this.Content.AuthorName : this.Author.FirstName, format);
+                    case "authorlastname":
+                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.LastName) ? this.Content.AuthorName : this.Author.LastName, format);
+                    case "authoremail":
+                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.Email) ? string.Empty : this.Author.Email, format);
+                    case "userid":
+                        return PropertyAccess.FormatString(this.UserId.ToString(), format);
+                    case "username":
+                        return PropertyAccess.FormatString(this.ForumUser.Username, format);
+                    case "userdisplaynamelink":
+                        {
+                            return PropertyAccess.FormatString(
+                                Controllers.ForumUserController.CanLinkToProfile(
+                                    this.Forum.PortalSettings,
+                                    this.Forum.MainSettings,
+                                    this.ModuleId,
+                                    new Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                        accessingUser.PortalID,
+                                        accessingUser.UserID),
+                                    this.ForumUser)
+                                    ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
+                                        string.Empty,
+                                        $"userId={this.UserId}")
+                                    : string.Empty,
+                                format);
+                        }
 
-                case "authordisplayname":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName :
-                        DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
-                            this.Forum.PortalSettings,
-                            this.Forum.MainSettings,
-                            isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId),
-                            isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
-                            this.Author.AuthorId,
-                            this.Author.Username,
-                            this.Author.FirstName,
-                            this.Author.LastName,
-                            this.Author.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.Content.AuthorName), format);
-                case "authorfirstname":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.FirstName) ? this.Content.AuthorName : this.Author.FirstName, format);
-                case "authorlastname":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.LastName) ? this.Content.AuthorName : this.Author.LastName, format);
-                case "authoremail":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.Email) ? string.Empty : this.Author.Email, format);
-                case "userid":
-                    return PropertyAccess.FormatString(this.UserId.ToString(), format);
-                case "username":
-                    return PropertyAccess.FormatString(this.ForumUser.Username, format);
-                case "userdisplaynamelink":
-                    {
-                        return PropertyAccess.FormatString(
-                            Controllers.ForumUserController.CanLinkToProfile(
+                    case "userdisplayname":
+                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.DisplayName) ? this.ForumUser.Username :
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
                                 this.Forum.PortalSettings,
                                 this.Forum.MainSettings,
-                                this.ModuleId,
-                                new Controllers.ForumUserController(this.ModuleId).GetByUserId(
-                                    accessingUser.PortalID,
-                                    accessingUser.UserID),
-                                this.ForumUser)
-                                ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
-                                    string.Empty,
-                                    $"userId={this.UserId}")
-                                : string.Empty,
-                            format);
-                    }
-
-                case "userdisplayname":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.DisplayName) ? this.ForumUser.Username :
-                        DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
-                            this.Forum.PortalSettings,
-                            this.Forum.MainSettings,
-                            isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId),
-                            isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
-                            this.ForumUser.UserId,
-                            this.ForumUser.Username,
-                            this.ForumUser.FirstName,
-                            this.ForumUser.LastName,
-                            this.ForumUser.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.ForumUser.Username), format);
-                case "userfirstname":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.FirstName) ? this.ForumUser.Username : this.ForumUser.FirstName, format);
-                case "userlastname":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.LastName) ? this.ForumUser.Username : this.ForumUser.LastName, format);
-                case "useremail":
-                    return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.Email) ? string.Empty : this.ForumUser.Email, format);
+                                isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId),
+                                isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
+                                this.ForumUser.UserId,
+                                this.ForumUser.Username,
+                                this.ForumUser.FirstName,
+                                this.ForumUser.LastName,
+                                this.ForumUser.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.ForumUser.Username), format);
+                    case "userfirstname":
+                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.FirstName) ? this.ForumUser.Username : this.ForumUser.FirstName, format);
+                    case "userlastname":
+                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.LastName) ? this.ForumUser.Username : this.ForumUser.LastName, format);
+                    case "useremail":
+                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.Email) ? string.Empty : this.ForumUser.Email, format);
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(new ArgumentException(string.Format(Utilities.GetSharedResource("[RESX:TokenReplacementException]"), "LikeInfo", this.Id, propertyName, format)));
+                return string.Empty;
             }
 
             propertyNotFound = true;

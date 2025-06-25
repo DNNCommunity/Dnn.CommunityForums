@@ -1,20 +1,4 @@
-﻿using NUnit.Framework;
-using DotNetNuke.Modules.ActiveForums.Controllers;
-
-namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
-{
-    [TestFixture()]
-    public class PermissionControllerTests
-    {
-        [Test()]
-        public void GetRoleIdsTest()
-        {
-            Assert.Fail();
-        }
-    }
-}
-
-// Copyright (c) by DNN Community
+﻿// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //

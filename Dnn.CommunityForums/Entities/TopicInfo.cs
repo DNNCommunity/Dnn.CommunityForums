@@ -589,7 +589,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
 
             propertyName = propertyName.ToLowerInvariant();
-            switch (propertyName)
+            try
+            {
+                switch (propertyName)
             {
                 case "postid":
                     return PropertyAccess.FormatString(this.PostId.ToString(), format);
@@ -1407,6 +1409,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                 case "actionmarkansweronclick": /* this applies only to replies not original topic */
                     return string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(new ArgumentException(string.Format(Utilities.GetSharedResource("[RESX:TokenReplacementException]"), "TopicInfo", this.TopicId, propertyName, format)));
+                return string.Empty;
             }
 
             propertyNotFound = true;

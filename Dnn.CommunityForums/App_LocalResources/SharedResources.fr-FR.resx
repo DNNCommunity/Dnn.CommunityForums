@@ -1834,4 +1834,7 @@ De,
   <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
     <value>Date de publication</value>
   </data>
+  <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
+    <value>Exception remplaçant le jeton sur l’entité : {0} id : {1} propriété du jeton : {2} format : {3}</value>
+  </data>
 </root>

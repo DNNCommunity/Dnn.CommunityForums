@@ -1838,4 +1838,7 @@ Von
   <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
     <value>Datum der Veröffentlichung</value>
   </data>
+  <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
+    <value>Ausnahme: Ersetzen des Tokens für Entität: {0}-ID: {1} Tokeneigenschaft: {2} Format: {3}</value>
+  </data>
 </root>
