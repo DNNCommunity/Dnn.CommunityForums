@@ -50,10 +50,16 @@
             09.00.00
         </h3>
         <p>
-            <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, and
-           <a href="https://github.com/nvsai" target="_blank">@nvsai</a><!--, 
-           <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>, and
-            <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>-->.
+            <b>THANK YOU</b> for all of the valuable contributions by 
+            <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, 
+            <a href="https://github.com/nvsai" target="_blank">@nvsai</a>, 
+            <a href="https://github.com/ernieblues" target="_blank">@nvsai</a>, and 
+            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>
+           
+               <!--, 
+               , and
+                <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>
+                -->.
         </p>
         <p>
             What's to follow are all of the relevant updates that have occurred during the development cycle of this release.
@@ -63,6 +69,8 @@
         <ul>
               <li>NEW: Convention-based template names (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/477">Issue 477</a>)</li>
               <li>NEW: Moderators can now see attachments on unapproved topics (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1386">Issue 1386</a>)</li>
+              <li>NEW: Avatar token can contain size, e.g., [FORUMAUTHOR:AVATAR:50] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/421">Issue 421</a>)</li>
+              <li>NEW: "Debounce" topic and forum links to prevent multiple clicks (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1027">Issue 1027</a>)</li>
               
               <!--
             <li>None at this time.</li>
@@ -79,6 +87,8 @@
             <li>FIXED: Brackets in content interfering with token replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1384">Issue 1384</a>)</li>
             <li>FIXED: 'Edit' link in topics view loading latest reply rather than the originating topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1396">Issue 1396</a>)</li>
             <li>FIXED: Scheduler item not correctly removed in 8.1 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1397">Issue 1397</a>)</li>
+            <li>FIXED: Submit button disabled after click to prevent duplicated posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1031">Issue 1031</a>)</li>
+            <li>FIXED: Improved token replacement causing page to not load if topic contains curly braces (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1435">Issue 1435</a>)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
@@ -101,7 +111,8 @@
             <li>Update MSBuild.Community.Tasks to 1.5.0.235 (no longer require .NET Framework 3.5/2.0 for build) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1418">Issue 1418</a>)</li>
             <li>Remove legacy Analyzer tags from project file (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1425">Issue 1425</a>)</li>
             <li>Update wiki documentation for v8-v9 upgrade path for anyone using customized templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1352">Issue 1352</a>)</li>
-            <li>Release Prep: 09.00.00 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1423">Issue 1423</a>)</li>
+            <li>09.00.00 RC1 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1423">Issue 1423</a>)</li>
+            <li>09.00.00 RC2 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1436">Issue 1436</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
