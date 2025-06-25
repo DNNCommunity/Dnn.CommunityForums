@@ -1837,6 +1837,9 @@ Da
   <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
     <value>Data di pubblicazione</value>
   </data>
+  <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
+    <value>Eccezione che sostituisce il token sull'entità: {0} id: {1} proprietà token: {2} formato: {3}</value>
+  </data>
   <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
     <value>Gravatar aggiornato per l'utente {0}</value>
   </data>

@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Avatars
         {
             try
             {
-                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId: moduleId).Get().Where(u => (u.PortalId == portalId && !u.AvatarDisabled) &&
+                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId: moduleId).Get().Where(u => (u.PortalId == portalId && !u.AvatarDisabled && !u.PrefBlockAvatars) &&
                                                                                                                                 ((string.IsNullOrEmpty(u.UserInfo.Profile.GetPropertyValue("Photo")) && !u.AvatarLastRefresh.HasValue) || /* anyone without an avatar who has never had their avatar refreshed */
                                                                                                                                  (u.AvatarLastRefresh.HasValue && DateTime.UtcNow.Subtract(u.AvatarLastRefresh.Value).TotalDays > 90))) /* or anyone whose avatar was last refreshed more than 90 days ago */
                                                                                                                                 .OrderByDescending(u => u.AvatarLastRefresh).Take(50).ToList();

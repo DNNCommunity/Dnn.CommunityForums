@@ -113,71 +113,80 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             }
 
             propertyName = propertyName.ToLowerInvariant();
-            switch (propertyName)
+            try
             {
-                case "loginlink":
-                    {
-                        // [DCF:LOGINLINK|Please <a href="{0}">login</a> to join the conversation.]
-                        return accessingUser.UserID < 0 ? PropertyAccess.FormatString(GetLoginUrl(), format) : string.Empty;
-                    }
+                switch (propertyName)
+                {
+                    case "loginlink":
+                        {
+                            // [DCF:LOGINLINK|Please <a href="{0}">login</a> to join the conversation.]
+                            return accessingUser.UserID < 0 ? PropertyAccess.FormatString(GetLoginUrl(), format) : string.Empty;
+                        }
 
-                case "loginpopuplink":
-                    {
-                        // [DCF:LOGINPOPUPLINK|Please <a href="[DCF:LOGINLINK]" onclick="return `{0}`;">login</a> to join the conversation|Please <a href="[DCF:LOGINLINK]">login</a> to join the conversation.].
-                        return accessingUser.UserID < 0 &&
-                               this.PortalSettings.EnablePopUps &&
-                               this.PortalSettings.LoginTabId == DotNetNuke.Common.Utilities.Null.NullInteger &&
-                               !AuthenticationController.HasSocialAuthenticationEnabled() ?
-                                    PropertyAccess.FormatString(DotNetNuke.Common.Utilities.UrlUtils.PopUpUrl(System.Net.WebUtility.UrlDecode(GetLoginUrl()), this.PortalSettings, true, false, 300, 650), format) :
-                                    string.Empty;
-                    }
+                    case "loginpopuplink":
+                        {
+                            // [DCF:LOGINPOPUPLINK|Please <a href="[DCF:LOGINLINK]" onclick="return `{0}`;">login</a> to join the conversation|Please <a href="[DCF:LOGINLINK]">login</a> to join the conversation.].
+                            return accessingUser.UserID < 0 &&
+                                   this.PortalSettings.EnablePopUps &&
+                                   this.PortalSettings.LoginTabId == DotNetNuke.Common.Utilities.Null.NullInteger &&
+                                   !AuthenticationController.HasSocialAuthenticationEnabled() ?
+                                        PropertyAccess.FormatString(DotNetNuke.Common.Utilities.UrlUtils.PopUpUrl(System.Net.WebUtility.UrlDecode(GetLoginUrl()), this.PortalSettings, true, false, 300, 650), format) :
+                                        string.Empty;
+                        }
 
-                case "toolbar-forums-onclick":
-                    return PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId), format);
-                case "toolbar-controlpanel-onclick":
-                    return accessingUser.IsSuperUser || accessingUser.IsAdmin ?
-                        PropertyAccess.FormatString(Utilities.NavigateURL(this.ForumTabId, "EDIT", $"mid={this.ForumModuleId}"), format) :
-                        string.Empty;
-                case "toolbar-moderate-onclick":
-                    return accessingUser.IsSuperUser || accessingUser.IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).GetIsMod(this.ModuleId) ?
-                        PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId, string.Empty, $"{ParamKeys.ViewType}={Views.ModerateTopics}"), format) :
-                        string.Empty;
-                case "toolbar-notread-onclick":
-                    return accessingUser.UserID >= 0 ?
-                        PropertyAccess.FormatString(
-                        new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.NotRead, 1, -1, -1),
-                        format) :
-                        string.Empty;
-                case "toolbar-mytopics-onclick":
-                    return accessingUser.UserID >= 0 ?
-                        PropertyAccess.FormatString(
-                            new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MyTopics, 1, -1, -1),
+                    case "toolbar-forums-onclick":
+                        return PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId), format);
+                    case "toolbar-controlpanel-onclick":
+                        return accessingUser.IsSuperUser || accessingUser.IsAdmin ?
+                            PropertyAccess.FormatString(Utilities.NavigateURL(this.ForumTabId, "EDIT", $"mid={this.ForumModuleId}"), format) :
+                            string.Empty;
+                    case "toolbar-moderate-onclick":
+                        return accessingUser.IsSuperUser || accessingUser.IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).GetIsMod(this.ModuleId) ?
+                            PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId, string.Empty, $"{ParamKeys.ViewType}={Views.ModerateTopics}"), format) :
+                            string.Empty;
+                    case "toolbar-notread-onclick":
+                        return accessingUser.UserID >= 0 ?
+                            PropertyAccess.FormatString(
+                            new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.NotRead, 1, -1, -1),
                             format) :
-                        string.Empty;
-                case "toolbar-mysettings-onclick":
-                    return accessingUser.UserID >= 0 ?
-                        PropertyAccess.FormatString(
-                        new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MySettings, 1, -1, -1),
-                        format) :
-                        string.Empty;
-                case "toolbar-mysubscriptions-onclick":
-                    return accessingUser.UserID >= 0 ?
-                        PropertyAccess.FormatString(
-                        new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MySubscriptions, 1, -1, -1),
-                        format) :
-                        string.Empty;
-                case "toolbar-unanswered-onclick":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Unanswered, 1, -1, -1), format);
-                case "toolbar-unresolved-onclick":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Unresolved, 1, -1, -1), format);
-                case "toolbar-announcements-onclick":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Announcements, 1, -1, -1), format);
-                case "toolbar-activetopics-onclick":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.ActiveTopics, 1, -1, -1), format);
-                case "toolbar-mostliked-onclick":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostLiked, 1, -1, -1), format);
-                case "toolbar-mostreplies-onclick":
-                    return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostReplies, 1, -1, -1), format);
+                            string.Empty;
+                    case "toolbar-mytopics-onclick":
+                        return accessingUser.UserID >= 0 ?
+                            PropertyAccess.FormatString(
+                                new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MyTopics, 1, -1, -1),
+                                format) :
+                            string.Empty;
+                    case "toolbar-mysettings-onclick":
+                        return accessingUser.UserID >= 0 ?
+                            PropertyAccess.FormatString(
+                            new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MySettings, 1, -1, -1),
+                            format) :
+                            string.Empty;
+                    case "toolbar-mysubscriptions-onclick":
+                        return accessingUser.UserID >= 0 ?
+                            PropertyAccess.FormatString(
+                            new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MySubscriptions, 1, -1, -1),
+                            format) :
+                            string.Empty;
+                    case "toolbar-unanswered-onclick":
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Unanswered, 1, -1, -1), format);
+                    case "toolbar-unresolved-onclick":
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Unresolved, 1, -1, -1), format);
+                    case "toolbar-announcements-onclick":
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Announcements, 1, -1, -1), format);
+                    case "toolbar-activetopics-onclick":
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.ActiveTopics, 1, -1, -1), format);
+                    case "toolbar-mostliked-onclick":
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostLiked, 1, -1, -1), format);
+                    case "toolbar-mostreplies-onclick":
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostReplies, 1, -1, -1), format);
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(new ArgumentException(string.Format(Utilities.GetSharedResource("[RESX:TokenReplacementException]"), "ForumsModuleTokenReplacer", "N/A", propertyName, format)));
+                return string.Empty;
             }
 
             propertyNotFound = true;

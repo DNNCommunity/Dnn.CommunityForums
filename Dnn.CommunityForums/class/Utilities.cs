@@ -564,12 +564,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string EncodeBrackets(string text)
         {
-            return text.Replace("[", "&#91;").Replace("]", "&#93;");
+            return text.Replace("[", "&#91;").Replace("]", "&#93;").Replace("{", "&#123;").Replace("}", "&#125;");
         }
 
         internal static string DecodeBrackets(string text)
         {
-            return text.Replace("&#91;", "[").Replace("&#93;", "]");
+            return text.Replace("&#91;", "[").Replace("&#93;", "]").Replace("&#123;", "{").Replace("&#125;", "}");
         }
 
         private static string CleanEditor(int portalId, string text, bool useFilter, int moduleId, string themePath, bool processEmoticons)

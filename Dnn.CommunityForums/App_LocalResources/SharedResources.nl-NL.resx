@@ -1873,6 +1873,9 @@ Van,
   <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
     <value>Publicatiedatum</value>
   </data>
+  <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
+    <value>Uitzondering ter vervanging van token op entiteit: {0} id: {1} eigenschap token: {2} indeling: {3}</value>
+  </data>
   <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
     <value>Gravatar vernieuwd voor {0} gebruiker</value>
   </data>

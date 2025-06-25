@@ -1834,6 +1834,9 @@ From,
   <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
     <value>Post Date</value>
   </data>
+  <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
+    <value>Exception replacing token on entity: {0} id: {1} token property: {2} format: {3}</value>
+  </data>
   <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
     <value>Gravatar refreshed for user {0}</value>
   </data>
