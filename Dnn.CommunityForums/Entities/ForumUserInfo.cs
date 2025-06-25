@@ -522,11 +522,32 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 format = tokenReplacer.ReplaceEmbeddedTokens(format);
             }
 
+            var length = DotNetNuke.Common.Utilities.Null.NullInteger;
+            if (propertyName.Contains(":"))
+            {
+                var splitPropertyName = propertyName.Split(':');
+                propertyName = splitPropertyName[0];
+                length = Utilities.SafeConvertInt(splitPropertyName[1], DotNetNuke.Common.Utilities.Null.NullInteger);
+            }
+
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {
                 case "avatar":
-                    return PropertyAccess.FormatString(!this.PrefBlockAvatars && !this.AvatarDisabled ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(this.UserId, this.MainSettings.AvatarWidth, this.MainSettings.AvatarHeight) : string.Empty, format);
+                    if (this.PrefBlockAvatars || this.AvatarDisabled)
+                    {
+                        return PropertyAccess.FormatString(string.Empty, format);
+                    }
+
+                    var height = this.MainSettings.AvatarHeight;
+                    var width = this.MainSettings.AvatarWidth;
+                    if (length > 0)
+                    {
+                        height = length;
+                        width = length;
+                    }
+
+                    return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(this.UserId, width, height), format);
                 case "usercaption":
                     return PropertyAccess.FormatString(this.UserCaption, format);
                 case "displayname":
