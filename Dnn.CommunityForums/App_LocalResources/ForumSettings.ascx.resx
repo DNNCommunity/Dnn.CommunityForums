@@ -495,4 +495,16 @@
   <data name="URLPrefixLikes.Help" xml:space="preserve">
     <value>This is the text that will be used as part of the URL to identify forum likes.</value>
   </data>
+  <data name="AvatarRefreshType.Text" xml:space="preserve">
+    <value>Refresh Avatars</value>
+  </data>
+  <data name="AvatarRefreshGravatar.Text" xml:space="preserve">
+    <value>Gravatar</value>
+  </data>
+  <data name="AvatarRefreshType.Help" xml:space="preserve">
+    <value>Periodically refreshes avatars using selected service</value>
+  </data>
+  <data name="AvatarRefreshDisabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
 </root>

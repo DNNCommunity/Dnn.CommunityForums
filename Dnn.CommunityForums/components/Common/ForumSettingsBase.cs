@@ -459,7 +459,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.UpdateModuleSettingCaseSensitive(SettingKeys.AvatarHeight, value.ToString());
             }
         }
-
+        
         public int AvatarWidth
         {
             get
@@ -470,6 +470,19 @@ namespace DotNetNuke.Modules.ActiveForums
             set
             {
                 this.UpdateModuleSettingCaseSensitive(SettingKeys.AvatarWidth, value.ToString());
+            }
+        }
+
+        public string AvatarRefresh
+        {
+            get
+            {
+                return this.Settings.GetString(SettingKeys.AvatarRefresh, Globals.AvatarRefreshGravatar);
+            }
+
+            set
+            {
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.AvatarRefresh, value.ToString());
             }
         }
 

@@ -390,4 +390,16 @@
   <data name="URLPrefixLikes.Help" xml:space="preserve">
     <value>Dit is de tekst die zal worden gebruikt als onderdeel van de URL om forum-likes te identificeren.</value>
   </data>
+  <data name="AvatarRefreshGravatar.Text" xml:space="preserve">
+    <value>Gravatar</value>
+  </data>
+  <data name="AvatarRefreshType.Text" xml:space="preserve">
+    <value>Avatars vernieuwen</value>
+  </data>
+  <data name="AvatarRefreshType.Help" xml:space="preserve">
+    <value>Vernieuwt periodiek avatars met behulp van de geselecteerde service</value>
+  </data>
+  <data name="AvatarRefreshDisabled.Text" xml:space="preserve">
+    <value>Uitgeschakeld</value>
+  </data>
 </root>

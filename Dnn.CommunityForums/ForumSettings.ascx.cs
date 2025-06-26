@@ -134,8 +134,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 Utilities.SelectListItemByValue(this.drpMode, this.Mode);
                 Utilities.SelectListItemByValue(this.drpThemes, this.Theme);
-
                 Utilities.SelectListItemByValue(this.rdAutoLinks, this.AutoLink);
+                Utilities.SelectListItemByValue(this.drpAvatarRefreshType, this.AvatarRefresh);
                 Utilities.SelectListItemByValue(this.drpDeleteBehavior, this.DeleteBehavior);
                 Utilities.SelectListItemByValue(this.drpProfileVisibility, this.ProfileVisibility);
                 Utilities.SelectListItemByValue(this.drpSignatures, this.Signatures);
@@ -198,6 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.ProfileVisibility = Utilities.SafeConvertInt(this.drpProfileVisibility.SelectedValue);
                 this.Signatures = Utilities.SafeConvertInt(this.drpSignatures.SelectedValue);
                 this.UserNameDisplay = this.drpUserDisplayMode.SelectedValue;
+                this.AvatarRefresh = this.drpAvatarRefreshType.SelectedValue;
                 this.FriendlyURLs = Utilities.SafeConvertBool(this.rdEnableURLRewriter.SelectedValue);
 
                 var urlSettings = new FriendlyUrlSettings(this.PortalId);

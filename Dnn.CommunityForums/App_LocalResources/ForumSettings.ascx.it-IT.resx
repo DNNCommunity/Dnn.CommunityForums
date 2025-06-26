@@ -390,4 +390,16 @@
   <data name="URLPrefixLikes.Help" xml:space="preserve">
     <value>Questo è il testo che verrà utilizzato come parte dell'URL per identificare i Mi piace del forum.</value>
   </data>
+  <data name="AvatarRefreshGravatar.Text" xml:space="preserve">
+    <value>Gravatar</value>
+  </data>
+  <data name="AvatarRefreshType.Text" xml:space="preserve">
+    <value>Aggiorna avatar</value>
+  </data>
+  <data name="AvatarRefreshType.Help" xml:space="preserve">
+    <value>Aggiorna periodicamente gli avatar utilizzando il servizio selezionato</value>
+  </data>
+  <data name="AvatarRefreshDisabled.Text" xml:space="preserve">
+    <value>Disabile</value>
+  </data>
 </root>

@@ -1837,4 +1837,7 @@ De,
   <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
     <value>Exception remplaçant le jeton sur l’entité : {0} id : {1} propriété du jeton : {2} format : {3}</value>
   </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar actualisé pour le {0} utilisateur</value>
+  </data>
 </root>

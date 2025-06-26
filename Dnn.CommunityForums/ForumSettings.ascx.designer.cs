@@ -33,6 +33,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drpAvatarRefreshType;
+        /// <summary>
+        /// drpForumGroupTemplate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpForumGroupTemplate;
         /// <summary>
         /// litForumSecurity control.

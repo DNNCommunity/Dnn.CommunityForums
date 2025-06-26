@@ -1841,4 +1841,7 @@ Von
   <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
     <value>Ausnahme: Ersetzen des Tokens für Entität: {0}-ID: {1} Tokeneigenschaft: {2} Format: {3}</value>
   </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar für Benutzer-{0} aktualisiert</value>
+  </data>
 </root>
