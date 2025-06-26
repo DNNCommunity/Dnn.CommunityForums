@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Avatars
                 {
                     foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
                     {
-                        if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant().Equals(Globals.ModuleName.ToLowerInvariant()))
+                        if (!module.IsDeleted && module.DesktopModule.ModuleName.Trim().ToLowerInvariant().Equals(Globals.ModuleName.ToLowerInvariant()))
                         {
                             if (ForumBase.GetModuleSettings(module.ModuleID).AvatarRefreshEnabled)
                             {
@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Avatars
                                 {
                                     var intQueueCount = RefreshGravatars(module.PortalID, module.ModuleID);
                                     this.ScheduleHistoryItem.Succeeded = true;
-                                    this.ScheduleHistoryItem.AddLogNote(string.Concat("Processed ", intQueueCount, " avatar refresh requests"));
+                                    this.ScheduleHistoryItem.AddLogNote($"Processed {intQueueCount} avatar refresh requests for {module.ModuleTitle} on portal {portal.PortalName}. ");
                                 }
                             }
                         }
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Avatars
         {
             try
             {
-                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId: moduleId).Get().Where(u => (u.PortalId == portalId && !u.AvatarDisabled && !u.PrefBlockAvatars) &&
+                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId: moduleId).Get().Where(u => (u.PortalId == portalId && !u.UserInfo.IsDeleted && !u.AvatarDisabled && !u.PrefBlockAvatars) &&
                                                                                                                                 ((string.IsNullOrEmpty(u.UserInfo.Profile.GetPropertyValue("Photo")) && !u.AvatarLastRefresh.HasValue) || /* anyone without an avatar who has never had their avatar refreshed */
                                                                                                                                  (u.AvatarLastRefresh.HasValue && DateTime.UtcNow.Subtract(u.AvatarLastRefresh.Value).TotalDays > 90))) /* or anyone whose avatar was last refreshed more than 90 days ago */
                                                                                                                                 .OrderByDescending(u => u.AvatarLastRefresh).Take(50).ToList();
@@ -164,7 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Avatars
 
                     DotNetNuke.Entities.Users.UserController.UpdateUser(portalId: portalId, user: forumUser.UserInfo, loggedAction: true);
 
-                    var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.SCHEDULER_EVENT_PROGRESSING.ToString() };
+                    var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
                     log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
                     var message = string.Format(Utilities.GetSharedResource("[RESX:GravatarRefreshed]"), forumUser.UserInfo.DisplayName);
                     log.AddProperty("Message", message);
