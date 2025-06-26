@@ -1,0 +1,116 @@
+SET NOCOUNT ON 
+GO
+
+/* issues 1434 - begin - duplicated forum and topic tracking */
+
+/* Drop indexes for forum and topic tracking tables to avoid duplicates -- note index prefix name change from idx_ to IX_ */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Forums_Tracking') AND name = N'idx_{objectQualifier}activeforums_Forums_Tracking_Opt1')
+DROP INDEX [idx_{objectQualifier}activeforums_Forums_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Forums_Tracking 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Forums_Tracking') AND name = N'IX_{objectQualifier}activeforums_Forums_Tracking_Opt1')
+DROP INDEX [IX_{objectQualifier}activeforums_Forums_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Forums_Tracking 
+GO
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tracking') AND name = N'idx_{objectQualifier}activeforums_Topics_Tracking_Opt1')
+DROP INDEX [idx_{objectQualifier}activeforums_Topics_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Topics_Tracking 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tracking') AND name = N'IX_{objectQualifier}activeforums_Topics_Tracking_Opt1')
+DROP INDEX [IX_{objectQualifier}activeforums_Topics_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Topics_Tracking 
+GO
+
+/* delete any duplicated tracking records for user/forum, keeping latest one */
+WITH ft_max AS (
+SELECT ft.ForumId, ft.UserId, MAX(TrackingId) AS TrackingId 
+FROM {databaseOwner}[{objectQualifier}activeforums_Forums_Tracking] ft 
+GROUP BY ft.ForumId, ft.UserId
+)
+, ft_multiples AS (
+SELECT ft.ForumId, ft.UserId, ft_max.TrackingId
+FROM {databaseOwner}[{objectQualifier}activeforums_Forums_Tracking] ft 
+LEFT OUTER JOIN ft_max
+ON ft_max.ForumId = ft.ForumId
+AND ft_max.UserId = ft.UserId
+GROUP BY ft.UserId, ft.ForumId, ft_max.TrackingId
+HAVING COUNT(*) > 1
+)
+
+DELETE ft 
+FROM {databaseOwner}[{objectQualifier}activeforums_Forums_Tracking] ft 
+INNER JOIN ft_max
+ON ft_max.ForumId = ft.ForumId
+AND ft_max.UserId = ft.UserId
+INNER JOIN ft_multiples
+ON ft_multiples.ForumId = ft_max.ForumId
+AND ft_multiples.UserId = ft_max.UserId
+
+WHERE ft.ForumId = ft_max.ForumId
+AND ft.UserId = ft_max.UserId
+AND ft.TrackingId < ft_max.TrackingId
+GO
+
+/* delete topic tracking records from incorrect (moved) forums */
+
+DELETE tt 
+FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking] tt 
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft
+ON ft.TopicId = tt.TopicId
+AND ft.ForumId = tt.ForumId
+WHERE ft.TopicId IS NULL
+GO
+
+/* delete any duplicated tracking records for user/topic, keeping latest one */
+WITH tt_max AS (
+SELECT tt.TopicId, tt.UserId, MAX(TrackingId) AS TrackingId 
+FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking] tt 
+GROUP BY tt.TopicId, tt.UserId
+)
+, tt_multiples AS (
+SELECT tt.TopicId, tt.UserId, tt_max.TrackingId
+FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking] tt 
+LEFT OUTER JOIN tt_max
+ON tt_max.TopicId = tt.TopicId
+AND tt_max.UserId = tt.UserId
+GROUP BY tt.UserId, tt.TopicId, tt_max.TrackingId
+HAVING COUNT(*) > 1
+)
+
+DELETE tt 
+FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking] tt 
+INNER JOIN tt_max
+ON tt_max.TopicId = tt.TopicId
+AND tt_max.UserId = tt.UserId
+INNER JOIN tt_multiples
+ON tt_multiples.TopicId = tt_max.TopicId
+AND tt_multiples.UserId = tt_max.UserId
+
+WHERE tt.TopicId = tt_max.TopicId
+AND tt.UserId = tt_max.UserId
+AND tt.TrackingId < tt_max.TrackingId
+GO
+
+/* create new indexes */
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Topics_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Topics_Tracking
+(
+	[UserId] ASC,
+	[TopicId] ASC
+)
+INCLUDE ( 
+[LastReplyId]
+) WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Forums_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Forums_Tracking
+(
+	[UserId] ASC,
+	[ForumId] ASC
+)
+INCLUDE ( 
+[MaxTopicRead],
+[MaxReplyRead]
+) WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+/* issues 1434 - end - duplicated forum and topic tracking */
+
+/* ---------------- */
