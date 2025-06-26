@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
             //ForumsConfig.Sort_PermissionSets_080200();
             //ForumsConfig.Upgrade_PermissionSets_090000();
             //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
-            DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();
+            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();
 
 
 #endif
