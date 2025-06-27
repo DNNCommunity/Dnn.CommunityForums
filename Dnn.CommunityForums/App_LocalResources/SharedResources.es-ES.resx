@@ -1840,4 +1840,13 @@ De
   <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
     <value>Excepción que reemplaza el token en la entidad: {0} id: {1} propiedad del token: {2} formato: {3}</value>
   </data>
+  <data name="[RESX:EmailNotificationGreeting].Text" xml:space="preserve">
+    <value>Se ha publicado un mensaje en un foro que está siguiendo.</value>
+  </data>
+  <data name="[RESX:EmailNotificationVisitLinkMessage].Text" xml:space="preserve">
+    <value>Para ver el hilo completo y la respuesta, visite:</value>
+  </data>
+  <data name="[RESX:ThankYou].Text" xml:space="preserve">
+    <value>Gracias</value>
+  </data>
 </root>

@@ -1837,4 +1837,13 @@ From,
   <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
     <value>Exception replacing token on entity: {0} id: {1} token property: {2} format: {3}</value>
   </data>
+  <data name="[RESX:EmailNotificationGreeting].Text" xml:space="preserve">
+    <value>A message was posted to a forum you are tracking.</value>
+  </data>
+  <data name="[RESX:EmailNotificationVisitLinkMessage].Text" xml:space="preserve">
+    <value>To view the complete thread and reply, please visit:</value>
+  </data>
+  <data name="[RESX:ThankYou].Text" xml:space="preserve">
+    <value>Thank you,</value>
+  </data>
 </root>

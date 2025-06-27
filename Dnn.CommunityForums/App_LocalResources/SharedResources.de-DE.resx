@@ -1841,4 +1841,13 @@ Von
   <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
     <value>Ausnahme: Ersetzen des Tokens für Entität: {0}-ID: {1} Tokeneigenschaft: {2} Format: {3}</value>
   </data>
+  <data name="[RESX:EmailNotificationGreeting].Text" xml:space="preserve">
+    <value>In einem Forum, das Sie verfolgen, wurde eine Nachricht gepostet.</value>
+  </data>
+  <data name="[RESX:EmailNotificationVisitLinkMessage].Text" xml:space="preserve">
+    <value>Um den vollständigen Thread und die Antwort zu sehen, besuchen Sie bitte:</value>
+  </data>
+  <data name="[RESX:ThankYou].Text" xml:space="preserve">
+    <value>Vielen Dank</value>
+  </data>
 </root>
