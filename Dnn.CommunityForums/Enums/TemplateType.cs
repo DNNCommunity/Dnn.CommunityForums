@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Enums
         TopicEditor,
         ReplyEditor,
         QuickReply,
-        Email,
+        SubscribedEmail,
         ProfileInfo,
         ModEmail,
         PostInfo,

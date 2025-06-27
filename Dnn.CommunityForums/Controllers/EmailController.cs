@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var navigationManager = (INavigationManager)new Services.URLNavigator().NavigationManager();
             DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = Utilities.GetPortalSettings(fi.PortalId);
             var lstSubscriptionInfo = subs;
-            var bodyTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, TemplateType.Email, fi.FeatureSettings.TemplateFileNameSuffix);
+            var bodyTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, TemplateType.SubscribedEmail, fi.FeatureSettings.TemplateFileNameSuffix);
             var subjectTemplate = !string.IsNullOrEmpty(fi.FeatureSettings.EmailNotificationSubjectTemplate) ?
                 fi.FeatureSettings.EmailNotificationSubjectTemplate :
                 (!string.IsNullOrEmpty(fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate) ?
