@@ -1885,4 +1885,7 @@ Van,
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Bedankt</value>
   </data>
+  <data name="[RESX:Posted].Text" xml:space="preserve">
+    <value>Verzonden:</value>
+  </data>
 </root>
