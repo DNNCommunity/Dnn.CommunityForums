@@ -1846,4 +1846,7 @@ From,
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Thank you,</value>
   </data>
+  <data name="[RESX:Posted].Text" xml:space="preserve">
+    <value>Posted:</value>
+  </data>
 </root>
