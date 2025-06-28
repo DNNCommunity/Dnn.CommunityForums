@@ -1850,4 +1850,7 @@ Von
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Vielen Dank</value>
   </data>
+  <data name="[RESX:Posted].Text" xml:space="preserve">
+    <value>Verschickt:</value>
+  </data>
 </root>

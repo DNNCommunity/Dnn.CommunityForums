@@ -1849,4 +1849,7 @@ De
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Gracias</value>
   </data>
+  <data name="[RESX:Posted].Text" xml:space="preserve">
+    <value>Publicada:</value>
+  </data>
 </root>
