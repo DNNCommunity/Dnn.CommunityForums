@@ -1852,4 +1852,7 @@ Da
   <data name="[RESX:Posted].Text" xml:space="preserve">
     <value>Pubblicato:</value>
   </data>
+  <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
+    <value>Per gestire le notifiche dei forum, visita:</value>
+  </data>
 </root>

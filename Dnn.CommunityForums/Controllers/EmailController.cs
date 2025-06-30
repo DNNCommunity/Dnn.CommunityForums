@@ -149,7 +149,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                     priority: DotNetNuke.Services.Mail.MailPriority.Normal,
                                     subject: subject,
                                     bodyFormat: DotNetNuke.Services.Mail.MailFormat.Html,
-                                    bodyEncoding: System.Text.Encoding.Default,
+                                    bodyEncoding: System.Text.Encoding.UTF8,
                                     body: body,
                                     attachments: new List<System.Net.Mail.Attachment>(),
                                     smtpServer: SMTPServer(portalId),

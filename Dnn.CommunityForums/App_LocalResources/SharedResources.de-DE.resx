@@ -1853,4 +1853,7 @@ Von
   <data name="[RESX:Posted].Text" xml:space="preserve">
     <value>Verschickt:</value>
   </data>
+  <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
+    <value>Um Ihre Forenbenachrichtigungen zu verwalten, besuchen Sie bitte:</value>
+  </data>
 </root>

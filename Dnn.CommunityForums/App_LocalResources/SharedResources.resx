@@ -1849,4 +1849,10 @@ From,
   <data name="[RESX:Posted].Text" xml:space="preserve">
     <value>Posted:</value>
   </data>
+  <data name="By.Text" xml:space="preserve">
+    <value>By</value>
+  </data>
+  <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
+    <value>To manage your forums notifications, please visit:</value>
+  </data>
 </root>
