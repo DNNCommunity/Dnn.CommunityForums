@@ -1888,4 +1888,7 @@ Van,
   <data name="[RESX:Posted].Text" xml:space="preserve">
     <value>Verzonden:</value>
   </data>
+  <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
+    <value>Om de meldingen van je forum te beheren, ga je naar:</value>
+  </data>
 </root>

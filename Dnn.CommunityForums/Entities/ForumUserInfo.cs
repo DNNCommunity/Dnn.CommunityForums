@@ -549,7 +549,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             width = length;
                         }
 
-                        return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(this.UserId, width, height), format);
+                        return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(this.PortalSettings, this.UserId, width, height), format);
                     case "usercaption":
                         return PropertyAccess.FormatString(this.UserCaption, format);
                     case "displayname":
