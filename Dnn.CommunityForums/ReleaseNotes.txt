@@ -71,6 +71,8 @@
               <li>NEW: Moderators can now see attachments on unapproved topics (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1386">Issue 1386</a>)</li>
               <li>NEW: Avatar token can contain size, e.g., [FORUMAUTHOR:AVATAR:50] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/421">Issue 421</a>)</li>
               <li>NEW: "Debounce" topic and forum links to prevent multiple clicks (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1027">Issue 1027</a>)</li>
+              <li>NEW: Move text from email notification template to resource files to facilitate localization (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1454">Issue 1454</a>)</li>
+              <li>NEW: More modern email notification template and UTF8 encoding (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1457">Issue 1457</a>)</li>
               
               <!--
             <li>None at this time.</li>
@@ -89,6 +91,9 @@
             <li>FIXED: Scheduler item not correctly removed in 8.1 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1397">Issue 1397</a>)</li>
             <li>FIXED: Submit button disabled after click to prevent duplicated posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1031">Issue 1031</a>)</li>
             <li>FIXED: Improved token replacement causing page to not load if topic contains curly braces (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1435">Issue 1435</a>)</li>
+            <li>FIXED: Forum Groups not inheriting from default settings are losing their sort order (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1433">Issue 1433</a>)</li>
+            <li>FIXED: During upgrade, fix any permissions (role Id's) separated by colon rather than semi-colon (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1443">Issue 1443</a>)</li>
+            <li>FIXED: After upgrade to 09.00.00, email notifications are missing the email body (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1452">Issue 1452</a>)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
@@ -113,6 +118,7 @@
             <li>Update wiki documentation for v8-v9 upgrade path for anyone using customized templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1352">Issue 1352</a>)</li>
             <li>09.00.00 RC1 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1423">Issue 1423</a>)</li>
             <li>09.00.00 RC2 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1436">Issue 1436</a>)</li>
+            <li>09.00.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1460">Issue 1460</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
