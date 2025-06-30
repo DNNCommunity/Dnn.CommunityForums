@@ -825,13 +825,21 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             name = name.Trim();
-            var chars = "_$%#@!*?;:~`+=()[]{}|\\'<>,/^&\".".ToCharArray();
+            name = name.Replace("\u0022", "-"); /* Unicode quotation mark (U+0022) */
+            name = name.Replace("\u0027", "-"); /* Unicode apostrophe (U+0027) */
+            name = name.Replace("\u0060", "-"); /* Unicode grave accent (U+0060) */
+            name = name.Replace("\u00B4", "-"); /* Unicode accute accent (U+00b4) */
+            name = name.Replace("\u2018", "-"); /* Unicode left single quotation mark (U+2018) */
+            name = name.Replace("\u2019", "-"); /* Unicode right single quotation mark (U+2019) */
+            name = name.Replace("\u201C", "-"); /* Unicode left double quotation mark (U+201c) */
+            name = name.Replace("\u201D", "-"); /* Unicode right double quotation mark (U+201d) */
             name = name.Replace(". ", ".");
             name = name.Replace(" .", ".");
             name = name.Replace("- ", "-");
             name = name.Replace(" -", "-");
             name = name.Replace(".", "-");
             name = name.Replace(" ", "-");
+            var chars = "_$%#@!*?;:~`+=()[]{}|\\'<>,/^&\".".ToCharArray();
             for (var i = 0; i < chars.Length; i++)
             {
                 var strChar = chars.GetValue(i).ToString();
