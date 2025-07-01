@@ -90,10 +90,12 @@
             <li>FIXED: 'Edit' link in topics view loading latest reply rather than the originating topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1396">Issue 1396</a>)</li>
             <li>FIXED: Scheduler item not correctly removed in 8.1 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1397">Issue 1397</a>)</li>
             <li>FIXED: Submit button disabled after click to prevent duplicated posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1031">Issue 1031</a>)</li>
-            <li>FIXED: Improved token replacement causing page to not load if topic contains curly braces (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1435">Issue 1435</a>)</li>
+            <li>FIXED: Token replacement causing page to not load if topic contains curly braces (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1435">Issue 1435</a>)</li>
             <li>FIXED: Forum Groups not inheriting from default settings are losing their sort order (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1433">Issue 1433</a>)</li>
-            <li>FIXED: During upgrade, fix any permissions (role Id's) separated by colon rather than semi-colon (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1443">Issue 1443</a>)</li>
+            <li>FIXED: Keep Unicode quotes and accents out of friendly URLs (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1456">Issue 1456</a>)</li>
+            <li>FIXED: During 09.00.00 upgrade, fix any permissions (role Id's) separated by colon rather than semi-colon (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1443">Issue 1443</a>)</li>
             <li>FIXED: After upgrade to 09.00.00, email notifications are missing the email body (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1452">Issue 1452</a>)</li>
+            <li>FIXED: After upgrade to 09.00.00, exception when retrieving notification subscriptions (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1463">Issue 1463</a>)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
