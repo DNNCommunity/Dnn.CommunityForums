@@ -301,7 +301,7 @@ $(document).ready(function () {
 function dcf_collapsible_toggle(targetName) {
     var cookieName = dcf_collapsible_getCookieName(targetName);
     var showCollapsible = dcf_getCookieParam(cookieName);
-    if (showCollapsible == 'T' || showCollapsible == '') {
+    if (showCollapsible == 'T') {
         dcf_setCookieParam(cookieName, 'F', 30);
     }
     else {
