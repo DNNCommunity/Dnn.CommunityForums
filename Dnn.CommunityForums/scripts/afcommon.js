@@ -300,13 +300,13 @@ $(document).ready(function () {
 });
 function dcf_collapsible_toggle(targetName) {
     var cookieName = dcf_collapsible_getCookieName(targetName);
+    var targetElement = eval(document.getElementById(targetName));
+    var isCollapsed = targetElement.style.display === 'none' ? true : false;
     var showCollapsible = dcf_getCookieParam(cookieName);
-    if (showCollapsible == 'T' || showCollapsible == '') {
-        dcf_setCookieParam(cookieName, 'F', 30);
+    if (showCollapsible === '') {
+        showCollapsible = isCollapsed === true ? 'F' : 'T';
     }
-    else {
-        dcf_setCookieParam(cookieName, 'T', 30);
-    }
+    dcf_setCookieParam(cookieName, showCollapsible === 'T' ? 'F' : 'T', 30);
     dcf_collapsible_showOrHideTarget(targetName);
 };
 function dcf_collapsible_showOrHideByCollapsibleId(id) {
@@ -316,13 +316,13 @@ function dcf_collapsible_showOrHideTarget(targetName) {
     var cookieName = dcf_collapsible_getCookieName(targetName);
     var targetElement = eval(document.getElementById(targetName));
     var showCollapsible = dcf_getCookieParam(cookieName);
-    if (showCollapsible == 'T') {
+    if (showCollapsible === 'T') {
         targetElement.style.display = '';
         $(dcf_collapsible_getElementId(targetName)).removeClass(dcf_collapsible_getCssClassClosed()).addClass(dcf_collapsible_getCssClassOpened());
         $(dcf_collapsible_getElementId(targetName)).children().removeClass(dcf_collapsible_getFaCssClassClosed()).addClass(dcf_collapsible_getFaCssClassOpened());
         dcf_setCookieParam(cookieName, 'T', 30);
     }
-    else if (showCollapsible == 'F') {
+    else if (showCollapsible === 'F') {
         targetElement.style.display = 'none';
         $(dcf_collapsible_getElementId(targetName)).removeClass(dcf_collapsible_getCssClassOpened()).addClass(dcf_collapsible_getCssClassClosed());
         $(dcf_collapsible_getElementId(targetName)).children().removeClass(dcf_collapsible_getFaCssClassOpened()).addClass(dcf_collapsible_getFaCssClassClosed());
