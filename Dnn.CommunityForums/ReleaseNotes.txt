@@ -94,6 +94,7 @@
             <li>FIXED: Forum Groups not inheriting from default settings are losing their sort order (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1433">Issue 1433</a>)</li>
             <li>FIXED: Keep Unicode quotes and accents out of friendly URLs (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1456">Issue 1456</a>)</li>
             <li>FIXED: Collapsible sections not opening on first click (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1462">Issue 1462</a>)</li>
+            <li>FIXED: Broken link in moderation notification emails (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1468">Issue 1468</a>)</li>
             <li>FIXED: During 09.00.00 upgrade, fix any permissions (role Id's) separated by colon rather than semi-colon (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1443">Issue 1443</a>)</li>
             <li>FIXED: After upgrade to 09.00.00, email notifications are missing the email body (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1452">Issue 1452</a>)</li>
             <li>FIXED: After upgrade to 09.00.00, exception when retrieving notification subscriptions (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1463">Issue 1463</a>)</li>
