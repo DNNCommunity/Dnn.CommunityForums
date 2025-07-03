@@ -1547,6 +1547,9 @@ div.dcf-mod-edit-wrap {
 	width: 95% !important;
 }
 
+/* wider subject for quick reply */
+.dnn-community-forums .dcf-quick-reply .dcf-textbox { width: 95% !important; }
+
 /* poll graphics removed from module.css and moved to _legacy/theme.css need to be put back */
 
 .afpollbar {
