@@ -1724,5 +1724,30 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return expression != null && (double.TryParse(expression.ToString(), out _) || bool.TryParse(expression.ToString(), out _));
         }
+
+        internal static string ResolveUrl(PortalSettings portalSettings, string template)
+        {
+            const string linkRegex = "(href|src)=\"(/[^\"]*?)\"";
+            var matches = Regex.Matches(template, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            foreach (Match match in matches)
+            {
+                var link = match.Groups[2].Value;
+                var defaultAlias = portalSettings.DefaultPortalAlias;
+                var domain = DotNetNuke.Common.Globals.AddHTTP(defaultAlias);
+                if (defaultAlias.Contains("/"))
+                {
+                    var subDomain =
+                        defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
+                    if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        link = link.Substring(subDomain.Length);
+                    }
+                }
+
+                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{domain}{link}\"");
+            }
+
+            return template;
+        }
     }
 }

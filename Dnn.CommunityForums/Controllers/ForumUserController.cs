@@ -26,19 +26,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Threading;
     using System.Web;
     using System.Web.UI.WebControls;
-
+    using DotNetNuke.Data;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.GeneratedImage;
     using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
-
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Journal;
-    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.UI.UserControls;
 
     internal class ForumUserController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
     {
@@ -501,27 +501,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return "<span class=\"af-user-status\"><i class=\"fa fa-circle fa-red\"></i></span>";
         }
 
-        internal static string GetAvatar(int userID, int avatarWidth, int avatarHeight)
+        internal static string GetAvatar(PortalSettings portalSettings, int userId, int avatarWidth, int avatarHeight)
         {
-            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-
-            if (portalSettings == null)
-                return string.Empty;
-
             // GIF files when reduced using DNN class losses its animation, so for gifs send them as is
-            var user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userID);
+            var user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
             string imgUrl = string.Empty;
+            string imgTag = string.Empty;
 
             if (user != null) imgUrl = user.Profile.PhotoURL;
 
             if (!string.IsNullOrWhiteSpace(imgUrl) && imgUrl.ToLower().EndsWith("gif"))
             {
-                return string.Format("<img class='af-avatar' alt='' src='{0}' height='{1}px' width='{2}px' />", imgUrl, avatarHeight, avatarWidth);
+                imgUrl = $"https://{portalSettings.DefaultPortalAlias}/{imgUrl}";
+                imgTag = string.Format("<img class='af-avatar' alt='' src='{0}' height='{1}px' width='{2}px' />", imgUrl, avatarHeight, avatarWidth);
             }
             else
             {
-                return string.Concat("<img class='af-avatar' src='", string.Format(Common.Globals.UserProfilePicFormattedUrl(), userID, avatarWidth, avatarHeight), "' />");
+                /* NOTE: This purposely does not use DNN API GetUserProfilePictureUrl because it inadvertantly requires HttpContext */
+                imgTag = $"<img class='af-avatar' src='https://{portalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={avatarWidth}&w={avatarHeight}' />";
             }
+
+            return Utilities.ResolveUrl(portalSettings, imgTag);
         }
 
         internal static void UpdateUserTopicCount(int portalId, int userId)
