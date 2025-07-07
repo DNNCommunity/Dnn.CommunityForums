@@ -840,7 +840,7 @@ namespace DotNetNuke.Modules.ActiveForums
             name = name.Replace("\u2008", "-"); /* Unicode punctuation space (U+2008) */
             name = name.Replace("\u2009", "-"); /* Unicode thin space (U+2009) */
             name = name.Replace("\u200A", "-"); /* Unicode hair space (U+200A) */
-            name = name.Replace("\u200B", string.Empty; /* Unicode zero width space (U+200B) */
+            name = name.Replace("\u200B", string.Empty); /* Unicode zero width space (U+200B) */
             name = name.Replace("\u200C", string.Empty);  // zero width non-joiner
             name = name.Replace("\u200D", string.Empty);  // zero width joiner
             name = name.Replace("\u2010", "-"); /* Unicode hyphen (U+2010) */
