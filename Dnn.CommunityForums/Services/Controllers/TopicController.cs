@@ -177,6 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                                     contentId: ti.ContentId,
                                     authorId: ti.Content.AuthorId,
                                     userId: this.UserInfo.UserID,
+                                    badgeId: DotNetNuke.Common.Utilities.Null.NullInteger,
                                     requestUrl: this.Request.RequestUri.ToString());
                             }
 

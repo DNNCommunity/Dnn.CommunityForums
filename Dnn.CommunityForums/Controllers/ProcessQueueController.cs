@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class ProcessQueueController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo>
     {
-        public bool Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, string requestUrl)
+        public bool Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, int badgeId, string requestUrl)
         {
             try
             {
@@ -46,6 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     ContentId = contentId,
                     AuthorId = authorId,
                     UserId = userId,
+                    BadgeId = badgeId,
                     DateCreated = DateTime.UtcNow,
                     RequestUrl = requestUrl,
                 });
