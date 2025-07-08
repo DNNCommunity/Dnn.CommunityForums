@@ -511,6 +511,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         case 10:
                             v = GridTypes.Unresolved;
                             break;
+                        case 11:
+                            v = GridTypes.BadgeUsers;
+                            break;
+                        case 12:
+                            v = GridTypes.UserBadges;
+                            break;
                         case 13:
                             v = GridTypes.RecycleBin;
                             break;

@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
 
         public Permissions()
         {
-            permissions = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
+            this.permissions = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
         }
 
         public Permissions(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissions)
@@ -39,49 +39,49 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
             this.permissions = permissions;
         }
 
-        public int PermissionsId { get => this.permissions.PermissionsId; }
+        public int PermissionsId => this.permissions.PermissionsId;
 
-        public HashSet<int> ViewRoleIds { get => this.permissions.ViewRoleIds; }
+        public HashSet<int> ViewRoleIds => this.permissions.ViewRoleIds;
 
-        public HashSet<int> ReadRoleIds {  get => this.permissions.ReadRoleIds; }
+        public HashSet<int> ReadRoleIds => this.permissions.ReadRoleIds;
 
-        public HashSet<int> CreateRoleIds {  get => this.permissions.CreateRoleIds; }
+        public HashSet<int> CreateRoleIds => this.permissions.CreateRoleIds;
 
-        public HashSet<int> ReplyRoleIds {  get => this.permissions.ReplyRoleIds; }
+        public HashSet<int> ReplyRoleIds => this.permissions.ReplyRoleIds;
 
-        public HashSet<int> EditRoleIds {  get => this.permissions.EditRoleIds; }
+        public HashSet<int> EditRoleIds => this.permissions.EditRoleIds;
 
-        public HashSet<int> DeleteRoleIds {  get => this.permissions.DeleteRoleIds; }
+        public HashSet<int> DeleteRoleIds => this.permissions.DeleteRoleIds;
 
-        public HashSet<int> LockRoleIds {  get => this.permissions.LockRoleIds; }
+        public HashSet<int> LockRoleIds => this.permissions.LockRoleIds;
 
-        public HashSet<int> PinRoleIds {  get => this.permissions.PinRoleIds; }
+        public HashSet<int> PinRoleIds => this.permissions.PinRoleIds;
 
-        public HashSet<int> AttachRoleIds {  get => this.permissions.AttachRoleIds; }
+        public HashSet<int> AttachRoleIds => this.permissions.AttachRoleIds;
 
-        public HashSet<int> PollRoleIds {  get => this.permissions.PollRoleIds; }
+        public HashSet<int> PollRoleIds => this.permissions.PollRoleIds;
 
-        public HashSet<int> BlockRoleIds {  get => this.permissions.BlockRoleIds; }
+        public HashSet<int> BlockRoleIds => this.permissions.BlockRoleIds;
 
-        public HashSet<int> TrustRoleIds {  get => this.permissions.TrustRoleIds; }
+        public HashSet<int> TrustRoleIds => this.permissions.TrustRoleIds;
 
-        public HashSet<int> SubscribeRoleIds {  get => this.permissions.SubscribeRoleIds; }
+        public HashSet<int> SubscribeRoleIds => this.permissions.SubscribeRoleIds;
 
-        public HashSet<int> AnnounceRoleIds {  get => this.permissions.AnnounceRoleIds; }
+        public HashSet<int> AnnounceRoleIds => this.permissions.AnnounceRoleIds;
 
-        public HashSet<int> TagRoleIds {  get => this.permissions.TagRoleIds; }
+        public HashSet<int> TagRoleIds => this.permissions.TagRoleIds;
 
-        public HashSet<int> CategorizeRoleIds {  get => this.permissions.CategorizeRoleIds; }
+        public HashSet<int> CategorizeRoleIds => this.permissions.CategorizeRoleIds;
 
-        public HashSet<int> PrioritizeRoleIds {  get => this.permissions.PrioritizeRoleIds; }
+        public HashSet<int> PrioritizeRoleIds => this.permissions.PrioritizeRoleIds;
 
-        public HashSet<int> ModerateRoleIds {  get => this.permissions.ModerateRoleIds; }
+        public HashSet<int> ModerateRoleIds => this.permissions.ModerateRoleIds;
 
-        public HashSet<int> MoveRoleIds {  get => this.permissions.MoveRoleIds; }
+        public HashSet<int> MoveRoleIds => this.permissions.MoveRoleIds;
 
-        public HashSet<int> SplitRoleIds {  get => this.permissions.SplitRoleIds; }
+        public HashSet<int> SplitRoleIds => this.permissions.SplitRoleIds;
 
-        public HashSet<int> BanRoleIds {  get => this.permissions.BanRoleIds; }
+        public HashSet<int> BanRoleIds => this.permissions.BanRoleIds;
 
         public bool EqualPermissions(Permissions other)
         {
@@ -131,20 +131,20 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
                 Edit = string.Join(";", this.EditRoleIds.Distinct().OrderBy(r => r)),
                 Delete = string.Join(";", this.DeleteRoleIds.Distinct().OrderBy(r => r)),
                 Lock = string.Join(";", this.LockRoleIds.Distinct().OrderBy(r => r)),
-                Pin = string.Join(";",this.PinRoleIds.Distinct().OrderBy(r => r)),
-                Attach = string.Join(";",this.AttachRoleIds.Distinct().OrderBy(r => r)),
-                Poll = string.Join(";",this.PollRoleIds.Distinct().OrderBy(r => r)),
-                Block = string.Join(";",this.BlockRoleIds.Distinct().OrderBy(r => r)),
-                Trust = string.Join(";",this.TrustRoleIds.Distinct().OrderBy(r => r)),
-                Subscribe = string.Join(";",this.SubscribeRoleIds.Distinct().OrderBy(r => r)),
-                Announce = string.Join(";",this.AnnounceRoleIds.Distinct().OrderBy(r => r)),
-                Tag = string.Join(";",this.TagRoleIds.Distinct().OrderBy(r => r)),
-                Categorize = string.Join(";",this.CategorizeRoleIds.Distinct().OrderBy(r => r)),
-                Prioritize = string.Join(";",this.PrioritizeRoleIds.Distinct().OrderBy(r => r)),
-                Moderate = string.Join(";",this.ModerateRoleIds.Distinct().OrderBy(r => r)),
-                Move = string.Join(";",this.MoveRoleIds.Distinct().OrderBy(r => r)),
-                Split = string.Join(";",this.SplitRoleIds.Distinct().OrderBy(r => r)),
-                Ban = string.Join(";",this.BanRoleIds.Distinct().OrderBy(r => r)),
+                Pin = string.Join(";", this.PinRoleIds.Distinct().OrderBy(r => r)),
+                Attach = string.Join(";", this.AttachRoleIds.Distinct().OrderBy(r => r)),
+                Poll = string.Join(";", this.PollRoleIds.Distinct().OrderBy(r => r)),
+                Block = string.Join(";", this.BlockRoleIds.Distinct().OrderBy(r => r)),
+                Trust = string.Join(";", this.TrustRoleIds.Distinct().OrderBy(r => r)),
+                Subscribe = string.Join(";", this.SubscribeRoleIds.Distinct().OrderBy(r => r)),
+                Announce = string.Join(";", this.AnnounceRoleIds.Distinct().OrderBy(r => r)),
+                Tag = string.Join(";", this.TagRoleIds.Distinct().OrderBy(r => r)),
+                Categorize = string.Join(";", this.CategorizeRoleIds.Distinct().OrderBy(r => r)),
+                Prioritize = string.Join(";", this.PrioritizeRoleIds.Distinct().OrderBy(r => r)),
+                Moderate = string.Join(";", this.ModerateRoleIds.Distinct().OrderBy(r => r)),
+                Move = string.Join(";", this.MoveRoleIds.Distinct().OrderBy(r => r)),
+                Split = string.Join(";", this.SplitRoleIds.Distinct().OrderBy(r => r)),
+                Ban = string.Join(";", this.BanRoleIds.Distinct().OrderBy(r => r)),
             };
 
             return entity;

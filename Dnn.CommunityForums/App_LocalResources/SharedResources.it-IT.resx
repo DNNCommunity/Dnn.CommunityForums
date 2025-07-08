@@ -1861,4 +1861,37 @@ Da
   <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
     <value>Iscrizione automatica ai miei argomenti</value>
   </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Ricevi le notifiche di assegnazione dei badge</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Seleziona questa opzione se desideri ricevere notifiche quando ti viene assegnato un nuovo badge obiettivo.</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsCongratulations].Text" xml:space="preserve">
+    <value>Felicitazioni! Sei stato ricompensato con un nuovo distintivo!</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORUMSLINK| &lt;a href="{0}"&gt;Visita per&lt;/a&gt; continuare a partecipare e guadagnare più premi.]</value>
+  </data>
+  <data name="[RESX:BadgeSendAwardNotification].Text" xml:space="preserve">
+    <value>Invia una notifica all'utente quando viene assegnato</value>
+  </data>
+  <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
+    <value>Non inviare una notifica a un utente meno recente durante il backfill dei premi</value>
+  </data>
+  <data name="[RESX:lastawarded].Text" xml:space="preserve">
+    <value>Ultimo premio</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Distintivo</value>
+  </data>
+  <data name="[RESX:BadgeUsersAssigned].Text" xml:space="preserve">
+    <value>Utenti che hanno ricevuto il Badge: {0}</value>
+  </data>
+  <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
+    <value>Badge assegnati all'Utente: {0}</value>
+  </data>
+  <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
+    <value>Badge non ancora assegnato</value>
+  </data>
 </root>

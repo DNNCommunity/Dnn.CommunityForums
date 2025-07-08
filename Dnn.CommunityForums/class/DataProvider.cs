@@ -45,6 +45,10 @@ namespace DotNetNuke.Modules.ActiveForums
             return objProvider;
         }
 
+        #region Badges
+        public abstract IDataReader Badges_List(int moduleId);
+        #endregion
+
         #region Filters
         public abstract int Filters_Save(int portalId, int moduleId, int filterId, string find, string replace, string filterType);
 

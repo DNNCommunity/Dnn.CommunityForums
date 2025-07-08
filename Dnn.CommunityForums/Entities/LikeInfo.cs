@@ -45,6 +45,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool Checked { get; set; }
 
+        public DateTime DateCreated { get; set; }
+
         [IgnoreColumn]
         public int ForumId => this.Content.Post.ForumId;
 

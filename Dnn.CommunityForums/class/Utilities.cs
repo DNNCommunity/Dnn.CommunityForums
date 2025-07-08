@@ -1044,6 +1044,11 @@ namespace DotNetNuke.Modules.ActiveForums
             return GetUserFormattedDateTime(dateTime, userCultureInfo, timeZoneOffset, "g");
         }
 
+        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        {
+            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, timeZoneOffset, "g");
+        }
+
         internal static string GetUserFormattedDateTime(DateTime? dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
         {
             if (dateTime != null)
@@ -1074,11 +1079,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return GetUserFormattedDateTime((DateTime?)dateTime, portalId, userId);
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
-        {
-            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, timeZoneOffset, "g");
-        }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
         public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)

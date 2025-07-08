@@ -49,18 +49,22 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.btnReturn.ClientSideScript = "window.location.href = '" + Utilities.NavigateURL(this.TabId) + "';";
             this.cbModal.LoadingTemplate = this.GetLoadingTemplateSmall();
-            Hashtable settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
-            if (Convert.ToBoolean(settings["AFINSTALLED"]) == false)
+
+            if (!this.Page.IsPostBack)
             {
-                try
+                Hashtable settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
+                if (Convert.ToBoolean(settings["AFINSTALLED"]) == false)
                 {
-                    var fc = new ForumsConfig();
-                    bool configComplete = fc.ForumsInit(this.PortalId, this.ModuleId);
-                    DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "AFINSTALLED", configComplete.ToString());
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    try
+                    {
+                        var fc = new ForumsConfig();
+                        bool configComplete = fc.ForumsInit(this.PortalId, this.ModuleId);
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "AFINSTALLED", configComplete.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    }
                 }
             }
 

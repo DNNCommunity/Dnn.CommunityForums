@@ -30,5 +30,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
         UpdateForumTopicPointers = 6,
         PostLiked = 7,
         TopicPinned = 8,
+        BadgeAssigned = 9,
     }
 }

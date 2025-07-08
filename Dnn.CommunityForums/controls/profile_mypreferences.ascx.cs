@@ -24,6 +24,20 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class profile_mypreferences : ForumBase
     {
+        protected global::System.Web.UI.UserControl lblHeader;
+        protected global::System.Web.UI.WebControls.DropDownList drpPrefDefaultSort;
+        protected global::System.Web.UI.WebControls.DropDownList drpPrefPageSize;
+        protected global::System.Web.UI.WebControls.CheckBox chkPrefJumpToLastPost;
+        protected global::System.Web.UI.WebControls.CheckBox chkPrefTopicSubscribe;
+        protected global::System.Web.UI.WebControls.CheckBox chkLikesNotificationsEnabled;
+        protected global::System.Web.UI.WebControls.CheckBox chkPinNotificationsEnabled;
+        protected global::System.Web.UI.WebControls.CheckBox chkBadgeNotificationsEnabled;
+        protected global::System.Web.UI.WebControls.CheckBox chkEnableNotificationsForOwnContent;
+        protected global::System.Web.UI.WebControls.CheckBox chkPrefBlockAvatars;
+        protected global::System.Web.UI.WebControls.CheckBox chkPrefBlockSignatures;
+        protected global::System.Web.UI.WebControls.TextBox txtSignature;
+        protected global::System.Web.UI.WebControls.LinkButton btnSave;
+
         public int UID { get; set; }
 
         protected override void OnLoad(EventArgs e)
@@ -53,6 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.chkPrefBlockSignatures.Checked = ui.PrefBlockSignatures;
                 this.chkLikesNotificationsEnabled.Checked = ui.LikeNotificationsEnabled;
                 this.chkPinNotificationsEnabled.Checked = ui.PinNotificationsEnabled;
+                this.chkBadgeNotificationsEnabled.Checked = ui.BadgeNotificationsEnabled;
                 this.chkEnableNotificationsForOwnContent.Checked = ui.EnableNotificationsForOwnContent;
                 this.txtSignature.Text = ui.Signature;
             }
@@ -78,6 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     upi.PrefBlockSignatures = this.chkPrefBlockSignatures.Checked;
                     upi.LikeNotificationsEnabled = this.chkLikesNotificationsEnabled.Checked;
                     upi.PinNotificationsEnabled = this.chkPinNotificationsEnabled.Checked;
+                    upi.BadgeNotificationsEnabled = this.chkBadgeNotificationsEnabled.Checked;
                     upi.EnableNotificationsForOwnContent = this.chkEnableNotificationsForOwnContent.Checked;
                     if (this.ModuleSettings.AllowSignatures == 1 || this.ModuleSettings.AllowSignatures == 0)
                     {
