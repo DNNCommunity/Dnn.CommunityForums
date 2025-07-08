@@ -84,6 +84,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                         case ProcessType.UpdateForumTopicPointers:
                             completed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.RecalculateTopicPointers(item.ForumId);
                             break;
+                        case ProcessType.BadgeAssigned:
+                            completed = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(item.PortalId, item.ModuleId).AssignUserBadgeAfterAction(item.UserId, item.BadgeId, item.RequestUrl);
+                            break;
+                        case ProcessType.BadgeUnassigned:
+                            completed = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(item.PortalId, item.ModuleId).UnassignUserBadgeAfterAction(item.UserId, item.BadgeId);
+                            break;
                         default:
                             DotNetNuke.Services.Exceptions.Exceptions.LogException(new NotImplementedException("invalid ProcessType"));
                             break;

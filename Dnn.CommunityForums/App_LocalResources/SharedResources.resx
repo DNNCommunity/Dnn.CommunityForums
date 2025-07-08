@@ -1864,4 +1864,10 @@ From,
   <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
     <value>Select this option if you wish to receive notifications when you are awarded a new achievement badge.</value>
   </data>
+  <data name="[RESX:BadgeNotificationsCongratulations].Text" xml:space="preserve">
+    <value>Congratulations! You've been rewarded with a new badge!</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORUMSLINK|Please &lt;a href="{0}"&gt;visit&lt;/a&gt; to keep participating and earn more rewards.]</value>
+  </data>
 </root>

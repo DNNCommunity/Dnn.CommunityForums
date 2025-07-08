@@ -18,19 +18,15 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
+namespace DotNetNuke.Modules.ActiveForums.Enums
 {
-    public enum ProcessType
+    public enum BadgeMetric
     {
-        ApprovedTopicCreated = 1,
-        UnapprovedTopicCreated = 2,
-        ApprovedReplyCreated = 3,
-        UnapprovedReplyCreated = 4,
-        UpdateForumLastUpdated = 5,
-        UpdateForumTopicPointers = 6,
-        PostLiked = 7,
-        TopicPinned = 8,
-        BadgeAssigned = 9,
-        BadgeUnassigned = 10,
+        NoMetric = 0,
+        PostsByNewUser = 1,
+        NewTopicsCreated = 2,
+        TopicRepliesCreated = 3,
+        LikesReceived = 4,
+        TopicsRead = 5,
     }
 }

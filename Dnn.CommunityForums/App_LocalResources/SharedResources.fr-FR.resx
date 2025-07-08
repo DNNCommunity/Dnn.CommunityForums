@@ -1861,4 +1861,10 @@ De,
   <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
     <value>Sélectionnez cette option si vous souhaitez recevoir des notifications lorsque vous recevez un nouvel insigne de succès.</value>
   </data>
+  <data name="[RESX:BadgeNotificationsCongratulations].Text" xml:space="preserve">
+    <value>Félicitations! Vous avez été récompensé par un nouveau badge !</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF :FORUMSLINK|Veuillez &lt;a href="{0}"&gt;vous y rendre&lt;/a&gt; pour continuer à participer et gagner plus de récompenses.]</value>
+  </data>
 </root>

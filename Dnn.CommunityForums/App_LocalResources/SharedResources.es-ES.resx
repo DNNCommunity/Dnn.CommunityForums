@@ -1864,4 +1864,10 @@ De
   <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
     <value>Seleccione esta opción si desea recibir notificaciones cuando se le otorgue una nueva insignia de logro.</value>
   </data>
+  <data name="[RESX:BadgeNotificationsCongratulations].Text" xml:space="preserve">
+    <value>¡Felicidades! ¡Has sido recompensado con una nueva insignia!</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORUMSLINK| &lt;a href="{0}"&gt;Visite&lt;/a&gt; para seguir participando y ganar más recompensas.]</value>
+  </data>
 </root>

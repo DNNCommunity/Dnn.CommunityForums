@@ -179,6 +179,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string LikeNotificationTypeDescription = Globals.ModuleFriendlyName + " Like Notification";
         public const string PinNotificationType = "DCF-PinNotification";
         public const string PinNotificationTypeDescription = Globals.ModuleFriendlyName + " Pin Notification";
+        public const string BadgeNotificationType = "DCF-BadgeNotification";
+        public const string BadgeNotificationTypeDescription = Globals.ModuleFriendlyName + " Badge Notification";
 
         public static Version ModuleVersion => new Version(DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).Version);
     }
@@ -499,6 +501,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ForumGroupInfo = "AF-{0}-fgi-{1}";
         public const string ForumGroupSettings = "AF-{0}-fgs-{1}";
         public const string PermissionsInfo = "AF-{0}-perms-{1}";
+        public const string BadgeInfo = "AF-{0}-badge-{1}";
+        public const string UserBadgeInfo = "AF-{0}-userbadge-{1}";
+        public const string UserBadges = "AF-{0}-userbadges-{1}";
+        public const string BadgeUsers = "AF-{0}-badgeusers-{1}";
+        public const string BadgeUserCount = "AF-{0}-badgeusercount-{1}";
 
         public const string ContentInfo = "AF-{0}-ci-{1}";
         public const string TopicInfo = "AF-{0}-ti-{1}";

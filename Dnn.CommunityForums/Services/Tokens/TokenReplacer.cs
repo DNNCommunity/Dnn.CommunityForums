@@ -46,6 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         private const string PropertySource_forumuser = "forumuser";
         private const string PropertySource_like = "forumlike";
         private const string PropertySource_user = "user";
+        private const string PropertySource_badge = "badge";
         private const string PropertySource_profile = "profile";
         private const string PropertySource_membership = "membership";
         private const string PropertySource_forumauthor = "forumauthor";
@@ -346,7 +347,32 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
+        
+        public TokenReplacer(PortalSettings portalSettings, UserBadgeInfo userBadgeInfo, Uri requestUri, string rawUrl)
+        {
+            userBadgeInfo.ForumUser.RawUrl = rawUrl;
+            userBadgeInfo.ForumUser.RequestUri = requestUri;
+            this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
+            this.PropertySource[PropertySource_forumuser] = userBadgeInfo.ForumUser;
+            this.PropertySource[PropertySource_badge] = userBadgeInfo;
+            this.PropertySource[PropertySource_user] = userBadgeInfo.ForumUser.UserInfo;
+            this.PropertySource[PropertySource_profile] = new ProfilePropertyAccess(userBadgeInfo.ForumUser.UserInfo);
+            this.PropertySource[PropertySource_membership] = new MembershipPropertyAccess(userBadgeInfo.ForumUser.UserInfo);
+            this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
+            this.PropertySource[PropertySource_module] = userBadgeInfo.ForumUser.ModuleInfo;
+            this.PropertySource[PropertySource_portal] = portalSettings;
+            try
+            {
+                this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            }
 
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
+            {
+            }
+
+            this.CurrentAccessLevel = Scope.DefaultSettings;
+        }
         public new string ReplaceTokens(string source)
         {
             return base.ReplaceTokens(source);
@@ -510,6 +536,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, like, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
+            template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
+            template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
+
+            return template;
+        }
+
+        internal static StringBuilder ReplaceBadgeTokens(StringBuilder template, UserBadgeInfo userBadge, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
+        {
+            template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
+            var tokenReplacer = new TokenReplacer(portalSettings, userBadge, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
 

@@ -1864,4 +1864,10 @@ Da
   <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
     <value>Seleziona questa opzione se desideri ricevere notifiche quando ti viene assegnato un nuovo badge obiettivo.</value>
   </data>
+  <data name="[RESX:BadgeNotificationsCongratulations].Text" xml:space="preserve">
+    <value>Felicitazioni! Sei stato ricompensato con un nuovo distintivo!</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORUMSLINK| &lt;a href="{0}"&gt;Visita per&lt;/a&gt; continuare a partecipare e guadagnare più premi.]</value>
+  </data>
 </root>

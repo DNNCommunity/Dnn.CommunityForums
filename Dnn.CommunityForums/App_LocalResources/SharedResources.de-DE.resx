@@ -1865,4 +1865,10 @@ Von
   <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
     <value>Wählen Sie diese Option aus, wenn Sie Benachrichtigungen erhalten möchten, wenn Sie ein neues Erfolgsabzeichen erhalten.</value>
   </data>
+  <data name="[RESX:BadgeNotificationsCongratulations].Text" xml:space="preserve">
+    <value>Glückwunsch! Sie wurden mit einem neuen Abzeichen belohnt!</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORENLINK|Bitte &lt;a href="{0}"&gt;besuchen Sie&lt;/a&gt; , um weiter teilzunehmen und weitere Belohnungen zu erhalten.]</value>
+  </data>
 </root>

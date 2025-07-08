@@ -69,6 +69,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Create "Pin notification" core messaging notification type new in 08.02.00
                 ForumsConfig.Install_PinNotificationType_080200();
 
+                // Create "badge notification" core messaging notification type new in 09.01.00
+                ForumsConfig.Install_BadgeNotificationType_090100();
                 return true;
             }
             catch (Exception ex)
@@ -731,6 +733,19 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             string notificationTypeName = Globals.PinNotificationType;
             string notificationTypeDescription = Globals.PinNotificationTypeDescription;
+            int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
+
+            NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
+            if (NotificationsController.Instance.GetNotificationType(notificationTypeName) == null)
+            {
+                NotificationsController.Instance.CreateNotificationType(type);
+            }
+        }
+
+        internal static void Install_BadgeNotificationType_090100()
+        {
+            string notificationTypeName = Globals.BadgeNotificationType;
+            string notificationTypeDescription = Globals.BadgeNotificationTypeDescription;
             int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
 
             NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
