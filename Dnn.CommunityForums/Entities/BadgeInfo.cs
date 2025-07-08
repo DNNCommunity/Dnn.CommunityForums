@@ -62,19 +62,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int FileId{ get; set; }
 
         /// <summary>
-        /// Gets or sets the UTC date and time the badge was created.
+        /// Gets or sets the DisplayOrder for the badge.
         /// </summary>
-        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
-
-        /// <summary>
-        /// Gets or sets the UTC date and time the badge was last modified.
-        /// </summary>
-        public DateTime DateUpdated { get; set; } = DateTime.UtcNow;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the badge is active.
-        /// </summary>
-        public bool IsActive { get; set; }
+        public int DisplayOrder { get; set; }
 
         /// <summary>
         /// Gets or sets the BadgeMetric.
