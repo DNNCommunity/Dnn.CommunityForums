@@ -1859,4 +1859,10 @@ Von
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Ein Tag ist ein Schlüsselwort oder ein Begriff, der mit dem Inhalt verknüpft ist, den Sie einreichen. Wenn Sie mehrere Tags eingeben, trennen Sie diese durch ein Komma.</value>
   </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Erhalten Sie Benachrichtigungen über Abzeichenauszeichnungen</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Wählen Sie diese Option aus, wenn Sie Benachrichtigungen erhalten möchten, wenn Sie ein neues Erfolgsabzeichen erhalten.</value>
+  </data>
 </root>

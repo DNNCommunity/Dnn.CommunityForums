@@ -1858,4 +1858,10 @@ De
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Una etiqueta es una palabra clave o un término asociado con el contenido que está enviando. Al introducir varias etiquetas, sepárelas con una coma.</value>
   </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Recibir notificaciones de premios de insignias</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Seleccione esta opción si desea recibir notificaciones cuando se le otorgue una nueva insignia de logro.</value>
+  </data>
 </root>

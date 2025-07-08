@@ -90,6 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             PrefBlockSignatures = false,
                             PrefBlockAvatars = false,
                             PrefTopicSubscribe = false,
+                            BadgeNotificationsEnabled = true,
                             LikeNotificationsEnabled = true,
                             PrefJumpLastPost = false,
                             PrefDefaultShowReplies = false,

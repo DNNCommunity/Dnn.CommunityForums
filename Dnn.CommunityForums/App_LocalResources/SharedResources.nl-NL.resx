@@ -1894,4 +1894,10 @@ Van,
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Een tag is een trefwoord of term die is gekoppeld aan de inhoud die u indient. Wanneer u meerdere tags invoert, scheidt u deze met een komma.</value>
   </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Ontvang meldingen over badges</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Selecteer deze optie als u meldingen wilt ontvangen wanneer u een nieuwe prestatiebadge krijgt.</value>
+  </data>
 </root>

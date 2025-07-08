@@ -1858,4 +1858,10 @@ Da
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Un tag è una parola chiave o un termine associato al contenuto che stai inviando. Quando inserisci più tag, separali con una virgola.</value>
   </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Ricevi le notifiche di assegnazione dei badge</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Seleziona questa opzione se desideri ricevere notifiche quando ti viene assegnato un nuovo badge obiettivo.</value>
+  </data>
 </root>

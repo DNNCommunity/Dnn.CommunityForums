@@ -1858,4 +1858,10 @@ From,
   <data name="[RESX:RestoreAll].Text" xml:space="preserve">
     <value>Restore All</value>
   </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Receive Badge Award Notifications</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Select this option if you wish to receive notifications when you are awarded a new achievement badge.</value>
+  </data>
 </root>
