@@ -59,12 +59,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// <summary>
         /// Gets or sets the file Id for the badge.
         /// </summary>
-        public int FileId{ get; set; }
+        public int FileId { get; set; }
 
         /// <summary>
-        /// Gets or sets the DisplayOrder for the badge.
+        /// Gets or sets the SortOrder for the badge.
         /// </summary>
-        public int DisplayOrder { get; set; }
+        public int SortOrder { get; set; }
 
         /// <summary>
         /// Gets or sets the BadgeMetric.

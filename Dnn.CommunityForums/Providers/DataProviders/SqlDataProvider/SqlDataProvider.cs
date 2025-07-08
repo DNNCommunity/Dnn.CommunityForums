@@ -311,6 +311,14 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
+        #region Badges
+
+        public override IDataReader Badges_List(int ModuleId)
+        {
+            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Badges_List", ModuleId);
+        }
+        #endregion
+
         #region Replies/Comments
         public override IDataReader Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
         {

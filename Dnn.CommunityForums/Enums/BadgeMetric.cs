@@ -22,11 +22,12 @@ namespace DotNetNuke.Modules.ActiveForums.Enums
 {
     public enum BadgeMetric
     {
-        NoMetric = 0,
-        PostsByNewUser = 1,
-        NewTopicsCreated = 2,
-        TopicRepliesCreated = 3,
-        LikesReceived = 4,
-        TopicsRead = 5,
+        BadgeMetricNone,
+        BadgeMetricNewUser,
+        BadgeMetricPostsByNewUser,
+        BadgeMetricNewTopicsCreated,
+        BadgeMetricTopicRepliesCreated,
+        BadgeMetricLikesReceived,
+        BadgeMetricTopicsRead,
     }
 }

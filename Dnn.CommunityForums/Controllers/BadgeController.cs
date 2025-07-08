@@ -33,15 +33,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         internal override string cacheKeyTemplate => CacheKeys.BadgeInfo;
 
-        /// <summary>
-        /// Gets all active badges.
-        /// </summary>
-        /// <returns>List of active badges.</returns>
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo> GetActiveBadges(int moduleId)
-        {
-            return this.Get().Where(b => b.ModuleId.Equals(moduleId) && b.IsActive);
-        }
-
         internal DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo GetById(int badgeId, int moduleId)
         {
             var cachekey = this.GetCacheKey(moduleId: moduleId, id: badgeId);
@@ -71,8 +62,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal new DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo Insert(DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo badgeInfo)
         {
-            badgeInfo.DateCreated = DateTime.UtcNow;
-            badgeInfo.DateUpdated = DateTime.UtcNow;
             base.Insert(badgeInfo);
             return this.GetById(badgeInfo.BadgeId, badgeInfo.ModuleId);
         }
@@ -81,7 +70,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             var cachekey = this.GetCacheKey(moduleId: badgeInfo.ModuleId, id: badgeInfo.BadgeId);
             DataCache.SettingsCacheClear(badgeInfo.ModuleId, cachekey);
-            badgeInfo.DateUpdated = DateTime.UtcNow;
             base.Update(badgeInfo);
             return this.GetById(badgeInfo.BadgeId, badgeInfo.ModuleId);
         }
