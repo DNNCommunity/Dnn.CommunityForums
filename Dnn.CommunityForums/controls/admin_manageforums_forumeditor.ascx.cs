@@ -24,6 +24,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Text;
     using System.Web.UI.WebControls;
+
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Security.Roles;
 
     public partial class admin_manageforums_forumeditor : ActiveAdminBase
@@ -153,12 +155,16 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected override void OnLoad(EventArgs e)
         {
-            base.OnLoad(e);
+            if (!this.IsPostBack)
+            {
+                base.OnLoad(e);
 
-            this.litTopicPropButton.Text = "<div><a href=\"\" onclick=\"afadmin_LoadPropForm();return false;\" class=\"btnadd afroundall\">[RESX:AddProperty]</a></div>";
-            this.litPropLoad.Text = Utilities.GetFileResource("DotNetNuke.Modules.ActiveForums.scripts.afadmin.properties.js");
+                this.litTopicPropButton.Text = "<div><a href=\"\" onclick=\"afadmin_LoadPropForm();return false;\" class=\"btnadd afroundall\">[RESX:AddProperty]</a></div>";
+                this.litPropLoad.Text = Utilities.GetFileResource("DotNetNuke.Modules.ActiveForums.scripts.afadmin.properties.js");
 
-            this.BindRoles();
+                this.BindRoles();
+                this.BindEditorTypes();
+            }
 
             var sepChar = '|';
             if (this.Params != null && !string.IsNullOrEmpty(this.Params))
@@ -249,7 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.rdAttachOff.Attributes.Add("value", "0");
             this.cfgAttach.InnerHtml = propImage;
 
-            this.rdHTMLOn.Attributes.Add("onclick", "toggleEditor(this);document.getElementById('" + this.drpEditorTypes.ClientID + "').value = '2';document.getElementById('" + this.drpEditorMobile.ClientID + "').value ='2';");
+            this.rdHTMLOn.Attributes.Add("onclick", "toggleEditor(this);document.getElementById('" + this.drpEditorTypes.ClientID + "').value = '3';document.getElementById('" + this.drpEditorMobile.ClientID + "').value ='3';");
             this.rdHTMLOff.Attributes.Add("onclick", "toggleEditor(this); document.getElementById('" + this.drpEditorTypes.ClientID + "').value = '0'; document.getElementById('" + this.drpEditorMobile.ClientID + "').value = '0'; ");
             this.rdHTMLOn.Attributes.Add("value", "1");
             this.rdHTMLOff.Attributes.Add("value", "0");
@@ -717,14 +723,14 @@ namespace DotNetNuke.Modules.ActiveForums
             // if switching from HTML off to HTML on, switch editor to HTML editor, or vice versa
             if (this.rdHTMLOff.Checked && featureSettings.AllowHTML)
             {
-                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorTypes.HTMLEDITORPROVIDER);
-                Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorTypes.HTMLEDITORPROVIDER);
+                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS);
+                Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS);
             }
 
             if (this.rdHTMLOn.Checked && !featureSettings.AllowHTML)
             {
-                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorTypes.TEXTBOX);
-                Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorTypes.TEXTBOX);
+                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorType.TEXTBOX);
+                Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorType.TEXTBOX);
             }
 
             this.rdHTMLOn.Checked = featureSettings.AllowHTML;
@@ -870,6 +876,11 @@ namespace DotNetNuke.Modules.ActiveForums
             this.drpRoles.Items.Insert(0, new ListItem("[RESX:DropDownDefault]", string.Empty));
         }
 
+        private void BindEditorTypes()
+        {
+            Utilities.BindEnum(pDDL: this.drpEditorTypes, enumType: typeof(Enums.EditorType), pColValue: string.Empty, addEmptyValue: false, localize: true, excludeIndex: -1);
+            Utilities.BindEnum(pDDL: this.drpEditorMobile, enumType: typeof(Enums.EditorType), pColValue: string.Empty, addEmptyValue: false, localize: true, excludeIndex: -1);
+        }
         #endregion
 
     }

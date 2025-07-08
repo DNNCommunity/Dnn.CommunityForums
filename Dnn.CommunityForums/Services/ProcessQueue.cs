@@ -87,6 +87,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                         case ProcessType.BadgeAssigned:
                             completed = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(item.PortalId, item.ModuleId).AssignUserBadgeAfterAction(item.PortalId, item.UserId, item.BadgeId, item.DateCreated, item.RequestUrl);
                             break;
+                        case ProcessType.UserMentioned:
+                            completed = new DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController().UserMentionAfterAction(item.PortalId, item.ModuleId, item.TabId, item.ForumGroupId, item.ForumId, item.TopicId, item.ReplyId, item.ContentId, item.AuthorId, item.UserId, item.RequestUrl);
+                            break;
                         default:
                             DotNetNuke.Services.Exceptions.Exceptions.LogException(new NotImplementedException("invalid ProcessType"));
                             break;

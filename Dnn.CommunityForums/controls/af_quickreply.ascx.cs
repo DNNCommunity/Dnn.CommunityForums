@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Modules.ActiveForums.Controls;
+    using DotNetNuke.Modules.ActiveForums.Enums;
 
     public partial class af_quickreplyform : ForumBase
     {
@@ -283,7 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                sUsername = Utilities.CleanString(this.PortalId, this.txtUsername.Text, false, EditorTypes.TEXTBOX, true, false, this.ForumModuleId, this.ThemePath, false);
+                sUsername = Utilities.CleanString(this.PortalId, this.txtUsername.Text, false, EditorType.TEXTBOX, true, false, this.ForumModuleId, this.ThemePath, false);
             }
 
             string sBody = string.Empty;
@@ -292,7 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.AllowHTML = this.IsHtmlPermitted(this.ForumInfo.FeatureSettings.EditorPermittedUsers, this.IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds));
             }
 
-            sBody = Utilities.CleanString(this.PortalId, CodeParser.ConvertCodeBrackets(this.Request.Form["txtBody"]), this.AllowHTML, EditorTypes.TEXTBOX, this.UseFilter, this.AllowScripts, this.ForumModuleId, this.ThemePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
+            sBody = Utilities.CleanString(this.PortalId, CodeParser.ConvertCodeBrackets(this.Request.Form["txtBody"]), this.AllowHTML, EditorType.TEXTBOX, this.UseFilter, this.AllowScripts, this.ForumModuleId, this.ThemePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
             ri.Content.AuthorId = this.UserId;
             ri.Content.AuthorName = sUsername;
             ri.Content.Body = sBody;

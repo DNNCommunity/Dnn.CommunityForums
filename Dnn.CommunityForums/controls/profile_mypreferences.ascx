@@ -52,6 +52,10 @@
         <asp:CheckBox ID="chkEnableNotificationsForOwnContent" runat="server" />
     </div>
     <div class="dnnFormItem">
+        <dnn:label controlname="chkUserMentionNotificationsEnabled" text="[RESX:UserMentionNotificationsEnabled]" suffix=":" runat="server" />
+        <asp:checkbox id="chkUserMentionNotificationsEnabled" runat="server" />
+    </div>
+    <div class="dnnFormItem">
         <dnn:label controlname="chkPrefBlockAvatars" text="[RESX:PrefBlockAvatars]" suffix=":" runat="server" />
         <asp:checkbox id="chkPrefBlockAvatars" runat="server" />
     </div>

@@ -109,6 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             PrefTopicSubscribe = false,
                             BadgeNotificationsEnabled = true,
                             LikeNotificationsEnabled = true,
+                            UserMentionNotificationsEnabled = true,
                             PrefJumpLastPost = false,
                             PrefDefaultShowReplies = false,
                             PrefDefaultSort = "ASC",

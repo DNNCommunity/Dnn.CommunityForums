@@ -174,6 +174,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool BadgeNotificationsEnabled { get; set; } = true;
 
+        public bool UserMentionNotificationsEnabled { get; set; } = true;
+
         [IgnoreColumn]
         public string RawUrl { get; set; }
 

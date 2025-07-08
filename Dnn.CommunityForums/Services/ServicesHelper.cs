@@ -115,5 +115,26 @@ namespace DotNetNuke.Modules.ActiveForums.Services
 
             return false;
         }
+
+        internal static string CleanAndChopString(string MatchString, int maxLength)
+        {
+            string matchString = string.Empty;
+            if (!string.IsNullOrEmpty(MatchString))
+            {
+                matchString = MatchString.Trim();
+                matchString = DotNetNuke.Modules.ActiveForums.Utilities.XSSFilter(matchString);
+                matchString = DotNetNuke.Modules.ActiveForums.Utilities.Text.RemoveHTML(matchString);
+                matchString = DotNetNuke.Modules.ActiveForums.Utilities.Text.CheckSqlString(matchString);
+                if (!string.IsNullOrEmpty(matchString))
+                {
+                    if (matchString.Length > maxLength)
+                    {
+                        matchString = matchString.Substring(0, 20);
+                    }
+                }
+            }
+
+            return matchString;
+        }
     }
 }

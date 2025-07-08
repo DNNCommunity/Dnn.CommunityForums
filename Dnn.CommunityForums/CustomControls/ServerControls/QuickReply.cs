@@ -26,6 +26,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Modules.ActiveForums.Enums;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:QuickReply runat=server></{0}:QuickReply>")]
     public class QuickReply : ControlsBase
     {
@@ -205,7 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sUsername = Utilities.CleanString(this.portalId, this.txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, this.moduleId, this.ThemePath, false);
+                sUsername = Utilities.CleanString(this.portalId, this.txtUserName.Value, false, EditorType.TEXTBOX, true, false, this.moduleId, this.ThemePath, false);
             }
 
             string sBody = string.Empty;
@@ -213,7 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // TODO: Check for allowhtml
             bool allowHtml = false;
 
-            sBody = Utilities.CleanString(this.portalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.FeatureSettings.UseFilter, forumInfo.FeatureSettings.AllowScript, this.moduleId, this.ThemePath, forumInfo.FeatureSettings.AllowEmoticons);
+            sBody = Utilities.CleanString(this.portalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorType.TEXTBOX, forumInfo.FeatureSettings.UseFilter, forumInfo.FeatureSettings.AllowScript, this.moduleId, this.ThemePath, forumInfo.FeatureSettings.AllowEmoticons);
             ri.TopicId = this.TopicId;
             ri.ReplyToId = this.TopicId;
             ri.Content.AuthorId = this.UserId;

@@ -1894,4 +1894,34 @@ Da
   <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
     <value>Badge non ancora assegnato</value>
   </data>
+  <data name="[RESX:UserMentionNotificationsEnabled].Text" xml:space="preserve">
+    <value>Ricevi notifiche di menzione utente</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationsEnabled].Help" xml:space="preserve">
+    <value>Seleziona questa opzione se desideri ricevere notifiche quando un altro utente ti menziona in un post.</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORUMSLINK|Si prega di &lt;a href="{0}"&gt;visitare&lt;/a&gt; per continuare a partecipare!]</value>
+  </data>
+  <data name="[RESX:mentioned].Text" xml:space="preserve">
+    <value>accennato</value>
+  </data>
+  <data name="[RESX:youwerementioned].Text" xml:space="preserve">
+    <value>Sei stato menzionato</value>
+  </data>
+  <data name="[RESX:MySettingsLinkText].Text" xml:space="preserve">
+    <value>Per gestire le tue preferenze sui forum, visita:</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationCongratulations].Text" xml:space="preserve">
+    <value>Ehi, sei stato menzionato!</value>
+  </data>
+  <data name="[RESX:TEXTBOX].Text" xml:space="preserve">
+    <value>Casella di testo</value>
+  </data>
+  <data name="[RESX:HTMLEDITORPROVIDER].Text" xml:space="preserve">
+    <value>Editor DNN predefinito</value>
+  </data>
+  <data name="[RESX:DNNCKEDITOR4PLUSFORUMSPLUGINS].Text" xml:space="preserve">
+    <value>Plugin DNN CKEditor4 plus Forums</value>
+  </data>
 </root>
