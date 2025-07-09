@@ -61,6 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums
             //ForumsConfig.Upgrade_PermissionSets_090000();
             //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
             //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();
+            //new ForumsConfig().CreateDefaultBadges_090100();
 
 
 #endif

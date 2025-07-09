@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Web.UI.WebControls;
 
@@ -71,6 +72,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Create "badge notification" core messaging notification type new in 09.01.00
                 ForumsConfig.Install_BadgeNotificationType_090100();
+
+                // Create default badges new in 09.01.00
+                new ForumsConfig().CreateDefaultBadges_090100();
                 return true;
             }
             catch (Exception ex)
@@ -742,19 +746,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static void Install_BadgeNotificationType_090100()
-        {
-            string notificationTypeName = Globals.BadgeNotificationType;
-            string notificationTypeDescription = Globals.BadgeNotificationTypeDescription;
-            int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
-
-            NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
-            if (NotificationsController.Instance.GetNotificationType(notificationTypeName) == null)
-            {
-                NotificationsController.Instance.CreateNotificationType(type);
-            }
-        }
-
         internal static void Upgrade_PermissionSets_090000()
         {
             foreach (var perms in new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Get())
@@ -781,7 +772,67 @@ namespace DotNetNuke.Modules.ActiveForums
                 perms.Trust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Trust) ? string.Empty : perms.Trust.Replace(":", ";")));
                 perms.View = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.View) ? string.Empty : perms.View.Replace(":", ";")));
                 new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
+            }
+        }
 
+        internal static void Install_BadgeNotificationType_090100()
+        {
+            string notificationTypeName = Globals.BadgeNotificationType;
+            string notificationTypeDescription = Globals.BadgeNotificationTypeDescription;
+            int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
+
+            NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
+            if (NotificationsController.Instance.GetNotificationType(notificationTypeName) == null)
+            {
+                NotificationsController.Instance.CreateNotificationType(type);
+            }
+        }
+
+        internal void CreateDefaultBadges_090100()
+        {
+            try
+            {
+                foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+                {
+                    foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                    {
+                        if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if (new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Get(module.ModuleID).Count().Equals(0))
+                            {
+                                var xDoc = new System.Xml.XmlDocument();
+                                xDoc.Load(this.sPath);
+                                if (xDoc != null)
+                                {
+                                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                                    System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//badges/badge");
+                                    if (xNodeList.Count > 0)
+                                    {
+                                        int i;
+                                        for (i = 0; i < xNodeList.Count; i++)
+                                        {
+                                            var badge = new DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo
+                                            {
+                                                Name = xNodeList[i].Attributes["name"].Value,
+                                                Description = xNodeList[i].Attributes["description"].Value,
+                                                BadgeMetric = (DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric)Utilities.SafeConvertInt(xNodeList[i].Attributes["badgemetric"].Value),
+                                                ModuleId = module.ModuleID,
+                                                SortOrder = Utilities.SafeConvertInt(xNodeList[i].Attributes["sortorder"].Value),
+//                                                FileId = Utilities.SafeConvertInt(xNodeList[i].Attributes["fileid"].Value),
+                                                Threshold = Utilities.SafeConvertInt(xNodeList[i].Attributes["threshold"].Value),
+                                            };
+                                            new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Insert(badge);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
             }
         }
     }

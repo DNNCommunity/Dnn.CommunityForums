@@ -318,6 +318,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090100();
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();                   
                         ForumsConfig.Install_BadgeNotificationType_090100();
+                        new ForumsConfig().CreateDefaultBadges_090100();
                     }
                     catch (Exception ex)
                     {

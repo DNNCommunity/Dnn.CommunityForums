@@ -24,9 +24,8 @@ namespace DotNetNuke.Modules.ActiveForums.Enums
     {
         BadgeMetricNone,
         BadgeMetricNewUser,
-        BadgeMetricPostsByNewUser,
-        BadgeMetricNewTopicsCreated,
-        BadgeMetricTopicRepliesCreated,
+        BadgeMetricTopicsCreated,
+        BadgeMetricRepliesCreated,
         BadgeMetricLikesReceived,
         BadgeMetricTopicsRead,
     }
