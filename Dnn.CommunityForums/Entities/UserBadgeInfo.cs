@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "description":
                         return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Badge.Description.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Badge.Description), "...") : Utilities.StripHTMLTag(this.Badge.Description)), format);
                     case "imageurl":
-                        var imgUrl = $"https://{this.ForumUser.PortalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=file&fileId={this.Badge.FileId}";
+                        var imgUrl = $"https://{this.ForumUser.PortalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=securefile&fileId={this.Badge.FileId}";
                         if (length > 0)
                         {
                             imgUrl += $"&h={length}&w={length}";

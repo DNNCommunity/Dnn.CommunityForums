@@ -1612,4 +1612,22 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:BadgeMetricNone].Text" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="[RESX:Description].Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
+    <value>New User</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsCreated].Text" xml:space="preserve">
+    <value>Topics Created</value>
+  </data>
+  <data name="[RESX:BadgeMetricRepliesCreated].Text" xml:space="preserve">
+    <value>Replied to Topics</value>
+  </data>
+  <data name="[RESX:BadgeMetricLikesReceived].Text" xml:space="preserve">
+    <value>Likes Received</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
+    <value>Topics Read</value>
+  </data>
 </root>

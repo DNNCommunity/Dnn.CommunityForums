@@ -1480,4 +1480,49 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
     <value>Introduzca una cadena que se utilizará al recuperar plantillas. Por ejemplo, si desea tener archivos de plantilla separados para foros moderados, escriba 'moderados' y luego las plantillas se recuperarán usando 'moderados' como parte del nombre del archivo, por ejemplo, 'TopicsView-moderated.ascx' en lugar de solo 'TopicsView.ascx' cuando se recupere la plantilla TopicsView.</value>
   </data>
+  <data name="[RESX:Description].Text" xml:space="preserve">
+    <value>Descripción</value>
+  </data>
+  <data name="[RESX:BadgeName].Text" xml:space="preserve">
+    <value>Insignia</value>
+  </data>
+  <data name="[RESX:SortOrder].Text" xml:space="preserve">
+    <value>Criterio de clasificación</value>
+  </data>
+  <data name="[RESX:Badges].Text" xml:space="preserve">
+    <value>Insignias</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Insignia</value>
+  </data>
+  <data name="[RESX:BadgeNew].Text" xml:space="preserve">
+    <value>Nueva insignia</value>
+  </data>
+  <data name="[RESX:BadgeThreshold].Text" xml:space="preserve">
+    <value>Umbral</value>
+  </data>
+  <data name="[RESX:BadgeMetric].Text" xml:space="preserve">
+    <value>Métrico</value>
+  </data>
+  <data name="[RESX:BadgeImage].Text" xml:space="preserve">
+    <value>Imagen</value>
+  </data>
+  <data name="[RESX:BadgeMetricNone].Text" xml:space="preserve">
+    <value>Ninguno</value>
+  </data>
+  <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
+    <value>Nuevo usuario</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsCreated].Text" xml:space="preserve">
+    <value>Temas creados</value>
+  </data>
+  <data name="[RESX:BadgeMetricRepliesCreated].Text" xml:space="preserve">
+    <value>Respondido a los temas</value>
+  </data>
+  <data name="[RESX:BadgeMetricLikesReceived].Text" xml:space="preserve">
+    <value>Me gusta recibidos</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
+    <value>Temas leídos</value>
+  </data>
 </root>

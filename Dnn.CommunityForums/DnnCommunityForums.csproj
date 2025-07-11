@@ -89,6 +89,10 @@
         <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
     </ItemGroup>
     
+    <ItemGroup>
+      <Folder Include="images\badges\" />
+    </ItemGroup>
+    
 
     <Import Project="Module.build" />
 </Project>

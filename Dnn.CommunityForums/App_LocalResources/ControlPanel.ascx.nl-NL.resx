@@ -1630,4 +1630,49 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
     <value>Voer een tekenreeks in die moet worden gebruikt bij het ophalen van sjablonen. Als u bijvoorbeeld aparte sjabloonbestanden wilt hebben voor gemodereerde forums, voert u 'gemodereerd' in, waarna sjablonen worden opgehaald met 'gemodereerd' als onderdeel van de bestandsnaam, bijvoorbeeld 'TopicsView-moderated.ascx' in plaats van alleen 'TopicsView.ascx' wanneer het TopicsView-sjabloon wordt opgehaald.</value>
   </data>
+  <data name="[RESX:Description].Text" xml:space="preserve">
+    <value>Beschrijving</value>
+  </data>
+  <data name="[RESX:BadgeName].Text" xml:space="preserve">
+    <value>Insigne</value>
+  </data>
+  <data name="[RESX:SortOrder].Text" xml:space="preserve">
+    <value>Sorteervolgorde</value>
+  </data>
+  <data name="[RESX:Badges].Text" xml:space="preserve">
+    <value>Badges</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Insigne</value>
+  </data>
+  <data name="[RESX:BadgeNew].Text" xml:space="preserve">
+    <value>Nieuwe badge</value>
+  </data>
+  <data name="[RESX:BadgeThreshold].Text" xml:space="preserve">
+    <value>Drempel</value>
+  </data>
+  <data name="[RESX:BadgeMetric].Text" xml:space="preserve">
+    <value>Metriek</value>
+  </data>
+  <data name="[RESX:BadgeImage].Text" xml:space="preserve">
+    <value>Beeld</value>
+  </data>
+  <data name="[RESX:BadgeMetricNone].Text" xml:space="preserve">
+    <value>Geen</value>
+  </data>
+  <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
+    <value>Nieuwe gebruiker</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsCreated].Text" xml:space="preserve">
+    <value>Onderwerpen gemaakt</value>
+  </data>
+  <data name="[RESX:BadgeMetricRepliesCreated].Text" xml:space="preserve">
+    <value>Gereageerd op onderwerpen</value>
+  </data>
+  <data name="[RESX:BadgeMetricLikesReceived].Text" xml:space="preserve">
+    <value>Likes ontvangen</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
+    <value>Onderwerpen Lezen</value>
+  </data>
 </root>
