@@ -17,69 +17,27 @@
     <div class="dnnClear">
         <h2 class="muy-importante">Important Upgrade Notes</h2>
         <p>
-            The release notes will follow, below these <b>important</b> notes.
+            <strong>VERY IMPORTANT:</strong>The MINIMUM DNN Platform version for this release is now <strong>DNN 9.11</strong>.
+            <br />
+            The release notes will follow, below this <b>important</b> note.
+
         </p>
 
         <blockquote class="dcf-oldnews">
 
             <h2 class="muy-importante">
-                Upgrading Through 8.0 & 8.1  (must read)
+                Upgrading to 9.0 if you have customized templates (must read)
             </h2>
             <p>
-                First, if you're upgrading from a version earlier than 8.0, you NEED to view the important release note FYI wiki articles below. 
+                First, if you're upgrading to version 9.0 AND you have customized templates, you NEED to view the important release note FYI wiki article below. 
             </p>
 
             <ul>
-                <li><a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Upgrading-to-Version-8.0" target="_blank">What to Know When Upgrading to Commmunity Forums 8.0</a></li>
-                <li><a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Upgrading-to-Version-8.1" target="_blank">What to Know When Upgrading to Commmunity Forums 8.1</a></li>
+                <li><a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Upgrading-to-Version-9.0" target="_blank">What to Know When Upgrading to Commmunity Forums 9.0</a></li>
             </ul>
 
         </blockquote>
 
-        <h3>New <strong>&quot;Legacy Token&quot; Replacement</strong></h3>
-        <p>
-            Tokens are used in various templates to insert content from a forum, topic, reply, etc.
-            into a page.
-            However, in previous versions, HTML was injected from code for certain tokens, which
-            made it impossible for a designer to tailor the HTML markup without customizing the
-            code.
-            DNN Community Forums 08.02.00 introduces new token replacement features that inject only
-            the data associated with the token, allowing the designer to create whatever HTML markup
-            is desired.
-            The community-default and community-bootstrap themes and templates have been updated to
-            include the markup that used to be generated in the module's code.
-            However, for installed sites that have other themes and templates, DNN Community Forums
-            08.02.00 will replace a legacy token--on-the-fly--with its modern replacement, including
-            the previously-injected markup.
-            <br />
-            <br />
-            For example, [GROUPNAME] will now be replaced by [FORUMGROUP:FORUMGROUPLINK|&lt;a
-            href="{0}" class="dcf-forumgroup-link"&gt;[FORUMGROUP:GROUPNAME]&lt;/a&gt;]
-            <br />
-            <br />
-            <b>
-                IMPORTANT! The legacy token replacement feature will be supported through version
-                10.00.00, and will then be removed.
-            </b>
-            <br /><br />
-            If you use your own themes and templates, please visit <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki"
-                                                                        target="_blank">our wiki</a> to
-            read more and see which legacy tokens are replaced by which updated tokens.
-
-        </p>
-
-
-        <h3>Removed <strong>Duplicated Templates</strong></h3>
-        <p>
-            In 08.00.00, template loading was enhanced to fallback/default from theme templates to
-            module default templates, making it no longer necessary to duplicate all templates into
-            a theme folder if not specifically customizing a template for a particular theme.
-            Several templates shipped with the community themes have been removed in 08.02.00 since
-            they
-            are the same as the defaults in /config/templates. If you have a custom theme and a
-            template has not been customized from the version shipped with DNN Community Forums,
-            the template can be removed from your custom theme if desired.
-        </p>
     </div>
     <hr />
     <div class="dnnClear">
@@ -89,12 +47,19 @@
         <hr />
 
         <h3>
-            08.02.08
+            09.00.00
         </h3>
         <p>
-            <b>THANK YOU</b> for all of the valuable contributions by <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, 
-            <!--<a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>, and -->
-            <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>.
+            <b>THANK YOU</b> for all of the valuable contributions by 
+            <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>, 
+            <a href="https://github.com/nvsai" target="_blank">@nvsai</a>, 
+            <a href="https://github.com/ernieblues" target="_blank">@nvsai</a>, and 
+            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>
+           
+               <!--, 
+               , and
+                <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>
+                -->.
         </p>
         <p>
             What's to follow are all of the relevant updates that have occurred during the development cycle of this release.
@@ -102,7 +67,17 @@
 
         <h4>New Features &amp; Enhancements</h4>
         <ul>
+              <li>NEW: Convention-based template names (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/477">Issue 477</a>)</li>
+              <li>NEW: Moderators can now see attachments on unapproved topics (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1386">Issue 1386</a>)</li>
+              <li>NEW: Avatar token can contain size, e.g., [FORUMAUTHOR:AVATAR:50] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/421">Issue 421</a>)</li>
+              <li>NEW: "Debounce" topic and forum links to prevent multiple clicks (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1027">Issue 1027</a>)</li>
+              <li>NEW: Move text from email notification template to resource files to facilitate localization (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1454">Issue 1454</a>)</li>
+              <li>NEW: More modern email notification template and UTF8 encoding (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1457">Issue 1457</a>)</li>
+              <li>NEW: Wider quick reply subject text box (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1470">Issue 1470</a>)</li>
+              
+              <!--
             <li>None at this time.</li>
+            -->
             <!--
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
@@ -111,8 +86,20 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>FIXED: Fatal Exception on Attempts to Load the Reply View When There are Unexpected Post Count in the Pager (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1333">Issue 1333</a>!)</li>
-            <li>FIXED: Topic Edit Preview Not Using Token Replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1369">Issue 1369</a>!)</li>
+            <li>FIXED: Unauthenticated users should not see direct-messaging icon (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1403">Issue 1403</a>)</li>
+            <li>FIXED: Brackets in content interfering with token replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1384">Issue 1384</a>)</li>
+            <li>FIXED: 'Edit' link in topics view loading latest reply rather than the originating topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1396">Issue 1396</a>)</li>
+            <li>FIXED: Scheduler item not correctly removed in 8.1 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1397">Issue 1397</a>)</li>
+            <li>FIXED: Submit button disabled after click to prevent duplicated posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1031">Issue 1031</a>)</li>
+            <li>FIXED: Token replacement causing page to not load if topic contains curly braces (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1435">Issue 1435</a>)</li>
+            <li>FIXED: Forum Groups not inheriting from default settings are losing their sort order (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1433">Issue 1433</a>)</li>
+            <li>FIXED: Keep Unicode quotes and accents out of friendly URLs (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1456">Issue 1456</a>)</li>
+            <li>FIXED: Incorrect image paths for spacers in control panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1467">Issue 1467</a>)</li>
+            <li>FIXED: Collapsible sections not opening on first click (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1462">Issue 1462</a>)</li>
+            <li>FIXED: Broken link in moderation notification emails (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1468">Issue 1468</a>)</li>
+            <li>FIXED: During 09.00.00 upgrade, fix any permissions (role Id's) separated by colon rather than semi-colon (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1443">Issue 1443</a>)</li>
+            <li>FIXED: After upgrade to 09.00.00, email notifications are missing the email body (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1452">Issue 1452</a>)</li>
+            <li>FIXED: After upgrade to 09.00.00, exception when retrieving notification subscriptions (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1463">Issue 1463</a>)</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
@@ -121,7 +108,23 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            <li>Release Prep: 08.02.08 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1372">Issue 1372</a>)</li>
+            <li>Remove template editor from control panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1354">Issue 1354</a>)</li>
+            <li>Refactor/modernize template caching and controller methods (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/465">Issue 465</a>)</li>
+            <li>Refactor/modernize permissions checking (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/950">Issue 950</a>)</li>
+            <li>Convert NTEXT database columns to NVARCHAR(MAX) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1184">Issue 1184</a>)</li>
+            <li>Update minimum DNN Platform dependency to 9.11 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1224">Issue 1224</a>)</li>
+            <li>Migrate csproj to SDK format (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1274">Issue 1274</a>)</li>
+            <li>Update third-party dependencies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1307">Issue 1307</a>)</li>
+            <li>Update code files to use explicit <emphasis>using</emphasis> statements (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1350">Issue 1350</a>)</li>
+            <li>Duplicated tags in csproj file (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1421">Issue 1421</a>)</li>
+            <li>Remove unused images (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1310">Issue 1310</a>)</li>
+            <li>Remove deprecated methods (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/377">Issue 377</a>)</li>
+            <li>Update MSBuild.Community.Tasks to 1.5.0.235 (no longer require .NET Framework 3.5/2.0 for build) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1418">Issue 1418</a>)</li>
+            <li>Remove legacy Analyzer tags from project file (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1425">Issue 1425</a>)</li>
+            <li>Update wiki documentation for v8-v9 upgrade path for anyone using customized templates (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1352">Issue 1352</a>)</li>
+            <li>09.00.00 RC1 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1423">Issue 1423</a>)</li>
+            <li>09.00.00 RC2 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1436">Issue 1436</a>)</li>
+            <li>09.00.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1460">Issue 1460</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>

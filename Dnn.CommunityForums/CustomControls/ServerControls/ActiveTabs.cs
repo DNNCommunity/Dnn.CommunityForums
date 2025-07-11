@@ -1,4 +1,4 @@
-// Copyright (c) by DNN Community
+﻿// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -21,14 +21,9 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
-    using System.Text;
-    using System.Web;
     using System.Web.UI;
-    using System.Web.UI.WebControls;
 
     [ParseChildren(true), PersistChildren(true), ToolboxData("<{0}:ActiveTabs runat=server></{0}:ActiveTabs>")]
     public class ActiveTabs : System.Web.UI.WebControls.CompositeControl

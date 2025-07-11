@@ -32,9 +32,117 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public string imgOn;
         public string imgOff;
-        public string editorType = string.Empty; //"G"; // "F"
+        public string editorType = string.Empty; // "G"; // "F"
         public int recordId = 0;
+
         protected Controls.admin_securitygrid ctlSecurityGrid = new Controls.admin_securitygrid();
+
+        protected System.Web.UI.WebControls.Literal litScripts;
+        protected System.Web.UI.HtmlControls.HtmlGenericControl span_Parent; 
+        protected System.Web.UI.WebControls.Literal litTabs;
+        protected System.Web.UI.HtmlControls.HtmlTableRow trGroups;
+        protected System.Web.UI.WebControls.DropDownList drpGroups;
+        protected DotNetNuke.Modules.ActiveForums.Controls.RequiredFieldValidator reqGroups;
+        protected System.Web.UI.HtmlControls.HtmlTableRow trName;
+        protected System.Web.UI.WebControls.Label lblForumGroupName;
+        protected System.Web.UI.WebControls.TextBox txtForumName;
+        protected DotNetNuke.Modules.ActiveForums.Controls.RequiredFieldValidator reqForumName;
+        protected System.Web.UI.HtmlControls.HtmlTableRow trDesc;
+        protected System.Web.UI.WebControls.TextBox txtForumDesc;
+        protected System.Web.UI.HtmlControls.HtmlTableRow trPrefix;
+        protected System.Web.UI.WebControls.TextBox txtPrefixURL;
+        protected System.Web.UI.HtmlControls.HtmlTable trActive;
+        protected System.Web.UI.WebControls.CheckBox chkActive;
+        protected System.Web.UI.HtmlControls.HtmlTableRow trHidden;
+        protected System.Web.UI.WebControls.CheckBox chkHidden;
+        protected System.Web.UI.HtmlControls.HtmlTable trInheritModuleFeatures;
+        protected System.Web.UI.WebControls.CheckBox chkInheritModuleFeatures;
+        protected System.Web.UI.HtmlControls.HtmlTable trInheritModuleSecurity;
+        protected System.Web.UI.WebControls.CheckBox chkInheritModuleSecurity;
+        protected System.Web.UI.HtmlControls.HtmlTable trInheritGroupFeatures;
+        protected System.Web.UI.WebControls.CheckBox chkInheritGroupFeatures;
+        protected System.Web.UI.HtmlControls.HtmlTable trInheritGroupSecurity;
+        protected System.Web.UI.WebControls.CheckBox chkInheritGroupSecurity;
+        protected System.Web.UI.HtmlControls.HtmlTable trTemplates;
+        protected System.Web.UI.HtmlControls.HtmlTableRow trEmail;
+        protected System.Web.UI.WebControls.TextBox txtEmailAddress;
+        protected System.Web.UI.HtmlControls.HtmlTableRow trEmailNotificationSubjectTemplate;
+        protected System.Web.UI.WebControls.TextBox txtEmailNotificationSubjectTemplate;
+        protected System.Web.UI.WebControls.TextBox txtTemplateFileNameSuffix;
+        protected System.Web.UI.WebControls.TextBox txtCreatePostCount;
+        protected System.Web.UI.WebControls.TextBox txtReplyPostCount;
+        protected System.Web.UI.WebControls.HiddenField hidForumId;
+        protected System.Web.UI.WebControls.HiddenField hidSortOrder;
+        protected System.Web.UI.WebControls.PlaceHolder plhGrid;
+        protected System.Web.UI.WebControls.RadioButton rdModOn;
+        protected System.Web.UI.WebControls.RadioButton rdModOff;
+        protected System.Web.UI.HtmlControls.HtmlGenericControl cfgMod;
+        protected System.Web.UI.WebControls.RadioButton rdFilterOn;
+        protected System.Web.UI.WebControls.RadioButton rdFilterOff;
+        protected System.Web.UI.WebControls.RadioButton rdPostIconOn;
+        protected System.Web.UI.WebControls.RadioButton rdPostIconOff;
+        protected System.Web.UI.WebControls.RadioButton rdEmotOn;
+        protected System.Web.UI.WebControls.RadioButton rdEmotOff;
+        protected System.Web.UI.WebControls.RadioButton rdScriptsOn;
+        protected System.Web.UI.WebControls.RadioButton rdScriptsOff;
+        protected System.Web.UI.WebControls.RadioButton rdIndexOn;
+        protected System.Web.UI.WebControls.RadioButton rdIndexOff;
+        protected System.Web.UI.WebControls.RadioButton rdRSSOn;
+        protected System.Web.UI.WebControls.RadioButton rdRSSOff;
+        protected System.Web.UI.WebControls.RadioButton rdAttachOn;
+        protected System.Web.UI.WebControls.RadioButton rdAttachOff;
+        protected System.Web.UI.HtmlControls.HtmlGenericControl cfgAttach;
+        protected System.Web.UI.WebControls.RadioButton rdHTMLOn;
+        protected System.Web.UI.WebControls.RadioButton rdHTMLOff;
+        protected System.Web.UI.HtmlControls.HtmlGenericControl cfgHTML;
+        protected System.Web.UI.HtmlControls.HtmlTableRow trAutoSub;
+        protected System.Web.UI.WebControls.RadioButton rdAutoSubOn;
+        protected System.Web.UI.WebControls.RadioButton rdAutoSubOff;
+        protected System.Web.UI.HtmlControls.HtmlGenericControl cfgAutoSub;
+        protected System.Web.UI.HtmlControls.HtmlTableRow trAllowLikes;
+        protected System.Web.UI.WebControls.RadioButton rdLikesOn;
+        protected System.Web.UI.WebControls.RadioButton rdLikesOff;
+        protected System.Web.UI.WebControls.Label lblMaintWarn;
+        protected System.Web.UI.WebControls.CheckBox chkTopicsOlderThan;
+        protected System.Web.UI.WebControls.TextBox txtOlderThan;
+        protected System.Web.UI.WebControls.CheckBox chkTopicsByUser;
+        protected System.Web.UI.WebControls.TextBox txtUserId;
+        protected System.Web.UI.WebControls.CheckBox chkNoReplies;
+        protected System.Web.UI.WebControls.CheckBox chkActivityOlderThan;
+        protected System.Web.UI.WebControls.TextBox txtReplyOlderThan;
+        protected System.Web.UI.WebControls.Literal litTopicPropButton;
+        protected DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnSave;
+        protected DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnDelete;
+        protected DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnClose;
+        protected DotNetNuke.Modules.ActiveForums.Controls.Callback cbEditorAction;
+        protected System.Web.UI.WebControls.HiddenField hidEditorResult;
+        protected System.Web.UI.WebControls.DropDownList drpPermittedRoles;
+        protected System.Web.UI.WebControls.DropDownList drpEditorTypes;
+        protected System.Web.UI.WebControls.TextBox txtEditorHeight;
+        protected System.Web.UI.WebControls.TextBox txtEditorWidth;
+        protected System.Web.UI.WebControls.DropDownList drpEditorMobile;
+        protected System.Web.UI.WebControls.DropDownList drpDefaultTrust;
+        protected System.Web.UI.WebControls.TextBox txtAutoTrustLevel;
+        protected System.Web.UI.WebControls.CheckBox chkModNotifyAlert;
+        protected System.Web.UI.WebControls.CheckBox chkModNotifyApprove;
+        protected System.Web.UI.WebControls.CheckBox chkModNotifyReject;
+        protected System.Web.UI.WebControls.CheckBox chkModNotifyMove;
+        protected System.Web.UI.WebControls.CheckBox chkModNotifyDelete;
+        protected System.Web.UI.WebControls.TextBox txtMaxAttach;
+        protected System.Web.UI.WebControls.TextBox txtMaxAttachSize;
+        protected System.Web.UI.WebControls.TextBox txtAllowedTypes;
+        protected System.Web.UI.WebControls.CheckBox ckAllowBrowseSite;
+        protected System.Web.UI.WebControls.CheckBox ckConvertingToJpegAllowed;
+        protected System.Web.UI.WebControls.CheckBox ckAttachInsertAllowed;
+        protected System.Web.UI.WebControls.TextBox txtMaxAttachWidth;
+        protected System.Web.UI.WebControls.TextBox txtMaxAttachHeight;
+        protected System.Web.UI.WebControls.CheckBox chkAutoSubscribeNewTopicsOnly;
+        protected System.Web.UI.WebControls.DropDownList drpRoles;
+        protected System.Web.UI.WebControls.Literal tbRoles;
+        protected System.Web.UI.WebControls.HiddenField hidRoles;
+        protected System.Web.UI.WebControls.CheckBox chkSocialTopicsOnly;
+        protected System.Web.UI.WebControls.DropDownList drpSocialSecurityOption;
+        protected System.Web.UI.WebControls.Literal litPropLoad;
 
         #region Event Handlers
 
@@ -176,14 +284,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.lblMaintWarn.Text = string.Format(this.GetSharedResource("[RESX:MaintenanceWarning]"), this.GetSharedResource("[RESX:MaintenanceWarning:Remove]"), this.GetSharedResource("[RESX:MaintenanceWarning:Remove:Desc]"));
             }
 
-            // drpEditorTypes.Attributes.Add("onchange", "toggleEditorFields();");
             if (this.cbEditorAction.IsCallback)
             {
                 return;
             }
 
             this.BindGroups();
-            this.BindTemplates();
 
             if (this.recordId > 0)
             {
@@ -242,7 +348,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 case "forumsave":
                     {
-                        var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(this.PortalId);
+                        var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(this.PortalSettings);
                         var bIsNew = false;
                         int forumGroupId;
 
@@ -426,14 +532,15 @@ namespace DotNetNuke.Modules.ActiveForums
             AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.IsModerated, parameters[34]);
             AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.DefaultTrustLevel, parameters[35]);
             AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoTrustLevel, parameters[36]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModApproveTemplateId, parameters[37]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModRejectTemplateId, parameters[38]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModMoveTemplateId, parameters[39]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModDeleteTemplateId, parameters[40]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModNotifyTemplateId, parameters[41]);
+            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModApproveNotify, parameters[37]);
+            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModRejectNotify, parameters[38]);
+            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModMoveNotify, parameters[39]);
+            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModDeleteNotify, parameters[40]);
+            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModAlertNotify, parameters[41]);
             AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoSubscribeEnabled, parameters[42]);
             AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, parameters[43]);
             AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EmailNotificationSubjectTemplate, parameters[44]);
+            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.TemplateFileNameSuffix, parameters[45]);
         }
 
         private void LoadForum(int forumId)
@@ -518,6 +625,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.chkInheritModuleFeatures.Checked = true;
                 this.trTemplates.Attributes.Add("style", "display:none;");
             }
+
             this.LoadFeatureSettings(gi.FeatureSettings);
         }
 
@@ -529,8 +637,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId: this.MainSettings.DefaultPermissionId, moduleId: this.ModuleId);
                 if (permissions == null)
                 {
-                    permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(this.PortalId).ToString(), this.ModuleId);
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(this.PortalId, this.ModuleId, permissions.PermissionsId);
+                    permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateDefaultPermissions(this.PortalSettings, this.ModuleId);
                     DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, SettingKeys.DefaultPermissionId, permissions.PermissionsId.ToString());
                 }
 
@@ -551,17 +658,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadFeatureSettings(DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings featureSettings)
         {
-            Utilities.SelectListItemByValue(this.drpTopicsTemplate, featureSettings.TopicsTemplateId);
-            Utilities.SelectListItemByValue(this.drpTopicTemplate, featureSettings.TopicTemplateId);
-            Utilities.SelectListItemByValue(this.drpTopicForm, featureSettings.TopicFormId);
-            Utilities.SelectListItemByValue(this.drpReplyForm, featureSettings.ReplyFormId);
-            Utilities.SelectListItemByValue(this.drpQuickReplyForm, featureSettings.QuickReplyFormId);
-            Utilities.SelectListItemByValue(this.drpProfileDisplay, featureSettings.ProfileTemplateId);
-            Utilities.SelectListItemByValue(this.drpModApprovedTemplateId, featureSettings.ModApproveTemplateId);
-            Utilities.SelectListItemByValue(this.drpModRejectTemplateId, featureSettings.ModRejectTemplateId);
-            Utilities.SelectListItemByValue(this.drpModDeleteTemplateId, featureSettings.ModDeleteTemplateId);
-            Utilities.SelectListItemByValue(this.drpModMoveTemplateId, featureSettings.ModMoveTemplateId);
-            Utilities.SelectListItemByValue(this.drpModNotifyTemplateId, featureSettings.ModNotifyTemplateId);
+
             Utilities.SelectListItemByValue(this.drpDefaultTrust, (int)featureSettings.DefaultTrustValue);
             Utilities.SelectListItemByValue(this.drpEditorTypes, (int)featureSettings.EditorType);
             Utilities.SelectListItemByValue(this.drpEditorMobile, (int)featureSettings.EditorMobile);
@@ -570,8 +667,15 @@ namespace DotNetNuke.Modules.ActiveForums
             this.txtAutoTrustLevel.Text = featureSettings.AutoTrustLevel.ToString();
             this.txtEmailAddress.Text = featureSettings.EmailAddress;
             this.txtEmailNotificationSubjectTemplate.Text = featureSettings.EmailNotificationSubjectTemplate;
+            this.txtTemplateFileNameSuffix.Text = featureSettings.TemplateFileNameSuffix;
             this.txtCreatePostCount.Text = featureSettings.CreatePostCount.ToString();
             this.txtReplyPostCount.Text = featureSettings.ReplyPostCount.ToString();
+
+            this.chkModNotifyApprove.Checked = featureSettings.ModApproveNotify;
+            this.chkModNotifyReject.Checked = featureSettings.ModRejectNotify;
+            this.chkModNotifyDelete.Checked = featureSettings.ModDeleteNotify;
+            this.chkModNotifyMove.Checked = featureSettings.ModMoveNotify;
+            this.chkModNotifyAlert.Checked = featureSettings.ModAlertNotify;
 
             this.rdFilterOn.Checked = featureSettings.UseFilter;
             this.rdFilterOff.Checked = !featureSettings.UseFilter;
@@ -766,22 +870,6 @@ namespace DotNetNuke.Modules.ActiveForums
             this.drpRoles.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: this.PortalId);
             this.drpRoles.DataBind();
             this.drpRoles.Items.Insert(0, new ListItem("[RESX:DropDownDefault]", string.Empty));
-        }
-
-        private void BindTemplates()
-        {
-            this.BindTemplateDropDown(this.drpTopicsTemplate, Templates.TemplateTypes.TopicsView, "[RESX:Default]", "0");
-            this.BindTemplateDropDown(this.drpTopicTemplate, Templates.TemplateTypes.TopicView, "[RESX:Default]", "0");
-            this.BindTemplateDropDown(this.drpTopicForm, Templates.TemplateTypes.TopicForm, "[RESX:Default]", "0");
-            this.BindTemplateDropDown(this.drpReplyForm, Templates.TemplateTypes.ReplyForm, "[RESX:Default]", "0");
-            this.BindTemplateDropDown(this.drpQuickReplyForm, Templates.TemplateTypes.QuickReplyForm, "[RESX:Default]", "0");
-
-            this.BindTemplateDropDown(this.drpProfileDisplay, Templates.TemplateTypes.PostInfo, "[RESX:Default]", "0");
-            this.BindTemplateDropDown(this.drpModApprovedTemplateId, Templates.TemplateTypes.ModEmail, "[RESX:DropDownDisabled]", "0");
-            this.BindTemplateDropDown(this.drpModDeleteTemplateId, Templates.TemplateTypes.ModEmail, "[RESX:DropDownDisabled]", "0");
-            this.BindTemplateDropDown(this.drpModMoveTemplateId, Templates.TemplateTypes.ModEmail, "[RESX:DropDownDisabled]", "0");
-            this.BindTemplateDropDown(this.drpModRejectTemplateId, Templates.TemplateTypes.ModEmail, "[RESX:DropDownDisabled]", "0");
-            this.BindTemplateDropDown(this.drpModNotifyTemplateId, Templates.TemplateTypes.ModEmail, "[RESX:DropDownDisabled]", "0");
         }
 
         #endregion

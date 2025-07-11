@@ -6,19 +6,12 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
+	
+    
 	public partial class admin_manageforums_home
 	{
-
 		///<summary>
 		///cbGrid control.
 		///</summary>
@@ -27,7 +20,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbGrid;
-
 		///<summary>
 		///litForums control.
 		///</summary>

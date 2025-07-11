@@ -85,13 +85,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             this.authorId = this.UserId;
-            this.canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Moderate, this.ForumUser.UserRoles);
-            this.canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Edit, this.ForumUser.UserRoles);
+            this.canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds);
+            this.canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.EditRoleIds, this.ForumUser.UserRoleIds);
             this.canModEdit = (this.canModApprove && this.canEdit);
 
-            this.canTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles);
-            this.canLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Lock, this.ForumUser.UserRoles);
-            this.canPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Pin, this.ForumUser.UserRoles);
+            this.canTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TrustRoleIds, this.ForumUser.UserRoleIds);
+            this.canLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.LockRoleIds, this.ForumUser.UserRoleIds);
+            this.canPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.PinRoleIds, this.ForumUser.UserRoleIds);
 
             if (this.ForumInfo == null)
             {
@@ -396,7 +396,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ctlForm.Summary = System.Net.WebUtility.HtmlDecode(ti.Content.Summary);
                 this.ctlForm.Body = sBody;
                 this.ctlForm.AnnounceEnd = ti.AnnounceEnd ?? Utilities.NullDate();
-                this.ctlForm.AnnounceStart =  ti.AnnounceStart ?? Utilities.NullDate();
+                this.ctlForm.AnnounceStart = ti.AnnounceStart ?? Utilities.NullDate();
                 this.ctlForm.Locked = ti.IsLocked;
                 this.ctlForm.Pinned = ti.IsPinned;
                 this.ctlForm.TopicIcon = ti.TopicIcon;
@@ -496,7 +496,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void PrepareTopic()
         {
-            string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicEditor", this.ForumInfo.FeatureSettings.TopicFormId);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicEditor, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
             if (this.isEdit)
             {
                 template = template.Replace("[RESX:CreateNewTopic]", "[RESX:EditingExistingTopic]");
@@ -530,7 +530,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
-            string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ReplyEditor", this.ForumInfo.FeatureSettings.ReplyFormId);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ReplyEditor, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
 
 #region "Backward compatilbility -- remove in v10.00.00"
             template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
@@ -806,7 +806,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
 
             this.SaveAttachments(ti.ContentId);
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Tag, this.ForumUser.UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TagRoleIds, this.ForumUser.UserRoleIds))
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopicId(this.TopicId);
                 var tagForm = string.Empty;
@@ -826,7 +826,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Categorize, this.ForumUser.UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.CategorizeRoleIds, this.ForumUser.UserRoleIds))
             {
                 if (this.Request.Form["amaf-catselect"] != null)
                 {
@@ -1024,7 +1024,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (!sc.Subscribed(this.PortalId, this.ForumModuleId, authorId, this.ForumId, this.TopicId))
                     {
                         // TODO: move to new DAL2 subscription controller
-                        new SubscriptionController().Subscription_Update(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, 1, authorId, this.ForumUser.UserRoles);
+                        new SubscriptionController().Subscription_Update(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, 1, this.ForumUser);
                     }
                 }
                 else if (this.isEdit)
@@ -1033,7 +1033,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (isSub && !this.ctlForm.Subscribe)
                     {
                         // TODO: move to new DAL2 subscription controller
-                        new SubscriptionController().Subscription_Update(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, 1, authorId, this.ForumUser.UserRoles);
+                        new SubscriptionController().Subscription_Update(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, 1, this.ForumUser);
                     }
                 }
 

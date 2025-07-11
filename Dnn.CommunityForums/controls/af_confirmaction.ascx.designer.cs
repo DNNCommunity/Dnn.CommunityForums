@@ -6,14 +6,12 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
-
+	
+    
     public partial class af_confirmaction_new
     {
-
         /// <summary>
         /// lblTitle control.
         /// </summary>
@@ -22,7 +20,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblTitle;
-
         /// <summary>
         /// lblMessage control.
         /// </summary>
@@ -31,7 +28,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMessage;
-
         /// <summary>
         /// hypForums control.
         /// </summary>
@@ -40,7 +36,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hypForums;
-
         /// <summary>
         /// hypPost control.
         /// </summary>
@@ -49,7 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hypPost;
-
         /// <summary>
         /// hypHome control.
         /// </summary>

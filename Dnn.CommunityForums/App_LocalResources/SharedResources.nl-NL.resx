@@ -1873,4 +1873,22 @@ Van,
   <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
     <value>Publicatiedatum</value>
   </data>
+  <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
+    <value>Uitzondering ter vervanging van token op entiteit: {0} id: {1} eigenschap token: {2} indeling: {3}</value>
+  </data>
+  <data name="[RESX:EmailNotificationGreeting].Text" xml:space="preserve">
+    <value>Er is een bericht geplaatst op een forum dat u volgt.</value>
+  </data>
+  <data name="[RESX:EmailNotificationVisitLinkMessage].Text" xml:space="preserve">
+    <value>Om de volledige thread te bekijken en te antwoorden, ga naar:</value>
+  </data>
+  <data name="[RESX:ThankYou].Text" xml:space="preserve">
+    <value>Bedankt</value>
+  </data>
+  <data name="[RESX:Posted].Text" xml:space="preserve">
+    <value>Verzonden:</value>
+  </data>
+  <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
+    <value>Om de meldingen van je forum te beheren, ga je naar:</value>
+  </data>
 </root>

@@ -97,9 +97,6 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract IDataReader Groups_Get(int moduleId, int forumGroupID);
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Used by Cache but only Cleared but never Set so not needed.")]
-        public abstract IDataReader Groups_List(int moduleId);
-
         public abstract void Groups_Move(int moduleId, int forumGroupId, int sortDirection);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
@@ -257,14 +254,19 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Templates
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public abstract void Templates_Delete(int templateId, int portalId, int moduleId);
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public abstract IDataReader Templates_Get(int templateId, int portalId, int moduleId);
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public abstract IDataReader Templates_List(int portalId, int moduleId, int templateType);
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public abstract IDataReader Templates_List(int portalId, int moduleId, int templateType, int rowIndex, int pageSize);
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public abstract int Templates_Save(int templateId, int portalId, int moduleId, int templateType, bool isSystem, string title, string subject, string template);
         #endregion
 

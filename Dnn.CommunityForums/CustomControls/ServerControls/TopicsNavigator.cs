@@ -20,15 +20,8 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
-    using System.Text;
-    using System.Web;
     using System.Web.UI;
-    using System.Web.UI.WebControls;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicsNavigator runat=server></{0}:TopicsNavigator>")]
     public class TopicsNavigator : ForumBase
@@ -110,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.ForumId > 0)
             {
-                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(this.ForumInfo.Security.View, this.ForumUser.UserRoles))
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(this.ForumInfo.Security.View, this.ForumUser.UserPermSet))
                 {
                     tb.ForumIds = this.ForumId.ToString();
                 }

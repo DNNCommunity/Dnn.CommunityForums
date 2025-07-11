@@ -27,50 +27,21 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
-    using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.UI.WebControls;
-    using System.Xml.Linq;
 
-    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
-    using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Modules.ActiveForums.Queue;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Localization;
-    using Microsoft.SqlServer.Server;
-
-    using static log4net.Appender.RollingFileAppender;
 
     public abstract partial class Utilities
     {
         internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
-
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, removeHTML, HttpContext.Current.Request.Url);
-        }
-
-        [Obsolete(message: "Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, true, true, HttpContext.Current.Request.Url);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string ImportFilter(int portalID, int moduleID)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(portalID, moduleID);
-        }
 
         internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
@@ -143,7 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : string.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
-                sToolbar = TemplateCache.GetCachedTemplate(forumModuleId, "ToolBar", 0);
+                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser, requestUri: requestUri, rawUrl: rawUrl);
                 if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
                 {
@@ -163,7 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Search popup
             templateStringBuilder.Replace("[AF:TB:SearchURL]", System.Net.WebUtility.HtmlEncode(NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search", $"f={forumId}" })));
-            templateStringBuilder.Replace("[AF:TB:AdvancedSearchURL]", System.Net.WebUtility.HtmlEncode( NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" })));
+            templateStringBuilder.Replace("[AF:TB:AdvancedSearchURL]", System.Net.WebUtility.HtmlEncode(NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" })));
             templateStringBuilder.Replace("[AF:TB:SearchText]", forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]");
             templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId, requestUri, rawUrl);
             return Utilities.LocalizeControl(templateStringBuilder.ToString());
@@ -198,8 +169,8 @@ namespace DotNetNuke.Modules.ActiveForums
                    || forumUser.IsAnonymous
                    || forumUser.IsAdmin
                    || forumUser.IsSuperUser
-                   || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, forumUser.UserRoles), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
-                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, forumUser.UserRoles)
+                   || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.TrustRoleIds, forumUser.UserRoleIds), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.ModerateRoleIds, forumUser.UserRoleIds)
                    || (forumUser.DateLastPost == null)
                    || (forumUser.DateLastPost != null && DateTime.UtcNow.Subtract((DateTime)forumUser.DateLastPost).TotalSeconds > floodInterval)
                    || (forumUser.DateLastReply != null && DateTime.UtcNow.Subtract((DateTime)forumUser.DateLastReply).TotalSeconds > floodInterval);
@@ -220,8 +191,8 @@ namespace DotNetNuke.Modules.ActiveForums
                    || forumUser == null
                    || forumUser.IsAdmin
                    || forumUser.IsSuperUser
-                   || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, forumUser.UserRoles), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
-                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, forumUser.UserRoles)
+                   || Utilities.IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.TrustRoleIds, forumUser.UserRoleIds), forumInfo.FeatureSettings.AutoTrustLevel, forumUser.PostCount)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.ModerateRoleIds, forumUser.UserRoleIds)
                    || (postInfo?.Content?.DateCreated != null && DateTime.UtcNow.Subtract(postInfo.Content.DateCreated).TotalMinutes > editInterval);
         }
 
@@ -590,14 +561,14 @@ namespace DotNetNuke.Modules.ActiveForums
             return RegexUtils.GetCachedRegex(System.Environment.NewLine).Replace(text, " <br /> ");
         }
 
-        private static string EncodeBrackets(string text)
+        internal static string EncodeBrackets(string text)
         {
-            return text.Replace("[", "&#91;").Replace("]", "&#93;");
+            return text.Replace("[", "&#91;").Replace("]", "&#93;").Replace("{", "&#123;").Replace("}", "&#125;");
         }
 
-        private static string DecodeBrackets(string text)
+        internal static string DecodeBrackets(string text)
         {
-            return text.Replace("&#91;", "[").Replace("&#93;", "]");
+            return text.Replace("&#91;", "[").Replace("&#93;", "]").Replace("&#123;", "{").Replace("&#125;", "}");
         }
 
         private static string CleanEditor(int portalId, string text, bool useFilter, int moduleId, string themePath, bool processEmoticons)
@@ -854,13 +825,51 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             name = name.Trim();
-            var chars = "_$%#@!*?;:~`+=()[]{}|\\'<>,/^&\".".ToCharArray();
+            name = name.Replace("\u0022", "-"); /* Unicode quotation mark (U+0022) */
+            name = name.Replace("\u0027", "-"); /* Unicode apostrophe (U+0027) */
+            name = name.Replace("\u0060", "-"); /* Unicode grave accent (U+0060) */
+            name = name.Replace("\u00A0", "-"); /* Unicode non-breaking space (U+00A0) */
+            name = name.Replace("\u00B4", "-"); /* Unicode accute accent (U+00b4) */
+            name = name.Replace("\u180E", string.Empty);  // mongolian vowel separator
+            name = name.Replace("\u2002", "-"); /* Unicode en space (U+2002) */
+            name = name.Replace("\u2003", "-"); /* Unicode em space (U+2003) */
+            name = name.Replace("\u2004", "-"); /* Unicode three-per-em space (U+2004) */
+            name = name.Replace("\u2005", "-"); /* Unicode four-per-em space (U+2005) */
+            name = name.Replace("\u2006", "-"); /* Unicode six-per-em space (U+2006) */
+            name = name.Replace("\u2007", "-"); /* Unicode figure space (U+2007) */
+            name = name.Replace("\u2008", "-"); /* Unicode punctuation space (U+2008) */
+            name = name.Replace("\u2009", "-"); /* Unicode thin space (U+2009) */
+            name = name.Replace("\u200A", "-"); /* Unicode hair space (U+200A) */
+            name = name.Replace("\u200B", string.Empty); /* Unicode zero width space (U+200B) */
+            name = name.Replace("\u200C", string.Empty);  // zero width non-joiner
+            name = name.Replace("\u200D", string.Empty);  // zero width joiner
+            name = name.Replace("\u2010", "-"); /* Unicode hyphen (U+2010) */
+            name = name.Replace("\u2011", "-"); /* Unicode non-breaking hyphen (U+2011) */
+            name = name.Replace("\u2012", "-"); // figure dash
+            name = name.Replace("\u2013", "-"); /* Unicode en dash (U+2013) */
+            name = name.Replace("\u2014", "-"); /* Unicode em dash (U+2014) */
+            name = name.Replace("\u2015", "-"); /* Unicode horizontal bar (U+2015) */
+            name = name.Replace("\u2018", "-"); /* Unicode left single quotation mark (U+2018) */
+            name = name.Replace("\u2019", "-"); /* Unicode right single quotation mark (U+2019) */
+            name = name.Replace("\u201C", "-"); /* Unicode left double quotation mark (U+201c) */
+            name = name.Replace("\u201D", "-"); /* Unicode right double quotation mark (U+201d) */
+            name = name.Replace("\u202F", "-"); /* Unicode narrow no-break space (U+202F) */
+            name = name.Replace("\u2053", "-"); // swung dash
+            name = name.Replace("\u205F", "-"); /* Unicode medium mathematical space (U+205F) */
+            name = name.Replace("\u2212", "-"); /* Unicode minus sign (U+2212) */
+            name = name.Replace("\u3000", "-"); // ideographic space
+            name = name.Replace("\uFE63", "-"); // small hyphen-minus
+            name = name.Replace("\uFEFF", string.Empty);  // zero width no-break space
+            name = name.Replace("\uFF0D", "-"); // fullwidth hyphen-minus
+            name = Regex.Replace(name, @"[\u0000-\u001F\u007F]", string.Empty);
+
             name = name.Replace(". ", ".");
             name = name.Replace(" .", ".");
             name = name.Replace("- ", "-");
             name = name.Replace(" -", "-");
             name = name.Replace(".", "-");
             name = name.Replace(" ", "-");
+            var chars = "_$%#@!*?;:~`+=()[]{}|\\'<>,/^&\".".ToCharArray();
             for (var i = 0; i < chars.Length; i++)
             {
                 var strChar = chars.GetValue(i).ToString();
@@ -970,32 +979,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return sHTML;
-        }
-
-        internal static string GetFileContent(string filePath)
-        {
-            var sPath = filePath;
-            if (!sPath.Contains(@":\") && !sPath.Contains(@"\\"))
-            {
-                sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(sPath);
-            }
-
-            var sContents = string.Empty;
-            if (File.Exists(sPath))
-            {
-                try
-                {
-                    var objStreamReader = File.OpenText(sPath);
-                    sContents = objStreamReader.ReadToEnd();
-                    objStreamReader.Close();
-                }
-                catch (Exception exc)
-                {
-                    sContents = exc.Message;
-                }
-            }
-
-            return sContents;
         }
 
         internal static string GetUserFriendlyDateTimeString(DateTime datetime, int moduleId, UserInfo userInfo)
@@ -1770,6 +1753,31 @@ namespace DotNetNuke.Modules.ActiveForums
         public static bool IsNumeric(object expression)
         {
             return expression != null && (double.TryParse(expression.ToString(), out _) || bool.TryParse(expression.ToString(), out _));
+        }
+
+        internal static string ResolveUrl(PortalSettings portalSettings, string template)
+        {
+            const string linkRegex = "(href|src)=\"(/[^\"]*?)\"";
+            var matches = Regex.Matches(template, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            foreach (Match match in matches)
+            {
+                var link = match.Groups[2].Value;
+                var defaultAlias = portalSettings.DefaultPortalAlias;
+                var domain = DotNetNuke.Common.Globals.AddHTTP(defaultAlias);
+                if (defaultAlias.Contains("/"))
+                {
+                    var subDomain =
+                        defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
+                    if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        link = link.Substring(subDomain.Length);
+                    }
+                }
+
+                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{domain}{link}\"");
+            }
+
+            return template;
         }
     }
 }

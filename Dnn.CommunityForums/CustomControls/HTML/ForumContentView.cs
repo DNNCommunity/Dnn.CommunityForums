@@ -21,8 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
     using System.Text;
 
@@ -34,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Categories,
             Forums,
         }
-
 
         public int PortalId { get; set; } = -1;
 
@@ -111,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string sSubforums = string.Empty;
                 while (dr.Read())
                 {
-                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(dr["CanRead"].ToString(), this.ForumUser.UserRoles))
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(dr["CanRead"].ToString()), this.ForumUser.UserRoleIds))
                     {
                         string sURL = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ModuleId, dr["GroupPrefixURL"].ToString(), dr["PrefixURL"].ToString(), int.Parse(dr["ForumGroupId"].ToString()), int.Parse(dr["ForumId"].ToString()), -1, -1, string.Empty, 1, -1, -1);
                         if (this.ForumId == int.Parse(dr["ForumId"].ToString()))

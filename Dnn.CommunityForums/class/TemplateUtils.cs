@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Modules.ActiveForums.Enums;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -49,9 +50,6 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Remove in 10.00.00. Not Used.")]
         public static string ShowIcon(bool canView, int forumID, int userId, DateTime dateAdded, DateTime lastRead, int lastPostId) => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public static void LoadTemplateCache(int moduleID) => throw new NotImplementedException();
-
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, int timeZoneOffset) => throw new NotImplementedException();
 
@@ -60,9 +58,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int timeZoneOffset) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Entities.Users.UserInfo user, int timeZoneOffset) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, int timeZoneOffset) => throw new NotImplementedException();
@@ -96,7 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion "Deprecated Methods"
 
-        internal static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, bool topicSubscriber, INavigationManager navigationManager, Uri requestUrl, string rawUrl)
+        internal static string ParseEmailTemplate(string template, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, bool topicSubscriber, INavigationManager navigationManager, Uri requestUrl, string rawUrl)
         {
             if (navigationManager == null)
             {
@@ -108,17 +103,6 @@ namespace DotNetNuke.Modules.ActiveForums
             if (author == null)
             {
                 author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(portalID, moduleID, accessingUser.UserId);
-            }
-
-            // If we have a template name, load the template into sOut
-            if (templateName != string.Empty)
-            {
-                if (templateName.Contains("_Subject_"))
-                {
-                    templateName = templateName.Replace(string.Concat("_Subject_", moduleID), string.Empty);
-                }
-
-                template = TemplateCache.GetCachedTemplate(moduleID, templateName, -1);
             }
 
             var templateStringbuilder = new StringBuilder(template);
@@ -257,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var myTemplate = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey));
             if (string.IsNullOrEmpty(myTemplate))
             {
-                myTemplate = TemplateCache.GetCachedTemplate(moduleId, "ProfileInfo", -1);
+                myTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.ProfileInfo, SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
                 if (cacheKey != string.Empty)
                 {
                     DataCache.SettingsCacheStore(moduleId, cacheKey, myTemplate);
@@ -369,7 +353,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Parse Roles
                 if (pt.Contains("[ROLES:"))
                 {
-                    pt = ParseRoles(pt, (author.ForumUser.UserId == -1) ? string.Empty : author.ForumUser.UserRoles);
+                    pt = ParseRoles(pt, (author.ForumUser.UserId == -1) ? string.Empty : author.ForumUser.UserPermSet);
                 }
 
 #region "Backward compatilbility -- remove in v09.00.00"
@@ -531,7 +515,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string PreviewTopic(int topicTemplateID, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string body, string imagePath, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset, Uri requestUri, string rawUrl)
         {
-            var sTemplate = TemplateCache.GetCachedTemplate(forumInfo.ModuleId, "TopicView", topicTemplateID);
+            var sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumInfo.ModuleId, Enums.TemplateType.TopicView, forumInfo.FeatureSettings.TemplateFileNameSuffix);
             try
             {
                 var sbTopicTemplate = new StringBuilder(GetTemplateSection(sTemplate, "[TOPIC]", "[/TOPIC]"));

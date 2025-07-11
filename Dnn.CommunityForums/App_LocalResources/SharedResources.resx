@@ -1834,4 +1834,25 @@ From,
   <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
     <value>Post Date</value>
   </data>
+  <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
+    <value>Exception replacing token on entity: {0} id: {1} token property: {2} format: {3}</value>
+  </data>
+  <data name="[RESX:EmailNotificationGreeting].Text" xml:space="preserve">
+    <value>A message was posted to a forum you are tracking.</value>
+  </data>
+  <data name="[RESX:EmailNotificationVisitLinkMessage].Text" xml:space="preserve">
+    <value>To view the complete thread and reply, please visit:</value>
+  </data>
+  <data name="[RESX:ThankYou].Text" xml:space="preserve">
+    <value>Thank you,</value>
+  </data>
+  <data name="[RESX:Posted].Text" xml:space="preserve">
+    <value>Posted:</value>
+  </data>
+  <data name="By.Text" xml:space="preserve">
+    <value>By</value>
+  </data>
+  <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
+    <value>To manage your forums notifications, please visit:</value>
+  </data>
 </root>

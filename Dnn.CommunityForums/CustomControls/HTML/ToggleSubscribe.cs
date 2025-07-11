@@ -21,9 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Text;
 
     public class ToggleSubscribe
@@ -45,15 +42,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public int UserId { get; set; } = -1;
 
         public string ImageURL { get; set; } = string.Empty;
-
-        [Obsolete("Deprecated in Community Forums. Removing in 09.00.00. Use ToggleSubscribe(int ModuleId, int ForumId, int TopicId, int ToggleMode)")]
-        public ToggleSubscribe(int m, int f, int t)
-        {
-            this.ModuleId = -1;
-            this.ToggleMode = m;
-            this.ForumId = f;
-            this.TopicId = t;
-        }
 
         public ToggleSubscribe(int moduleId, int forumId, int topicId, int toggleMode)
         {

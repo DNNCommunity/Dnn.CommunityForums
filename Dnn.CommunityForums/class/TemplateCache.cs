@@ -23,111 +23,22 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Web;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Modules.ActiveForums.Enums;
 
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
     internal static class TemplateCache
     {
-        internal static string GetCachedTemplate(int moduleId, string templateType)
-        {
-            return GetCachedTemplate(moduleId, templateType, -1);
-        }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string GetCachedTemplate(int moduleId, string TemplateType, int TemplateId)
         {
-            string sTemplate = string.Empty;
-            string cacheKey = string.Format(CacheKeys.Template, moduleId, TemplateId, TemplateType);
-            object obj = null;
-            if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
-            {
-                obj = DataCache.SettingsCacheRetrieve(moduleId, cacheKey);
-            }
-
-            if (obj != null)
-            {
-                return Convert.ToString(obj);
-            }
-
             if (TemplateId < 1)
             {
-                try
-                {
-                    string fileName = $"{TemplateType}.ascx";
-                    SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(moduleId);
-                    string templateFilePathFileName = Utilities.MapPath(moduleSettings.TemplatePath + fileName);
-                    if (!System.IO.File.Exists(templateFilePathFileName))
-                    {
-                        templateFilePathFileName = Utilities.MapPath(Globals.TemplatesPath + fileName);
-                        if (!System.IO.File.Exists(templateFilePathFileName))
-                        {
-                            templateFilePathFileName = Utilities.MapPath(Globals.DefaultTemplatePath + fileName);
-                        }
-                    }
-
-                    if (System.IO.File.Exists(templateFilePathFileName))
-                    {
-                        using (System.IO.StreamReader objStreamReader = System.IO.File.OpenText(templateFilePathFileName))
-                        {
-                            sTemplate = objStreamReader.ReadToEnd();
-                        }
-
-                        sTemplate = Utilities.ParseSpacer(sTemplate);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    sTemplate = $"ERROR: Loading template {TemplateType} failed";
-                }
-            }
-            else
-            {
-                TemplateInfo templateInfo = new TemplateController().Template_Get(TemplateId);
-                if (templateInfo != null)
-                {
-                    sTemplate = templateInfo.Template;
-                    sTemplate = Utilities.ParseSpacer(sTemplate);
-                }
+                return DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, (Enums.TemplateType)Enum.Parse(typeof(Enums.TemplateType), TemplateType, true), string.Empty);
             }
 
-            sTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTemplateTokenSynonyms(new StringBuilder(sTemplate)).ToString();
-
-            sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
-            if (sTemplate.ToLowerInvariant().Contains("<dnn:"))
-            {
-                sTemplate = Globals.DnnControlsRegisterTag + sTemplate;
-            }
-
-            if (sTemplate.ToLowerInvariant().Contains("<am:"))
-            {
-                sTemplate = Globals.ForumsControlsRegisterAMTag + sTemplate;
-            }
-
-            if (sTemplate.ToLowerInvariant().Contains("<af:"))
-            {
-                sTemplate = Globals.ForumsControlsRegisterAFTag + sTemplate;
-            }
-
-            if (sTemplate.ToUpperInvariant().Contains("DCF:TEMPLATE-"))
-            {
-                foreach (Match nestedTemplateToken in RegexUtils.GetCachedRegex(@"\[DCF:TEMPLATE-(?<templateName>.[^\]]+)\]", RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(sTemplate))
-                {
-                    var token = nestedTemplateToken.Value;
-                    var nestedTemplateName = nestedTemplateToken.Groups["templateName"]?.Value;
-                    if (!string.IsNullOrEmpty(nestedTemplateName))
-                    {
-                        sTemplate = sTemplate.Replace(token, GetCachedTemplate(moduleId, nestedTemplateName, -1));
-                    }
-                }
-            }
-
-            if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
-            {
-                DataCache.SettingsCacheStore(moduleId, cacheKey, sTemplate);
-            }
-
-            return sTemplate;
+            return DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, (DotNetNuke.Modules.ActiveForums.Enums.TemplateType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.Enums.TemplateType), TemplateId.ToString()), string.Empty);
         }
     }
 }

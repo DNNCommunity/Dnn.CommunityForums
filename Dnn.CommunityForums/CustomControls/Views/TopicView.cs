@@ -1,15 +1,5 @@
 ﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Text.RegularExpressions;
 
 namespace Active.Modules.Forums.Controls
 {
@@ -398,7 +388,7 @@ namespace Active.Modules.Forums.Controls
 		}
 		private string ParseBanner(string template)
 		{
-			#if SKU = "PROFESSIONAL" Or SKU = "ENTERPRISE"
+			//#if SKU = "PROFESSIONAL" Or SKU = "ENTERPRISE"
 			if (template.Contains("[BANNER")) {
 				int bannerCount = 1;
 				template = "<%@ Register TagPrefix=\"dnn\" TagName=\"BANNER\" Src=\"~/Admin/Skins/Banner.ascx\" %>" + template;
@@ -415,10 +405,10 @@ namespace Active.Modules.Forums.Controls
 					template = regExp.Replace(template, sReplace, 1);
 				}
 			}
-			#elif
-			template = template.Replace("[BANNER]", string.Empty);
-			template = template.Replace("<%@ Register TagPrefix=\"dnn\" TagName=\"BANNER\" Src=\"~/Admin/Skins/Banner.ascx\" %>", string.Empty);
-			#endif
+			//#elseif
+			//template = template.Replace("[BANNER]", string.Empty);
+			//template = template.Replace("<%@ Register TagPrefix=\"dnn\" TagName=\"BANNER\" Src=\"~/Admin/Skins/Banner.ascx\" %>", string.Empty);
+			//#endif
 			return template;
 		}
 		public TopicDisplay()

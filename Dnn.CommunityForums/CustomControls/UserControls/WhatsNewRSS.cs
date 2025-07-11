@@ -23,13 +23,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System;
     using System.Collections;
     using System.ComponentModel;
-    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.UI;
 
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:WhatsNewRSS runat=server></{0}:WhatsNewRSS>")]
@@ -139,7 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return this.authorizedForums ??
                        (this.authorizedForums =
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, this.Settings.Forums, this.CurrentUser.UserRoles));
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, this.Settings.Forums, this.CurrentUser.UserRoleIds));
             }
         }
 

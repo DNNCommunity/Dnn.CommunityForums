@@ -21,9 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
 
     public partial class af_subscribe : ForumBase
     {
@@ -76,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             int iStatus = 0;
             SubscriptionController sc = new SubscriptionController();
-            iStatus = sc.Subscription_Update(this.PortalId, this.ModuleId, this.ForumId, this.TopicId, 1, this.UserId, this.ForumUser.UserRoles);
+            iStatus = sc.Subscription_Update(this.PortalId, this.ModuleId, this.ForumId, this.TopicId, 1, this.ForumUser);
             if (iStatus == 1)
             {
                 this.IsSubscribed = true;

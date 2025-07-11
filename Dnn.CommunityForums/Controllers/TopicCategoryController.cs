@@ -23,8 +23,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Collections.Generic;
     using System.Linq;
 
-    using DotNetNuke.Entities.Urls;
-
     internal partial class TopicCategoryController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo>
     {
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo> GetForTopic(int topicId)

@@ -30,16 +30,11 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Formatting;
-    using System.Net.Http.Headers;
-    using System.Reflection;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.Script.Serialization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
-    using DotNetNuke.Modules.ActiveForums.DAL2;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Api;
@@ -153,7 +148,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // Make sure the user has permissions to attach files
-                if (forumUser == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.Attach, forumUser.UserRoles))
+                if (forumUser == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security.ViewRoleIds, forumUser.UserRoleIds))
                 {
                     File.Delete(file.LocalFileName);
                     return request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized");
@@ -204,8 +199,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     var sExtOut = ".jpg";
                     ImageFormat imf, imfout = ImageFormat.Jpeg;
 
-                    Image img = Image.FromFile(file.LocalFileName);
-                    Image nimg;
+                    var img = System.Drawing.Image.FromFile(file.LocalFileName);
+                    System.Drawing.Image nimg;
 
                     var maxWidth = forum.FeatureSettings.MaxAttachWidth;
                     var maxHeight = forum.FeatureSettings.MaxAttachHeight;
@@ -388,7 +383,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var userInfo = portalSettings.UserInfo;
             var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).GetByUserId(this.ActiveModule.PortalID, userInfo.UserID);
             Dictionary<string, string> rows = new Dictionary<string, string>();
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(this.ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (this.UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, forumUser.UserRoles))))
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(this.ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (this.UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security.ViewRoleIds, forumUser.UserRoleIds))))
             {
                 rows.Add(fi.ForumID.ToString(), fi.ForumName.ToString());
             }
@@ -432,15 +427,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (oldForum == newForum)
                     {
-                        hasCreatePerm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Create, forumUser.UserRoles);
+                        hasCreatePerm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(oldForum.Security.CreateRoleIds, forumUser.UserRoleIds);
                     }
                     else
                     {
-                        hasCreatePerm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Create, forumUser.UserRoles) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(newForum.Security.Create, forumUser.UserRoles);
+                        hasCreatePerm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(oldForum.Security.CreateRoleIds, forumUser.UserRoleIds) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(newForum.Security.CreateRoleIds, forumUser.UserRoleIds);
                     }
 
-                    var canSplit = (ti.Content.AuthorId == userInfo.UserID && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Split, forumUser.UserRoles)) || userInfo.IsAdmin || userInfo.IsSuperUser ||
-                                   (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Moderate, forumUser.UserRoles) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(oldForum.Security.Split, forumUser.UserRoles));
+                    var canSplit = (ti.Content.AuthorId == userInfo.UserID && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(oldForum.Security.SplitRoleIds, forumUser.UserRoleIds)) || userInfo.IsAdmin || userInfo.IsSuperUser ||
+                                   (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(oldForum.Security.ModerateRoleIds, forumUser.UserRoleIds) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(oldForum.Security.SplitRoleIds, forumUser.UserRoleIds));
 
                     if (hasCreatePerm && canSplit)
                     {
@@ -467,6 +462,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
             }
+
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 

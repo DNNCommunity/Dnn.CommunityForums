@@ -234,12 +234,6 @@
   <data name="ForumGroupTemplate.Text" xml:space="preserve">
     <value>Forumsgruppe für neue Foren</value>
   </data>
-  <data name="ForumTemplate.Help" xml:space="preserve">
-    <value>Wählen Sie die Vorlage für die Seite aus, auf der alle Ihre Foren angezeigt werden.</value>
-  </data>
-  <data name="ForumTemplate.Text" xml:space="preserve">
-    <value>Vorlage</value>
-  </data>
   <data name="ForumTheme.Help" xml:space="preserve">
     <value>Wählen Sie das Layout für Ihr Forum aus.</value>
   </data>

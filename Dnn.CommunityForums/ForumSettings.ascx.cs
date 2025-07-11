@@ -21,8 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
     using System.Text;
     using System.Web;
@@ -124,10 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Note, this is called before OnLoad
             try
             {
-                // if (Page.IsPostBack == false)
-                // {
                 this.BindThemes();
-                this.BindTemplates();
                 this.BindPrivateMessaging();
                 this.BindForumGroups();
                 this.BindForumSecurity();
@@ -139,7 +134,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 Utilities.SelectListItemByValue(this.drpMode, this.Mode);
                 Utilities.SelectListItemByValue(this.drpThemes, this.Theme);
-                Utilities.SelectListItemByValue(this.drpTemplates, this.TemplateId);
 
                 Utilities.SelectListItemByValue(this.rdAutoLinks, this.AutoLink);
                 Utilities.SelectListItemByValue(this.drpDeleteBehavior, this.DeleteBehavior);
@@ -174,8 +168,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.txtDateFormat.Text = this.DateFormatString;
 
                 Utilities.SelectListItemByValue(this.drpForumGroupTemplate, this.ForumGroupTemplate);
-
-                // }
             }
             catch (Exception exc) // Module failed to load
             {
@@ -198,7 +190,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 this.Theme = this.drpThemes.SelectedValue;
                 this.Mode = this.drpMode.SelectedValue;
-                this.TemplateId = Utilities.SafeConvertInt(this.drpTemplates.SelectedValue);
                 this.PageSize = Utilities.SafeConvertInt(this.drpPageSize.SelectedValue, 10);
                 this.FloodInterval = Math.Max(0, Utilities.SafeConvertInt(this.txtFloodInterval.Text, 0));
                 this.EditInterval = Math.Max(0, Utilities.SafeConvertInt(this.txtEditInterval.Text, 0));
@@ -332,17 +323,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #endregion
 
         #region Private Methods
-
-        private void BindTemplates()
-        {
-            var tc = new TemplateController();
-            var tl = tc.Template_List(this.PortalId, this.ModuleId, Templates.TemplateTypes.ForumView);
-            this.drpTemplates.DataTextField = "Title";
-            this.drpTemplates.DataValueField = "TemplateId";
-            this.drpTemplates.DataSource = tl;
-            this.drpTemplates.DataBind();
-            this.drpTemplates.Items.Insert(0, new ListItem(this.LocalizeString("Default"), "0"));
-        }
 
         private void BindThemes()
         {

@@ -25,10 +25,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     using System.Net.Http;
     using System.Security.Principal;
     using System.Threading;
-    using System.Web.Helpers;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;

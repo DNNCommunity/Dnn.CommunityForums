@@ -21,10 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
-    using System.Data.SqlClient;
 
     using DotNetNuke.Common.Utilities;
     using Microsoft.ApplicationBlocks.Data;
@@ -227,12 +224,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public override IDataReader Groups_Get(int ModuleId, int ForumGroupID)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Groups_Get", ModuleId, ForumGroupID);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Used by Cache but only Cleared but never Set so not needed.")]
-        public override IDataReader Groups_List(int ModuleId)
-        {
-            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Groups_List", ModuleId);
         }
 
         public override void Groups_Move(int ModuleId, int ForumGroupId, int SortDirection)
@@ -506,26 +497,31 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
         #region Templates
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public override void Templates_Delete(int TemplateId, int PortalId, int ModuleId)
         {
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Templates_Delete", TemplateId, PortalId, ModuleId);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public override IDataReader Templates_Get(int TemplateId, int PortalId, int ModuleId)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Templates_Get", TemplateId, PortalId, ModuleId);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public override IDataReader Templates_List(int PortalId, int ModuleId, int TemplateType)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Templates_List", PortalId, ModuleId, TemplateType, 0, 10000);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public override IDataReader Templates_List(int PortalId, int ModuleId, int TemplateType, int RowIndex, int PageSize)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Templates_List", PortalId, ModuleId, TemplateType, RowIndex, PageSize);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public override int Templates_Save(int TemplateId, int PortalId, int ModuleId, int TemplateType, bool IsSystem, string Title, string Subject, string Template)
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Templates_Save", TemplateId, PortalId, ModuleId, TemplateType, IsSystem, Title, Subject, Template));
@@ -708,7 +704,7 @@ namespace DotNetNuke.Modules.ActiveForums
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_UpdateActivity", PortalId, UserId);
         }
 
-       public override IDataReader Profiles_GetStats(int PortalId, int Interval)
+        public override IDataReader Profiles_GetStats(int PortalId, int Interval)
         {
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_Stats", PortalId, Interval);
         }

@@ -20,9 +20,9 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTIO
 CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="MSBuild.Community.Tasks.Targets" />
-  <Target Name="PackageModule" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <Target Name="PackageModule" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <XmlRead Prefix="n"
                     Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
                     XPath="dotnetnuke/packages/package[1]/@version"
@@ -59,8 +59,8 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <InstallInclude Include="**\*.jpeg" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.jpg" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.bmp" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
-		<InstallInclude Include="**\*.xml" Exclude="packages\**;**\node_modules\**;clientApp\**;bin\**;.git\**;.vs\**;*.GhostDoc*" />
-		<InstallInclude Include="**\*.config" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**;**\app.config;**\packages.config" />
+		<InstallInclude Include="**\*.xml" Exclude="packages\**;**\node_modules\**;clientApp\**;bin\**;.git\**;.vs\**;*.GhostDoc*;obj\**\*.xml" />
+		<InstallInclude Include="**\*.config" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**;**\app.config;**\packages.config;**\*.dll.config" />
     </ItemGroup>
 
     <CreateItem Include="$(DNNFileName).dnn">
@@ -93,13 +93,13 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 	  <ItemGroup>
-      <BinInstallInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.dll" />
+      <BinInstallInclude Include="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).dll" />
       <!--BinInstallInclude Include="$(MSBuildProjectDirectory)\bin\*.dll" Exclude="$(MSBuildProjectDirectory)\bin\DotNetNuke*;$(MSBuildProjectDirectory)\bin\Dnn*;$(MSBuildProjectDirectory)\bin\Telerik*;$(MSBuildProjectDirectory)\bin\System.*;$(MSBuildProjectDirectory)\bin\Microsoft.*;$(MSBuildProjectDirectory)\bin\Newtonsoft.Json.*;$(MSBuildProjectDirectory)\bin\WebMatrix.*;" /-->
     </ItemGroup>
 
     <ItemGroup>
-      <SymbolsBinInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.pdb" />
-      <SymbolsBinInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.xml" />
+      <SymbolsBinInclude Include="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).pdb" />
+      <SymbolsBinInclude Include="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml" />
       <!--SymbolsBinInclude Include="$(MSBuildProjectDirectory)\bin\*.pdb" Exclude="$(MSBuildProjectDirectory)\bin\DotNetNuke*;$(MSBuildProjectDirectory)\bin\Dnn*;$(MSBuildProjectDirectory)\bin\Telerik*;$(MSBuildProjectDirectory)\bin\System.*;$(MSBuildProjectDirectory)\bin\Microsoft.*;$(MSBuildProjectDirectory)\bin\Newtonsoft.Json.*;$(MSBuildProjectDirectory)\bin\WebMatrix.*;" />
       <SymbolsBinInclude Include="$(MSBuildProjectDirectory)\bin\*.xml" Exclude="$(MSBuildProjectDirectory)\bin\DotNetNuke*;$(MSBuildProjectDirectory)\bin\Dnn*;$(MSBuildProjectDirectory)\bin\Telerik*;$(MSBuildProjectDirectory)\bin\System.*;$(MSBuildProjectDirectory)\bin\Microsoft.*;$(MSBuildProjectDirectory)\bin\Newtonsoft.Json.*;$(MSBuildProjectDirectory)\bin\WebMatrix.*;" /-->
     </ItemGroup>

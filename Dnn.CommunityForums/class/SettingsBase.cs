@@ -21,14 +21,10 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Reflection;
-    using System.Web;
 
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Security.Permissions;
 
     public class SettingsBase : PortalModuleBase
     {
@@ -43,7 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Public Properties
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UserId);
 
-        internal string UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ForumModuleId);
+        internal string UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ForumModuleId, this.ForumUser);
 
         public int ForumModuleId
         {
@@ -88,7 +84,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.@params = value;
             }
         }
-
 
         public int PageId
         {
@@ -135,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public CurrentUserTypes CurrentUserType => this.ForumUser.CurrentUserType;
-        
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public bool UserIsMod => this.ForumUser.GetIsMod(this.ForumModuleId);
 

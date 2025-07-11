@@ -53,9 +53,13 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         private Mock<IUserController> userController;
         private Mock<IRoleController> roleController;
         private Mock<IHostController> mockHostController;
+
+        internal Mock<DotNetNuke.Entities.Modules.ModuleInfo> mockModule;
+
         internal Mock<DotNetNuke.Modules.ActiveForums.SettingsInfo> MainSettings;
 
         [SetUp]
+
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -118,17 +122,25 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         private void SetupRoleProvider()
         {
             var adminRoleInfoForAdministrators = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_Administrators, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators, UserID = DotNetNuke.Tests.Utilities.Constants.UserID_Admin };
-            var adminRoleInfoforRegisteredUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers, UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12 };
-            var user10RoleInfoforRegisteredUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers, UserID = DotNetNuke.Tests.Utilities.Constants.USER_TenId };
-            var user12RoleInfoforRegisteredUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers, UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12 };
-            var userFirstSocialGroupOwner = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_FirstSocialGroup, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_FirstSocialGroup, UserID = DotNetNuke.Tests.Utilities.Constants.UserID_FirstSocialGroupOwner, IsOwner = true };
-            var anonymousRoleInfo = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser), UserID = -1 };
+            var adminRoleInfoforRegisteredUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers, UserID = DotNetNuke.Tests.Utilities.Constants.UserID_Admin };
+            var adminRoleInfoforAllUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers), UserID = DotNetNuke.Tests.Utilities.Constants.UserID_Admin };
+            var adminRoleInfoforAnonymousUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser), UserID = DotNetNuke.Tests.Utilities.Constants.UserID_Admin };
+            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_Admin), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { adminRoleInfoForAdministrators, adminRoleInfoforRegisteredUsers, adminRoleInfoforAllUsers, adminRoleInfoforAnonymousUsers });
 
-            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_Admin), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { adminRoleInfoForAdministrators, adminRoleInfoforRegisteredUsers });
-            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_User12), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user12RoleInfoforRegisteredUsers });
+            var user10RoleInfoforRegisteredUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers, UserID = DotNetNuke.Tests.Utilities.Constants.USER_TenId };
+            var user10RoleInfoforAllUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers), UserID = DotNetNuke.Tests.Utilities.Constants.USER_TenId };
+            var user10RoleInfoforAnonymousUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser), UserID = DotNetNuke.Tests.Utilities.Constants.USER_TenId };
+            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.USER_TenId), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user10RoleInfoforRegisteredUsers, user10RoleInfoforAllUsers, user10RoleInfoforAnonymousUsers });
+
+            var user12RoleInfoforRegisteredUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers, UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12 };
+            var user12RoleInfoforAllUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers), UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12 };
+            var user12RoleInfoforAnonymousUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser), UserID = DotNetNuke.Tests.Utilities.Constants.USER_TenId };
+            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_User12), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user12RoleInfoforRegisteredUsers, user12RoleInfoforAllUsers, user12RoleInfoforAnonymousUsers });
+
+            var userFirstSocialGroupOwner = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_FirstSocialGroup, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_FirstSocialGroup, UserID = DotNetNuke.Tests.Utilities.Constants.UserID_FirstSocialGroupOwner, IsOwner = true };
             this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_FirstSocialGroupOwner), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { userFirstSocialGroupOwner });
-            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.USER_TenId), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user10RoleInfoforRegisteredUsers });
-            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == -1), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { anonymousRoleInfo });
+
+            this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { });
         }
 
         private void SetupUserInfo()
@@ -140,6 +152,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                 Username = DotNetNuke.Tests.Utilities.Constants.UserName_Admin,
                 DisplayName = DotNetNuke.Tests.Utilities.Constants.UserDisplayName_Admin,
             };
+            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_Admin), It.IsAny<int>())).Returns(adminUserInfo);
+            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_Admin))).Returns(adminUserInfo);
+
             var user10Info = new UserInfo
             {
                 PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
@@ -147,6 +162,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                 Username = DotNetNuke.Tests.Utilities.Constants.USER_TenName,
                 DisplayName = DotNetNuke.Tests.Utilities.Constants.USER_TenName,
             };
+            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_TenId), It.IsAny<int>())).Returns(user10Info);
+            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_TenId))).Returns(user10Info);
+
             var user12Info = new UserInfo
             {
                 PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
@@ -158,13 +176,22 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                     PreferredLocale = "en-US",
                 },
             };
-            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_Admin), It.IsAny<int>())).Returns(adminUserInfo);
             this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_User12), It.IsAny<int>())).Returns(user12Info);
-            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_TenId), It.IsAny<int>())).Returns(user10Info);
-
-            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_Admin))).Returns(adminUserInfo);
             this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_User12))).Returns(user12Info);
-            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_TenId))).Returns(user10Info);
+
+            var anonUserInfo = new UserInfo
+            {
+                PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
+                UserID = DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId,
+                Username = "Guest",
+                DisplayName = "Unauthenticated User",
+                Profile = new UserProfile
+                {
+                    PreferredLocale = "en-US",
+                },
+            };
+            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId), It.IsAny<int>())).Returns(anonUserInfo);
+            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId))).Returns(anonUserInfo);
         }
 
         private void SetupRoleInfo()
@@ -182,6 +209,20 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                 {
                     RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators,
                     RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_Administrators,
+                    Status = RoleStatus.Approved,
+                    PortalID = this.portalController.Object.GetCurrentPortalSettings().PortalId,
+                },
+                new RoleInfo()
+                {
+                    RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser),
+                    RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName,
+                    Status = RoleStatus.Approved,
+                    PortalID = this.portalController.Object.GetCurrentPortalSettings().PortalId,
+                },
+                new RoleInfo()
+                {
+                    RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers),
+                    RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName,
                     Status = RoleStatus.Approved,
                     PortalID = this.portalController.Object.GetCurrentPortalSettings().PortalId,
                 },
@@ -206,6 +247,16 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                 new UserRoleInfo()
                 {
                     UserRoleID = 2,
+                    RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers),
+                    RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName,
+                    Status = RoleStatus.Approved,
+                    EffectiveDate = DotNetNuke.Common.Utilities.Null.NullDate,
+                    ExpiryDate = DotNetNuke.Common.Utilities.Null.NullDate,
+                    UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12,
+                },
+                new UserRoleInfo()
+                {
+                    UserRoleID = 2,
                     RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers,
                     RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers,
                     Status = RoleStatus.Approved,
@@ -216,6 +267,16 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                 new UserRoleInfo()
                 {
                     UserRoleID = 3,
+                    RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers),
+                    RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName,
+                    Status = RoleStatus.Approved,
+                    EffectiveDate = DotNetNuke.Common.Utilities.Null.NullDate,
+                    ExpiryDate = DotNetNuke.Common.Utilities.Null.NullDate,
+                    UserID = DotNetNuke.Tests.Utilities.Constants.USER_TenId,
+                },
+                new UserRoleInfo()
+                {
+                    UserRoleID = 4,
                     RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers,
                     RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers,
                     Status = RoleStatus.Approved,
@@ -225,9 +286,29 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                 },
                 new UserRoleInfo()
                 {
-                    UserRoleID = 4,
+                    UserRoleID = 5,
                     RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators,
                     RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_Administrators,
+                    Status = RoleStatus.Approved,
+                    EffectiveDate = DotNetNuke.Common.Utilities.Null.NullDate,
+                    ExpiryDate = DotNetNuke.Common.Utilities.Null.NullDate,
+                    UserID = DotNetNuke.Tests.Utilities.Constants.UserID_Admin,
+                },
+                new UserRoleInfo()
+                {
+                    UserRoleID = 6,
+                    RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser),
+                    RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName,
+                    Status = RoleStatus.Approved,
+                    EffectiveDate = DotNetNuke.Common.Utilities.Null.NullDate,
+                    ExpiryDate = DotNetNuke.Common.Utilities.Null.NullDate,
+                    UserID = DotNetNuke.Tests.Utilities.Constants.UserID_Admin,
+                },
+                new UserRoleInfo()
+                {
+                    UserRoleID = 7,
+                    RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers),
+                    RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName,
                     Status = RoleStatus.Approved,
                     EffectiveDate = DotNetNuke.Common.Utilities.Null.NullDate,
                     ExpiryDate = DotNetNuke.Common.Utilities.Null.NullDate,
@@ -237,14 +318,18 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             this.roleController.Setup(rc => rc.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.USER_TenId), true)).Returns(roles.Where(r => r.UserID == DotNetNuke.Tests.Utilities.Constants.USER_TenId).ToList());
             this.roleController.Setup(rc => rc.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_User12), true)).Returns(roles.Where(r => r.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_User12).ToList());
             this.roleController.Setup(rc => rc.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_Admin), true)).Returns(roles.Where(r => r.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_Admin).ToList());
+            this.roleController.Setup(rc => rc.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId), true)).Returns(roles.Where(r => r.UserID == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId).ToList());
         }
 
         private void SetupPortalSettings()
         {
             var portalSettings = new PortalSettings
             {
-                AdministratorRoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_Administrators,
                 PortalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
+                AdministratorRoleId = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators,
+                AdministratorRoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_Administrators,
+                RegisteredRoleId = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers,
+                RegisteredRoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers,
             };
 
             this.portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
@@ -272,13 +357,19 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
         private void SetupModuleInfo()
         {
-            var moduleInfo = new ModuleInfo
+            this.mockModule = new Mock<DotNetNuke.Entities.Modules.ModuleInfo>
             {
-                ModuleID = 1,
-                PortalID = this.portalController.Object.GetCurrentPortalSettings().PortalId,
+                Object =
+                {
+                    ModuleID = 1,
+                    PortalID = this.portalController.Object.GetCurrentPortalSettings().PortalId,
+                    ModuleTitle = "Test Module",
+
+                }
+
             };
 
-            this.moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(moduleInfo);
+            this.moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(this.mockModule.Object);
         }
 
         private void SetupMainSettings()

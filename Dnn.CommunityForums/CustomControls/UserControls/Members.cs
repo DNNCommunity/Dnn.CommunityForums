@@ -21,12 +21,9 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
-    using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -101,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder(1024);
             SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(this.ForumModuleId);
-            string sTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "_memberlist", 0);
+            string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType._memberList, SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
             if (!(sTemplate == string.Empty))
             {
                 string sGrid = TemplateUtils.GetTemplateSection(sTemplate, "[AF:CONTROL:LIST]", "[/AF:CONTROL:LIST]");
@@ -127,6 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sRow = sAltRow;
                         }
+
                         var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, up.UserId);
                         sRow = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sRow, author, this.ImagePath, this.ForumUser.CurrentUserType, false, false, string.Empty, -1, this.TimeZoneOffset);
                         sb.Append(sRow);

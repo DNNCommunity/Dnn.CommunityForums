@@ -18,26 +18,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -66,6 +58,9 @@ namespace DotNetNuke.Modules.ActiveForums
             //ForumsConfig.Install_LikeNotificationType_080200();
             //ForumsConfig.Install_PinNotificationType_080200();
             //ForumsConfig.Sort_PermissionSets_080200();
+            //ForumsConfig.Upgrade_PermissionSets_090000();
+            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
+
 #endif
 
             try
@@ -238,9 +233,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ctl.ForumTabId = this.ForumTabId;
                 ctl.ForumGroupId = this.ForumGroupId;
-                ctl.DefaultForumViewTemplateId = this.DefaultForumViewTemplateId;
-                ctl.DefaultTopicsViewTemplateId = this.DefaultTopicsViewTemplateId;
-                ctl.DefaultTopicViewTemplateId = this.DefaultTopicViewTemplateId;
                 ctl.ParentForumId = this.ParentForumId;
                 if (string.IsNullOrEmpty(this.ForumIds))
                 {
@@ -293,8 +285,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 cc.ForumModuleId = this.ForumModuleId;
                 cc.User = this.ForumUser;
                 string authorizedViewRoles = this.ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(this.TabId, this.PortalId).ToString("VIEW") : this.ModuleConfiguration.ModulePermissions.ToString("VIEW");
-                cc.DefaultViewRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, authorizedViewRoles.Split(';'));
-                cc.AdminRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'));
+                cc.DefaultViewRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.PortalId, authorizedViewRoles.Split(';'));
+                cc.AdminRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.PortalId, this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'));
                 cc.ProfileLink = string.Empty; // GetProfileLink()
                 cc.MembersLink = string.Empty; // GetMembersLink()
                 this.ControlConfig = cc;
@@ -327,7 +319,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (ctrl is Controls.ForumRow)
                 {
-                    ((Controls.ForumRow)ctrl).UserRoles = this.ForumUser.UserRoles;
+                    ((Controls.ForumRow)ctrl).UserPermSet = this.ForumUser.UserPermSet;
                 }
 
                 if (ctrl is Controls.ControlsBase)
@@ -428,7 +420,6 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.AppendLine("$(document).ready(function () { $('.aftb-search').afSearchPopup(); });");
 
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "afscripts", sb.ToString(), true);
-
         }
 
         #endregion

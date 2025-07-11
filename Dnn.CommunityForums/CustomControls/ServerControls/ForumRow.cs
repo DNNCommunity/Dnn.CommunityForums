@@ -21,12 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
-    using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -41,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private ForumRowControl rowTemplate;
         private string viewRoles;
         private string readRoles;
-        private string userRoles;
+        private string userPermSet;
         private bool hidden;
 
         public override System.Web.UI.ControlCollection Controls
@@ -120,16 +115,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        public string UserRoles
+        public string UserPermSet
         {
             get
             {
-                return this.userRoles;
+                return this.userPermSet;
             }
 
             set
             {
-                this.userRoles = value;
+                this.userPermSet = value;
             }
         }
 
@@ -157,8 +152,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ViewRoles, this.UserRoles);
-            bool canRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ReadRoles, this.UserRoles);
+            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.ViewRoles), DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.UserPermSet));
+            bool canRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.ReadRoles), DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.UserPermSet));
 
             if (this.Content != null)
             {

@@ -21,16 +21,9 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
-    using System.Reflection;
     using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Web;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
 
     public class af_rss : DotNetNuke.Framework.PageBase
@@ -127,8 +120,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     return string.Empty;
                 }
 
-                this.bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanView"].ToString(), u.UserRoles);
-                this.bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanRead"].ToString(), u.UserRoles);
+                this.bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanView"].ToString()), u.UserRoleIds);
+                this.bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanRead"].ToString()), u.UserRoleIds);
                 StringBuilder sb = new StringBuilder(1024);
                 if (this.bRead)
                 {
@@ -295,7 +288,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region  Web Form Designer Generated Code
 
         // This call is required by the Web Form Designer.
-        [System.Diagnostics.DebuggerStepThrough()]
+        [System.Diagnostics.DebuggerStepThrough]
         private void InitializeComponent()
         {
         }

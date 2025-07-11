@@ -21,9 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
 
     public partial class admin_templates_new : ActiveAdminBase
     {
@@ -66,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sValue = string.Empty;
             try
             {
-                sValue = this.GetSharedResource("[RESX:" + Convert.ToString(Enum.Parse(typeof(Templates.TemplateTypes), e.Item[1].ToString())) + "]");
+                sValue = this.GetSharedResource("[RESX:" + Convert.ToString(Enum.Parse(typeof(Enums.TemplateType), e.Item[1].ToString())) + "]");
             }
             catch (Exception ex)
             {

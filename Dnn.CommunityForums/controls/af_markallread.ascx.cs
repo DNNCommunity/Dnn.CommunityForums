@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region  Web Form Designer Generated Code
 
         // This call is required by the Web Form Designer.
-        [System.Diagnostics.DebuggerStepThrough()]
+        [System.Diagnostics.DebuggerStepThrough]
         private void InitializeComponent()
         {
         }

@@ -21,10 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
     using System.Web;
     using System.Web.UI;
 
@@ -88,6 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.parseTemplate = value;
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int DataPageId
         {
@@ -135,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (ctrl is Controls.ForumRow)
                     {
-                        ((Controls.ForumRow)ctrl).UserRoles = this.ForumUser.UserRoles;
+                        ((Controls.ForumRow)ctrl).UserPermSet = this.ForumUser.UserPermSet;
                     }
 
                     if (ctrl is Controls.ControlsBase)

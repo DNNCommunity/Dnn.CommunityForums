@@ -66,12 +66,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string template = string.Empty;
                 try
                 {
-                    int defaultTemplateId = this.MainSettings.ForumTemplateID;
-                    if (this.DefaultForumViewTemplateId >= 0)
-                    {
-                        defaultTemplateId = this.DefaultForumViewTemplateId;
-                    }
-
                     template = this.BuildForumView();
                 }
                 catch (Exception ex)
@@ -148,15 +142,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-                string sTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ForumView", 0);
-
+                string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ForumView, SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
 
                 StringBuilder stringBuilder = new StringBuilder(sTemplate);
-#region "Backward compatilbility -- remove in v10.00.00"
+                #region "Backward compatilbility -- remove in v10.00.00"
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(stringBuilder);
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyUserTokenSynonyms(stringBuilder, this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale);
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(stringBuilder, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale);
-#endregion "Backward compatilbility -- remove in v10.00.00"
+                #endregion "Backward compatilbility -- remove in v10.00.00"
 
                 stringBuilder.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
                 stringBuilder.Replace("[STATISTICS]", "<am:Stats id=\"amStats\" MID=\"" + this.ModuleId + "\" PID=\"" + this.PortalId.ToString() + "\" runat=\"server\" />");
@@ -187,7 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
                     string tmpGroup = string.Empty;
 
-#region "backward compatibilty - remove when removing ForumTable property"
+                    #region "backward compatibilty - remove when removing ForumTable property"
 #pragma warning disable CS0618
                     /* this is for backward compatibility -- remove when removing ForumTable property in 10.00.00 */
                     if (this.ForumTable != null)
@@ -201,7 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             this.Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"]), this.ForumModuleId));
                         }
                     }
-#endregion "backward compatibilty - remove when removing ForumTable property"
+                    #endregion "backward compatibilty - remove when removing ForumTable property"
 
                     if (this.Forums == null)
                     {
@@ -225,11 +218,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (this.Request.QueryString[ParamKeys.GroupId] != null)
                     {
-                        this.Forums = this.Forums.Where(f => f.ForumGroupId == Convert.ToInt32(this.Request.QueryString[ParamKeys.GroupId])).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList();
+                        this.Forums = this.Forums.Where(f => f.ForumGroupId == Convert.ToInt32(this.Request.QueryString[ParamKeys.GroupId])).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).ToList();
                     }
                     else
                     {
-                        this.Forums = this.Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList();
+                        this.Forums = this.Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).ToList();
                     }
 
                     string sGroupName = (this.ForumGroupId != -1 && this.Forums?.Count > 0) ? this.Forums?.FirstOrDefault().GroupName : string.Empty;
@@ -257,11 +250,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     int tmpGroupCount = 0;
                     if (this.Forums != null)
                     {
-                        foreach (var fi in this.Forums.Where(f => !this.SubsOnly || f.ParentForumId > 0).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).Take(Globals.ForumCount))
+                        foreach (var fi in this.Forums.Where(f => !this.SubsOnly || f.ParentForumId > 0).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).Take(Globals.ForumCount))
                         {
                             fi.PortalSettings = this.PortalSettings;
                             fi.MainSettings = this.MainSettings;
-                            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security?.View, this.ForumUser.UserRoles);
+                            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(fi.Security?.ViewRoleIds, this.ForumUser.UserRoleIds);
                             if (this.UserInfo.IsSuperUser || (canView && !fi.ForumGroup.Hidden))
                             {
                                 if (tmpGroup != fi.GroupName)
@@ -282,7 +275,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                         sGroupSectionTempStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sGroupSectionTempStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl);
                                         sGroupSectionTemp = sGroupSectionTempStringBuilder.ToString();
 
-                                        //any replacements on the group
+                                        // any replacements on the group
                                         StringBuilder sNewGroupStringBuilder = new StringBuilder("<div id=\"group" + fi.ForumGroupId + "\" class=\"afgroup\">" + sGroupTemplate + "</div>");
                                         sNewGroupStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumGroupTokens(sNewGroupStringBuilder, fi.ForumGroup, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl);
                                         string sNewGroup = sNewGroupStringBuilder.ToString();
@@ -396,7 +389,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (templateStringBuilder.ToString().Contains("[AF:CONTROL:TOGGLESUBSCRIBE]"))
             {
-                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, this.ForumUser.UserRoles))
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(fi.Security.SubscribeRoleIds, this.ForumUser.UserRoleIds))
                 {
                     bool isSubscribed = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId);
                     var subControl = new ToggleSubscribe(this.ForumModuleId, fi.ForumID, -1, 0);
@@ -413,10 +406,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     templateStringBuilder.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", "<img src=\"" + this.ThemePath + "email_disabled.png\" border=\"0\" alt=\"[RESX:ForumSubscribe:Disabled]\" />");
                 }
             }
+
             template = templateStringBuilder.ToString();
 
             return template;
-
         }
 
         #endregion
@@ -468,11 +461,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     i += 1;
                     string tmpSubs = TemplateUtils.GetTemplateSection(template, "[SUBFORUMS]", "[/SUBFORUMS]");
 
-                    bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, this.ForumUser.UserRoles);
+                    bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(fi.Security.ViewRoleIds, this.ForumUser.UserRoleIds);
                     if (canView || (!fi.Hidden) | this.UserInfo.IsSuperUser)
                     {
                         tmpSubs = this.ParseForumRow(tmpSubs, fi, i, subforums.Count());
-
                     }
                     else
                     {

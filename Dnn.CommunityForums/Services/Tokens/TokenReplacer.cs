@@ -23,21 +23,17 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
     using System;
     using System.Data.SqlTypes;
     using System.Linq;
-    using System.Net;
-    using System.Runtime.CompilerServices;
+    using System.Security.AccessControl;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
 
@@ -64,12 +60,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         private const string PropertySource_forumpost = "forumpost";
         private const string PropertySource_forumtopicaction = "forumtopicaction";
         private const string PropertySource_forumpostaction = "forumpostaction";
-        
+
         public TokenReplacer(DotNetNuke.Services.Tokens.TokenContext context)
         {
             this.TokenContext = context;
 
         }
+
         public TokenReplacer(PortalSettings portalSettings, ForumUserInfo forumUser, ForumInfo forumInfo, Uri requestUri, string rawUrl)
         {
             forumInfo.RawUrl = rawUrl;
@@ -94,6 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
+
             /* this allows unit tests to complete */
             catch (System.ArgumentNullException)
             {
@@ -122,7 +120,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
@@ -154,13 +154,15 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             topicInfo.Forum.RawUrl = rawUrl;
             topicInfo.Forum.ForumGroup.RawUrl = rawUrl;
             topicInfo.RawUrl = rawUrl;
+            topicInfo.Author.ForumUser.RawUrl = rawUrl;
             forumUser.RawUrl = rawUrl;
             topicInfo.Forum.RequestUri = requestUri;
             topicInfo.Forum.ForumGroup.RequestUri = requestUri;
             topicInfo.RequestUri = requestUri;
+            topicInfo.Author.ForumUser.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.GetTabId(), topicInfo.Forum.ModuleId, GetTabId(portalSettings, topicInfo.Forum),  GetModuleId(portalSettings, topicInfo.Forum), requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, topicInfo.Forum.GetTabId(), topicInfo.Forum.ModuleId, GetTabId(portalSettings, topicInfo.Forum), GetModuleId(portalSettings, topicInfo.Forum), requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = topicInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = topicInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = topicInfo;
@@ -180,7 +182,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
@@ -192,15 +196,17 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             postInfo.Forum.RawUrl = rawUrl;
             postInfo.Forum.ForumGroup.RawUrl = rawUrl;
             postInfo.Topic.RawUrl = rawUrl;
+            postInfo.Author.ForumUser.RawUrl = rawUrl;
             postInfo.RawUrl = rawUrl;
             forumUser.RawUrl = rawUrl;
             postInfo.Forum.RequestUri = requestUri;
             postInfo.Forum.ForumGroup.RequestUri = requestUri;
             postInfo.Topic.RequestUri = requestUri;
+            postInfo.Author.ForumUser.RequestUri = requestUri;
             postInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
-            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, postInfo.Forum.GetTabId(), postInfo.Forum.ModuleId, GetTabId(portalSettings, postInfo.Forum),  GetModuleId(portalSettings, postInfo.Forum), requestUri, rawUrl);
+            this.PropertySource[PropertySource_dcf] = new ForumsModuleTokenReplacer(portalSettings, postInfo.Forum.GetTabId(), postInfo.Forum.ModuleId, GetTabId(portalSettings, postInfo.Forum), GetModuleId(portalSettings, postInfo.Forum), requestUri, rawUrl);
             this.PropertySource[PropertySource_forum] = postInfo.Forum;
             this.PropertySource[PropertySource_forumgroup] = postInfo.Forum.ForumGroup;
             this.PropertySource[PropertySource_forumtopic] = postInfo.Topic;
@@ -221,7 +227,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
@@ -233,11 +241,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             likeInfo.Forum.RawUrl = rawUrl;
             likeInfo.Forum.ForumGroup.RawUrl = rawUrl;
             likeInfo.Topic.RawUrl = rawUrl;
+            likeInfo.Author.ForumUser.RawUrl = rawUrl;
             likeInfo.RawUrl = rawUrl;
             forumUser.RawUrl = rawUrl;
             likeInfo.Forum.RequestUri = requestUri;
             likeInfo.Forum.ForumGroup.RequestUri = requestUri;
             likeInfo.Topic.RequestUri = requestUri;
+            likeInfo.Topic.Author.ForumUser.RequestUri = requestUri;
+            likeInfo.Author.ForumUser.RequestUri = requestUri;
             likeInfo.RequestUri = requestUri;
             forumUser.RequestUri = requestUri;
             this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
@@ -279,7 +290,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
@@ -306,7 +319,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
@@ -323,7 +338,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 this.PropertySource[PropertySource_host] = new HostPropertyAccess();
             }
-            catch 
+
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
             {
             }
 
@@ -541,6 +558,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             // no longer using this
             template = RemoveObsoleteTokenByPrefix(template, "[SPLITBUTTONS2");
+
             // Add This -- obsolete so just remove
             template = RemoveObsoleteTokenByPrefix(template, "[AF:CONTROL:ADDTHIS");
 

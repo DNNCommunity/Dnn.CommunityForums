@@ -21,14 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Text;
-    using System.Web;
     using System.Web.UI;
-    using System.Web.UI.WebControls;
 
     [ToolboxData("<{0}:Toolbar runat=server></{0}:Toolbar>")]
     public class Toolbar : ControlsBase
@@ -76,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (ctrl is Controls.Link)
                 {
-                    ((Controls.Link)ctrl).UserRoles = this.ForumUser.UserRoles;
+                    ((Controls.Link)ctrl).UserPermSet = this.ForumUser.UserPermSet;
                 }
 
                 if (ctrl.Controls.Count > 0)

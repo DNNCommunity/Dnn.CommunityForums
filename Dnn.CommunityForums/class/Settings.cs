@@ -23,10 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Profile;
     using DotNetNuke.Modules.ActiveForums.Entities;
-    using Newtonsoft.Json.Linq;
 
     #region SettingsInfo
 
@@ -133,10 +130,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public int ForumTemplateID
-        {
-            get { return this.MainSettings.GetInt(SettingKeys.ForumTemplateId); }
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public int ForumTemplateID => throw new NotImplementedException();
 
         public DateTime InstallDate
         {
@@ -178,7 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public string ThemeLocation =>  string.Concat(Globals.ThemesPath, this.Theme, "/");
+        public string ThemeLocation => string.Concat(Globals.ThemesPath, this.Theme, "/");
 
         public string TemplatePath => string.Concat(this.ThemeLocation, "templates/");
 

@@ -23,7 +23,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Web.UI;
 
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Modules.ActiveForums.Constants;

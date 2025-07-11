@@ -6,14 +6,12 @@
 //     the code is regenerated. 
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
-
+	
+    
     public partial class admin_templates_edit
     {
-
         /// <summary>
         /// reqTitle control.
         /// </summary>
@@ -22,7 +20,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage reqTitle;
-
         /// <summary>
         /// reqSubject control.
         /// </summary>
@@ -31,7 +28,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage reqSubject;
-
         /// <summary>
         /// Img1 control.
         /// </summary>
@@ -40,7 +36,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img1;
-
         /// <summary>
         /// txtTitle control.
         /// </summary>
@@ -49,7 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTitle;
-
         /// <summary>
         /// txtSubject control.
         /// </summary>
@@ -58,7 +52,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSubject;
-
         /// <summary>
         /// drpTemplateType control.
         /// </summary>
@@ -67,7 +60,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpTemplateType;
-
         /// <summary>
         /// txtFileName control.
         /// </summary>
@@ -76,7 +68,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtFileName;
-
         /// <summary>
         /// txtEditor control.
         /// </summary>
@@ -85,7 +76,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEditor;
-
         /// <summary>
         /// hidTemplateId control.
         /// </summary>
@@ -94,7 +84,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidTemplateId;
-
         /// <summary>
         /// cbAction control.
         /// </summary>
@@ -103,7 +92,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbAction;
-
         /// <summary>
         /// cbActionMessage control.
         /// </summary>
@@ -112,7 +100,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cbActionMessage;
-
         /// <summary>
         /// btnSave control.
         /// </summary>
@@ -121,7 +108,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnSave;
-
         /// <summary>
         /// btnDelete control.
         /// </summary>
@@ -130,7 +116,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnDelete;
-
         /// <summary>
         /// btnClose control.
         /// </summary>

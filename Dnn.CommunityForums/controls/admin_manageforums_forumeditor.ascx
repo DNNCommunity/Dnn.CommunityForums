@@ -205,43 +205,6 @@ function saveSettings(){
         settingsAction = "groupsettingssave";
     };
 
-
-	var tt1 = document.getElementById("<%=drpTopicsTemplate.ClientID%>");
-    if (tt1.selectedIndex > 0) {
-        var TopicsTemplateId = tt1.options[tt1.selectedIndex].value;
-    } else {
-        var TopicsTemplateId = 0;
-    };
-	var tt2 = document.getElementById("<%=drpTopicTemplate.ClientID%>");
-    if (tt2.selectedIndex > 0) {
-        var TopicTemplateId = tt2.options[tt2.selectedIndex].value;
-    } else {
-        var TopicTemplateId = 0;
-    };
-	var tt3 = document.getElementById("<%=drpTopicForm.ClientID%>");
-    if (tt3.selectedIndex > 0) {
-        var TopicFormId = tt3.options[tt3.selectedIndex].value;
-    } else {
-        var TopicFormId = 0;
-    };
-    var tt4 = document.getElementById("<%=drpReplyForm.ClientID%>");
-    if (tt4.selectedIndex > 0) {
-        var ReplyFormId = tt4.options[tt4.selectedIndex].value;
-    } else {
-        var ReplyFormId = 0;
-    };
-    var tt5 = document.getElementById("<%=drpQuickReplyForm.ClientID%>");
-    if (tt5.selectedIndex > 0) {
-        var QuickReplyFormId = tt5.options[tt5.selectedIndex].value;
-    } else {
-        var QuickReplyFormId = 0;
-    };
-	var tt6 = document.getElementById("<%=drpProfileDisplay.ClientID%>");
-    if (tt6.selectedIndex > 0) {
-        var ProfileTemplateId = tt6.options[tt6.selectedIndex].value;
-    } else {
-        var ProfileTemplateId = 0;
-    };
     var EmailAddress = document.getElementById("<%=txtEmailAddress.ClientID%>");
     if (EmailAddress) {
         EmailAddress = EmailAddress.value;
@@ -253,6 +216,12 @@ function saveSettings(){
         EmailNotificationSubjectTemplate = EmailNotificationSubjectTemplate.value;
     } else {
         EmailNotificationSubjectTemplate = '';
+    };
+    var TemplateFileNameSuffix = document.getElementById("<%=txtTemplateFileNameSuffix.ClientID%>");
+    if (TemplateFileNameSuffix) {
+        TemplateFileNameSuffix = TemplateFileNameSuffix.value;
+    } else {
+        TemplateFileNameSuffix = '';
     };
     var CreatePostCount = document.getElementById("<%=txtCreatePostCount.ClientID%>");
     if (CreatePostCount) {
@@ -317,37 +286,14 @@ function saveSettings(){
         var DefaultTrustLevel = 0;
     };
 	var AutoTrustLevel = document.getElementById("<%=txtAutoTrustLevel.ClientID%>").value;
-	var md3 = document.getElementById("<%=drpModApprovedTemplateId.ClientID%>");
-    if (md3.selectedIndex > 0) {
-        var ModApproveTemplateId = md3.options[md3.selectedIndex].value;
-    } else {
-        var ModApproveTemplateId = 0;
-    };
-	var md4 = document.getElementById("<%=drpModRejectTemplateId.ClientID%>");
-    if (md4.selectedIndex > 0) {
-        var ModRejectTemplateId = md4.options[md4.selectedIndex].value;
-    } else {
-        var ModRejectTemplateId = 0;
-    };
-	var md5 = document.getElementById("<%=drpModMoveTemplateId.ClientID%>");
-    if (md5.selectedIndex > 0) {
-        var ModMoveTemplateId = md5.options[md5.selectedIndex].value;
-    } else {
-        var ModMoveTemplateId = 0;
-    };
-	var md6 = document.getElementById("<%=drpModDeleteTemplateId.ClientID%>");
-    if (md6.selectedIndex > 0) {
-        var ModDeleteTemplateId = md6.options[md6.selectedIndex].value;
-    } else {
-        var ModDeleteTemplateId = 0;
-    };
-	var md7 = document.getElementById("<%=drpModNotifyTemplateId.ClientID%>");
-    if (md7.selectedIndex > 0) {
-        var ModNotifyTemplateId = md7.options[md7.selectedIndex].value;
-    } else {
-        var ModNotifyTemplateId = 0;
-    };
-	var as = document.getElementById("<%=rdAutoSubOn.ClientID%>");
+
+    var modNotifyApprove = document.getElementById("<%=chkModNotifyApprove.ClientID%>").checked;
+    var modNotifyReject = document.getElementById("<%=chkModNotifyReject.ClientID%>").checked;
+    var modNotifyDelete = document.getElementById("<%=chkModNotifyDelete.ClientID%>").checked;
+    var modNotifyMove = document.getElementById("<%=chkModNotifyMove.ClientID%>").checked;
+    var modNotifyAlert = document.getElementById("<%=chkModNotifyAlert.ClientID%>").checked;
+
+    var as = document.getElementById("<%=rdAutoSubOn.ClientID%>");
 	var as1 = document.getElementById('<%=hidRoles.ClientID%>');
 	if (as != null){
 		var AutoSubscribeEnabled = as.checked;
@@ -362,11 +308,11 @@ function saveSettings(){
     var AllowLikes = document.getElementById("<%=rdLikesOn.ClientID%>").checked;
 	
     var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
-	<%=cbEditorAction.ClientID%>.Callback(settingsAction, forumid, TopicsTemplateId, TopicTemplateId, EmailAddress, UseFilter, AllowPostIcon, AllowEmoticons, AllowScripts,
+	<%=cbEditorAction.ClientID%>.Callback(settingsAction, forumid, null, null, EmailAddress, UseFilter, AllowPostIcon, AllowEmoticons, AllowScripts,
 		IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, EditorMobile, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, AttachInsertAllowed, MaxAttachWidth,
-		MaxAttachHeight, AttachConvertToJGPAllowed, AllowHtml, EditorType, EditorHeight, EditorWidth, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles, TopicFormId, ReplyFormId,
-		AutoSubscribeRoles, ProfileTemplateId, IsModerated, DefaultTrustLevel, AutoTrustLevel, ModApproveTemplateId, ModRejectTemplateId, ModMoveTemplateId, ModDeleteTemplateId,
-        ModNotifyTemplateId, AutoSubscribeEnabled, QuickReplyFormId, EmailNotificationSubjectTemplate);
+		MaxAttachHeight, AttachConvertToJGPAllowed, AllowHtml, EditorType, EditorHeight, EditorWidth, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles, null, null,
+		AutoSubscribeRoles, null, IsModerated, DefaultTrustLevel, AutoTrustLevel, modNotifyApprove, modNotifyReject, modNotifyMove, modNotifyDelete,
+        modNotifyAlert, AutoSubscribeEnabled, null, EmailNotificationSubjectTemplate, TemplateFileNameSuffix);
 
 
 };
@@ -959,7 +905,7 @@ function afadmin_getProperties() {
 				<table width="100%">
 					<tr id="trGroups" runat="server">
 						<td>
-							<img id="Img13" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:ForumGroup]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:ForumGroup]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:ForumGroup]:</td>
 						<td width="100%">
 							<asp:DropDownList ID="drpGroups" runat="server" CssClass="amcptxtbx" /></td>
@@ -969,7 +915,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr id="trName" runat="server">
 						<td>
-							<img id="Img14" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:ForumName]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:ForumName]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap;">
 							<asp:Label ID="lblForumGroupName" runat="server" Text="[RESX:ForumName]" />:</td>
 						<td width="100%">
@@ -980,27 +926,27 @@ function afadmin_getProperties() {
 					</tr>
 					<tr id="trDesc" runat="server">
 						<td valign="top">
-							<img id="Img15" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:ForumDesc]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:ForumDesc]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" valign="top">[RESX:ForumDesc]:</td>
 						<td width="100%">
 							<asp:TextBox ID="txtForumDesc" runat="server" CssClass="amcptxtbx" TextMode="MultiLine" /></td>
 						<td>
-							<img src="~/DesktopModules/ActiveForums/images/spacer.gif" width="20" runat="server" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/spacer.gif")%>" width="20" /></td>
 					</tr>
 					<tr id="trPrefix" runat="server">
 						<td valign="top">
-							<img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:VanityName]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:VanityName]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" valign="top">[RESX:VanityName]:</td>
 						<td width="100%">
 							<asp:TextBox ID="txtPrefixURL" runat="server" Width="100%" CssClass="amcptxtbx" MaxLength="50" onkeypress="return filterVanity(this,event);" /></td>
 						<td>
-							<img src="~/DesktopModules/ActiveForums/images/spacer.gif" width="20" runat="server" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/spacer.gif")%>" width="20" height="" /></td>
 					</tr>
                 </table>
 				<table id="trActive" runat="server" width="100%">
 					<tr>
 						<td>
-							<img id="Img20" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:Active]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:Active]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold">[RESX:Active]:</td>
 						<td width="100%">
 							<asp:CheckBox ID="chkActive" runat="server" Checked="true" /></td>
@@ -1008,7 +954,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr id="trHidden" runat="server">
 						<td>
-							<img id="Img21" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:Hidden]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:Hidden]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold">[RESX:Hidden]:</td>
 						<td>
 							<asp:CheckBox ID="chkHidden" runat="server" /></td>
@@ -1018,7 +964,7 @@ function afadmin_getProperties() {
                 <table width="100%" id="trInheritModuleFeatures" runat="server">
                     <tr>
                         <td>
-                            <img id="Img9" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritModuleFeatures]');" onmouseout="amHideTip(this);" /></td>
+                            <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:InheritModuleFeatures]');" onmouseout="amHideTip(this);" /></td>
                         <td class="amcpbold" style="white-space: nowrap;">[RESX:InheritModuleFeatures]:</td>
                         <td width="100%">
                             <asp:CheckBox ID="chkInheritModuleFeatures" runat="server" />
@@ -1029,7 +975,7 @@ function afadmin_getProperties() {
                 <table width="100%" id="trInheritModuleSecurity" runat="server">
                     <tr>
                         <td>
-                            <img id="Img10" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritModuleSecurity]');" onmouseout="amHideTip(this);" /></td>
+                            <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:InheritModuleSecurity]');" onmouseout="amHideTip(this);" /></td>
                         <td class="amcpbold" style="white-space: nowrap;">[RESX:InheritModuleSecurity]:</td>
                         <td width="100%">
                             <asp:CheckBox ID="chkInheritModuleSecurity" runat="server" />
@@ -1040,7 +986,7 @@ function afadmin_getProperties() {
                 <table width="100%" id="trInheritGroupFeatures" runat="server">
                     <tr>
                         <td>
-                            <img id="Img11" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritGroupFeatures]');" onmouseout="amHideTip(this);" /></td>
+                            <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:InheritGroupFeatures]');" onmouseout="amHideTip(this);" /></td>
                         <td class="amcpbold" style="white-space: nowrap;">[RESX:InheritGroupFeatures]:</td>
                         <td width="100%">
                             <asp:CheckBox ID="chkInheritGroupFeatures" runat="server" />
@@ -1051,7 +997,7 @@ function afadmin_getProperties() {
                 <table width="100%" id="trInheritGroupSecurity" runat="server">
                     <tr>
                         <td>
-                            <img id="Img12" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritGroupSecurity]');" onmouseout="amHideTip(this);" /></td>
+                            <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:InheritGroupSecurity]');" onmouseout="amHideTip(this);" /></td>
                         <td class="amcpbold" style="white-space: nowrap;">[RESX:InheritGroupSecurity]:</td>
                         <td width="100%">
                             <asp:CheckBox ID="chkInheritGroupSecurity" runat="server" />
@@ -1063,55 +1009,9 @@ function afadmin_getProperties() {
 					<tr>
 						<td colspan="4" class="amcpbold">[RESX:Templates]</td>
 					</tr>
-					<tr>
-						<td>
-							<img id="Img17" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:TopicsTemplate]');" onmouseout="amHideTip(this);" /></td>
-						<td class="amcpbold" style="white-space: nowrap">[RESX:TopicsTemplate]:</td>
-						<td width="100%">
-							<asp:DropDownList ID="drpTopicsTemplate" runat="server" CssClass="amcptxtbx" /></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<img id="Img18" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:TopicTemplate]');" onmouseout="amHideTip(this);" /></td>
-						<td class="amcpbold" style="white-space: nowrap">[RESX:TopicTemplate]:</td>
-						<td width="100%">
-							<asp:DropDownList ID="drpTopicTemplate" runat="server" CssClass="amcptxtbx" /></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<img id="Img22" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:TopicForm]');" onmouseout="amHideTip(this);" /></td>
-						<td class="amcpbold" style="white-space: nowrap">[RESX:TopicForm]:</td>
-						<td width="100%">
-							<asp:DropDownList ID="drpTopicForm" runat="server" CssClass="amcptxtbx" /></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<img id="Img23" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:ReplyForm]');" onmouseout="amHideTip(this);" /></td>
-						<td class="amcpbold" style="white-space: nowrap">[RESX:ReplyForm]:</td>
-						<td width="100%">
-							<asp:DropDownList ID="drpReplyForm" runat="server" CssClass="amcptxtbx" /></td>
-						<td></td>
-					</tr>
-					 <tr>
-					    <td><img id="Img24" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:QuickReplyForm]');" onmouseout="amHideTip(this);" /></td>
-					    <td class="amcpbold" style="white-space:nowrap">[RESX:QuickReplyForm]:</td>
-					    <td width="100%"><asp:DropDownList ID="drpQuickReplyForm" runat="server" CssClass="amcptxtbx" /></td>
-					    <td></td>
-				    </tr>
-					<tr>
-						<td>
-							<img id="Img16" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:UserProfileTemplate]');" onmouseout="amHideTip(this);" /></td>
-						<td class="amcpbold" style="white-space: nowrap">[RESX:UserProfileTemplate]:</td>
-						<td width="100%">
-							<asp:DropDownList ID="drpProfileDisplay" runat="server" CssClass="amcptxtbx" /></td>
-						<td></td>
-					</tr>
                     <tr id="trEmail" runat="server">
                         <td>
-                            <img id="Img19" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:EmailAddress]');" onmouseout="amHideTip(this);" /></td>
+                            <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:EmailAddress]');" onmouseout="amHideTip(this);" /></td>
                         <td class="amcpbold" style="white-space: nowrap">[RESX:EmailAddress]:</td>
                         <td width="100%">
                             <asp:TextBox ID="txtEmailAddress" runat="server" CssClass="amcptxtbx" /></td>
@@ -1119,15 +1019,23 @@ function afadmin_getProperties() {
                     </tr>
                     <tr id="trEmailNotificationSubjectTemplate" runat="server">
                         <td>
-                            <img id="Img27" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:EmailSubjectTemplate]');" onmouseout="amHideTip(this);" /></td>
+                            <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:EmailSubjectTemplate]');" onmouseout="amHideTip(this);" /></td>
                         <td class="amcpbold" style="white-space: nowrap">[RESX:EmailSubjectTemplate]:</td>
                         <td width="100%">
                             <asp:TextBox ID="txtEmailNotificationSubjectTemplate" runat="server" CssClass="amcptxtbx" /></td>
                         <td></td>
                     </tr>
+                    <tr id="trTemplateFileNameSuffix" runat="server">
+                        <td>
+                            <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:TemplateFileNameSuffix]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap">[RESX:TemplateFileNameSuffix]:</td>
+                        <td width="100%">
+                            <asp:TextBox ID="txtTemplateFileNameSuffix" runat="server" CssClass="amcptxtbx" /></td>
+                        <td></td>
+                    </tr>
                     <tr>
                         <td>
-                            <img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:CreatePostCount]');" onmouseout="amHideTip(this);" /></td>
+                            <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:CreatePostCount]');" onmouseout="amHideTip(this);" /></td>
                         <td class="amcpbold" style="white-space: nowrap">[RESX:CreatePostCount]:</td>
                         <td width="100%">
                             <asp:TextBox ID="txtCreatePostCount" runat="server" CssClass="amcptxtbx" /></td>
@@ -1135,7 +1043,7 @@ function afadmin_getProperties() {
                     </tr>
                     <tr>
                         <td>
-                            <img src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:ReplyPostCount]');" onmouseout="amHideTip(this);" /></td>
+                            <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:ReplyPostCount]');" onmouseout="amHideTip(this);" /></td>
                         <td class="amcpbold" style="white-space: nowrap">[RESX:ReplyPostCount]:</td>
                         <td width="100%">
                             <asp:TextBox ID="txtReplyPostCount" runat="server" CssClass="amcptxtbx" /></td>
@@ -1170,7 +1078,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr>
 						<td>
-							<img id="Img25" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:Moderated]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:Moderated]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:Moderated]</td>
 						<td align="center">
 							<asp:RadioButton ID="rdModOn" GroupName="Moderated" runat="server" /></td>
@@ -1182,7 +1090,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr>
 						<td>
-							<img id="Img1" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:Filters]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:Filters]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:EnableFilter]:</td>
 						<td align="center">
 							<asp:RadioButton ID="rdFilterOn" GroupName="Filter" runat="server" Checked="true" /></td>
@@ -1192,7 +1100,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr>
 						<td>
-							<img id="Img2" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:PostIcon]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:PostIcon]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:AllowPostIcon]:</td>
 						<td align="center">
 							<asp:RadioButton ID="rdPostIconOn" GroupName="PostIcon" runat="server" Checked="true" /></td>
@@ -1202,7 +1110,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr>
 						<td>
-							<img id="Img3" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:Emoticons]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:Emoticons]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:Emoticons]:</td>
 						<td align="center">
 							<asp:RadioButton ID="rdEmotOn" GroupName="Emot" runat="server" Checked="true" /></td>
@@ -1212,7 +1120,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr>
 						<td>
-							<img id="Img4" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:Scripts]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:Scripts]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:AllowScripts]:</td>
 						<td align="center">
 							<asp:RadioButton ID="rdScriptsOn" GroupName="Scripts" runat="server" /></td>
@@ -1222,7 +1130,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr>
 						<td>
-							<img id="Img5" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:IndexContent]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:IndexContent]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:IndexContent]:</td>
 						<td align="center">
 							<asp:RadioButton ID="rdIndexOn" GroupName="Index" runat="server" /></td>
@@ -1232,7 +1140,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr>
 						<td>
-							<img id="Img6" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:RSS]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:RSS]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:AllowRSS]:</td>
 						<td align="center">
 							<asp:RadioButton ID="rdRSSOn" GroupName="RSS" runat="server" /></td>
@@ -1242,7 +1150,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr>
 						<td>
-							<img id="Img7" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:Attachments]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:Attachments]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:AllowAttach]:</td>
 						<td align="center">
 							<asp:RadioButton ID="rdAttachOn" GroupName="Attach" runat="server" /></td>
@@ -1252,7 +1160,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr>
 						<td>
-							<img id="Img8" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AllowHTML]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:AllowHTML]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:AllowHTML]:</td>
 						<td align="center">
 							<asp:RadioButton ID="rdHTMLOn" GroupName="HTML" runat="server" Checked="true" /></td>
@@ -1263,17 +1171,9 @@ function afadmin_getProperties() {
 						</td>
 					</tr>
 
-
-					<%--                <tr>
-					<td><img id="Img12" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:CustomFields]');" onmouseout="amHideTip(this);" /></td>
-					<td class="amcpbold" style="white-space:nowrap;">[RESX:CustomFields]:</td>
-					<td align="center"><asp:RadioButton ID="rdCustomOn" GroupName="CustomFields" runat="server" /></td>
-					<td align="center"><asp:RadioButton ID="rdCustomOff" GroupName="CustomFields" runat="server" Checked="true" /></td>
-					<td width="100%"></td>
-				</tr>--%>
 					<tr id="trAutoSub" runat="server" visible="false">
 						<td>
-							<img id="Img26" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AutoSubscribe]');" onmouseout="amHideTip(this);" /></td>
+							<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:AutoSubscribe]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap;">[RESX:AutoSubscribe]:</td>
 						<td align="center">
 							<asp:RadioButton ID="rdAutoSubOn" GroupName="AutoSubscribe" runat="server" /></td>
@@ -1286,7 +1186,8 @@ function afadmin_getProperties() {
 
 					<tr id="trAllowLikes" runat="server">
 						<td>
-						</td>
+                            <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:AllowLikes]');" onmouseout="amHideTip(this);" /></td>
+
 						<td class="amcpbold" style="white-space: nowrap;">[RESX:AllowLikes]:</td>
 						<td align="center">
 							<asp:RadioButton ID="rdLikesOn" GroupName="AllowLikes" runat="server" />
@@ -1316,7 +1217,7 @@ function afadmin_getProperties() {
 								<table>
 									<tr>
 										<td>
-											<img id="Img45" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:MaintOlderThan]');" onmouseout="amHideTip(this);" /></td>
+											<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:MaintOlderThan]');" onmouseout="amHideTip(this);" /></td>
 										<td>
 											<asp:CheckBox ID="chkTopicsOlderThan" runat="server" /></td>
 										<td>[RESX:Maint:TopicsOlderThan]</td>
@@ -1326,7 +1227,7 @@ function afadmin_getProperties() {
 									</tr>
 									<tr>
 										<td>
-											<img id="Img46" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:MaintTopicsByUser]');" onmouseout="amHideTip(this);" /></td>
+											<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:MaintTopicsByUser]');" onmouseout="amHideTip(this);" /></td>
 										<td>
 											<asp:CheckBox ID="chkTopicsByUser" runat="server" /></td>
 										<td>[RESX:Maint:TopicsByUser]</td>
@@ -1336,7 +1237,7 @@ function afadmin_getProperties() {
 									</tr>
 									<tr>
 										<td>
-											<img id="Img47" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:MaintWithOutReplies]');" onmouseout="amHideTip(this);" /></td>
+											<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:MaintWithOutReplies]');" onmouseout="amHideTip(this);" /></td>
 										<td>
 											<asp:CheckBox ID="chkNoReplies" runat="server" /></td>
 										<td>[RESX:Maint:WithoutReplies]</td>
@@ -1344,7 +1245,7 @@ function afadmin_getProperties() {
 									</tr>
 									<tr>
 										<td>
-											<img id="Img48" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:MaintActivityOlderThan]');" onmouseout="amHideTip(this);" /></td>
+											<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:MaintActivityOlderThan]');" onmouseout="amHideTip(this);" /></td>
 										<td>
 											<asp:CheckBox ID="chkActivityOlderThan" runat="server" /></td>
 										<td>[RESX:Maint:NoActivityPast]</td>
@@ -1357,10 +1258,10 @@ function afadmin_getProperties() {
 											<table>
 												<tr>
 													<td>
-														<am:imagebutton id="imgTestRun" runat="server" postback="false" clientsidescript="maintRun(1);" cssclass="amsmallbtn" text="[RESX:Maint:TestRun]" height="18" width="85" imagelocation="LEFT" imageurl="~/DesktopModules/ActiveForums/images/testrun16.png" />
+														<am:imagebutton runat="server" postback="false" clientsidescript="maintRun(1);" cssclass="amsmallbtn" text="[RESX:Maint:TestRun]" height="18" width="85" imagelocation="LEFT" imageurl="~/DesktopModules/ActiveForums/images/testrun16.png" />
 													</td>
 													<td>
-														<am:imagebutton id="imgExecute" runat="server" postback="false" clientsidescript="maintRun(0);" cssclass="amsmallbtn" text="[RESX:Maint:Execute]" height="18" width="85" imagelocation="LEFT" imageurl="~/DesktopModules/ActiveForums/images/execute16.png" />
+														<am:imagebutton runat="server" postback="false" clientsidescript="maintRun(0);" cssclass="amsmallbtn" text="[RESX:Maint:Execute]" height="18" width="85" imagelocation="LEFT" imageurl="~/DesktopModules/ActiveForums/images/execute16.png" />
 													</td>
 												</tr>
 											</table>
@@ -1488,31 +1389,31 @@ function afadmin_getProperties() {
 			<tr>
 				<td></td>
 				<td class="amcpbold">[RESX:Notify]:</td>
-				<td><asp:DropDownList ID="drpModNotifyTemplateId" runat="server" CssClass="amcptxtbx" /></td>
+				<td><asp:CheckBox ID="chkModNotifyAlert" runat="server" /></td>
 				<td></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td class="amcpbold">[RESX:Approved]:</td>
-				<td><asp:DropDownList ID="drpModApprovedTemplateId" runat="server" CssClass="amcptxtbx" /></td>
+				<td><asp:CheckBox ID="chkModNotifyApprove" runat="server" /></td>
 				<td></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td class="amcpbold">[RESX:Rejected]:</td>
-				<td><asp:DropDownList ID="drpModRejectTemplateId" runat="server" CssClass="amcptxtbx" /></td>
+				<td><asp:CheckBox ID="chkModNotifyReject" runat="server" /></td>
 				<td></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td class="amcpbold">[RESX:Moved]:</td>
-				<td><asp:DropDownList ID="drpModMoveTemplateId" runat="server" CssClass="amcptxtbx" /></td>
+				<td><asp:CheckBox ID="chkModNotifyMove" runat="server" /></td>
 				<td></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td class="amcpbold">[RESX:Deleted]:</td>
-				<td><asp:DropDownList ID="drpModDeleteTemplateId" runat="server" CssClass="amcptxtbx" /></td>
+				<td><asp:CheckBox ID="chkModNotifyDelete" runat="server" /></td>
 				<td></td>
 			</tr>
 
@@ -1588,7 +1489,7 @@ function afadmin_getProperties() {
 				<td></td>
 				<td class="amcpbold" style="white-space: nowrap">[RESX:SelectRoles]:</td>
 				<td><asp:DropDownList ID="drpRoles" runat="server" CssClass="amcptxtbx" /></td>
-				<td><div onclick="addRole();"><img id="Img40" src="~/DesktopModules/ActiveForums/images/add.png" runat="server" border="0" align="absmiddle" alt="[RESX:ClickToAdd]" /></div></td>
+				<td><div onclick="addRole();"><img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/add.png")%>" border="0" align="absmiddle" alt="[RESX:ClickToAdd]" /></div></td>
 			</tr>
 			<tr>
 				<td colspan="4" class="amcpnormal"><asp:Literal ID="tbRoles" runat="server" /></td>
@@ -1627,7 +1528,7 @@ function afadmin_getProperties() {
 <div style="display: none; width: 500px; height: 350px; position: absolute; padding: 0; margin: 0;" id="propeditor" class="afmodalform afroundall">
 	<div class="amcp-mod-inner" style="height: 348px;">
 		<div class="amcp-mod-hd">
-			<img src="~/DesktopModules/ActiveForums/images/close.gif" onclick="afadmin_cancelPropForm();" runat="server" border="0" />
+			<img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/close.gif")%>" onclick="afadmin_cancelPropForm();" border="0" />
 			<div id="propeditor_header" style="float: left; padding: 3px; padding-top: 8px; padding-left: 10px; font-weight: bold;">[RESX:PropertyEditor]</div>
 			<div class="afclear"></div>
 		</div>

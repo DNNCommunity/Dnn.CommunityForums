@@ -18,22 +18,35 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Enums
 {
-    using System;
-    using System.Text;
-
-    using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Entities.Portals;
-
-    [Obsolete("Deprecated in Community Forums 09.0.00.Not Used.")]
-
-    public class UsersOnline
+    public enum TemplateType : int
     {
-        [Obsolete("Deprecated in Community Forums 09.0.00.Not Used.")]
-        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Entities.Users.UserInfo user) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums 09.0.00.Not Used.")]
-        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.User user) => throw new NotImplementedException();
-	}
+        All,
+        System,
+        ForumView,
+        TopicView,
+        TopicsView,
+        TopicEditor,
+        ReplyEditor,
+        QuickReply,
+        SubscribedEmail,
+        ProfileInfo,
+        ModEmail,
+        PostInfo,
+        ModApprove,
+        ModReject,
+        ModMove,
+        ModDelete,
+        ModNotify,
+        PostActions,
+        TopicActions,
+        TopicSplitButtons,
+        ToolBar,
+        SearchResults,
+        Likes,
+        TopicResults,
+        _userProfile,
+        _memberList,
+    }
 }

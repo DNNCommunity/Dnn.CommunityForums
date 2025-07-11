@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return this.authorizedForums ??
                        (this.authorizedForums =
-                       DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, this.Settings.Forums, this.CurrentUser.UserRoles));
+                       DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, this.Settings.Forums, this.CurrentUser.UserRoleIds));
             }
         }
 
@@ -230,7 +230,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var template = sbTemplate.ToString();
 
                     // Do this regex replace first before moving on to the simpler ones.
-                    template = RegexUtils.GetCachedRegex( @"\[BODY\:\s*(\d+)\s*\]", RegexOptions.IgnoreCase).Replace(template, m => SafeSubstring(body, int.Parse(m.Groups[1].Value)));
+                    template = RegexUtils.GetCachedRegex(@"\[BODY\:\s*(\d+)\s*\]", RegexOptions.IgnoreCase).Replace(template, m => SafeSubstring(body, int.Parse(m.Groups[1].Value)));
 
                     sb.Append(template);
                 }

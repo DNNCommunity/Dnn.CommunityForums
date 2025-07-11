@@ -21,11 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
-
-using Microsoft.ApplicationBlocks.Data;
 
     #region "Deprecated"
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]

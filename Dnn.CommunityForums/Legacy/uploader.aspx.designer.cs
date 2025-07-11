@@ -11,12 +11,15 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+	using System;
+using System.Collections.Generic;
 
 	public partial class uploader
 	{

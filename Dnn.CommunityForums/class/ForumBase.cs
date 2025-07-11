@@ -20,14 +20,12 @@
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Xml;
+    using System;
+    using System.Collections.Generic;
+    using System.Xml;
 
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
 
     public class ForumBase : SettingsBase
     {
@@ -48,12 +46,12 @@ using DotNetNuke.Services.Localization;
         #endregion
 
         #region Public Properties
-        
+
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public XmlDocument ForumData
         {
             get => throw new NotImplementedException();// this.forumData ?? (this.forumData = this.ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.ControlConfig.PortalId, this.ControlConfig.ForumModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.PortalId, this.ForumModuleId));
-            set => throw new NotImplementedException(); //this.forumData = value;
+            set => throw new NotImplementedException(); // this.forumData = value;
         }
 
         public ControlsConfig ControlConfig { get; set; }
@@ -62,10 +60,13 @@ using DotNetNuke.Services.Localization;
 
         public string ForumIds { get; set; } = string.Empty;
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
         public int DefaultForumViewTemplateId { get; set; } = -1;
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int DefaultTopicsViewTemplateId { get; set; } = -1;
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int DefaultTopicViewTemplateId { get; set; } = -1;
 
         public string DefaultView { get; set; } = Views.ForumView;
@@ -392,7 +393,7 @@ using DotNetNuke.Services.Localization;
                     }
 
                     // Admins and trusted users shall pass!
-                    else if (this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles))
+                    else if (this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TrustRoleIds, this.ForumUser.UserRoleIds))
                     {
                         this.canCreate = true;
                     }
@@ -432,7 +433,7 @@ using DotNetNuke.Services.Localization;
                     }
 
                     // Admins and trusted users shall pass!
-                    else if (this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles))
+                    else if (this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TrustRoleIds, this.ForumUser.UserRoleIds))
                     {
                         this.canReply = true;
                     }
@@ -468,8 +469,9 @@ using DotNetNuke.Services.Localization;
             {
                 return false;
             }
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess( this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoleIds);
 
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoles);
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess( this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoleIds);
         }
 
         protected string GetSharedResource(string key)

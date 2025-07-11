@@ -7,20 +7,10 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
 	public partial class ActiveForumViewerSettings
 	{
-
 		///<summary>
 		///drpForumInstance control.
 		///</summary>
@@ -29,7 +19,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.DropDownList drpForumInstance;
-
 		///<summary>
 		///drpForum control.
 		///</summary>
@@ -38,7 +27,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.DropDownList drpForum;
-
 		///<summary>
 		///drpForumViewTemplate control.
 		///</summary>
@@ -47,7 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.DropDownList drpForumViewTemplate;
-
 		///<summary>
 		///drpTopicsTemplate control.
 		///</summary>
@@ -56,7 +43,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.DropDownList drpTopicsTemplate;
-
 		///<summary>
 		///drpTopicTemplate control.
 		///</summary>

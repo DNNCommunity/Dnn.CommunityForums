@@ -21,8 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
 
     public class TopicBrowser
@@ -72,10 +70,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private SettingsInfo _mainSettings = null;
         private bool _canEdit = false;
 
-
         public string Render()
         {
-            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ModuleId, "CanEdit");
+            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ModuleId, this.ForumUser, "CanEdit");
             if (!string.IsNullOrEmpty(fs))
             {
                 this._canEdit = true;
@@ -187,13 +184,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 auth.FirstName = row[columnPrefix + "AuthorFirstName"].ToString();
                 auth.Username = row[columnPrefix + "AuthorUsername"].ToString();
 
+                DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(this.PortalId);
                 tmp = tmp.Replace("[TOPICURL]", cUtils.TopicURL(row, this.TabId, this.ModuleId));
                 tmp = tmp.Replace("[FORUMURL]", cUtils.ForumURL(row, this.TabId, this.ModuleId));
                 if (int.Parse(row["LastAuthorId"].ToString()) == -1)
                 {
                     try
                     {
-                        DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(this.PortalId);
                         tmp = tmp.Replace("[LASTAUTHOR]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this._mainSettings, this.ForumUser.GetIsMod(this.ModuleId), this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, -1, auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
                     }
                     catch (Exception ex)
@@ -203,7 +200,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(this.PortalId);
                     tmp = tmp.Replace("[LASTAUTHOR]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, this._mainSettings, this.ForumUser.GetIsMod(this.ModuleId), this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
                 }
 
@@ -217,7 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 tmp = tmp.Replace("[TOPICSTATE]", cUtils.TopicState(row));
-                var sAvatar = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(auth.AuthorId, this._mainSettings.AvatarWidth, this._mainSettings.AvatarHeight);
+                var sAvatar = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(portalSettings, auth.AuthorId, this._mainSettings.AvatarWidth, this._mainSettings.AvatarHeight);
 
                 tmp = tmp.Replace("[AF:AVATAR]", sAvatar);
                 return tmp;

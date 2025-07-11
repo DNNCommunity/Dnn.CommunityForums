@@ -23,12 +23,7 @@ using System.Collections;
 namespace DotNetNuke.Modules.ActiveForumsTests
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
-    using System.Runtime.InteropServices.WindowsRuntime;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Entities;
@@ -113,14 +108,20 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             {
                 Object =
                 {
-                    UserID = isAnonymous ? -1 : DotNetNuke.Tests.Utilities.Constants.UserID_User12,
-                    IsSuperUser = isSuperUser && !isAnonymous,
+                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
+                    UserID = isAnonymous ? DotNetNuke.Common.Utilities.Null.NullInteger : DotNetNuke.Tests.Utilities.Constants.UserID_User12,
+                    IsSuperUser = isSuperUser,
+                    Profile = new DotNetNuke.Entities.Users.UserProfile()
+                    {
+                        PreferredLocale = "en-US",
+                    },
                 },
             };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {
+                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
                     UserId = mockUserInfo.Object.UserID,
                     UserInfo = mockUserInfo.Object,
                 },
@@ -193,14 +194,15 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             {
                 Object =
                 {
+                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
                     UserID = isAnonymous ? -1 : DotNetNuke.Tests.Utilities.Constants.UserID_User12,
                     IsSuperUser = isSuperUser && !isAnonymous,
                 },
-            };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
+            }; var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {
+                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
                     UserId = mockUserInfo.Object.UserID,
                     UserInfo = mockUserInfo.Object,
                 },
@@ -211,60 +213,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             // Assert
             return actualResult;
-        }
-
-        [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
-        public void HtmlEncodeTestEmptyTag()
-        {
-            // Arrange
-            // Act
-            string actualResult = Utilities.HtmlEncode(string.Empty);
-
-            // Assert
-            Assert.That(actualResult, Is.Empty);
-        }
-
-        [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlEncode.")]
-        public void HtmlEncodeTest()
-        {
-            // Arrange
-            string tag = "<p>";
-            string expectedResult = "&lt;p&gt;";
-
-            // Act
-            string actualResult = Utilities.HtmlEncode(tag);
-
-            // Assert
-            Assert.That(actualResult, Is.EqualTo(expectedResult));
-        }
-
-        [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlDecode.")]
-        public void HtmlDecodeTestEmptyTag()
-        {
-            // Arrange
-            // Act
-            string actualResult = Utilities.HtmlDecode(string.Empty);
-
-            // Assert
-            Assert.That(actualResult, Is.Empty);
-        }
-
-        [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use System.Net.WebUtility.HtmlDecode.")]
-        public void HtmlDecodeTest()
-        {
-            // Arrange
-            string tag = "&lt;p&gt;";
-            string expectedResult = "<p>";
-
-            // Act
-            string actualResult = Utilities.HtmlDecode(tag);
-
-            // Assert
-            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
         [Test]
@@ -315,6 +263,187 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             // Assert
             return actualResult;
+        }
+
+        [Test]
+        public void EncodeBrackets_WithEmptyString_ReturnsEmptyString()
+        {
+            // Arrange
+            var input = string.Empty;
+
+            // Act
+            var result = Utilities.EncodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(string.Empty));
+        }
+
+        [Test]
+        public void EncodeBrackets_WithSquareBrackets_ReturnsEncodedBrackets()
+        {
+            // Arrange
+            var input = "This is a [test] string";
+
+            // Act
+            var result = Utilities.EncodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo("This is a &#91;test&#93; string"));
+        }
+
+        [Test]
+        public void EncodeBrackets_WithCurlyBraces_ReturnsEncodedBraces()
+        {
+            // Arrange
+            var input = "This is a {test} string";
+
+            // Act
+            var result = Utilities.EncodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo("This is a &#123;test&#125; string"));
+        }
+
+        [Test]
+        public void EncodeBrackets_WithMixedBrackets_ReturnsAllEncodedBrackets()
+        {
+            // Arrange
+            var input = "Test with [square] and {curly} brackets";
+
+            // Act
+            var result = Utilities.EncodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo("Test with &#91;square&#93; and &#123;curly&#125; brackets"));
+        }
+
+        [Test]
+        public void EncodeBrackets_WithMultipleBrackets_EncodesAllInstances()
+        {
+            // Arrange
+            var input = "[test][test2]{test3}{test4}";
+
+            // Act
+            var result = Utilities.EncodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo("&#91;test&#93;&#91;test2&#93;&#123;test3&#125;&#123;test4&#125;"));
+        }
+
+        [Test]
+        public void EncodeBrackets_WithNoSpecialCharacters_ReturnsOriginalString()
+        {
+            // Arrange
+            var input = "This is a normal string";
+
+            // Act
+            var result = Utilities.EncodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo("This is a normal string"));
+        }
+
+        [Test]
+        public void EncodeBrackets_WithNull_ThrowsNullReferenceException()
+        {
+            // Arrange & Act & Assert
+            Assert.Throws<System.NullReferenceException>(() => Utilities.EncodeBrackets(null));
+        }
+
+        [Test]
+        public void DecodeBrackets_WithNoBrackets_ReturnsOriginalString()
+        {
+            // Arrange
+            var input = "Hello World";
+
+            // Act
+            var result = Utilities.DecodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(input));
+        }
+
+        [Test]
+        public void DecodeBrackets_WithSquareBrackets_DecodesProperly()
+        {
+            // Arrange
+            var input = "Hello &#91;World&#93;";
+            var expected = "Hello [World]";
+
+            // Act
+            var result = Utilities.DecodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void DecodeBrackets_WithCurlyBrackets_DecodesProperly()
+        {
+            // Arrange
+            var input = "Hello &#123;World&#125;";
+            var expected = "Hello {World}";
+
+            // Act
+            var result = Utilities.DecodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void DecodeBrackets_WithMixedBrackets_DecodesProperly()
+        {
+            // Arrange
+            var input = "&#91;Hello&#93; &#123;World&#125;";
+            var expected = "[Hello] {World}";
+
+            // Act
+            var result = Utilities.DecodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void DecodeBrackets_WithMultipleOccurrences_DecodesProperly()
+        {
+            // Arrange
+            var input = "&#91;Test&#93; &#91;Test2&#93; &#123;Test3&#125; &#123;Test4&#125;";
+            var expected = "[Test] [Test2] {Test3} {Test4}";
+
+            // Act
+            var result = Utilities.DecodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void DecodeBrackets_WithEmptyString_ReturnsEmptyString()
+        {
+            // Arrange
+            var input = string.Empty;
+
+            // Act
+            var result = Utilities.DecodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(string.Empty));
+        }
+
+        [Test]
+        public void DecodeBrackets_WithPartialEncodedBrackets_OnlyDecodesComplete()
+        {
+            // Arrange
+            var input = "&#91Test&#93 &#123Test&#125";
+            var expected = "&#91Test&#93 &#123Test&#125";
+
+            // Act
+            var result = Utilities.DecodeBrackets(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
         }
     }
 }

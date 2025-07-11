@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (ctrl is ForumRow)
                 {
-                    ((ForumRow)ctrl).UserRoles = this.ForumUser.UserRoles;
+                    ((ForumRow)ctrl).UserPermSet = this.ForumUser.UserPermSet;
                 }
 
                 if (ctrl is ControlsBase)
@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var forumGroups = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(this.ControlConfig.ForumModuleId);
             foreach (var forumGroup in forumGroups)
-            { 
+            {
                 if (forumGroup.Active && (this.ForumGroupId == -1 || forumGroup.ForumGroupId == this.ForumGroupId))
                 {
                     string sGroup = groupTemplate;
@@ -243,7 +243,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             fc += "</af:forumrow>";
             return fc;
         }
-
 
         #endregion
         #region Public Methods

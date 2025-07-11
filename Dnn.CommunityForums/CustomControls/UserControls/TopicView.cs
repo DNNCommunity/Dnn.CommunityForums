@@ -32,13 +32,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Xml;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.ActiveForums.Constants;
-    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
-    using DotNetNuke.Services.Authentication;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicView runat=server></{0}:TopicView>")]
@@ -263,7 +258,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // first make sure we have read permissions, otherwise we need to redirect
-            this.bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanRead"].ToString(), this.ForumUser.UserRoles);
+            this.bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanRead"].ToString()), this.ForumUser.UserRoleIds);
 
             if (!this.bRead)
             {
@@ -279,13 +274,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            this.bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanEdit"].ToString(), this.ForumUser.UserRoles);
-            this.bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanSubscribe"].ToString(), this.ForumUser.UserRoles);
-            this.bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanModerate"].ToString(), this.ForumUser.UserRoles);
-            this.bSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanSplit"].ToString(), this.ForumUser.UserRoles);
-            this.bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.drSecurity["CanTrust"].ToString(), this.ForumUser.UserRoles);
+            this.bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanEdit"].ToString()), this.ForumUser.UserRoleIds);
+            this.bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanSubscribe"].ToString()), this.ForumUser.UserRoleIds);
+            this.bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanModerate"].ToString()), this.ForumUser.UserRoleIds);
+            this.bSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanSplit"].ToString()), this.ForumUser.UserRoleIds);
+            this.bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanTrust"].ToString()), this.ForumUser.UserRoleIds);
 
-            this.isTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, this.ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles));
+            this.isTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, this.ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TrustRoleIds, this.ForumUser.UserRoleIds));
 
             // TODO: Eventually this will use DAL2 to load from stored procedure into object model, but for now populate topic object model from stored procedure results
             this.topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
@@ -453,7 +448,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sOutput = TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicView", this.topicTemplateId);
+                sOutput = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicView, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
             }
 
             sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(sOutput)).ToString();
@@ -582,7 +577,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, "<asp:placeholder id=\"plhTopic\" runat=\"server\" />", "[AF:CONTROL:CALLBACK]", "[/AF:CONTROL:CALLBACK]");
                 sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sOutput), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(sOutput), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
-
+                sOutput = Utilities.DecodeBrackets(sOutput);
                 sOutput = Utilities.LocalizeControl(sOutput);
                 sOutput = Utilities.StripTokens(sOutput);
 
@@ -776,8 +771,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[TOPICSUBSCRIBE]", string.Empty);
             }
 
-// TODO: remove in v10.00.00
-#region "TODO: Backward compatibility -- remove in v10.00.00"
+            // TODO: remove in v10.00.00
+            #region "TODO: Backward compatibility -- remove in v10.00.00"
 
             // Topic and post actions
             // for backward compatibility, this needs to map to post actions, not topic actions
@@ -800,11 +795,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (sbOutput.ToString().Contains("[DCF:TEMPLATE-POSTACTIONS]"))
             {
                 this.useListActions = true;
-                sbOutput.Replace("[DCF:TEMPLATE-POSTACTIONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "PostActions"));
+                sbOutput.Replace("[DCF:TEMPLATE-POSTACTIONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.PostActions, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix));
             }
 
             sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostActionTokenSynonyms(sbOutput, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale, this.useListActions);
-#endregion "Backward compatibility -- remove in v10.00.00"
+            #endregion "Backward compatibility -- remove in v10.00.00"
 
             // Quick Reply
             if (this.CanReply)
@@ -847,7 +842,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (sOutput.Contains("[SPLITBUTTONS]") && (this.bSplit && (this.bModerate || (this.topic.Author.AuthorId == this.UserId))) && (this.topic.ReplyCount > 0))
             {
-                sbOutput.Replace("[SPLITBUTTONS]", TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicSplitButtons"));
+                sbOutput.Replace("[SPLITBUTTONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicSplitButtons, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix));
                 sbOutput.Replace("[TOPICID]", this.TopicId.ToString());
             }
             else
@@ -963,14 +958,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var sTopicTemplate = TemplateUtils.GetTemplateSection(sOutput, "[TOPIC]", "[/TOPIC]");
             var sReplyTemplate = TemplateUtils.GetTemplateSection(sOutput, "[REPLIES]", "[/REPLIES]");
 
-#region "Backward compatilbility -- remove in v10.00.00"
+            #region "Backward compatilbility -- remove in v10.00.00"
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyUserTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sTopicTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(sTopicTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             sReplyTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(sReplyTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
 
-#endregion "Backward compatilbility -- remove in v10.00.00"
+            #endregion "Backward compatilbility -- remove in v10.00.00"
 
             var sTemp = string.Empty;
             var i = 0;
@@ -1113,7 +1108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         DateUpdated = dr.GetDateTime("DateUpdated"),
                         IPAddress = dr.GetString("IPAddress"),
                     },
-                    Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId,  dr.GetInt("AuthorId")),
+                    Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, dr.GetInt("AuthorId")),
                 };
                 sbOutput.Replace("[ATTACHMENTS]", this.GetAttachments(reply.ContentId, true, this.PortalId, this.ForumModuleId));
                 sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input id=\"dcf-split-checkbox-" + reply.ReplyId + "\" type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + reply.ReplyId + "\" /><label for=\"dcf-split-checkbox-" + reply.ReplyId + "\" class=\"dcf-split-checkbox-label\">[RESX:SplitCreate]</label></div>");

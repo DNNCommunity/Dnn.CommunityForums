@@ -18,14 +18,17 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    using System;
-    using System.Web.Caching;
 
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.LikeInfo")]
-    class Likes : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
+    public class TemplateInfo
+    {
+        public int TemplateId { get; set; }
 
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.LikeInfo")]
-    class Like : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
+        public Enums.TemplateType TemplateType { get; set; }
+
+        public string Template { get; set; }
+
+        public string FileName { get; set; }
+    }
 }

@@ -21,11 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
-
-    using DotNetNuke;
 
     public partial class af_usersonline : ForumBase
     {

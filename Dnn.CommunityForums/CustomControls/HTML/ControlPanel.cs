@@ -21,9 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
     using System.Text;
 
@@ -39,19 +36,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.ModuleId = moduleId;
         }
 
-        public string TemplatesOptions(Templates.TemplateTypes templateType)
-        {
-            StringBuilder sb = new StringBuilder();
-            TemplateController tc = new TemplateController();
-            sb.Append("<option value=\"0\">[RESX:Default]</option>");
-            List<TemplateInfo> lc = tc.Template_List(this.PortalId, this.ModuleId, templateType);
-            foreach (TemplateInfo l in lc)
-            {
-                sb.Append("<option value=\"" + l.TemplateId + "\">" + l.Subject + "</option>");
-            }
-
-            return sb.ToString();
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public string TemplatesOptions(Enums.TemplateType templateType) => throw new NotImplementedException();
 
         public string ForumGroupOptions()
         {

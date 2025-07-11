@@ -1480,4 +1480,13 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:Tips:EmailSubjectTemplate].Text" xml:space="preserve">
     <value>Inserisci il modello da utilizzare come oggetto per l'invio delle notifiche. Il modello può includere token. Visita il repository Github (https://github.com/DNNCommunity/Dnn.CommunityForums) dei forum della community DNN e consulta il wiki per la documentazione sui token.</value>
   </data>
+  <data name="[RESX:Tips:AllowLikes].Text" xml:space="preserve">
+    <value>Consenti agli spettatori di mettere "mi piace" ai post e alle risposte degli argomenti.</value>
+  </data>
+  <data name="[RESX:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Suffisso del nome del file del modello</value>
+  </data>
+  <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Immettere una stringa da utilizzare per il recupero dei modelli. Ad esempio, se si desidera avere file modello separati per i forum moderati, immettere "moderato" e quindi i modelli verranno recuperati utilizzando "moderato" come parte del nome del file, ad esempio "TopicsView-moderated.ascx" anziché solo "TopicsView.ascx" quando viene recuperato il modello TopicsView.</value>
+  </data>
 </root>

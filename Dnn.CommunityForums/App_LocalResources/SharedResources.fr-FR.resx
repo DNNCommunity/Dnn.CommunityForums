@@ -1834,4 +1834,22 @@ De,
   <data name="[RESX:SearchSortTypePostDate].Text" xml:space="preserve">
     <value>Date de publication</value>
   </data>
+  <data name="[RESX:TokenReplacementException].Text" xml:space="preserve">
+    <value>Exception remplaçant le jeton sur l’entité : {0} id : {1} propriété du jeton : {2} format : {3}</value>
+  </data>
+  <data name="[RESX:EmailNotificationGreeting].Text" xml:space="preserve">
+    <value>Un message a été posté sur un forum que vous suivez.</value>
+  </data>
+  <data name="[RESX:EmailNotificationVisitLinkMessage].Text" xml:space="preserve">
+    <value>Pour consulter le fil de discussion complet et y répondre, veuillez visiter :</value>
+  </data>
+  <data name="[RESX:ThankYou].Text" xml:space="preserve">
+    <value>Merci</value>
+  </data>
+  <data name="[RESX:Posted].Text" xml:space="preserve">
+    <value>Publié:</value>
+  </data>
+  <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
+    <value>Pour gérer les notifications de vos forums, rendez-vous sur :</value>
+  </data>
 </root>

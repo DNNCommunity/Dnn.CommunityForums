@@ -18,13 +18,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Modules.ActiveForums.Enums;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
-
-    using DotNetNuke.Modules.ActiveForums.Data;
 
     public partial class af_modtopics_new : ForumBase
     {
@@ -100,16 +100,14 @@ namespace DotNetNuke.Modules.ActiveForums
                                     if (ti != null)
                                     {
                                         new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).DeleteById(tmpTopicId);
-                                        if (fi.FeatureSettings?.ModDeleteTemplateId > 0 & ti?.Author?.AuthorId > 0)
+                                        if (fi.FeatureSettings.ModDeleteNotify && ti?.Author?.AuthorId > 0)
                                         {
                                             try
                                             {
                                                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(
-                                                    fi.FeatureSettings.ModDeleteTemplateId,
-                                                    this.PortalId,
-                                                    this.ForumModuleId,
+                                                    TemplateType.ModDelete,
                                                     this.TabId,
-                                                    tmpForumId,
+                                                    ti.Forum,
                                                     tmpTopicId,
                                                     -1,
                                                     ti.Author);
@@ -127,16 +125,14 @@ namespace DotNetNuke.Modules.ActiveForums
                                     if (ri != null)
                                     {
                                         new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).Reply_Delete(this.PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);
-                                        if (fi.FeatureSettings?.ModDeleteTemplateId > 0 & ri?.Author?.AuthorId > 0)
+                                        if (fi.FeatureSettings.ModDeleteNotify && ri?.Author?.AuthorId > 0)
                                         {
                                             try
                                             {
                                                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(
-                                                    fi.FeatureSettings.ModDeleteTemplateId,
-                                                    this.PortalId,
-                                                    this.ForumModuleId,
+                                                    TemplateType.ModDelete,
                                                     this.TabId,
-                                                    tmpForumId,
+                                                    ri.Forum,
                                                     tmpTopicId,
                                                     tmpReplyId,
                                                     ri.Author);
@@ -148,6 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         }
                                     }
                                 }
+
                                 DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
                             }
 
@@ -163,7 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             ModController mc = new ModController();
                             mc.Mod_Reject(this.PortalId, this.ForumModuleId, this.UserId, tmpForumId, tmpTopicId, tmpReplyId);
                             DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
-                            if (fi.FeatureSettings.ModRejectTemplateId > 0 & tmpAuthorId > 0)
+                            if (fi.FeatureSettings.ModRejectNotify && tmpAuthorId > 0)
                             {
                                 DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, tmpAuthorId);
                                 if (ui != null)
@@ -175,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     au.FirstName = ui.FirstName;
                                     au.LastName = ui.LastName;
                                     au.Username = ui.Username;
-                                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.FeatureSettings.ModRejectTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, au);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(TemplateType.ModReject, this.TabId, this.ForumInfo, tmpTopicId, tmpReplyId, au);
                                 }
                             }
 
@@ -197,9 +194,9 @@ namespace DotNetNuke.Modules.ActiveForums
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
 
                                     // TODO: Add Audit log for who approved topic
-                                    if (fi.FeatureSettings.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
+                                    if (fi.FeatureSettings.ModApproveNotify && ti.Author.AuthorId > 0)
                                     {
-                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.FeatureSettings.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, ti.Author);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(TemplateType.ModApprove, this.TabId, this.ForumInfo, tmpTopicId, tmpReplyId, ti.Author);
                                     }
 
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
@@ -216,13 +213,13 @@ namespace DotNetNuke.Modules.ActiveForums
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
 
                                     // TODO: Add Audit log for who approved topic
-                                    if (fi.FeatureSettings.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
+                                    if (fi.FeatureSettings.ModApproveNotify && ri.Author.AuthorId > 0)
                                     {
-                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.FeatureSettings.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, ri.Author);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(TemplateType.ModApprove, this.TabId, ri.Forum, tmpTopicId, tmpReplyId, ri.Author);
                                     }
 
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(this.ForumTabId, this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
-                                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId:this.PortalId, tabId: this.ForumTabId, moduleId: this.ForumModuleId, forumGroupId: fi.ForumGroupId, forumId: tmpForumId, topicId: tmpTopicId, replyId: tmpReplyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(portalId: this.PortalId, tabId: this.ForumTabId, moduleId: this.ForumModuleId, forumGroupId: fi.ForumGroupId, forumId: tmpForumId, topicId: tmpTopicId, replyId: tmpReplyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
                                 }
                             }
 
@@ -294,18 +291,22 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             sb.Append("<span class=\"dnnPrimaryAction\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\">[RESX:Approve]</span>");
                         }
+
                         if (this.bModEdit)
                         {
                             sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\">[RESX:Reject]</span>");
                         }
+
                         if (this.bModDelete)
                         {
                             sb.Append("<span class=\"dnnTertiaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\">[RESX:Delete]</span>");
                         }
+
                         if (this.bModEdit)
                         {
                             sb.Append("<span class=\"dnnTertiaryAction\" onclick=\"afmodEdit('" + this.TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\">[RESX:Edit]</span>");
                         }
+
                         if (this.bModBan)
                         {
                             var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ReplyId + "=" + Convert.ToInt32(dr["ReplyId"]), ParamKeys.AuthorId + "=" + Convert.ToInt32(dr["AuthorId"]), };
@@ -350,11 +351,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(fId, this.ForumModuleId);
 
-            bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Moderate, ForumUser?.UserRoles);
-            bModDelete = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Delete, ForumUser?.UserRoles));
-            bModEdit = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Edit, ForumUser?.UserRoles));
-            bModBan = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Ban, ForumUser?.UserRoles));
+            bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.ModerateRoleIds, ForumUser?.UserRoleIds);
+            bModDelete = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.DeleteRoleIds, ForumUser?.UserRoleIds));
+            bModEdit = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.EditRoleIds, ForumUser?.UserRoleIds));
+            bModBan = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.BanRoleIds, ForumUser?.UserRoleIds));
         }
+
         private string GetAttachments(int contentId, int portalID, int moduleID, DataTable dtAttach)
         {
             string strHost = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(this.Request)) + "/";

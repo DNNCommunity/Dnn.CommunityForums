@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicResults", -1);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicResults, SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
 
             try
             {
@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                     if (topic != null)
                     {
-                        itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
+                        itemTemplate = Utilities.DecodeBrackets(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString());
                         ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text = itemTemplate;
                     }
                 }
@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.rowIndex = (this.PageId - 1) * this.pageSize;
 
             var db = new Data.Common();
-            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ForumModuleId, "CanRead");
+            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ForumModuleId, this.ForumUser, "CanRead");
 
             if (this.Request.Params[ParamKeys.GridType] != null)
             {
@@ -463,7 +463,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public string GetForumUrl() => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetThreadUrl() => throw new NotImplementedException();  
+        public string GetThreadUrl() => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string GetLastRead() => throw new NotImplementedException();
@@ -471,7 +471,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string GetPostTime() => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string GetAuthor() => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]

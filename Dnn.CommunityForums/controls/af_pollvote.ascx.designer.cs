@@ -7,20 +7,12 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
+	
+    
 	public partial class af_pollvote
 	{
-
 		///<summary>
 		///lblQuestion control.
 		///</summary>
@@ -29,7 +21,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.Label lblQuestion;
-
 		///<summary>
 		///rdbtnOptions control.
 		///</summary>
@@ -38,7 +29,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.RadioButtonList rdbtnOptions;
-
 		///<summary>
 		///cblstOptions control.
 		///</summary>
@@ -47,7 +37,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.CheckBoxList cblstOptions;
-
 		///<summary>
 		///btnVote control.
 		///</summary>

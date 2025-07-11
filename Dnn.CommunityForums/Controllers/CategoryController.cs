@@ -20,8 +20,5 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     internal partial class CategoryController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo> { }
 }

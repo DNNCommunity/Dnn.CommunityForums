@@ -21,13 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Linq;
-
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Security.Roles;
 
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ContentInfo.")]
     public class Content : DotNetNuke.Modules.ActiveForums.Entities.ContentInfo { }

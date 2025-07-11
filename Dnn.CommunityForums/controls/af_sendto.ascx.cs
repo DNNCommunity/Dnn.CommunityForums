@@ -21,14 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Web.UI;
-
-    using DotNetNuke.Modules.ActiveForums.Entities;
-
-    using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
     public partial class af_sendto : ForumBase
     {
@@ -54,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
                 if (ti != null)
                 {
-                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Read, this.ForumUser.UserRoles))
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ReadRoleIds, this.ForumUser.UserRoleIds))
                     {
                         if (!this.Page.IsPostBack)
                         {

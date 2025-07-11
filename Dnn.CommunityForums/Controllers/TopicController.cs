@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Web;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Log.EventLog;
@@ -198,12 +199,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ti.ModuleId, ti.ForumId, topicId);
 
-            if (ti.Forum.FeatureSettings.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
+            if (ti.Forum.FeatureSettings.ModApproveNotify && ti.Author.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.FeatureSettings.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.GetTabId(), ti.ForumId, topicId, 0, ti.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(TemplateType.ModApprove, ti.Forum.GetTabId(), ti.Forum, topicId, 0, ti.Author);
             }
 
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: ti.PortalId, tabId: ti.Forum.GetTabId(), moduleId: ti.Forum.ModuleId, forumGroupId: ti.Forum.ForumGroupId, forumId: ti.ForumId, topicId: topicId,  replyId: -1,  contentId: ti.ContentId, userId: userId, authorId: ti.Content.AuthorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: ti.PortalId, tabId: ti.Forum.GetTabId(), moduleId: ti.Forum.ModuleId, forumGroupId: ti.Forum.ForumGroupId, forumId: ti.ForumId, topicId: topicId, replyId: -1, contentId: ti.ContentId, userId: userId, authorId: ti.Content.AuthorId);
             return ti;
         }
 
@@ -238,9 +239,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Move(ti.PortalId, ti.ModuleId, newForumId, topicId);
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
 
-            if (oldForum.FeatureSettings.ModMoveTemplateId > 0 & ti?.Author?.AuthorId > 0)
+            if (oldForum.FeatureSettings.ModMoveNotify && ti?.Author?.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(oldForum.FeatureSettings.ModMoveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.GetTabId(), forumId: ti.Forum.ForumID, topicId: ti.TopicId, replyId: -1, author: ti.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(TemplateType.ModMove, ti.Forum.GetTabId(), oldForum, topicId: ti.TopicId, replyId: -1, author: ti.Author);
             }
 
             new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: topicId, replyId: -1, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: userId, requestUrl: null);

@@ -20,10 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
     using System.Text;
     using System.Web;
@@ -58,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string ftmp = string.Empty;
             string subtmp = string.Empty;
             StringBuilder list = new StringBuilder();
-            var filteredForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).Where(f => f.ForumGroup.Active && f.Active && f.ParentForumId == 0 && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, this.ForumUser.UserRoles));
+            var filteredForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).Where(f => f.ForumGroup.Active && f.Active && f.ParentForumId == 0 && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security.ViewRoleIds, this.ForumUser.UserRoleIds));
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in filteredForums)
             {
                 if (currGroup != f.ForumGroupId)

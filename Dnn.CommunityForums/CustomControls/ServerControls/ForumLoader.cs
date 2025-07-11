@@ -25,8 +25,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Common.Utilities;
-
     [ToolboxData("<{0}:ForumLoader runat=server></{0}:ForumLoader>")]
     public class ForumLoader : ForumBase
     {
@@ -62,9 +60,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         objModule.ForumInfo = this.fi;
                         objModule.ForumId = this.ForumId;
                         objModule.ForumGroupId = this.ForumGroupId;
-                        objModule.DefaultForumViewTemplateId = this.DefaultForumViewTemplateId;
-                        objModule.DefaultTopicsViewTemplateId = this.DefaultTopicsViewTemplateId;
-                        objModule.DefaultTopicViewTemplateId = this.DefaultTopicViewTemplateId;
                         objModule.ParentForumId = this.ParentForumId;
                         objModule.ForumIds = this.ForumIds;
                         this.Controls.Add(objModule);

@@ -7,20 +7,12 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-
+	
+    
 	public partial class admin_home_new
 	{
-
 		///<summary>
 		///litRecentTopics control.
 		///</summary>
@@ -29,7 +21,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.Literal litRecentTopics;
-
 		///<summary>
 		///litRecentMembers control.
 		///</summary>
@@ -38,7 +29,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.Literal litRecentMembers;
-
 		///<summary>
 		///litTopForums control.
 		///</summary>
@@ -47,7 +37,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.Literal litTopForums;
-
 		///<summary>
 		///litQuickLinks control.
 		///</summary>
@@ -56,7 +45,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.Literal litQuickLinks;
-
 		///<summary>
 		///litQuickStats control.
 		///</summary>
@@ -65,7 +53,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		///To modify move field declaration from designer file to code-behind file.
 		///</remarks>
 		protected global::System.Web.UI.WebControls.Literal litQuickStats;
-
 		///<summary>
 		///litTopMembers control.
 		///</summary>
