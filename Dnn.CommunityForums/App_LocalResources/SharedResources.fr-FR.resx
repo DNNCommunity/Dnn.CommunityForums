@@ -1870,4 +1870,10 @@ De,
   <data name="[RESX:awarded].Text" xml:space="preserve">
     <value>attribué</value>
   </data>
+  <data name="[RESX:BadgeSendAwardNotification].Text" xml:space="preserve">
+    <value>Envoyer une notification à l’utilisateur lorsqu’il est attribué</value>
+  </data>
+  <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
+    <value>N’envoyez pas de notification à un utilisateur plus âgé lors du rachat de récompenses</value>
+  </data>
 </root>

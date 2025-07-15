@@ -75,5 +75,27 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// Gets or sets the Threshold.
         /// </summary>
         public int Threshold { get; set; }
+
+        /// <summary>
+        /// Gets or sets the SendAwardNotification.
+        /// </summary>
+        public bool SendAwardNotification { get; set; }
+
+        /// <summary>
+        /// Gets or sets the SuppresssAwardNotificationOnBackfill.
+        /// </summary>
+        public bool SuppresssAwardNotificationOnBackfill { get; set; }
+
+        /// <summary>
+        /// Gets the enum name/description for the badge metric.
+        /// </summary>
+        [IgnoreColumn]
+        public string BadgeMetricEnumName => Enum.GetName(typeof(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric), this.BadgeMetric);
+
+        /// <summary>
+        /// Gets the Url for the badge image.
+        /// </summary>
+        [IgnoreColumn]
+        public string GetBadgeImageUrl(int portalId, int size = 32) => this.FileId <= 0 ? string.Empty : Utilities.ResolveUrl($"https://{Utilities.GetPortalSettings(portalId).DefaultPortalAlias}/DnnImageHandler.ashx?mode=securefile&fileId={this.FileId}&h={size}&w={size}");
     }
 }

@@ -76,7 +76,6 @@
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     </ItemGroup>
 
-
     <ItemGroup>
         <Reference Include="System.Design" />
         <Reference Include="System.Web" />
@@ -92,7 +91,6 @@
     <ItemGroup>
       <Folder Include="images\badges\" />
     </ItemGroup>
-    
 
     <Import Project="Module.build" />
 </Project>

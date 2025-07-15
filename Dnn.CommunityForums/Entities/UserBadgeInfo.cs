@@ -150,13 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "description":
                         return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Badge.Description.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Badge.Description), "...") : Utilities.StripHTMLTag(this.Badge.Description)), format);
                     case "imageurl":
-                        var imgUrl = $"https://{this.ForumUser.PortalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=securefile&fileId={this.Badge.FileId}";
-                        if (length > 0)
-                        {
-                            imgUrl += $"&h={length}&w={length}";
-                        }
-
-                        return PropertyAccess.FormatString(Utilities.ResolveUrl(imgUrl), format);
+                        return PropertyAccess.FormatString(length > 0 ? this.Badge.GetBadgeImageUrl(this.PortalId, length) : this.Badge.GetBadgeImageUrl(this.PortalId), format);
                     case "dateassigned":
                         return Utilities.GetUserFormattedDateTime((DateTime?)this.DateAssigned, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
                 }

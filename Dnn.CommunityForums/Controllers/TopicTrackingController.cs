@@ -53,5 +53,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return (int)topicReadCount;
         }
+
+        internal int GetTopicsReadCountByUser(int moduleId, int userId)
+        {
+            // this accommodates duplicates which may exist since currently no uniqueness applied in database
+            return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking tt WHERE tt.UserId = @0", userId).FirstOrDefault();
+        }
     }
 }

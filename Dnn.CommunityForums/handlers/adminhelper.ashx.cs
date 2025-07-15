@@ -319,7 +319,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             sOut += ",";
             sOut += Utilities.JSON.Pair("BadgeMetric", badge.BadgeMetric.ToString());
             sOut += ",";
-            sOut += Utilities.JSON.Pair("BadgeMetricEnumName", Enum.GetName(typeof(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric), badge.BadgeMetric));
+            sOut += Utilities.JSON.Pair("BadgeMetricEnumName", badge.BadgeMetricEnumName);
             sOut += ",";
             sOut += Utilities.JSON.Pair("Threshold", badge.Threshold.ToString());
             sOut += ",";
@@ -327,7 +327,11 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             sOut += ",";
             sOut += Utilities.JSON.Pair("Url", url);
             sOut += ",";
-            sOut += Utilities.JSON.Pair("ImageUrl", badge.FileId <= 0 ? string.Empty : Utilities.ResolveUrl($"https://{Utilities.GetPortalSettings(this.PortalId).DefaultPortalAlias}/DnnImageHandler.ashx?mode=securefile&fileId={badge.FileId}&h=16&w=16"));
+            sOut += Utilities.JSON.Pair("ImageUrl", badge.GetBadgeImageUrl(portalId: this.PortalId, size: 16));
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("SendAwardNotification", badge.SendAwardNotification.ToString());
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("SuppresssAwardNotificationOnBackfill", badge.SuppresssAwardNotificationOnBackfill.ToString());
             sOut += "}";
             return sOut;
         }
@@ -381,6 +385,16 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             if (this.Params.ContainsKey("Url"))
             {
                 var url = this.Params["Url"].ToString();
+            }
+
+            if (this.Params.ContainsKey("SendAwardNotification"))
+            {
+                badge.SendAwardNotification = Utilities.SafeConvertBool(this.Params["SendAwardNotification"].ToString());
+            }
+
+            if (this.Params.ContainsKey("SuppresssAwardNotificationOnBackfill"))
+            {
+                badge.SuppresssAwardNotificationOnBackfill = Utilities.SafeConvertBool(this.Params["SuppresssAwardNotificationOnBackfill"].ToString());
             }
 
             if (badge.BadgeId == badgeId)

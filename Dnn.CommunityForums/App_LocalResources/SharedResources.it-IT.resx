@@ -1873,4 +1873,10 @@ Da
   <data name="[RESX:awarded].Text" xml:space="preserve">
     <value>premiato</value>
   </data>
+  <data name="[RESX:BadgeSendAwardNotification].Text" xml:space="preserve">
+    <value>Invia una notifica all'utente quando viene assegnato</value>
+  </data>
+  <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
+    <value>Non inviare una notifica a un utente meno recente durante il backfill dei premi</value>
+  </data>
 </root>

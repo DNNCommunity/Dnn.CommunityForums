@@ -1909,4 +1909,10 @@ Van,
   <data name="[RESX:awarded].Text" xml:space="preserve">
     <value>toegekend</value>
   </data>
+  <data name="[RESX:BadgeSendAwardNotification].Text" xml:space="preserve">
+    <value>Stuur de gebruiker een melding wanneer deze is toegekend</value>
+  </data>
+  <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
+    <value>Stuur een oudere gebruiker geen melding bij het aanvullen van awards</value>
+  </data>
 </root>

@@ -163,13 +163,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     this.Insert(UserBadge);
                 }
 
-                if (UserBadge.ForumUser.BadgeNotificationsEnabled)
+                // Check if badge notifications should be sent to the user.
+                // Conditions:
+                // - The badge is configured to send award notifications.
+                // - The forum user has enabled badge notifications.
+                // - Either notifications are not suppressed for backfill, or the user account is less than 30 days old.
+                if (UserBadge.ForumUser.BadgeNotificationsEnabled
+                    && UserBadge.Badge.SendAwardNotification
+                    && (!UserBadge.Badge.SuppresssAwardNotificationOnBackfill
+                        || (DateTime.UtcNow - UserBadge.ForumUser.DateCreated.Value).TotalDays < 30))
                 {
                     var subject = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.moduleId, Enums.TemplateType.BadgeNotificationSubject, SettingsBase.GetModuleSettings(this.moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
-                    subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(new StringBuilder(subject), UserBadge, UserBadge.ForumUser.PortalSettings, UserBadge.ForumUser.MainSettings, new Services.URLNavigator().NavigationManager(), UserBadge.ForumUser, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery).ToString();
+                    subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(new StringBuilder(subject), UserBadge, UserBadge.ForumUser.PortalSettings, UserBadge.ForumUser.MainSettings, new Services.URLNavigator().NavigationManager(), UserBadge.ForumUser, string.IsNullOrEmpty(requestUrl) ? null : new Uri(requestUrl), string.IsNullOrEmpty(requestUrl) ? string.Empty : new Uri(requestUrl).PathAndQuery).ToString();
                     subject = subject.Length > 400 ? subject.Substring(0, 400) : subject;
                     var body = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.moduleId, Enums.TemplateType.BadgeNotificationBody, SettingsBase.GetModuleSettings(this.moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
-                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(new StringBuilder(body), UserBadge, UserBadge.ForumUser.PortalSettings, UserBadge.ForumUser.MainSettings, new Services.URLNavigator().NavigationManager(), UserBadge.ForumUser, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery).ToString();
+                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(new StringBuilder(body), UserBadge, UserBadge.ForumUser.PortalSettings, UserBadge.ForumUser.MainSettings, new Services.URLNavigator().NavigationManager(), UserBadge.ForumUser, string.IsNullOrEmpty(requestUrl) ? null : new Uri(requestUrl), string.IsNullOrEmpty(requestUrl) ? string.Empty : new Uri(requestUrl).PathAndQuery).ToString();
 
                     string notificationKey = BuildNotificationContextKey(this.portalId, this.moduleId, badgeId, userId);
 

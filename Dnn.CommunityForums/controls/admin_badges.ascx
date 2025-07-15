@@ -26,6 +26,8 @@ function openDialog(row){
         $('#txtThreshold').val('');
         $('#txtFileId').val('-1');
         $('#<%=ctlBadgeImage.ClientID%>').Url = '';
+        $('#chkSendAwardNotification').prop("checked", true);
+        $('#chkSuppresssAwardNotificationOnBackfill').prop("checked", true);
 		am.UI.LoadDiv('afBadgeEdit', badgeOptions);
 	};
 };
@@ -39,6 +41,8 @@ function loadEdit(data) {
 	$('#txtThreshold').val(data.Threshold);
     $('#txtFileId').val(data.FileId);
     $('#<%=ctlBadgeImage.ClientID%>').Url = data.Url;
+    $('#chkSendAwardNotification').prop("checked", data.SendAwardNotification);
+    $('#chkSuppresssAwardNotificationOnBackfill').prop("checked", data.SuppresssAwardNotificationOnBackfill);
 	am.UI.LoadDiv('afBadgeEdit', badgeOptions);
 }
 var badge = {};
@@ -50,6 +54,8 @@ badge.Url = '';
 badge.SortOrder = 0;
 badge.BadgeMetric = 0;
 badge.Threshold = 0;
+badge.SendAwardNotification = false;
+badge.SuppresssAwardNotificationOnBackfill = false;
 function saveBadge() {
 	var isvalid = true;
 	badge.action = 15;
@@ -76,10 +82,11 @@ function saveBadge() {
         isvalid = false;
     }
     badge.Url = $('#<%=ctlBadgeImage.ClientID%>').Url;
-    alert(badge.Url);
     if (badge.Url === '') {
         isvalid = false;
     }
+    badge.SendAwardNotification = $('#chkSendAwardNotification').prop("checked");
+    badge.SuppresssAwardNotificationOnBackfill = $('#chkSuppresssAwardNotificationOnBackfill').prop("checked");
 	if (isvalid) {
 		am.UI.CloseDiv('afBadgeEdit');
 		afadmin_callback(JSON.stringify(badge), renderDG);
@@ -132,6 +139,7 @@ function saveBadge() {
                 <td class="amcpnormal" onclick="openDialog(this.parentNode);" style="white-space: nowrap;">##DataItem('Threshold')##</td>
                 <td style="display: none;">##DataItem('FileId')##</td>
                 <td style="white-space: nowrap;">##DataItem('ImageUrl')##</td>
+                d>
             </tr>
         </itemtemplate>
         <footertemplate>
@@ -168,6 +176,18 @@ function saveBadge() {
             <label>
                 [RESX:BadgeThreshold]:</label>
             <input type="text" id="txtThreshold" class="dnnFormRequired" onkeypress="return onlyNumbers(event);" width="50" />
+
+        </div>
+        <div class="dnnFormItem">
+            <label>
+                [RESX:BadgeSendAwardNotification]:</label>
+            <input type="checkbox" id="chkSendAwardNotification" width="50" />
+
+        </div>
+        <div class="dnnFormItem">
+            <label>
+                [RESX:BadgeSuppresssAwardNotificationOnBackfill]:</label>
+            <input type="checkbox" id="chkSuppresssAwardNotificationOnBackfill" width="50" />
 
         </div>
         <div class="dnnFormItem">

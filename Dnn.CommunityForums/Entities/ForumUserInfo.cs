@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     {
         [IgnoreColumn]
         private string cacheKeyTemplate => CacheKeys.ForumUser;
-        
+
         private DotNetNuke.Entities.Users.UserInfo userInfo;
         private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> userBadges;
         private PortalSettings portalSettings;
@@ -59,7 +59,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.portalSettings = portalSettings;
             this.PortalId = portalSettings.PortalId;
             this.userInfo = userInfo;
-}
+        }
+
         public ForumUserInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             this.portalSettings = portalSettings;
@@ -499,9 +500,19 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return 0;
         }
 
+        internal int GetLikeCountForUser()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Count("WHERE UserId = @0 AND Checked = 1", this.UserId);
+        }
+
         internal int GetTopicReadCount(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountForUserForum(this.ModuleId, this.UserId, fi.ForumID);
+        }
+
+        internal int GetTopicReadCount()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountByUser(this.ModuleId, this.UserId);
         }
 
         internal int GetLastTopicReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
@@ -703,18 +714,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "badges":
                         if (length < 1)
                         {
-                            length = 10; /* if no length specified, default to 10 badges */
+                            length = 5; /* if no length specified, default to 5 badges */
                         }
 
                         var badgeString = string.Empty;
                         var userBadgesToDisplay = this.Badges.OrderBy(b => b.Badge.SortOrder).Take(length);
                         var badgeTemplate = new StringBuilder(DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ModuleId, Enums.TemplateType.UserBadge, SettingsBase.GetModuleSettings(this.ModuleId).ForumFeatureSettings.TemplateFileNameSuffix));
-                        badgeTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(badgeTemplate);
                         foreach (var userBadge in userBadgesToDisplay)
                         {
-                            var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, userBadge, this.RequestUri, this.RawUrl) { AccessingUser = accessingUser, };
-                            var badgeTemplateToInsert = tokenReplacer.ReplaceEmbeddedTokens(badgeTemplate);
-                            badgeString += tokenReplacer.ReplaceTokens(badgeTemplateToInsert.ToString());
+                            badgeString += DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(badgeTemplate, userBadge, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this.RequestUri, this.RawUrl);
                         }
 
                         return PropertyAccess.FormatString(badgeString, format);
