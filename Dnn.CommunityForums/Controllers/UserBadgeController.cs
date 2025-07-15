@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (UserBadges == null)
             {
-                UserBadges = this.Find("WHERE UserId = @0", this.moduleId, userId);
+                UserBadges = this.Find("WHERE UserId = @0", userId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, UserBadges);
             }
 
@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (UserBadges == null)
             {
-                UserBadges = this.Find("WHERE BadgeId = @0", this.moduleId, badgeId);
+                UserBadges = this.Find("WHERE BadgeId = @0", badgeId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, UserBadges);
             }
 

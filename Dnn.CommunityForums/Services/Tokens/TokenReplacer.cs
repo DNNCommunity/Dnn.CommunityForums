@@ -1294,14 +1294,19 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         internal string ReplaceEmbeddedTokens(string source)
         {
+            return this.ReplaceEmbeddedTokens(new StringBuilder(source)).ToString();
+        }
+
+        internal StringBuilder ReplaceEmbeddedTokens(StringBuilder source)
+        {
+            var sb = new StringBuilder(source.ToString());
             const string Pattern = @"(?<token>(?:(?<text>\[\])|\[(?:(?<object>[^{}\]\[:]+):(?<property>[^\]\[\|]+))(?:\|(?:(?<format>[^\]\[]+)\|(?<ifEmpty>[^\]\[]+))|\|(?:(?<format>[^\|\]\[]+)))?\])|(?<text>\[[^\]\[]+\])|(?<text>[^\]\[]+){0}\1)";
             try
             {
-                var matches = RegexUtils.GetCachedRegex(Pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace, 5).Matches(source);
+                var matches = RegexUtils.GetCachedRegex(Pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace, 5).Matches(sb.ToString());
 
                 if (matches.Count > 0)
                 {
-                    var sb = new StringBuilder(source);
                     foreach (Match match in matches)
                     {
                         if (!string.IsNullOrEmpty(match.Groups["token"]?.Value) && match.Groups["object"] != null && this.PropertySource.ContainsKey(match.Groups["object"].Value.ToLowerInvariant()))
@@ -1310,13 +1315,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                         }
                     }
 
-                    return sb.ToString();
+                    return sb;
                 }
             }
             catch (RegexMatchTimeoutException ex)
             {
                 Exceptions.LogException(ex);
-                return source;
+                return sb;
             }
             catch (Exception ex)
             {
@@ -1324,7 +1329,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 throw;
             }
 
-            return source;
+            return sb;
         }
     }
 }

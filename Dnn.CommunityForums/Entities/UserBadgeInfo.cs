@@ -157,6 +157,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                         return PropertyAccess.FormatString(Utilities.ResolveUrl(imgUrl), format);
+                    case "dateassigned":
+                        return Utilities.GetUserFormattedDateTime((DateTime?)this.DateAssigned, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
                 }
             }
             catch (Exception ex)

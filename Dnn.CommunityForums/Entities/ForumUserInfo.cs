@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Linq;
+using System.Text;
+using DotNetNuke.Collections;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -39,8 +41,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     {
         [IgnoreColumn]
         private string cacheKeyTemplate => CacheKeys.ForumUser;
-
+        
         private DotNetNuke.Entities.Users.UserInfo userInfo;
+        private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> userBadges;
         private PortalSettings portalSettings;
         private SettingsInfo mainSettings;
         private ModuleInfo moduleInfo;
@@ -56,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.portalSettings = portalSettings;
             this.PortalId = portalSettings.PortalId;
             this.userInfo = userInfo;
-        }
+}
         public ForumUserInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             this.portalSettings = portalSettings;
@@ -513,6 +516,24 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> Badges
+        {
+            get
+            {
+                if (this.userBadges == null)
+                {
+                    this.GetUserBadges();
+                    this.UpdateCache();
+                }
+
+                return this.userBadges;
+            }
+            set => this.userBadges = value;
+        }
+
+        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetUserBadges() => this.userBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ModuleId).GetForUser(this.UserId);
+
+        [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
         {
             get
@@ -679,6 +700,24 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return PropertyAccess.FormatString((accessingUser.IsAdmin || accessingUser.IsSuperUser) && this.UserId > 0 ? this.UserId.ToString() : string.Empty, format);
                     case "displaynameforjson":
                         return PropertyAccess.FormatString(Utilities.JSON.EscapeJsonString(this.DisplayName), format);
+                    case "badges":
+                        if (length < 1)
+                        {
+                            length = 10; /* if no length specified, default to 10 badges */
+                        }
+
+                        var badgeString = string.Empty;
+                        var userBadgesToDisplay = this.Badges.OrderBy(b => b.Badge.SortOrder).Take(length);
+                        var badgeTemplate = new StringBuilder(DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ModuleId, Enums.TemplateType.UserBadge, SettingsBase.GetModuleSettings(this.ModuleId).ForumFeatureSettings.TemplateFileNameSuffix));
+                        badgeTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.ResourceStringTokenReplacer.ReplaceResourceTokens(badgeTemplate);
+                        foreach (var userBadge in userBadgesToDisplay)
+                        {
+                            var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, userBadge, this.RequestUri, this.RawUrl) { AccessingUser = accessingUser, };
+                            var badgeTemplateToInsert = tokenReplacer.ReplaceEmbeddedTokens(badgeTemplate);
+                            badgeString += tokenReplacer.ReplaceTokens(badgeTemplateToInsert.ToString());
+                        }
+
+                        return PropertyAccess.FormatString(badgeString, format);
                 }
             }
             catch (Exception ex)

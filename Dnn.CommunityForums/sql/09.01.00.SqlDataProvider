@@ -1984,6 +1984,7 @@ GO
 
 /* --------------------- */
 
+
 /* issue 1479 - begin - add badge notification option to user profile */
 
 /* add BadgeNotificationsEnabled to activeforums_UserProfiles */

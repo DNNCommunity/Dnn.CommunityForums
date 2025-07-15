@@ -1870,4 +1870,7 @@ Da
   <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
     <value>[DCF:FORUMSLINK| &lt;a href="{0}"&gt;Visita per&lt;/a&gt; continuare a partecipare e guadagnare più premi.]</value>
   </data>
+  <data name="[RESX:awarded].Text" xml:space="preserve">
+    <value>premiato</value>
+  </data>
 </root>

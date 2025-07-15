@@ -1,0 +1,7 @@
+<div class="dcf-user-badge-wrap">
+    <div class="dcf-user-badge-image">
+        <a href="#" class="dcf-user-badge-image-tooltip" data-tooltip="[BADGE:DESCRIPTION]">
+            <img src="[BADGE:IMAGEURL:32]" title="[BADGE:NAME] ([RESX:awarded] [BADGE:DATEASSIGNED])" alt="[BADGE:NAME]" data-tooltip="[BADGE:NAME]" />
+         </a>
+    </div>
+</div>
