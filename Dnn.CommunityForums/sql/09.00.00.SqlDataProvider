@@ -20,7 +20,7 @@ BEGIN
     BEGIN
         PRINT 'Dropping Full Text Index on activeforums_Content.Body'
         EXEC sp_fulltext_column      
-        @tabname =  '{databaseOwner}{objectQualifier}[activeforums_Content]' , 
+        @tabname =  '{databaseOwner}[{objectQualifier}[activeforums_Content]' , 
         @colname =  'Body' , 
         @action =  'drop' 
     END
@@ -33,7 +33,7 @@ BEGIN
     BEGIN
         PRINT 'Adding Full Text Index on activeforums_Content.Body'
         EXEC sp_fulltext_column      
-        @tabname =  '{databaseOwner}{objectQualifier}[activeforums_Content]' , 
+        @tabname =  '{databaseOwner}[{objectQualifier}[activeforums_Content]' , 
         @colname =  'Body' , 
         @action =  'add' 
     END
@@ -48,7 +48,7 @@ BEGIN
     BEGIN
         PRINT 'Dropping Full Text Index on activeforums_EmailNotificationQueue.EmailBody'
         EXEC sp_fulltext_column      
-        @tabname =  '{databaseOwner}{objectQualifier}[activeforums_Content]' , 
+        @tabname =  '{databaseOwner}[{objectQualifier}[activeforums_Content]' , 
         @colname =  'EmailBody' , 
         @action =  'drop' 
     END
@@ -61,7 +61,7 @@ BEGIN
     BEGIN
         PRINT 'Adding Full Text Index on activeforums_EmailNotificationQueue.EmailBody'
         EXEC sp_fulltext_column      
-        @tabname =  '{databaseOwner}{objectQualifier}[activeforums_EmailNotificationQueue]' , 
+        @tabname =  '{databaseOwner}[{objectQualifier}[activeforums_EmailNotificationQueue]' , 
         @colname =  'EmailBody' , 
         @action =  'add' 
     END
@@ -76,7 +76,7 @@ BEGIN
     BEGIN
         PRINT 'Dropping Full Text Index on activeforums_Templates.Template'
         EXEC sp_fulltext_column      
-        @tabname =  '{databaseOwner}{objectQualifier}[activeforums_Content]' , 
+        @tabname =  '{databaseOwner}[{objectQualifier}[activeforums_Content]' , 
         @colname =  'Template' , 
         @action =  'drop' 
     END

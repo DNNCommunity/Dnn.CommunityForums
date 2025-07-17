@@ -82,7 +82,9 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.Likes, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
+
+            this.post = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId, this.ForumModuleId).Post;
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.Likes, this.post.Forum.FeatureSettings.TemplateFileNameSuffix ?? SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
 
             try
             {
@@ -111,8 +113,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 this.BindLikes();
-
-                var post = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId, this.ForumModuleId).Post;
                 foreach (Control control in this.ctl.Controls)
                 {
                     string template = string.Empty;
@@ -134,9 +134,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!string.IsNullOrEmpty(template) && template.Contains("["))
                     {
-                        if (post != null)
+                        if (this.post != null)
                         {
-                            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(template), post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
+                            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(template), this.post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
                             if (control.GetType().FullName == "System.Web.UI.LiteralControl")
                             {
                                 ((System.Web.UI.LiteralControl)control).Text = template;
