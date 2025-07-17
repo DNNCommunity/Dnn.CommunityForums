@@ -134,3 +134,268 @@ GO
 
 /* ---------------------- */
 
+
+
+/* issues 1396 - begin - incorrect content shown when editing topic that has replies  */
+
+/*activeforums_UI_TopicsView */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[activeforums_UI_TopicsView]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[activeforums_UI_TopicsView]
+GO
+CREATE PROCEDURE [dbo].[activeforums_UI_TopicsView]
+@PortalId int,
+@ModuleId int,
+@ForumId int,
+@UserId int,
+@RowIndex int = 0, 
+@MaxRows int = 20,
+@IsSuperUser bit = 0,
+@SortColumn nvarchar(25) = 'ReplyCreated'
+AS
+--Forum/Group Info
+DECLARE @PrefixURL nvarchar(255)
+DECLARE @GroupPrefix nvarchar(255)
+SET @GroupPrefix = (SELECT g.PrefixURL from [dbo].activeforums_Groups as g INNER JOIN [dbo].activeforums_Forums as f ON f.ForumGroupId = g.ForumGroupId WHERE f.ForumId=@ForumId)
+SET @PrefixURL = (SELECT PRefixURL from [dbo].activeforums_Forums WHERE ForumId = @ForumId)
+IF @PrefixURL <> '' OR @PrefixURL IS NOT NULL
+	SET @PrefixURL = '/' + @PrefixURL + '/'
+IF @GroupPrefix <> '' OR @GroupPrefix IS NOT NULL
+	SET @PrefixURL = '/' + @GroupPrefix + @PrefixURL 
+BEGIN
+	SELECT v.ForumName, v.GroupName, v.ForumGroupId, v.ForumDesc,
+		TopicsTemplateId = IsNull((SELECT SettingValue FROM [dbo].activeforums_Settings WHERE ModuleId = @ModuleId AND SettingName = 'TOPICSTEMPLATEID' and GroupKey = v.ForumSettingsKey),0),
+		AllowRSS = IsNull((SELECT SettingValue FROM [dbo].activeforums_Settings WHERE ModuleId = @ModuleId AND SettingName = 'ALLOWRSS' and GroupKey = v.ForumSettingsKey),0),
+		TopicRowCount = IsNull((SELECT Count(t.TopicId) FROM [dbo].activeforums_Topics as t inner join [dbo].activeforums_ForumTopics as ft on t.topicid = ft.topicid WHERE ft.ForumId = @ForumId AND t.IsApproved = 1 and t.IsDeleted = 0),0),
+		IsSubscribedForum = IsNull((SELECT ID FROM [dbo].activeforums_Subscriptions WHERE ModuleId = @ModuleId AND ForumId = @ForumId AND TopicId = 0 AND UserId = @UserId),0),
+					COALESCE((SELECT COUNT(*)
+							  FROM         [dbo].activeforums_Subscriptions
+							  WHERE    (ModuleId = @ModuleId) AND (ForumId = @ForumId) AND (TopicId = 0)), 0) AS ForumSubscriberCount
+		
+		 FROM [dbo].vw_activeforums_GroupForum as v WHERE v.ForumActive = 1 AND v.ModuleId = @ModuleId AND v.ForumId = @ForumId
+END
+--Forum Security
+BEGIN
+	Select p.* from [dbo].activeforums_Permissions as p INNER JOIN [dbo].activeforums_Forums as f ON f.PermissionsId = p.PermissionsId WHERE f.ModuleId = @ModuleId AND f.ForumId = @ForumId
+	
+END
+--Get Sub Forums
+ exec [dbo].activeforums_UI_ForumView @PortalId, @ModuleId,@UserId,@IsSuperUser, @ForumId
+
+--Get Topics
+
+SELECT 
+	ForumId,
+	LastReplyId,
+	TopicId,
+    ContentId,
+    TopicContentId,
+	ViewCount,
+	ReplyCount,
+	IsLocked,
+	IsPinned,
+    IsApproved,
+    IsDeleted,
+    IsRejected,
+    IsArchived,
+	TopicIcon,
+	StatusId,
+	IsAnnounce,
+	AnnounceStart,
+	AnnounceEnd,
+	TopicType,
+    Priority,
+	[Subject],
+	Summary,
+	AuthorId,
+	AuthorName,
+	Body,
+	DateCreated,
+	AuthorUserName,
+	AuthorFirstName,
+	AuthorLastName,
+	AuthorDisplayName,
+	LastReplyContentId,
+	LastReplySubject,
+	LastReplySummary,
+	LastReplyAuthorId,
+	LastReplyAuthorName,
+	LastReplyUserName,
+	LastReplyFirstName,
+	LastReplyLastName,
+	LastReplyDisplayName,
+	LastReplyDate,
+	TopicRating,
+	UserLastReplyRead,
+	UserLastTopicRead,
+	TopicURL,
+	TopicData,
+	FullURL,
+	TopicSubscriberCount,
+	ForumSubscriberCount
+	FROM (
+
+SELECT 
+	f.ForumId,
+	IsNull(f.LastReplyId,0) as LastReplyId,
+	t.TopicId,
+    CASE WHEN rc.ContentId IS NULL THEN c.ContentId ELSE rc.ContentId END as ContentId,
+    t.ContentId as TopicContentId,
+	t.ViewCount,
+	t.ReplyCount,
+	t.IsLocked,
+	t.IsPinned,
+    t.IsApproved,
+    t.IsDeleted,
+    t.IsRejected,
+    t.IsArchived,
+	IsNull(t.TopicIcon,'') as TopicIcon,
+	t.StatusId,
+	t.IsAnnounce,
+	t.AnnounceStart,
+	t.AnnounceEnd,
+	t.TopicType, 
+    t.Priority,
+	c.Subject,
+	IsNull(c.Summary,'') as Summary,
+	IsNull(c.AuthorId,-1) as AuthorId,
+	IsNull(c.AuthorName,'') as AuthorName,
+	c.Body,
+	c.DateCreated,
+	IsNull(u.Username,'') as AuthorUserName,
+	IsNull(u.FirstName,'') as AuthorFirstName,
+	IsNull(u.LastName,'') as AuthorLastName,
+	IsNull(u.DisplayName,'') as AuthorDisplayName,
+	CASE WHEN rc.ContentId IS NULL THEN c.ContentId ELSE rc.ContentId END as LastReplyContentId,
+	CASE WHEN rc.Subject IS NULL THEN c.Subject ELSE rc.Subject END as LastReplySubject,
+	CASE WHEN rc.Summary IS NULL THEN IsNull(c.Summary,'') ELSE rc.Summary END as LastReplySummary,
+	CASE WHEN rc.AuthorId IS NULL THEN c.AuthorId ELSE rc.AuthorId END as LastReplyAuthorId,
+	CASE WHEN rc.AuthorName IS NULL THEN IsNull(c.AuthorName,'') ELSE rc.AuthorName END  as LastReplyAuthorName,
+	CASE WHEN ru.Username IS NULL THEN IsNull(u.UserName,'') ELSE ru.UserName END as LastReplyUserName,
+	CASE WHEN ru.FirstName IS NULL THEN IsNULL(u.FirstName,'') ELSE ru.FirstName END as LastReplyFirstName,
+	CASE WHEN ru.LastName IS NULL THEN IsNull(u.LastName,'') ELSE ru.LastName END as LastReplyLastName,
+	CASE WHEN ru.DisplayName IS NULL THEN IsNull(IsNull(u.DisplayName,rc.AuthorName),'') ELSE ru.DisplayName END as LastReplyDisplayName,
+	CASE WHEN rc.DateCreated IS NULL THEN c.DateCreated ELSE rc.DateCreated END  as LastReplyDate,
+	CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
+	CASE WHEN FT.MaxTopicRead > TT.TopicId OR TT.TopicId IS NULL THEN ISNULL(FT.MaxTopicRead,0) ELSE TT.TopicId END AS UserLastTopicRead,
+	t.URL as TopicURL,
+	IsNull(t.TopicData,'') as TopicData,
+	CASE WHEN ISNULL(t.URL,'') <> '' THEN @PrefixURL + t.URL ELSE '' END as FullURL,
+	(SELECT     ISNULL(AVG(Rating), 0) AS Expr1
+                            FROM	[dbo].activeforums_Topics_Ratings
+                            WHERE      (TopicId = T.TopicId)) AS TopicRating, 
+						ROW_NUMBER() OVER (ORDER BY T.IsPinned DESC, T.Priority DESC,
+								CASE
+									WHEN @SortColumn = 'ReplyCreated' THEN 
+										CASE WHEN rc.DateCreated IS NULL THEN c.DateCreated ELSE rc.DateCreated END
+									WHEN @SortColumn = 'TopicCreated' THEN
+										c.DateCreated
+								END DESC) as RowRank,
+					COALESCE((SELECT COUNT(*)
+							  FROM         [dbo].activeforums_Subscriptions
+							  WHERE     (ModuleId = @ModuleId) AND (ForumId = @ForumId) AND (TopicId = T.TopicId)), 0) AS TopicSubscriberCount,
+					COALESCE((SELECT COUNT(*)
+							  FROM         [dbo].activeforums_Subscriptions
+							  WHERE     (ModuleId = @ModuleId) AND (ForumId = @ForumId) AND (TopicId = 0)), 0) AS ForumSubscriberCount
+				
+		FROM	[dbo].activeforums_ForumTopics AS f INNER JOIN
+				[dbo].activeforums_Topics as t on f.TopicId = t.TopicId INNER JOIN
+				[dbo].activeforums_Content as c on t.ContentId = c.ContentId LEFT OUTER JOIN
+				[dbo].Users as u on c.AuthorId = u.UserId LEFT OUTER JOIN
+				[dbo].activeforums_Replies as r on f.LastReplyId = r.ReplyId LEFT OUTER JOIN
+				[dbo].activeforums_Content as rc on r.ContentId = rc.ContentId LEFT OUTER JOIN
+				[dbo].Users as ru on rc.AuthorId = ru.UserId LEFT OUTER JOIN				
+                [dbo].activeforums_Topics_Tracking AS TT ON T.TopicId = TT.TopicId AND TT.UserId = @UserId LEFT OUTER JOIN
+				[dbo].activeforums_Forums_Tracking as FT ON f.ForumId = FT.ForumId AND FT.UserId = @UserId
+	
+		WHERE     (f.ForumId = @ForumId AND t.IsApproved = 1 AND t.IsDeleted = 0)	
+		) AS TopicsWithRowNumbers
+	WHERE RowRank > @RowIndex AND RowRank <= (@RowIndex + @MaxRows)
+	IF @RowIndex = 0
+	BEGIN
+		SELECT 
+        f.ForumId,
+	    IsNull(f.LastReplyId,0) as LastReplyId,
+	    t.TopicId,
+	    CASE WHEN rc.ContentId IS NULL THEN c.ContentId ELSE rc.ContentId END as ContentId,
+        t.ContentId AS TopicContentId,
+	    t.ViewCount,
+	    t.ReplyCount,
+	    t.IsLocked,
+	    t.IsPinned,
+        t.IsApproved,
+        t.IsDeleted,
+        t.IsRejected,
+        t.IsArchived,
+	    IsNull(t.TopicIcon,'') as TopicIcon,
+	    t.StatusId,
+	    t.IsAnnounce,
+	    t.AnnounceStart,
+	    t.AnnounceEnd,
+	    t.TopicType,
+        t.Priority,
+	    c.Subject,
+	    IsNull(c.Summary,'') as Summary,
+	    IsNull(c.AuthorId,-1) as AuthorId,
+	    IsNull(c.AuthorName,'') as AuthorName,
+	    c.Body,
+	    c.DateCreated,
+	    IsNull(u.Username,'') as AuthorUserName,
+	    IsNull(u.FirstName,'') as AuthorFirstName,
+	    IsNull(u.LastName,'') as AuthorLastName,
+	    IsNull(u.DisplayName,'') as AuthorDisplayName,
+	    CASE WHEN rc.ContentId IS NULL THEN c.ContentId ELSE rc.ContentId END as LastReplyContentId,
+	    CASE WHEN rc.Subject IS NULL THEN c.Subject ELSE rc.Subject END as LastReplySubject,
+	    CASE WHEN rc.Summary IS NULL THEN IsNull(c.Summary,'') ELSE rc.Summary END as LastReplySummary,
+	    CASE WHEN rc.AuthorId IS NULL THEN c.AuthorId ELSE rc.AuthorId END as LastReplyAuthorId,
+	    CASE WHEN rc.AuthorName IS NULL THEN IsNull(c.AuthorName,'') ELSE rc.AuthorName END  as LastReplyAuthorName,
+	    CASE WHEN ru.Username IS NULL THEN IsNull(u.UserName,'') ELSE ru.UserName END as LastReplyUserName,
+	    CASE WHEN ru.FirstName IS NULL THEN IsNULL(u.FirstName,'') ELSE ru.FirstName END as LastReplyFirstName,
+	    CASE WHEN ru.LastName IS NULL THEN IsNull(u.LastName,'') ELSE ru.LastName END as LastReplyLastName,
+	    CASE WHEN ru.DisplayName IS NULL THEN IsNull(IsNull(u.DisplayName,rc.AuthorName),'') ELSE ru.DisplayName END as LastReplyDisplayName,
+	    CASE WHEN rc.DateCreated IS NULL THEN c.DateCreated ELSE rc.DateCreated END  as LastReplyDate,
+	    CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
+	    CASE WHEN FT.MaxTopicRead > TT.TopicId OR TT.TopicId IS NULL THEN ISNULL(FT.MaxTopicRead,0) ELSE TT.TopicId END AS UserLastTopicRead,
+	    t.URL as TopicURL,
+	    IsNull(t.TopicData,'') as TopicData,
+	    CASE WHEN ISNULL(t.URL,'') <> '' THEN @PrefixURL + t.URL ELSE '' END as FullURL,
+	    (SELECT     ISNULL(AVG(Rating), 0) AS Expr1
+                                FROM	[dbo].activeforums_Topics_Ratings
+                                WHERE      (TopicId = T.TopicId)) AS TopicRating, 
+						    ROW_NUMBER() OVER (ORDER BY T.IsPinned DESC,
+								    CASE
+									    WHEN rc.DateCreated IS NULL THEN c.DateCreated ELSE rc.DateCreated END DESC
+											    ) as RowRank,
+					    COALESCE((SELECT COUNT(*)
+							      FROM         [dbo].activeforums_Subscriptions
+							      WHERE     (ModuleId = @ModuleId) AND (ForumId = @ForumId) AND (TopicId = T.TopicId)), 0) AS TopicSubscriberCount,
+					    COALESCE((SELECT COUNT(*)
+							      FROM         [dbo].activeforums_Subscriptions
+							      WHERE     (ModuleId = @ModuleId) AND (ForumId = @ForumId) AND (TopicId = 0)), 0) AS ForumSubscriberCount
+				
+		    FROM	[dbo].activeforums_ForumTopics AS f INNER JOIN
+				    [dbo].activeforums_Topics as t on f.TopicId = t.TopicId INNER JOIN
+				    [dbo].activeforums_Content as c on t.ContentId = c.ContentId LEFT OUTER JOIN
+				    [dbo].Users as u on c.AuthorId = u.UserId LEFT OUTER JOIN
+				    [dbo].activeforums_Replies as r on f.LastReplyId = r.ReplyId LEFT OUTER JOIN
+				    [dbo].activeforums_Content as rc on r.ContentId = rc.ContentId LEFT OUTER JOIN
+				    [dbo].Users as ru on rc.AuthorId = ru.UserId LEFT OUTER JOIN				
+                    [dbo].activeforums_Topics_Tracking AS TT ON T.TopicId = TT.TopicId AND TT.UserId = @UserId LEFT OUTER JOIN
+				    [dbo].activeforums_Forums_Tracking as FT ON f.ForumId = FT.ForumId AND FT.UserId = @UserId
+	
+		    WHERE     (f.ForumId = @ForumId AND t.IsApproved = 1 AND t.IsDeleted = 0 AND T.IsAnnounce = 1 AND T.AnnounceStart <= GETUTCDATE() AND T.AnnounceEnd >= GETUTCDATE())
+		    ORDER BY T.IsPinned DESC, c.DateCreated DESC, rc.DateCreated DESC
+	END
+BEGIN
+If @UserId > 0
+	BEGIN
+	exec [dbo].activeforums_Forums_Tracking_UpdateUser @ModuleId, @UserId, @ForumId
+	exec [dbo].activeforums_UserProfiles_UpdateActivity @PortalId, @UserId
+	END
+END
+
+GO
+
+/* issues 1396 - end - column 'TopicContentId missing from Table4' when viewing topics containing announcements  */
+
+/* ---------------------- */
+
