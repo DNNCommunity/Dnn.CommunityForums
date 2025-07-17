@@ -134,8 +134,6 @@ GO
 
 /* ---------------------- */
 
-SET NOCOUNT ON 
-GO
 
 
 /* issues 1396 - begin - incorrect content shown when editing topic that has replies  */
