@@ -147,6 +147,27 @@ function amaf_forumSubscribe(mid, fid) {
         alert('error subscribing to forum');
     });
 };
+function amaf_badgeAssign(mid, bid, uid, assigned) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        badgeId: bid,
+        userId: uid,
+        assigned: assigned
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/UserBadge/Assign',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        $('input[type=checkbox].amaf-badge-assigned')
+            .prop('checked', data);
+    }).fail(function (xhr, status) {
+        alert('error assigning badge');
+    });
+};
 function amaf_UpdateForumSubscriberCount(mid, fid) {
     var u = document.getElementById('af-topicsview-forumsubscribercount');
     if (u != null) {

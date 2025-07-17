@@ -41,6 +41,22 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo badgeInfo;
+        private string badgeName;
+
+        public UserBadgeInfo()
+        {
+        }
+
+        public UserBadgeInfo(int userBadgeId, int badgeId, string badgeName, int userId, int portalId, int moduleId, bool assigned)
+        {
+            this.UserBadgeId = userBadgeId;
+            this.BadgeId = badgeId;
+            this.UserId = userId;
+            this.PortalId = portalId;
+            this.ModuleId = moduleId;
+            this.BadgeName = badgeName;
+            this.Assigned = assigned;
+        }
 
         /// <summary>
         /// Gets or sets the badge ID.
@@ -88,6 +104,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo GetBadge() => this.badgeInfo = new Controllers.BadgeController().GetById(this.BadgeId, this.ModuleId);
+
+        [IgnoreColumn]
+        public string BadgeName { get => this.badgeName ?? (this.badgeName = this.Badge.Name); set => this.badgeName = value; }
+
+        [IgnoreColumn]
+        public bool Assigned { get; set; }
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser

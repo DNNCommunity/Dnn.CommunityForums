@@ -82,6 +82,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return UserBadges;
         }
 
+        public DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo GetForUserAndBadge(int userId, int badgeId)
+        {
+            return this.Find("WHERE UserId = @0 AND BadgeId = @1", userId, badgeId).FirstOrDefault();
+        }
+
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForBadge(int badgeId)
         {
             var cachekey = string.Format(CacheKeys.BadgeUsers, this.moduleId, badgeId);
