@@ -89,7 +89,7 @@ BEGIN
     BEGIN
         PRINT 'Adding Full Text Index on activeforums_Templates.Template'
         EXEC sp_fulltext_column      
-        @tabname =  '{databaseOwner}{objectQualifier}[activeforums_Templates]' , 
+        @tabname =  '{databaseOwner}[{objectQualifier}[activeforums_Templates]' , 
         @colname =  'Template' , 
         @action =  'add' 
     END
