@@ -1,0 +1,136 @@
+SET NOCOUNT ON 
+GO
+
+/* issues 1498 - objectqualifier typo */
+
+DECLARE @FullTextEnabled INT
+
+/*
+    This script is used to convert NTEXT columns to NVARCHAR(MAX) in the activeforums_Content, activeforums_EmailNotificationQueue, and activeforums_Templates tables.
+    (even though we are removing activeforums_Templates, it is included for completeness... )
+    It also drops and re-adds full text indexes if they are enabled on those columns.
+*/
+
+IF EXISTS (SELECT * FROM sys.columns WHERE system_type_id = 99 and object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Content]') AND name = 'Body')
+BEGIN
+    PRINT 'Updating activeforums_Content.Body from NTEXT to NVARCHAR(MAX)'
+    
+    SELECT @FullTextEnabled = COLUMNPROPERTY(OBJECT_ID('{databaseOwner}[{objectQualifier}activeforums_Content]'), 'Body', 'IsFulltextIndexed')
+    IF @FullTextEnabled = 1
+    BEGIN
+        PRINT 'Dropping Full Text Index on activeforums_Content.Body'
+        EXEC sp_fulltext_column      
+        @tabname =  '{databaseOwner}[{objectQualifier}activeforums_Content]' , 
+        @colname =  'Body' , 
+        @action =  'drop' 
+    END
+    ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Content] ALTER COLUMN Body NVARCHAR(MAX) NULL
+
+    /* this step moves the data internally from the old NTEXT column to the new NVARCHAR(MAX) column */
+    UPDATE {databaseOwner}[{objectQualifier}activeforums_Content] SET Body = Body
+    
+    IF @FullTextEnabled = 1
+    BEGIN
+        PRINT 'Adding Full Text Index on activeforums_Content.Body'
+        EXEC sp_fulltext_column      
+        @tabname =  '{databaseOwner}[{objectQualifier}activeforums_Content]' , 
+        @colname =  'Body' , 
+        @action =  'add' 
+    END
+END
+
+IF EXISTS (SELECT * FROM sys.columns WHERE system_type_id = 99 and object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]') AND name = 'EmailBody')
+BEGIN
+    PRINT 'Updating activeforums_EmailNotificationQueue.EmailBody from NTEXT to NVARCHAR(MAX)'
+    
+    SELECT @FullTextEnabled = COLUMNPROPERTY(OBJECT_ID('{databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]'), 'EmailBody', 'IsFulltextIndexed')
+    IF @FullTextEnabled = 1
+    BEGIN
+        PRINT 'Dropping Full Text Index on activeforums_EmailNotificationQueue.EmailBody'
+        EXEC sp_fulltext_column      
+        @tabname =  '{databaseOwner}[{objectQualifier}activeforums_Content]' , 
+        @colname =  'EmailBody' , 
+        @action =  'drop' 
+    END
+    ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue] ALTER COLUMN EmailBody NVARCHAR(MAX) NULL
+    
+    /* this step moves the data internally from the old NTEXT column to the new NVARCHAR(MAX) column */
+    UPDATE {databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue] SET EmailBody = EmailBody
+    
+    IF @FullTextEnabled = 1
+    BEGIN
+        PRINT 'Adding Full Text Index on activeforums_EmailNotificationQueue.EmailBody'
+        EXEC sp_fulltext_column      
+        @tabname =  '{databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]' , 
+        @colname =  'EmailBody' , 
+        @action =  'add' 
+    END
+END
+
+IF EXISTS (SELECT * FROM sys.columns WHERE system_type_id = 99 and object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates]') AND name = 'Template')
+BEGIN
+    PRINT 'Updating activeforums_Templates.EmailBody from NTEXT to NVARCHAR(MAX)'
+    
+    SELECT @FullTextEnabled = COLUMNPROPERTY(OBJECT_ID('{databaseOwner}[{objectQualifier}activeforums_Templates]'), 'Template', 'IsFulltextIndexed')
+    IF @FullTextEnabled = 1
+    BEGIN
+        PRINT 'Dropping Full Text Index on activeforums_Templates.Template'
+        EXEC sp_fulltext_column      
+        @tabname =  '{databaseOwner}[{objectQualifier}activeforums_Content]' , 
+        @colname =  'Template' , 
+        @action =  'drop' 
+    END
+    ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Templates] ALTER COLUMN Template NVARCHAR(MAX) NULL
+    
+    /* this step moves the data internally from the old NTEXT column to the new NVARCHAR(MAX) column */
+    UPDATE {databaseOwner}[{objectQualifier}activeforums_Templates] SET Template = Template
+    
+    IF @FullTextEnabled = 1
+    BEGIN
+        PRINT 'Adding Full Text Index on activeforums_Templates.Template'
+        EXEC sp_fulltext_column      
+        @tabname =  '{databaseOwner}[{objectQualifier}activeforums_Templates]' , 
+        @colname =  'Template' , 
+        @action =  'add' 
+    END
+END 
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_activeforums_Topics]') AND type in (N'V', N'VW'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}vw_activeforums_Topics]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_activeforums_Replies]') AND type in (N'V', N'VW'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}vw_activeforums_Replies]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_activeforums_ForumTopics]') AND type in (N'V', N'VW'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}vw_activeforums_ForumTopics]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_activeforums_ForumReplies]') AND type in (N'V', N'VW'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}vw_activeforums_ForumReplies]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_activeforums_TopicsView]') AND type in (N'V', N'VW'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}vw_activeforums_TopicsView]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Save]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Topics_Save]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Reply_Save]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Reply_Save]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates_Save]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Templates_Save]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Mod_Pending]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Mod_Pending]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_Standard]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_Standard]
+GO
+
+
+/* issues  1498 - objectqualifier typo  */
+
+/* ---------------------- */
+
