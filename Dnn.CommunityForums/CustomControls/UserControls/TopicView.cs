@@ -214,7 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Test for a proper dataset
-            if (ds.Tables.Count < 4 || ds.Tables[0].Rows.Count == 0 || ds.Tables[1].Rows.Count == 0)
+            if (ds.Tables?.Count < 4 || ds.Tables[0]?.Rows?.Count == 0 || ds.Tables[1]?.Rows?.Count == 0)
             {
                 this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
                 this.Context.ApplicationInstance.CompleteRequest();
