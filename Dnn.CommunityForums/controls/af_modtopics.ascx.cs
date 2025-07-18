@@ -231,6 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             this.BuildModList();
+            this.lblHeader.RenderControl(e.Output);
             this.litTopics.RenderControl(e.Output);
         }
 
@@ -244,13 +245,13 @@ namespace DotNetNuke.Modules.ActiveForums
             DataTable dtContent = ds.Tables[0];
             DataTable dtAttach = ds.Tables[1];
             string tmpForum = string.Empty;
+            sb.Append("<div id=\"afgrid\" style=\"position:relative;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">");
             if (dtContent.Rows.Count < 1)
             {
                 this.lblHeader.Text = Utilities.GetSharedResource("[RESX:NoPendingPosts]");
             }
             else
             {
-                sb.Append("<div id=\"afgrid\" style=\"position:relative;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">");
                 foreach (DataRow dr in dtContent.Rows)
                 {
                     string forumKey = dr["ForumId"].ToString() + dr["ForumName"].ToString();
@@ -328,10 +329,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         sb.Append("</table></div>");
                     }
                 }
-
-                sb.Append("</table></div>");
             }
 
+            sb.Append("</table></div>");
             this.litTopics.Text = Utilities.LocalizeControl(sb.ToString());
         }
 
