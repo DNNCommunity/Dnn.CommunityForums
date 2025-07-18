@@ -888,7 +888,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return this.FeatureSettings.AllowRSS && Controllers.PermissionController.HasRequiredPerm(this.Security.ReadRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleNameArray(this.PortalId, accessingUser.Roles)) ? PropertyAccess.FormatString(this.RssLink, format) : string.Empty;
                     case "modlink":
                         var modLink = Utilities.NavigateURL(this.GetTabId(), this.portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={this.ForumID}" });
-                        return Controllers.PermissionController.HasRequiredPerm(this.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleNameArray(this.PortalId, accessingUser.Roles)) ? PropertyAccess.FormatString(modLink, format) : string.Empty;
+                        return PropertyAccess.FormatString(modLink, format);
                 }
             }
             catch (Exception ex)

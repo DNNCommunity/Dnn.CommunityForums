@@ -111,22 +111,22 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}vw_activeforums_TopicsView]';
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Save]') AND type in (N'P', N'PC'))
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Topics_Save]
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Topics_Save]';
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Reply_Save]') AND type in (N'P', N'PC'))
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Reply_Save]
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Reply_Save]';
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates_Save]') AND type in (N'P', N'PC'))
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Templates_Save]
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Templates_Save]';
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Mod_Pending]') AND type in (N'P', N'PC'))
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Mod_Pending]
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Mod_Pending]';
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]') AND type in (N'P', N'PC'))
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]';
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_Standard]') AND type in (N'P', N'PC'))
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_Standard]
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_Standard]';
 GO
 
 
