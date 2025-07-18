@@ -153,6 +153,8 @@ namespace DotNetNuke.Modules.ActiveForums
         
         public const string AvatarRefreshGravatar = "GRAVATAR";
 
+        public const string DefaultBadgesFolderName = "DNNCommunityForums/Badges";
+
         public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
         public const string ControlPanelResourceFile = Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx";

@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid agBadges;
         protected global::System.Web.UI.WebControls.DropDownList drpBadgeMetrics;
-        protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlBadgeImage;
+        protected global::System.Web.UI.WebControls.DropDownList drpBadgeImages;
 
         protected override void OnInit(EventArgs e)
         {
@@ -46,19 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 base.OnLoad(e);
 
                 this.BindBadgeMetrics();
-
-                ctlBadgeImage.FileFilter = DotNetNuke.Common.Globals.glbImageFileTypes;
-                ctlBadgeImage.Url = string.Empty;
-
-                //var objFileInfo = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile(fileId);
-                //if (!ReferenceEquals(objFileInfo, null))
-                //{
-                //    ctlBadgeImage.Url = objFileInfo.Folder + objFileInfo.FileName;
-                //}
-                //else
-                //{
-                //    ctlBadgeImage.Url = string.Empty;
-                //}
+                this.BindBadgeImages();
             }
         }
 
@@ -94,6 +82,20 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindBadgeMetrics()
         {
             Utilities.BindEnum(pDDL: this.drpBadgeMetrics, enumType: typeof(Enums.BadgeMetric), pColValue: string.Empty, addEmptyValue: false, localize: true, excludeIndex: -1);
+        }
+
+        private void BindBadgeImages()
+        {
+            var folderInfo = DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFolder(this.PortalId, Globals.DefaultBadgesFolderName);
+            foreach (var fileInfo in DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFiles(folderInfo, recursive: true))
+            {
+                if (fileInfo.ContentType.ToLowerInvariant().Contains("image/"))
+                {
+                    this.drpBadgeImages.Items.Add(new ListItem(fileInfo.FileName, fileInfo.FileId.ToString()));
+                }
+            }
+            this.drpBadgeImages.Items.Insert(0, new ListItem("[RESX:DropDownDefault]", "-1"));
+
         }
     }
 }

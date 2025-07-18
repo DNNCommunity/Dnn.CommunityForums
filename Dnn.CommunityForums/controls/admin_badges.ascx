@@ -1,5 +1,4 @@
 ﻿<%@ control language="C#" autoeventwireup="false" codebehind="admin_badges.ascx.cs" inherits="DotNetNuke.Modules.ActiveForums.admin_badges" %>
-<%@ register tagprefix="dnn" tagname="URL" src="~/controls/DnnUrlControl.ascx" %>
 <%@ register assembly="DotNetNuke.Modules.ActiveForums" namespace="DotNetNuke.Modules.ActiveForums.Controls" tagprefix="am" %>
 <script type="text/javascript">
 function renderDG(){
@@ -24,8 +23,7 @@ function openDialog(row){
 		$('#txtSortOrder').val('');
         $('#<%=drpBadgeMetrics.ClientID%>').val('-1');
         $('#txtThreshold').val('');
-        $('#txtFileId').val('-1');
-        $('#<%=ctlBadgeImage.ClientID%>').Url = '';
+        $('#<%=drpBadgeImages.ClientID%>').val('-1');
         $('#chkSendAwardNotification').prop("checked", true);
         $('#chkSuppresssAwardNotificationOnBackfill').prop("checked", true);
 		am.UI.LoadDiv('afBadgeEdit', badgeOptions);
@@ -39,8 +37,7 @@ function loadEdit(data) {
 	$('#txtSortOrder').val(data.SortOrder);
     $('#<%=drpBadgeMetrics.ClientID%>').val(data.BadgeMetric);
 	$('#txtThreshold').val(data.Threshold);
-    $('#txtFileId').val(data.FileId);
-    $('#<%=ctlBadgeImage.ClientID%>').Url = data.Url;
+    $('#<%=drpBadgeImages.ClientID%>').val(data.FileId);
     $('#chkSendAwardNotification').prop("checked", data.SendAwardNotification);
     $('#chkSuppresssAwardNotificationOnBackfill').prop("checked", data.SuppresssAwardNotificationOnBackfill);
 	am.UI.LoadDiv('afBadgeEdit', badgeOptions);
@@ -50,7 +47,6 @@ badge.BadgeId = -1;
 badge.Name = '';
 badge.Description = '';
 badge.FileId = -1;
-badge.Url = '';
 badge.SortOrder = 0;
 badge.BadgeMetric = 0;
 badge.Threshold = 0;
@@ -77,12 +73,8 @@ function saveBadge() {
 	if (badge.BadgeMetric === -1) {
 		isvalid = false;
 	}
-    badge.FileId = $('#txtFileId').val();
+    badge.FileId = $('#<%=drpBadgeImages.ClientID%>').val();
     if (badge.FileId === -1) {
-        isvalid = false;
-    }
-    badge.Url = $('#<%=ctlBadgeImage.ClientID%>').Url;
-    if (badge.Url === '') {
         isvalid = false;
     }
     badge.SendAwardNotification = $('#chkSendAwardNotification').prop("checked");
@@ -139,7 +131,6 @@ function saveBadge() {
                 <td class="amcpnormal" onclick="openDialog(this.parentNode);" style="white-space: nowrap;">##DataItem('Threshold')##</td>
                 <td style="display: none;">##DataItem('FileId')##</td>
                 <td style="white-space: nowrap;">##DataItem('ImageUrl')##</td>
-                d>
             </tr>
         </itemtemplate>
         <footertemplate>
@@ -180,6 +171,11 @@ function saveBadge() {
         </div>
         <div class="dnnFormItem">
             <label>
+                [RESX:BadgeImage]:</label>
+            <asp:dropdownlist id="drpBadgeImages" runat="server" width="150" />
+        </div>
+        <div class="dnnFormItem">
+            <label>
                 [RESX:BadgeSendAwardNotification]:</label>
             <input type="checkbox" id="chkSendAwardNotification" width="50" />
 
@@ -189,18 +185,6 @@ function saveBadge() {
                 [RESX:BadgeSuppresssAwardNotificationOnBackfill]:</label>
             <input type="checkbox" id="chkSuppresssAwardNotificationOnBackfill" width="50" />
 
-        </div>
-        <div class="dnnFormItem">
-            <label>
-                [RESX:BadgeFileId]:</label>
-            <input type="text" id="txtFileId" class="dnnFormRequired" onkeypress="return onlyNumbers(event);" width="50" />
-
-        </div>
-        <div class="dnnFormItem">
-            <label>
-                [RESX:BadgeImage]:</label>
-            <dnn:url id="ctlBadgeImage" runat="server" width="300" showimages="true" showfiles="True" showurls="True" shownewwindow="false" showtrack="False" showlog="False" urltype="F" showtabs="False">
-            </dnn:url>
         </div>
         <ul class="dnnActions dnnClear">
             <li><a href="#" onclick="saveBadge(); return false;" class="dnnPrimaryAction">[RESX:Button:Save]</a></li>

@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
     using System;
     using System.Text;
     using System.Web;
+    using Newtonsoft.Json.Linq;
 
     public class adminhelper : HandlerBase
     {
@@ -317,15 +318,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             sOut += ",";
             sOut += Utilities.JSON.Pair("SortOrder", badge.SortOrder.ToString());
             sOut += ",";
-            sOut += Utilities.JSON.Pair("BadgeMetric", badge.BadgeMetric.ToString());
+            sOut += Utilities.JSON.Pair("BadgeMetric", Convert.ToInt32(Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric), badge.BadgeMetric.ToString())).ToString());
             sOut += ",";
             sOut += Utilities.JSON.Pair("BadgeMetricEnumName", badge.BadgeMetricEnumName);
             sOut += ",";
             sOut += Utilities.JSON.Pair("Threshold", badge.Threshold.ToString());
             sOut += ",";
             sOut += Utilities.JSON.Pair("FileId", badge.FileId.ToString());
-            sOut += ",";
-            sOut += Utilities.JSON.Pair("Url", url);
             sOut += ",";
             sOut += Utilities.JSON.Pair("ImageUrl", badge.GetBadgeImageUrl(portalId: this.PortalId, size: 16));
             sOut += ",";
@@ -380,11 +379,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             if (this.Params.ContainsKey("FileId"))
             {
                 badge.FileId = Utilities.SafeConvertInt(this.Params["FileId"]);
-            }
-
-            if (this.Params.ContainsKey("Url"))
-            {
-                var url = this.Params["Url"].ToString();
             }
 
             if (this.Params.ContainsKey("SendAwardNotification"))

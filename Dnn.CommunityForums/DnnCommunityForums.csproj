@@ -89,10 +89,6 @@
     </ItemGroup>
     
     <ItemGroup>
-      <Folder Include="images\badges\" />
-    </ItemGroup>
-    
-    <ItemGroup>
       <Compile Update="controls\af_assign_user_badges.ascx.cs">
         <SubType>ASPXCodeBehind</SubType>
       </Compile>
