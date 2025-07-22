@@ -792,7 +792,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.ViewRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleNameArray(this.PortalId, accessingUser.Roles)))
+            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.ViewRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser)))
             {
                 return string.Empty;
             }
@@ -885,10 +885,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "forumiconcss":
                         return PropertyAccess.FormatString(this.GetForumFolderIconCss(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
                     case "rsslink":
-                        return this.FeatureSettings.AllowRSS && Controllers.PermissionController.HasRequiredPerm(this.Security.ReadRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleNameArray(this.PortalId, accessingUser.Roles)) ? PropertyAccess.FormatString(this.RssLink, format) : string.Empty;
+                        return this.FeatureSettings.AllowRSS && Controllers.PermissionController.HasRequiredPerm(this.Security.ReadRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser)) ? PropertyAccess.FormatString(this.RssLink, format) : string.Empty;
                     case "modlink":
                         var modLink = Utilities.NavigateURL(this.GetTabId(), this.portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={this.ForumID}" });
-                        return Controllers.PermissionController.HasRequiredPerm(this.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleNameArray(this.PortalId, accessingUser.Roles)) ? PropertyAccess.FormatString(modLink, format) : string.Empty;
+                        return PropertyAccess.FormatString(modLink, format);
                 }
             }
             catch (Exception ex)

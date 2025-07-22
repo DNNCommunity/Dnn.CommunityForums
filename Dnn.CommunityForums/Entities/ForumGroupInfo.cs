@@ -233,6 +233,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
+            if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.ViewRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser)))
+            {
+                return string.Empty;
+            }
+
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
