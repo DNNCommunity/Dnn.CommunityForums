@@ -86,8 +86,8 @@ function saveBadge() {
 }
 
 function redirectBadgeUsers() {
-    var uri = window.location.protocol + "//" + window.location.host + ":" + window.location.port + "/" + window.location.pathname + "/afv/grid/afgt/badgeusers?uid=" + badge.BadgeId;
-    alert(uri);
+    var pathname = window.location.pathname.indexOf('/ctl/EDIT') > 0 ? window.location.pathname.substr(0, window.location.pathname.indexOf('/ctl/EDIT')) : window.location.pathname;
+	var uri = window.location.protocol + "//" + window.location.host + pathname + "/afv/grid/afgt/badgeusers?badgeId=" + badge.BadgeId;
     window.location.replace(uri);
 }
 

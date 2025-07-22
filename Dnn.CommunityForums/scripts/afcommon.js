@@ -147,10 +147,9 @@ function amaf_forumSubscribe(mid, fid) {
         alert('error subscribing to forum');
     });
 };
-function amaf_badgeAssign(mid, fid, bid, uid, assigned) {
+function amaf_badgeAssign(mid, bid, uid, assigned) {
     var sf = $.ServicesFramework(mid);
     var params = {
-        forumId: fid,
         badgeId: bid,
         userId: uid,
         assigned: assigned

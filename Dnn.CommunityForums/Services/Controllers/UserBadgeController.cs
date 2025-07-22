@@ -24,7 +24,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
-
+    
+    using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -34,8 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     {
         public struct UserBadgeDto
         {
-            public int ForumId { get; set; } /* this is required to satisfy the "ForumsAuthorize" attribute security checking, but not otherwise used at this time */
-
             public int BadgeId { get; set; }
 
             public int UserId { get; set; }
@@ -62,21 +61,39 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     var userBadge = userBadgeController.GetForUserAndBadge(userId: dto.UserId, badgeId: dto.BadgeId);
                     if (userBadge == null && dto.Assigned.Equals(true))
                     {
-                        userBadge = new DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo
-                        {
-                            BadgeId = dto.BadgeId,
-                            UserId = dto.UserId,
-                            PortalId = this.PortalSettings.PortalId,
-                            ModuleId = this.ForumModuleId,
-                            DateAssigned = DateTime.UtcNow,
-                        };
-                        userBadgeController.Insert(userBadge);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(
+                            processType: ProcessType.BadgeAssigned,
+                            portalId: this.PortalSettings.PortalId,
+                            tabId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            moduleId: this.ForumModuleId,
+                            forumGroupId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            forumId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            topicId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            replyId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            contentId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            authorId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            userId: dto.UserId,
+                            badgeId: dto.BadgeId,
+                            requestUrl: this.Request.RequestUri.ToString());
                         return this.Request.CreateResponse(HttpStatusCode.OK, true);
                     }
 
                     if (userBadge != null && dto.Assigned.Equals(false))
                     {
-                        userBadgeController.DeleteById(userBadge.UserBadgeId);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(
+                            processType: ProcessType.BadgeUnassigned,
+                            portalId: this.PortalSettings.PortalId,
+                            tabId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            moduleId: this.ForumModuleId,
+                            forumGroupId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            forumId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            topicId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            replyId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            contentId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            authorId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                            userId: dto.UserId,
+                            badgeId: dto.BadgeId,
+                            requestUrl: this.Request.RequestUri.ToString());
                         return this.Request.CreateResponse(HttpStatusCode.OK, false);
                     }
 

@@ -31,7 +31,6 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_assign_user_badges : ForumBase
     {
         private int? userid { get; set; }
-        private int fakeForumId { get; set; }
 
         private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser { get; set; }
 
@@ -42,7 +41,6 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.fakeForumId = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId).ToList().First().ForumID; /* this is needed to send a valid forum Id to the Web API */
             this.userid = this.Request.QueryString[ParamKeys.UserId] != null ? Convert.ToInt32(this.Request.QueryString[ParamKeys.UserId]) : -1;
             this.forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, (int)this.userid);
             this.lblBadgesAssigned.Text = string.Format(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserBadgesAssigned]"), forumUser.DisplayName);
@@ -138,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             var chkBox = cellControl as CheckBox;
                             if (!(chkBox == null))
                             {
-                                chkBox.Attributes.Add("onclick", $"amaf_badgeAssign({this.ForumModuleId},{this.fakeForumId},{userBadgeInfo.BadgeId},{userBadgeInfo.UserId},$('#{cellControl.ClientID}').is(':checked'));");
+                                chkBox.Attributes.Add("onclick", $"amaf_badgeAssign({this.ForumModuleId},{userBadgeInfo.BadgeId},{userBadgeInfo.UserId},$('#{cellControl.ClientID}').is(':checked'));");
                                 chkBox.Enabled = true;
                             }
                         }
