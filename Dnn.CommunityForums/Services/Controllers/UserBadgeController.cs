@@ -34,6 +34,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     {
         public struct UserBadgeDto
         {
+            public int ForumId { get; set; } /* this is required to satisfy the "ForumsAuthorize" attribute security checking, but not otherwise used at this time */
+
             public int BadgeId { get; set; }
 
             public int UserId { get; set; }

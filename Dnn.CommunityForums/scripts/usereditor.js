@@ -59,6 +59,7 @@
                 open: function () { editUserDialog.find("#trustLevel").focus(); },
                 buttons: [
                     { text: opts.updateText, click: updateUser },
+                    { text: opts.updateBadges, click: redirectUpdateBadges },
                     { text: opts.cancelText, click: function () { $(this).dialog("close"); } }
                 ],
                 close: function () { }
@@ -67,7 +68,33 @@
             editUserDialog.dialog('open');
 
         };
+        function redirectUpdateBadges() {
+            window.location.replace(this.baseURI + "/afv/grid/afgt/userbadges?uid=" + userId);
+        }
 
+        $(opts.openTriggerSelector).button({ icons: { primary:'ui-icon-person' } });
+
+        $wrap.on('click', opts.openTriggerSelector, function (e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            userId = $(e.currentTarget).attr('data-id');
+            userName = $(e.currentTarget).attr('data-name');
+
+            $.ajax(
+                {
+                    url: opts.serviceurlbase + "GetUserProfile?UserID=" + userId,
+                    type: "GET",
+                    contentType: "application/json",
+                    dataType: "json",
+                    beforeSend: opts.servicesFramework.setModuleHeaders
+                }).done(function (data) {
+                openEditUserDialog(data);
+            }).fail(function (xhr, status) {
+                alert('Error Retriving User Profile');
+            });
+        });
         function updateUser() {
 
             var params = {
@@ -129,6 +156,7 @@
         signatureText: "Signature:",
         rewardPointsText: "Reward Points:",
         updateText: "Update User",
+        updateBadges: "Update Badges",
         cancelText: "Cancel",
         dialogClass: 'dnnFormPopup dnnClear',
         autoOpen: false

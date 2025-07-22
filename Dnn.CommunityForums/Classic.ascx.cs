@@ -104,6 +104,18 @@ namespace DotNetNuke.Modules.ActiveForums
                             opts = $"{ParamKeys.ContentId}={this.Request.QueryString[ParamKeys.ContentId]}";
                         }
                     }
+                    else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.BadgeUsers)
+                    {
+                        ctl = Views.BadgeUsers;
+                        if (this.Request.QueryString[ParamKeys.BadgeId] != null)
+                        {
+                            opts = $"{ParamKeys.BadgeId}={this.Request.QueryString[ParamKeys.BadgeId]}";
+                        }
+                    }
+                    else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.UserBadges)
+                    {
+                        ctl = Views.UserBadges;
+                    }
                     else if (this.Request.Params[ParamKeys.ViewType] != null)
                     {
                         ctl = this.Request.Params[ParamKeys.ViewType];
@@ -183,6 +195,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 else if (view.ToUpperInvariant() == Views.RecycleBin.ToUpperInvariant() && this.Request.IsAuthenticated)
                 {
                     ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/af_recycle_bin.ascx"));
+                }
+                else if (view.ToUpperInvariant() == Views.UserBadges.ToUpperInvariant() && this.Request.IsAuthenticated)
+                {
+                    ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/af_assign_user_badges.ascx"));
+                }
+                else if (view.ToUpperInvariant() == Views.BadgeUsers.ToUpperInvariant() && this.Request.IsAuthenticated)
+                {
+                    ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/af_assign_badge_users.ascx"));
                 }
                 else if (view.ToUpperInvariant() == "FORUMVIEW")
                 {

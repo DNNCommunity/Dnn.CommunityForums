@@ -1630,4 +1630,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
     <value>Topics Read</value>
   </data>
+  <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
+    <value>Update Users</value>
+  </data>
 </root>

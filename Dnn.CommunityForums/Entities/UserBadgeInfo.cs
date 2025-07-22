@@ -42,12 +42,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo badgeInfo;
         private string badgeName;
+        private string userName;
 
         public UserBadgeInfo()
         {
         }
 
-        public UserBadgeInfo(int userBadgeId, int badgeId, string badgeName, int userId, int portalId, int moduleId, bool assigned)
+        public UserBadgeInfo(int userBadgeId, int badgeId, string badgeName, int userId, string userName, int portalId, int moduleId, bool assigned)
         {
             this.UserBadgeId = userBadgeId;
             this.BadgeId = badgeId;
@@ -55,6 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.PortalId = portalId;
             this.ModuleId = moduleId;
             this.BadgeName = badgeName;
+            this.UserName = userName;
             this.Assigned = assigned;
         }
 
@@ -104,9 +106,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo GetBadge() => this.badgeInfo = new Controllers.BadgeController().GetById(this.BadgeId, this.ModuleId);
-
+        
         [IgnoreColumn]
         public string BadgeName { get => this.badgeName ?? (this.badgeName = this.Badge.Name); set => this.badgeName = value; }
+
+        [IgnoreColumn]
+        public string UserName { get => this.userName ?? (this.userName = this.ForumUser.DisplayName); set => this.userName = value; }
 
         [IgnoreColumn]
         public bool Assigned { get; set; }

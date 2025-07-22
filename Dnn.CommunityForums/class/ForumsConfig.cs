@@ -842,6 +842,8 @@ namespace DotNetNuke.Modules.ActiveForums
                                                     ModuleId = module.ModuleID,
                                                     SortOrder = Utilities.SafeConvertInt(xNodeList[i].Attributes["sortorder"].Value),
                                                     Threshold = Utilities.SafeConvertInt(xNodeList[i].Attributes["threshold"].Value),
+                                                    SendAwardNotification = true,
+                                                    SuppresssAwardNotificationOnBackfill = true,
                                                     FileId = fileId,
                                                 };
                                                 new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Insert(badge);

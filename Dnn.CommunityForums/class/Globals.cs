@@ -388,6 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Action = "action";
         public const string TimeSpan = "ts";
         public const string Mode = "mode";
+        public const string BadgeId = "badgeid";
     }
 
     public class Modes
@@ -433,6 +434,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ModerateReport = "modreport";
         public const string Likes = "likes";
         public const string RecycleBin = "recyclebin";
+        public const string BadgeUsers = "badgeusers";
+        public const string UserBadges = "userbadges";
     }
 
     internal static class GridTypes
@@ -449,6 +452,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Announcements = "announcements";
         public const string Tags = "tags";
         public const string RecycleBin = "recyclebin";
+        public const string BadgeUsers = "badgeusers";
+        public const string UserBadges = "userbadges";
     }
 
     public class PostActions

@@ -1879,4 +1879,13 @@ From,
   <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
     <value>Don't send an older user a notification when backfilling awards</value>
   </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Badge</value>
+  </data>
+  <data name="[RESX:BadgeUsersAssigned].Text" xml:space="preserve">
+    <value>Users awarded Badge: {0}</value>
+  </data>
+  <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
+    <value>Badges awarded to User: {0}</value>
+  </data>
 </root>

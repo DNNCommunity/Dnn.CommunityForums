@@ -28,28 +28,28 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Collections;
 
-    public partial class af_assign_user_badges : ForumBase
+    public partial class af_assign_badge_users : ForumBase
     {
-        private int? userid { get; set; }
+        private int? badgeId { get; set; }
         private int fakeForumId { get; set; }
 
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser { get; set; }
+        private DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo badge { get; set; }
 
         protected global::System.Web.UI.WebControls.Label lblBadgesAssigned;
-        protected global::System.Web.UI.UpdatePanel upOptions;
-        protected global::System.Web.UI.WebControls.GridView dgrdUserBadges;
+        protected global::System.Web.UI.WebControls.GridView dgrdBadgeUsers;
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.fakeForumId = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId).ToList().First().ForumID; /* this is needed to send a valid forum Id to the Web API */
-            this.userid = this.Request.QueryString[ParamKeys.UserId] != null ? Convert.ToInt32(this.Request.QueryString[ParamKeys.UserId]) : -1;
-            this.forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, (int)this.userid);
-            this.lblBadgesAssigned.Text = string.Format(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserBadgesAssigned]"), forumUser.DisplayName);
-            this.dgrdUserBadges.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Badge]");
 
-            this.dgrdUserBadges.PageIndexChanging += this.UserBadgesGridRowPageIndexChanging;
-            this.dgrdUserBadges.RowDataBound += this.OnUserBadgesGridRowDataBound;
+            this.fakeForumId = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId).ToList().First().ForumID; /* this is needed to send a valid forum Id to the Web API */
+            this.badgeId = this.Request.QueryString[ParamKeys.BadgeId] != null ? Convert.ToInt32(this.Request.QueryString[ParamKeys.BadgeId]) : -1;
+            this.badge = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().GetById((int)this.badgeId);
+            this.lblBadgesAssigned.Text = string.Format(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:BadgeUsersAssigned]"), badge.Name);
+            this.dgrdBadgeUsers.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Username]");
+
+            this.dgrdBadgeUsers.PageIndexChanging += this.BadgeUsersGridRowPageIndexChanging;
+            this.dgrdBadgeUsers.RowDataBound += this.OnBadgeUsersGridRowDataBound;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -68,12 +68,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     _pageSize = 10;
                 }
 
-                this.dgrdUserBadges.PageSize = _pageSize;
+                this.dgrdBadgeUsers.PageSize = _pageSize;
 
-
-                if (this.userid > 0 && this.ForumUser.GetIsMod(this.ForumModuleId))
+                if (this.UserId > 0 && this.ForumUser.GetIsMod(this.ForumModuleId))
                 {
-                    this.BindUserBadges();
+                    this.BindBadgeUsers();
                 }
             }
             catch (Exception ex)
@@ -82,49 +81,34 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private int User
+        private void BindBadgeUsers()
         {
-            get
-            {
-                if (!this.userid.HasValue)
-                {
-                    int parsedUserId;
-                    this.userid = int.TryParse(this.Request.Params[ParamKeys.UserId], out parsedUserId) ? parsedUserId : 0;
-                }
-
-                return this.userid.Value;
-            }
-        }
-
-        private void BindUserBadges()
-        {
-            this.dgrdUserBadges.DataSource = this.GetBadges().ToList();
-            this.dgrdUserBadges.DataBind();
+            this.dgrdBadgeUsers.DataSource = this.GetBadges().ToList();
+            this.dgrdBadgeUsers.DataBind();
         }
 
 
         private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetBadges()
         {
-            var availableBadges = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Get(this.ForumModuleId).Select(badge =>
+            var availableUsers = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).Get().Where(u => u.PortalId == this.PortalId).Select(forumUser =>
             {
-                return new { badge.BadgeId, badge };
+                return new { forumUser.UserId, forumUser };
             });
 
-            var assignedBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ForumModuleId).GetForUser((int)this.userid);
+            var assignedBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ForumModuleId).GetForBadge((int)this.badgeId);
             var assignedBadgeIds = assignedBadges.Select(userBadge =>
             {
-                return new { userBadge.UserBadgeId, userBadge.BadgeId };
+                return new { userBadge.UserBadgeId, userBadge.UserId };
             });
-            var mergedBadges = from availBadges in availableBadges
-                                      join asgnedBadges in assignedBadgeIds
-                                      on availBadges.BadgeId equals asgnedBadges.BadgeId into merged
-                                      from mrgdBadges in merged.DefaultIfEmpty()
-                                      //where mrgdBadges == null || mrgdBadges.UserBadgeId != 0
-                                      select new DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo(userBadgeId: mrgdBadges?.UserBadgeId ?? 0, badgeId: availBadges.badge.BadgeId, badgeName: availBadges.badge.Name, userId: (int)this.userid, userName: this.forumUser.DisplayName, portalId: this.PortalId, moduleId: this.ForumModuleId, assigned: mrgdBadges != null);
+            var mergedBadges = from availUsers in availableUsers
+                join asgnedBadges in assignedBadgeIds on availUsers.UserId equals asgnedBadges.UserId into merged
+                from mrgdBadges in merged.DefaultIfEmpty()
+                //where mrgdBadges == null || mrgdBadges.UserBadgeId != 0
+                select new DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo(userBadgeId: mrgdBadges?.UserBadgeId ?? 0, userId: availUsers.UserId, userName: availUsers.forumUser.DisplayName, badgeId: (int)this.badgeId, badgeName: this.badge.Name, portalId: this.PortalId, moduleId: this.ForumModuleId, assigned: mrgdBadges != null);
             return mergedBadges;
         }
 
-        protected void OnUserBadgesGridRowDataBound(object sender, GridViewRowEventArgs e)
+        protected void OnBadgeUsersGridRowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
@@ -147,10 +131,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        protected void UserBadgesGridRowPageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void BadgeUsersGridRowPageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            this.dgrdUserBadges.PageIndex = e.NewPageIndex;
-            this.dgrdUserBadges.DataBind();
+            this.dgrdBadgeUsers.PageIndex = e.NewPageIndex;
+            this.dgrdBadgeUsers.DataBind();
         }
     }
 }

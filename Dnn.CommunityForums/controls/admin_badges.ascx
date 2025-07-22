@@ -85,7 +85,11 @@ function saveBadge() {
 	}
 }
 
-
+function redirectBadgeUsers() {
+    var uri = window.location.protocol + "//" + window.location.host + ":" + window.location.port + "/" + window.location.pathname + "/afv/grid/afgt/badgeusers?uid=" + badge.BadgeId;
+    alert(uri);
+    window.location.replace(uri);
+}
 
 </script>
 <div class="amcpsubnav">
@@ -188,8 +192,9 @@ function saveBadge() {
         </div>
         <ul class="dnnActions dnnClear">
             <li><a href="#" onclick="saveBadge(); return false;" class="dnnPrimaryAction">[RESX:Button:Save]</a></li>
-            <li><a href="#" class="confirm dnnSecondaryAction">[RESX:Button:Delete]</a></li>
-            <li><a href="#" onclick="am.UI.CloseDiv('afBadgeEdit'); return false;" class="dnnSecondaryAction">[RESX:Button:Cancel]</a></li>
+            <li><a href="#" onclick="redirectBadgeUsers(); return false;" class="dnnSecondaryAction">[RESX:Button:UpdateBadgeUsers]</a></li>
+            <li><a href="#" class="confirm dnnTertiaryAction">[RESX:Button:Delete]</a></li>
+            <li><a href="#" onclick="am.UI.CloseDiv('afBadgeEdit'); return false;" class="dnnTertiaryAction">[RESX:Button:Cancel]</a></li>
         </ul>
     </div>
 </div>

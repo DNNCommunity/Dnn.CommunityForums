@@ -89,6 +89,9 @@
     </ItemGroup>
     
     <ItemGroup>
+      <Compile Update="controls\af_assign_badge_users.ascx.cs">
+        <SubType>ASPXCodeBehind</SubType>
+      </Compile>
       <Compile Update="controls\af_assign_user_badges.ascx.cs">
         <SubType>ASPXCodeBehind</SubType>
       </Compile>
