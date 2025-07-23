@@ -624,7 +624,7 @@ GO
 CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt2] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles
 (
 	[UserId] ASC
-)
+) 
 INCLUDE ( [TopicCount],
 [ReplyCount],
 [ViewCount],
@@ -648,7 +648,7 @@ CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt3] 
 (
 	[PortalId] ASC,
 	[UserId] ASC
-)
+) 
 INCLUDE ( [ProfileId],
 [TopicCount],
 [ReplyCount],
@@ -725,6 +725,7 @@ INCLUDE (
 	[AvatarFileId], 
 	[AvatarSourceLastModified] 
 )
+WHERE IsDeleted = 1
 WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
 GO
 /* issue 1411 end -- add AvatarLastRefresh */
@@ -740,3 +741,47 @@ IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE Type
 /* issue 1412 end -- create scheduler entry for avatar refresh queue */
 /* --------------------- */
 
+/* issues 1406 - begin - indexes on IsDeleted columns in activeforums_Content, activeforums_Topics and activeforums_Replies tables  */
+
+/* IX_activeforums_Content_IsDeleted  */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{objectQualifier}activeforums_Content') AND name = N'IX_{objectQualifier}activeforums_Content_IsDeleted')
+DROP INDEX [IX_{objectQualifier}activeforums_Content_IsDeleted] ON {databaseOwner}{objectQualifier}activeforums_Content 
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Content_IsDeleted] ON {databaseOwner}{objectQualifier}activeforums_Content
+(
+    [ContentId] ASC
+) 
+WHERE IsDeleted = 1
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+/* IX_activeforums_Topics_IsDeleted  */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{objectQualifier}activeforums_Topics') AND name = N'IX_{objectQualifier}activeforums_Topics_IsDeleted')
+DROP INDEX [IX_{objectQualifier}activeforums_Topics_IsDeleted] ON {databaseOwner}{objectQualifier}activeforums_Topics 
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Topics_IsDeleted] ON {databaseOwner}{objectQualifier}activeforums_Topics
+(
+    [TopicId] ASC,
+    [ContentId] ASC
+) 
+WHERE IsDeleted = 1
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+/* IX_activeforums_Replies_IsDeleted  */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{objectQualifier}activeforums_Replies') AND name = N'IX_{objectQualifier}activeforums_Replies_IsDeleted')
+DROP INDEX [IX_{objectQualifier}activeforums_Replies_IsDeleted] ON {databaseOwner}{objectQualifier}activeforums_Replies 
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Replies_IsDeleted] ON {databaseOwner}{objectQualifier}activeforums_Replies
+(
+    [ReplyId] ASC,
+    [TopicId] ASC,
+    [ContentId] ASC
+)
+WHERE IsDeleted = 1
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+/* issues 1406 - end - indexes on IsDeleted columns in activeforums_Content, activeforums_Topics and activeforums_Replies tables  */
+
+/* ---------------------- */
