@@ -145,6 +145,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
+        public void Restore(int portalId, int forumId, int topicId, int replyId)
+        {
+            var reply = this.GetById(replyId);
+            reply.IsDeleted = false;
+            this.Update(reply);
+            reply.Content.IsDeleted = false;
+            new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().Update(reply.Content);
+            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_SaveToForum(forumId, topicId, replyId); /* this updates LastReplyId in ForumTopics */
+
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(forumId);
+
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(reply.ModuleId, reply.ForumId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(reply.ModuleId, reply.ReplyId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(reply.ModuleId, reply.TopicId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(reply.ModuleId, reply.ContentId);
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.ForumViewPrefix, reply.ModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicViewPrefix, reply.ModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, reply.ModuleId));
+
+            Utilities.UpdateModuleLastContentModifiedOnDate(reply.ModuleId);
+        }
+
         public int Reply_QuickCreate(int portalId, int moduleId, int forumId, int topicId, int replyToId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress)
         {
             int replyId = -1;

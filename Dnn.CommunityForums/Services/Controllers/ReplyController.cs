@@ -135,5 +135,49 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
+#pragma warning disable CS1570
+        /// <summary>
+        /// Reatores a Reply
+        /// </summary>
+        /// <param name="forumId" type="int"></param>
+        /// <param name="replyId" type="int"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Reply/Restore?forumId=xxx&replyId=zzz</remarks>
+#pragma warning restore CS1570
+        [HttpPost]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.Moderate)]
+        public HttpResponseMessage Restore(ReplyDto dto)
+        {
+            try
+            {
+                if (dto.ForumId > 0 && dto.ReplyId > 0)
+                {
+                    var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId);
+                    var r = rc.GetById(dto.ReplyId);
+                    if (r != null)
+                    {
+                        if (r.IsDeleted == false)
+                        {
+                            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+
+                        rc.Restore(this.ActiveModule.PortalID,
+                            dto.ForumId,
+                            r.TopicId,
+                            dto.ReplyId);
+                        return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                    }
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
     }
 }

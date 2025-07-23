@@ -749,6 +749,7 @@ DROP INDEX [IX_{objectQualifier}activeforums_Content_IsDeleted] ON {databaseOwne
 GO
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Content_IsDeleted] ON {databaseOwner}{objectQualifier}activeforums_Content
 (
+    [ModuleId] ASC,
     [ContentId] ASC
 ) 
 WHERE IsDeleted = 1
@@ -784,4 +785,6 @@ GO
 
 /* issues 1406 - end - indexes on IsDeleted columns in activeforums_Content, activeforums_Topics and activeforums_Replies tables  */
 
+
 /* ---------------------- */
+

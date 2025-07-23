@@ -267,7 +267,33 @@ function amaf_topicDel(mid, fid, tid) {
         });
     };
 };
-
+function amaf_topicRestore(mid, fid, tid) {
+    if (confirm(amaf.resx.DeleteConfirm)) {
+        var sf = $.ServicesFramework(mid);
+        $.ajax({
+            type: "POST",
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Restore?forumId=' + fid + '&topicId=' + tid,
+            beforeSend: sf.setModuleHeaders
+        }).done(function (data) {
+            afreload();
+        }).fail(function (xhr, status) {
+            alert('error restoring topic');
+        });
+    };
+};function amaf_replyRestore(mid, fid, tid) {
+    if (confirm(amaf.resx.DeleteConfirm)) {
+        var sf = $.ServicesFramework(mid);
+        $.ajax({
+            type: "POST",
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Reply/Restore?forumId=' + fid + '&replyId=' + tid,
+            beforeSend: sf.setModuleHeaders
+        }).done(function (data) {
+            afreload();
+        }).fail(function (xhr, status) {
+            alert('error restoring topic');
+        });
+    };
+};
 function amaf_likePost(mid, fid, cid) {
     var sf = $.ServicesFramework(mid);
     var params = {

@@ -292,6 +292,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Save(ti.Forum.PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart ?? Utilities.NullDate(), ti.AnnounceEnd ?? Utilities.NullDate(), ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
         }
 
+        public void Restore(int portalId, int forumId, int topicId)
+        {
+            var topic = this.GetById(topicId);
+            topic.IsDeleted = false;
+            this.Update(topic);
+            topic.Content.IsDeleted = false;
+            new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().Update(topic.Content);
+            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_SaveToForum(forumId, topicId, topic.LastReplyId);
+
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(forumId);
+
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(topic.ModuleId, topic.ForumId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(topic.ModuleId, topic.ReplyId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(topic.ModuleId, topic.TopicId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(topic.ModuleId, topic.ContentId);
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(topic.ModuleId, string.Format(CacheKeys.ForumViewPrefix, topic.ModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(topic.ModuleId, string.Format(CacheKeys.TopicViewPrefix, topic.ModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(topic.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, topic.ModuleId));
+
+            Utilities.UpdateModuleLastContentModifiedOnDate(topic.ModuleId);
+        }
+
         public void DeleteById(int topicId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = this.GetById(topicId);
