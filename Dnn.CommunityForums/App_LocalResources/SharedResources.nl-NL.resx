@@ -1894,4 +1894,13 @@ Van,
   <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
     <value>Gravatar vernieuwd voor {0} gebruiker</value>
   </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Prullenbak</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Herstellen</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>Weet je zeker dat je dit item wilt restaureren?</value>
+  </data>
 </root>

@@ -1858,4 +1858,13 @@ De
   <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
     <value>Gravatar actualizado para el {0} de usuario</value>
   </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Papelera de reciclaje</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Restaurar</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>¿Está seguro de que desea restaurar este artículo?</value>
+  </data>
 </root>

@@ -1855,4 +1855,13 @@ De,
   <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
     <value>Gravatar actualisé pour le {0} utilisateur</value>
   </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Corbeille</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Restaurer</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir restaurer cet article ?</value>
+  </data>
 </root>

@@ -1859,4 +1859,13 @@ Von
   <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
     <value>Gravatar für Benutzer-{0} aktualisiert</value>
   </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Papierkorb</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Wiederherstellen</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie diesen Artikel wiederherstellen möchten?</value>
+  </data>
 </root>

@@ -321,7 +321,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 new Social().DeleteJournalItemForPost(ti.PortalId, ti.ForumId, topicId, 0);
 
-                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, (int)SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(ti.ModuleId, ti.ForumId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(ti.ModuleId, ti.TopicId);
@@ -330,7 +330,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
                 DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
 
-                if (SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior != 0)
+                if (SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior != DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Remove)
                 {
                     return;
                 }

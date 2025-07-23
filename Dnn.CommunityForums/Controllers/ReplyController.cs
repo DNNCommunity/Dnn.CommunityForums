@@ -101,10 +101,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return ri;
         }
 
-        public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, int delBehavior)
+        public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior delBehavior)
         {
             var ri = this.GetById(replyId);
-            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Delete(forumId, topicId, replyId, delBehavior);
+            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Delete(forumId, topicId, replyId, (int)delBehavior);
             DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_SaveToForum(forumId, topicId, replyId); /* this updates LastReplyId in ForumTopics */
 
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(forumId);

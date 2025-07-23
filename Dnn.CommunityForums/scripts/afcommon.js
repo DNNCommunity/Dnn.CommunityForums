@@ -268,11 +268,18 @@ function amaf_topicDel(mid, fid, tid) {
     };
 };
 function amaf_topicRestore(mid, fid, tid) {
-    if (confirm(amaf.resx.DeleteConfirm)) {
+    if (confirm(amaf.resx.RestoreConfirm)) {
         var sf = $.ServicesFramework(mid);
+        var params = {
+            forumId: fid, 
+            topicId: tid
+        };
         $.ajax({
             type: "POST",
-            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Restore?forumId=' + fid + '&topicId=' + tid,
+            data: JSON.stringify(params),
+            contentType: "application/json",
+            dataType: "json", 
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Restore',
             beforeSend: sf.setModuleHeaders
         }).done(function (data) {
             afreload();
@@ -280,17 +287,26 @@ function amaf_topicRestore(mid, fid, tid) {
             alert('error restoring topic');
         });
     };
-};function amaf_replyRestore(mid, fid, tid) {
-    if (confirm(amaf.resx.DeleteConfirm)) {
+};
+function amaf_replyRestore(mid, fid, tid, rid) {
+    if (confirm(amaf.resx.RestoreConfirm)) {
         var sf = $.ServicesFramework(mid);
+        var params = {
+            forumId: fid, 
+            topicId: tid,
+            replyId: rid
+        };
         $.ajax({
             type: "POST",
-            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Reply/Restore?forumId=' + fid + '&replyId=' + tid,
+            data: JSON.stringify(params),
+            contentType: "application/json",
+            dataType: "json", 
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Reply/Restore',
             beforeSend: sf.setModuleHeaders
         }).done(function (data) {
             afreload();
         }).fail(function (xhr, status) {
-            alert('error restoring topic');
+            alert('error restoring reply');
         });
     };
 };

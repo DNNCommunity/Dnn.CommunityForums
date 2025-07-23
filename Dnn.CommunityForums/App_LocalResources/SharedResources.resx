@@ -1864,4 +1864,7 @@ From,
   <data name="[RESX:Restore].Text" xml:space="preserve">
     <value>Restore</value>
   </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>Are you sure you wish to restore this item?</value>
+  </data>
 </root>

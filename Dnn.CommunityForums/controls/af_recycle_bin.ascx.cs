@@ -57,11 +57,11 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnInit(e);
 
             this.lblRecycleBin.Text = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:RecycleBin]");
-            this.dgrdRestoreView.Columns[2].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Reply]");
-            this.dgrdRestoreView.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Forum]");
-            this.dgrdRestoreView.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Subject]");
-            this.dgrdRestoreView.Columns[5].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Author]");
-            this.dgrdRestoreView.Columns[6].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:DateCreated]");
+            this.dgrdRestoreView.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Reply]");
+            this.dgrdRestoreView.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Forum]");
+            this.dgrdRestoreView.Columns[5].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Subject]");
+            this.dgrdRestoreView.Columns[6].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Author]");
+            this.dgrdRestoreView.Columns[7].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:DateCreated]");
 
             this.dgrdRestoreView.PageIndexChanging += this.RestoreViewGridRowPageIndexChanging;
             this.dgrdRestoreView.RowDataBound += this.OnRestoreViewGridRowDataBound;
@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private IEnumerable<RestoreData> GetData()
         {
             var restoreData = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().Find("WHERE IsDeleted = 1 AND ModuleId = @0", this.ForumModuleId);
-            var data = restoreData.Select(content =>
+            return restoreData.OrderByDescending(content => content.DateUpdated).Select(content =>
             {
                 return new RestoreData
                 {
@@ -120,7 +120,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     DateCreated = content.DateCreated,
                 };
             });
-
         }
 
         protected void OnRestoreViewGridRowDataBound(object sender, GridViewRowEventArgs e)
@@ -140,11 +139,11 @@ namespace DotNetNuke.Modules.ActiveForums
                                 restoreButton.Enabled = true;
                                 if (restoreData.IsReply)
                                 {
-                                    restoreButton.Attributes.Add("onclick", $"amaf_restoreReply({this.ForumModuleId},{restoreData.ForumId},{restoreData.ReplyId});");
+                                    restoreButton.Attributes.Add("onclick", $"amaf_replyRestore({this.ForumModuleId},{restoreData.ForumId},{restoreData.TopicId},{restoreData.ReplyId});return RemoveRow(this)");
                                 }
                                 else
                                 {
-                                    restoreButton.Attributes.Add("onclick", $"amaf_restoreTopic({this.ForumModuleId},{restoreData.ForumId},{restoreData.TopicId});");
+                                    restoreButton.Attributes.Add("onclick", $"amaf_topicRestore({this.ForumModuleId},{restoreData.ForumId},{restoreData.TopicId});return RemoveRow(this)");
                                 }
                             }
                         }

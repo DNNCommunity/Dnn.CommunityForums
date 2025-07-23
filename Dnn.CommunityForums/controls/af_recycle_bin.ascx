@@ -16,10 +16,12 @@
                 <FooterStyle CssClass="dnnGridFooter" />
                 <pagerstyle cssclass="dnnGridPager dcf-pager" />
                 <Columns>
-                    <asp:Button  Text="[RESX:Restore]" CssClass="dnnPrimaryAction" runat="server"/>
+                    <asp:buttonfield buttontype="Button"
+                                     headertext=""
+                                     text="[RESX:Restore]" headerstyle-horizontalalign="Center" itemstyle-horizontalalign="Center" ControlStyle-CssClass="dnnPrimaryAction" />
                     <asp:boundfield datafield="TopicId" readonly="True" visible="false" />
                     <asp:boundfield datafield="ReplyId" readonly="True" visible="false" />
-                    <asp:CheckBox datafield="IsReply" readonly="True"  runat="server"/>
+                    <asp:checkboxfield datafield="IsReply" readonly="True" headerstyle-horizontalalign="Center" itemstyle-horizontalalign="Center"  controlstyle-cssclass="dnnCheckbox" />
                     <asp:boundfield datafield="ForumName" readonly="True" />
                     <asp:boundfield datafield="Subject" readonly="True" />
                     <asp:boundfield datafield="AuthorName" readonly="True" />
@@ -32,3 +34,10 @@
         </contenttemplate>
     </asp:UpdatePanel>
 </div>
+<script type="text/ecmascript">
+function RemoveRow(item) {
+    var table = document.getElementById('dgrdRestoreView');
+    table.deleteRow(item.parentNode.parentNode.rowIndex);
+    return false;
+}
+</script>

@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             if (this.bModDelete)
                             {
-                                int delAction = ms.DeleteBehavior;
+                                int delAction = (int)ms.DeleteBehavior;
                                 int tmpForumId = Convert.ToInt32(e.Parameters[1]);
                                 int tmpTopicId = Convert.ToInt32(e.Parameters[2]);
                                 int tmpReplyId = Convert.ToInt32(e.Parameters[3]);
@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(tmpReplyId);
                                     if (ri != null)
                                     {
-                                        new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).Reply_Delete(this.PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);
+                                        new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).Reply_Delete(this.PortalId, tmpForumId, tmpTopicId, tmpReplyId, (DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior)delAction);
                                         if (fi.FeatureSettings.ModDeleteNotify && ri?.Author?.AuthorId > 0)
                                         {
                                             try
