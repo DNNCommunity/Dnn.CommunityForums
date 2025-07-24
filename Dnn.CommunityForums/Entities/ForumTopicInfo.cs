@@ -33,6 +33,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int TopicId { get; set; }
 
-        public int LastReplyId { get; set; } = 0;
+        public int? LastReplyId { get; set; }
     }
 }

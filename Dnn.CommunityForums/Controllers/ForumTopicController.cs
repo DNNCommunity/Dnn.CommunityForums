@@ -51,6 +51,37 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumTopic;
         }
 
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetForForumIdTopicId(int forumId, int topicId)
+        {
+            return this.Find("WHERE ForumId = @0 AND TopicId = @1", forumId, topicId).FirstOrDefault();
+        }
+
+        internal void Update(int forumId, int topicId)
+        {
+            var forumTopic = this.GetForForumIdTopicId(forumId, topicId);
+            if (forumTopic == null)
+            {
+                forumTopic = new DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo {
+                    ForumId = forumId,
+                    TopicId = topicId,
+                    LastReplyId = null,
+                };
+                this.Insert(forumTopic);
+            }
+
+            var replies = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.moduleId).GetByTopicId(topicId);
+            if (replies.Any())
+            {
+                forumTopic.LastReplyId = replies.Max(r => r.ReplyId);
+            }
+            else
+            {
+                forumTopic.LastReplyId = null;
+            }
+
+            this.Update(forumTopic);
+        }
+
         internal void DeleteForForum(int forumId)
         {
             this.Delete("WHERE ForumId = @0", forumId);

@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(tmpTopicId);
                                     if (ti != null)
                                     {
-                                        new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).DeleteById(tmpTopicId);
+                                        new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).DeleteById(tmpTopicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
                                         if (fi.FeatureSettings.ModDeleteNotify && ti?.Author?.AuthorId > 0)
                                         {
                                             try
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 {
                                     ti.IsApproved = true;
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
-                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId);
 
                                     // TODO: Add Audit log for who approved topic
                                     if (fi.FeatureSettings.ModApproveNotify && ti.Author.AuthorId > 0)
@@ -210,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 {
                                     ri.IsApproved = true;
                                     new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).Reply_Save(this.PortalId, this.ForumModuleId, ri);
-                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId);
 
                                     // TODO: Add Audit log for who approved topic
                                     if (fi.FeatureSettings.ModApproveNotify && ri.Author.AuthorId > 0)

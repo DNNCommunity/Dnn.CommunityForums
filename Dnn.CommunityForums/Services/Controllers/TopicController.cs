@@ -371,7 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(ti.Forum.Security.DeleteRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == ti.Content.AuthorId)
                             )
                         {
-                            tc.DeleteById(topicId);
+                            tc.DeleteById(topicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
                             return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                         }
 

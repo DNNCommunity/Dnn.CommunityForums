@@ -51,14 +51,14 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(int ModuleId, int ForumId, int TopicId, int LastReplyId)")]
         public int Topics_SaveToForum(int forumId, int topicId, int portalId, int moduleId)
         {
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, forumId, topicId, -1);
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, forumId, topicId);
             return -1;
         }
 
         [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(int ModuleId, int ForumId, int TopicId, int LastReplyId)")]
         public int Topics_SaveToForum(int forumId, int topicId, int portalId, int moduleId, int lastReplyId)
         {
-            Controllers.TopicController.SaveToForum(moduleId, forumId, topicId, lastReplyId);
+            Controllers.TopicController.SaveToForum(moduleId, forumId, topicId);
             return -1;
         }
 
@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int portalId, int moduleId, int topicId, int forumId, int userId, bool withSecurity) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.DeleteById(int TopicId)")]
-        public void Topics_Delete(int portalId, int moduleId, int forumId, int topicId, int delBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).DeleteById(topicId);
+        public void Topics_Delete(int portalId, int moduleId, int forumId, int topicId, int delBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).DeleteById(topicId, (DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior)(delBehavior));
 
         [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(int TopicId, int NewForumId)")]
         public void Topics_Move(int portalId, int moduleId, int forumId, int topicId) => throw new NotImplementedException();

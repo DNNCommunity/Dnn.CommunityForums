@@ -1864,4 +1864,10 @@ De,
   <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
     <value>Êtes-vous sûr de vouloir restaurer cet article ?</value>
   </data>
+  <data name="[RESX:EmptyRecycleBin].Text" xml:space="preserve">
+    <value>Corbeille vide</value>
+  </data>
+  <data name="[RESX:RestoreAll].Text" xml:space="preserve">
+    <value>Restaurer tout</value>
+  </data>
 </root>

@@ -17,7 +17,7 @@
                 <pagerstyle cssclass="dnnGridPager dcf-pager" />
                 <Columns>
                     <asp:buttonfield buttontype="Button"
-                                     headertext=""
+                                     headertext="" CommandName="Restore"
                                      text="[RESX:Restore]" headerstyle-horizontalalign="Center" itemstyle-horizontalalign="Center" ControlStyle-CssClass="dnnPrimaryAction" />
                     <asp:boundfield datafield="TopicId" readonly="True" visible="false" />
                     <asp:boundfield datafield="ReplyId" readonly="True" visible="false" />
@@ -33,6 +33,10 @@
             </asp:GridView>
         </contenttemplate>
     </asp:UpdatePanel>
+    <div style="float: right;">
+        <asp:button id="btnRestoreAll" cssclass="dnnPrimaryAction" runat="server" text="[RESX:RestoreAll]" />
+        <asp:button id="btnEmptyRecycleBin" cssclass="dnnSecondaryAction" runat="server" text="[RESX:EmptyRecycleBin]" />
+    </div>
 </div>
 <script type="text/ecmascript">
 function RemoveRow(item) {

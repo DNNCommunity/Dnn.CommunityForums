@@ -291,9 +291,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract IDataReader Topics_Replies(int topicId);
-
+        
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract int Topics_Save(int portalId, int topicId, int viewCount, int replyCount, bool isLocked, bool isPinned, string topicIcon, int statusId, bool isApproved, bool isDeleted, bool isAnnounce, bool isArchived, DateTime announceStart, DateTime announceEnd, string subject, string body, string summary, DateTime dateCreated, DateTime dateUpdated, int authorId, string authorName, string iPAddress, int topicType, int topicPriority, string uRL, string topicData);
 
+        public abstract int Topics_Save(int portalId, int moduleId, int topicId, int viewCount, int replyCount, bool isLocked, bool isPinned, string topicIcon, int statusId, bool isApproved, bool isDeleted, bool isAnnounce, bool isArchived, DateTime announceStart, DateTime announceEnd, string subject, string body, string summary, DateTime dateCreated, DateTime dateUpdated, int authorId, string authorName, string iPAddress, int topicType, int topicPriority, string uRL, string topicData);
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract int Topics_SaveToForum(int forumId, int topicId, int lastReplyId);
 
         public abstract void Replies_Split(int oldTopicId, int newTopicId, string listreplies, DateTime dateUpdated, int firstReplyId);

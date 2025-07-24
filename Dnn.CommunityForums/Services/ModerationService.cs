@@ -195,7 +195,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
                 }
 
-                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.moduleId).DeleteById(this.topicId);
+                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.moduleId).DeleteById(this.topicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
                 if (fi.FeatureSettings.ModDeleteNotify && ti?.Content?.AuthorId > 0)
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(TemplateType.ModDelete, fi.GetTabId(), fi, this.topicId, this.replyId, ti.Author);

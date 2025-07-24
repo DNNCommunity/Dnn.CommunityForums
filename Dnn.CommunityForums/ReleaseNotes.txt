@@ -45,8 +45,6 @@
         <h2>
             DNN Community Forums Release Notes
         </h2>
-        <hr />
-
         <h3>
             09.01.00
         </h3>
@@ -54,24 +52,21 @@
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by 
             <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a> 
-    <!--,, 
             <a href="https://github.com/nvsai" target="_blank">@nvsai</a>, 
             <a href="https://github.com/ernieblues" target="_blank">@nvsai</a>, and 
             <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>
-                  -->.
-               <!--, 
                , and
                 <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>
         </p>
-                -->.
         <p>
             What's to follow are all of the relevant updates that have occurred during the development cycle of this release.
         </p>
+                -->.
 
         <h4>New Features &amp; Enhancements</h4>
         <ul>
+              <li>NEW: Recycle Bin (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/515">Issue 515</a>)</li>
 <!--
-              <li>NEW: Convention-based template names (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/477">Issue 477</a>)</li>
               <li>NEW: Moderators can now see attachments on unapproved topics (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1386">Issue 1386</a>)</li>
               <li>NEW: Avatar token can contain size, e.g., [FORUMAUTHOR:AVATAR:50] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/421">Issue 421</a>)</li>
               <li>NEW: "Debounce" topic and forum links to prevent multiple clicks (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1027">Issue 1027</a>)</li>
@@ -79,9 +74,9 @@
               <li>NEW: More modern email notification template and UTF8 encoding (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1457">Issue 1457</a>)</li>
               <li>NEW: Wider quick reply subject text box (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1470">Issue 1470</a>)</li>
               
-            --> 
             <li>None at this time.</li>
         
+            --> 
             <!--
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>

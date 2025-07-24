@@ -1868,4 +1868,10 @@ Von
   <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
     <value>Sind Sie sicher, dass Sie diesen Artikel wiederherstellen möchten?</value>
   </data>
+  <data name="[RESX:EmptyRecycleBin].Text" xml:space="preserve">
+    <value>Papierkorb leeren</value>
+  </data>
+  <data name="[RESX:RestoreAll].Text" xml:space="preserve">
+    <value>Alle wiederherstellen</value>
+  </data>
 </root>

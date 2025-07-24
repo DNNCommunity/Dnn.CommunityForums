@@ -724,6 +724,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
                 ti.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
                 ti.ForumId = this.ForumInfo.ForumID;
+                ti.PortalId = this.PortalId;
+                ti.ModuleId = this.ForumModuleId;
                 ti.Forum = this.ForumInfo;
             }
 

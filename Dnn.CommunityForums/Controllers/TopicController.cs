@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Collections;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
@@ -29,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
@@ -150,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             topicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
             if (topicId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, forumId, topicId, -1);
+                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, forumId, topicId);
             }
 
             return topicId;
@@ -252,13 +255,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(ti.ModuleId, ti.ContentId);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static void SaveToForum(int moduleId, int forumId, int topicId, int lastReplyId = -1)
         {
-            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_SaveToForum(forumId, topicId, lastReplyId);
+            SaveToForum(moduleId: moduleId, forumId: forumId, topicId: topicId);
+        }
+
+        public static void SaveToForum(int moduleId, int forumId, int topicId)
+        {
+            new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(moduleId).Update(forumId: forumId, topicId: topicId);
             Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(forumId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(moduleId, forumId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(moduleId, topicId);
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.ForumViewPrefix, moduleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicViewPrefix, moduleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicsViewPrefix, moduleId));
         }
 
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
@@ -289,7 +301,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             // TODO: convert to use DAL2?
-            return Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Save(ti.Forum.PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart ?? Utilities.NullDate(), ti.AnnounceEnd ?? Utilities.NullDate(), ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
+            return Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Save(ti.Forum.PortalId, ti.ModuleId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart ?? Utilities.NullDate(), ti.AnnounceEnd ?? Utilities.NullDate(), ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
         }
 
         public void Restore(int portalId, int forumId, int topicId)
@@ -299,29 +311,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this.Update(topic);
             topic.Content.IsDeleted = false;
             new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().Update(topic.Content);
-            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_SaveToForum(forumId, topicId, topic.LastReplyId);
-
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(forumId);
-
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(topic.ModuleId, topic.ForumId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(topic.ModuleId, topic.ReplyId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(topic.ModuleId, topic.TopicId);
+            SaveToForum(topic.ModuleId, forumId, topicId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(topic.ModuleId, topic.ContentId);
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(topic.ModuleId, string.Format(CacheKeys.ForumViewPrefix, topic.ModuleId));
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(topic.ModuleId, string.Format(CacheKeys.TopicViewPrefix, topic.ModuleId));
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(topic.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, topic.ModuleId));
-
-            Utilities.UpdateModuleLastContentModifiedOnDate(topic.ModuleId);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DeleteById(int topicId, DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior deleteBehavior)")]
         public void DeleteById(int topicId)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = this.GetById(topicId);
+            DeleteById(topicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
+        }
+
+        public void DeleteById(int topicId, DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior deleteBehavior)
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = this.GetById(topicId);
             if (ti != null)
             {
                 new Social().DeleteJournalItemForPost(ti.PortalId, ti.ForumId, topicId, 0);
 
-                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, (int)SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
+                var replyController = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(ti.ModuleId);
+                replyController.GetByTopicId(topicId).ForEach(reply =>
+                {
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(reply.ModuleId, reply.ReplyId);
+                });
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, (int)deleteBehavior);
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(ti.ModuleId, ti.ForumId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(ti.ModuleId, ti.TopicId);
@@ -330,7 +343,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
                 DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
 
-                if (SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior != DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Remove)
+                if (deleteBehavior.Equals(DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Recycle))
                 {
                     return;
                 }

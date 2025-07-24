@@ -1867,4 +1867,10 @@ Da
   <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
     <value>Sei sicuro di voler ripristinare questo oggetto?</value>
   </data>
+  <data name="[RESX:EmptyRecycleBin].Text" xml:space="preserve">
+    <value>Svuota il cestino</value>
+  </data>
+  <data name="[RESX:RestoreAll].Text" xml:space="preserve">
+    <value>Ripristina tutto</value>
+  </data>
 </root>
