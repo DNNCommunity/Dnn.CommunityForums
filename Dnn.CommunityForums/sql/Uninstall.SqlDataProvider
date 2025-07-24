@@ -712,6 +712,9 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_AuditLog]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_AuditLog]
 GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Badges]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Badges]
+GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Filters]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Filters]
 GO
@@ -771,6 +774,9 @@ DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Topics]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserBadges]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_UserBadges]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_UserProfiles]
@@ -1016,4 +1022,8 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Badges_List]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Badges_List]
 GO
+IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.Badges.BadgeAwardQueue, DotNetNuke.Modules.ActiveForums')
+	DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.Badges.BadgeAwardQueue, DotNetNuke.Modules.ActiveForums'
+GO
+
 /* end 09.01.00 */
