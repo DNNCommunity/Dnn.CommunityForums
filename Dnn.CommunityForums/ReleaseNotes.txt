@@ -47,8 +47,9 @@
         <hr />
 
         <h3>
-            09.00.01
+            09.00.02
         </h3>
+        <!--,,
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by 
             <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a> 
@@ -60,8 +61,8 @@
                <!--, 
                , and
                 <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>
-                -->.
         </p>
+                -->.
         <p>
             What's to follow are all of the relevant updates that have occurred during the development cycle of this release.
         </p>
@@ -88,11 +89,7 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>FIXED: "Error: DNN Community Forums is currently unavailable." when viewing likes (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1496">Issue 1496</a>)</li>
-            <li>FIXED: Privileged content not showing just after logging in (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1501">Issue 1501</a>)</li>
-            <li>FIXED: Forums containing "announcement" topics are not displaying correctly (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1494">Issue 1494</a>)</li>
-            <li>FIXED: Moderated post approval not refreshing page when one item on page (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1500">Issue 1500</a>)</li>
-            <li>FIXED: Misplaced {objectQualifer} token in SQL script (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1498">Issue 1498</a>)</li>
+            <li>None at this time.</li>
             <!--
             <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
             <li>None at this time.</li>
@@ -102,7 +99,7 @@
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
             
-            <li>09.00.01 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1505">Issue 1505</a>)</li>
+            <li>09.00.02 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1510">Issue 1510</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
