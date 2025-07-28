@@ -27,9 +27,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     public class TopicTagInfo
     {
         private DotNetNuke.Modules.ActiveForums.Entities.TagInfo tagInfo;
-
+        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
+        
         public int TopicTagId { get; set; }
-
         public int TopicId { get; set; }
 
         public int TagId { get; set; }

@@ -51,5 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Enums
         BadgeNotificationSubject,
         BadgeNotificationBody,
         UserBadge,
+        UserMentionNotificationSubject,
+        UserMentionNotificationBody,
     }
 }

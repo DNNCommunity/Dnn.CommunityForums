@@ -1891,4 +1891,25 @@ De
   <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
     <value>Insignia aún no asignada</value>
   </data>
+  <data name="[RESX:UserMentionNotificationsEnabled].Text" xml:space="preserve">
+    <value>Recibir notificaciones de mención de usuario</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationsEnabled].Help" xml:space="preserve">
+    <value>Selecciona esta opción si deseas recibir notificaciones cuando otro usuario te mencione en una publicación.</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORUMSLINK|¡ &lt;a href="{0}"&gt;Visítanos&lt;/a&gt; para seguir participando!]</value>
+  </data>
+  <data name="[RESX:mentioned].Text" xml:space="preserve">
+    <value>susodicho</value>
+  </data>
+  <data name="[RESX:youwerementioned].Text" xml:space="preserve">
+    <value>fuiste mencionado</value>
+  </data>
+  <data name="[RESX:MySettingsLinkText].Text" xml:space="preserve">
+    <value>Para administrar sus preferencias en los foros, visite:</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationCongratulations].Text" xml:space="preserve">
+    <value>¡Oye, te mencionaron!</value>
+  </data>
 </root>

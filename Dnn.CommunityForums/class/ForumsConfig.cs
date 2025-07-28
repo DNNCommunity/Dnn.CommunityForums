@@ -77,6 +77,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Create default badges new in 09.02.00
                 new ForumsConfig().Install_DefaultBadges_090200();
+
+                // Create "user mention notification" core messaging notification type new in 09.03.00
+                ForumsConfig.Install_UserMentionNotificationType_090300();
+
                 return true;
             }
             catch (Exception ex)
@@ -868,5 +872,19 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
             }
         }
+
+        internal static void Install_UserMentionNotificationType_090300()
+        {
+            string notificationTypeName = Globals.UserMentionNotificationType;
+            string notificationTypeDescription = Globals.UserMentionNotificationTypeDescription;
+            int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
+
+            NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
+            if (NotificationsController.Instance.GetNotificationType(notificationTypeName) == null)
+            {
+                NotificationsController.Instance.CreateNotificationType(type);
+            }
+        }
+
     }
 }

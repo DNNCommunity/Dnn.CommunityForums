@@ -31,5 +31,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
         PostLiked = 7,
         TopicPinned = 8,
         BadgeAssigned = 9,
+        UserMentioned = 10,
     }
 }

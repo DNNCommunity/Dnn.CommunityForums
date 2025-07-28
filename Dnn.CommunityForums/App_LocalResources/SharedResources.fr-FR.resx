@@ -1888,4 +1888,25 @@ De,
   <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
     <value>Badge non encore attribué</value>
   </data>
+  <data name="[RESX:UserMentionNotificationsEnabled].Text" xml:space="preserve">
+    <value>Recevoir des notifications de mention d’utilisateur</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationsEnabled].Help" xml:space="preserve">
+    <value>Sélectionnez cette option si vous souhaitez recevoir des notifications lorsqu’un autre utilisateur vous mentionne dans un message.</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF :FORUMSLINK| &lt;a href="{0}"&gt;S’il&lt;/a&gt; vous plaît visitez pour continuer à participer !]</value>
+  </data>
+  <data name="[RESX:mentioned].Text" xml:space="preserve">
+    <value>susmentionné</value>
+  </data>
+  <data name="[RESX:youwerementioned].Text" xml:space="preserve">
+    <value>Vous avez été mentionné</value>
+  </data>
+  <data name="[RESX:MySettingsLinkText].Text" xml:space="preserve">
+    <value>Pour gérer vos préférences en matière de forums, veuillez visiter :</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationCongratulations].Text" xml:space="preserve">
+    <value>Hé, vous avez été mentionné !</value>
+  </data>
 </root>

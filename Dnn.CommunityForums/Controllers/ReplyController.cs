@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Collections;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Log.EventLog;
 
@@ -319,6 +320,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 pqc.Add(ProcessType.UpdateForumLastUpdated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, requestUrl: requestUrl);
 
                 Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
+
+                DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController.ProcessUserMentions(reply);
+
                 return true;
             }
             catch (Exception ex)

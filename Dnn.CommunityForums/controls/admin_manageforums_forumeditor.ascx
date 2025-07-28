@@ -257,7 +257,7 @@ function saveSettings(){
     if (ed1.selectedIndex >= 0) {
         var EditorType = ed1.options[ed1.selectedIndex].value;
     } else if (AllowHtml==true) {
-        var EditorType = 2;/* default to HTML editor */
+        var EditorType = 3;/* default to forums editor */
     } else {
 		var EditorType = 0;
 	};
@@ -273,7 +273,7 @@ function saveSettings(){
     if (edm.selectedIndex >= 0) {
         var EditorMobile = edm.options[edm.selectedIndex].value;
     } else if (AllowHtml == true) {
-        var EditorMobile = 2;/* default to HTML editor */
+        var EditorMobile = 3;/* default to forums editor */
         } else {
 		var EditorMobile = 0;
     };
@@ -1328,7 +1328,9 @@ function afadmin_getProperties() {
 				<td>
 					<asp:DropDownList ID="drpEditorTypes" runat="server" CssClass="amcptxtbx" >
 						<asp:ListItem Value="0">TextBox</asp:ListItem>
-						<asp:ListItem Selected="True" Value="2">Default DNN Editor</asp:ListItem>
+                        <asp:listitem selected="false" value="2">Default DNN Editor</asp:listitem>
+                        <asp:listitem selected="True" value="3">Forums Editor (Full)</asp:listitem>
+<%--                        <asp:listitem selected="False" value="4">Forums Editor (Light)</asp:listitem>--%>
 					</asp:DropDownList>
 				</td>
 				<td></td>
@@ -1353,7 +1355,9 @@ function afadmin_getProperties() {
 				<td>
 					<asp:DropDownList ID="drpEditorMobile" runat="server" CssClass="amcptxtbx">
 						<asp:ListItem Value="0">TextBox</asp:ListItem>
-						<asp:ListItem Value="2" Selected="True">Default DNN Editor</asp:ListItem>
+						<asp:ListItem Value="2" Selected="False">Default DNN Editor</asp:ListItem>
+                        <asp:listitem value="3" selected="True">Forums Editor (Full)</asp:listitem>
+                        <%--<asp:listitem selected="False" value="4">Forums Editor (Light)</asp:listitem>--%>
 					</asp:DropDownList>
 				</td>
 				<td></td>

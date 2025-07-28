@@ -340,6 +340,19 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     break;
+                case "09.03.00":
+                    try
+                    {
+                        ForumsConfig.Install_UserMentionNotificationType_090300();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
                 default:
                     break;
             }

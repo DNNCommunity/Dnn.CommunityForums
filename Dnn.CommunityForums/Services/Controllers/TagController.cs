@@ -38,16 +38,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// Gets Tags matching a string anywhere in string
         /// </summary>
         /// <param name="forumId" type="int"></param>
-        /// <param name="matchString" type="string"></param>
+        /// <param name="query" type="string"></param>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/Tag/Matches?ForumId=xxx&MatchString=xxx</remarks>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Tag/Matches?ForumId=xxx&query=xxx</remarks>
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Tag)]
-        public HttpResponseMessage Matches(int forumId, string matchString)
+        public HttpResponseMessage Matches(int forumId, string query)
         {
-            return this.Match($"%{CleanAndChopString(matchString, 20)}%");
+            return this.Match($"%{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(query, 20)}%");
         }
 
 #pragma warning disable CS1570
@@ -55,16 +55,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// Gets Tags with names matching string from beginning
         /// </summary>
         /// <param name="forumId" type="int"></param>
-        /// <param name="matchString" type="string"></param>
+        /// <param name="query" type="string"></param>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/Tag/BeginsWith?ForumId=xxx&MatchString=xxx</remarks>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Tag/BeginsWith?ForumId=xxxquery=xxx</remarks>
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Tag)]
-        public HttpResponseMessage BeginsWith(int forumId, string matchString)
+        public HttpResponseMessage BeginsWith(int forumId, string query)
         {
-            return this.Match($"{CleanAndChopString(matchString, 20)}%");
+            return this.Match($"{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(query, 20)}%");
         }
 
         private HttpResponseMessage Match(string matchString)
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (!string.IsNullOrEmpty(matchString))
                 {
-                    var matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Find("WHERE IsCategory=0 AND PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName", this.ActiveModule.PortalID, this.ForumModuleId, matchString).Select(t => new { id = t.TagId, name = t.TagName, type = 0 }).ToList();
+                    var matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Find("WHERE IsCategory=0 AND PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName", this.ActiveModule.PortalID, this.ForumModuleId, matchString).Select(t => new { id = t.TagId, name = t.TagName }).ToList();
                     if (matchingTags.Count > 0)
                     {
                         return this.Request.CreateResponse(HttpStatusCode.OK, matchingTags);
@@ -90,24 +90,5 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
-        private static string CleanAndChopString(string MatchString, int maxLength)
-        {
-            string matchString = string.Empty;
-            if (!string.IsNullOrEmpty(MatchString))
-            {
-                matchString = MatchString.Trim();
-                matchString = DotNetNuke.Modules.ActiveForums.Utilities.Text.RemoveHTML(matchString);
-                matchString = DotNetNuke.Modules.ActiveForums.Utilities.Text.CheckSqlString(matchString);
-                if (!string.IsNullOrEmpty(matchString))
-                {
-                    if (matchString.Length > maxLength)
-                    {
-                        matchString = matchString.Substring(0, 20);
-                    }
-                }
-            }
-
-            return matchString;
-        }
     }
 }

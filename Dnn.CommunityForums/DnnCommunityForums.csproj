@@ -12,8 +12,8 @@
         <Description>Discussion Forum Module for DNN</Description>
         <Company>dnncommunity.org</Company>
         <Authors>dnncommunity.org</Authors>
-        <FileVersion>09.02.00.00</FileVersion>
-        <AssemblyVersion>09.02.00.00</AssemblyVersion>
+        <FileVersion>09.03.00.00</FileVersion>
+        <AssemblyVersion>09.03.00.00</AssemblyVersion>
 
         <IncludeSymbols>False</IncludeSymbols>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
@@ -34,13 +34,6 @@
         <None Remove="CustomControls\Views\**" />
         <None Remove="Legacy\**" />
         <None Remove="Properties\**" />
-        <Content Remove="C:\Users\jhenley\.nuget\packages\datatables.net-dt\2.3.3\contentFiles\any\any\wwwroot\css\dataTables.dataTables.css" />
-        <Content Remove="C:\Users\jhenley\.nuget\packages\datatables.net-dt\2.3.3\contentFiles\any\any\wwwroot\css\dataTables.dataTables.min.css" />
-        <Content Remove="C:\Users\jhenley\.nuget\packages\datatables.net-dt\2.3.3\contentFiles\any\any\wwwroot\js\dataTables.dataTables.js" />
-        <Content Remove="C:\Users\jhenley\.nuget\packages\datatables.net-dt\2.3.3\contentFiles\any\any\wwwroot\js\dataTables.dataTables.min.js" />
-        <None Remove="CustomControls\Resources\TextSuggest.js" />
-        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-        <None Remove="CustomControls\Resources\TextSuggest.js" />
     </ItemGroup>
 
     <ItemGroup>

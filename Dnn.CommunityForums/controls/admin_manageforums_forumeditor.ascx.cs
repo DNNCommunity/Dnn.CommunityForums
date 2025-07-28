@@ -251,7 +251,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.rdAttachOff.Attributes.Add("value", "0");
             this.cfgAttach.InnerHtml = propImage;
 
-            this.rdHTMLOn.Attributes.Add("onclick", "toggleEditor(this);document.getElementById('" + this.drpEditorTypes.ClientID + "').value = '2';document.getElementById('" + this.drpEditorMobile.ClientID + "').value ='2';");
+            this.rdHTMLOn.Attributes.Add("onclick", "toggleEditor(this);document.getElementById('" + this.drpEditorTypes.ClientID + "').value = '3';document.getElementById('" + this.drpEditorMobile.ClientID + "').value ='3';");
             this.rdHTMLOff.Attributes.Add("onclick", "toggleEditor(this); document.getElementById('" + this.drpEditorTypes.ClientID + "').value = '0'; document.getElementById('" + this.drpEditorMobile.ClientID + "').value = '0'; ");
             this.rdHTMLOn.Attributes.Add("value", "1");
             this.rdHTMLOff.Attributes.Add("value", "0");
@@ -719,8 +719,8 @@ namespace DotNetNuke.Modules.ActiveForums
             // if switching from HTML off to HTML on, switch editor to HTML editor, or vice versa
             if (this.rdHTMLOff.Checked && featureSettings.AllowHTML)
             {
-                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorTypes.HTMLEDITORPROVIDER);
-                Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorTypes.HTMLEDITORPROVIDER);
+                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorTypes.FORUMSEDITOR);
+                Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorTypes.FORUMSEDITOR);
             }
 
             if (this.rdHTMLOn.Checked && !featureSettings.AllowHTML)

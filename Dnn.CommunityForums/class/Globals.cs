@@ -46,6 +46,8 @@ namespace DotNetNuke.Modules.ActiveForums
         TEXTBOX,
         ACTIVEEDITOR,
         HTMLEDITORPROVIDER,
+        FORUMSEDITOR,
+        FORUMSEDITORLITE,
     }
 
     public enum HTMLPermittedUsers
@@ -183,6 +185,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string PinNotificationTypeDescription = Globals.ModuleFriendlyName + " Pin Notification";
         public const string BadgeNotificationType = "DCF-BadgeNotification";
         public const string BadgeNotificationTypeDescription = Globals.ModuleFriendlyName + " Badge Notification";
+        public const string UserMentionNotificationType = "DCF-UserMentionNotification";
+        public const string UserMentionNotificationTypeDescription = Globals.ModuleFriendlyName + " User Mention Notification";
 
         public static Version ModuleVersion => new Version(DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).Version);
     }
@@ -542,6 +546,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string UserRoles = "AF-userroles-{0}";
         public const string CultureInfoForUser = "AF-usercultureinfo-{0}";
         public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
+        public const string UserMentionQuery = "AF-{0}-usermentionquery-{1}";
+        public const string UserMentionInfo = "AF-{0}-usermentioninfo-{1}";
     }
 
     public class SortColumns
