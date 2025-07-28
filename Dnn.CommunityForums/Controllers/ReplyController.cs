@@ -321,6 +321,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
 
+                DotNetNuke.Modules.ActiveForums.Controllers.TagController.ProcessTags(reply);
                 DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController.ProcessUserMentions(reply);
 
                 return true;
