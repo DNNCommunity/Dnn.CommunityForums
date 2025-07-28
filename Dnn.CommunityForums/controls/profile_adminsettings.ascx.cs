@@ -24,6 +24,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class profile_adminsettings : ProfileBase
     {
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow adminrow1;
+        protected global::System.Web.UI.WebControls.TextBox txtRewardPoints;
+        protected global::System.Web.UI.WebControls.TextBox txtUserCaption;
+        protected global::System.Web.UI.WebControls.CheckBox chkDisableSignature;
+        protected global::System.Web.UI.WebControls.CheckBox chkDisableAvatar;
+        protected global::System.Web.UI.WebControls.DropDownList drpDefaultTrust;
+        protected global::System.Web.UI.WebControls.CheckBox chkMonitor;
+        protected global::System.Web.UI.WebControls.CheckBox chkDisableAttachments;
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnAdminSave;
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnAdminCancel;
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbAdmin;
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

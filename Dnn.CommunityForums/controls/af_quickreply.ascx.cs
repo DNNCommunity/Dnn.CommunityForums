@@ -270,6 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             ri.ReplyToId = this.TopicId;
             ri.TopicId = this.TopicId;
+            ri.ForumId = this.ForumId;
             ri.StatusId = -1;
             ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             string sUsername = string.Empty;

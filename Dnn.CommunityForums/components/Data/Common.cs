@@ -101,11 +101,13 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         #endregion
         #region Tags
-        public int Tag_GetIdByName(int portalId, int moduleId, string tagName, bool isCategory)
-        {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Tags_GetByName", portalId, moduleId, tagName.Replace("-", " ").ToLowerInvariant(), isCategory));
-        }
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        public int Tag_GetIdByName(int portalId, int moduleId, string tagName, bool isCategory) => throw new NotImplementedException();
 
+        public int Tag_GetIdByName(int portalId, int moduleId, string tagName)
+{
+        return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Tags_GetByName", portalId, moduleId, tagName.Replace("-", " ").ToLowerInvariant()));
+}
         #endregion
         #region TopMembers
         public IDataReader TopMembers_Get(int portalId, int rows)
