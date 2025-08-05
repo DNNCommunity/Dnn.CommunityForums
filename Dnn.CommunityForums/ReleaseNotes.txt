@@ -15,14 +15,15 @@
     <hr />
 
     <div class="dnnClear">
-        <h2 class="muy-importante">Important Upgrade Notes</h2>
+        <h2 class="muy-importante">Important Upgrade Note</h2>
         <p>
             <strong>VERY IMPORTANT:</strong>The MINIMUM DNN Platform version for this release is now <strong>DNN 9.11</strong>.
+<!--
             <br />
             The release notes will follow, below this <b>important</b> note.
-
+-->
         </p>
-
+        <!--
         <blockquote class="dcf-oldnews">
 
             <h2 class="muy-importante">
@@ -37,7 +38,7 @@
             </ul>
 
         </blockquote>
-
+        -->
     </div>
     <hr />
     <div class="dnnClear">
@@ -47,7 +48,7 @@
         <hr />
 
         <h3>
-            09.00.02
+            09.01.00
         </h3>
         <!--,,
         <p>
@@ -99,7 +100,8 @@
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
             
-            <li>09.00.02 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1510">Issue 1510</a>)</li>
+            <li>Refactors Web API methods security checking to use Role Ids rather than string array of Role names; also refactors Topic view model and Topic update panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1526">Issue 1526</a>)</li>
+            <li>09.01.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/TBD">Issue TBD</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>

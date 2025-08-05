@@ -64,9 +64,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     var r = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(replyId);
                     if (r != null)
                     {
-                        if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.Moderate, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                        var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
+                        if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(r.Topic.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds))
                         {
-                            DataProvider.Instance().Reply_UpdateStatus(this.ActiveModule.PortalID, this.ForumModuleId, r.TopicId, replyId, this.UserInfo.UserID, 1, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.Moderate, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))));
+                            DataProvider.Instance().Reply_UpdateStatus(this.ActiveModule.PortalID, this.ForumModuleId, r.TopicId, replyId, this.UserInfo.UserID, 1, r.Forum.GetIsMod(forumUser));
                             DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, this.ForumModuleId));
                             return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                         }
@@ -106,13 +107,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     var r = rc.GetById(replyId);
                     if (r != null)
                     {
-                        if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) ||
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                                r.Topic.Forum.Security.Moderate,
-                                string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
-                                        this.ActiveModule.PortalID,
-                                        this.UserInfo.Roles))))
+                        var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
+                        if (this.UserInfo.IsAdmin ||
+                            this.UserInfo.IsSuperUser ||
+                            Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(r.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
+                            (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(r.Forum.Security.DeleteRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == r.Author.AuthorId && !r.Topic.IsLocked)
+                            )
                         {
                             rc.Reply_Delete(this.ActiveModule.PortalID,
                                 forumId,

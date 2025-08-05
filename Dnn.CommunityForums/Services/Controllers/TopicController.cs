@@ -155,15 +155,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                     if (ti != null)
                     {
-                        if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                                ti.Forum.Security.Pin, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
-                                        this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
-                            this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin || this.UserInfo.IsSuperUser ||
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                                ti.Forum.Security.Moderate, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
-                                        this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                        var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
+                        if (this.UserInfo.IsAdmin ||
+                            this.UserInfo.IsSuperUser ||
+                            Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(ti.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
+                            (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(ti.Forum.Security.PinRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == ti.Content.AuthorId)
+                            )
                         {
                             ti.IsPinned = !ti.IsPinned;
                             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
@@ -222,18 +219,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                     if (ti != null)
                     {
-                        if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                                ti.Forum.Security.Lock, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
-                                        this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
-                            this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin ||
+                        var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
+                        if (this.UserInfo.IsAdmin ||
                             this.UserInfo.IsSuperUser ||
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                                ti.Forum.Security.Moderate,
-                                string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
-                                        this.ActiveModule.PortalID,
-                                        this.UserInfo.Roles))))
+                            Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(ti.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
+                            (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(ti.Forum.Security.LockRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == ti.Content.AuthorId)
+                            )
                         {
                             ti.IsLocked = !ti.IsLocked;
                             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
@@ -276,16 +267,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                     if (ti != null)
                     {
-                        if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                                ti.Forum.Security.Move, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
-                                        this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
-                            this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin ||
+                        var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
+                        if (this.UserInfo.IsAdmin ||
                             this.UserInfo.IsSuperUser ||
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                                ti.Forum.Security.Moderate, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
-                                        this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                            Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(ti.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
+                            (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(ti.Forum.Security.MoveRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == ti.Content.AuthorId)
+                            )
                         {
                             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(moduleId: this.ForumModuleId, userId: this.UserInfo.UserID, topicId: topicId, newForumId: forumId);
                             DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.CacheModulePrefix, this.ForumModuleId));
@@ -307,6 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
+
 #pragma warning disable CS1570
         /// <summary>
         /// Loads a Topic
@@ -329,18 +317,21 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                         if (t != null)
                         {
-                            var topic = new DotNetNuke.Modules.ActiveForums.ViewModels.Topic(t);
-                            return this.Request.CreateResponse(HttpStatusCode.OK, topic);
+                            var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
+                            if (this.UserInfo.IsAdmin ||
+                                this.UserInfo.IsSuperUser ||
+                                Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(t.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
+                                (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(t.Forum.Security.ReadRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == t.Content.AuthorId)
+                                )
+                            {
+                                var topic = new DotNetNuke.Modules.ActiveForums.ViewModels.Topic(t);
+                                return this.Request.CreateResponse(HttpStatusCode.OK, topic);
+                            }
+                            this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                         }
-                        else
-                        {
-                            this.Request.CreateResponse(HttpStatusCode.NotFound);
-                        }
+                        this.Request.CreateResponse(HttpStatusCode.NotFound);
                     }
-                    else
-                    {
-                        this.Request.CreateResponse(HttpStatusCode.Unauthorized);
-                    }
+                    this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
             }
             catch (Exception ex)
@@ -350,6 +341,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
+
 #pragma warning disable CS1570
         /// <summary>
         /// Deletes a Topic
@@ -372,16 +364,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.GetById(topicId);
                     if (ti != null)
                     {
-                        if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                                ti.Forum.Security.Delete, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
-                                        this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
-                            this.UserInfo.UserID == ti.Content.AuthorId || this.UserInfo.IsAdmin ||
+                        var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
+                        if (this.UserInfo.IsAdmin ||
                             this.UserInfo.IsSuperUser ||
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                                ti.Forum.Security.Moderate, string.Join(";",
-                                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
-                                        this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                            Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(ti.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
+                            (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(ti.Forum.Security.DeleteRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == ti.Content.AuthorId)
+                            )
                         {
                             tc.DeleteById(topicId);
                             return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
@@ -444,28 +432,27 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 int forumId = dto.ForumId;
                 int topicId = dto.Topic.TopicId;
 
-            if (topicId > 0 && forumId > 0)
+                if (topicId > 0 && forumId > 0)
             {
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo originalTopic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                 if (originalTopic != null)
                 {
-                    if (Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                            originalTopic.Forum.Security.Edit, string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
-                                    this.ActiveModule.PortalID, this.UserInfo.Roles))) &&
-                        this.UserInfo.UserID == originalTopic.Content.AuthorId || this.UserInfo.IsAdmin || 
-                        this.UserInfo.IsSuperUser || 
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(
-                            originalTopic.Forum.Security.Moderate, string.Join(";",
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(
-                                    this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                        var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
+                        if (this.UserInfo.IsAdmin ||
+                            this.UserInfo.IsSuperUser ||
+                            Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(originalTopic.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
+                            (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(originalTopic.Forum.Security.EditRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == originalTopic.Content.AuthorId)
+                            )
                     {
                         string subject = Utilities.XSSFilter(dto.Topic.Subject, true);
                         originalTopic.Content.Subject = subject;
                         originalTopic.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrlSegment(portalId: this.ActiveModule.PortalID, moduleId: this.ForumModuleId, topicId: topicId, subject: subject, forumInfo: originalTopic.Forum);
 
                         if (dto.Topic.IsLocked != originalTopic.IsLocked &&
-                            (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Lock, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))) 
+                            (this.UserInfo.IsAdmin ||
+                            this.UserInfo.IsSuperUser ||
+                            Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(originalTopic.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
+                            (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(originalTopic.Forum.Security.LockRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == originalTopic.Content.AuthorId)
                             )
                             )
                         {
@@ -473,17 +460,20 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         }
 
                         if (dto.Topic.IsPinned != originalTopic.IsPinned &&
-                            (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Pin, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))) 
+                            (this.UserInfo.IsAdmin ||
+                            this.UserInfo.IsSuperUser ||
+                            Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(originalTopic.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
+                            (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(originalTopic.Forum.Security.PinRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == originalTopic.Content.AuthorId)
                             )
                             )
                         {
                             originalTopic.IsLocked = dto.Topic.IsLocked;
                         }
 
-                            originalTopic.Priority = dto.Topic.Priority;
-                            originalTopic.StatusId = dto.Topic.StatusId;
+                        originalTopic.Priority = dto.Topic.Priority;
+                        originalTopic.StatusId = dto.Topic.StatusId;
 
-                            if (originalTopic.Forum.Properties != null && originalTopic.Forum.Properties.Count > 0)
+                        if (originalTopic.Forum.Properties != null && originalTopic.Forum.Properties.Count > 0)
                             {
                                 StringBuilder tData = new StringBuilder();
                                 tData.Append("<topicdata>");
@@ -513,10 +503,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                                 originalTopic.TopicData = tData.ToString();
                             }
 
-                            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(originalTopic);
-                            Utilities.UpdateModuleLastContentModifiedOnDate(this.ForumModuleId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(originalTopic);
+                        Utilities.UpdateModuleLastContentModifiedOnDate(this.ForumModuleId);
 
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Tag, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
+                        if (this.UserInfo.IsAdmin ||
+                            this.UserInfo.IsSuperUser ||
+                            Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(originalTopic.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
+                            (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(originalTopic.Forum.Security.TagRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == originalTopic.Content.AuthorId)
+                            )
                         {
                             if (!string.IsNullOrEmpty(dto.Topic.Tags))
                             {
@@ -531,26 +525,30 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             }
                         }
 
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Categorize, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
-                        {
-                            if (!string.IsNullOrEmpty(dto.Topic.SelectedCategoriesAsString))
+                        if (this.UserInfo.IsAdmin ||
+                            this.UserInfo.IsSuperUser ||
+                            Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(originalTopic.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
+                            (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(originalTopic.Forum.Security.EditRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == originalTopic.Content.AuthorId)
+                            )
                             {
-                                string[] cats = dto.Topic.SelectedCategoriesAsString.Split(';');
-                                DataProvider.Instance().Tags_DeleteTopicToCategory(this.ActiveModule.PortalID, this.ForumModuleId, -1, topicId);
-                                foreach (string c in cats)
+                                if (!string.IsNullOrEmpty(dto.Topic.SelectedCategoriesAsString))
                                 {
-                                    int cid = -1;
-                                    if (!string.IsNullOrEmpty(c) && SimulateIsNumeric.IsNumeric(c))
+                                    string[] cats = dto.Topic.SelectedCategoriesAsString.Split(';');
+                                    DataProvider.Instance().Tags_DeleteTopicToCategory(this.ActiveModule.PortalID, this.ForumModuleId, -1, topicId);
+                                    foreach (string c in cats)
                                     {
-                                        cid = Convert.ToInt32(c);
-                                        if (cid > 0)
+                                        int cid = -1;
+                                        if (!string.IsNullOrEmpty(c) && SimulateIsNumeric.IsNumeric(c))
                                         {
-                                            DataProvider.Instance().Tags_AddTopicToCategory(this.ActiveModule.PortalID, this.ForumModuleId, cid, topicId);
+                                            cid = Convert.ToInt32(c);
+                                            if (cid > 0)
+                                            {
+                                                DataProvider.Instance().Tags_AddTopicToCategory(this.ActiveModule.PortalID, this.ForumModuleId, cid, topicId);
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
                             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo updatedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                             return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.ViewModels.Topic(updatedTopic));
@@ -559,7 +557,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                     }
 
-                    return this.Request.CreateResponse(HttpStatusCode.NotFound, dto.Topic);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound, dto.Topic);
                 }
             }
             catch (Exception ex)

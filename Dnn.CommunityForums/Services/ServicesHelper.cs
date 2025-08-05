@@ -103,7 +103,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                         return false;
                 }
 
-                return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(roles, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleNameArray(portalId: portalId, roles: userInfo.Roles));
+                var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userInfo.UserID);
+                return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(roles, forumUser.UserRoleIds);
             }
             catch (Exception ex)
             {
