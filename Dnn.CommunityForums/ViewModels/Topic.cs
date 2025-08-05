@@ -25,192 +25,132 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
 
     public class Topic
     {
-        private readonly DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic;
-
         public Topic()
         {
-            this.topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
-            {
-                Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.ModuleId),
-                LastReplyAuthor = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.ModuleId),
-                Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo(),
-            };
         }
 
         public Topic(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic)
         {
-            this.topic = topic;
+            this.ModuleId = topic.ModuleId;
+            this.ForumId = topic.ForumId;
+            this.TopicId = topic.TopicId;
+            this.AuthorId = topic.Author?.AuthorId ?? DotNetNuke.Common.Utilities.Null.NullInteger;
+            this.AuthorDisplayName = topic.Author?.DisplayName ?? topic.Content.AuthorName ?? string.Empty;
+            this.AuthorFirstName = topic.Author?.FirstName ?? string.Empty;
+            this.AuthorLastName = topic.Author?.LastName ?? string.Empty;
+            this.AuthorUsername = topic.Author?.Username ?? string.Empty;
+            this.AuthorEmail = topic.Author?.Email ?? string.Empty;
+            this.LastReplyAuthorId = topic.LastReplyAuthor?.AuthorId ?? DotNetNuke.Common.Utilities.Null.NullInteger;
+            this.LastReplyAuthorDisplayName = topic.LastReplyAuthor?.DisplayName ?? topic.LastReply?.Content?.AuthorName ?? string.Empty;
+            this.LastReplyAuthorFirstName = topic.LastReplyAuthor?.FirstName ?? string.Empty;
+            this.LastReplyAuthorLastName = topic.LastReplyAuthor?.LastName ?? string.Empty;
+            this.LastReplyAuthorUsername = topic.LastReplyAuthor?.Username ?? string.Empty;
+            this.LastReplyAuthorEmail = topic.LastReplyAuthor?.Email ?? string.Empty;
+            this.IsLocked = topic.IsLocked;
+            this.IsPinned = topic.IsPinned;
+            this.IsArchived = topic.IsArchived;
+            this.IsApproved = topic.IsApproved;
+            this.IsRejected = topic.IsRejected;
+            this.IsDeleted = topic.IsDeleted;
+            this.StatusId = topic.StatusId;
+            this.IsPinned = topic.IsPinned;
+            this.AnnounceStart = topic.AnnounceStart;
+            this.AnnounceEnd = topic.AnnounceEnd;
+            this.Priority = topic.Priority;
             this.Tags = topic.Tags;
+            this.Categories = topic.Categories;
+            this.SelectedCategories = topic.SelectedCategories;
+            this.SelectedCategoriesAsString = topic.SelectedCategoriesAsString;
+            this.TopicProperties = topic.TopicProperties;
+            this.ForumProperties = topic.Forum.Properties;
+            this.Subject = topic.Content?.Subject ?? string.Empty;
+            this.Body = topic.Content?.Body ?? string.Empty;
+            this.Summary = topic.Content?.Summary ?? string.Empty;
+            this.Forum = topic.Forum;
         }
 
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo TopicInfo() => this.topic;
+        public int TopicId { get; set; }
 
-        public int TopicId { get => this.topic.TopicId; set => this.topic.TopicId = value; }
+        public int ForumId { get; set; }
 
-        public int ForumId { get => this.topic.ForumId; set => this.topic.ForumId = value; }
+        public int ForumGroupId { get; set; }
 
-        public int PortalId => this.topic.Forum.PortalId;
-
-        public int ModuleId => this.topic.Forum.ModuleId;
+        public int ModuleId { get; set; }
 
         public int PostId => this.TopicId;
 
-        public int AuthorId { get => this.topic.Author != null ? this.topic.Author.AuthorId : 0; set => this.topic.Author.AuthorId = value; }
+        public int AuthorId { get; set; }
 
-        public string AuthorDisplayName { get => this.topic.Author != null ? this.topic.Author.DisplayName : string.Empty; set => this.topic.Author.DisplayName = value; }
+        public string AuthorDisplayName { get; set; }
 
-        public string AuthorUsername { get => this.topic.Author != null ? this.topic.Author.Username : string.Empty; set => this.topic.Author.Username = value; }
+        public string AuthorUsername { get; set; }
 
-        public string AuthorEmail { get => this.topic.Author != null ? this.topic.Author.Email : string.Empty; set => this.topic.Author.Email = value; }
+        public string AuthorEmail { get; set; }
 
-        public string AuthorFirstName { get => this.topic.Author != null ? this.topic.Author.FirstName : string.Empty; set => this.topic.Author.FirstName = value; }
+        public string AuthorFirstName { get; set; }
 
-        public string AuthorLastName { get => this.topic.Author != null ? this.topic.Author.LastName : string.Empty; set => this.topic.Author.LastName = value; }
+        public string AuthorLastName { get; set; }
 
-        public int LastReplyAuthorId { get => this.topic.LastReplyAuthor != null ? this.topic.LastReplyAuthor.AuthorId : 0; set => this.topic.LastReplyAuthor.AuthorId = value; }
+        public int LastReplyAuthorId { get; set; }
 
-        public string LastReplyAuthorDisplayName { get => this.topic.LastReplyAuthor != null ? this.topic.LastReplyAuthor.DisplayName : string.Empty; set => this.topic.LastReplyAuthor.DisplayName = value; }
+        public string LastReplyAuthorDisplayName { get; set; }
 
-        public string LastReplyAuthorUsername { get => this.topic.LastReplyAuthor != null ? this.topic.LastReplyAuthor.Username : string.Empty; set => this.topic.LastReplyAuthor.Username = value; }
+        public string LastReplyAuthorUsername { get; set; }
 
-        public string LastReplyAuthorEmail { get => this.topic.LastReplyAuthor != null ? this.topic.LastReplyAuthor.Email : string.Empty; set => this.topic.LastReplyAuthor.Email = value; }
+        public string LastReplyAuthorEmail { get; set; }
 
-        public string LastReplyAuthorFirstName { get => this.topic.LastReplyAuthor != null ? this.topic.LastReplyAuthor.FirstName : string.Empty; set => this.topic.LastReplyAuthor.FirstName = value; }
+        public string LastReplyAuthorFirstName { get; set; }
 
-        public string LastReplyAuthorLastName { get => this.topic.LastReplyAuthor != null ? this.topic.LastReplyAuthor.LastName : string.Empty; set => this.topic.LastReplyAuthor.LastName = value; }
+        public string LastReplyAuthorLastName { get; set; }
 
-        public int ContentId { get => this.topic.ContentId; set => this.topic.ContentId = value; }
+        public bool IsLocked { get; set; }
 
-        public int ViewCount { get => this.topic.ViewCount; set => this.topic.ViewCount = value; }
+        public bool IsPinned { get; set; }
 
-        public int ReplyCount { get => this.topic.ReplyCount; set => this.topic.ReplyCount = value; }
+        public int StatusId { get; set; }
 
-        public bool IsLocked { get => this.topic.IsLocked; set => this.topic.IsLocked = value; }
+        public bool IsApproved { get; set; }
 
-        public bool IsPinned { get => this.topic.IsPinned; set => this.topic.IsPinned = value; }
+        public bool IsRejected { get; set; }
 
-        public string TopicIcon { get => this.topic.TopicIcon; set => this.topic.TopicIcon = value; }
+        public bool IsDeleted { get; set; }
 
-        public int StatusId { get => this.topic.StatusId; set => this.topic.StatusId = value; }
+        public bool IsAnnounce { get => this.AnnounceStart.HasValue; }
 
-        public bool IsApproved { get => this.topic.IsApproved; set => this.topic.IsApproved = value; }
+        public bool IsArchived { get; set; }
 
-        public bool IsRejected { get => this.topic.IsRejected; set => this.topic.IsRejected = value; }
+        public DateTime? AnnounceStart { get; set; }
 
-        public bool IsDeleted { get => this.topic.IsDeleted; set => this.topic.IsDeleted = value; }
+        public DateTime? AnnounceEnd { get; set; }
 
-        public bool IsAnnounce { get => this.topic.IsAnnounce; set => this.topic.IsAnnounce = value; }
+        public int Priority { get; set; }
 
-        public bool IsArchived { get => this.topic.IsArchived; set => this.topic.IsArchived = value; }
+        public string Subject { get; set; }
 
-        public DateTime? AnnounceStart { get => this.topic.AnnounceStart; set => this.topic.AnnounceStart = value; }
+        public string Body { get; set; }
 
-        public DateTime? AnnounceEnd { get => this.topic.AnnounceEnd; set => this.topic.AnnounceEnd = value; }
+        public string Summary { get; set; }
 
-        public TopicTypes TopicType { get => this.topic.TopicType; set => this.topic.TopicType = value; }
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum { get; set; }
 
-        public int Priority { get => this.topic.Priority; set => this.topic.Priority = value; }
+        public string ForumName => this.Forum?.ForumName;
 
-        public string TopicUrl { get => this.topic.TopicUrl; set => this.topic.TopicUrl = value; }
+        public string ForumGroupName => this.Forum?.GroupName;
 
-        public int LastReplyId => this.topic.LastReplyId;
+        public string ForumDescription => this.Forum?.ForumDesc;
 
-        public int Rating { get => this.topic.Rating; set => this.topic.Rating = value; }
-
-        public string URL => this.topic.URL;
-
-        public string Subject { get => this.topic?.Content?.Subject != null ? this.topic.Content.Subject : string.Empty; set => this.topic.Content.Subject = value; }
-
-        public string Body { get => this.topic?.Content?.Body != null ? this.topic.Content.Body : string.Empty; set => this.topic.Content.Body = value; }
-
-        public string Summary { get => this.topic?.Content?.Summary != null ? this.topic.Content.Summary : string.Empty; set => this.topic.Content.Summary = value; }
-
-        public int SubscriberCount => this.topic.SubscriberCount;
-
-        public string ForumName => this.topic.Forum.ForumName;
-
-        public string ForumGroupName => this.topic.Forum.GroupName;
-
-        public string ForumDescription => this.topic.Forum.ForumDesc;
-
-        public string ForumURL => this.topic.ForumURL;
-
-        public int NextTopic => this.topic.NextTopic;
-
-        public int PrevTopic => this.topic.PrevTopic;
-
-        public string TopicData { get => this.topic.TopicData; set => this.topic.TopicData = value; }
+        public string ForumURL => this.Forum.ForumURL;
 
         public string Tags { get; set; } = string.Empty;
 
-        public IEnumerable<Entities.TopicInfo.Category> Categories => this.topic.Categories;
+        public IEnumerable<Entities.TopicInfo.Category> Categories { get; set; }
 
-        public string SelectedCategoriesAsString { get => this.topic.SelectedCategoriesAsString; set => this.topic.SelectedCategoriesAsString = value; }
+        public string SelectedCategoriesAsString { get; set; }
 
-        public IEnumerable<Entities.TopicInfo.Category> SelectedCategories => this.topic.SelectedCategories;
+        public IEnumerable<Entities.TopicInfo.Category> SelectedCategories { get; set; }
 
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> TopicProperties { get => this.topic.TopicProperties; set => this.topic.TopicProperties = value; }
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> TopicProperties { get; set; }
 
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> ForumProperties => this.topic.Forum.Properties;
-
-        public int ForumGroupId => this.topic.Forum.ForumGroupId;
-
-        public int ForumPermissionsId => this.topic.Forum.PermissionsId;
-
-        public int ForumLastTopicId => this.topic.Forum.LastTopicId;
-
-        public int ForumLastReplyId => this.topic.Forum.LastReplyId;
-
-        public int ForumLastPostID => this.topic.Forum.LastPostID;
-
-        public int ForumTotalTopics => this.topic.Forum.TotalTopics;
-
-        public int ForumTotalReplies => this.topic.Forum.TotalReplies;
-
-        public string ForumSettingsKey => this.topic.Forum.ForumSettingsKey;
-
-        public bool ForumActive => this.topic.Forum.Active;
-
-        public bool ForumHidden => this.topic.Forum.Hidden;
-
-        public int ForumSubscriberCount => this.topic.Forum.SubscriberCount;
-
-        public string ForumGroupPrefixURL => this.topic.Forum.ForumGroup.PrefixURL;
-
-        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo ForumSecurity => this.topic.Forum.Security;
-
-        public string ForumSecurityCreate => this.topic.Forum.Security.Create;
-
-        public string ForumSecurityEdit => this.topic.Forum.Security.Edit;
-
-        public string ForumSecurityDelete => this.topic.Forum.Security.Delete;
-
-        public string ForumSecurityView => this.topic.Forum.Security.View;
-
-        public string ForumSecurityAnnounce => this.topic.Forum.Security.Announce;
-
-        public string ForumSecurityModerate => this.topic.Forum.Security.Moderate;
-
-        public string ForumSecurityMove => this.topic.Forum.Security.Move;
-
-        public string ForumSecuritySplit => this.topic.Forum.Security.Split;
-
-        public string ForumSecurityTrust => this.topic.Forum.Security.Trust;
-
-        public string ForumSecurityAttach => this.topic.Forum.Security.Attach;
-
-        public string ForumSecurityAuthRolesCreate => this.topic.Forum.Security.Ban;
-
-        public string ForumSecurityTag => this.topic.Forum.Security.Tag;
-
-        public string ForumSecuritySubscribe => this.topic.Forum.Security.Subscribe;
-
-        public string ForumPrefixURL => this.topic.Forum.PrefixURL;
-
-        public int ParentForumId => this.topic.Forum.ParentForumId;
-
-        public string ParentForumName => this.topic.Forum.ParentForumName;
-
-        public bool ForumHasProperties => this.topic.Forum.HasProperties;
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> ForumProperties { get; set; }
     }
 }

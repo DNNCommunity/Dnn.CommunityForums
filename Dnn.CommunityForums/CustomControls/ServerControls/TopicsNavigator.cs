@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.ForumId > 0)
             {
-                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(this.ForumInfo.Security.View, this.ForumUser.UserPermSet))
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ViewRoleIds, this.ForumUser.UserRoleIds))
                 {
                     tb.ForumIds = this.ForumId.ToString();
                 }
