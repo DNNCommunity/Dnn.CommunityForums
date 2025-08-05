@@ -445,5 +445,19 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             // Assert
             Assert.That(result, Is.EqualTo(expected));
         }
+
+        [Test]
+        public void GetSha256HashTest()
+        {
+            // Arrange
+            var input = "webmaster@dnncommunity.org";
+            var expectedResult = "db4c6321693845e820dfbebbd7df8e5c980f7aa3c9f4a884ad10ee57d0ba159f";
+
+            // Act
+            var actualResult = DotNetNuke.Modules.ActiveForums.Utilities.GetSha256Hash(input);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
     }
 }

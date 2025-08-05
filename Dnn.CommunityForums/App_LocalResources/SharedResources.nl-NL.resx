@@ -1891,4 +1891,7 @@ Van,
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Om de meldingen van je forum te beheren, ga je naar:</value>
   </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar vernieuwd voor {0} gebruiker</value>
+  </data>
 </root>

@@ -1852,4 +1852,7 @@ De,
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Pour gérer les notifications de vos forums, rendez-vous sur :</value>
   </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar actualisé pour le {0} utilisateur</value>
+  </data>
 </root>

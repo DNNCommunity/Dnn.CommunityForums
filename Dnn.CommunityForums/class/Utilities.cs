@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -1778,6 +1779,22 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return template;
+        }
+
+        internal static string GetSha256Hash(string input)
+        {
+            using (var sha256Hash = SHA256.Create())
+            {
+                var inputBytes = Encoding.UTF8.GetBytes(input);
+                var hashBytes = sha256Hash.ComputeHash(inputBytes);
+                var sb = new StringBuilder();
+                foreach (var b in hashBytes)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
         }
     }
 }

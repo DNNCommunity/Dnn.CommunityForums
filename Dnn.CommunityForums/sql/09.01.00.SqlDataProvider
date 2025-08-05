@@ -13,7 +13,7 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tracking') AND name = N'idx_{objectQualifier}activeforums_Topics_Tracking_Opt1')
 DROP INDEX [idx_{objectQualifier}activeforums_Topics_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Topics_Tracking 
-GO 
+GO
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tracking') AND name = N'IX_{objectQualifier}activeforums_Topics_Tracking_Opt1')
 DROP INDEX [IX_{objectQualifier}activeforums_Topics_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Topics_Tracking 
 GO 
@@ -56,7 +56,7 @@ LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft
 ON ft.TopicId = tt.TopicId
 AND ft.ForumId = tt.ForumId
 WHERE ft.TopicId IS NULL
-GO 
+GO
 
 /* delete any duplicated tracking records for user/topic, keeping latest one */
 WITH tt_max AS (
@@ -98,7 +98,7 @@ CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Topics_Tracki
 INCLUDE ( 
 [LastReplyId]
 ) WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
-GO 
+GO
 
 CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Forums_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Forums_Tracking
 (
@@ -109,7 +109,7 @@ INCLUDE (
 [MaxTopicRead],
 [MaxReplyRead]
 ) WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
-GO
+GO 
 
 /* issues 1434 - end - duplicated forum and topic tracking */
 
@@ -125,21 +125,147 @@ ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN La
 GO 
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}activeforums_Forums_LastPostAuthorId]') AND type = 'D')
 ALTER TABLE {databaseOwner}{objectQualifier}activeforums_Forums DROP CONSTRAINT DF_{objectQualifier}activeforums_Forums_LastPostAuthorId
-GO 
+GO
 IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostAuthorId' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
 ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostAuthorId
-GO 
+GO
 IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostAuthorName' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
 ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostAuthorName
-GO 
+GO
 IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostSubject' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
 ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostSubject
-GO 
+GO
 IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostDate' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
 ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostDate
-GO 
+GO
 
 /* issue 792 end -  activeforums_Forums -- remove columns no longer used */
 
+/* --------------------- */
+
+/* issue 1411 begin -- updates to activeforums_UserProfiles for avatar updates */
+
+
+/* recreate activeforums_UserProfiles_Opt2 */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{objectQualifier}activeforums_UserProfiles') AND name = N'idx_{objectQualifier}activeforums_UserProfiles_Opt2')
+DROP INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt2] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+GO
+CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt2] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles
+(
+	[UserId] ASC
+)
+INCLUDE ( [TopicCount],
+[ReplyCount],
+[ViewCount],
+[AnswerCount],
+[RewardPoints],
+[UserCaption],
+[DateCreated],
+[DateLastActivity],
+[Signature],
+[SignatureDisabled],
+[AvatarDisabled]
+) WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+
+/* activeforums_UserProfiles_Opt3  */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{objectQualifier}activeforums_UserProfiles') AND name = N'idx_{objectQualifier}activeforums_UserProfiles_Opt3')
+DROP INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt3] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+GO
+CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt3] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+(
+	[PortalId] ASC,
+	[UserId] ASC
+)
+INCLUDE ( [ProfileId],
+[TopicCount],
+[ReplyCount],
+[ViewCount],
+[AnswerCount],
+[RewardPoints],
+[UserCaption],
+[DateCreated],
+[DateUpdated],
+[DateLastActivity],
+[Signature],
+[SignatureDisabled],
+[TrustLevel],
+[AdminWatch],
+[AttachDisabled],
+[AvatarDisabled],
+[PrefDefaultSort],
+[PrefDefaultShowReplies],
+[PrefJumpLastPost],
+[PrefTopicSubscribe],
+[PrefSubscriptionType],
+[PrefEmailFormat],
+[PrefBlockAvatars],
+[PrefBlockSignatures],
+[PrefPageSize],
+[DateLastPost]) WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+/* remove Avatar and AvatarType from activeforums_UserProfiles if they exist */
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'Avatar' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserProfiles] DROP COLUMN Avatar
+GO 
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}activeforums_UserProfiles_AvatarType]') AND type = 'D')
+ALTER TABLE {databaseOwner}{objectQualifier}activeforums_UserProfiles DROP CONSTRAINT DF_{objectQualifier}activeforums_UserProfiles_AvatarType
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'AvatarType' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserProfiles] DROP COLUMN AvatarType
+GO 
+
+/* add AvatarLastRefresh to activeforums_UserProfiles */
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'AvatarLastRefresh' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserProfiles] ADD
+	[AvatarLastRefresh] [datetime] NULL
+END
+GO
+/* add AvatarFileId to activeforums_UserProfiles */
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'AvatarFileId' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserProfiles] ADD
+	[AvatarFileId] [int] NULL
+END
+GO
+/* add AvatarSourceLastModified to activeforums_UserProfiles */
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'AvatarSourceLastModified' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserProfiles] ADD
+	[AvatarSourceLastModified] [datetime] NULL
+END
+GO
+
+/* activeforums_UserProfiles_Opt5 -- adding index for LastAvatarRefresh for users */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{objectQualifier}activeforums_UserProfiles') AND name = N'IX_{objectQualifier}activeforums_UserProfiles_Opt5')
+DROP INDEX [IX_{objectQualifier}activeforums_UserProfiles_Opt5] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+GO
+CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt5] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles
+(
+	[PortalId] ASC,
+    [AvatarDisabled], 
+	[AvatarLastRefresh] DESC,
+	[UserId] ASC
+)
+INCLUDE ( 
+	[AvatarFileId], 
+	[AvatarSourceLastModified] 
+)
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+/* issue 1411 end -- add AvatarLastRefresh */
+
+/* --------------------- */
+
+/* issue 1412 start -- create scheduler entry for avatar refresh queue */
+
+IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.Avatars.AvatarRefreshQueue, DotNetNuke.Modules.ActiveForums')
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule (TypeFullName,TimeLapse,TimeLapseMeasurement,RetryTimeLapse,RetryTimeLapseMeasurement,RetainHistoryNum,AttachToEvent,CatchUpEnabled,Enabled,ObjectDependencies,Servers,FriendlyName)
+	VALUES('DotNetNuke.Modules.ActiveForums.Services.Avatars.AvatarRefreshQueue, DotNetNuke.Modules.ActiveForums',1,'h',1,'h',100,'',1,1,'','','DNN Community Forums Avatar Refresh Queue')
+
+/* issue 1412 end -- create scheduler entry for avatar refresh queue */
 /* --------------------- */
 
