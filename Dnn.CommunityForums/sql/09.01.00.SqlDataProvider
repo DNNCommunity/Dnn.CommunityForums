@@ -6,17 +6,17 @@ GO
 /* Drop indexes for forum and topic tracking tables to avoid duplicates -- note index prefix name change from idx_ to IX_ */
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Forums_Tracking') AND name = N'idx_{objectQualifier}activeforums_Forums_Tracking_Opt1')
 DROP INDEX [idx_{objectQualifier}activeforums_Forums_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Forums_Tracking 
-GO
+GO 
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Forums_Tracking') AND name = N'IX_{objectQualifier}activeforums_Forums_Tracking_Opt1')
 DROP INDEX [IX_{objectQualifier}activeforums_Forums_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Forums_Tracking 
-GO
+GO 
 
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tracking') AND name = N'idx_{objectQualifier}activeforums_Topics_Tracking_Opt1')
 DROP INDEX [idx_{objectQualifier}activeforums_Topics_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Topics_Tracking 
-GO
+GO 
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tracking') AND name = N'IX_{objectQualifier}activeforums_Topics_Tracking_Opt1')
 DROP INDEX [IX_{objectQualifier}activeforums_Topics_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Topics_Tracking 
-GO
+GO 
 
 /* delete any duplicated tracking records for user/forum, keeping latest one */
 WITH ft_max AS (
@@ -56,7 +56,7 @@ LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft
 ON ft.TopicId = tt.TopicId
 AND ft.ForumId = tt.ForumId
 WHERE ft.TopicId IS NULL
-GO
+GO 
 
 /* delete any duplicated tracking records for user/topic, keeping latest one */
 WITH tt_max AS (
@@ -86,7 +86,7 @@ AND tt_multiples.UserId = tt_max.UserId
 WHERE tt.TopicId = tt_max.TopicId
 AND tt.UserId = tt_max.UserId
 AND tt.TrackingId < tt_max.TrackingId
-GO
+GO 
 
 /* create new indexes */
 
@@ -98,7 +98,7 @@ CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Topics_Tracki
 INCLUDE ( 
 [LastReplyId]
 ) WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
-GO
+GO 
 
 CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Forums_Tracking_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Forums_Tracking
 (
@@ -114,3 +114,32 @@ GO
 /* issues 1434 - end - duplicated forum and topic tracking */
 
 /* ---------------- */
+
+/* issue 792 begin -  activeforums_Forums -- remove columns no longer used */
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}activeforums_Forums_LastPostId]') AND type = 'D')
+ALTER TABLE {databaseOwner}{objectQualifier}activeforums_Forums DROP CONSTRAINT DF_{objectQualifier}activeforums_Forums_LastPostId
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostId' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostId
+GO 
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}activeforums_Forums_LastPostAuthorId]') AND type = 'D')
+ALTER TABLE {databaseOwner}{objectQualifier}activeforums_Forums DROP CONSTRAINT DF_{objectQualifier}activeforums_Forums_LastPostAuthorId
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostAuthorId' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostAuthorId
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostAuthorName' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostAuthorName
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostSubject' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostSubject
+GO 
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'LastPostDate' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN LastPostDate
+GO 
+
+/* issue 792 end -  activeforums_Forums -- remove columns no longer used */
+
+/* --------------------- */
+
