@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             try
             {
                 if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.ForumId, this.ForumModuleId).FeatureSettings.AllowLikes &&
-                    ServicesHelper.IsAuthorized(this.PortalSettings.PortalId, this.ForumModuleId, dto.ForumId, SecureActions.Reply, this.UserInfo))
+                    ServicesHelper.IsAuthorized(this.PortalSettings, this.ForumModuleId, dto.ForumId, SecureActions.Reply, this.UserInfo))
                 {
                     var post = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(dto.ContentId, this.ForumModuleId).Post;
                     if (post != null)

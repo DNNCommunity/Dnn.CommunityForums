@@ -312,7 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (topicId > 0 && forumId > 0)
                 {
-                    if (ServicesHelper.IsAuthorized(this.PortalSettings.PortalId, this.ForumModuleId, forumId, SecureActions.Read, this.UserInfo))
+                    if (ServicesHelper.IsAuthorized(this.PortalSettings, this.ForumModuleId, forumId, SecureActions.Read, this.UserInfo))
                     {
                         DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                         if (t != null)

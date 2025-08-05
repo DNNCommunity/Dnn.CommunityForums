@@ -27,9 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     using System.Threading;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Web.Api;
 
@@ -67,52 +65,53 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 IIdentity identity = Thread.CurrentPrincipal.Identity;
                 if (identity.IsAuthenticated)
                 {
-                    int forumId = -1;
-                    if (forumId <= 0)
+                    var moduleInfo = context.ActionContext.Request.FindModuleInfo();
+                    var portalSettings = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings();
+                    var userInfo = portalSettings.UserInfo;
+                    int moduleId = DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(moduleInfo.ModuleID, moduleInfo.TabID);
+                    if (this.PermissionNeeded is SecureActions.Ban)
                     {
-                        if (context.ActionContext.Request.GetRouteData().Route.DataTokens.ContainsKey(Literals.ForumId))
-                        {
-                            forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetRouteData().Route
-                                .DataTokens[Literals.ForumId]
-                                .ToString());
-                        }
-                    }
-
-                    if (forumId <= 0)
-                    {
-                        try
-                        {
-                            forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetQueryNameValuePairs()
-                                .Where(q => q.Key.ToLowerInvariant() == Literals.ForumId.ToLowerInvariant())
-                                .FirstOrDefault().Value);
-                        }
-                        catch
-                        {
-                        }
-                    }
-
-                    if (forumId <= 0)
-                    {
-                        try
-                        {
-                            var postData = context.ActionContext.Request.Content.ReadAsStringAsync().Result;
-                            forumId = Utilities.SafeConvertInt(System.Web.Helpers.Json.Decode(postData).ForumId);
-                        }
-                        catch
-                        {
-                        }
-                    }
-
-                    if (forumId <= 0)
-                    {
-                        throw new System.InvalidOperationException();
+                        return ServicesHelper.IsAuthorized(portalSettings, moduleId, DotNetNuke.Common.Utilities.Null.NullInteger, this.PermissionNeeded, userInfo);
                     }
                     else
                     {
-                        ModuleInfo moduleInfo = context.ActionContext.Request.FindModuleInfo();
-                        UserInfo userInfo = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().UserInfo;
-                        int moduleId = DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(moduleInfo.ModuleID, moduleInfo.TabID);
-                        return ServicesHelper.IsAuthorized(moduleInfo.PortalID, moduleId, forumId, this.PermissionNeeded, userInfo);
+                        int forumId = -1;
+                        if (context.ActionContext.Request.GetRouteData().Route.DataTokens.ContainsKey(Literals.ForumId))
+                        {
+                            forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetRouteData().Route.DataTokens[Literals.ForumId].ToString());
+                        }
+
+                        if (forumId <= 0)
+                        {
+                            try
+                            {
+                                forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetQueryNameValuePairs().Where(q => q.Key.ToLowerInvariant() == Literals.ForumId.ToLowerInvariant()).FirstOrDefault().Value);
+                            }
+                            catch
+                            {
+                            }
+                        }
+
+                        if (forumId <= 0)
+                        {
+                            try
+                            {
+                                var postData = context.ActionContext.Request.Content.ReadAsStringAsync().Result;
+                                forumId = Utilities.SafeConvertInt(System.Web.Helpers.Json.Decode(postData).ForumId);
+                            }
+                            catch
+                            {
+                            }
+                        }
+
+                        if (forumId <= 0)
+                        {
+                            throw new System.InvalidOperationException();
+                        }
+                        else
+                        {
+                            return ServicesHelper.IsAuthorized(portalSettings, moduleId, forumId, this.PermissionNeeded, userInfo);
+                        }
                     }
                 }
             }
