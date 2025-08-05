@@ -99,7 +99,8 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            
+            <li>Update indexes on these forum/topic tracking tables to make unique combination of UserId/TopicId and UserId/ForumId; Create a script to detect and remove duplicates, keeping the latest entries (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1434">Issue 1434</a>)</li>
+            <li>Update Web API method security to not require ForumId for certain methods (e.g. user Ban) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1507">Issue 1507</a>)</li>
             <li>Refactors Web API methods security checking to use Role Ids rather than string array of Role names; also refactors Topic view model and Topic update panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1526">Issue 1526</a>)</li>
             <li>09.01.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/TBD">Issue TBD</a>)</li>
             <!--
