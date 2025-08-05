@@ -240,8 +240,8 @@ END
 GO
 
 /* activeforums_UserProfiles_Opt5 -- adding index for LastAvatarRefresh for users */
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{objectQualifier}activeforums_UserProfiles') AND name = N'idx_{objectQualifier}activeforums_UserProfiles_Opt5')
-DROP INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt5] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{objectQualifier}activeforums_UserProfiles') AND name = N'IX_{objectQualifier}activeforums_UserProfiles_Opt5')
+DROP INDEX [IX_{objectQualifier}activeforums_UserProfiles_Opt5] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
 GO
 CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt5] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles
 (

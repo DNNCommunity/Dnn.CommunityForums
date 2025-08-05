@@ -966,8 +966,8 @@ GO
 
 /* begin 09.01.00 */
 
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_UserProfiles') AND name = N'idx_{objectQualifier}activeforums_UserProfiles_Opt5')
-DROP INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt5] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_UserProfiles') AND name = N'IX_{objectQualifier}activeforums_UserProfiles_Opt5')
+DROP INDEX [IX_{objectQualifier}activeforums_UserProfiles_Opt5] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
 GO
 IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.Avatars.AvatarRefreshQueue, DotNetNuke.Modules.ActiveForums')
 	DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.Avatars.AvatarRefreshQueue, DotNetNuke.Modules.ActiveForums'
