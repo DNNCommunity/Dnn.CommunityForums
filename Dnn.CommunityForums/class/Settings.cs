@@ -215,9 +215,16 @@ namespace DotNetNuke.Modules.ActiveForums
             get { return this.MainSettings.GetInt(SettingKeys.EditInterval); }
         }
 
-        public int DeleteBehavior
+        public DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior DeleteBehavior
         {
-            get { return this.MainSettings.GetInt(SettingKeys.DeleteBehavior); }
+            get
+            {
+                DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior parsedValue;
+
+                return Enum.TryParse(this.MainSettings.GetString(SettingKeys.DeleteBehavior), true, out parsedValue)
+                    ? parsedValue
+                    : DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Recycle;
+            }
         }
 
         public ProfileVisibilities ProfileVisibility

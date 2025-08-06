@@ -428,6 +428,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ModerateBan = "modban";
         public const string ModerateReport = "modreport";
         public const string Likes = "likes";
+        public const string RecycleBin = "recyclebin";
     }
 
     internal static class GridTypes
@@ -443,6 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Unresolved = "unresolved";
         public const string Announcements = "announcements";
         public const string Tags = "tags";
+        public const string RecycleBin = "recyclebin";
     }
 
     public class PostActions

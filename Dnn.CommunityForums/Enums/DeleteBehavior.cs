@@ -18,21 +18,11 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums.Entities
+namespace DotNetNuke.Modules.ActiveForums.Enums
 {
-    using DotNetNuke.ComponentModel.DataAnnotations;
-
-    [TableName("activeforums_ForumTopics")]
-    [PrimaryKey("ForumTopicId", AutoIncrement = true)]
-
-    internal class ForumTopicInfo
+    public enum DeleteBehavior : byte
     {
-        public int ForumTopicId { get; set; }
-
-        public int ForumId { get; set; }
-
-        public int TopicId { get; set; }
-
-        public int? LastReplyId { get; set; }
+        Remove = 0,
+        Recycle = 1,
     }
 }

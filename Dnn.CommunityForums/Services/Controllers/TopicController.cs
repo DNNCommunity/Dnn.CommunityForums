@@ -371,7 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(ti.Forum.Security.DeleteRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == ti.Content.AuthorId)
                             )
                         {
-                            tc.DeleteById(topicId);
+                            tc.DeleteById(topicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
                             return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                         }
 
@@ -559,6 +559,49 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
                 return this.Request.CreateResponse(HttpStatusCode.NotFound, dto.Topic);
                 }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+#pragma warning disable CS1570
+        /// <summary>
+        /// Reatores a Topic
+        /// </summary>
+        /// <param name="forumId" type="int"></param>
+        /// <param name="topicId" type="int"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Restore?forumId=xxx&topicId=zzz</remarks>
+#pragma warning restore CS1570
+        [HttpPost]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.Moderate)]
+        public HttpResponseMessage Restore(TopicDto1 dto)
+        {
+            try
+            {
+                if (dto.ForumId > 0 && dto.TopicId > 0)
+                {
+                    var topicController = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId);
+                    var topic = topicController.GetById(dto.TopicId);
+                    if (topic != null)
+                    {
+                        if (topic.IsDeleted == false)
+                        {
+                            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+
+                        topicController.Restore(this.ActiveModule.PortalID,
+                            dto.ForumId,
+                            dto.TopicId);
+                        return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                    }
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
             catch (Exception ex)
             {

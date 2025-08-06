@@ -1858,4 +1858,19 @@ From,
   <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
     <value>Gravatar refreshed for user {0}</value>
   </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Recycle Bin</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>Are you sure you wish to restore this item?</value>
+  </data>
+  <data name="[RESX:EmptyRecycleBin].Text" xml:space="preserve">
+    <value>Empty Recycle Bin</value>
+  </data>
+  <data name="[RESX:RestoreAll].Text" xml:space="preserve">
+    <value>Restore All</value>
+  </data>
 </root>

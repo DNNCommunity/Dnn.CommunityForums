@@ -90,6 +90,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctl = Views.MySubscriptions;
                     }
+                    else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.RecycleBin)
+                    {
+                        ctl = Views.RecycleBin;
+                    }
                     else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.Likes)
                     {
                         ctl = Views.Likes;
@@ -173,6 +177,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 else if (view.ToUpperInvariant() == Views.MySubscriptions.ToUpperInvariant() && this.Request.IsAuthenticated)
                 {
                     ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/profile_mysubscriptions.ascx"));
+                }
+                else if (view.ToUpperInvariant() == Views.RecycleBin.ToUpperInvariant() && this.Request.IsAuthenticated)
+                {
+                    ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/af_recycle_bin.ascx"));
                 }
                 else if (view.ToUpperInvariant() == "FORUMVIEW")
                 {
