@@ -1123,9 +1123,6 @@ Da
   <data name="[RESX:Summary].Text" xml:space="preserve">
     <value>Sommario</value>
   </data>
-  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>Un tag è una parola chiave o un termine associato al contenuto che stai inviando.</value>
-  </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Tag</value>
   </data>
@@ -1849,9 +1846,6 @@ Da
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Grazie</value>
   </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Pubblicato:</value>
-  </data>
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Per gestire le notifiche dei forum, visita:</value>
   </data>
@@ -1872,5 +1866,8 @@ Da
   </data>
   <data name="[RESX:RestoreAll].Text" xml:space="preserve">
     <value>Ripristina tutto</value>
+  </data>
+  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
+    <value>Un tag è una parola chiave o un termine associato al contenuto che stai inviando. Quando inserisci più tag, separali con una virgola.</value>
   </data>
 </root>

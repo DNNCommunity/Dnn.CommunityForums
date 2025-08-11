@@ -913,10 +913,7 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:System].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Sistema</value>
   </data>
-  <data name="[RESX:TagClicks].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Clic</value>
-  </data>
-  <data name="[RESX:TagItems].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+  <data name="[RESX:Items].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Elementi</value>
   </data>
   <data name="[RESX:TagName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">

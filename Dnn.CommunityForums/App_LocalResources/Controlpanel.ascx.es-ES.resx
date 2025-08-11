@@ -913,10 +913,7 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:System].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Sistema</value>
   </data>
-  <data name="[RESX:TagClicks].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Clics</value>
-  </data>
-  <data name="[RESX:TagItems].Text" xml:space="preserve" lastModified="2024-05-27 10:53:02">
+  <data name="[RESX:Items].Text" xml:space="preserve" lastModified="2024-05-27 10:53:02">
     <value>Elementos</value>
   </data>
   <data name="[RESX:TagName].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">

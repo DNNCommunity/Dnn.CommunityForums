@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Linq;
     using System.Web.UI.WebControls;
+    using DotNetNuke.Modules.ActiveForums.Data;
 
     public partial class admin_categories : ActiveAdminBase
     {
@@ -55,10 +56,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         case "DELETE":
                             {
-                                int tagId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
-                                if (Utilities.IsNumeric(tagId))
+                                int categoryId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
+                                if (Utilities.IsNumeric(categoryId))
                                 {
-                                    new DotNetNuke.Modules.ActiveForums.Controllers.TagController().DeleteById(tagId);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().DeleteById(categoryId);
                                 }
 
                                 break;
@@ -67,13 +68,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         case "SAVE":
                             {
                                 string[] sParams = e.Parameters[4].Split(':');
-                                string tagName = sParams[1].Trim();
-                                int tagId = 0;
+                                string categoryName = sParams[1].Trim();
+                                int categoryId = 0;
                                 int forumId = -1;
                                 int forumGroupId = -1;
                                 if (sParams.Length > 2)
                                 {
-                                    tagId = Convert.ToInt32(sParams[2]);
+                                    categoryId = Convert.ToInt32(sParams[2]);
                                 }
 
                                 if (sParams[3].Contains("FORUM"))
@@ -86,9 +87,38 @@ namespace DotNetNuke.Modules.ActiveForums
                                     forumGroupId = Convert.ToInt32(sParams[3].Replace("GROUP", string.Empty));
                                 }
 
-                                if (!(tagName == string.Empty))
+                                if (!(categoryName == string.Empty))
                                 {
-                                    DataProvider.Instance().Tags_Save(this.PortalId, this.ModuleId, tagId, tagName, 0, 0, 0, -1, true, forumId, forumGroupId);
+                                    var categoryController = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController();
+                                    DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo category = null;
+                                    if (categoryId > 0)
+                                    {
+                                        category = categoryController.GetById(categoryId);
+                                    }
+
+                                    if (category != null)
+                                    {
+                                        category.CategoryName = categoryName;
+                                        category.ForumId = forumId;
+                                        category.ForumGroupId = forumGroupId;
+                                        category.PortalId = this.PortalId;
+                                        category.ModuleId = this.ModuleId;
+                                        categoryController.Update(category);
+                                        categoryController.RecountItems(category.CategoryId);
+                                    }
+                                    else
+                                    {
+                                        category = new DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo()
+                                        {
+                                            CategoryName = categoryName,
+                                            ForumId = forumId,
+                                            ForumGroupId = forumGroupId,
+                                            PortalId = this.PortalId,
+                                            ModuleId = this.ModuleId,
+                                            Items = 0,
+                                        };
+                                        categoryController.Insert(category);
+                                    }
                                 }
 
                                 break;
@@ -101,7 +131,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 int pageSize = Convert.ToInt32(e.Parameters[1]);
                 string sortColumn = e.Parameters[2].ToString();
                 string sort = e.Parameters[3].ToString();
-                this.agCategories.Datasource = DataProvider.Instance().Tags_List(this.PortalId, this.ModuleId, true, pageIndex, pageSize, sort, sortColumn, -1, -1);
+                this.agCategories.Datasource = DataProvider.Instance().Categories_List(this.PortalId, this.ModuleId, pageIndex, pageSize, sort, sortColumn, -1, -1);
                 this.agCategories.Refresh(e.Output);
             }
             catch (Exception ex)
@@ -136,9 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void agCategories_ItemBound(object sender, Modules.ActiveForums.Controls.ItemBoundEventArgs e)
         {
-            // e.Item(1) = Server.HtmlEncode(e.Item(1).ToString)
-            // e.Item(2) = Server.HtmlEncode(e.Item(2).ToString)
-            e.Item[6] = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + this.GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
+            e.Item[5] = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + this.GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
         }
     }
 }

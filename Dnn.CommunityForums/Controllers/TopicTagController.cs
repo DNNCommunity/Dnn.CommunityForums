@@ -23,26 +23,47 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Collections;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+
+
     internal partial class TopicTagController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo>
     {
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTopic(int topicId)
+        internal void AddTagToTopic(int tagId, int topicId)
         {
-            return this.Find("WHERE TopicId = @0", topicId).Where(t => !t.Tag.IsCategory);
+            this.Insert(new TopicTagInfo() { TagId = tagId, TopicId = topicId });
+            new DotNetNuke.Modules.ActiveForums.Controllers.TagController().RecountItems(tagId);
         }
 
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTag(int tagId)
+        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTopic(int topicId)
         {
-            return this.Find("WHERE TagId = @0", tagId).Where(t => !t.Tag.IsCategory);
+            return this.Find("WHERE TopicId = @0", topicId);
         }
 
-        public void DeleteForTagId(int tagId)
+        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTag(int tagId)
+        {
+            return this.Find("WHERE TagId = @0", tagId);
+        }
+
+        internal void DeleteForTag(int tagId)
         {
             this.Delete("WHERE TagId = @0", tagId);
         }
 
-        public void DeleteForTopicId(int topicId)
+        internal void DeleteForTopicTag(int topicId, int tagId)
         {
+            this.Delete("WHERE TagId = @0 AND TopicId = @1", tagId, topicId);
+            new DotNetNuke.Modules.ActiveForums.Controllers.TagController().RecountItems(tagId);
+        }
+
+        internal void DeleteForTopic(int topicId)
+        {
+            var tagsToRecount = this.GetForTopic(topicId).Select(x => x.TagId).Distinct();
             this.Delete("WHERE TopicId = @0", topicId);
+            tagsToRecount.ForEach(tagId =>
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.TagController().RecountItems(tagId);
+            });
         }
     }
 }

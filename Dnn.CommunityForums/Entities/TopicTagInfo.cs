@@ -22,12 +22,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    /* activeforums_Topics_Tags has a composite primary key, which is not supported by DAL2/PetaPoco */
     [TableName("activeforums_Topics_Tags")]
+    [PrimaryKey("TopicTagId", AutoIncrement = true)]
     public class TopicTagInfo
     {
         private DotNetNuke.Modules.ActiveForums.Entities.TagInfo tagInfo;
-        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
+
+        public int TopicTagId { get; set; }
 
         public int TopicId { get; set; }
 

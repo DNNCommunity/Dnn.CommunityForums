@@ -20,16 +20,36 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System.Linq;
+
+    using DotNetNuke.Collections;
+
     internal partial class TagController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TagInfo>
     {
-        public void DeleteForTagId(int tagId)
+        internal void RecountItems(int tagId)
         {
-            this.Delete("WHERE TagId = @0", tagId);
+            var tag = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(tagId);
+            tag.Items = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTag(tagId).Count();
+            new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Update(tag);
         }
 
-        public void DeleteForTopicId(int topicId)
+        internal void Delete(string sqlCondition, params object[] args)
         {
-            this.Delete("WHERE TopicId = @0", topicId);
+            this.Find(sqlCondition, args).ForEach(item =>
+            {
+                this.Delete(item);
+            });
         }
+
+        internal void DeleteById(int id)
+        {
+            this.Delete(this.GetById(id));
+        }
+
+        internal void Delete(DotNetNuke.Modules.ActiveForums.Entities.TagInfo item)
+        {
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTag(item.TagId);
+            base.Delete(item);
+        } 
     }
 }

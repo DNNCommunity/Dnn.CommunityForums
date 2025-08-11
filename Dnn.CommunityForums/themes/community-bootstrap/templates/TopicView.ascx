@@ -131,10 +131,6 @@
 								<div class="dcf-post-attachements">
 									[ATTACHMENTS]
 								</div>
-								<div class="dcf-post-meta">
-									[AF:CONTROL:TAGS][TRESX:Tags]: [AF:LABEL:TAGS]
-								[/AF:CONTROL:TAGS]
-								</div>
 								
 							</section>
 							<footer class="dcf-post-footer">

@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     this.SocialGroupId = -1;
-                    if (this.Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.GroupId]))
+                    if (this.Request.QueryString[Literals.GroupId] != null && Utilities.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                     {
                         this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
                     }

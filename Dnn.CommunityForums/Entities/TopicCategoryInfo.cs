@@ -20,6 +20,36 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    /* category is currently stored as a type of tag with 'isCategory' = true */
-    public class TopicCategoryInfo : DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo { }
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
+    [TableName("activeforums_Topics_Categories")]
+    [PrimaryKey("TopicCategoryId", AutoIncrement = true)]
+    public class TopicCategoryInfo
+    {
+        private DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo categoryInfo;
+
+        public int TopicCategoryId { get; set; }
+
+        public int TopicId { get; set; }
+
+        public int CategoryId { get; set; }
+
+        [IgnoreColumn]
+        internal DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo Category
+        {
+            get
+            {
+                if (this.categoryInfo == null)
+                {
+                    this.categoryInfo = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().GetById(this.CategoryId);
+                    if (this.categoryInfo == null)
+                    {
+                        this.categoryInfo = new DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo();
+                    }
+                }
+
+                return this.categoryInfo;
+            }
+        }
+    }
 }

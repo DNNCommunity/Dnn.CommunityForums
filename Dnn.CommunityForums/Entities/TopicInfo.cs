@@ -358,10 +358,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 if (this.categories == null)
                 {
                     this.categories = new Controllers.CategoryController()
-                        .Find("WHERE ForumId = @0 OR ForumGroupid = @1", this.ForumId, this.Forum.ForumGroupId)
-                        .Select(c => new Category(c.TagId, c.TagName, false)).ToList();
+                        .Find("WHERE ForumId IN (-1,@0) OR ForumGroupid IN (-1,@1)", this.ForumId, this.Forum.ForumGroupId)
+                        .Select(c => new Category(c.CategoryId, c.CategoryName, false)).ToList();
                     var topicCategoryIds = new Controllers.TopicCategoryController().GetForTopic(this.TopicId)
-                        .Select(t => t.TagId);
+                        .Select(t => t.CategoryId);
                     topicCategoryIds.ForEach(tc =>
                         this.categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
                     this.UpdateCache();

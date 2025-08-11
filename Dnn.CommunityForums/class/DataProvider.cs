@@ -232,24 +232,37 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract int Subscriptions_IsSubscribed(int portalId, int moduleId, int forumId, int topicId, int mode, int userId);
         #endregion
 
+        #region Categories
+        public abstract IDataReader Categories_List(int portalId, int moduleId, int pageIndex, int pageSize, string sort, string sortColumn, int forumId, int forumGroupId);
+        #endregion
+
         #region Tags
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract void Tags_Delete(int portalId, int moduleId, int tagId);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract void Tags_DeleteByTopicId(int portalId, int moduleId, int topicId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract IDataReader Tags_Get(int portalId, int moduleId, int tagId);
 
-        public abstract IDataReader Tags_List(int portalId, int moduleId, bool isCategory, int pageIndex, int pageSize, string sort, string sortColumn, int forumId, int forumGroupId);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        public abstract IDataReader Tags_List(int PortalId, int ModuleId, bool IsCategory, int PageIndex, int PageSize, string Sort, string SortColumn, int ForumId, int ForumGroupId);
 
-        public abstract int Tags_Save(int portalId, int moduleId, int tagId, string tagName, int clicks, int items, int priority, int topicId, bool isCategory, int forumId, int forumGroupId);
+        public abstract IDataReader Tags_List(int PortalId, int ModuleId, int PageIndex, int PageSize, string Sort, string SortColumn);
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        public abstract int Tags_Save(int portalId, int moduleId, int tagId, string tagName, int clicks, int items, int priority, int topicId, int forumId, int forumGroupId);
+
+        public abstract int Tags_Save(int portalId, int moduleId, int tagId, string tagName, int items, int topicId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract IDataReader Tags_Search(int portalId, int moduleId, string search);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract void Tags_AddTopicToCategory(int portalId, int moduleId, int tagId, int topicId);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract void Tags_DeleteTopicToCategory(int portalId, int moduleId, int tagId, int topicId);
         #endregion
 

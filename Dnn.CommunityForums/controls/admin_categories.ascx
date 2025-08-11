@@ -65,25 +65,36 @@ function amaf_deleteCategory(row){
 			<td></td><td class="amcpbold">[RESX:CategoryName]:</td><td><asp:TextBox ID="txtCategory" runat="server" CssClass="amcptxtbx" Font-Size="14px" Height="18" Width="125"/></td><td>
 			<asp:DropDownList ID="drpForums" runat="server" CssClass="amcptxtbx" />
 			</td>
-			<td><am:ImageButton ID="imgSave" runat="server" PostBack="false" ClientSideScript="amaf_saveCategory();" CssClass="amsmallbtn" Text="[RESX:Save]" Height="18" Width="50" ImageLocation="LEFT" imageurl="~/DesktopModules/ActiveForums/images/save16.png" /></td>
+			<td><am:imagebutton id="imgSave" runat="server" postback="false" clientsidescript="amaf_saveCategory();" cssclass="amsmallbtn" text="[RESX:Save]" height="18" width="50" imagelocation="LEFT" imageurl="~/DesktopModules/ActiveForums/images/save16.png" /></td>
 			<td></td>
 		</tr>
 	</table>
 	<div style="height:400px;overflow:auto;">
 	<am:ActiveGrid ID="agCategories" runat="server" DefaultColumn="CategoryName" PageSize="20000" ImagePath="<%=ImagePath%>">
-		<HeaderTemplate><table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width:100%;">
-					<tr><td ColumnName="TagId" style="display:none;width:0px;"></td>
-					<td ColumnName="ForumId" style="display:none;width:0px;"></td><td ColumnName="ForumGroupId" style="display:none;width:0px;"></td><td class="amcptblhdr" ColumnName="TagName" style="height:16px;"><div class="amheadingcelltext">[RESX:CategoryName]</div></td><td class="amcptblhdr" ColumnName="Clicks" style="width:50px;height:16px;"><div class="amheadingcelltext">[RESX:TagClicks]</div></td><td class="amcptblhdr" ColumnName="Items" style="height:16px;white-space:nowrap;width:50px;"><div class="amheadingcelltext">[RESX:TagItems]</div></td><td class="amcptblhdr" style="height:16px;white-space:nowrap;width:30px;"><div class="amheadingcelltext">&nbsp;</div></td></tr>
+		<HeaderTemplate>
+			<table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width:100%;">
+					<tr>
+						<td ColumnName="TagId" style="display:none;width:0px;"></td>
+						<td ColumnName="ForumId" style="display:none;width:0px;"></td>
+						<td ColumnName="ForumGroupId" style="display:none;width:0px;"></td>
+						<td class="amcptblhdr" ColumnName="TagName" style="height:16px;">
+							<div class="amheadingcelltext">[RESX:CategoryName]</div></td>
+						<td class="amcptblhdr" ColumnName="Items" style="height:16px;white-space:nowrap;width:50px;">
+							<div class="amheadingcelltext">[RESX:Items]</div>
+						</td>
+						<td class="amcptblhdr" style="height:16px;white-space:nowrap;width:30px;">
+							<div class="amheadingcelltext">&nbsp;</div>
+						</td>
+					</tr>
 		</HeaderTemplate>
 		<ItemTemplate>
 			<tr style="display:none;" class="amdatarow">
-				<td style="display:none;">##DataItem('Tagid')##</td>
+				<td style="display:none;">##DataItem('CategoryId')##</td>
 				<td style="display:none;">##DataItem('ForumId')##</td>
 				<td style="display:none;">##DataItem('ForumGroupId')##</td>
-				<td class="amcpnormal" resize="true" onclick="amaf_openDialog(this.parentNode);">##DataItem('TagName')##</td>
-				<td class="amcpnormal" onclick="amaf_openDialog(this.parentNode);" style="text-align:center;">##DataItem('Clicks')##</td>
+				<td class="amcpnormal" resize="true" onclick="amaf_openDialog(this.parentNode);">##DataItem('CategoryName')##</td>
 				<td class="amcpnormal" onclick="openDialog(this.parentNode);" style="white-space:nowrap;text-align:center;">##DataItem('Items')##</td>
-				<td class="amcpnormal" onclick="amaf_deleteCategory(this.parentNode);">##DataItem('Tagid')##</td>
+				<td class="amcpnormal" onclick="amaf_deleteCategory(this.parentNode);">##DataItem('CategoryId')##</td>
 		   </tr>
 	   </ItemTemplate>
 		<FooterTemplate></table></FooterTemplate>

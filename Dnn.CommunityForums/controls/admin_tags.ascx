@@ -48,14 +48,25 @@ function amaf_deleteTag(row){
 	</table>
 	<div style="height:400px;overflow:auto;">
 	<am:ActiveGrid ID="agTags" runat="server" DefaultColumn="TagName" PageSize="20000" ImagePath="~/DesktopModules/ActiveForums/images/">
-		<HeaderTemplate><table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width:100%;">
-					<tr><td ColumnName="TagId" style="display:none;width:0px;"></td><td class="amcptblhdr" ColumnName="TagName" style="height:16px;"><div class="amheadingcelltext">[RESX:TagName]</div></td><td class="amcptblhdr" ColumnName="Clicks" style="width:50px;height:16px;"><div class="amheadingcelltext">[RESX:TagClicks]</div></td><td class="amcptblhdr" ColumnName="Items" style="height:16px;white-space:nowrap;width:50px;"><div class="amheadingcelltext">[RESX:TagItems]</div></td><td class="amcptblhdr" style="height:16px;white-space:nowrap;width:30px;"><div class="amheadingcelltext">&nbsp;</div></td></tr>
+		<HeaderTemplate>
+			<table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width:100%;">
+				<tr>
+					<td ColumnName="TagId" style="display:none;width:0px;"></td>
+					<td class="amcptblhdr" ColumnName="TagName" style="height:16px;">
+						<div class="amheadingcelltext">[RESX:TagName]</div>
+					</td>
+					<td class="amcptblhdr" ColumnName="Items" style="height:16px;white-space:nowrap;width:50px;">
+						<div class="amheadingcelltext">[RESX:TagItems]</div>
+					</td>
+					<td class="amcptblhdr" style="height:16px;white-space:nowrap;width:30px;">
+						<div class="amheadingcelltext">&nbsp;</div>
+					</td>
+				</tr>
 		</HeaderTemplate>
 		<ItemTemplate>
 			<tr style="display:none;" class="amdatarow">
 				<td style="display:none;">##DataItem('Tagid')##</td>
 				<td class="amcpnormal" resize="true" onclick="amaf_openDialog(this.parentNode);">##DataItem('TagName')##</td>
-				<td class="amcpnormal" onclick="amaf_openDialog(this.parentNode);" style="text-align:center;">##DataItem('Clicks')##</td>
 				<td class="amcpnormal" onclick="openDialog(this.parentNode);" style="white-space:nowrap;text-align:center;">##DataItem('Items')##</td>
 				<td class="amcpnormal" onclick="amaf_deleteTag(this.parentNode);">##DataItem('Tagid')##</td>
 		   </tr>

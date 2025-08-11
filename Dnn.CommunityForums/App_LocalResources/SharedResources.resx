@@ -700,7 +700,7 @@
     <value>Select a post icon to help classify your topic.</value>
   </data>
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>A tag is a keyword or term associated with the content you are submitting.</value>
+    <value>A tag is a keyword or term associated with the content you are submitting. When entering multiple tags, separate them with a comma.</value>
   </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Tags</value>
@@ -1845,9 +1845,6 @@ From,
   </data>
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Thank you,</value>
-  </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Posted:</value>
   </data>
   <data name="By.Text" xml:space="preserve">
     <value>By</value>
