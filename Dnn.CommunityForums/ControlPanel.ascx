@@ -167,7 +167,7 @@
 			<am:imagebutton id="btnRanks" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('ranks');" ImageLocation="TOP" text="[RESX:Ranks]" ImageUrl="~/DesktopModules/ActiveForums/images/ranks32.png" />
 			<am:imagebutton id="btnTags" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('tags');" ImageLocation="TOP" text="[RESX:Tags]" ImageUrl="~/DesktopModules/ActiveForums/images/tags32.png" />
 			<am:imagebutton id="btnCategories" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('categories');" ImageLocation="TOP" text="[RESX:Categories]" ImageUrl="~/DesktopModules/ActiveForums/images/categories32.png" />
-            <am:imagebutton id="btnBadges" runat="server" height="50" width="70" postback="False" clientsidescript="LoadView('badges');" imagelocation="TOP" text="[RESX:Badges]" imageurl="~/DesktopModules/ActiveForums/images/info32.png" />
+            <am:imagebutton id="btnBadges" runat="server" height="50" width="70" postback="False" clientsidescript="LoadView('badges');" imagelocation="TOP" text="[RESX:Badges]" imageurl="~/DesktopModules/ActiveForums/images/badges32.png" />
 			<am:imagebutton id="btnReturn" runat="server" Height="50" Width="70" PostBack="False" ImageLocation="TOP" text="[RESX:Exit]" ImageUrl="~/DesktopModules/ActiveForums/images/return32.png" />
 		</div>
 	</div>
