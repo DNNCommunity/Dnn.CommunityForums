@@ -20,6 +20,7 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
     using System.Linq;
 
     using DotNetNuke.Data;
@@ -58,6 +59,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             // this accommodates duplicates which may exist since currently no uniqueness applied in database
             return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking tt WHERE tt.UserId = @0", userId).FirstOrDefault();
+        }
+
+        internal int GetTopicsReadCountByUser(int moduleId, int userId, DateTime minDateTime)
+        {
+            // this accommodates duplicates which may exist since currently no uniqueness applied in database
+            return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking tt WHERE tt.UserId = @0 AND DateAdded IS NOT NULL AND DateAdded >= @1", userId, minDateTime).FirstOrDefault();
         }
     }
 }

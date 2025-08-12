@@ -20,6 +20,7 @@
 
 using System.Linq;
 using System.Text;
+
 using DotNetNuke.Collections;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
@@ -29,10 +30,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Linq;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Tokens;
+    using DotNetNuke.UI.UserControls;
 
     [TableName("activeforums_UserProfiles")]
     [PrimaryKey("ProfileId", AutoIncrement = true)]
@@ -95,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int TopicCount { get; set; }
 
-        public int ReplyCount { get; set; }
+        public int ReplyCount { get; set; } 
 
         public int ViewCount { get; set; }
 
@@ -505,6 +508,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Count("WHERE UserId = @0 AND Checked = 1", this.UserId);
         }
 
+        internal int GetLikeCountForUserSince(DateTime minDateTime)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Count("WHERE UserId = @0 AND Checked = 1 AND DateCreated >= @1", this.UserId, minDateTime);
+        }
+
         internal int GetTopicReadCount(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountForUserForum(this.ModuleId, this.UserId, fi.ForumID);
@@ -513,6 +521,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         internal int GetTopicReadCount()
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountByUser(this.ModuleId, this.UserId);
+        }
+
+        internal int GetTopicReadCountSince(DateTime minDateTimeRead)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountByUser(this.ModuleId, this.UserId, minDateTimeRead);
         }
 
         internal int GetLastTopicReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
@@ -542,7 +555,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.userBadges = value;
         }
 
-        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetUserBadges() => this.userBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ModuleId).GetForUser(this.UserId);
+        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetUserBadges() => this.userBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ModuleId).GetForUser(this.PortalId, this.UserId);
 
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
@@ -551,6 +564,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 return DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
             }
+        }
+
+        public int GetTopicCountSince(DateTime minDateTime)
+        {
+            string sSql = "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Content c INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics t ON t.ContentId = c.ContentId WHERE c.ModuleId = @0 AND c.AuthorId = @1 AND c.IsDeleted = 0 AND c.DateCreated >= @2";
+            return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, sSql, this.ModuleId, this.UserId, minDateTime).FirstOrDefault();
+        }
+
+        public int GetReplyCountSince(DateTime minDateTime)
+        {
+            string sSql = "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Content c INNER JOIN {databaseOwner}{objectQualifier}activeforums_Replies r ON r.ContentId = c.ContentId WHERE c.ModuleId = @0 AND c.AuthorId = @1 AND c.IsDeleted = 0 AND c.DateCreated >= @2";
+            return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, sSql, this.ModuleId, this.UserId, minDateTime).FirstOrDefault();
         }
 
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
@@ -718,7 +743,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                         var badgeString = string.Empty;
-                        var userBadgesToDisplay = this.Badges.OrderBy(b => b.Badge.SortOrder).Take(length);
+                        var userBadgesToDisplay = this.Badges.GroupBy(b => b.BadgeId).Select(g => g.OrderByDescending(b => b.DateAssigned).First()).ToList().OrderBy(b => b.Badge.SortOrder).Take(length);
                         var badgeTemplate = new StringBuilder(DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ModuleId, Enums.TemplateType.UserBadge, SettingsBase.GetModuleSettings(this.ModuleId).ForumFeatureSettings.TemplateFileNameSuffix));
                         foreach (var userBadge in userBadgesToDisplay)
                         {

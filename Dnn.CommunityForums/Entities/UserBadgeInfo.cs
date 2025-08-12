@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo GetBadge() => this.badgeInfo = new Controllers.BadgeController().GetById(this.BadgeId, this.ModuleId);
-        
+
         [IgnoreColumn]
         public string BadgeName { get => this.badgeName ?? (this.badgeName = this.Badge.Name); set => this.badgeName = value; }
 
@@ -115,6 +115,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn]
         public bool Assigned { get; set; }
+
+        public int GetAwardCount()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController().BadgeCount(this.PortalId, this.UserId, this.BadgeId);
+        }
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
@@ -172,14 +177,24 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "id":
                     case "badgeid":
                         return PropertyAccess.FormatString(this.BadgeId.ToString(), format);
+                    case "awardcount":
+                        return PropertyAccess.FormatString(this.GetAwardCount() > 1 ? this.GetAwardCount().ToString() : string.Empty, format);
                     case "name":
                         return PropertyAccess.FormatString(this.Badge.Name, format);
                     case "description":
                         return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Badge.Description.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Badge.Description), "...") : Utilities.StripHTMLTag(this.Badge.Description)), format);
+                    case "imagemarkup":
+                        return PropertyAccess.FormatString(this.Badge.ImageMarkup, format);
                     case "imageurl":
                         return PropertyAccess.FormatString(length > 0 ? this.Badge.GetBadgeImageUrl(this.PortalId, length) : this.Badge.GetBadgeImageUrl(this.PortalId), format);
                     case "dateassigned":
                         return Utilities.GetUserFormattedDateTime((DateTime?)this.DateAssigned, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
+                    case "intervaldays":
+                        return PropertyAccess.FormatString(this.Badge.IntervalDays.ToString(), format);
+                    case "threshold":
+                        return PropertyAccess.FormatString(this.Badge.Threshold.ToString(), format);
+                    case "metricname":
+                        return PropertyAccess.FormatString(this.Badge.BadgeMetricEnumName, format);
                 }
             }
             catch (Exception ex)

@@ -112,56 +112,70 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
                     return false;
                 }
 
-                if (!forumUser.Badges.Any(b => b.BadgeId == badge.BadgeId))
+                if (badge.OneTimeAward && forumUser.Badges.Any(b => b.BadgeId.Equals(badge.BadgeId)))
                 {
-                    var awardBadge = false;
-                    switch (badge.BadgeMetric)
-                    {
-                        case BadgeMetric.BadgeMetricNewUser:
-                            if (DateTime.UtcNow.Subtract(forumUser.DateCreated.Value).TotalDays < 30)
-                            {
-                                awardBadge = true;
-                            }
-
-                            break;
-                        case BadgeMetric.BadgeMetricLikesReceived:
-                            if (forumUser.GetLikeCountForUser() >= badge.Threshold)
-                            {
-                                awardBadge = true;
-                            }
-
-                            break;
-                        case BadgeMetric.BadgeMetricTopicsCreated:
-                            if (forumUser.TopicCount >= badge.Threshold)
-                            {
-                                awardBadge = true;
-                            }
-
-                            break;
-                        case BadgeMetric.BadgeMetricRepliesCreated:
-                            if (forumUser.ReplyCount >= badge.Threshold)
-                            {
-                                awardBadge = true;
-                            }
-
-                            break;
-                        case BadgeMetric.BadgeMetricTopicsRead:
-                            if (forumUser.GetTopicReadCount() >= badge.Threshold)
-                            {
-                                awardBadge = true;
-                            }
-
-                            break;
-                    }
-
-                    if (awardBadge)
-                    {
-                        DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.AssignUserBadge(portalId, moduleId, forumUser.UserId, badge.BadgeId, string.Empty);
-                        return true;
-                    }
-
+                    // One-time award badge has already been awarded to this user
                     return false;
                 }
+
+                var lastAward = forumUser.Badges.Where(b => b.BadgeId.Equals(badge.BadgeId)).OrderByDescending(b => b.DateAssigned).FirstOrDefault();
+                if (lastAward != null && lastAward.DateAssigned.AddDays(badge.IntervalDays) > DateTime.UtcNow)
+                {
+                    // Badge has already been awarded within the interval period
+                    return false;
+                }
+
+                var awardBadge = false;
+                switch (badge.BadgeMetric)
+                {
+                    case BadgeMetric.BadgeMetricNewUser:
+                        if (DateTime.UtcNow.Subtract(forumUser.DateCreated.Value).TotalDays < (badge.IntervalDays > 0 ? badge.IntervalDays : 30))
+                        {
+                            awardBadge = true;
+                        }
+
+                        break;
+                    case BadgeMetric.BadgeMetricLikesReceived:
+                        if ((badge.IntervalDays > 0 && forumUser.GetLikeCountForUserSince(DateTime.UtcNow.AddDays(-1 * badge.IntervalDays)) >= badge.Threshold) ||
+                            (forumUser.GetLikeCountForUser() >= badge.Threshold))
+                        {
+                            awardBadge = true;
+                        }
+
+                        break;
+                    case BadgeMetric.BadgeMetricTopicsCreated:
+                        if ((badge.IntervalDays > 0 && forumUser.GetTopicCountSince(DateTime.UtcNow.AddDays(-1 * badge.IntervalDays)) >= badge.Threshold) ||
+                            (forumUser.TopicCount >= badge.Threshold))
+                        {
+                            awardBadge = true;
+                        }
+
+                        break;
+                    case BadgeMetric.BadgeMetricRepliesCreated:
+                        if ((badge.IntervalDays > 0 && forumUser.GetReplyCountSince(DateTime.UtcNow.AddDays(-1 * badge.IntervalDays)) >= badge.Threshold) ||
+                            (forumUser.ReplyCount >= badge.Threshold))
+                        {
+                            awardBadge = true;
+                        }
+
+                        break;
+                    case BadgeMetric.BadgeMetricTopicsRead:
+                        if ((badge.IntervalDays > 0 && forumUser.GetTopicReadCountSince(DateTime.UtcNow.AddDays(-1 * badge.IntervalDays)) >= badge.Threshold) ||
+                            (forumUser.GetTopicReadCount() >= badge.Threshold))
+                        {
+                            awardBadge = true;
+                        }
+
+                        break;
+                }
+
+                if (awardBadge)
+                {
+                    DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.AssignUserBadge(portalId, moduleId, forumUser.UserId, badge.BadgeId, string.Empty);
+                    return true;
+                }
+
+                return false;
             }
             catch (Exception ex)
             {

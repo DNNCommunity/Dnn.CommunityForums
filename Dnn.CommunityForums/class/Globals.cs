@@ -512,7 +512,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string UserBadgeInfo = "AF-{0}-userbadge-{1}";
         public const string UserBadges = "AF-{0}-userbadges-{1}";
         public const string BadgeUsers = "AF-{0}-badgeusers-{1}";
-        public const string BadgeUserCount = "AF-{0}-badgeusercount-{1}";
+        public const string BadgeUserCount = "AF-{0}-badgeusercount-{1}-{2}";
 
         public const string ContentInfo = "AF-{0}-ci-{1}";
         public const string TopicInfo = "AF-{0}-ti-{1}";

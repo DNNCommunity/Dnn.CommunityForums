@@ -1528,4 +1528,16 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
     <value>Sujets lus</value>
   </data>
+  <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
+    <value>Mettre à jour les utilisateurs</value>
+  </data>
+  <data name="[RESX:BadgeImageMarkup].Text" xml:space="preserve">
+    <value>Balisage HTML pour badge (par exemple, font-awesome)</value>
+  </data>
+  <data name="[RESX:BadgeOneTimeAward].Text" xml:space="preserve">
+    <value>L’utilisateur ne peut gagner un badge qu’une seule fois</value>
+  </data>
+  <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
+    <value># de jours entre l’obtention de ce badge</value>
+  </data>
 </root>

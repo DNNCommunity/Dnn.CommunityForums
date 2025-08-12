@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 if (dto.BadgeId > 0 && dto.UserId > 0)
                 {
                     var userBadgeController = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalSettings.PortalId, this.ForumModuleId);
-                    var userBadge = userBadgeController.GetForUserAndBadge(userId: dto.UserId, badgeId: dto.BadgeId);
+                    var userBadge = userBadgeController.GetForUserAndBadge(this.PortalSettings.PortalId, userId: dto.UserId, badgeId: dto.BadgeId);
                     if (userBadge == null && dto.Assigned.Equals(true))
                     {
                         new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(

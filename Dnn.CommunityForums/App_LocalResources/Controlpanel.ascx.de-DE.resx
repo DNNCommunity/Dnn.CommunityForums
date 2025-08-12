@@ -1630,4 +1630,16 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
     <value>Gelesene Themen</value>
   </data>
+  <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
+    <value>Aktualisieren von Benutzern</value>
+  </data>
+  <data name="[RESX:BadgeImageMarkup].Text" xml:space="preserve">
+    <value>HTML-Markup für Badge (z. B. font-awesome)</value>
+  </data>
+  <data name="[RESX:BadgeOneTimeAward].Text" xml:space="preserve">
+    <value>Der Benutzer kann das Abzeichen nur einmal verdienen</value>
+  </data>
+  <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
+    <value># der Tage zwischen dem Erhalt dieses Abzeichens</value>
+  </data>
 </root>

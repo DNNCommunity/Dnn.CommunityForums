@@ -57,6 +57,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets the badge image markup (optional).
+        /// </summary>
+        public string ImageMarkup { get; set; }
+
+        /// <summary>
         /// Gets or sets the file Id for the badge.
         /// </summary>
         public int FileId { get; set; }
@@ -67,6 +72,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int SortOrder { get; set; }
 
         /// <summary>
+        /// Gets or sets One Time Award.
+        /// </summary>
+        public bool OneTimeAward { get; set; }
+
+        /// <summary>
         /// Gets or sets the BadgeMetric.
         /// </summary>
         public DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric BadgeMetric { get; set; }
@@ -75,6 +85,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// Gets or sets the Threshold.
         /// </summary>
         public int Threshold { get; set; }
+
+        /// <summary>
+        /// Gets or sets the interval days.
+        /// </summary>
+        public int IntervalDays { get; set; }
 
         /// <summary>
         /// Gets or sets the SendAwardNotification.

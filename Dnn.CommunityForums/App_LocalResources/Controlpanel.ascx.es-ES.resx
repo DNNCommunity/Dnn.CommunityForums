@@ -1525,4 +1525,16 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
     <value>Temas leídos</value>
   </data>
+  <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
+    <value>Actualizar usuarios</value>
+  </data>
+  <data name="[RESX:BadgeImageMarkup].Text" xml:space="preserve">
+    <value>Marcado HTML para insignia (por ejemplo, font-awesome)</value>
+  </data>
+  <data name="[RESX:BadgeOneTimeAward].Text" xml:space="preserve">
+    <value>El usuario solo puede ganar insignia una vez</value>
+  </data>
+  <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
+    <value># de días entre la obtención de esta insignia</value>
+  </data>
 </root>

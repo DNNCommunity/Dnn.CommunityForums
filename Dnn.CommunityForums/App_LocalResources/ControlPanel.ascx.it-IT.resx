@@ -1525,4 +1525,16 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
     <value>Argomenti Leggi</value>
   </data>
+  <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
+    <value>Aggiorna utenti</value>
+  </data>
+  <data name="[RESX:BadgeImageMarkup].Text" xml:space="preserve">
+    <value>Markup HTML per badge (ad esempio, font-awesome)</value>
+  </data>
+  <data name="[RESX:BadgeOneTimeAward].Text" xml:space="preserve">
+    <value>L'utente può guadagnare il badge una sola volta</value>
+  </data>
+  <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
+    <value># di giorni tra l'ottenimento di questo distintivo</value>
+  </data>
 </root>

@@ -1675,4 +1675,16 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
     <value>Onderwerpen Lezen</value>
   </data>
+  <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
+    <value>Gebruikers bijwerken</value>
+  </data>
+  <data name="[RESX:BadgeImageMarkup].Text" xml:space="preserve">
+    <value>HTML-opmaak voor badge (bijv. lettertype-geweldig)</value>
+  </data>
+  <data name="[RESX:BadgeOneTimeAward].Text" xml:space="preserve">
+    <value>De gebruiker kan slechts één keer een badge verdienen</value>
+  </data>
+  <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
+    <value># dagen tussen het verdienen van deze badge</value>
+  </data>
 </root>

@@ -26,6 +26,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class admin_badges : ActiveAdminBase
     {
+        public string ImagePath => this.Page.ResolveUrl(string.Concat(this.MainSettings.ThemeLocation, "/images"));
+
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid agBadges;
         protected global::System.Web.UI.WebControls.DropDownList drpBadgeMetrics;
         protected global::System.Web.UI.WebControls.DropDownList drpBadgeImages;

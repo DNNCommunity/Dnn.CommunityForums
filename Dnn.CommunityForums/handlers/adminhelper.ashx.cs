@@ -326,7 +326,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             sOut += ",";
             sOut += Utilities.JSON.Pair("FileId", badge.FileId.ToString());
             sOut += ",";
+            sOut += Utilities.JSON.Pair("ImageMarkup", badge.ImageMarkup);
+            sOut += ",";
             sOut += Utilities.JSON.Pair("ImageUrl", badge.GetBadgeImageUrl(portalId: this.PortalId, size: 16));
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("OneTimeAward", badge.OneTimeAward.ToString());
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("IntervalDays", badge.IntervalDays.ToString());
             sOut += ",";
             sOut += Utilities.JSON.Pair("SendAwardNotification", badge.SendAwardNotification.ToString());
             sOut += ",";
@@ -370,15 +376,30 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 badge.BadgeMetric = string.IsNullOrEmpty(this.Params["BadgeMetric"].ToString()) || this.Params["BadgeMetric"].ToString() == "null" ? BadgeMetric.BadgeMetricNone : (Enums.BadgeMetric)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric), this.Params["BadgeMetric"].ToString());
             }
-
+            
             if (this.Params.ContainsKey("Threshold"))
             {
                 badge.Threshold = Utilities.SafeConvertInt(this.Params["Threshold"]);
             }
 
+            if (this.Params.ContainsKey("IntervalDays"))
+            {
+                badge.IntervalDays = Utilities.SafeConvertInt(this.Params["IntervalDays"]);
+            }
+
+            if (this.Params.ContainsKey("ImageMarkup"))
+            {
+                badge.ImageMarkup = this.Params["ImageMarkup"].ToString();
+            }
+
             if (this.Params.ContainsKey("FileId"))
             {
                 badge.FileId = Utilities.SafeConvertInt(this.Params["FileId"]);
+            }            
+
+            if (this.Params.ContainsKey("OneTimeAward"))
+            {
+                badge.OneTimeAward = Utilities.SafeConvertBool(this.Params["OneTimeAward"].ToString());
             }
 
             if (this.Params.ContainsKey("SendAwardNotification"))

@@ -23,7 +23,10 @@ function openDialog(row){
 		$('#txtSortOrder').val('');
         $('#<%=drpBadgeMetrics.ClientID%>').val('-1');
         $('#txtThreshold').val('');
+        $('#txtIntervalDays').val('');
+        $('#txtImageMarkup').val('');
         $('#<%=drpBadgeImages.ClientID%>').val('-1');
+        $('#chkOneTimeAward').prop("checked", true);
         $('#chkSendAwardNotification').prop("checked", true);
         $('#chkSuppresssAwardNotificationOnBackfill').prop("checked", true);
 		am.UI.LoadDiv('afBadgeEdit', badgeOptions);
@@ -37,7 +40,10 @@ function loadEdit(data) {
 	$('#txtSortOrder').val(data.SortOrder);
     $('#<%=drpBadgeMetrics.ClientID%>').val(data.BadgeMetric);
 	$('#txtThreshold').val(data.Threshold);
+	$('#txtIntervalDays').val(data.IntervalDays);
     $('#<%=drpBadgeImages.ClientID%>').val(data.FileId);
+	$('#txtImageMarkup').val(data.ImageMarkup);
+    $('#chkOneTimeAward').prop("checked", data.OneTimeAward);
     $('#chkSendAwardNotification').prop("checked", data.SendAwardNotification);
     $('#chkSuppresssAwardNotificationOnBackfill').prop("checked", data.SuppresssAwardNotificationOnBackfill);
 	am.UI.LoadDiv('afBadgeEdit', badgeOptions);
@@ -46,10 +52,13 @@ var badge = {};
 badge.BadgeId = -1;
 badge.Name = '';
 badge.Description = '';
+badge.ImageMarkup = '';
 badge.FileId = -1;
 badge.SortOrder = 0;
 badge.BadgeMetric = 0;
 badge.Threshold = 0;
+badge.IntervalDays = 30;
+badge.OneTimeAward = true;
 badge.SendAwardNotification = false;
 badge.SuppresssAwardNotificationOnBackfill = false;
 function saveBadge() {
@@ -65,18 +74,22 @@ function saveBadge() {
     }
     badge.SortOrder = $('#txtSortOrder').val();
 	badge.Threshold = $('#txtThreshold').val();
+	badge.IntervalDays = $('#txtIntervalDays').val();
 	if (isvalid) {
-		badge.Threshold = parseInt(badge.Threshold);
 		badge.SortOrder = parseInt(badge.SortOrder);
+		badge.Threshold = parseInt(badge.Threshold);
+		badge.IntervalDays = parseInt(badge.IntervalDays);
 	}
 	badge.BadgeMetric = $('#<%=drpBadgeMetrics.ClientID%>').val();
 	if (badge.BadgeMetric === -1) {
 		isvalid = false;
 	}
+    badge.ImageMarkup = $('#<%=txtImageMarkup.ClientID%>').val();
     badge.FileId = $('#<%=drpBadgeImages.ClientID%>').val();
-    if (badge.FileId === -1) {
+    if (badge.FileId === -1 && badge.ImageMarkup === '') {
         isvalid = false;
     }
+    badge.OneTimeAward = $('#chkOneTimeAward').prop("checked");
     badge.SendAwardNotification = $('#chkSendAwardNotification').prop("checked");
     badge.SuppresssAwardNotificationOnBackfill = $('#chkSuppresssAwardNotificationOnBackfill').prop("checked");
 	if (isvalid) {
@@ -101,7 +114,7 @@ function redirectBadgeUsers() {
     [RESX:Badges]
 </div>
 <div class="amcpcontrols">
-    <am:activegrid id="agBadges" runat="server" imagepath="<%=ImagePath%>">
+    <am:activegrid id="agBadges" runat="server" pagesize="15" imagepath="~/DesktopModules/activeforums/images/">
         <headertemplate>
             <table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width: 100%;">
                 <tr>
@@ -158,6 +171,12 @@ function redirectBadgeUsers() {
         </div>
         <div class="dnnFormItem">
             <label>
+                [RESX:BadgeOneTimeAward]:</label>
+            <input type="checkbox" id="chkOneTimeAward" width="50" />
+
+        </div>
+        <div class="dnnFormItem">
+            <label>
                 [RESX:SortOrder]:</label>
             <input type="text" id="txtSortOrder" class="dnnFormRequired" onkeypress="return onlyNumbers(event);" width="50" />
 
@@ -171,6 +190,18 @@ function redirectBadgeUsers() {
             <label>
                 [RESX:BadgeThreshold]:</label>
             <input type="text" id="txtThreshold" class="dnnFormRequired" onkeypress="return onlyNumbers(event);" width="50" />
+
+        </div>
+        <div class="dnnFormItem">
+            <label>
+                [RESX:BadgeIntervalDays]:</label>
+            <input type="text" id="txtIntervalDays" class="dnnFormRequired" onkeypress="return onlyNumbers(event);" width="50" />
+
+        </div>
+        <div class="dnnFormItem">
+            <label>
+                [RESX:BadgeImageMarkup]:</label>
+            <asp:textbox type="text" runat="server" textmode="MultiLine" id="txtImageMarkup" />
 
         </div>
         <div class="dnnFormItem">

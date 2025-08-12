@@ -2014,11 +2014,14 @@ CREATE TABLE {databaseOwner}[{objectQualifier}activeforums_Badges] (
     BadgeId INT IDENTITY(1,1) NOT NULL,
     ModuleId INT NOT NULL,
     Name NVARCHAR(100) NOT NULL,
-    Description NVARCHAR(255) NULL,
+    Description NVARCHAR(MAX) NULL,
+    ImageMarkup NVARCHAR(MAX) NULL,
     FileId INT NOT NULL,
     BadgeMetric INT NOT NULL,
     SortOrder INT NOT NULL,
     Threshold INT NOT NULL,
+    IntervalDays INT NOT NULL,
+    OneTimeAward BIT NOT NULL CONSTRAINT DF_{objectQualifier}activeforums_Badges_OneTimeAward DEFAULT(1),
     SendAwardNotification BIT NOT NULL CONSTRAINT DF_{objectQualifier}activeforums_Badges_SendAwardNotification DEFAULT(1),
     SuppresssAwardNotificationOnBackfill BIT NOT NULL CONSTRAINT DF_{objectQualifier}activeforums_Badges_SuppresssAwardNotificationOnBackfill DEFAULT(1),
     CONSTRAINT PK_{objectQualifier}activeforums_Badges PRIMARY KEY CLUSTERED (BadgeId ASC)
@@ -2296,4 +2299,37 @@ IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE Type
 /* issue 1484 end -- create scheduler entry for badge award queue */
 
 
+/* --------------------- */
+
+
+/* issue 1535 - start -- add DateCreated to activeforums_Likes and set default for existing records to created date from content; set default for future records to GETUTCDAT() */
+
+DECLARE @addDateCreated bit = 0
+SET @addDateCreated = (SELECT COUNT(*) FROM SYS.COLUMNS WHERE Name = N'DateCreated' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_Likes]'))
+
+/* issue 1535 - start -- add DateCreated to activeforums_Likes */
+IF @addDateCreated = 0
+BEGIN
+    ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Likes] ADD DateCreated datetime NULL
+END
+GO
+DECLARE @addDateCreated bit = 0
+SET @addDateCreated = (SELECT COUNT(*) FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}activeforums_Likes_DateCreated]') AND type = 'D')
+IF @addDateCreated = 0
+BEGIN
+    UPDATE l SET DateCreated = c.DateCreated 
+    FROM {databaseOwner}[{objectQualifier}activeforums_Likes] l
+    INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c ON c.ContentId = l.PostId
+END
+IF @addDateCreated = 0
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Likes] ADD CONSTRAINT [DF_{objectQualifier}activeforums_Likes_DateCreated] DEFAULT (GETUTCDATE()) FOR [DateCreated]
+END
+IF @addDateCreated = 0
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Likes] 
+    ALTER COLUMN [DateCreated] [datetime] NOT NULL 
+END
+GO
+/* issue 1535 - end -- add DateCreated to activeforums_Likes */
 /* --------------------- */

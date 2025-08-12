@@ -840,10 +840,13 @@ namespace DotNetNuke.Modules.ActiveForums
                                                     Description = xNodeList[i].Attributes["description"].Value,
                                                     BadgeMetric = (DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric)Utilities.SafeConvertInt(xNodeList[i].Attributes["badgemetric"].Value),
                                                     ModuleId = module.ModuleID,
+                                                    OneTimeAward = Utilities.SafeConvertBool(xNodeList[i].Attributes["onetimeaward"].Value, true),
                                                     SortOrder = Utilities.SafeConvertInt(xNodeList[i].Attributes["sortorder"].Value),
                                                     Threshold = Utilities.SafeConvertInt(xNodeList[i].Attributes["threshold"].Value),
+                                                    IntervalDays = Utilities.SafeConvertInt(xNodeList[i].Attributes["intervaldays"].Value),
                                                     SendAwardNotification = true,
                                                     SuppresssAwardNotificationOnBackfill = true,
+                                                    ImageMarkup = xNodeList[i].Attributes["imagemarkup"].Value,
                                                     FileId = fileId,
                                                 };
                                                 new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Insert(badge);

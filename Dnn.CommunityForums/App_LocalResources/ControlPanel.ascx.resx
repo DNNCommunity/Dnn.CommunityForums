@@ -1633,4 +1633,13 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
     <value>Update Users</value>
   </data>
+  <data name="[RESX:BadgeImageMarkup].Text" xml:space="preserve">
+    <value>HTML markup for badge (e.g., font-awesome)</value>
+  </data>
+  <data name="[RESX:BadgeOneTimeAward].Text" xml:space="preserve">
+    <value>User can only earn badge one time</value>
+  </data>
+  <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
+    <value># of days between earning this badge</value>
+  </data>
 </root>
