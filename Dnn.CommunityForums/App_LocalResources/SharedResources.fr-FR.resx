@@ -1867,13 +1867,22 @@ De,
   <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
     <value>[DCF :FORUMSLINK|Veuillez &lt;a href="{0}"&gt;vous y rendre&lt;/a&gt; pour continuer à participer et gagner plus de récompenses.]</value>
   </data>
-  <data name="[RESX:awarded].Text" xml:space="preserve">
-    <value>attribué</value>
-  </data>
   <data name="[RESX:BadgeSendAwardNotification].Text" xml:space="preserve">
     <value>Envoyer une notification à l’utilisateur lorsqu’il est attribué</value>
   </data>
   <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
     <value>N’envoyez pas de notification à un utilisateur plus âgé lors du rachat de récompenses</value>
+  </data>
+  <data name="[RESX:lastawarded].Text" xml:space="preserve">
+    <value>Dernier prix</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Insigne</value>
+  </data>
+  <data name="[RESX:BadgeUsersAssigned].Text" xml:space="preserve">
+    <value>Utilisateurs ayant reçu le badge : {0}</value>
+  </data>
+  <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
+    <value>Badges attribués à l’utilisateur : {0}</value>
   </data>
 </root>

@@ -1871,13 +1871,22 @@ Von
   <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
     <value>[DCF:FORENLINK|Bitte &lt;a href="{0}"&gt;besuchen Sie&lt;/a&gt; , um weiter teilzunehmen und weitere Belohnungen zu erhalten.]</value>
   </data>
-  <data name="[RESX:awarded].Text" xml:space="preserve">
-    <value>zuerkannt</value>
-  </data>
   <data name="[RESX:BadgeSendAwardNotification].Text" xml:space="preserve">
     <value>Senden Sie dem Benutzer eine Benachrichtigung, wenn er vergeben wird</value>
   </data>
   <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
     <value>Senden Sie einem älteren Benutzer keine Benachrichtigung, wenn Sie Prämien auffüllen</value>
+  </data>
+  <data name="[RESX:lastawarded].Text" xml:space="preserve">
+    <value>Zuletzt verliehen</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Abzeichen</value>
+  </data>
+  <data name="[RESX:BadgeUsersAssigned].Text" xml:space="preserve">
+    <value>Benutzer, die mit dem Abzeichen ausgezeichnet wurden: {0}</value>
+  </data>
+  <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
+    <value>Abzeichen für Benutzer: {0}</value>
   </data>
 </root>

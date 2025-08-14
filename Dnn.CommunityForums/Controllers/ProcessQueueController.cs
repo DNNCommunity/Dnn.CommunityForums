@@ -31,6 +31,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         public bool Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, int badgeId, string requestUrl)
         {
+            return this.Add(processType: processType, portalId: portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: badgeId, dateCreated: DateTime.UtcNow, requestUrl: requestUrl);
+        }
+
+        public bool Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, int badgeId, DateTime dateCreated, string requestUrl)
+        {
             try
             {
                 this.Insert(new DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo
@@ -47,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     AuthorId = authorId,
                     UserId = userId,
                     BadgeId = badgeId,
-                    DateCreated = DateTime.UtcNow,
+                    DateCreated = dateCreated,
                     RequestUrl = requestUrl,
                 });
                 return true;

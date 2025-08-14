@@ -147,12 +147,13 @@ function amaf_forumSubscribe(mid, fid) {
         alert('error subscribing to forum');
     });
 };
-function amaf_badgeAssign(mid, bid, uid, assigned) {
+function amaf_badgeAssign(mid, bid, uid, userBadgeId, assign) {
     var sf = $.ServicesFramework(mid);
     var params = {
         badgeId: bid,
         userId: uid,
-        assigned: assigned
+        userBadgeId: userBadgeId,
+        assign: assign
     };
     $.ajax({
         type: "POST",
@@ -162,8 +163,6 @@ function amaf_badgeAssign(mid, bid, uid, assigned) {
         url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/UserBadge/Assign',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
-        //$('input[type=checkbox].amaf-badge-assigned')
-        //    .prop('checked', data);
     }).fail(function (xhr, status) {
         alert('error assigning badge');
     });

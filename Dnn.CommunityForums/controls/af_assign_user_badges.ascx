@@ -21,6 +21,7 @@
                     <asp:boundfield datafield="UserBadgeId" readonly="True" visible="false" />
                     <asp:boundfield datafield="BadgeId" readonly="True" visible="false" />
                     <asp:BoundField DataField="BadgeName" ReadOnly="True" />
+                    <asp:boundfield datafield="DateAssigned" readonly="True" />
                 </Columns>
                 <EmptyDataTemplate>
                     <div></div>

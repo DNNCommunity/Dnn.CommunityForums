@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
         }
 
-        public UserBadgeInfo(int userBadgeId, int badgeId, string badgeName, int userId, string userName, int portalId, int moduleId, bool assigned)
+        public UserBadgeInfo(int userBadgeId, int badgeId, string badgeName, int userId, string userName, int portalId, int moduleId, DateTime? dateAssigned, bool assigned)
         {
             this.UserBadgeId = userBadgeId;
             this.BadgeId = badgeId;
@@ -58,6 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.BadgeName = badgeName;
             this.UserName = userName;
             this.Assigned = assigned;
+            this.DateAssigned = dateAssigned.HasValue ? dateAssigned.Value : DotNetNuke.Common.Utilities.Null.NullDate;
         }
 
         /// <summary>

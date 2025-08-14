@@ -21,11 +21,14 @@
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
     using System;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Reflection;
     using System.Web.Http;
     
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
+    using DotNetNuke.UI.UserControls;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -39,7 +42,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
             public int UserId { get; set; }
 
-            public bool Assigned { get; set; }
+            public int UserBadgeId { get; set; }
+
+            public bool Assign { get; set; }
         }
 
         /// <summary>
@@ -57,43 +62,30 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (dto.BadgeId > 0 && dto.UserId > 0)
                 {
+                    DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo userBadge = null;
                     var userBadgeController = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalSettings.PortalId, this.ForumModuleId);
-                    var userBadge = userBadgeController.GetForUserAndBadge(this.PortalSettings.PortalId, userId: dto.UserId, badgeId: dto.BadgeId);
-                    if (userBadge == null && dto.Assigned.Equals(true))
+                    if (dto.UserBadgeId > 0)
                     {
-                        new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(
-                            processType: ProcessType.BadgeAssigned,
-                            portalId: this.PortalSettings.PortalId,
-                            tabId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            moduleId: this.ForumModuleId,
-                            forumGroupId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            forumId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            topicId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            replyId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            contentId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            authorId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            userId: dto.UserId,
-                            badgeId: dto.BadgeId,
-                            requestUrl: this.Request.RequestUri.ToString());
+                        userBadge = userBadgeController.GetById(dto.UserBadgeId);
+                    }
+                    else
+                    {
+                        userBadge = userBadgeController.GetLatestForUserAndBadge(portalId: this.PortalSettings.PortalId, userId: dto.UserId, badgeId: dto.BadgeId);
+                    }
+
+                    if (userBadge == null && dto.Assign.Equals(true))
+                    {
+                        DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.AssignUserBadge(portalId: this.PortalSettings.PortalId, moduleId: this.ForumModuleId, userId: dto.UserId, badgeId: dto.BadgeId, requestUrl: this.Request.RequestUri.ToString());
                         return this.Request.CreateResponse(HttpStatusCode.OK, true);
                     }
 
-                    if (userBadge != null && dto.Assigned.Equals(false))
+                    if (dto.Assign.Equals(false))
                     {
-                        new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(
-                            processType: ProcessType.BadgeUnassigned,
-                            portalId: this.PortalSettings.PortalId,
-                            tabId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            moduleId: this.ForumModuleId,
-                            forumGroupId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            forumId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            topicId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            replyId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            contentId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            authorId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                            userId: dto.UserId,
-                            badgeId: dto.BadgeId,
-                            requestUrl: this.Request.RequestUri.ToString());
+                        if (userBadge != null)
+                        {
+                            userBadgeController.UnassignUserBadge(portalId: userBadge.PortalId, userId: userBadge.UserId, badgeId: userBadge.BadgeId, dateAssigned: userBadge.DateAssigned);
+                        }
+
                         return this.Request.CreateResponse(HttpStatusCode.OK, false);
                     }
 

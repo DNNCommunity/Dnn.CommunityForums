@@ -1701,4 +1701,5 @@ div.dcf-mod-edit-wrap {
 .dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-image-tooltip::before { content: attr(data-tooltip); position: absolute; white-space: wrap; top: 3.8em; left: 0; color: var(--tooltip-color); background: var(--tooltip-bg-color); border-radius: 0.3em; padding: 0.2em 0.5em; }
 .dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-image-tooltip::before { opacity: 0; visibility: hidden; transition: opacity .3s ease-in-out; width: 20em; display: inline-block; }
 .dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-image-tooltip:hover::before { opacity: 1; visibility: visible; }
-.dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-count { background-color: red; border-radius: 2px; color: white; padding: 1px 3px; font-size: 10px; position: absolute; top: 0; right: 0; }
+.dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-count { background-color: red; border-radius: 5px; color: white; padding: 1px 3px; font-size: 11px; position: relative; top: 10px; left: 20px; z-index: 9; }
+.dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-count:empty { padding:0; }

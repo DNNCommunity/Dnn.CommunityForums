@@ -2118,7 +2118,8 @@ CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_UserBadges_Alt1
     (
     PortalId ASC,
     UserId ASC,
-    BadgeId ASC
+    BadgeId ASC,
+    DateAssigned ASC
     ) 
 GO
 
@@ -2140,12 +2141,13 @@ GO
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_UserBadges') AND name = N'IX_{objectQualifier}activeforums_UserBadges_Alt2')
 DROP INDEX [IX_{objectQualifier}activeforums_UserBadges_Alt2] ON {databaseOwner}{objectQualifier}activeforums_UserBadges 
 GO
-CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_UserBadges_Alt2
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_UserBadges_Alt2
     ON {databaseOwner}[{objectQualifier}activeforums_UserBadges] 
     (
     BadgeId ASC,
     PortalId ASC,
-    UserId ASC
+    UserId ASC,
+    DateAssigned ASC
     ) 
 GO
 

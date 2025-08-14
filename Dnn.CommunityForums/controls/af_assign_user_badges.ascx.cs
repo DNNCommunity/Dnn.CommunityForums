@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, (int)this.userid);
             this.lblBadgesAssigned.Text = string.Format(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserBadgesAssigned]"), forumUser.DisplayName);
             this.dgrdUserBadges.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Badge]");
+            this.dgrdUserBadges.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Date]", isAdmin: true) + " (UTC)";
 
             this.dgrdUserBadges.PageIndexChanging += this.UserBadgesGridRowPageIndexChanging;
             this.dgrdUserBadges.RowDataBound += this.OnUserBadgesGridRowDataBound;
@@ -100,7 +101,6 @@ namespace DotNetNuke.Modules.ActiveForums
             this.dgrdUserBadges.DataBind();
         }
 
-
         private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetBadges()
         {
             var availableBadges = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Get(this.ForumModuleId).Select(badge =>
@@ -111,14 +111,14 @@ namespace DotNetNuke.Modules.ActiveForums
             var assignedBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ForumModuleId).GetForUser(this.PortalId, (int)this.userid);
             var assignedBadgeIds = assignedBadges.Select(userBadge =>
             {
-                return new { userBadge.UserBadgeId, userBadge.BadgeId };
+                return new { userBadge.UserBadgeId, userBadge.BadgeId, userBadge.DateAssigned, };
             });
             var mergedBadges = from availBadges in availableBadges
                                       join asgnedBadges in assignedBadgeIds
                                       on availBadges.BadgeId equals asgnedBadges.BadgeId into merged
                                       from mrgdBadges in merged.DefaultIfEmpty()
                                       //where mrgdBadges == null || mrgdBadges.UserBadgeId != 0
-                                      select new DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo(userBadgeId: mrgdBadges?.UserBadgeId ?? 0, badgeId: availBadges.badge.BadgeId, badgeName: availBadges.badge.Name, userId: (int)this.userid, userName: this.forumUser.DisplayName, portalId: this.PortalId, moduleId: this.ForumModuleId, assigned: mrgdBadges != null);
+                                      select new DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo(userBadgeId: mrgdBadges?.UserBadgeId ?? 0, badgeId: availBadges.badge.BadgeId, badgeName: availBadges.badge.Name, userId: (int)this.userid, userName: this.forumUser.DisplayName, portalId: this.PortalId, moduleId: this.ForumModuleId, dateAssigned: mrgdBadges?.DateAssigned, assigned: mrgdBadges != null);
             return mergedBadges;
         }
 
@@ -127,6 +127,10 @@ namespace DotNetNuke.Modules.ActiveForums
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo userBadgeInfo = e.Row.DataItem as DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo;
+                if (userBadgeInfo.DateAssigned.Equals(DotNetNuke.Common.Utilities.Null.NullDate))
+                {
+                    e.Row.Cells[4].Text = string.Empty;
+                }
                 foreach (TableCell cell in e.Row.Cells)
                 {
                     foreach (Control cellControl in cell.Controls)
@@ -136,7 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             var chkBox = cellControl as CheckBox;
                             if (!(chkBox == null))
                             {
-                                chkBox.Attributes.Add("onclick", $"amaf_badgeAssign({this.ForumModuleId},{userBadgeInfo.BadgeId},{userBadgeInfo.UserId},$('#{cellControl.ClientID}').is(':checked'));");
+                                chkBox.Attributes.Add("onclick", $"amaf_badgeAssign({this.ForumModuleId},{userBadgeInfo.BadgeId},{userBadgeInfo.UserId},{userBadgeInfo.UserBadgeId},$('#{cellControl.ClientID}').is(':checked'));");
                                 chkBox.Enabled = true;
                             }
                         }

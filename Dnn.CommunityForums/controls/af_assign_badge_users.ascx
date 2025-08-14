@@ -19,7 +19,8 @@
                     <asp:CheckBoxField DataField="Assigned" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" />
                     <asp:boundfield datafield="UserBadgeId" readonly="True" visible="false" />
                     <asp:BoundField DataField="UserId" ReadOnly="True" Visible="false" />
-                    <asp:BoundField DataField="UserName" ReadOnly="True" />
+                    <asp:boundfield datafield="UserName" readonly="True" />
+                    <asp:boundfield datafield="DateAssigned" readonly="True" />
                 </Columns>
                 <EmptyDataTemplate>
                     <div></div>
