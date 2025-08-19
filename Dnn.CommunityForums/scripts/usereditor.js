@@ -69,7 +69,7 @@
 
         };
         function redirectUpdateBadges() {
-            window.location.replace(this.baseURI + "/afv/grid/afgt/userbadges?uid=" + userId);
+            window.location.replace(opts.baseUrl + "/afv/grid/afgt/userbadges?uid=" + userId);
         }
 
         $(opts.openTriggerSelector).button({ icons: { primary:'ui-icon-person' } });

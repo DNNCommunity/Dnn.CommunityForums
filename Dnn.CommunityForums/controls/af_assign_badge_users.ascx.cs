@@ -27,6 +27,9 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Data;
+
+    using static log4net.Appender.RollingFileAppender;
 
     public partial class af_assign_badge_users : ForumBase
     {
@@ -86,12 +89,17 @@ namespace DotNetNuke.Modules.ActiveForums
             this.dgrdBadgeUsers.DataBind();
         }
 
+        private class UserList
+        {
+            public int UserId { get; set; }
+
+            public string DisplayName { get; set; }
+        }
+
         private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetBadges()
         {
-            var availableUsers = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).Get().Where(u => u.PortalId == this.PortalId).Select(forumUser =>
-            {
-                return new { forumUser.UserId, forumUser };
-            });
+            string sSql = "SELECT up.UserId, u.DisplayName FROM {databaseOwner}{objectQualifier}activeforums_UserProfiles up INNER JOIN {databaseOwner}{objectQualifier}Users u ON u.UserID = up.UserId WHERE up.PortalId = @0";
+            var availableUsers = DataContext.Instance().ExecuteQuery<UserList>(System.Data.CommandType.Text, sSql, this.PortalId).ToList();
 
             var assignedBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ForumModuleId).GetForBadge((int)this.badgeId);
             var assignedBadgeIds = assignedBadges.Select(userBadge =>
@@ -101,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var mergedBadges = from availUsers in availableUsers
                 join asgnedBadges in assignedBadgeIds on availUsers.UserId equals asgnedBadges.UserId into merged
                 from mrgdBadges in merged.DefaultIfEmpty()
-                select new DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo(userBadgeId: mrgdBadges?.UserBadgeId ?? 0, userId: availUsers.UserId, userName: availUsers.forumUser.DisplayName, badgeId: (int)this.badgeId, badgeName: this.badge.Name, portalId: this.PortalId, moduleId: this.ForumModuleId, dateAssigned: mrgdBadges?.DateAssigned, assigned: mrgdBadges != null);
+                select new DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo(userBadgeId: mrgdBadges?.UserBadgeId ?? 0, userId: availUsers.UserId, userName: availUsers.DisplayName, badgeId: (int)this.badgeId, badgeName: this.badge.Name, portalId: this.PortalId, moduleId: this.ForumModuleId, dateAssigned: mrgdBadges?.DateAssigned, assigned: mrgdBadges != null);
             return mergedBadges;
         }
 

@@ -374,9 +374,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
             if (this.Params.ContainsKey("BadgeMetric"))
             {
-                badge.BadgeMetric = string.IsNullOrEmpty(this.Params["BadgeMetric"].ToString()) || this.Params["BadgeMetric"].ToString() == "null" ? BadgeMetric.BadgeMetricNone : (Enums.BadgeMetric)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric), this.Params["BadgeMetric"].ToString());
+                badge.BadgeMetric = string.IsNullOrEmpty(this.Params["BadgeMetric"].ToString()) || this.Params["BadgeMetric"].ToString() == "null" ? BadgeMetric.BadgeMetricManual : (Enums.BadgeMetric)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric), this.Params["BadgeMetric"].ToString());
             }
-            
+
             if (this.Params.ContainsKey("Threshold"))
             {
                 badge.Threshold = Utilities.SafeConvertInt(this.Params["Threshold"]);
@@ -395,7 +395,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             if (this.Params.ContainsKey("FileId"))
             {
                 badge.FileId = Utilities.SafeConvertInt(this.Params["FileId"]);
-            }            
+            }
 
             if (this.Params.ContainsKey("OneTimeAward"))
             {
@@ -412,13 +412,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 badge.SuppresssAwardNotificationOnBackfill = Utilities.SafeConvertBool(this.Params["SuppresssAwardNotificationOnBackfill"].ToString());
             }
 
-            if (badge.BadgeId == badgeId)
+            if (badge.BadgeId == -1)
             {
-                badgeController.Update(badge);
+                badgeController.Insert(badge);
             }
             else
             {
-                badgeController.Insert(badge);
+                badgeController.Update(badge);
             }
         }
 

@@ -185,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "description":
                         return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Badge.Description.Length > length ? string.Concat(Utilities.StripHTMLTag(this.Badge.Description), "...") : Utilities.StripHTMLTag(this.Badge.Description)), format);
                     case "imagemarkup":
-                        return PropertyAccess.FormatString(this.Badge.ImageMarkup, format);
+                        return PropertyAccess.FormatString(System.Web.HttpUtility.HtmlDecode(this.Badge.ImageMarkup), format);
                     case "imageurl":
                         return PropertyAccess.FormatString(length > 0 ? this.Badge.GetBadgeImageUrl(this.PortalId, length) : this.Badge.GetBadgeImageUrl(this.PortalId), format);
                     case "dateassigned":

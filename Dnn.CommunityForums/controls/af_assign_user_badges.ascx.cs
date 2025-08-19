@@ -117,7 +117,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                       join asgnedBadges in assignedBadgeIds
                                       on availBadges.BadgeId equals asgnedBadges.BadgeId into merged
                                       from mrgdBadges in merged.DefaultIfEmpty()
-                                      //where mrgdBadges == null || mrgdBadges.UserBadgeId != 0
                                       select new DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo(userBadgeId: mrgdBadges?.UserBadgeId ?? 0, badgeId: availBadges.badge.BadgeId, badgeName: availBadges.badge.Name, userId: (int)this.userid, userName: this.forumUser.DisplayName, portalId: this.PortalId, moduleId: this.ForumModuleId, dateAssigned: mrgdBadges?.DateAssigned, assigned: mrgdBadges != null);
             return mergedBadges;
         }

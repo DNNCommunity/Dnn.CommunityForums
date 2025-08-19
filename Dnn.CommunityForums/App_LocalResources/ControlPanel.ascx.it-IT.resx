@@ -1507,9 +1507,6 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:BadgeImage].Text" xml:space="preserve">
     <value>Immagine</value>
   </data>
-  <data name="[RESX:BadgeMetricNone].Text" xml:space="preserve">
-    <value>Nessuno</value>
-  </data>
   <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
     <value>Nuovo utente</value>
   </data>
@@ -1536,5 +1533,8 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   </data>
   <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
     <value># di giorni tra l'ottenimento di questo distintivo</value>
+  </data>
+  <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
+    <value>Premio Manuale</value>
   </data>
 </root>

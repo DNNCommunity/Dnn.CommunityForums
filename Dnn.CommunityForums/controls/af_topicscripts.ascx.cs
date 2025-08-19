@@ -23,17 +23,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System;
 
     using DotNetNuke.Framework;
+    using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public partial class af_topicscripts : SettingsBase
     {
+        public string GetBaseUrl()
+        {
+            return Utilities.NavigateURL(this.TabId, string.Empty);
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/usereditor.js");
+            ClientResourceManager.RegisterScript(this.Page, DotNetNuke.Modules.ActiveForums.Globals.ModulePath + "scripts/usereditor.js");
         }
     }
 }

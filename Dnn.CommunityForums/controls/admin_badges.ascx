@@ -21,7 +21,7 @@ function openDialog(row){
         $('#txtBadgeName').val('');
         $('#<%=txtBadgeDescription.ClientID%>').val('');
 		$('#txtSortOrder').val('');
-        $('#<%=drpBadgeMetrics.ClientID%>').val('-1');
+        $('#<%=drpBadgeMetrics.ClientID%>').val('0');
         $('#txtThreshold').val('');
         $('#txtIntervalDays').val('');
         $('#txtImageMarkup').val('');
@@ -42,7 +42,7 @@ function loadEdit(data) {
 	$('#txtThreshold').val(data.Threshold);
 	$('#txtIntervalDays').val(data.IntervalDays);
     $('#<%=drpBadgeImages.ClientID%>').val(data.FileId);
-	$('#txtImageMarkup').val(data.ImageMarkup);
+	$('#<%=txtImageMarkup.ClientID%>').val(data.ImageMarkup.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, '&'));
     $('#chkOneTimeAward').prop("checked", data.OneTimeAward);
     $('#chkSendAwardNotification').prop("checked", data.SendAwardNotification);
     $('#chkSuppresssAwardNotificationOnBackfill').prop("checked", data.SuppresssAwardNotificationOnBackfill);
@@ -77,14 +77,23 @@ function saveBadge() {
 	badge.IntervalDays = $('#txtIntervalDays').val();
 	if (isvalid) {
 		badge.SortOrder = parseInt(badge.SortOrder);
+        if (isNaN(badge.SortOrder)) {
+            badge.SortOrder = 0;
+        }
 		badge.Threshold = parseInt(badge.Threshold);
+        if (isNaN(badge.Threshold)) {
+            badge.Threshold = 0;
+        }
 		badge.IntervalDays = parseInt(badge.IntervalDays);
+        if (isNaN(badge.IntervalDays)) {
+            badge.IntervalDays = 0;
+        }
 	}
 	badge.BadgeMetric = $('#<%=drpBadgeMetrics.ClientID%>').val();
 	if (badge.BadgeMetric === -1) {
 		isvalid = false;
 	}
-    badge.ImageMarkup = $('#<%=txtImageMarkup.ClientID%>').val();
+    badge.ImageMarkup = $('#<%=txtImageMarkup.ClientID%>').val().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
     badge.FileId = $('#<%=drpBadgeImages.ClientID%>').val();
     if (badge.FileId === -1 && badge.ImageMarkup === '') {
         isvalid = false;

@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
             var badgeCount = 0;
             try
             {
-                var badges = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Get(moduleId).Where(b => b.BadgeMetric != BadgeMetric.BadgeMetricNone);
+                var badges = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Get(moduleId).Where(b => b.BadgeMetric != BadgeMetric.BadgeMetricManual);
                 GetBatch(portalId, moduleId).ForEach(forumUser =>
                 {
                     foreach (var badge in badges)

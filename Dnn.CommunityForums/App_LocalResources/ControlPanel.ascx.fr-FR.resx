@@ -1510,9 +1510,6 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:BadgeImage].Text" xml:space="preserve">
     <value>Image</value>
   </data>
-  <data name="[RESX:BadgeMetricNone].Text" xml:space="preserve">
-    <value>Aucun</value>
-  </data>
   <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
     <value>Nouvel utilisateur</value>
   </data>
@@ -1539,5 +1536,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   </data>
   <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
     <value># de jours entre l’obtention de ce badge</value>
+  </data>
+  <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
+    <value>Prix du manuel</value>
   </data>
 </root>

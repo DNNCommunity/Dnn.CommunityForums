@@ -1507,9 +1507,6 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:BadgeImage].Text" xml:space="preserve">
     <value>Imagen</value>
   </data>
-  <data name="[RESX:BadgeMetricNone].Text" xml:space="preserve">
-    <value>Ninguno</value>
-  </data>
   <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
     <value>Nuevo usuario</value>
   </data>
@@ -1536,5 +1533,8 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   </data>
   <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
     <value># de días entre la obtención de esta insignia</value>
+  </data>
+  <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
+    <value>Premio Manual</value>
   </data>
 </root>

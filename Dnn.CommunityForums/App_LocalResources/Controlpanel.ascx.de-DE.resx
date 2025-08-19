@@ -1612,9 +1612,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:BadgeImage].Text" xml:space="preserve">
     <value>Bild</value>
   </data>
-  <data name="[RESX:BadgeMetricNone].Text" xml:space="preserve">
-    <value>Nichts</value>
-  </data>
   <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
     <value>Neuer Benutzer</value>
   </data>
@@ -1641,5 +1638,8 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   </data>
   <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
     <value># der Tage zwischen dem Erhalt dieses Abzeichens</value>
+  </data>
+  <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
+    <value>Manuelle Auszeichnung</value>
   </data>
 </root>

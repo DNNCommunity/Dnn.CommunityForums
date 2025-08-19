@@ -205,7 +205,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.UserBadgeInfo, this.moduleId, userBadge.UserBadgeId));
                     DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.UserBadges, this.moduleId, userId));
                     DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.BadgeUsers, this.moduleId, badgeId));
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.BadgeUserCount, this.moduleId, badgeId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.BadgeUserCount, this.moduleId, badgeId, userId));
                 }
             }
             catch (Exception e)
@@ -260,7 +260,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.UserBadgeInfo, this.moduleId, userBadge.UserBadgeId));
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.UserBadges, this.moduleId, userId));
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.BadgeUsers, this.moduleId, badgeId));
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.BadgeUserCount, this.moduleId, badgeId));
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.BadgeUserCount, this.moduleId, badgeId, userId));
                 return true;
             }
             catch (Exception e)

@@ -1657,9 +1657,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:BadgeImage].Text" xml:space="preserve">
     <value>Beeld</value>
   </data>
-  <data name="[RESX:BadgeMetricNone].Text" xml:space="preserve">
-    <value>Geen</value>
-  </data>
   <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
     <value>Nieuwe gebruiker</value>
   </data>
@@ -1686,5 +1683,8 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
     <value># dagen tussen het verdienen van deze badge</value>
+  </data>
+  <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
+    <value>Handleiding Award</value>
   </data>
 </root>

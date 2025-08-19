@@ -1609,8 +1609,8 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:BadgeImage].Text" xml:space="preserve">
     <value>Image</value>
   </data>
-  <data name="[RESX:BadgeMetricNone].Text" xml:space="preserve">
-    <value>None</value>
+  <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
+    <value>Manual Award</value>
   </data>
   <data name="[RESX:Description].Text" xml:space="preserve">
     <value>Description</value>
