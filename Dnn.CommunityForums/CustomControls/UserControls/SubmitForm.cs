@@ -1321,8 +1321,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var avatartag = Utilities.ResolveUrl(this.PortalSettings, "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />");
                 ClientResourceManager.RegisterScript(this.Page, string.Concat(Globals.ModulePath, "resources/ckeditor-4.22.1/ckeditor.js"), FileOrder.Js.DefaultPriority + 2, "DnnPageHeaderProvider");
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                sb.Append("window.onload = function () { CKEDITOR.replace( '" + this.clientId + "', {versionCheck: false} );};");
-
+                sb.Append("window.onload = function () { CKEDITOR.replace( '" + this.clientId + "', {versionCheck: false});};");
                 sb.Append("CKEDITOR.config.mentions = [");
                 sb.Append(" { feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 1, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatartag + "{name}</li>', outputTemplate: `<a href=\"" + usertag + "\">" + avatartag + "&nbsp;{name}</a>` }");
 
@@ -1357,10 +1356,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 sb.Append("CKEDITOR.config.language = '" + lang.Substring(0, 2) + "';");
 
-                //if (this.EditorType.Equals(EditorTypes.FORUMSEDITORLITE))
                 if (this.ForumUser.IsAnonymous || (!this.ForumUser.IsAdmin && !this.ForumUser.IsSuperUser && !this.ForumInfo.GetIsMod(this.ForumUser)))
                 {
-                    sb.Append("CKEDITOR.config.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] },{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }];");
+                    sb.Append("CKEDITOR.config.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] },{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }, { name: 'links', items: [ 'Link' ] } ];");
 
                     sb.Append("CKEDITOR.config.toolbarCanCollapse = false;");
                     sb.Append("CKEDITOR.config.toolbarStartupExpanded = true;");

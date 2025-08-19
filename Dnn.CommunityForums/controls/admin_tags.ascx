@@ -56,7 +56,7 @@ function amaf_deleteTag(row){
 						<div class="amheadingcelltext">[RESX:TagName]</div>
 					</td>
 					<td class="amcptblhdr" ColumnName="Items" style="height:16px;white-space:nowrap;width:50px;">
-						<div class="amheadingcelltext">[RESX:TagItems]</div>
+						<div class="amheadingcelltext">[RESX:Items]</div>
 					</td>
 					<td class="amcptblhdr" style="height:16px;white-space:nowrap;width:30px;">
 						<div class="amheadingcelltext">&nbsp;</div>
