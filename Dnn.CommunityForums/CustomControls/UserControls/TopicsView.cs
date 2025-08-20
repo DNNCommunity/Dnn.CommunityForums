@@ -657,7 +657,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     intPages = Convert.ToInt32(System.Math.Ceiling(this.topicRowCount / (double)this.pageSize));
                     pager1.PageCount = intPages;
                     pager1.PageMode = PagerNav.Mode.Links;
-                    pager1.BaseURL = URL.ForumLink(this.TabId, this.ForumInfo);
+                    if (this.MainSettings.URLRewriteEnabled)
+                    {
+                        pager1.BaseURL = URL.ForumLink(this.TabId, this.ForumInfo);
+                    }
+
                     pager1.CurrentPage = this.PageId;
                     pager1.TabID = Convert.ToInt32(this.Request.Params["TabId"]);
                     pager1.ForumID = this.ForumId;
@@ -679,7 +683,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (pager2 != null)
                 {
                     pager2.PageMode = Modules.ActiveForums.Controls.PagerNav.Mode.Links;
-                    pager2.BaseURL = URL.ForumLink(this.TabId, this.ForumInfo);
+                    if (this.MainSettings.URLRewriteEnabled)
+                    {
+                        pager2.BaseURL = URL.ForumLink(this.TabId, this.ForumInfo);
+                    }
                     pager2.UseShortUrls = this.MainSettings.UseShortUrls;
                     pager2.PageCount = intPages;
                     pager2.CurrentPage = this.PageId;
