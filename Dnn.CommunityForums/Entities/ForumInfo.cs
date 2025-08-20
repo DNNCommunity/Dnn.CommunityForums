@@ -161,6 +161,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public bool LastPostIsTopic => this.LastReplyId == 0;
 
+        [IgnoreColumn]
         public string LastPostSubject
         {
             get
@@ -223,15 +224,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             // return this.lastPostInfo = this.LastReplyId == 0 ? (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.LastTopicId) : new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetById(this.LastReplyId);
         }
-
-        [ColumnName("LastPostAuthorName")]
-        public string LastPostUserName { get; set; }
-
-        [ColumnName("LastPostAuthorId")]
-        public int LastPostUserID { get; set; }
-
-        [ColumnName("LastPostDate")]
-        public DateTime? LastPostDateTime { get; set; }
+        
+        [IgnoreColumn]
+        public string LastPostUserName => this.LastPost != null && this.LastPost.Content != null ? this.LastPost.Content.AuthorName : string.Empty;
+        
+        [IgnoreColumn]
+        public int LastPostUserID => this.LastPost != null && this.LastPost.Content != null ? this.LastPost.Content.AuthorId : DotNetNuke.Common.Utilities.Null.NullInteger;
+        
+        [IgnoreColumn]
+        public DateTime? LastPostDateTime => this.LastPost != null && this.LastPost.Content != null ? (DateTime)this.LastPost.Content.DateUpdated : DotNetNuke.Common.Utilities.Null.NullDate;
 
         public int PermissionsId { get; set; }
 

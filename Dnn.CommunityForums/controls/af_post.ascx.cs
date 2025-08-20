@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.IO;
     using System.Linq;
     using System.Runtime.Serialization.Json;
+    using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -724,6 +725,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
                 ti.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
                 ti.ForumId = this.ForumInfo.ForumID;
+                ti.PortalId = this.PortalId;
+                ti.ModuleId = this.ForumModuleId;
                 ti.Forum = this.ForumInfo;
             }
 
@@ -808,7 +811,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.SaveAttachments(ti.ContentId);
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TagRoleIds, this.ForumUser.UserRoleIds))
             {
-                new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopicId(this.TopicId);
+                new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopic(this.TopicId);
                 var tagForm = string.Empty;
                 if (this.Request.Form["txtTags"] != null)
                 {
@@ -816,12 +819,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 if (tagForm != string.Empty)
-                {
+                {   
                     var tags = tagForm.Split(',');
                     foreach (var tag in tags)
                     {
                         var sTag = Utilities.CleanString(this.PortalId, tag.Trim(), false, EditorTypes.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);
-                        DataProvider.Instance().Tags_Save(this.PortalId, this.ForumModuleId, -1, sTag, 0, 1, 0, this.TopicId, false, -1, -1);
+                        DataProvider.Instance().Tags_Save(this.PortalId, this.ForumModuleId, -1, sTag, 0, this.TopicId);
                     }
                 }
             }
@@ -831,7 +834,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (this.Request.Form["amaf-catselect"] != null)
                 {
                     var cats = this.Request.Form["amaf-catselect"].Split(';');
-                    DataProvider.Instance().Tags_DeleteTopicToCategory(this.PortalId, this.ForumModuleId, -1, this.TopicId);
+                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().DeleteForTopic(this.TopicId);
                     foreach (var c in cats)
                     {
                         if (string.IsNullOrEmpty(c) || !Utilities.IsNumeric(c))
@@ -842,7 +845,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         var cid = Convert.ToInt32(c);
                         if (cid > 0)
                         {
-                            DataProvider.Instance().Tags_AddTopicToCategory(this.PortalId, this.ForumModuleId, cid, this.TopicId);
+                            new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().AddCategoryToTopic(cid, this.TopicId);
+
                         }
                     }
                 }

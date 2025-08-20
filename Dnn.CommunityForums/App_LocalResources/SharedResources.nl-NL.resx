@@ -699,9 +699,6 @@
   <data name="[RESX:PostIcons:Note].Text" xml:space="preserve">
     <value>Selecteer een icoon voor dit bericht om uw bericht te classificeren.</value>
   </data>
-  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>Een label is een sleutelwoord welke geassocieerd wordt met de inhoud van uw bericht.</value>
-  </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Labels</value>
   </data>
@@ -1885,10 +1882,28 @@ Van,
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Bedankt</value>
   </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Verzonden:</value>
-  </data>
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Om de meldingen van je forum te beheren, ga je naar:</value>
+  </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar vernieuwd voor {0} gebruiker</value>
+  </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Prullenbak</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Herstellen</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>Weet je zeker dat je dit item wilt restaureren?</value>
+  </data>
+  <data name="[RESX:EmptyRecycleBin].Text" xml:space="preserve">
+    <value>Prullenbak legen</value>
+  </data>
+  <data name="[RESX:RestoreAll].Text" xml:space="preserve">
+    <value>Alles herstellen</value>
+  </data>
+  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
+    <value>Een tag is een trefwoord of term die is gekoppeld aan de inhoud die u indient. Wanneer u meerdere tags invoert, scheidt u deze met een komma.</value>
   </data>
 </root>

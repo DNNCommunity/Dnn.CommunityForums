@@ -14,6 +14,7 @@ amaf.resx = {
     Pin: '[RESX:Pin]',
     UnPin: '[RESX:UnPin]',
     DeleteConfirm: '[RESX:Confirm:Delete]',
+    RestoreConfirm: '[RESX:Confirm:Restore]',
     PinConfirm: '[RESX:Confirm:Pin]',
     UnPinConfirm: '[RESX:Confirm:UnPin]',
     LockConfirm: '[RESX:Confirm:Lock]',

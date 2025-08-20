@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public class ReplyController
     {
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
-        public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, int delBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(-1).Reply_Delete(portalId, forumId, topicId, replyId, delBehavior);
+        public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, int delBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(-1).Reply_Delete(portalId, forumId, topicId, replyId, (DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior)delBehavior);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
         public int Reply_QuickCreate(int portalId, int moduleId, int forumId, int topicId, int replyToId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).Reply_QuickCreate(portalId, moduleId, forumId, topicId, replyToId, subject, body, userId, displayName, isApproved, iPAddress);

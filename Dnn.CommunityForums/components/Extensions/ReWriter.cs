@@ -491,6 +491,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         case 10:
                             v = GridTypes.Unresolved;
                             break;
+                        case 13:
+                            v = GridTypes.RecycleBin;
+                            break;
                     }
 
                     sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}=" + v + sPage + qs);

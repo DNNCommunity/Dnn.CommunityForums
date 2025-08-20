@@ -311,7 +311,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 log.AddProperty("Message", userBannedMsg);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
 
-                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete_For_User(moduleId: moduleId, userId: authorId, delBehavior: SettingsBase.GetModuleSettings(moduleId).DeleteBehavior);
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete_For_User(moduleId: moduleId, userId: authorId, delBehavior: (int)SettingsBase.GetModuleSettings(moduleId).DeleteBehavior);
 
                 if (bannedUser != null)
                 {

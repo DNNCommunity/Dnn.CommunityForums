@@ -24,7 +24,9 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Data;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using Microsoft.ApplicationBlocks.Data;
+    using static DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
     public class SqlDataProvider : DataProvider
     {
@@ -451,6 +453,15 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
+
+        #region Categories
+
+        public override IDataReader Categories_List(int PortalId, int ModuleId, int PageIndex, int PageSize, string Sort, string SortColumn, int ForumId, int ForumGroupId)
+        {
+            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Categories_List", PortalId, ModuleId, PageIndex, PageSize, Sort, SortColumn, ForumId, ForumGroupId);
+        }
+        #endregion
+
         #region Tags
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override void Tags_Delete(int PortalId, int ModuleId, int TagId)
@@ -458,6 +469,7 @@ namespace DotNetNuke.Modules.ActiveForums
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Tags_Delete", PortalId, ModuleId, TagId, -1);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override void Tags_DeleteByTopicId(int PortalId, int ModuleId, int TopicId)
         {
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Tags_Delete", PortalId, ModuleId, -1, TopicId);
@@ -469,14 +481,20 @@ namespace DotNetNuke.Modules.ActiveForums
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Tags_Get", PortalId, ModuleId, TagId);
         }
 
-        public override IDataReader Tags_List(int PortalId, int ModuleId, bool IsCategory, int PageIndex, int PageSize, string Sort, string SortColumn, int ForumId, int ForumGroupId)
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        public override IDataReader Tags_List(int PortalId, int ModuleId, bool IsCategory, int PageIndex, int PageSize, string Sort, string SortColumn, int ForumId, int ForumGroupId) => throw new NotImplementedException();
+
+        public override IDataReader Tags_List(int PortalId, int ModuleId, int PageIndex, int PageSize, string Sort, string SortColumn)
         {
-            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Tags_List", PortalId, ModuleId, IsCategory, PageIndex, PageSize, Sort, SortColumn, ForumId, ForumGroupId);
+            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Tags_List", PortalId, ModuleId, PageIndex, PageSize, Sort, SortColumn);
         }
 
-        public override int Tags_Save(int PortalId, int ModuleId, int TagId, string TagName, int Clicks, int Items, int Priority, int TopicId, bool IsCategory, int ForumId, int ForumGroupId)
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        public override int Tags_Save(int PortalId, int ModuleId, int TagId, string TagName, int Clicks, int Items, int Priority, int TopicId, int ForumId, int ForumGroupId) => throw new NotImplementedException();
+
+        public override int Tags_Save(int PortalId, int ModuleId, int TagId, string TagName, int Items, int TopicId)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Tags_Save", PortalId, ModuleId, TagId, TagName, Clicks, Items, Priority, TopicId, IsCategory, ForumId, ForumGroupId));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Tags_Save", PortalId, ModuleId, TagId, TagName, Items, TopicId));
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
@@ -485,15 +503,11 @@ namespace DotNetNuke.Modules.ActiveForums
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Tags_Search", PortalId, ModuleId, Search);
         }
 
-        public override void Tags_AddTopicToCategory(int PortalId, int ModuleId, int TagId, int TopicId)
-        {
-            SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Tags_AddTopicToCategory", PortalId, ModuleId, TagId, TopicId);
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        public override void Tags_AddTopicToCategory(int PortalId, int ModuleId, int TagId, int TopicId) => throw new NotImplementedException();
 
-        public override void Tags_DeleteTopicToCategory(int PortalId, int ModuleId, int TagId, int TopicId)
-        {
-            SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Tags_DeleteTopicToCategory", PortalId, ModuleId, TagId, TopicId);
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        public override void Tags_DeleteTopicToCategory(int PortalId, int ModuleId, int TagId, int TopicId) => throw new NotImplementedException();
 
         #endregion
         #region Templates
@@ -568,11 +582,18 @@ namespace DotNetNuke.Modules.ActiveForums
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Topics_Move", PortalId, ModuleId, ForumId, TopicId);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override int Topics_Save(int PortalId, int TopicId, int ViewCount, int ReplyCount, bool IsLocked, bool IsPinned, string TopicIcon, int StatusId, bool IsApproved, bool IsDeleted, bool IsAnnounce, bool IsArchived, DateTime AnnounceStart, DateTime AnnounceEnd, string Subject, string Body, string Summary, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress, int TopicType, int priority, string URL, string TopicData)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Topics_Save", PortalId, TopicId, ViewCount, ReplyCount, IsLocked, IsPinned, TopicIcon, StatusId, IsApproved, IsDeleted, IsAnnounce, IsArchived, this.GetNull(AnnounceStart), this.GetNull(AnnounceEnd), Subject, Body, Summary, DateCreated, DateUpdated, AuthorId, AuthorName, IPAddress, TopicType, priority, URL, TopicData));
+            throw new NotImplementedException();
         }
 
+        public override int Topics_Save(int PortalId, int ModuleId, int TopicId, int ViewCount, int ReplyCount, bool IsLocked, bool IsPinned, string TopicIcon, int StatusId, bool IsApproved, bool IsDeleted, bool IsAnnounce, bool IsArchived, DateTime AnnounceStart, DateTime AnnounceEnd, string Subject, string Body, string Summary, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress, int TopicType, int priority, string URL, string TopicData)
+        {
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Topics_Save", PortalId, ModuleId, TopicId, ViewCount, ReplyCount, IsLocked, IsPinned, TopicIcon, StatusId, IsApproved, IsDeleted, IsAnnounce, IsArchived, this.GetNull(AnnounceStart), this.GetNull(AnnounceEnd), Subject, Body, Summary, DateCreated, DateUpdated, AuthorId, AuthorName, IPAddress, TopicType, priority, URL, TopicData));
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override int Topics_SaveToForum(int ForumId, int TopicId, int LastReplyId)
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Topics_SaveToForum", ForumId, TopicId, this.GetNull(LastReplyId)));

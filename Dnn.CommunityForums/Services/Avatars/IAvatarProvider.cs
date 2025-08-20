@@ -18,26 +18,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums.Entities
+namespace DotNetNuke.Modules.ActiveForums.Services.Avatars
 {
-    using System.Web.Caching;
+    using System;
+    using System.Threading.Tasks;
 
-    using DotNetNuke.ComponentModel.DataAnnotations;
-
-    [TableName("activeforums_Tags")]
-    [PrimaryKey("TagId", AutoIncrement = true)]
-    [Scope("ModuleId")]
-    [Cacheable("activeforums_Tags", CacheItemPriority.Low)]
-    public class TagInfo
+    internal interface IAvatarProvider  
     {
-        public int TagId { get; set; }
-
-        public int PortalId { get; set; }
-
-        public int ModuleId { get; set; }
-
-        public string TagName { get; set; }
-
-        public int Items { get; set; }
+        /// <summary>
+        /// Gets the content type and avatar image for the specified email address.
+        /// </summary>
+        /// <param name="email">The user's email address.</param>
+        /// <returns>content type and avatar image bytes</returns>
+        Task<(string ContentType, byte[] ImageBytes, DateTime? LastModifiedDateTime)> GetAvatarImageAsync(string email);
     }
 }

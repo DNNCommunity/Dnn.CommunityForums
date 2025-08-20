@@ -258,9 +258,6 @@
   <data name="[RESX:AutoTrustLevel].Text" xml:space="preserve">
     <value>Auto Niveau Vertrouwen</value>
   </data>
-  <data name="[RESX:AvatarDefault].Text" xml:space="preserve">
-    <value>Standaard Avatar Ingeschakeld</value>
-  </data>
   <data name="[RESX:AvatarDimensions].Text" xml:space="preserve">
     <value>Avatar Dimensies</value>
   </data>
@@ -1066,10 +1063,7 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:System].Text" xml:space="preserve">
     <value>Systeem</value>
   </data>
-  <data name="[RESX:TagClicks].Text" xml:space="preserve">
-    <value>Kliks</value>
-  </data>
-  <data name="[RESX:TagItems].Text" xml:space="preserve">
+  <data name="[RESX:Items].Text" xml:space="preserve">
     <value>Items</value>
   </data>
   <data name="[RESX:TagName].Text" xml:space="preserve">
@@ -1125,9 +1119,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:Tips:AutoSubscribe].Text" xml:space="preserve">
     <value>Selecteer de rollen welke automatisch zijn geabonneerd en welke notificatie berichten ontvangen wanneer nieuwe berichten in dit forum worden geplaatst.</value>
-  </data>
-  <data name="[RESX:Tips:AvatarDefault].Text" xml:space="preserve">
-    <value>Schakel deze optie in om de standaard avatar vanuit de thema directory weer te geven indien een gebruiker geen avatar heeft gespecificeerd.</value>
   </data>
   <data name="[RESX:Tips:AvatarDimensions].Text" xml:space="preserve">
     <value> Kies de maximum hoogte en breedte voor de avatars</value>

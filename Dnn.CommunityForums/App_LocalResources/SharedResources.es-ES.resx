@@ -1123,9 +1123,6 @@ De
   <data name="[RESX:Summary].Text" xml:space="preserve">
     <value>Resumen</value>
   </data>
-  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>Una etiqueta es una palabra clave o término asociado con el contenido que está enviando.</value>
-  </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Etiquetas</value>
   </data>
@@ -1849,10 +1846,28 @@ De
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Gracias</value>
   </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Publicada:</value>
-  </data>
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Para administrar las notificaciones de sus foros, visite:</value>
+  </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar actualizado para el {0} de usuario</value>
+  </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Papelera de reciclaje</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Restaurar</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>¿Está seguro de que desea restaurar este artículo?</value>
+  </data>
+  <data name="[RESX:EmptyRecycleBin].Text" xml:space="preserve">
+    <value>Papelera de reciclaje vacía</value>
+  </data>
+  <data name="[RESX:RestoreAll].Text" xml:space="preserve">
+    <value>Restaurar todo</value>
+  </data>
+  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
+    <value>Una etiqueta es una palabra clave o un término asociado con el contenido que está enviando. Al introducir varias etiquetas, sepárelas con una coma.</value>
   </data>
 </root>

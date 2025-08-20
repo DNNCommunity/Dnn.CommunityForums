@@ -180,6 +180,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                         return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostLiked, 1, -1, -1), format);
                     case "toolbar-mostreplies-onclick":
                         return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostReplies, 1, -1, -1), format);
+                    case "toolbar-recyclebin-onclick":
+                        return SettingsBase.GetModuleSettings(this.ForumModuleId).DeleteBehavior.Equals(DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Recycle) && (accessingUser.IsSuperUser || accessingUser.IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).GetIsMod(this.ModuleId)) ?
+                            PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId, string.Empty, $"{ParamKeys.ViewType}={Views.RecycleBin}"), format) :
+                            string.Empty;
                 }
             }
             catch (Exception ex)

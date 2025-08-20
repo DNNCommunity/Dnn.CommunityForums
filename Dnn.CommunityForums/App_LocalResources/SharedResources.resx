@@ -700,7 +700,7 @@
     <value>Select a post icon to help classify your topic.</value>
   </data>
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>A tag is a keyword or term associated with the content you are submitting.</value>
+    <value>A tag is a keyword or term associated with the content you are submitting. When entering multiple tags, separate them with a comma.</value>
   </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Tags</value>
@@ -1846,13 +1846,28 @@ From,
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Thank you,</value>
   </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Posted:</value>
-  </data>
   <data name="By.Text" xml:space="preserve">
     <value>By</value>
   </data>
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>To manage your forums notifications, please visit:</value>
+  </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar refreshed for user {0}</value>
+  </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Recycle Bin</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>Are you sure you wish to restore this item?</value>
+  </data>
+  <data name="[RESX:EmptyRecycleBin].Text" xml:space="preserve">
+    <value>Empty Recycle Bin</value>
+  </data>
+  <data name="[RESX:RestoreAll].Text" xml:space="preserve">
+    <value>Restore All</value>
   </data>
 </root>

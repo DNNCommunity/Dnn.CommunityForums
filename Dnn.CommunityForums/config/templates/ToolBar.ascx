@@ -22,6 +22,7 @@
     <div class="dcf-toolbar dcf-toolbar-manage">
         <ul>
             <li>[DCF:TOOLBAR-MODERATE-ONCLICK|<a href="{0}"><i class="fa fa-wrench fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:Moderate]</span></a>]</li>
+            <li>[DCF:TOOLBAR-RECYCLEBIN-ONCLICK|<a href="{0}"><i class="fa fa-recycle fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:RecycleBin]</span></a>]</li>
             <li>[DCF:TOOLBAR-MYSETTINGS-ONCLICK|<a href="{0}"><i class="fa fa-cog fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:MySettings]</span></a>]</li>
             <li>[DCF:TOOLBAR-MYSUBSCRIPTIONS-ONCLICK|<a href="{0}"><i class="fa fa-envelope fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:MySubscriptions]</span></a>]</li>
             <li>[DCF:TOOLBAR-CONTROLPANEL-ONCLICK|<a href="{0}"><i class="fa fa-bars fa-fw fa-blue"></i><span class="dcf-link-text">[RESX:ControlPanel]</span></a>]</li>

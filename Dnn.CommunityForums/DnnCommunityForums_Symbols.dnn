@@ -1,7 +1,7 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
     <package name="Active Forums_Symbols" type="Library" version="09.00.03">
-
+    <package name="Active Forums_Symbols" type="Library" version="09.01.00">
       <friendlyName>DNN Community Forums Symbols</friendlyName>
       <description>DNN Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
@@ -15,7 +15,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>True</azureCompatible>
       <dependencies>
-        <dependency type="managedPackage" version="9.0.3">Active Forums</dependency>
+        <dependency type="managedPackage" version="9.1.0">Active Forums</dependency>
       </dependencies>
       <components>
         <component type="ResourceFile">

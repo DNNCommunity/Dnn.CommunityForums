@@ -275,7 +275,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.txtReplyOlderThan.Attributes.Add("onkeypress", "return onlyNumbers(event)");
             this.txtUserId.Attributes.Add("onkeypress", "return onlyNumbers(event)");
 
-            if (this.MainSettings.DeleteBehavior == 1)
+            if (this.MainSettings.DeleteBehavior == DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Recycle)
             {
                 this.lblMaintWarn.Text = string.Format(this.GetSharedResource("[RESX:MaintenanceWarning]"), this.GetSharedResource("[RESX:MaintenanceWarning:Recycle]"), this.GetSharedResource("[RESX:MaintenanceWarning:Recycle:Desc]"));
             }
