@@ -47,22 +47,19 @@
         <hr />
 
         <h3>
-            09.00.02
+            09.00.03
         </h3>
-        <!--,,
+<!--
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by 
             <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a> 
-    <!--,, 
             <a href="https://github.com/nvsai" target="_blank">@nvsai</a>, 
             <a href="https://github.com/ernieblues" target="_blank">@nvsai</a>, and 
             <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>
-                  -->.
-               <!--, 
                , and
                 <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>
         </p>
-                -->.
+-->
         <p>
             What's to follow are all of the relevant updates that have occurred during the development cycle of this release.
         </p>
@@ -99,7 +96,7 @@
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
             
-            <li>09.00.02 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1510">Issue 1510</a>)</li>
+            <li>09.00.03 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1539">Issue 1539</a>)</li>
             <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
