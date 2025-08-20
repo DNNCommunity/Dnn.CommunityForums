@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (string.IsNullOrWhiteSpace(fi.PrefixURL) || !mainSettings.URLRewriteEnabled)
             {
-                sURL = Utilities.NavigateURL(tabId, string.Empty, ParamKeys.ForumId + "=" + fi.ForumID);
+                sURL = Utilities.NavigateURL(tabId, string.Empty, ParamKeys.ForumId + "=" + fi.ForumID) + "/";
             }
             else
             {
