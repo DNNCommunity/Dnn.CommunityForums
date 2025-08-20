@@ -1221,7 +1221,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pager1.View = Views.Topic;
                 pager1.TopicId = this.topic.TopicId;
                 pager1.PageMode = PagerNav.Mode.Links;
-                pager1.BaseURL = URL.ForumLink(this.TabId, this.ForumInfo) + this.topic.TopicUrl;
+                if (this.MainSettings.URLRewriteEnabled)
+                {
+                    pager1.BaseURL = URL.ForumLink(this.TabId, this.ForumInfo) + this.topic.TopicUrl;
+                }
+
                 pager1.Params = @params.ToArray();
             }
 
@@ -1237,7 +1241,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pager2.View = Views.Topic;
                 pager2.TopicId = this.topic.TopicId;
                 pager2.PageMode = PagerNav.Mode.Links;
-                pager2.BaseURL = URL.ForumLink(this.TabId, this.ForumInfo) + this.topic.TopicUrl;
+                if (this.MainSettings.URLRewriteEnabled)
+                {
+                    pager2.BaseURL = URL.ForumLink(this.TabId, this.ForumInfo) + this.topic.TopicUrl;
+                }
+
                 pager2.Params = @params.ToArray();
             }
         }

@@ -89,10 +89,10 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>None at this time.</li>
+            <li>FIXED: Incorrect URLs in navigation pager when not using friendly URLs (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1537">Issue 1537</a>)</li>
+           
             <!--
-            <li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>!)</li>
-            <li>None at this time.</li>
+             <li>None at this time.</li>
             -->
         </ul>
 
