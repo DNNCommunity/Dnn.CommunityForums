@@ -58,6 +58,7 @@
                , and
                 <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>
         </p>
+-->
         <p>
             What's to follow are all of the relevant updates that have occurred during the development cycle of this release.
         </p>
@@ -87,6 +88,9 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
+            
+            <li>09.00.03 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1539">Issue 1539</a>)</li>
+            <!--
             <li>Update indexes on forum/topic tracking tables for uniqueness; upgrade script to detect and remove duplicates, keeping the latest entries (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1434">Issue 1434</a>)</li>
             <li>Categories and topic categories were previously handled as tags with an 'isCategory' flag; they are now first-class entites (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1441">Issue 1441</a>)</li>
             <li>Update Web API method security to not require ForumId for certain methods (e.g. user Ban) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1507">Issue 1507</a>)</li>
