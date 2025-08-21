@@ -193,6 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (cellControl is Button)
                         {
                             var restoreButton = cellControl as Button;
+                            restoreButton.Text = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Restore]");
                             if (!(restoreButton == null))
                             {
                                 restoreButton.Enabled = true;
