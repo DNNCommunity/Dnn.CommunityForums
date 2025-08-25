@@ -25,15 +25,22 @@
 
     <ItemGroup>
         <Compile Remove="CustomControls\Views\**" />
+        <Compile Remove="Resources\datatables.net-plugins-2.3.3\NewFolder\**" />
         <Compile Include="CustomControls\Views\ForumDisplay.cs" />
         <Compile Remove="Legacy\**" />
         <Compile Remove="Properties\**" />
         <EmbeddedResource Remove="CustomControls\Views\**" />
         <EmbeddedResource Remove="Legacy\**" />
         <EmbeddedResource Remove="Properties\**" />
+        <EmbeddedResource Remove="Resources\datatables.net-plugins-2.3.3\NewFolder\**" />
         <None Remove="CustomControls\Views\**" />
         <None Remove="Legacy\**" />
         <None Remove="Properties\**" />
+        <None Remove="Resources\datatables.net-plugins-2.3.3\NewFolder\**" />
+        <Content Remove="C:\Users\jhenley\.nuget\packages\datatables.net-dt\2.3.3\contentFiles\any\any\wwwroot\css\dataTables.dataTables.css" />
+        <Content Remove="C:\Users\jhenley\.nuget\packages\datatables.net-dt\2.3.3\contentFiles\any\any\wwwroot\css\dataTables.dataTables.min.css" />
+        <Content Remove="C:\Users\jhenley\.nuget\packages\datatables.net-dt\2.3.3\contentFiles\any\any\wwwroot\js\dataTables.dataTables.js" />
+        <Content Remove="C:\Users\jhenley\.nuget\packages\datatables.net-dt\2.3.3\contentFiles\any\any\wwwroot\js\dataTables.dataTables.min.js" />
         <None Remove="CustomControls\Resources\TextSuggest.js" />
         <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
         <None Remove="CustomControls\Resources\TextSuggest.js" />
