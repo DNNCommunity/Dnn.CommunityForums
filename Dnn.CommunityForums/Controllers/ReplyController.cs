@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Linq;
     using System.Web;
 
+    using DotNetNuke.Collections;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Services.FileSystem;
@@ -73,7 +74,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo> GetByTopicId(int topicId)
         {
-            return this.Find("WHERE TopicId = @0", topicId);
+            var replies = new List<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo>();
+            var replyIds = this.Find("WHERE TopicId = @0", topicId).Select(r => r.ReplyId).ToList();
+
+            replyIds.ForEach(r =>
+            {
+                replies.Add(this.GetById(r));
+            });
+            return replies;
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetByContentId(int contentId)
@@ -87,19 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (ri != null)
             {
-                ri.ModuleId = this.moduleId;
-                ri.GetTopic();
-                ri.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ri.Topic.ForumId, this.moduleId);
-                if (ri.Forum != null)
-                {
-                    ri.PortalId = ri.Forum.PortalId;
-                }
-
-                ri.GetContent();
-                if (ri.Content != null)
-                {
-                    ri.Author = ri.GetAuthor(ri.PortalId, ri.ModuleId, ri.Content.AuthorId);
-                }
+                ri = this.GetById(ri.ReplyId);
             }
 
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, ri);

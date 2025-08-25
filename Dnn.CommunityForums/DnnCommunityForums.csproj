@@ -36,7 +36,6 @@
         <None Remove="Properties\**" />
         <None Remove="CustomControls\Resources\TextSuggest.js" />
         <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-        <None Remove="packages.config" />
         <None Remove="CustomControls\Resources\TextSuggest.js" />
     </ItemGroup>
 
@@ -53,6 +52,7 @@
 
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0" />
+        <PackageReference Include="datatables.net-dt" Version="2.3.3" />
         <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web.Client" Version="9.11.0" />
