@@ -1889,4 +1889,7 @@ Von
   <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
     <value>Abzeichen für Benutzer: {0}</value>
   </data>
+  <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
+    <value>Badge noch nicht zugewiesen</value>
+  </data>
 </root>

@@ -1888,4 +1888,7 @@ De
   <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
     <value>Insignias otorgadas al Usuario: {0}</value>
   </data>
+  <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
+    <value>Insignia aún no asignada</value>
+  </data>
 </root>

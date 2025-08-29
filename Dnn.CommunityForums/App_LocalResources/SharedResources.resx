@@ -1888,4 +1888,7 @@ From,
   <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
     <value>Badges awarded to User: {0}</value>
   </data>
+  <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
+    <value>Badge not yet assigned</value>
+  </data>
 </root>

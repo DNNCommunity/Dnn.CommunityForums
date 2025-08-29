@@ -1924,4 +1924,7 @@ Van,
   <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
     <value>Badges toegekend aan gebruiker: {0}</value>
   </data>
+  <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
+    <value>Badge nog niet toegekend</value>
+  </data>
 </root>

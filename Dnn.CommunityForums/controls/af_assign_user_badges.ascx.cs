@@ -44,11 +44,11 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnInit(e);
             this.userid = this.Request.QueryString[ParamKeys.UserId] != null ? Convert.ToInt32(this.Request.QueryString[ParamKeys.UserId]) : -1;
             this.forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, (int)this.userid);
-            this.lblBadgesAssigned.Text = string.Format(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserBadgesAssigned]"), forumUser.DisplayName);
+            this.lblBadgesAssigned.Text = string.Format(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserBadgesAssigned]"), this.forumUser.DisplayName);
             this.dgrdUserBadges.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Badge]");
             this.dgrdUserBadges.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Date]", isAdmin: true) + " (UTC)";
 
-            this.dgrdUserBadges.PageIndexChanging += this.UserBadgesGridRowPageIndexChanging;
+//            this.dgrdUserBadges.PageIndexChanging += this.UserBadgesGridRowPageIndexChanging;
             this.dgrdUserBadges.RowDataBound += this.OnUserBadgesGridRowDataBound;
         }
 
@@ -68,7 +68,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     _pageSize = 10;
                 }
 
-                this.dgrdUserBadges.PageSize = _pageSize;
 
 
                 if (this.userid > 0 && this.ForumUser.GetIsMod(this.ForumModuleId))
@@ -100,6 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.dgrdUserBadges.DataSource = this.GetBadges().ToList();
             this.dgrdUserBadges.DataBind();
+            this.dgrdUserBadges.PageSize = this.dgrdUserBadges.Rows.Count;
             this.dgrdUserBadges.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
         }
 
@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo userBadgeInfo = e.Row.DataItem as DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo;
                 if (userBadgeInfo.DateAssigned.Equals(DotNetNuke.Common.Utilities.Null.NullDate))
                 {
-                    e.Row.Cells[4].Text = string.Empty;
+                    e.Row.Cells[4].Text = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:BadgeNotAssigned]");
                 }
                 foreach (TableCell cell in e.Row.Cells)
                 {
@@ -150,11 +150,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        protected void UserBadgesGridRowPageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            this.dgrdUserBadges.PageIndex = e.NewPageIndex;
-            this.dgrdUserBadges.DataBind();
-            this.dgrdUserBadges.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
-        }
+        //protected void UserBadgesGridRowPageIndexChanging(object sender, GridViewPageEventArgs e)
+        //{
+        //    this.dgrdUserBadges.PageIndex = e.NewPageIndex;
+        //    this.dgrdUserBadges.DataBind();
+        //    this.dgrdUserBadges.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
+        //}
     }
 }

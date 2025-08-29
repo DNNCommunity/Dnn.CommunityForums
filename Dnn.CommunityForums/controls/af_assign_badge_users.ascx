@@ -6,7 +6,7 @@
 <div>
     <asp:UpdatePanel ID="upOptions1" UpdateMode="Conditional" runat="server" ChildrenAsTriggers="True" >
         <contenttemplate>
-            <asp:GridView ID="dgrdBadgeUsers" AutoGenerateColumns="false" AllowPaging="true" PageSize="25"
+            <asp:GridView ID="dgrdBadgeUsers" AutoGenerateColumns="false" AllowPaging="false" 
                 Width="100%" CellPadding="4" GridLines="None" CssClass="dnnGrid" runat="server">
                 <HeaderStyle CssClass="dnnGridHeader" VerticalAlign="Top" HorizontalAlign="Left" />
                 <RowStyle CssClass="dnnGridItem" HorizontalAlign="Left" />
