@@ -27,9 +27,15 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Modules.ActiveForums.Extensions.WebForms;
 
     public partial class profile_mysubscriptions : ForumBase
     {
+        protected global::System.Web.UI.UpdatePanel updatePanel1;
+        protected global::System.Web.UI.WebControls.GridView dgrdTopicSubs;
+        protected global::System.Web.UI.UpdatePanel updatePanel2;
+        protected global::System.Web.UI.WebControls.GridView dgrdForumSubs;
+        protected global::System.Web.UI.WebControls.Button btnSubscribeAll;
         private int UID { get; set; }
 
         protected override void OnInit(EventArgs e)
@@ -92,12 +98,15 @@ namespace DotNetNuke.Modules.ActiveForums
             });
             this.dgrdTopicSubs.DataSource = subscribedTopics.ToList();
             this.dgrdTopicSubs.DataBind();
+            this.dgrdTopicSubs.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
+
         }
 
         private void BindForumSubs()
         {
             this.dgrdForumSubs.DataSource = this.GetSubscriptions().ToList();
             this.dgrdForumSubs.DataBind();
+            this.dgrdForumSubs.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
         }
 
         private void btnSubscribeAll_Click(object sender, System.EventArgs e)

@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Modules.ActiveForums.Enums;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -29,10 +27,11 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Extensions.WebForms;
 
     public partial class af_recycle_bin : ForumBase
     {
-        protected global::System.Web.UI.WebControls.Label lblRecycleBin;
         protected global::System.Web.UI.WebControls.GridView dgrdRestoreView;
         protected global::System.Web.UI.WebControls.Button btnRestoreAll;
         protected global::System.Web.UI.WebControls.Button btnEmptyRecycleBin;
@@ -64,7 +63,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            this.lblRecycleBin.Text = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:RecycleBin]");
             this.dgrdRestoreView.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Reply]");
             this.dgrdRestoreView.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Forum]");
             this.dgrdRestoreView.Columns[5].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Subject]");
@@ -158,6 +156,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.dgrdRestoreView.DataBind();
             this.btnEmptyRecycleBin.Enabled = recycleData.Any();
             this.btnRestoreAll.Enabled = recycleData.Any();
+            this.dgrdRestoreView.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
         }
 
         private IEnumerable<RecycleBinData> GetData()

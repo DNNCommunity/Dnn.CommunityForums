@@ -363,12 +363,6 @@
   <data name="NoProfile.Text" xml:space="preserve">
     <value>Gebruiker heeft geen profiel gemaakt.</value>
   </data>
-  <data name="[RESX:ThreadsTracked].Text" xml:space="preserve">
-    <value>Onderwerpen waarop u bent geabonneerd:</value>
-  </data>
-  <data name="[RESX:ForumsTracked].Text" xml:space="preserve">
-    <value>Forums waarop u bent geabonneerd:</value>
-  </data>
   <data name="Banned.Text" xml:space="preserve">
     <value>Verbannen:</value>
   </data>
@@ -1660,14 +1654,8 @@ Van,
   <data name="[RESX:SubscribeAllForums].Text" xml:space="preserve">
     <value>Abonneer u op alle forums</value>
   </data>
-  <data name="ForumsTracked.Text" xml:space="preserve">
-    <value>Forums die u volgt:</value>
-  </data>
   <data name="Subscriptions.Text" xml:space="preserve">
     <value>Abonnementen</value>
-  </data>
-  <data name="ThreadsTracked.Text" xml:space="preserve">
-    <value>Berichten die u volgt: </value>
   </data>
   <data name="[RESX:Unresolved].Text" xml:space="preserve">
     <value>Onopgelost</value>

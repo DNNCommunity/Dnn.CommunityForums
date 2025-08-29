@@ -93,23 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (ti != null)
             {
-                ti.ModuleId = this.moduleId;
-                ti.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ti.ForumId, this.moduleId);
-                if (ti.Forum != null)
-                {
-                    ti.PortalId = ti.Forum.PortalId;
-                }
-
-                ti.GetContent();
-                if (ti.Content != null)
-                {
-                    ti.Author = ti.GetAuthor(ti.PortalId, ti.ModuleId, ti.Content.AuthorId);
-                }
-
-                if (ti.LastReply != null)
-                {
-                    ti.LastReplyAuthor = ti.GetAuthor(ti.PortalId, ti.ModuleId, ti.LastReply.Content.AuthorId);
-                }
+                ti = this.GetById(ti.TopicId);
             }
 
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, ti);

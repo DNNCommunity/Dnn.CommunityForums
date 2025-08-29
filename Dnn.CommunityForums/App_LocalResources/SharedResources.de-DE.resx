@@ -454,9 +454,6 @@ Von
   <data name="[RESX:FORUMS].Text" xml:space="preserve">
     <value>Foren</value>
   </data>
-  <data name="[RESX:ForumsTracked].Text" xml:space="preserve">
-    <value>Foren, in denen Sie abonniert sind:</value>
-  </data>
   <data name="[RESX:ForumSubscribe:Disabled].Text" xml:space="preserve">
     <value>E-Mail-Benachrichtigungen sind deaktiviert.</value>
   </data>
@@ -1126,9 +1123,6 @@ Von
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Tags</value>
   </data>
-  <data name="[RESX:ThreadsTracked].Text" xml:space="preserve">
-    <value>Themen, die Sie abonniert haben:</value>
-  </data>
   <data name="[RESX:ThumbLink].Text" xml:space="preserve">
     <value>Link zum Originalbild</value>
   </data>
@@ -1481,9 +1475,6 @@ Von
   <data name="ForumHeader.Text" xml:space="preserve">
     <value>Name des Forums</value>
   </data>
-  <data name="ForumsTracked.Text" xml:space="preserve">
-    <value>Foren, die Sie beobachten:</value>
-  </data>
   <data name="ForumSubscribe.Text" xml:space="preserve">
     <value>Senden Sie mir eine E-Mail, wenn jemand in diesem Forum postet.</value>
   </data>
@@ -1648,9 +1639,6 @@ Von
   </data>
   <data name="Subscriptions.Text" xml:space="preserve">
     <value>Abonnements</value>
-  </data>
-  <data name="ThreadsTracked.Text" xml:space="preserve">
-    <value>Themen, die Sie verfolgen:</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Aktion abgeschlossen</value>
