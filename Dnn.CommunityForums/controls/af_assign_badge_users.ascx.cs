@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Collections;
     using DotNetNuke.Data;
+    using DotNetNuke.Modules.ActiveForums.Extensions.WebForms;
 
     using static log4net.Appender.RollingFileAppender;
 
@@ -87,6 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.dgrdBadgeUsers.DataSource = this.GetBadges().ToList();
             this.dgrdBadgeUsers.DataBind();
+            this.dgrdBadgeUsers.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
         }
 
         private class UserList
@@ -144,6 +146,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.dgrdBadgeUsers.PageIndex = e.NewPageIndex;
             this.dgrdBadgeUsers.DataBind();
+            this.dgrdBadgeUsers.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
+
         }
     }
 }

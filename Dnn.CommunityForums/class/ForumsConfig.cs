@@ -72,11 +72,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Create "Pin notification" core messaging notification type new in 08.02.00
                 ForumsConfig.Install_PinNotificationType_080200();
 
-                // Create "badge notification" core messaging notification type new in 09.01.00
-                ForumsConfig.Install_BadgeNotificationType_090100();
+                // Create "badge notification" core messaging notification type new in 09.02.00
+                ForumsConfig.Install_BadgeNotificationType_090200();
 
-                // Create default badges new in 09.01.00
-                new ForumsConfig().Install_DefaultBadges_090100();
+                // Create default badges new in 09.02.00
+                new ForumsConfig().Install_DefaultBadges_090200();
                 return true;
             }
             catch (Exception ex)
@@ -777,7 +777,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static void Install_BadgeNotificationType_090100()
+        internal static void Install_BadgeNotificationType_090200()
         {
             string notificationTypeName = Globals.BadgeNotificationType;
             string notificationTypeDescription = Globals.BadgeNotificationTypeDescription;
@@ -790,7 +790,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal void Install_DefaultBadges_090100()
+        internal void Install_DefaultBadges_090200()
         {
             try
             {

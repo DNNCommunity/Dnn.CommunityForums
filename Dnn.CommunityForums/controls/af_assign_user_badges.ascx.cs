@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Modules.ActiveForums.Extensions.WebForms;
 
     public partial class af_assign_user_badges : ForumBase
     {
@@ -99,6 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.dgrdUserBadges.DataSource = this.GetBadges().ToList();
             this.dgrdUserBadges.DataBind();
+            this.dgrdUserBadges.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
         }
 
         private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetBadges()
@@ -152,6 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.dgrdUserBadges.PageIndex = e.NewPageIndex;
             this.dgrdUserBadges.DataBind();
+            this.dgrdUserBadges.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
         }
     }
 }

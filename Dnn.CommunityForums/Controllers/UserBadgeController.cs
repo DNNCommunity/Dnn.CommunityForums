@@ -170,6 +170,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         DateAssigned = DateTime.UtcNow,
                     };
                     userBadgeController.Insert(userBadge);
+                    ClearBadgeCache(userBadge);
 
                     new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(
                     processType: ProcessType.BadgeAssigned,
@@ -194,6 +195,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
+        private static void ClearBadgeCache(DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo userBadge)
+        {
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(userBadge.ModuleId, string.Format(CacheKeys.UserBadgeInfo, userBadge.ModuleId, userBadge.UserBadgeId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(userBadge.ModuleId, string.Format(CacheKeys.UserBadges, userBadge.ModuleId, userBadge.UserId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(userBadge.ModuleId, string.Format(CacheKeys.BadgeUsers, userBadge.ModuleId, userBadge.BadgeId));
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(userBadge.ModuleId, string.Format(CacheKeys.BadgeUserCount, userBadge.ModuleId, userBadge.BadgeId, userBadge.UserId));
+        }
+
         internal void UnassignUserBadge(int portalId, int userId, int badgeId, DateTime dateAssigned)
         {
             try
@@ -201,11 +210,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var userBadge = this.GetForUserAndBadgeAndDateAssigned(portalId: portalId, userId: userId, badgeId: badgeId, dateAssigned: dateAssigned);
                 if (userBadge != null)
                 {
+                    ClearBadgeCache(userBadge);
                     this.DeleteById(userBadge.UserBadgeId);
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.UserBadgeInfo, this.moduleId, userBadge.UserBadgeId));
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.UserBadges, this.moduleId, userId));
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.BadgeUsers, this.moduleId, badgeId));
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.BadgeUserCount, this.moduleId, badgeId, userId));
                 }
             }
             catch (Exception e)
@@ -257,10 +263,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     NotificationsController.Instance.SendNotification(notification, this.portalId, null, users);
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.UserBadgeInfo, this.moduleId, userBadge.UserBadgeId));
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.UserBadges, this.moduleId, userId));
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.BadgeUsers, this.moduleId, badgeId));
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.BadgeUserCount, this.moduleId, badgeId, userId));
                 return true;
             }
             catch (Exception e)
