@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.dgrdRestoreView.Columns[6].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Author]");
             this.dgrdRestoreView.Columns[7].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:DateCreated]");
 
-            this.dgrdRestoreView.PageIndexChanging += this.RestoreViewGridRowPageIndexChanging;
+            //this.dgrdRestoreView.PageIndexChanging += this.RestoreViewGridRowPageIndexChanging;
             this.dgrdRestoreView.RowCommand += this.RestoreViewGrid_OnRowCommand;
             this.dgrdRestoreView.RowDataBound += this.OnRestoreViewGridRowDataBound;
             this.btnEmptyRecycleBin.Click += this.btnEmptyRecycleBin_Click;
@@ -136,7 +136,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     _pageSize = 10;
                 }
 
-                this.dgrdRestoreView.PageSize = _pageSize;
 
                 if (this.UserId > 0 && this.ForumUser.GetIsMod(this.ForumModuleId))
                 {
@@ -154,6 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var recycleData = this.GetData().ToList();
             this.dgrdRestoreView.DataSource = recycleData;
             this.dgrdRestoreView.DataBind();
+            this.dgrdRestoreView.PageSize = this.dgrdRestoreView.Rows.Count;
             this.btnEmptyRecycleBin.Enabled = recycleData.Any();
             this.btnRestoreAll.Enabled = recycleData.Any();
             this.dgrdRestoreView.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
@@ -211,10 +211,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        protected void RestoreViewGridRowPageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            this.dgrdRestoreView.PageIndex = e.NewPageIndex;
-            this.dgrdRestoreView.DataBind();
-        }
+        //protected void RestoreViewGridRowPageIndexChanging(object sender, GridViewPageEventArgs e)
+        //{
+        //    this.dgrdRestoreView.PageIndex = e.NewPageIndex;
+        //    this.dgrdRestoreView.DataBind();
+        //}
     }
 }

@@ -7,7 +7,7 @@
     <span>[RESX:Topic] [RESX:Subscriptions]:</span>
     <asp:updatepanel id="updatePanel1" updatemode="Conditional" runat="server" childrenastriggers="True">
         <contenttemplate>
-            <asp:GridView ID="dgrdTopicSubs" AutoGenerateColumns="false" AllowPaging="true" PageSize="25"
+            <asp:GridView ID="dgrdTopicSubs" AutoGenerateColumns="false" 
                 Width="100%" CellPadding="4" GridLines="None" CssClass="dnnGrid" runat="server">
                 <HeaderStyle CssClass="dnnGridHeader" VerticalAlign="Top" HorizontalAlign="Left" />
                 <RowStyle CssClass="dnnGridItem" HorizontalAlign="Left" />
