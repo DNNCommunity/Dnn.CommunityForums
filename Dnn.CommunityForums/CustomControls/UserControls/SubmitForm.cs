@@ -1293,13 +1293,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 var userTag = this.GetTagForUserMentions();
                 var avatarTag = this.GetAvatarTagForUserMentions();
+                var tagtag = this.GetTagForTagsMentions();
 
+                sb.Append("editorConfigeditortxtBody.mentions = [");
+                sb.Append("{ feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/Tag/Matches?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '#', minChars: 0, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-tag\">" + "{name}</li>', outputTemplate: `<a href=\"" + tagtag + "\" class=\"dcf-tag-link\">{name}</a>` }");
                 if (this.ForumInfo.FeatureSettings.UserMentions && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.MentionRoleIds, this.ForumUser.UserRoleIds))
                 {
-                    sb.Append("editorConfigeditortxtBody.mentions = [");
-                    sb.Append(" { feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 3, throttle: 100, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatarTag + "{name}</li>', outputTemplate: `<a href=\"" + userTag + "\">" + avatarTag + "&nbsp;{name}</a>` },");
-                    sb.Append("];");
+                    sb.Append(',');
+                    sb.Append("{ feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 3, throttle: 100, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatarTag + "{name}</li>', outputTemplate: `<a href=\"" + userTag + "\">" + avatarTag + "&nbsp;{name}</a>` }");
                 }
+
+                sb.Append("];");
 
                 if (this.Request.Browser.IsMobileDevice)
                 {
@@ -1324,6 +1328,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string GetTagForUserMentions()
         {
             return Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId={id}" });
+        }
+
+        private string GetTagForTagsMentions()
+        {
+            return Utilities.NavigateURL(this.ForumInfo.GetTabId(), string.Empty, new[] { $"{ParamKeys.ViewType}={Views.Search}", $"{ParamKeys.Tags}={{name}}" });
         }
 
         private void EmotScript()
