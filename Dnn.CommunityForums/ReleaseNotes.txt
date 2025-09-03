@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.02.00
+            09.04.00
         </h3>
 <!--
         <p>

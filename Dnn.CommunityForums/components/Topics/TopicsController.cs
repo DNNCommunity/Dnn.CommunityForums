@@ -317,7 +317,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090100();
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();
-                        ForumsConfig.Install_UserMentionNotificationType_090100();
+                        ForumsConfig.Install_UserMentionNotificationType_090300();
                     }
                     catch (Exception ex)
                     {
