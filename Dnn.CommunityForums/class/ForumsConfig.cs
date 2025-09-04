@@ -702,8 +702,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
                 Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
                 Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowHTML, "true");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
+                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.FORUMSEDITOR).ToString());
+                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.FORUMSEDITOR).ToString());
 
                 Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorHeight, "350");
                 Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorWidth, "99%");
