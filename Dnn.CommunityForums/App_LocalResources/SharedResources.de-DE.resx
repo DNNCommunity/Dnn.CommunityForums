@@ -1859,4 +1859,7 @@ Von
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Ein Tag ist ein Schlüsselwort oder ein Begriff, der mit dem Inhalt verknüpft ist, den Sie einreichen. Wenn Sie mehrere Tags eingeben, trennen Sie diese durch ein Komma.</value>
   </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Abmelden</value>
+  </data>
 </root>

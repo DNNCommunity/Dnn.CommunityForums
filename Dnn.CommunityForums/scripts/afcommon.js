@@ -98,6 +98,12 @@ function amaf_topicSubscribe(mid, fid, tid) {
             amaf_UpdateTopicSubscriberCount(mid, fid, tid);
             $('input[type=checkbox].amaf-chk-subs')
                 .prop('checked', data);
+            if (data === true) {
+                $('input[type=button].dcf-btn-subs').prop('value', amaf.resx.Unsubscribe).toggleClass('dnnPrimaryAction').toggleClass('dnnSecondaryAction');
+            } 
+            else { 
+                $('input[type=button].dcf-btn-subs').prop('value', amaf.resx.Subscribe).toggleClass('dnnPrimaryAction').toggleClass('dnnSecondaryAction');
+            }
         }).fail(function (xhr, status) {
             alert('error subscribing to topic');
         });
@@ -134,6 +140,12 @@ function amaf_forumSubscribe(mid, fid) {
         amaf_UpdateForumSubscriberCount(mid, fid);
         $('input[type=checkbox].amaf-chk-subs')
             .prop('checked', data);
+        if (data === true) {
+            $('input[type=button].dcf-btn-subs').prop('value', amaf.resx.Unsubscribe).toggleClass('dnnPrimaryAction').toggleClass('dnnSecondaryAction');
+        } 
+        else { 
+            $('input[type=button].dcf-btn-subs').prop('value', amaf.resx.Subscribe).toggleClass('dnnPrimaryAction').toggleClass('dnnSecondaryAction');
+        }
         $('img#amaf-sub-' + fid).each(function () {
             var imgSrc = $(this).attr('src');
             if (data) {

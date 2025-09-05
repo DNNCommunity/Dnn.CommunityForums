@@ -26,6 +26,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Data;
     using System.Globalization;
 
+    using DotNetNuke.UI.UserControls;
+
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
     public class SubscriptionInfo : DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
     {
@@ -53,13 +55,23 @@ namespace DotNetNuke.Modules.ActiveForums
             if (forumUser == null || forumUser.UserId == -1)
             {
                 return -1;
-            }
-
+            }            
 
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId, moduleId, forumId, false, -1);
 
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(fi.Security.SubscribeRoleIds, forumUser.UserRoleIds))
             {
+                if (topicId != -1)
+                {
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicSubscriber, moduleId, forumId, topicId, forumUser.UserId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicSubscriberCount, moduleId, forumId, topicId));
+                }
+                else
+                {
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumSubscriber, moduleId, forumId, forumUser.UserId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumSubscriberCount, moduleId, forumId));
+                }
+
                 return Convert.ToInt32(DataProvider.Instance().Subscription_Update(portalId, moduleId, forumId, topicId, mode, forumUser.UserId));
             }
 

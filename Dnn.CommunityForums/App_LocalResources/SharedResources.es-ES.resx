@@ -1858,4 +1858,7 @@ De
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Una etiqueta es una palabra clave o un término asociado con el contenido que está enviando. Al introducir varias etiquetas, sepárelas con una coma.</value>
   </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Anular la suscripción</value>
+  </data>
 </root>

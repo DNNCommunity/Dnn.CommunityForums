@@ -1858,4 +1858,7 @@ Da
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Un tag è una parola chiave o un termine associato al contenuto che stai inviando. Quando inserisci più tag, separali con una virgola.</value>
   </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Disiscrizione</value>
+  </data>
 </root>
