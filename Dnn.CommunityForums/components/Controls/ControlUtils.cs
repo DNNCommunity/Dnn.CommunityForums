@@ -165,7 +165,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var sURL = Utilities.NavigateURL(tabId, portalSettings, string.Empty, @params.ToArray());
             var tabInfo = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(tabId, portalId);
-            if (!string.IsNullOrEmpty(mainSettings.PrefixURLBase) && !mainSettings.PrefixURLBase.Trim().Equals(tabInfo.TabName.Trim(), StringComparison.InvariantCultureIgnoreCase))
+            var moduleInfo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId, DotNetNuke.Common.Utilities.Null.NullInteger, true);
+
+            /* ONLY include prefix if main forum module, prefix isn't same as tab name, and prefix is filled, e.g. don't include running in viewer module */
+            if (moduleInfo.TabID.Equals(tabId) && !mainSettings.PrefixURLBase.Trim().Equals(tabInfo.TabName.Trim(), StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(mainSettings.PrefixURLBase) )
             {
                 sURL += "/" + mainSettings.PrefixURLBase;
             }

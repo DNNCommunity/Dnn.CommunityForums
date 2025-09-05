@@ -222,15 +222,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return this.lastPostInfo;
 
-            // return this.lastPostInfo = this.LastReplyId == 0 ? (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.LastTopicId) : new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetById(this.LastReplyId);
         }
-        
+
         [IgnoreColumn]
         public string LastPostUserName => this.LastPost != null && this.LastPost.Content != null ? this.LastPost.Content.AuthorName : string.Empty;
-        
+
         [IgnoreColumn]
         public int LastPostUserID => this.LastPost != null && this.LastPost.Content != null ? this.LastPost.Content.AuthorId : DotNetNuke.Common.Utilities.Null.NullInteger;
-        
+
         [IgnoreColumn]
         public DateTime? LastPostDateTime => this.LastPost != null && this.LastPost.Content != null ? (DateTime)this.LastPost.Content.DateUpdated : DotNetNuke.Common.Utilities.Null.NullDate;
 
