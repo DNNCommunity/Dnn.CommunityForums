@@ -42,7 +42,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private bool? canCreate;
         private bool? canReply;
-        private bool isInViewer = false;
 
         #endregion
 
