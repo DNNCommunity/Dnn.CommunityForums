@@ -169,6 +169,7 @@
 
     <div class="dcf-tools dcf-tools-bottom">
         <div class="dcf-button-reply">[ADDREPLY]</div>
+		<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
        	<div class="dcf-pager">[PAGER2]</div>
     </div>
 
