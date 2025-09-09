@@ -80,8 +80,9 @@
         <h4>Bug Fixes</h4>
         <ul>
             <li>FIX: Update indexes on forum/topic tracking tables for uniqueness; upgrade script to detect and remove duplicates, keeping the latest entries (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1434">Issue 1434</a>)</li>
-            <li>FIX: Forum Viewer updated to working correctly with friendly URLs and localized sites (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1557">Issue 1557</a>)</li>
-            <li>FIX: Permissions preventing viewing of attachments (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1559">Issue 1559</a>)</li>
+            <li>FIX: Friendly URLs updated to working correctly with Forum Viewer and/or localized sites (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1557">Issue 1557</a>)</li>
+            <li>FIX: Incorrect logic in permissions checking for attachments (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1559">Issue 1559</a>)</li>
+            <li>FIX: Non-Admin/Non-Moderator is unable to edit their own post when edit interval/spam control feature used (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1562">Issue 1562</a>)</li>
            
 <!--
              <li>None at this time.</li>

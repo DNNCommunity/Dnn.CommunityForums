@@ -1099,7 +1099,7 @@ Van,
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>Dit is uw standaardinstelling wanneer u een onderwerp maakt of een antwoord toevoegt. Dit heeft geen invloed op abonnementen op forumniveau.</value>
   </data>
-  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
+  <data name="[RESX:Message:EditIntervalNotReached].Text" xml:space="preserve">
     <value>Dit forum staat toe dat u uw berichten kunt wijzigen tenminste {0} minuten nadat u het bericht heeft geplaatst.</value>
   </data>
   <data name="[RESX:SubmitVote].Text" xml:space="preserve">
