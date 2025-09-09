@@ -1355,7 +1355,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (this.ForumUser.IsAnonymous || (!this.ForumUser.IsAdmin && !this.ForumUser.IsSuperUser && !this.ForumInfo.GetIsMod(this.ForumUser)))
                 {
-                    sb.Append("CKEDITOR.config.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] },{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }, { name: 'links', items: [ 'Link' ] } ];");
+                    sb.Append("CKEDITOR.config.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] },{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }, { name: 'links', items: [ 'Link' ] }, { name: 'insert', items: [ 'Image', 'Smiley', 'Code' ] } ];");
 
                     sb.Append("CKEDITOR.config.toolbarCanCollapse = false;");
                     sb.Append("CKEDITOR.config.toolbarStartupExpanded = true;");

@@ -208,10 +208,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     sb.Append("CKEDITOR.config.language = '" + lang.Substring(0, 2) + "';");
 
-                    sb.Append("CKEDITOR.config.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] }, { name: 'links', items: [ 'Link' ] } ];");
+                    sb.Append("CKEDITOR.config.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] }, { name: 'links', items: [ 'Link' ] },  { name: 'insert', items: [ 'Image', 'Smiley', 'Code' ] } ];");
                     sb.Append("CKEDITOR.config.toolbarCanCollapse = false;");
                     sb.Append("CKEDITOR.config.toolbarStartupExpanded = true;");
-                    sb.Append("CKEDITOR.config.removeButtons = 'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,PasteFromWord,Print,Preview,ExportPdf,NewPage,Save,Replace,Find,BGColor,TextColor,Smiley,HorizontalRule,Anchor,Unlink,BidiLtr,BidiRtl,Language,CreateDiv,CopyFormatting,RemoveFormat,Subscript,Superscript,Strike,Format,Source,Templates,SelectAll,Scayt,PasteText,Styles,Font,FontSize,About,Maximize,Table,SpecialChar,PageBreak,Iframe,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Indent,Outdent,NumberedList,BulletedList,ShowBlocks';");
+                    sb.Append("CKEDITOR.config.extraPlugins = 'codeTag';");
+                    sb.Append("CKEDITOR.config.removeButtons = 'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,PasteFromWord,Print,Preview,ExportPdf,NewPage,Save,Replace,Find,BGColor,TextColor,HorizontalRule,Anchor,Unlink,BidiLtr,BidiRtl,Language,CreateDiv,CopyFormatting,RemoveFormat,Subscript,Superscript,Strike,Format,Source,Templates,SelectAll,Scayt,PasteText,Styles,Font,FontSize,About,Maximize,Table,SpecialChar,PageBreak,Iframe,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Indent,Outdent,NumberedList,BulletedList';");
                     sb.Append("CKEDITOR.config.removePlugins = 'elementspath';");
                     sb.Append("CKEDITOR.config.resize_enabled = false;");
 
@@ -363,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.AllowHTML = this.IsHtmlPermitted(this.ForumInfo.FeatureSettings.EditorPermittedUsers, this.IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds));
             }
 
-            sBody = Utilities.CleanString(this.PortalId, this.Request.Form["txtBody"], this.AllowHTML, EditorTypes.TEXTBOX, this.UseFilter, this.AllowScripts, this.ForumModuleId, this.ThemePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
+            sBody = Utilities.CleanString(this.PortalId, this.Request.Form["txtBody"], this.AllowHTML, EditorTypes.FORUMSEDITORLITE, this.UseFilter, this.AllowScripts, this.ForumModuleId, this.ThemePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
             ri.Content.AuthorId = this.UserId;
             ri.Content.AuthorName = sUsername;
             ri.Content.Body = sBody;
