@@ -67,22 +67,25 @@
 
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-              <li>NEW: Adds Recycle Bin to be able to restore (soft-)deleted topics and replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1531">PR# 1531</a>)</li>
-              <li>NEW: Adds an avatar injection service to populate avatars (currently using Gravatar) for forums users who haven't set up their own DNN profile picture/avatar. (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1446">PR# 1446</a>)</li>
+            <li>NEW: Adds Recycle Bin to be able to restore (soft-)deleted topics and replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1531">PR# 1531</a>)</li>
+            <li>NEW: Adds an avatar injection service to populate avatars (currently using Gravatar) for forums users who haven't set up their own DNN profile picture/avatar. (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1446">PR# 1446</a>)</li>
+<!-- 
+              <li>NEW: (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/TBD">PR# TBD</a>)</li>
 
-            <!--
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
+-->
             <li>None at this time.</li>
-            -->
         </ul>
 
         <h4>Bug Fixes</h4>
         <ul>
             <li>FIX: Update indexes on forum/topic tracking tables for uniqueness; upgrade script to detect and remove duplicates, keeping the latest entries (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1434">Issue 1434</a>)</li>
+            <li>FIX: Forum Viewer updated to working correctly with friendly URLs and localized sites (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1557">Issue 1557</a>)</li>
+            <li>FIX: Permissions preventing viewing of attachments (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1559">Issue 1559</a>)</li>
            
-            <!--
+<!--
              <li>None at this time.</li>
-            -->
+-->
         </ul>
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
