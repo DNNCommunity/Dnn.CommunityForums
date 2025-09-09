@@ -1,0 +1,162 @@
+SET NOCOUNT ON 
+GO
+
+/* --------------------- */
+
+/* issue 1557 - begin - forum viewer issues */
+
+/* activeforums_URL_Search needs to be updated to return URLs for forum viewer */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL_Search]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_URL_Search]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_URL_Search]
+@PortalId int,
+@Url nvarchar(max)
+AS
+DECLARE @views TABLE(id int,viewname nvarchar(50))
+INSERT INTO @views (id,viewname) VALUES (1,'unanswered');
+INSERT INTO @views (id,viewname) VALUES (2,'notread');
+INSERT INTO @views (id,viewname) VALUES (3,'mytopics');
+INSERT INTO @views (id,viewname) VALUES (4,'activetopics');
+INSERT INTO @views (id,viewname) VALUES (5,'afprofile');
+INSERT INTO @views (id,viewname) VALUES (6,'mostliked');
+INSERT INTO @views (id,viewname) VALUES (7,'mostreplies');
+INSERT INTO @views (id,viewname) VALUES (8,'afsubscriptions');
+INSERT INTO @views (id,viewname) VALUES (9,'announcements');
+INSERT INTO @views (id,viewname) VALUES (10,'unresolved');
+INSERT INTO @views (id,viewname) VALUES (13,'recyclebin');
+SELECT TabId, ModuleID, ForumGroupId, ForumId, TopicId, Url,Archived,OtherId,UrlType FROM 
+	(
+		SELECT tb.TabID,m.ModuleId, g.ForumGroupId,f.ForumId,t.TopicId, 
+			(CASE WHEN s.SettingValue <> '' THEN s.SettingValue + '/' Else '' END) + g.PrefixURL + '/' + f.PrefixURL + '/' + t.URL + '/' as URL, 0 as Archived,-1 as OtherId,0 as URLType 
+            FROM {databaseOwner}[{objectQualifier}activeforums_Topics] as t
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] as ft ON ft.TopicId = t.TopicId
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] as f ON f.ForumId = ft.ForumId
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Groups] as g ON g.ForumGroupId = f.ForumGroupId
+			INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] as s ON s.ModuleId = f.ModuleId AND s.SettingName = 'URLBASE'
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] as m ON m.ModuleID = f.ModuleId
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] as tb ON tb.TabId = m.TabID
+		WHERE tb.PortalID = @PortalId AND ISNULL(g.PrefixURL,'') <> '' AND ISNULL(f.PrefixURL,'') <> '' AND ISNULL(t.URL,'') <> '' 
+		UNION
+        
+		SELECT tb.TabID,tb.ModuleId, g.ForumGroupId,f.ForumId,t.TopicId, 
+			(CASE WHEN TB.TabPath <> '' THEN TB.TabPath + '/' Else '' END) + g.PrefixURL + '/' + f.PrefixURL + '/' + t.URL + '/' as URL, 0 as Archived,-1 as OtherId,0 as URLType 
+            FROM {databaseOwner}[{objectQualifier}activeforums_Topics] as t
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] as ft ON ft.TopicId = t.TopicId
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] as f ON f.ForumId = ft.ForumId
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Groups] as g ON g.ForumGroupId = f.ForumGroupId
+			INNER JOIN (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(t.TabPath,'//','') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND ms.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
+			ON f.ModuleId = TB.ModuleId
+		WHERE tb.PortalID = @PortalId AND ISNULL(g.PrefixURL,'') <> '' AND ISNULL(f.PrefixURL,'') <> '' AND  ISNULL(t.URL,'') <> '' 
+
+        UNION
+
+		SELECT tb.TabID,m.ModuleId,g.ForumGroupId,f.ForumId,-1, 
+			(CASE WHEN s.SettingValue <> '' THEN s.SettingValue + '/' Else '' END) + g.PrefixURL + '/' + f.PrefixURL + '/' as URL, 0 as Archived,-1,0 
+			FROM {databaseOwner}[{objectQualifier}activeforums_Forums] as f
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Groups] as g ON g.ForumGroupId = f.ForumGroupId
+			INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] as s ON s.ModuleId = f.ModuleId AND s.SettingName = 'URLBASE'
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] as m ON m.ModuleID = f.ModuleId
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] as tb ON tb.TabId = m.TabID
+		WHERE tb.PortalID = @PortalId AND ISNULL(g.PrefixURL,'') <> '' AND ISNULL(f.PrefixURL,'') <> ''
+		UNION
+        
+		SELECT tb.TabID,tb.ModuleId, g.ForumGroupId,f.ForumId,-1,
+			(CASE WHEN TB.TabPath <> '' THEN TB.TabPath + '/' Else '' END) + g.PrefixURL + '/' + f.PrefixURL + '/' as URL, 0 as Archived,-1 as OtherId,0 as URLType 
+			FROM {databaseOwner}[{objectQualifier}activeforums_Forums] as f
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Groups] as g ON g.ForumGroupId = f.ForumGroupId
+			INNER JOIN (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(t.TabPath,'//','') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND MS.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
+			ON f.ModuleId = TB.ModuleId
+		WHERE tb.PortalID = @PortalId AND ISNULL(g.PrefixURL,'') <> '' AND ISNULL(f.PrefixURL,'') <> '' 
+
+		UNION
+		SELECT tb.TabID,m.ModuleId,g.ForumGroupId,-1,-1, 
+			(CASE WHEN s.SettingValue <> '' THEN s.SettingValue + '/' Else '' END) + g.PrefixURL + '/' as URL, 0 as Archived,-1,0 
+            FROM {databaseOwner}[{objectQualifier}activeforums_Groups] as g 
+			INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] as s ON s.ModuleId = g.ModuleId AND s.SettingName = 'URLBASE'
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] as m ON m.ModuleID = g.ModuleId
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] as tb ON tb.TabId = m.TabID
+		WHERE tb.PortalID = @PortalId AND ISNULL(g.PrefixURL,'') <> ''
+		UNION
+        
+		SELECT tb.TabID,tb.ModuleId, g.ForumGroupId,-1,-1,
+			(CASE WHEN TB.TabPath <> '' THEN TB.TabPath + '/' Else '' END) + g.PrefixURL + '/' as URL, 0 as Archived,-1 as OtherId,0 as URLType 
+			FROM {databaseOwner}[{objectQualifier}activeforums_Groups] as g 
+			INNER JOIN (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(t.TabPath,'//','') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND MS.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
+			ON g.ModuleId = TB.ModuleId
+		WHERE tb.PortalID = @PortalId AND ISNULL(g.PrefixURL,'') <> '' 
+
+		UNION
+		SELECT tb.TabID,m.ModuleId,-1,-1,-1, 
+			(CASE WHEN s.SettingValue <> '' THEN s.SettingValue + '/' Else '' END) as URL, 0 as Archived,-1,0 
+            FROM {databaseOwner}[{objectQualifier}ModuleSettings] as s 
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] as m ON m.ModuleID = s.ModuleId AND s.SettingName = 'URLBASE'
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] as tb ON tb.TabId = m.TabID
+		WHERE tb.PortalID = @PortalId AND s.SettingValue <> ''
+		UNION
+		
+		SELECT tb.TabID,tb.ModuleId, -1,-1,-1,
+			(CASE WHEN TB.TabPath <> '' THEN TB.TabPath + '/' Else '' END) as URL, 0 as Archived,-1 as OtherId,0 as URLType 
+			FROM (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(t.TabPath,'//','') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND ms.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
+		WHERE tb.PortalID = @PortalId  
+
+		UNION
+		SELECT m.TabID,m.ModuleID,u.ForumGroupId,u.ForumId,u.TopicId, u.URL, 1 as Archived,-1,0 
+            FROM {databaseOwner}[{objectQualifier}activeforums_URL] as u
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Groups] as g ON u.ForumGroupId = g.ForumGroupId
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] as m ON m.ModuleID = g.ModuleId
+		WHERE u.PortalId = @PortalId
+		UNION
+		SELECT TabId, ModuleId,-1 as ForumGroupId,-1 as ForumId,-1 as TopicId, 
+			(CASE WHEN UrlBase <> '' THEN UrlBase + '/' Else '' END) + UrlOther + '/' + v.viewname + '/' as URL,0 as Archived,v.id,1 from (
+			SELECT m.TabId, ss.ModuleId, SettingValue,SettingName FROM {databaseOwner}[{objectQualifier}ModuleSettings] as ss
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] as m ON m.ModuleID = ss.ModuleId
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] as tb ON tb.TabId = m.TabID
+			WHERE (SettingName = 'URLBASE' OR SettingName = 'URLOTHER') AND tb.PortalID = @PortalId
+		) as s 
+		PIVOT (MAX(SettingValue) for SettingName in (urlbase,UrlOther)) as pu,@views as v
+		UNION
+		SELECT TabId, pu.ModuleId,-1 as ForumGroupId,-1 as ForumId,-1 as TopicId,
+		 (CASE WHEN UrlBase <> '' THEN UrlBase + '/' Else '' END) + URLCATS + '/' + REPLACE(LOWER(t.TagName),' ','-') + '/' as URL,0 as Archived,t.TagId,2 from (
+			SELECT m.TabId, ss.ModuleId, SettingValue,SettingName FROM {databaseOwner}[{objectQualifier}ModuleSettings] as ss
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] as m ON m.ModuleID = ss.ModuleId
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] as tb ON tb.TabId = m.TabID
+			WHERE (SettingName = 'URLBASE' OR SettingName = 'URLCATS') AND tb.PortalID = @PortalId
+		) as s 
+		PIVOT (MAX(SettingValue) for SettingName in (urlbase,URLCATS)) as pu
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Tags] as t ON t.ModuleId = pu.ModuleId
+		UNION
+		SELECT TabId, pu.ModuleId,-1 as ForumGroupId,-1 as ForumId,-1 as TopicId,
+		 (CASE WHEN UrlBase <> '' THEN UrlBase + '/' Else '' END) + URLTAGS + '/' + REPLACE(LOWER(t.TagName),' ','-') + '/' as URL,0 as Archived,t.TagId,3 from (
+			SELECT m.TabId, ss.ModuleId, SettingValue,SettingName FROM {databaseOwner}[{objectQualifier}ModuleSettings] as ss
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] as m ON m.ModuleID = ss.ModuleId
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] as tb ON tb.TabId = m.TabID
+			WHERE (SettingName = 'URLBASE' OR SettingName = 'URLTAGS') AND tb.PortalID = @PortalId
+		) as s 
+		PIVOT (MAX(SettingValue) for SettingName in (urlbase,URLTAGS)) as pu
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Tags] as t ON t.ModuleId = pu.ModuleId
+        UNION 
+        SELECT DISTINCT tb.TabID,m.ModuleId, g.ForumGroupId,f.ForumId ,COALESCE(t.TopicId, r.TopicId) AS TopicId, 
+			(CASE WHEN s1.SettingValue <> '' THEN s1.SettingValue + '/' Else '' END) + g.PrefixURL + '/' + f.PrefixURL + '/' + ISNULL(ISNULL(rt.URL,t.URL),'') + '/' + COALESCE('likes',s2.SettingValue) + '/' + LTRIM(STR(c.ContentId)) + '/' as URL, 0 as Archived,c.ContentId AS OtherId,4 as URLType 
+            FROM {databaseOwner}[{objectQualifier}activeforums_Content] as c
+			LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] as t ON t.ContentId = c.ContentId
+			LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] as r ON r.ContentId = c.ContentId
+			LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] as rt ON rt.TopicId = r.TopicId
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] as ft ON ft.TopicId = COALESCE(t.TopicId, r.TopicId)
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] as f ON f.ForumId = ft.ForumId
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Groups] as g ON g.ForumGroupId = f.ForumGroupId
+			INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] as s1 ON s1.ModuleId = f.ModuleId AND s1.SettingName = 'URLBASE'
+			LEFT OUTER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] as s2 ON s2.ModuleId = f.ModuleId AND s2.SettingName = 'URLLIKES'
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] as m ON m.ModuleID = f.ModuleId
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] as tb ON tb.TabId = m.TabID
+		WHERE c.IsDeleted = 0 AND tb.PortalID = @PortalId AND ISNULL(ISNULL(rt.URL,t.URL),'') <> '' AND ISNULL(f.PrefixURL,'') <> ''
+		
+	) as urls
+	WHERE LOWER(urls.URL) = @URL
+GO
+
+/* issue 1557 - begin - forum viewer issues */
+
+/* ---------------------- */
