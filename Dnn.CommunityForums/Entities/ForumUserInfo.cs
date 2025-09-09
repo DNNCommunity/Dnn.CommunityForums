@@ -396,7 +396,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (string.IsNullOrEmpty(this.userPermSet))
                 {
-                    this.userPermSet = string.Join(",", this.UserRoleIds) + "|" + this.UserId + "|" + string.Empty + "|";
+                    this.userPermSet = string.Join(";", this.UserRoleIds);
                     this.UpdateCache();
                 }
 
