@@ -580,7 +580,7 @@ De
   <data name="[RESX:MemberSince].Text" xml:space="preserve">
     <value>Miembro desde</value>
   </data>
-  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
+  <data name="[RESX:Message:EditIntervalNotReached].Text" xml:space="preserve">
     <value>Este foro solo te permite editar una publicación durante {0} minutos desde el momento en que se publicó.</value>
   </data>
   <data name="[RESX:Message].Text" xml:space="preserve">
