@@ -377,11 +377,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                 this.Context.ApplicationInstance.CompleteRequest();
             }
-            else if (!this.canModEdit && ti.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 && DateTime.UtcNow.Subtract(ti.Content.DateCreated).TotalMinutes > this.MainSettings.EditInterval)
+            else if (!this.canModEdit && ti.Content.AuthorId == this.UserId && this.canEdit && !Utilities.HasEditIntervalPassed(editInterval: this.ForumInfo.MainSettings.EditInterval, forumUser: this.ForumUser, forumInfo: this.ForumInfo, postInfo: ti))
             {
                 var im = new InfoMessage
                 {
-                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalReached]"), this.MainSettings.EditInterval) + "</div>",
+                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalNotReached]"), this.MainSettings.EditInterval) + "</div>",
                 };
                 this.plhMessage.Controls.Add(im);
                 this.plhContent.Controls.Clear();
@@ -467,7 +467,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var im = new Controls.InfoMessage
                 {
-                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalReached]"), this.MainSettings.EditInterval.ToString()) + "</div>",
+                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalNotReached]"), this.MainSettings.EditInterval.ToString()) + "</div>",
                 };
                 this.plhMessage.Controls.Add(im);
                 this.plhContent.Controls.Clear();
