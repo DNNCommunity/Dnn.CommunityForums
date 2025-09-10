@@ -98,6 +98,7 @@
             <li>Categories and topic categories were previously handled as tags with an 'isCategory' flag; they are now first-class entities (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1441">Issue 1441</a>)</li>
             <li>Update Web API method security to not require ForumId for certain methods (e.g. user Ban) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1507">Issue 1507</a>)</li>
             <li>Refactor Web API methods security checking to use Role Ids rather than string array of Role names; refactor Topic view model and Topic update panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1526">Issue 1526</a>)</li>
+            <li>Remove old "Core Forums" to "Active Forums" SQL migration script (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1569">Issue 1569</a>)</li>
             <li>09.01.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1543">Issue 1543</a>)</li>
 <!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
