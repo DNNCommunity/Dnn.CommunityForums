@@ -1858,4 +1858,7 @@ From,
   <data name="[RESX:RestoreAll].Text" xml:space="preserve">
     <value>Restore All</value>
   </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Unsubscribe</value>
+  </data>
 </root>

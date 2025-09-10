@@ -1894,4 +1894,7 @@ Van,
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Een tag is een trefwoord of term die is gekoppeld aan de inhoud die u indient. Wanneer u meerdere tags invoert, scheidt u deze met een komma.</value>
   </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Uitschrijven</value>
+  </data>
 </root>

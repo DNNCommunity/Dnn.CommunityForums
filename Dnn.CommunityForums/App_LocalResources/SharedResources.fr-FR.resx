@@ -1855,4 +1855,7 @@ De,
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Une balise est un mot-clé ou un terme associé au contenu que vous soumettez. Lorsque vous saisissez plusieurs balises, séparez-les par une virgule.</value>
   </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Se désabonner</value>
+  </data>
 </root>

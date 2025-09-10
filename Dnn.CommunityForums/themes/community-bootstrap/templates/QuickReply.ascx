@@ -57,9 +57,7 @@
 							<div>[AF:INPUT:CAPTCHA]</div> 
 						</div>
 					[/AF:UI:ANON]
-					<div class="dcf-subscribe mt-2">
-						<div id="divSubscribe" runat="server" />
-					</div> 
+					
 					
 				</div>
 			</div>
