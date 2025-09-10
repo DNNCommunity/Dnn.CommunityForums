@@ -401,11 +401,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                     case "summary":
-                        return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Summary.Length > length ? this.Summary.Substring(0, length) : this.Summary), format);
+                        return PropertyAccess.FormatString(Utilities.EncodeBrackets(System.Web.HttpUtility.HtmlEncode(length > 0 && this.Summary.Length > length ? this.Summary.Substring(0, length) : this.Summary)), format);
                     case "body":
-                        return PropertyAccess.FormatString(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, Utilities.EncodeBrackets(format));
+                        return PropertyAccess.FormatString(Utilities.EncodeBrackets(System.Web.HttpUtility.HtmlEncode(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body)), format);
                     case "bodytitle":
-                        return PropertyAccess.FormatString(Utilities.EncodeBrackets(GetTopicTitle(this.Content.Body)), format);
+                        return PropertyAccess.FormatString(Utilities.EncodeBrackets(System.Web.HttpUtility.HtmlEncode(GetTopicTitle(this.Content.Body))), format);
                     case "link":
                         {
                             string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, this.GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
