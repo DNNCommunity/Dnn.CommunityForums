@@ -152,9 +152,9 @@
 		</div>
     </div>
 
-    <div class="dcf-tools dcf-tools-bottom">
+    <div class="dcf-tools dcf-tools-bottom d-flex align-items-top gap-1">
         <div class="dcf-button-reply">[ADDREPLY]</div>
-        <div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
+        <div class="dcf-subscribe-topic flex-grow-1">[TOPICSUBSCRIBE]</div>
        	<div class="dcf-pager">[PAGER2]</div>
     </div>
 
