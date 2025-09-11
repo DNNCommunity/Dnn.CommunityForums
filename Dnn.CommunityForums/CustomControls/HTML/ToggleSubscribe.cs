@@ -61,11 +61,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("<input id=\"dcf-btn-subs\" type=\"button\" ");
                 if (this.Checked)
                 {
-                    sb.Append("class=\"dcf-btn-subs dcf-btn-unsubscribe dnnSecondaryAction\" value=\"[RESX:Unsubscribe]\" ");
+                    sb.Append("class=\"dcf-btn-subs dnnSecondaryAction\" value=\"[RESX:Unsubscribe]\" ");
                 }
                 else
                 {
-                    sb.Append("class=\"dcf-btn-subs dcf-btn-subscribe dnnPrimaryAction\" value=\"[RESX:Subscribe]\" ");
+                    sb.Append("class=\"dcf-btn-subs dnnPrimaryAction\" value=\"[RESX:Subscribe]\" ");
                 }
 
                 if (this.ToggleMode == 0)
