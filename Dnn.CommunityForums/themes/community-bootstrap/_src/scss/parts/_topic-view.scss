@@ -86,9 +86,11 @@
         cursor:pointer;
     }
 
+    .dcf-subscribe-topic{
+        padding: 0;
+    }
 
-
-    .dcf-quick-reply {
+       .dcf-quick-reply {
         .dcf-subscribe{
             .amaf-chk-subs{
                 margin-right: $spacer-xs;
