@@ -308,7 +308,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.AllowHTML = this.IsHtmlPermitted(this.ForumInfo.FeatureSettings.EditorPermittedUsers, this.IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds));
             }
 
-            sBody = Utilities.CleanString(this.PortalId, this.Request.Form["txtBody"], this.AllowHTML, EditorTypes.TEXTBOX, this.UseFilter, this.AllowScripts, this.ForumModuleId, this.ThemePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
+            sBody = Utilities.CleanString(this.PortalId, CodeParser.ConvertCodeBrackets(this.Request.Form["txtBody"]), this.AllowHTML, EditorTypes.TEXTBOX, this.UseFilter, this.AllowScripts, this.ForumModuleId, this.ThemePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
             ri.Content.AuthorId = this.UserId;
             ri.Content.AuthorName = sUsername;
             ri.Content.Body = sBody;
