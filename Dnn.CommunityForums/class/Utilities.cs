@@ -520,7 +520,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
                     }
 
-                    strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
+                    //strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
                     strMessage = ReplaceNewLineWithHtmlBreakTag(strMessage);
 
                     i = 0;
@@ -546,7 +546,22 @@ namespace DotNetNuke.Modules.ActiveForums
                     strMessage = ReplaceNewLineWithHtmlBreakTag(strMessage);
                 }
 
-                strMessage = EncodeBrackets(strMessage);
+                //strMessage = EncodeBrackets(strMessage);
+            }
+
+            return strMessage;
+        }
+
+        internal static string EncodeCodeBlocks(string text)
+        {
+            string strMessage = text;
+            if (!String.IsNullOrEmpty(strMessage) && (strMessage.ToUpperInvariant().Contains("[CODE]") || strMessage.ToUpperInvariant().Contains("<CODE")))
+            {
+                var pattern = @"[\[<]code[\]>](?<codeblock>(?s:.)*?)[\[<]\/code[\]>]";
+                foreach (Match m in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(strMessage))
+                {
+                    strMessage = strMessage.Replace(m.Value, System.Web.HttpUtility.HtmlEncode(m.Value));
+                }
             }
 
             return strMessage;

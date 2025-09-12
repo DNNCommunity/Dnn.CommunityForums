@@ -620,7 +620,8 @@ namespace DotNetNuke.Modules.ActiveForums
                                 {
                                     if (body.ToUpperInvariant().Contains("<CODE") || body.ToUpperInvariant().Contains("[CODE]"))
                                     {
-                                        body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
+                                        //body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
+                                        body = Utilities.EncodeCodeBlocks(body);
                                     }
                                 }
                                 else

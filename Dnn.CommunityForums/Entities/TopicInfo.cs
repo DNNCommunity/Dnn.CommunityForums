@@ -736,15 +736,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                     return string.Empty;
                 case "bodytitle":
-                    return PropertyAccess.FormatString(Utilities.EncodeBrackets(System.Web.HttpUtility.HtmlEncode(GetTopicTitle(this.Content.Body))), format);
+                    return PropertyAccess.FormatString(Utilities.EncodeBrackets(GetTopicTitle(this.Content.Body)), format);
                 case "summary":
                     return PropertyAccess.FormatString(
-                        Utilities.EncodeBrackets(System.Web.HttpUtility.HtmlEncode(
+                        Utilities.EncodeBrackets(
                         !string.IsNullOrEmpty(this.Summary)
                         ? length > 0 && this.Summary.Length > length ? this.Summary.Substring(0, length) : this.Summary
-                        : length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body)), format);
+                        : length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body), format);
                 case "body":
-                    return PropertyAccess.FormatString(Utilities.EncodeBrackets(System.Web.HttpUtility.HtmlEncode(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body)), format);
+                    return PropertyAccess.FormatString(Utilities.EncodeBrackets(Utilities.EncodeCodeBlocks(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body)), format);
                 case "lastreplyid":
                     return PropertyAccess.FormatString(this.LastReplyId.ToString(), format);
                 case "replycount":

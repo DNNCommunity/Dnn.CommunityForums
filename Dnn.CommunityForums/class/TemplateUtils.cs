@@ -595,7 +595,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-                var objCode = new CodeParser();
                 template = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(template));
             }
 
