@@ -58,11 +58,11 @@
 		<div id="afgrid" class="dcf-topic-posts">
 		
 			[TOPIC]
-			<div class="dcf-topic-post py-3 bg-light mb-4">
+			<div class="dcf-topic-post py-3 pb-5 mb-4 border-bottom border-primary">
 				<div class="d-flex flex-wrap">
 
 			
-						<div class="dcf-topic-info bg-light px-3 pb-2 mb-2 mb-md-0">
+						<div class="dcf-topic-info px-3 pb-2 mb-2 mb-md-0">
 							[DCF:TEMPLATE-PROFILEINFO]
 						</div>
 
@@ -105,11 +105,11 @@
 
 			[/TOPIC]
             [REPLIES]
-			<div class="dcf-topic-post dcf-topic-reply py-3 bg-light mb-4">
+			<div class="dcf-topic-post dcf-topic-reply py-3 pb-5 mb-4 border-bottom border-primary">
 				<a id="[FORUMPOST:POSTID]"></a>
 				<div class="d-flex flex-wrap">
 
-						<div class="dcf-topic-info bg-light px-3 pb-2  mb-2 mb-md-0">
+						<div class="dcf-topic-info px-3 pb-2  mb-2 mb-md-0">
 							[DCF:TEMPLATE-PROFILEINFO]
 						</div>
 
@@ -152,9 +152,9 @@
 		</div>
     </div>
 
-    <div class="dcf-tools dcf-tools-bottom">
+    <div class="dcf-tools dcf-tools-bottom d-flex align-items-top gap-1">
         <div class="dcf-button-reply">[ADDREPLY]</div>
-        <div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
+        <div class="dcf-subscribe-topic flex-grow-1">[TOPICSUBSCRIBE]</div>
        	<div class="dcf-pager">[PAGER2]</div>
     </div>
 
