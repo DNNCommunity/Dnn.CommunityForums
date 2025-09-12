@@ -28,7 +28,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public int ToggleMode { get; set; } = 0;
 
         public int DisplayMode { get; set; } = 0;
-
+        /// <summary>
+        /// 
+        /// ModuleId is the Forum OR the VIEWER ModuleID; if using viewer DO NOT pass the module id of the FORUMS
+        /// </summary>
         public int ModuleId { get; set; } = -1;
 
         public int ForumId { get; set; } = -1;
@@ -42,7 +45,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public int UserId { get; set; } = -1;
 
         public string ImageURL { get; set; } = string.Empty;
-
+        
+        /// <summary>
+        /// 
+        /// ModuleId is the Forum OR the VIEWER ModuleID; if using viewer DO NOT pass the module id of the FORUMS
+        /// </summary>
         public ToggleSubscribe(int moduleId, int forumId, int topicId, int toggleMode)
         {
             this.ToggleMode = toggleMode;

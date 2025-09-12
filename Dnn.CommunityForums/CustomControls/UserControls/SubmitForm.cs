@@ -793,7 +793,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (this.TopicId > 0)
                 {
-                    var subControl = new ToggleSubscribe(this.ForumModuleId, this.ForumInfo.ForumID, this.TopicId, 1);
+                    var subControl = new ToggleSubscribe(this.ModuleId, this.ForumInfo.ForumID, this.TopicId, 1);
                     subControl.Checked = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumInfo.ForumID, this.TopicId);
                     subControl.Text = "[RESX:Subscribe]";
                     sb.Append("<tr><td colspan=\"2\">" + subControl.Render() + "</td></tr>");

@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.divSubscribe.Visible = !this.UserPrefTopicSubscribe; /* if user has preference set for auto subscribe, no need to show them the subscribe option */
                 if (this.divSubscribe.Visible)
                 {
-                    var subControl = new ToggleSubscribe(this.ForumModuleId, this.ForumId, this.TopicId, 1);
+                    var subControl = new ToggleSubscribe(this.ModuleId, this.ForumId, this.TopicId, 1);
                     subControl.Checked = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId, this.TopicId);
                     subControl.Text = "[RESX:Subscribe]";
                     this.divSubscribe.InnerHtml = subControl.Render();
