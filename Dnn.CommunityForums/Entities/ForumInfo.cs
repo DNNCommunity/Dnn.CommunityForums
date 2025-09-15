@@ -818,7 +818,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             propertyName = propertyName.ToLowerInvariant();
             try
             {
-
                 switch (propertyName)
                 {
                     case "forumid":
@@ -889,6 +888,64 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "modlink":
                         var modLink = Utilities.NavigateURL(this.GetTabId(), this.portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={this.ForumID}" });
                         return PropertyAccess.FormatString(modLink, format);
+
+                    case "subscribe-unsubscribe-label":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString(
+                                    !new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId: this.PortalSettings.PortalId, moduleId: this.ModuleId, userId: accessingUser.UserID, forumId: this.ForumID)
+                                        ? Utilities.GetSharedResource("[RESX:Subscribe]")
+                                        : Utilities.GetSharedResource("[RESX:Unsubscribe]"),
+                                    format);
+                            }
+
+                            return string.Empty;
+                        }
+
+                    case "subscribed":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString(
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId: this.PortalSettings.PortalId, moduleId: this.ModuleId, userId: accessingUser.UserID, forumId: this.ForumID)
+                                        ? "true"
+                                        : "false",
+                                    format);
+                            }
+
+                            return string.Empty; 
+                        }
+
+                    case "subscribe-unsubscribe-cssclass":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString(
+                                    !new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId: this.PortalSettings.PortalId, moduleId: this.ModuleId, userId: accessingUser.UserID, forumId: this.ForumID)
+                                        ? "dnnPrimaryAction"
+                                        : "dnnSecondaryAction",
+                                    format);
+                            }
+
+                            return string.Empty; 
+                        }
+
+                    case "subscribeonclick":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString(
+                                    $"javascript:amaf_forumSubscribe({this.ModuleId},{this.ForumID});",
+                                    format);
+                            }
+
+                            return string.Empty;
+                        }
                 }
             }
             catch (Exception ex)

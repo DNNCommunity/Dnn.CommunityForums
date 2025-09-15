@@ -666,7 +666,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ctlQuickReply.ModApprove = this.bModerate;
                     ctlQuickReply.IsTrusted = this.isTrusted;
                     ctlQuickReply.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + this.topic.Subject;
-                    ctlQuickReply.AllowSubscribe = this.Request.IsAuthenticated && this.bSubscribe;
                     ctlQuickReply.AllowHTML = this.topic.Forum.FeatureSettings.AllowHTML;
                     ctlQuickReply.AllowScripts = this.topic.Forum.FeatureSettings.AllowScript;
                     ctlQuickReply.ForumId = this.ForumId;

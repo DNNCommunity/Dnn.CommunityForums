@@ -672,6 +672,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 "[FORUMTOPIC:ACTIONUNLOCKONCLICK",
                 "[FORUMPOST:LIKEONCLICK",
                 "[FORUMPOST:LIKESLINK",
+                "[FORUMTOPIC:SUBSCRIBEONCLICK",
+                "[FORUM:SUBSCRIBEONCLICK",
             };
             tokenPrefixes.ToList().ForEach(tokenPrefix => template = RemovePrefixedToken(template, tokenPrefix));
 
@@ -762,6 +764,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[FORUMICONSM]", "[FORUM:FORUMICONCSS", "[FORUMICONSM]");
 
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[DISPLAYNAME]", "[FORUM:LASTPOSTAUTHORDISPLAYNAMELINK", "[FORUMLASTPOSTAUTHORDISPLAYNAMELINK]", "[FORUM:LASTPOSTDISPLAYNAME]");
+
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[FORUMSUBSCRIBE]", "[FORUM:SUBSCRIBEONCLICK", "[FORUMSUBSCRIBE]");
+
 
             return template;
         }
@@ -994,6 +999,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:ICONLINK:LASTREPLY]", "[FORUMTOPIC:LASTREPLYURL", "[ICONLINK-LASTREPLY]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:ICONLINK:LASTREAD]", "[FORUMTOPIC:LASTREADURL", "[ICONLINK-LASTREAD]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:CONTROL:STATUSICON]", "[FORUMTOPIC:STATUSID", "[TOPICSTATUS]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[TOPICSUBSCRIBE]", "[FORUMTOPIC:SUBSCRIBEONCLICK", "[TOPICSUBSCRIBE]");
             return template;
         }
 

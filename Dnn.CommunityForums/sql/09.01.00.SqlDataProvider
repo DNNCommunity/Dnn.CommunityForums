@@ -2030,7 +2030,7 @@ SELECT TabId, ModuleID, ForumGroupId, ForumId, TopicId, Url,Archived,OtherId,Url
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] as ft ON ft.TopicId = t.TopicId
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] as f ON f.ForumId = ft.ForumId
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Groups] as g ON g.ForumGroupId = f.ForumGroupId
-			INNER JOIN (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(t.TabPath,'//','') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND ms.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
+			INNER JOIN (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(SUBSTRING(t.TabPath,3,LEN(t.TabPath)-2),'//','/') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND ms.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
 			ON f.ModuleId = TB.ModuleId
 		WHERE tb.PortalID = @PortalId AND ISNULL(g.PrefixURL,'') <> '' AND ISNULL(f.PrefixURL,'') <> '' AND  ISNULL(t.URL,'') <> '' 
 
@@ -2050,7 +2050,7 @@ SELECT TabId, ModuleID, ForumGroupId, ForumId, TopicId, Url,Archived,OtherId,Url
 			(CASE WHEN TB.TabPath <> '' THEN TB.TabPath + '/' Else '' END) + g.PrefixURL + '/' + f.PrefixURL + '/' as URL, 0 as Archived,-1 as OtherId,0 as URLType 
 			FROM {databaseOwner}[{objectQualifier}activeforums_Forums] as f
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Groups] as g ON g.ForumGroupId = f.ForumGroupId
-			INNER JOIN (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(t.TabPath,'//','') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND MS.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
+			INNER JOIN (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(SUBSTRING(t.TabPath,3,LEN(t.TabPath)-2),'//','/') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND MS.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
 			ON f.ModuleId = TB.ModuleId
 		WHERE tb.PortalID = @PortalId AND ISNULL(g.PrefixURL,'') <> '' AND ISNULL(f.PrefixURL,'') <> '' 
 
@@ -2067,7 +2067,7 @@ SELECT TabId, ModuleID, ForumGroupId, ForumId, TopicId, Url,Archived,OtherId,Url
 		SELECT tb.TabID,tb.ModuleId, g.ForumGroupId,-1,-1,
 			(CASE WHEN TB.TabPath <> '' THEN TB.TabPath + '/' Else '' END) + g.PrefixURL + '/' as URL, 0 as Archived,-1 as OtherId,0 as URLType 
 			FROM {databaseOwner}[{objectQualifier}activeforums_Groups] as g 
-			INNER JOIN (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(t.TabPath,'//','') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND MS.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
+			INNER JOIN (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(SUBSTRING(t.TabPath,3,LEN(t.TabPath)-2),'//','/') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND MS.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
 			ON g.ModuleId = TB.ModuleId
 		WHERE tb.PortalID = @PortalId AND ISNULL(g.PrefixURL,'') <> '' 
 
@@ -2082,7 +2082,7 @@ SELECT TabId, ModuleID, ForumGroupId, ForumId, TopicId, Url,Archived,OtherId,Url
 		
 		SELECT tb.TabID,tb.ModuleId, -1,-1,-1,
 			(CASE WHEN TB.TabPath <> '' THEN TB.TabPath + '/' Else '' END) as URL, 0 as Archived,-1 as OtherId,0 as URLType 
-			FROM (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(t.TabPath,'//','') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND ms.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
+			FROM (select t.PortalID, t.TabID, CAST(SettingValue as int) AS ModuleId, REPLACE(SUBSTRING(t.TabPath,3,LEN(t.TabPath)-2),'//','/') AS TabPath from {databaseOwner}[{objectQualifier}vw_Modules] m INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON t.TabID = m.TabID INNER JOIN {databaseOwner}[{objectQualifier}ModuleSettings] ms ON ms.ModuleID = m.ModuleID AND ms.SettingName = 'AFForumModuleID' where m.DefinitionName = 'Active Forums Viewer' AND t.IsDeleted = 0 and m.IsDeleted = 0) TB
 		WHERE tb.PortalID = @PortalId  
 
 		UNION
