@@ -29,7 +29,9 @@
                         <div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUM:SUBSCRIBERCOUNT]&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
 
 						<div class="dcf-subscribe-topic">
+
                             [FORUMTOPIC:SUBSCRIBEONCLICK|<input type="button" class="dcf-btn-subs [FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-CSSCLASS]" value="[FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-LABEL]" onclick="{0}" />]
+							
                         </div>
                         <span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
 					
@@ -56,7 +58,7 @@
 				</div>
 			</div>
 		</div>
-	
+
 		<div id="afgrid" class="dcf-topic-posts">
 		
 			[TOPIC]
@@ -157,8 +159,7 @@
     <div class="dcf-tools dcf-tools-bottom d-flex align-items-top gap-1">
         <div class="dcf-button-reply">[ADDREPLY]</div>
         <div class="dcf-subscribe-topic flex-grow-1">
-            [FORUMTOPIC:SUBSCRIBEONCLICK|<input id="amaf-chk-subs" type="checkbox" checked="[FORUMTOPIC:SUBSCRIBED]" class="amaf-chk-subs" onclick="{0}" /><label for="amaf-chk-subs">[RESX:Subscribe]</label>]
-
+            [FORUMTOPIC:SUBSCRIBEONCLICK|<input type="button" class="dcf-btn-subs [FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-CSSCLASS]" value="[FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-LABEL]" onclick="{0}" />]
         </div>
        	<div class="dcf-pager">[PAGER2]</div>
     </div>

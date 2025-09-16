@@ -57,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.PortalId = portalSettings.PortalId;
             this.userInfo = userInfo;
         }
+
         public ForumUserInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             this.portalSettings = portalSettings;
@@ -511,13 +512,40 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        public DotNetNuke.Services.Tokens.CacheLevel Cacheability
+        public bool RunningInViewer
         {
             get
             {
-                return DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
+                return this.PortalSettings.ActiveTab != null && this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
+                    m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) ||
+                    m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase));
             }
         }
+
+        [IgnoreColumn]
+        public int ForumsOrViewerModuleId
+        {
+            get
+            {
+                if (!this.RunningInViewer)
+                {
+                    return this.ModuleId;
+                }
+
+                if (this.PortalSettings.ActiveTab != null)
+                {
+                    foreach (DotNetNuke.Entities.Modules.ModuleInfo module in this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Where(m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) || m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        return module.ModuleID;
+                    }
+                }
+
+                return DotNetNuke.Common.Utilities.Null.NullInteger;
+            }
+        }
+
+        [IgnoreColumn]
+        public DotNetNuke.Services.Tokens.CacheLevel Cacheability => DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
 
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
