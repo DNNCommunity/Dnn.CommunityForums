@@ -174,8 +174,8 @@
     <div class="dcf-tools dcf-tools-bottom">
         <div class="dcf-button-reply">[ADDREPLY]</div>
 		<div class="dcf-subscribe-topic">
-            [FORUMTOPIC:SUBSCRIBEONCLICK|<input id="amaf-chk-subs" type="checkbox" checked="[FORUMTOPIC:SUBSCRIBED]" class="amaf-chk-subs" onclick="{0}" /><label for="amaf-chk-subs">[RESX:Subscribe]</label>]
-        </div>
+            [FORUMTOPIC:SUBSCRIBEONCLICK|<input type="button" class="dcf-btn-subs [FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-CSSCLASS]" value="[FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-LABEL]" onclick="{0}" />]
+		</div>
        	<div class="dcf-pager">[PAGER2]</div>
     </div>
 

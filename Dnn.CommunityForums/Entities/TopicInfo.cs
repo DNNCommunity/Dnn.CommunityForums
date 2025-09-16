@@ -557,6 +557,39 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return css;
         }
 
+        [IgnoreColumn]
+        public bool RunningInViewer
+        {
+            get
+            {
+                return this.Forum.PortalSettings.ActiveTab != null && this.Forum.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
+                    m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) ||
+                    m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        [IgnoreColumn]
+        public int ForumsOrViewerModuleId
+        {
+            get
+            {
+                if (!this.RunningInViewer)
+                {
+                    return this.ModuleId;
+                }
+
+                if (this.Forum.PortalSettings.ActiveTab != null)
+                {
+                    foreach (DotNetNuke.Entities.Modules.ModuleInfo module in this.Forum.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Where(m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) || m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        return module.ModuleID;
+                    }
+                }
+
+                return DotNetNuke.Common.Utilities.Null.NullInteger;
+            }
+        }
+
         /// <inheritdoc/>
         [IgnoreColumn]
         public CacheLevel Cacheability => CacheLevel.notCacheable;
@@ -762,9 +795,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             var bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ReplyRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                             if (this.Forum.FeatureSettings.AllowLikes)
                             {
-                                return PropertyAccess.FormatString(bReply ?
-                                    $"amaf_likePost({this.Forum.ModuleId},{this.Forum.ForumID},{this.ContentId})" : string.Empty,
-                                    format);
+                                return PropertyAccess.FormatString(bReply ? $"amaf_likePost({this.Forum.ForumsOrViewerModuleId},{this.Forum.ForumID},{this.ContentId})" : string.Empty, format);
                             }
                         }
 
@@ -1262,7 +1293,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                  ((this.Author.AuthorId == accessingUser.UserID) && (this.Forum.MainSettings.EditInterval == 0 || DateTime.UtcNow.Subtract(this.Content.DateCreated).TotalMinutes > this.Forum.MainSettings.EditInterval))))
                             {
                                 return PropertyAccess.FormatString(
-                                    $"amaf_quickEdit({this.ModuleId},{this.ForumId},{this.TopicId});",
+                                    $"amaf_quickEdit({this.ForumsOrViewerModuleId},{this.ForumId},{this.TopicId});",
                                     format);
                             }
 
@@ -1277,7 +1308,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                             (this.Author.AuthorId == accessingUser.UserID && !this.Topic.IsLocked)))
                             {
                                 return PropertyAccess.FormatString(
-                                    $"amaf_topicDel({this.ModuleId},{this.ForumId},{this.TopicId});",
+                                    $"amaf_topicDel({this.ForumsOrViewerModuleId},{this.ForumId},{this.TopicId});",
                                     format);
                             }
 
@@ -1292,7 +1323,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                           this.Author.AuthorId == accessingUser.UserID))
                             {
                                 return PropertyAccess.FormatString(
-                                    $"javascript:amaf_openMove({this.ModuleId},{this.ForumId},{this.TopicId});",
+                                    $"javascript:amaf_openMove({this.ForumsOrViewerModuleId},{this.ForumId},{this.TopicId});",
                                     format);
                             }
 
@@ -1306,7 +1337,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             if (!this.IsLocked && bLock && (bModerate || this.Author.AuthorId == accessingUser.UserID))
                             {
                                 return PropertyAccess.FormatString(
-                                    $"javascript:if(confirm('[RESX:Confirm:Lock]')){{amaf_Lock({this.ModuleId},{this.ForumId},{this.TopicId});}};",
+                                    $"javascript:if(confirm('[RESX:Confirm:Lock]')){{amaf_Lock({this.ForumsOrViewerModuleId},{this.ForumId},{this.TopicId});}};",
                                     format);
                             }
 
@@ -1321,7 +1352,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                                            this.Author.AuthorId == accessingUser.UserID))
                             {
                                 return PropertyAccess.FormatString(
-                                    $"javascript:if(confirm('[RESX:Confirm:UnLock]')){{amaf_Lock({this.ModuleId},{this.ForumId},{this.TopicId});}};",
+                                    $"javascript:if(confirm('[RESX:Confirm:UnLock]')){{amaf_Lock({this.ForumsOrViewerModuleId},{this.ForumId},{this.TopicId});}};",
                                     format);
                             }
 
@@ -1337,7 +1368,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                                            this.Author.AuthorId == accessingUser.UserID))
                             {
                                 return PropertyAccess.FormatString(
-                                    $"javascript:if(confirm('[RESX:Confirm:Pin]')){{amaf_Pin({this.ModuleId},{this.ForumId},{this.TopicId});}};",
+                                    $"javascript:if(confirm('[RESX:Confirm:Pin]')){{amaf_Pin({this.ForumsOrViewerModuleId},{this.ForumId},{this.TopicId});}};",
                                     format);
                             }
 
@@ -1352,7 +1383,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                                           this.Author.AuthorId == accessingUser.UserID))
                             {
                                 return PropertyAccess.FormatString(
-                                    $"javascript:if(confirm('[RESX:Confirm:UnPin]')){{amaf_Pin({this.ModuleId},{this.ForumId},{this.TopicId});}};",
+                                    $"javascript:if(confirm('[RESX:Confirm:UnPin]')){{amaf_Pin({this.ForumsOrViewerModuleId},{this.ForumId},{this.TopicId});}};",
                                     format);
                             }
 
@@ -1461,9 +1492,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                             if (bSubscribe && !this.IsLocked)
                             {
-                                return PropertyAccess.FormatString(
-                                    $"javascript:amaf_topicSubscribe({this.ModuleId},{this.ForumId},{this.TopicId});",
-                                    format);
+                                return PropertyAccess.FormatString($"javascript:amaf_topicSubscribe({this.ForumsOrViewerModuleId},{this.ForumId},{this.TopicId});", format);
                             }
 
                             return string.Empty;

@@ -486,7 +486,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             var author = new AuthorInfo(post.PortalId, post.Forum.ModuleId, post.Author.AuthorId);
             if (template.ToString().Contains("[POSTINFO]"))
             {
-                var sPostInfo = TemplateUtils.GetPostInfo(post.ModuleId, author.ForumUser, post.Forum.ThemeLocation, post.Forum.GetIsMod(forumUser), post.Content.IPAddress, author.ForumUser.IsUserOnline, forumUser.CurrentUserType, forumUser.UserId, forumUser.PrefBlockAvatars, forumUser.UserInfo.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
+                var sPostInfo = TemplateUtils.GetPostInfo(post.ForumsOrViewerModuleId, author.ForumUser, post.Forum.ThemeLocation, post.Forum.GetIsMod(forumUser), post.Content.IPAddress, author.ForumUser.IsUserOnline, forumUser.CurrentUserType, forumUser.UserId, forumUser.PrefBlockAvatars, forumUser.UserInfo.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
                 template.Replace("[POSTINFO]", sPostInfo);
             }
 
