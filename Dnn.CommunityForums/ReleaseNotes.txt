@@ -48,16 +48,18 @@
         <h3>
             09.01.00
         </h3>
-<!--
+
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by 
-            <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a> 
+            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>
+            and 
+            <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>. 
+        </p>
+<!--
+               , and
             <a href="https://github.com/nvsai" target="_blank">@nvsai</a>, 
             <a href="https://github.com/ernieblues" target="_blank">@nvsai</a>, and 
-            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>
-               , and
-                <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>
-        </p>
+            <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>
 -->
 <!--
         <p>
@@ -69,11 +71,13 @@
         <ul>
             <li>NEW: Adds Recycle Bin to be able to restore (soft-)deleted topics and replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1531">PR# 1531</a>)</li>
             <li>NEW: Adds an avatar injection service to populate avatars (currently using Gravatar) for forums users who haven't set up their own DNN profile picture/avatar. (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1446">PR# 1446</a>)</li>
+            <li>NEW: Grid controls (Recycle Bin and Subscriptions page) now using DataTables.net JavaScript library for enhanced UI (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1553">PR# 1553</a>)</li>
 <!-- 
             <li>NEW: (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/TBD">PR# TBD</a>)</li>
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
 --> 
             <li>UPDATE: Improved handling of XML & HTML in posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1385">Issue 1385</a>)</li>
+            <li>UPDATE: Changed "subscribe" to tokenized controls in topic and topics views to allow checkboxes or buttons (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1556">Issue 1556</a> & <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1568">Issue 1568</a>)</li>
 
 <!--
             <li>None at this time.</li>
@@ -86,7 +90,8 @@
             <li>FIX: Friendly URLs updated to working correctly with Forum Viewer and/or localized sites (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1557">Issue 1557</a>)</li>
             <li>FIX: Incorrect logic in permissions checking for attachments (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1559">Issue 1559</a>)</li>
             <li>FIX: Non-Admin/Non-Moderator is unable to edit their own post when edit interval/spam control feature used (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1562">Issue 1562</a>)</li>
-           
+            <li>FIX: Subscribe controls not working from viewer module (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1572">Issue 1572</a>)</li>
+            
 <!--
              <li>None at this time.</li>
 -->

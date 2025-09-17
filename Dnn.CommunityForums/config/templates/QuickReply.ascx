@@ -51,11 +51,6 @@
 				</table>
 				<table width="100%" cellspacing="0" cellpadding="4">	
 					<tr>
-						<td align="right" colspan="4"><div id="divSubscribe" runat="server" /></td>
-					</tr>
-				</table>
-				<table width="100%" cellspacing="0" cellpadding="4">	
-					<tr>
 						<td align="center" colspan="3">
 							<div class="amtbwrapper" style="text-align:center;">
 								<div style="margin:0px auto;min-width:50px;max-width:60px;">

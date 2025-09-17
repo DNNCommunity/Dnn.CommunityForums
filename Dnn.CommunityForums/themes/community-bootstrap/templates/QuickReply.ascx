@@ -33,15 +33,6 @@
 								<i class="fa fa-image fa-fw" accesskey="m" onclick="insertCode('[img] [/img]');" onmouseover="window.status='[RESX:ImageDesc]'; return true;" onmouseout="window.status=''; return true;"></i>
 								<i class="fa fa-code fa-fw" accesskey="c" onclick="insertCode('[code] [/code]');" onmouseover="window.status='[RESX:CodeDesc]'; return true;" title='[RESX:CodeDesc]' onmouseout="window.status=''; return true;"></i>
 
-							<!--
-									<input type="button" class="dcf-Button" accesskey="b" name="dcf-Bold" value="[RESX:Bold]" style="font-weight:bold;" onclick="insertCode('[b] [/b]');" onmouseover="window.status='[RESX:BoldDesc]';  return true;" onmouseout="window.status=''; return true;" />
-								<input type="button" class="dcf-Button" accesskey="i" name="dcf-Bold" value="[RESX:Italics]"  style="font-weight:bold;" onclick="insertCode('[i] [/i]');" onmouseover="window.status='[RESX:ItalicsDesc]';  return true;" onmouseout="window.status=''; return true;" />
-								<input type="button" class="dcf-Button" accesskey="u" name="dcf-Bold" value="[RESX:Underline]" style="font-weight:bold;" onclick="insertCode('[u] [/u]');" onmouseover="window.status='[RESX:UnderlineDesc]';  return true;" onmouseout="window.status=''; return true;" />
-								<input type="button" class="dcf-Button" accesskey="q" name="dcf-Bold" value="[RESX:Quote]" style="font-weight:bold;" onclick="insertQuote();" onmouseover="window.status='[RESX:QuoteDesc]';  return true;" onmouseout="window.status=''; return true;" />
-								<input type="button" class="dcf-Button" accesskey="m" name="dcf-Bold" value="[RESX:Image]" style="font-weight:bold;" onclick="insertCode('[img] [/img]');" onmouseover="window.status='[RESX:ImageDesc]';  return true;" onmouseout="window.status=''; return true;" />
-								<input type="button" class="dcf-Button" accesskey="c" name="dcf-Bold" value="[RESX:Code]" style="font-weight:bold;" onclick="insertCode('[code] [/code]');" onmouseover="window.status='[RESX:CodeDesc]';  return true;" title='[RESX:CodeDesc]' onmouseout="window.status=''; return true;" />
-							-->
-								
 							</div>
 							<textarea id="txtBody" name="txtBody" class="dcf-textbox w-100" rows="5"></textarea>
 						</div>

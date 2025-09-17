@@ -49,9 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.dgrdForumSubs.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Forum].Text");
             this.dgrdForumSubs.Columns[5].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:LastPost].Text");
 
-            //this.dgrdTopicSubs.PageIndexChanging += this.TopicSubsGridRow_PageIndexChanging;
             this.dgrdTopicSubs.RowDataBound += this.OnTopicSubsGridRowDataBound;
-            //this.dgrdForumSubs.PageIndexChanging += this.ForumSubsGridRow_PageIndexChanging;
             this.dgrdForumSubs.RowDataBound += this.OnForumSubsGridRowDataBound;
             this.btnSubscribeAll.Click += this.btnSubscribeAll_Click;
         }
@@ -61,20 +59,6 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
             try
             {
-                //int _pageSize = this.MainSettings.PageSize;
-                //if (this.UserInfo.UserID > 0)
-                //{
-                //    _pageSize = this.UserDefaultPageSize;
-                //}
-
-                //if (_pageSize < 5)
-                //{
-                //    _pageSize = 10;
-                //}
-
-                //this.dgrdForumSubs.PageSize = _pageSize;
-                //this.dgrdTopicSubs.PageSize = _pageSize;
-
                 // TODO: Add moderator functionality to edit a user's subscriptions; this currently is just for a user to edit own subscriptions
                 this.UID = this.Request.QueryString[Literals.UserId] != null ? Convert.ToInt32(this.Request.QueryString[Literals.UserId]) : this.UserInfo.UserID;
                 if (this.UserId == this.UID | this.ForumUser.GetIsMod(this.ForumModuleId))
@@ -188,17 +172,5 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
-
-        //protected void ForumSubsGridRow_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        //{
-        //    this.dgrdForumSubs.PageIndex = e.NewPageIndex;
-        //    this.dgrdForumSubs.DataBind();
-        //}
-
-        //protected void TopicSubsGridRow_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        //{
-        //    this.dgrdTopicSubs.PageIndex = e.NewPageIndex;
-        //    this.dgrdTopicSubs.DataBind();
-        //}
     }
 }

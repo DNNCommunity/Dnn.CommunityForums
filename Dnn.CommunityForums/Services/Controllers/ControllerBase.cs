@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     /// <inheritdoc/>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [SupportedModules(Globals.ModuleName + "," + Globals.ModuleName + " Viewer")] /* this MUST match DesktopModule.ModuleName so use new constant */
+    [SupportedModules(Globals.ModuleName + "," + Globals.ModuleName + " Viewer," + Globals.ModuleFriendlyName + "," + Globals.ModuleFriendlyName + " Viewer")] /* this MUST match DesktopModule.ModuleName so use new constant */
     public class ControllerBase<T> : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(T));
