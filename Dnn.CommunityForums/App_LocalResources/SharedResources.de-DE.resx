@@ -814,9 +814,6 @@ Von
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>Dies ist Ihre Standardeinstellung, wenn Sie ein Thema erstellen oder eine Antwort hinzufügen.  Dies hat keine Auswirkungen auf Abonnements auf Forumsebene.</value>
   </data>
-  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>Themen abonnieren</value>
-  </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve">
     <value>Der Forenadministrator hat Ihnen möglicherweise erlaubt, verschiedene Abonnementformen auszuwählen.  Sie können Ihre gewünschte Präferenz auswählen.</value>
   </data>
@@ -1861,5 +1858,8 @@ Von
   </data>
   <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
     <value>Abmelden</value>
+  </data>
+  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
+    <value>Automatisches Abonnieren von "Meine Themen"</value>
   </data>
 </root>

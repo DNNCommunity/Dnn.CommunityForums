@@ -900,9 +900,6 @@
   <data name="[RESX:PrefSubscriptionType].Text" xml:space="preserve">
     <value>Type abonnement</value>
   </data>
-  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>Abonneer op onderwerpen</value>
-  </data>
   <data name="[RESX:Actions:ProfileUpdated].Text" xml:space="preserve">
     <value>Uw profiel is bijgewerkt.</value>
   </data>
@@ -1896,5 +1893,8 @@ Van,
   </data>
   <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
     <value>Uitschrijven</value>
+  </data>
+  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
+    <value>Automatisch abonneren op Mijn onderwerpen</value>
   </data>
 </root>
