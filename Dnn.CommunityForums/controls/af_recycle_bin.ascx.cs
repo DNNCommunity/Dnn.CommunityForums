@@ -125,7 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
             try
             {
-                int _pageSize = this.MainSettings.PageSize;
+                int _pageSize = this.ModuleSettings.PageSize;
                 if (this.UserInfo.UserID > 0)
                 {
                     _pageSize = this.UserDefaultPageSize;

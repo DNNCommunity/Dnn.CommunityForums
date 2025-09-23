@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.SearchResults, SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.SearchResults, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
 
             try
             {
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                     if (topic != null)
                     {
-                        itemTemplate = Utilities.DecodeBrackets(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString());
+                        itemTemplate = Utilities.DecodeBrackets(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString());
                         ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text = itemTemplate;
                     }
                 }
@@ -243,7 +243,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             if (!string.IsNullOrEmpty(itemTemplate) && itemTemplate.Contains("["))
                             {
 
-                                itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
+                                itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), post, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
                                 if (control.GetType().FullName == "System.Web.UI.LiteralControl")
                                 {
                                     ((System.Web.UI.LiteralControl)control).Text = itemTemplate;
@@ -528,7 +528,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindPosts()
         {
-            this.pageSize = (this.UserId > 0) ? this.UserDefaultPageSize : this.MainSettings.PageSize;
+            this.pageSize = (this.UserId > 0) ? this.UserDefaultPageSize : this.ModuleSettings.PageSize;
 
             if (this.pageSize < 5)
             {
@@ -565,7 +565,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             const int maxCacheHours = 1;
 
-            var ds = DataProvider.Instance().Search(this.PortalId, this.ModuleId, this.UserId, this.SearchId, this.rowIndex, this.pageSize, this.SearchText, this.SearchType, this.SearchColumns, this.SearchDays, this.AuthorUserId, this.AuthorUsername, forumsToSearch, this.Tags, this.ResultType, this.Sort, maxCacheHours, this.MainSettings.FullText);
+            var ds = DataProvider.Instance().Search(this.PortalId, this.ModuleId, this.UserId, this.SearchId, this.rowIndex, this.pageSize, this.SearchText, this.SearchType, this.SearchColumns, this.SearchDays, this.AuthorUserId, this.AuthorUsername, forumsToSearch, this.Tags, this.ResultType, this.Sort, maxCacheHours, this.ModuleSettings.FullText);
 
             var dtSummary = (ds != null) ? ds.Tables[0] : null;
 

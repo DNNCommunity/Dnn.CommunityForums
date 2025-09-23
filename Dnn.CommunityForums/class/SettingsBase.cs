@@ -28,15 +28,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class SettingsBase : PortalModuleBase
     {
-        #region Private Members
         private int forumModuleId = -1;
-        private string loadView = string.Empty;
-        private string imagePath = string.Empty;
-        private string @params = string.Empty;
-        private int forumTabId = -1;
-        #endregion
 
-        #region Public Properties
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UserId);
 
         internal string UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ForumModuleId, this.ForumUser);
@@ -45,12 +38,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (this.forumModuleId > 0)
-                {
-                    return this.forumModuleId;
-                }
-
-                return DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ModuleId, this.TabId);
+                return this.forumModuleId > 0
+                    ? this.forumModuleId
+                    : DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ModuleId, this.TabId);
             }
 
             set
@@ -59,31 +49,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public int ForumTabId
-        {
-            get
-            {
-                return this.forumTabId;
-            }
+        public int ForumTabId { get; set; } = -1;
 
-            set
-            {
-                this.forumTabId = value;
-            }
-        }
-
-        public string Params
-        {
-            get
-            {
-                return this.@params;
-            }
-
-            set
-            {
-                this.@params = value;
-            }
-        }
+        public string Params { get; set; } = string.Empty;
 
         public int PageId
         {
@@ -119,14 +87,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool ShowToolbar { get; set; } = true;
 
-        #endregion
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public UserController UserController => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public ForumsDB ForumsDB => throw new NotImplementedException();
-
-        #region Public Properties - User Preferences
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public CurrentUserTypes CurrentUserType => this.ForumUser.CurrentUserType;
@@ -135,31 +100,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public bool UserIsMod => this.ForumUser.GetIsMod(this.ForumModuleId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public string UserDefaultSort
-        {
-            get
-            {
-                if (this.UserId != -1)
-                {
-                    return this.ForumUser.PrefDefaultSort;
-                }
+        public string UserDefaultSort => this.UserId != -1 ? this.ForumUser.PrefDefaultSort : "ASC";
 
-                return "ASC";
-            }
-        }
-
-        public int UserDefaultPageSize
-        {
-            get
-            {
-                if (this.UserId != -1)
-                {
-                    return this.ForumUser.PrefPageSize;
-                }
-
-                return this.MainSettings.PageSize;
-            }
-        }
+        public int UserDefaultPageSize => this.UserId != -1 ? this.ForumUser.PrefPageSize : this.ModuleSettings.PageSize;
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public bool UserPrefHideSigs
@@ -183,83 +126,31 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserPrefHideAvatars
-        {
-            get
-            {
-                if (this.UserId != -1)
-                {
-                    return this.ForumUser.PrefBlockAvatars;
-                }
-
-                return false;
-            }
-        }
+        public bool UserPrefHideAvatars => this.UserId != -1 ? this.ForumUser.PrefBlockAvatars : false;
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserPrefJumpLastPost
-        {
-            get
-            {
-                if (this.UserId != -1)
-                {
-                    return this.ForumUser.PrefJumpLastPost;
-                }
-
-                return false;
-            }
-        }
+        public bool UserPrefJumpLastPost => this.UserId != -1 ? this.ForumUser.PrefJumpLastPost : false;
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserPrefShowReplies
+        public bool UserPrefShowReplies => this.UserId != -1 ? this.ForumUser.PrefDefaultShowReplies : false;
+
+        public bool UserPrefTopicSubscribe => this.UserId != -1 ? this.ForumUser.PrefTopicSubscribe : false;
+
+        public Framework.CDefault BasePage => (Framework.CDefault)this.Page;
+
+        public static DotNetNuke.Modules.ActiveForums.ModuleSettings GetModuleSettings(int moduleId)
         {
-            get
-            {
-                if (this.UserId != -1)
-                {
-                    return this.ForumUser.PrefDefaultShowReplies;
-                }
-
-                return false;
-            }
-        }
-
-        public bool UserPrefTopicSubscribe
-        {
-            get
-            {
-                if (this.UserId != -1)
-                {
-                    return this.ForumUser.PrefTopicSubscribe;
-                }
-
-                return false;
-            }
-        }
-        #endregion
-
-        #region Public ReadOnly Properties
-        public Framework.CDefault BasePage
-        {
-            get
-            {
-                return (Framework.CDefault)this.Page;
-            }
-        }
-
-        public static SettingsInfo GetModuleSettings(int moduleId)
-        {
-            SettingsInfo objSettings = (SettingsInfo)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.MainSettings, moduleId));
+            DotNetNuke.Modules.ActiveForums.ModuleSettings objSettings = (ModuleSettings)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.MainSettings, moduleId));
             if (objSettings == null && moduleId > 0)
             {
-                objSettings = new SettingsInfo { ModuleId = moduleId, MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleId).ModuleSettings };
+                objSettings = new DotNetNuke.Modules.ActiveForums.ModuleSettings { ModuleId = moduleId, MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleId).ModuleSettings };
                 DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.MainSettings, moduleId), objSettings);
             }
 
             return objSettings;
         }
 
-        public SettingsInfo MainSettings
+        public DotNetNuke.Modules.ActiveForums.ModuleSettings ModuleSettings
         {
             get
             {
@@ -268,13 +159,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public string ImagePath
-        {
-            get
-            {
-                return this.Page.ResolveUrl(string.Concat(this.MainSettings.ThemeLocation, "/images"));
-            }
-        }
+        public string ImagePath => this.Page.ResolveUrl(string.Concat(this.ModuleSettings.ThemeLocation, "/images"));
 
         public string GetViewType
         {
@@ -285,55 +170,23 @@ namespace DotNetNuke.Modules.ActiveForums
                     return this.Request.Params[ParamKeys.ViewType].ToUpperInvariant();
                 }
 
-                if (this.Request.Params["view"] != null)
-                {
-                    return this.Request.Params["view"].ToUpperInvariant();
-                }
-
-                return null;
+                return this.Request.Params["view"] != null ? this.Request.Params["view"].ToUpperInvariant() : null;
             }
         }
 
-        public TimeSpan TimeZoneOffset
-        {
-            /* AF now stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback */
-            get
-            {
-                return Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
-            }
-        }
+        // Forums stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback
+        public TimeSpan TimeZoneOffset => Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
 
-        #endregion
-
-        #region Protected Methods
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        protected DateTime GetUserDate(DateTime displayDate)
-        {
-            return displayDate.AddMinutes(this.TimeZoneOffset.TotalMinutes);
-        }
+        protected DateTime GetUserDate(DateTime displayDate) => displayDate.AddMinutes(this.TimeZoneOffset.TotalMinutes);
 
-        #endregion
+        public string NavigateUrl(int tabId) => Utilities.NavigateURL(tabId);
 
-        #region Public Methods
-        public string NavigateUrl(int tabId)
-        {
-            return Utilities.NavigateURL(tabId);
-        }
+        public string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters) => Utilities.NavigateURL(tabId, controlKey, additionalParameters);
 
-        public string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters)
-        {
-            return Utilities.NavigateURL(tabId, controlKey, additionalParameters);
-        }
+        public void RenderMessage(string title, string message) => this.RenderMessage(Utilities.GetSharedResource(title), message, string.Empty, null);
 
-        public void RenderMessage(string title, string message)
-        {
-            this.RenderMessage(Utilities.GetSharedResource(title), message, string.Empty, null);
-        }
-
-        public void RenderMessage(string message, string errorMsg, Exception ex)
-        {
-            this.RenderMessage(Utilities.GetSharedResource("[RESX:Error]"), message, errorMsg, ex);
-        }
+        public void RenderMessage(string message, string errorMsg, Exception ex) => this.RenderMessage(Utilities.GetSharedResource("[RESX:Error]"), message, errorMsg, ex);
 
         public void RenderMessage(string title, string message, string errorMsg, Exception ex)
         {
@@ -383,6 +236,5 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
-        #endregion
     }
 }

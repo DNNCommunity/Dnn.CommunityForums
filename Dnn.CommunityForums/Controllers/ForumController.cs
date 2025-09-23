@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // if now inheriting group settings, remove any previously-defined forum settings
             if (forumInfo.InheritSettings)
             {
-                DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND GroupKey = @1", forumInfo.ModuleId, $"F:{forumInfo.ForumID}");
+                new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKey(forumInfo.ModuleId, $"F:{forumInfo.ForumID}");
             }
 
             // Clear the caches

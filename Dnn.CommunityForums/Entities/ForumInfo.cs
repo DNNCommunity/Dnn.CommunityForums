@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
         private DotNetNuke.Modules.ActiveForums.Entities.IPostInfo lastPostInfo;
         private FeatureSettings featureSettings;
-        private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
+        private DotNetNuke.Modules.ActiveForums.ModuleSettings mainSettings;
         private PortalSettings portalSettings;
         private ModuleInfo moduleInfo;
         private int? subscriberCount;
@@ -547,7 +547,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        public SettingsInfo MainSettings
+        public DotNetNuke.Modules.ActiveForums.ModuleSettings MainSettings
         {
             get
             {
@@ -567,7 +567,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        internal SettingsInfo LoadMainSettings()
+        internal DotNetNuke.Modules.ActiveForums.ModuleSettings LoadMainSettings()
         {
             return this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
         }
@@ -713,7 +713,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        internal string GetForumFolderIcon(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings)
+        internal string GetForumFolderIcon(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.ModuleSettings mainSettings)
         {
             switch (this.GetForumStatusForUser(forumUser))
             {

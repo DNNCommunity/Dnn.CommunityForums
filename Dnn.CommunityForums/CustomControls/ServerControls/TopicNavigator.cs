@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb.ModuleId = this.ForumModuleId;
             tb.TabId = this.ForumTabId;
             tb.PageIndex = this.PageId;
-            tb.PageSize = this.MainSettings.PageSize;
+            tb.PageSize = this.ModuleSettings.PageSize;
             tb.Template = this.ItemTemplate.Text;
 
             // tb.HeaderTemplate = HeaderTemplate.Text

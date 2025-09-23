@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
         private FeatureSettings featureSettings;
-        private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
+        private DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings;
         private PortalSettings portalSettings;
         private ModuleInfo moduleInfo;
         private int? tabId;
@@ -79,10 +79,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string ThemeLocation => Utilities.ResolveUrl(SettingsBase.GetModuleSettings(this.ModuleId).ThemeLocation);
 
         [IgnoreColumn]
-        public bool InheritSecurity => this.PermissionsId == this.MainSettings.DefaultPermissionId;
+        public bool InheritSecurity => this.PermissionsId == this.ModuleSettings.DefaultPermissionId;
 
         [IgnoreColumn]
-        public bool InheritSettings => this.GroupSettingsKey == this.MainSettings.DefaultSettingsKey;
+        public bool InheritSettings => this.GroupSettingsKey == this.ModuleSettings.DefaultSettingsKey;
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
@@ -148,29 +148,29 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        public SettingsInfo MainSettings
+        public DotNetNuke.Modules.ActiveForums.ModuleSettings ModuleSettings
         {
             get
             {
-                if (this.mainSettings == null)
+                if (this.moduleSettings == null)
                 {
-                    this.mainSettings = this.LoadMainSettings();
+                    this.moduleSettings = this.LoadModuleSettings();
                     this.UpdateCache();
                 }
 
-                return this.mainSettings;
+                return this.moduleSettings;
             }
 
             set
             {
-                this.mainSettings = value;
+                this.moduleSettings = value;
                 this.UpdateCache();
             }
         }
 
-        internal SettingsInfo LoadMainSettings()
+        internal DotNetNuke.Modules.ActiveForums.ModuleSettings LoadModuleSettings()
         {
-            return this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
+            return this.moduleSettings = SettingsBase.GetModuleSettings(this.ModuleId);
         }
 
         [IgnoreColumn]

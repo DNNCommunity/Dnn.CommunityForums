@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             try
             {
-                SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(moduleId);
+                ModuleSettings _mainSettings = SettingsBase.GetModuleSettings(moduleId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(forumGroupId, moduleId);
                 if (!string.IsNullOrEmpty(fg.PrefixURL))
                 {
@@ -213,7 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             try
             {
-                SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(moduleId);
+                ModuleSettings _mainSettings = SettingsBase.GetModuleSettings(moduleId);
                 if (!string.IsNullOrEmpty(_mainSettings.PrefixURLBase))
                 {
                     vanityName = _mainSettings.PrefixURLBase + "/" + vanityName;

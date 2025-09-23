@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
             int oldForumId = (int)ti.ForumId;
-            SettingsInfo settings = SettingsBase.GetModuleSettings(ti.ModuleId);
+            ModuleSettings settings = SettingsBase.GetModuleSettings(ti.ModuleId);
             if (settings.URLRewriteEnabled)
             {
                 try

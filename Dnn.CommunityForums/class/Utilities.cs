@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : string.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
-                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
+                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser, requestUri: requestUri, rawUrl: rawUrl);
                 if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
                 {

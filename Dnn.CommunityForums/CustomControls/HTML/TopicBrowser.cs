@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public bool MaintainPage { get; set; } = false;
 
-        private SettingsInfo _mainSettings = null;
+        private ModuleSettings _mainSettings = null;
         private bool _canEdit = false;
 
         public string Render()

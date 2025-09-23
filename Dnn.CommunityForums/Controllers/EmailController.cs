@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 fi.FeatureSettings.EmailNotificationSubjectTemplate :
                 (!string.IsNullOrEmpty(fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate) ?
                     fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate :
-                    SettingsBase.GetModuleSettings(fi.ModuleId).ForumFeatureSettings.EmailNotificationSubjectTemplate);
+                    SettingsBase.GetModuleSettings(fi.ModuleId).DefaultFeatureSettings.EmailNotificationSubjectTemplate);
             var bodyTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(fi.ModuleId, templateType, fi.FeatureSettings.TemplateFileNameSuffix);
             var subject = TemplateUtils.ParseEmailTemplate(subjectTemplate, fi.PortalId, fi.ModuleId, tabId, fi.ForumID, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url, HttpContext.Current.Request.RawUrl);
             var body = TemplateUtils.ParseEmailTemplate(bodyTemplate, fi.PortalId, fi.ModuleId, tabId, fi.ForumID, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url, HttpContext.Current.Request.RawUrl);
@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 fi.FeatureSettings.EmailNotificationSubjectTemplate :
                 (!string.IsNullOrEmpty(fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate) ?
                     fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate :
-                    SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.EmailNotificationSubjectTemplate);
+                    SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.EmailNotificationSubjectTemplate);
             IEnumerable<CultureInfo> userCultures = subs.Select(s => s.UserCulture).Distinct();
             foreach (CultureInfo userCulture in userCultures)
             {

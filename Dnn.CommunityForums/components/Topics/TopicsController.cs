@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
-            var ms = new SettingsInfo { ModuleId = moduleInfo.ModuleID, MainSettings = moduleInfo.ModuleSettings };
+            var ms = new ModuleSettings { ModuleId = moduleInfo.ModuleID, MainSettings = moduleInfo.ModuleSettings };
             /* if not using soft deletes, remove and rebuild entire index;
                note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
                and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
