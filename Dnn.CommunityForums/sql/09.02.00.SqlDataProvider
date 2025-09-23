@@ -44,13 +44,15 @@ GO
 
 CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Settings_Opt1]
     ON {databaseOwner}[{objectQualifier}activeforums_Settings]
-	(	
+	(
 	[ModuleId] ASC,
     [SettingsKey] ASC, 
 	[SettingName] ASC
 	)
     INCLUDE([SettingValue]);
 GO
+
+
 
 /* activeforums_Groups_Delete */
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups_Delete]') AND type in (N'P', N'PC'))
@@ -787,7 +789,7 @@ IF (SELECT ReplyCount FROM {databaseOwner}{objectQualifier}activeforums_Topics W
 If (@TopicsOnly = 1 AND @IsNewTopic = 0) OR (@TopicsOnly = 0)
 	BEGIN
 	IF @AutoSubscribe = 1 AND @AutoSubscribeRoles <> ''
-	BEGIN
+		BEGIN
 		
 			INSERT INTO @subs 
 			(userid, email, topicsubscriber)
@@ -819,6 +821,43 @@ If (@TopicsOnly = 1 AND @IsNewTopic = 0) OR (@TopicsOnly = 0)
 SELECT DISTINCT userid, email, topicsubscriber FROM @subs
 GO
 
+
+/* activeforums_SettingsTable */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_SettingsTable]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}activeforums_SettingsTable]
+GO
+CREATE FUNCTION {databaseOwner}[{objectQualifier}activeforums_SettingsTable](	
+@SettingsKey nvarchar(255)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+SELECT pvt.SettingKey, [ALLOWATTACH],[ALLOWEMOTICONS],[ALLOWHTML],[ALLOWPOSTICON],[ALLOWRSS],[ALLOWSCRIPT],[ALLOWTAGS],[ATTACHCOUNT],[ATTACHMAXHEIGHT],[ATTACHMAXSIZE],[ATTACHMAXWIDTH],[ATTACHSTORE],[ATTACHTYPEALLOWED],[ATTACHUNIQUEFILENAMES],[AUTOSUBSCRIBEENABLED],[AUTOSUBSCRIBENEWTOPICSONLY],[AUTOSUBSCRIBEROLES],[ATTACHINSERTALLOWED],[MAXATTACHHEIGHT],[MAXATTACHWIDTH],[CONVERTINGTOJPEGALLOWED],[AUTOTRUSTLEVEL],[DEFAULTTRUSTLEVEL],[EDITORHEIGHT],[EDITORPERMITTEDUSERS],[EDITORSTYLE],[EDITORTOOLBAR],[EDITORTYPE],[EDITORWIDTH],[EMAILADDRESS],[INDEXCONTENT],[ISMODERATED],[MCADDRESS],[MCADMINNOTIFY],[MCAUTOCREATEUSERS],[MCAUTORESPONSE],[MCENABLED],[MCEOMTAG],[MCEOMTAGREQ],[MCMODTYPE],[MCPOPPASSWORD],[MCPOPSERVER],[MCPOPUSERNAME],[MCREJECTNOTIFY],[MCRESTRICTALIAS],[MCSTRIPHTML],[MCSUBNOTIFY],[MCURL],[MODAPPROVETEMPLATEID],[MODDELETETEMPLATEID],[MODMOVETEMPLATEID],[MODNOTIFYTEMPLATEID],[MODREJECTTEMPLATEID],[PROFILETEMPLATEID],[QUICKREPLYFORMID],[REPLYFORMID],[TOPICFORMID],[TOPICSTEMPLATEID],[TOPICTEMPLATEID],[USEFILTER] from 
+	(
+		SELECT SettingKey, SettingName, SettingValue FROM [dbo].activeforums_Settings 
+	) s PIVOT (MAX(SettingValue) FOR SettingName IN ([ALLOWATTACH],[ALLOWEMOTICONS],[ALLOWHTML],[ALLOWPOSTICON],[ALLOWRSS],[ALLOWSCRIPT],[ALLOWTAGS],[ATTACHCOUNT],[ATTACHMAXHEIGHT],[ATTACHMAXSIZE],[ATTACHMAXWIDTH],[ATTACHSTORE],[ATTACHTYPEALLOWED],[ATTACHUNIQUEFILENAMES],[AUTOSUBSCRIBEENABLED],[AUTOSUBSCRIBENEWTOPICSONLY],[AUTOSUBSCRIBEROLES],[ATTACHINSERTALLOWED],[MAXATTACHHEIGHT],[MAXATTACHWIDTH],[CONVERTINGTOJPEGALLOWED],[AUTOTRUSTLEVEL],[DEFAULTTRUSTLEVEL],[EDITORHEIGHT],[EDITORPERMITTEDUSERS],[EDITORSTYLE],[EDITORTOOLBAR],[EDITORTYPE],[EDITORWIDTH],[EMAILADDRESS],[INDEXCONTENT],[ISMODERATED],[MCADDRESS],[MCADMINNOTIFY],[MCAUTOCREATEUSERS],[MCAUTORESPONSE],[MCENABLED],[MCEOMTAG],[MCEOMTAGREQ],[MCMODTYPE],[MCPOPPASSWORD],[MCPOPSERVER],[MCPOPUSERNAME],[MCREJECTNOTIFY],[MCRESTRICTALIAS],[MCSTRIPHTML],[MCSUBNOTIFY],[MCURL],[MODAPPROVETEMPLATEID],[MODDELETETEMPLATEID],[MODMOVETEMPLATEID],[MODNOTIFYTEMPLATEID],[MODREJECTTEMPLATEID],[PROFILETEMPLATEID],[QUICKREPLYFORMID],[REPLYFORMID],[TOPICFORMID],[TOPICSTEMPLATEID],[TOPICTEMPLATEID],[USEFILTER])) as pvt
+)
+
+GO
+
+
+/*activeforums_ForumsList*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumsList]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_ForumsList]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_ForumsList]
+@PortalId int,
+@ModuleId int
+AS
+SELECT F.*,P.*,s.*,G.GroupName,G.Active as GroupActive, G.Hidden as GroupHidden,ISNULL(g.PrefixURL,'') as GroupPrefixURL,GETUTCDATE() as LastRead from {databaseOwner}{objectQualifier}activeforums_Forums as f INNER JOIN
+	{databaseOwner}{objectQualifier}activeforums_Groups as G ON F.ForumGroupId = G.ForumGroupId INNER JOIN
+	{databaseOwner}{objectQualifier}activeforums_Permissions as P ON P.PermissionsId = f.PermissionsId INNER JOIN
+	{databaseOwner}{objectQualifier}activeforums_SettingsTable('F') as s ON s.SettingKey = f.ForumSettingsKey
+WHERE F.PortalId = @PortalId AND (F.ModuleId = @ModuleId OR @ModuleId=-1)
+ORDER BY G.SortOrder, F.SortOrder
+
+GO
 
 
 /* activeforums_Forums_List */
@@ -921,7 +960,7 @@ DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE Settings
 GO
 
 
-        
+
 /* begin: activeforums_Search_GetSearchItemsFromBegDate */
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]
@@ -953,6 +992,7 @@ INNER JOIN {databaseOwner}{objectQualifier}activeforums_Groups G ON G.ForumGroup
 INNER JOIN {databaseOwner}{objectQualifier}activeforums_settings S ON S.SettingsKey = F.ForumSettingsKey AND S.SettingName = 'INDEXCONTENT'
 WHERE F.Active = 1 AND S.SettingValue = 'true' AND F.ModuleId = @ModuleId 
 GO
+
 
 /* activeforums_Settings_Delete */
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_Delete]') AND type in (N'P', N'PC'))

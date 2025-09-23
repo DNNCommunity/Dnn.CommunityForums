@@ -15,6 +15,13 @@ moduleid: {{Moduleid}}
 requestverificationtoken: {{requestverificationtoken}} 
 cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}}
 
+### test to get a forum list
+GET {{hostname}}/API/ActiveForums/Forum/List
+tabid: {{TabId}}
+moduleid: {{Moduleid}}
+requestverificationtoken: {{requestverificationtoken}} 
+cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}}
+
 ### test to subscribe to a forum
 POST {{hostname}}/API/ActiveForums/Forum/Subscribe
 tabid: {{TabId}}
