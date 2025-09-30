@@ -15,14 +15,15 @@
     <hr />
 
     <div class="dnnClear">
-        <h2 class="muy-importante">Important Upgrade Notes</h2>
+        <h2 class="muy-importante">Important Upgrade Note</h2>
         <p>
-            <strong>VERY IMPORTANT:</strong>The MINIMUM DNN Platform version for this release is now <strong>DNN 9.11</strong>.
+            <strong>VERY IMPORTANT:</strong> The MINIMUM DNN Platform version for this release is now <strong>DNN 9.11</strong>.
+<!--
             <br />
             The release notes will follow, below this <b>important</b> note.
-
+-->
         </p>
-
+<!--
         <blockquote class="dcf-oldnews">
 
             <h2 class="muy-importante">
@@ -37,70 +38,77 @@
             </ul>
 
         </blockquote>
-
+-->
     </div>
     <hr />
     <div class="dnnClear">
         <h2>
             DNN Community Forums Release Notes
         </h2>
-        <hr />
-
         <h3>
-            09.00.03
+            09.01.00
         </h3>
-<!--
+
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by 
-            <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a> 
+            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>
+            and 
+            <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>. 
+        </p>
+<!--
+               , and
             <a href="https://github.com/nvsai" target="_blank">@nvsai</a>, 
             <a href="https://github.com/ernieblues" target="_blank">@nvsai</a>, and 
-            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>
-               , and
-                <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>
-        </p>
+            <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>
 -->
+<!--
         <p>
             What's to follow are all of the relevant updates that have occurred during the development cycle of this release.
         </p>
+-->
 
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-<!--
-              <li>NEW: Convention-based template names (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/477">Issue 477</a>)</li>
-              <li>NEW: Moderators can now see attachments on unapproved topics (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1386">Issue 1386</a>)</li>
-              <li>NEW: Avatar token can contain size, e.g., [FORUMAUTHOR:AVATAR:50] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/421">Issue 421</a>)</li>
-              <li>NEW: "Debounce" topic and forum links to prevent multiple clicks (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1027">Issue 1027</a>)</li>
-              <li>NEW: Move text from email notification template to resource files to facilitate localization (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1454">Issue 1454</a>)</li>
-              <li>NEW: More modern email notification template and UTF8 encoding (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1457">Issue 1457</a>)</li>
-              <li>NEW: Wider quick reply subject text box (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1470">Issue 1470</a>)</li>
-              
-            --> 
-            <li>None at this time.</li>
-        
-            <!--
+            <li>NEW: Adds Recycle Bin to be able to restore (soft-)deleted topics and replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1531">PR# 1531</a>)</li>
+            <li>NEW: Adds an avatar injection service to populate avatars (currently using Gravatar) for forums users who haven't set up their own DNN profile picture/avatar. (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1446">PR# 1446</a>)</li>
+            <li>NEW: Grid controls (Recycle Bin and Subscriptions page) now using DataTables.net JavaScript library for enhanced UI (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1553">PR# 1553</a>)</li>
+<!-- 
+            <li>NEW: (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/TBD">PR# TBD</a>)</li>
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
+--> 
+            <li>UPDATE: Improved handling of XML & HTML in posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1385">Issue 1385</a>)</li>
+            <li>UPDATE: Changed "subscribe" to tokenized controls in topic and topics views to allow checkboxes or buttons (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1556">Issue 1556</a> & <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1568">Issue 1568</a>)</li>
+
+<!--
             <li>None at this time.</li>
-            -->
+-->
         </ul>
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>FIXED: Incorrect URLs in navigation pager when not using friendly URLs (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1537">Issue 1537</a>)</li>
-           
-            <!--
+            <li>FIX: Update indexes on forum/topic tracking tables for uniqueness; upgrade script to detect and remove duplicates, keeping the latest entries (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1434">Issue 1434</a>)</li>
+            <li>FIX: Friendly URLs updated to working correctly with Forum Viewer and/or localized sites (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1557">Issue 1557</a>)</li>
+            <li>FIX: Incorrect logic in permissions checking for attachments (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1559">Issue 1559</a>)</li>
+            <li>FIX: Non-Admin/Non-Moderator is unable to edit their own post when edit interval/spam control feature used (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1562">Issue 1562</a>)</li>
+            <li>FIX: Subscribe controls not working from viewer module (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1572">Issue 1572</a>)</li>
+            
+<!--
              <li>None at this time.</li>
-            -->
+-->
         </ul>
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            
-            <li>09.00.03 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1539">Issue 1539</a>)</li>
-            <!--
+            <li>Remove unused columns from forums table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/792">Issue 792</a>)</li>
+            <li>Categories and topic categories were previously handled as tags with an 'isCategory' flag; they are now first-class entities (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1441">Issue 1441</a>)</li>
+            <li>Update Web API method security to not require ForumId for certain methods (e.g. user Ban) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1507">Issue 1507</a>)</li>
+            <li>Refactor Web API methods security checking to use Role Ids rather than string array of Role names; refactor Topic view model and Topic update panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1526">Issue 1526</a>)</li>
+            <li>Remove old "Core Forums" to "Active Forums" SQL migration script (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1569">Issue 1569</a>)</li>
+            <li>09.01.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1543">Issue 1543</a>)</li>
+<!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
-            -->
+-->
         </ul>
         <hr />
     </div>

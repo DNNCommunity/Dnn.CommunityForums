@@ -454,9 +454,6 @@ De,
   <data name="[RESX:FORUMS].Text" xml:space="preserve">
     <value>Forums</value>
   </data>
-  <data name="[RESX:ForumsTracked].Text" xml:space="preserve">
-    <value>Forums auxquels vous êtes abonné:</value>
-  </data>
   <data name="[RESX:ForumSubscribe:Disabled].Text" xml:space="preserve">
     <value>Les notifications par courriel sont désactivées.</value>
   </data>
@@ -583,7 +580,7 @@ De,
   <data name="[RESX:MemberSince].Text" xml:space="preserve">
     <value>Membre depuis</value>
   </data>
-  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
+  <data name="[RESX:Message:EditIntervalNotReached].Text" xml:space="preserve">
     <value>Ce forums permet seulement l'édition de publications en moins de {0} minutes suite à la publication initiale.</value>
   </data>
   <data name="[RESX:Message].Text" xml:space="preserve">
@@ -1120,14 +1117,8 @@ De,
   <data name="[RESX:Summary].Text" xml:space="preserve">
     <value>Résumé</value>
   </data>
-  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>Une étiquette est un mot clé ou terme associé avec le contenu que vous soumettez</value>
-  </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Étiquettes</value>
-  </data>
-  <data name="[RESX:ThreadsTracked].Text" xml:space="preserve">
-    <value>Sujets auxquels vous êtes abonnés:</value>
   </data>
   <data name="[RESX:ThumbLink].Text" xml:space="preserve">
     <value>Lien vers l'image originale</value>
@@ -1483,9 +1474,6 @@ De,
   <data name="ForumHeader.Text" xml:space="preserve">
     <value>Nom du forum</value>
   </data>
-  <data name="ForumsTracked.Text" xml:space="preserve">
-    <value>Forums que vous suivez:</value>
-  </data>
   <data name="ForumSubscribe.Text" xml:space="preserve">
     <value>M'envoyer un courriel lors de nouvelles publications sur ce forum.</value>
   </data>
@@ -1650,9 +1638,6 @@ De,
   </data>
   <data name="Subscriptions.Text" xml:space="preserve">
     <value>Abonnements</value>
-  </data>
-  <data name="ThreadsTracked.Text" xml:space="preserve">
-    <value>Fils que vous suivez:</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Action complétée</value>
@@ -1846,10 +1831,31 @@ De,
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Merci</value>
   </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Publié:</value>
-  </data>
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Pour gérer les notifications de vos forums, rendez-vous sur :</value>
+  </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar actualisé pour le {0} utilisateur</value>
+  </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Corbeille</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Restaurer</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir restaurer cet article ?</value>
+  </data>
+  <data name="[RESX:EmptyRecycleBin].Text" xml:space="preserve">
+    <value>Corbeille vide</value>
+  </data>
+  <data name="[RESX:RestoreAll].Text" xml:space="preserve">
+    <value>Restaurer tout</value>
+  </data>
+  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
+    <value>Une balise est un mot-clé ou un terme associé au contenu que vous soumettez. Lorsque vous saisissez plusieurs balises, séparez-les par une virgule.</value>
+  </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Se désabonner</value>
   </data>
 </root>

@@ -10,3 +10,8 @@
         border-bottom-width: 1px !important
     }
 }
+
+// Faalback for Bootstrap4
+.gap-1{
+    gap: $spacer-sm;
+}

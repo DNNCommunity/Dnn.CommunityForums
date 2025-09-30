@@ -153,9 +153,6 @@
   <data name="[RESX:AutoTrustLevel].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Niveau de confiance automatique</value>
   </data>
-  <data name="[RESX:AvatarDefault].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Avatar par défaut activé</value>
-  </data>
   <data name="[RESX:AvatarDimensions].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Dimensions de l’avatar</value>
   </data>
@@ -919,10 +916,7 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:System].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Système</value>
   </data>
-  <data name="[RESX:TagClicks].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Clics</value>
-  </data>
-  <data name="[RESX:TagItems].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
+  <data name="[RESX:Items].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Articles</value>
   </data>
   <data name="[RESX:TagName].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
@@ -978,9 +972,6 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   </data>
   <data name="[RESX:Tips:AutoSubscribe].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
     <value>Sélectionnez les rôles qui seront automatiquement souscrits et recevrez des notifications par courriel pour tout nouveau contenu publié sur ce forum.</value>
-  </data>
-  <data name="[RESX:Tips:AvatarDefault].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Activez cette option pour afficher l’avatar par défaut à partir du répertoire themes lorsqu’un utilisateur n’a pas encore spécifié d’avatar.</value>
   </data>
   <data name="[RESX:Tips:AvatarDimensions].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value> Choisissez la hauteur et la largeur maximales des avatars</value>

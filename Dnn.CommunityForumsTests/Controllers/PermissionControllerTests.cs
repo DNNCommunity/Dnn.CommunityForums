@@ -213,6 +213,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         }
 
         [Test]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public void GetRoleIdsFromRoleIdArrayTest()
         {
             // Arrange
@@ -244,7 +245,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetRolesNVCTest()
         {
             // Arrange
-            var portalId = 0;
             var roles = new string[]
             {
                 DotNetNuke.Common.Globals.glbRoleAllUsers,

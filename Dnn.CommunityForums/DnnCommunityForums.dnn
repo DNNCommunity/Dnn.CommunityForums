@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Active Forums" type="Module" version="09.00.03">
+    <package name="Active Forums" type="Module" version="09.01.00">
       <friendlyName>DNN Community Forums</friendlyName>
       <description>DNN Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
@@ -75,7 +75,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>07.00.07,07.00.11,07.00.12,08.00.00,08.01.00,08.02.00,08.02.02,08.02.03,08.02.04,08.02.08,09.00.00</upgradeVersionsList>
+              <upgradeVersionsList>07.00.07,07.00.11,07.00.12,08.00.00,08.01.00,08.02.00,08.02.02,08.02.03,08.02.04,08.02.08,09.00.00,09.01.00</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -86,7 +86,7 @@
             <assembly>
               <name>DotNetNuke.Modules.ActiveForums.dll</name>
               <sourceFileName>bin\DotNetNuke.Modules.ActiveForums.dll</sourceFileName>
-              <version>09.00.03</version>
+              <version>09.01.00</version>
             </assembly>
           </assemblies>
         </component>
@@ -429,10 +429,20 @@
                 <name>09.00.01.SqlDataProvider</name>
                 <version>09.00.01</version>
             </script>
+            <script type="Install">
+                <path>sql</path>
+                <name>09.01.00.SqlDataProvider</name>
+                <version>09.01.00</version>
+            </script>
+            <script type="Install">
+                <path>sql</path>
+                <name>09.01.00.SqlDataProvider</name>
+                <version>09.01.00</version>
+            </script>
             <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version>09.00.01</version>
+              <version>09.01.00</version>
             </script>
           </scripts>
         </component>
@@ -475,9 +485,8 @@
         <component type="Cleanup" version="09.00.00" fileName="09.00.00.txt" />
       </components>
     </package>
-
-    <package name="Active Forums What's New" type="Module" version="09.00.03">
-
+      
+    <package name="Active Forums What's New" type="Module" version="09.01.00">
       <friendlyName>DNN Community Forums What's New</friendlyName>
       <foldername>ActiveForumsWhatsNew</foldername>
       <description>DNN Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
@@ -546,7 +555,7 @@
       </components>
     </package>
 
-    <package name="Active Forums Viewer" type="Module" version="09.00.03">
+    <package name="Active Forums Viewer" type="Module" version="09.01.00">
       <friendlyName>DNN Community Forums Forums Viewer</friendlyName>
       <foldername>ActiveForumsViewer</foldername>
       <description>DNN Community Forums: Display any forum topic view on any page within your site.</description>
@@ -613,6 +622,5 @@
         </component>
       </components>
     </package>
-
   </packages>
 </dotnetnuke>

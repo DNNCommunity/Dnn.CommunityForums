@@ -57,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.PortalId = portalSettings.PortalId;
             this.userInfo = userInfo;
         }
+
         public ForumUserInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             this.portalSettings = portalSettings;
@@ -101,6 +102,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string UserCaption { get; set; }
 
+        public DateTime? AvatarLastRefresh { get; set; }
+
+        public DateTime? AvatarSourceLastModified { get; set; }
+
+        public int? AvatarFileId { get; set; }
+
         [IgnoreColumn]
         public DateTime? DateCreated => this.UserInfo?.CreatedOnDate;
 
@@ -123,8 +130,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool AttachDisabled { get; set; }
 
+        [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string Avatar { get; set; }
 
+        [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public AvatarTypes AvatarType { get; set; }
 
         public bool AvatarDisabled { get; set; }
@@ -386,7 +397,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (string.IsNullOrEmpty(this.userPermSet))
                 {
-                    this.userPermSet = string.Join(",", this.UserRoleIds) + "|" + this.UserId + "|" + string.Empty + "|";
+                    this.userPermSet = string.Join(";", this.UserRoleIds);
                     this.UpdateCache();
                 }
 
@@ -501,13 +512,40 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        public DotNetNuke.Services.Tokens.CacheLevel Cacheability
+        public bool RunningInViewer
         {
             get
             {
-                return DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
+                return this.PortalSettings.ActiveTab != null && this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
+                    m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) ||
+                    m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase));
             }
         }
+
+        [IgnoreColumn]
+        public int ForumsOrViewerModuleId
+        {
+            get
+            {
+                if (!this.RunningInViewer)
+                {
+                    return this.ModuleId;
+                }
+
+                if (this.PortalSettings.ActiveTab != null)
+                {
+                    foreach (DotNetNuke.Entities.Modules.ModuleInfo module in this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Where(m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) || m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        return module.ModuleID;
+                    }
+                }
+
+                return DotNetNuke.Common.Utilities.Null.NullInteger;
+            }
+        }
+
+        [IgnoreColumn]
+        public DotNetNuke.Services.Tokens.CacheLevel Cacheability => DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
 
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {

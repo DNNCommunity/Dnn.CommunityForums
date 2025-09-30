@@ -363,12 +363,6 @@
   <data name="NoProfile.Text" xml:space="preserve">
     <value>Gebruiker heeft geen profiel gemaakt.</value>
   </data>
-  <data name="[RESX:ThreadsTracked].Text" xml:space="preserve">
-    <value>Onderwerpen waarop u bent geabonneerd:</value>
-  </data>
-  <data name="[RESX:ForumsTracked].Text" xml:space="preserve">
-    <value>Forums waarop u bent geabonneerd:</value>
-  </data>
   <data name="Banned.Text" xml:space="preserve">
     <value>Verbannen:</value>
   </data>
@@ -698,9 +692,6 @@
   </data>
   <data name="[RESX:PostIcons:Note].Text" xml:space="preserve">
     <value>Selecteer een icoon voor dit bericht om uw bericht te classificeren.</value>
-  </data>
-  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>Een label is een sleutelwoord welke geassocieerd wordt met de inhoud van uw bericht.</value>
   </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Labels</value>
@@ -1108,7 +1099,7 @@ Van,
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>Dit is uw standaardinstelling wanneer u een onderwerp maakt of een antwoord toevoegt. Dit heeft geen invloed op abonnementen op forumniveau.</value>
   </data>
-  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
+  <data name="[RESX:Message:EditIntervalNotReached].Text" xml:space="preserve">
     <value>Dit forum staat toe dat u uw berichten kunt wijzigen tenminste {0} minuten nadat u het bericht heeft geplaatst.</value>
   </data>
   <data name="[RESX:SubmitVote].Text" xml:space="preserve">
@@ -1663,14 +1654,8 @@ Van,
   <data name="[RESX:SubscribeAllForums].Text" xml:space="preserve">
     <value>Abonneer u op alle forums</value>
   </data>
-  <data name="ForumsTracked.Text" xml:space="preserve">
-    <value>Forums die u volgt:</value>
-  </data>
   <data name="Subscriptions.Text" xml:space="preserve">
     <value>Abonnementen</value>
-  </data>
-  <data name="ThreadsTracked.Text" xml:space="preserve">
-    <value>Berichten die u volgt: </value>
   </data>
   <data name="[RESX:Unresolved].Text" xml:space="preserve">
     <value>Onopgelost</value>
@@ -1885,10 +1870,31 @@ Van,
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Bedankt</value>
   </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Verzonden:</value>
-  </data>
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Om de meldingen van je forum te beheren, ga je naar:</value>
+  </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar vernieuwd voor {0} gebruiker</value>
+  </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Prullenbak</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Herstellen</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>Weet je zeker dat je dit item wilt restaureren?</value>
+  </data>
+  <data name="[RESX:EmptyRecycleBin].Text" xml:space="preserve">
+    <value>Prullenbak legen</value>
+  </data>
+  <data name="[RESX:RestoreAll].Text" xml:space="preserve">
+    <value>Alles herstellen</value>
+  </data>
+  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
+    <value>Een tag is een trefwoord of term die is gekoppeld aan de inhoud die u indient. Wanneer u meerdere tags invoert, scheidt u deze met een komma.</value>
+  </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Uitschrijven</value>
   </data>
 </root>

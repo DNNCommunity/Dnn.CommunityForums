@@ -12,8 +12,9 @@
         <Description>Discussion Forum Module for DNN</Description>
         <Company>dnncommunity.org</Company>
         <Authors>dnncommunity.org</Authors>
-        <FileVersion>09.00.03.00</FileVersion>
-        <AssemblyVersion>09.00.03.00</AssemblyVersion>
+        <FileVersion>09.01.00.00</FileVersion>
+        <AssemblyVersion>09.01.00.00</AssemblyVersion>
+
         <IncludeSymbols>False</IncludeSymbols>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <AnalysisLevel>latest</AnalysisLevel>
@@ -35,7 +36,6 @@
         <None Remove="Properties\**" />
         <None Remove="CustomControls\Resources\TextSuggest.js" />
         <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-        <None Remove="packages.config" />
         <None Remove="CustomControls\Resources\TextSuggest.js" />
     </ItemGroup>
 

@@ -454,9 +454,6 @@ Von
   <data name="[RESX:FORUMS].Text" xml:space="preserve">
     <value>Foren</value>
   </data>
-  <data name="[RESX:ForumsTracked].Text" xml:space="preserve">
-    <value>Foren, in denen Sie abonniert sind:</value>
-  </data>
   <data name="[RESX:ForumSubscribe:Disabled].Text" xml:space="preserve">
     <value>E-Mail-Benachrichtigungen sind deaktiviert.</value>
   </data>
@@ -583,7 +580,7 @@ Von
   <data name="[RESX:MemberSince].Text" xml:space="preserve">
     <value>Mitglied seit</value>
   </data>
-  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
+  <data name="[RESX:Message:EditIntervalNotReached].Text" xml:space="preserve">
     <value>In diesem Forum können Sie Ihren Beitrag nur innerhalb von {0} Minuten ab dem Zeitpunkt bearbeiten, an dem Sie Ihren Beitrag erstellt haben.</value>
   </data>
   <data name="[RESX:Message].Text" xml:space="preserve">
@@ -1123,14 +1120,8 @@ Von
   <data name="[RESX:Summary].Text" xml:space="preserve">
     <value>Zusammenfassung</value>
   </data>
-  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>Ein Tag ist ein Schlüsselwort oder ein Begriff, der mit dem von Ihnen eingereichten Inhalt verknüpft ist.</value>
-  </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Tags</value>
-  </data>
-  <data name="[RESX:ThreadsTracked].Text" xml:space="preserve">
-    <value>Themen, die Sie abonniert haben:</value>
   </data>
   <data name="[RESX:ThumbLink].Text" xml:space="preserve">
     <value>Link zum Originalbild</value>
@@ -1484,9 +1475,6 @@ Von
   <data name="ForumHeader.Text" xml:space="preserve">
     <value>Name des Forums</value>
   </data>
-  <data name="ForumsTracked.Text" xml:space="preserve">
-    <value>Foren, die Sie beobachten:</value>
-  </data>
   <data name="ForumSubscribe.Text" xml:space="preserve">
     <value>Senden Sie mir eine E-Mail, wenn jemand in diesem Forum postet.</value>
   </data>
@@ -1651,9 +1639,6 @@ Von
   </data>
   <data name="Subscriptions.Text" xml:space="preserve">
     <value>Abonnements</value>
-  </data>
-  <data name="ThreadsTracked.Text" xml:space="preserve">
-    <value>Themen, die Sie verfolgen:</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Aktion abgeschlossen</value>
@@ -1850,10 +1835,31 @@ Von
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Vielen Dank</value>
   </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Verschickt:</value>
-  </data>
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>Um Ihre Forenbenachrichtigungen zu verwalten, besuchen Sie bitte:</value>
+  </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar für Benutzer-{0} aktualisiert</value>
+  </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Papierkorb</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Wiederherstellen</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie diesen Artikel wiederherstellen möchten?</value>
+  </data>
+  <data name="[RESX:EmptyRecycleBin].Text" xml:space="preserve">
+    <value>Papierkorb leeren</value>
+  </data>
+  <data name="[RESX:RestoreAll].Text" xml:space="preserve">
+    <value>Alle wiederherstellen</value>
+  </data>
+  <data name="[RESX:Tags:Note].Text" xml:space="preserve">
+    <value>Ein Tag ist ein Schlüsselwort oder ein Begriff, der mit dem Inhalt verknüpft ist, den Sie einreichen. Wenn Sie mehrere Tags eingeben, trennen Sie diese durch ein Komma.</value>
+  </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Abmelden</value>
   </data>
 </root>

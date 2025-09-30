@@ -23,16 +23,46 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Collections;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+
     internal partial class TopicCategoryController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo>
     {
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo> GetForTopic(int topicId)
+        internal void AddCategoryToTopic(int categoryId, int topicId)
         {
-            return this.Find("WHERE TopicId = @0", topicId).Where(t => t.Tag.IsCategory);
+            this.Insert(new TopicCategoryInfo() { CategoryId = categoryId, TopicId = topicId });
+            new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().RecountItems(categoryId);
         }
 
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo> GetForTag(int tagId)
+        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo> GetForTopic(int topicId)
         {
-            return this.Find("WHERE TagId = @0", tagId).Where(t => t.Tag.IsCategory);
+            return this.Find("WHERE TopicId = @0", topicId);
+        }
+
+        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo> GetForCategory(int categoryId)
+        {
+            return this.Find("WHERE CategoryId = @0", categoryId);
+        }
+
+        internal void DeleteForCategory(int categoryId)
+        {
+            this.Delete("WHERE CategoryId = @0", categoryId);
+        }
+
+        internal void DeleteForTopicCategory(int topicId, int categoryId)
+        {
+            this.Delete("WHERE CategoryId = @0 AND TopicId = @1", categoryId, topicId);
+            new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().RecountItems(categoryId);
+        }
+
+        internal void DeleteForTopic(int topicId)
+        {
+            var categoriesToRecount = this.GetForTopic(topicId).Select(x => x.CategoryId).Distinct();
+            this.Delete("WHERE TopicId = @0", topicId);
+            categoriesToRecount.ForEach(categoryId =>
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().RecountItems(categoryId);
+            });
         }
     }
 }

@@ -14,11 +14,14 @@ amaf.resx = {
     Pin: '[RESX:Pin]',
     UnPin: '[RESX:UnPin]',
     DeleteConfirm: '[RESX:Confirm:Delete]',
+    RestoreConfirm: '[RESX:Confirm:Restore]',
     PinConfirm: '[RESX:Confirm:Pin]',
     UnPinConfirm: '[RESX:Confirm:UnPin]',
     LockConfirm: '[RESX:Confirm:Lock]',
     UnLockConfirm: '[RESX:Confirm:UnLock]',
-    TopicLocked: '[RESX:TopicLocked]'
+    TopicLocked: '[RESX:TopicLocked]',
+    Subscribe: '[RESX:Subscribe]',
+    Unsubscribe: '[RESX:Unsubscribe]'
 };
 
 

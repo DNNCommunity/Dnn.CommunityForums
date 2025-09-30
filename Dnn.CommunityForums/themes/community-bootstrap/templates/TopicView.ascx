@@ -28,7 +28,11 @@
                         <div class="dcf-forum-subscribers"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;<span id="af-topicview-topicsubscribercount">[FORUMTOPIC:SUBSCRIBERCOUNT]</span> [RESX:TOPICSUBSCRIBERCOUNT]</div>
                         <div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUM:SUBSCRIBERCOUNT]&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
 
-						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
+						<div class="dcf-subscribe-topic">
+
+                            [FORUMTOPIC:SUBSCRIBEONCLICK|<input type="button" class="dcf-btn-subs [FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-CSSCLASS]" value="[FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-LABEL]" onclick="{0}" />]
+							
+                        </div>
                         <span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
 					
 					</div>
@@ -54,15 +58,15 @@
 				</div>
 			</div>
 		</div>
-	
+
 		<div id="afgrid" class="dcf-topic-posts">
 		
 			[TOPIC]
-			<div class="dcf-topic-post py-3 bg-light mb-4">
+			<div class="dcf-topic-post py-3 pb-5 mb-4 border-bottom border-primary">
 				<div class="d-flex flex-wrap">
 
 			
-						<div class="dcf-topic-info bg-light px-3 pb-2 mb-2 mb-md-0">
+						<div class="dcf-topic-info px-3 pb-2 mb-2 mb-md-0">
 							[DCF:TEMPLATE-PROFILEINFO]
 						</div>
 
@@ -105,11 +109,11 @@
 
 			[/TOPIC]
             [REPLIES]
-			<div class="dcf-topic-post dcf-topic-reply py-3 bg-light mb-4">
+			<div class="dcf-topic-post dcf-topic-reply py-3 pb-5 mb-4 border-bottom border-primary">
 				<a id="[FORUMPOST:POSTID]"></a>
 				<div class="d-flex flex-wrap">
 
-						<div class="dcf-topic-info bg-light px-3 pb-2  mb-2 mb-md-0">
+						<div class="dcf-topic-info px-3 pb-2  mb-2 mb-md-0">
 							[DCF:TEMPLATE-PROFILEINFO]
 						</div>
 
@@ -130,10 +134,6 @@
 								</div>
 								<div class="dcf-post-attachements">
 									[ATTACHMENTS]
-								</div>
-								<div class="dcf-post-meta">
-									[AF:CONTROL:TAGS][TRESX:Tags]: [AF:LABEL:TAGS]
-								[/AF:CONTROL:TAGS]
 								</div>
 								
 							</section>
@@ -156,8 +156,11 @@
 		</div>
     </div>
 
-    <div class="dcf-tools dcf-tools-bottom">
+    <div class="dcf-tools dcf-tools-bottom d-flex align-items-top gap-1">
         <div class="dcf-button-reply">[ADDREPLY]</div>
+        <div class="dcf-subscribe-topic flex-grow-1">
+            [FORUMTOPIC:SUBSCRIBEONCLICK|<input type="button" class="dcf-btn-subs [FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-CSSCLASS]" value="[FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-LABEL]" onclick="{0}" />]
+        </div>
        	<div class="dcf-pager">[PAGER2]</div>
     </div>
 

@@ -18,92 +18,98 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
-
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
     using System;
+    using System.Collections.Generic;
 
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
     internal static class ServicesHelper
     {
-        internal static bool IsAuthorized(int portalId, int moduleId, int forumId, SecureActions permissionRequired, UserInfo userInfo)
+        internal static bool IsAuthorized(PortalSettings portalSettings, int moduleId, int forumId, SecureActions permissionRequired, UserInfo userInfo)
         {
             try
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
                 var roles = new HashSet<int>();
-                switch (permissionRequired)
+                if (permissionRequired is SecureActions.Ban)
                 {
-                    case SecureActions.View:
-                        roles = fi.Security.ViewRoleIds;
-                        break;
-                    case SecureActions.Read:
-                        roles = fi.Security.ReadRoleIds;
-                        break;
-                    case SecureActions.Create:
-                        roles = fi.Security.CreateRoleIds;
-                        break;
-                    case SecureActions.Reply:
-                        roles = fi.Security.ReplyRoleIds;
-                        break;
-                    case SecureActions.Edit:
-                        roles = fi.Security.EditRoleIds;
-                        break;
-                    case SecureActions.Delete:
-                        roles = fi.Security.DeleteRoleIds;
-                        break;
-                    case SecureActions.Lock:
-                        roles = fi.Security.LockRoleIds;
-                        break;
-                    case SecureActions.Pin:
-                        roles = fi.Security.PinRoleIds;
-                        break;
-                    case SecureActions.Attach:
-                        roles = fi.Security.AttachRoleIds;
-                        break;
-                    case SecureActions.Poll:
-                        roles = fi.Security.PollRoleIds;
-                        break;
-                    case SecureActions.Block:
-                        roles = fi.Security.BlockRoleIds;
-                        break;
-                    case SecureActions.Trust:
-                        roles = fi.Security.TrustRoleIds;
-                        break;
-                    case SecureActions.Subscribe:
-                        roles = fi.Security.SubscribeRoleIds;
-                        break;
-                    case SecureActions.Announce:
-                        roles = fi.Security.AnnounceRoleIds;
-                        break;
-                    case SecureActions.Tag:
-                        roles = fi.Security.TagRoleIds;
-                        break;
-                    case SecureActions.Categorize:
-                        roles = fi.Security.CategorizeRoleIds;
-                        break;
-                    case SecureActions.Prioritize:
-                        roles = fi.Security.PrioritizeRoleIds;
-                        break;
-                    case SecureActions.Moderate:
-                        roles = fi.Security.ModerateRoleIds;
-                        break;
-                    case SecureActions.Move:
-                        roles = fi.Security.MoveRoleIds;
-                        break;
-                    case SecureActions.Split:
-                        roles = fi.Security.SplitRoleIds;
-                        break;
-                    case SecureActions.Ban:
-                        roles = fi.Security.BanRoleIds;
-                        break;
-                    default:
-                        return false;
+                    var moduleDefaultSecurity = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId: SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId, moduleId: moduleId);
+                    roles = moduleDefaultSecurity.BanRoleIds;
+                }
+                else
+                {
+                    var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
+                    switch (permissionRequired)
+                    {
+                        case SecureActions.View:
+                            roles = fi.Security.ViewRoleIds;
+                            break;
+                        case SecureActions.Read:
+                            roles = fi.Security.ReadRoleIds;
+                            break;
+                        case SecureActions.Create:
+                            roles = fi.Security.CreateRoleIds;
+                            break;
+                        case SecureActions.Reply:
+                            roles = fi.Security.ReplyRoleIds;
+                            break;
+                        case SecureActions.Edit:
+                            roles = fi.Security.EditRoleIds;
+                            break;
+                        case SecureActions.Delete:
+                            roles = fi.Security.DeleteRoleIds;
+                            break;
+                        case SecureActions.Lock:
+                            roles = fi.Security.LockRoleIds;
+                            break;
+                        case SecureActions.Pin:
+                            roles = fi.Security.PinRoleIds;
+                            break;
+                        case SecureActions.Attach:
+                            roles = fi.Security.AttachRoleIds;
+                            break;
+                        case SecureActions.Poll:
+                            roles = fi.Security.PollRoleIds;
+                            break;
+                        case SecureActions.Block:
+                            roles = fi.Security.BlockRoleIds;
+                            break;
+                        case SecureActions.Trust:
+                            roles = fi.Security.TrustRoleIds;
+                            break;
+                        case SecureActions.Subscribe:
+                            roles = fi.Security.SubscribeRoleIds;
+                            break;
+                        case SecureActions.Announce:
+                            roles = fi.Security.AnnounceRoleIds;
+                            break;
+                        case SecureActions.Tag:
+                            roles = fi.Security.TagRoleIds;
+                            break;
+                        case SecureActions.Categorize:
+                            roles = fi.Security.CategorizeRoleIds;
+                            break;
+                        case SecureActions.Prioritize:
+                            roles = fi.Security.PrioritizeRoleIds;
+                            break;
+                        case SecureActions.Moderate:
+                            roles = fi.Security.ModerateRoleIds;
+                            break;
+                        case SecureActions.Move:
+                            roles = fi.Security.MoveRoleIds;
+                            break;
+                        case SecureActions.Split:
+                            roles = fi.Security.SplitRoleIds;
+                            break;
+                        default:
+                            return false;
+                    }
                 }
 
-                return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(roles, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleNameArray(portalId: portalId, roles: userInfo.Roles));
+                var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalSettings.PortalId, userInfo.UserID);
+                return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(roles, forumUser.UserRoleIds);
             }
             catch (Exception ex)
             {

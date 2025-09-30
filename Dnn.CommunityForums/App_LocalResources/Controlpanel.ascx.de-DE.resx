@@ -258,9 +258,6 @@
   <data name="[RESX:AutoTrustLevel].Text" xml:space="preserve">
     <value>Automatische Vertrauensstufe</value>
   </data>
-  <data name="[RESX:AvatarDefault].Text" xml:space="preserve">
-    <value>Standard-Avatar aktiviert</value>
-  </data>
   <data name="[RESX:AvatarDimensions].Text" xml:space="preserve">
     <value>Avatar-Abmessungen</value>
   </data>
@@ -1021,10 +1018,7 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:System].Text" xml:space="preserve">
     <value>System</value>
   </data>
-  <data name="[RESX:TagClicks].Text" xml:space="preserve">
-    <value>Klicks</value>
-  </data>
-  <data name="[RESX:TagItems].Text" xml:space="preserve">
+  <data name="[RESX:Items].Text" xml:space="preserve">
     <value>Elemente</value>
   </data>
   <data name="[RESX:TagName].Text" xml:space="preserve">
@@ -1080,9 +1074,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   </data>
   <data name="[RESX:Tips:AutoSubscribe].Text" xml:space="preserve">
     <value>Wählen Sie Rollen aus, die automatisch abonniert werden, und erhalten Sie E-Mail-Benachrichtigungen für neue Inhalte, die in diesem Forum veröffentlicht werden.</value>
-  </data>
-  <data name="[RESX:Tips:AvatarDefault].Text" xml:space="preserve">
-    <value>Aktivieren Sie diese Option, um den Standard-Avatar aus dem Themenverzeichnis anzuzeigen, wenn ein Benutzer noch keinen Avatar angegeben hat.</value>
   </data>
   <data name="[RESX:Tips:AvatarDimensions].Text" xml:space="preserve">
     <value> Wählen Sie die maximale Höhe und Breite für Avatare</value>

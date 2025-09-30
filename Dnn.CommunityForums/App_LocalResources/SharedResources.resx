@@ -363,12 +363,6 @@
   <data name="NoProfile.Text" xml:space="preserve">
     <value>User has not created a profile.</value>
   </data>
-  <data name="[RESX:ThreadsTracked].Text" xml:space="preserve">
-    <value>Topics you are subscribed to:</value>
-  </data>
-  <data name="[RESX:ForumsTracked].Text" xml:space="preserve">
-    <value>Forums you are subscribed to:</value>
-  </data>
   <data name="Banned.Text" xml:space="preserve">
     <value>Banned:</value>
   </data>
@@ -700,7 +694,7 @@
     <value>Select a post icon to help classify your topic.</value>
   </data>
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
-    <value>A tag is a keyword or term associated with the content you are submitting.</value>
+    <value>A tag is a keyword or term associated with the content you are submitting. When entering multiple tags, separate them with a comma.</value>
   </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Tags</value>
@@ -1108,7 +1102,7 @@ From,
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>This will be your default setting when you are creating a topic or adding a reply.  This does not affect forum level subscriptions.</value>
   </data>
-  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
+  <data name="[RESX:Message:EditIntervalNotReached].Text" xml:space="preserve">
     <value>This forum only allows you to edit your post within {0} minutes from the time you created your post.</value>
   </data>
   <data name="[RESX:SubmitVote].Text" xml:space="preserve">
@@ -1680,14 +1674,8 @@ From,
   <data name="[RESX:SubscribeAllForums].Text" xml:space="preserve">
     <value>Subscribe to All Forums</value>
   </data>
-  <data name="ForumsTracked.Text" xml:space="preserve">
-    <value>Forums you are tracking:</value>
-  </data>
   <data name="Subscriptions.Text" xml:space="preserve">
     <value>Subscriptions</value>
-  </data>
-  <data name="ThreadsTracked.Text" xml:space="preserve">
-    <value>Threads you are tracking:</value>
   </data>
   <data name="[RESX:Unresolved].Text" xml:space="preserve">
     <value>Unresolved</value>
@@ -1846,13 +1834,31 @@ From,
   <data name="[RESX:ThankYou].Text" xml:space="preserve">
     <value>Thank you,</value>
   </data>
-  <data name="[RESX:Posted].Text" xml:space="preserve">
-    <value>Posted:</value>
-  </data>
   <data name="By.Text" xml:space="preserve">
     <value>By</value>
   </data>
   <data name="[RESX:EmailNotificationMySettingsLinkText].Text" xml:space="preserve">
     <value>To manage your forums notifications, please visit:</value>
+  </data>
+  <data name="[RESX:GravatarRefreshed].Text" xml:space="preserve">
+    <value>Gravatar refreshed for user {0}</value>
+  </data>
+  <data name="[RESX:RecycleBin].Text" xml:space="preserve">
+    <value>Recycle Bin</value>
+  </data>
+  <data name="[RESX:Restore].Text" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="[RESX:Confirm:Restore].Text" xml:space="preserve">
+    <value>Are you sure you wish to restore this item?</value>
+  </data>
+  <data name="[RESX:EmptyRecycleBin].Text" xml:space="preserve">
+    <value>Empty Recycle Bin</value>
+  </data>
+  <data name="[RESX:RestoreAll].Text" xml:space="preserve">
+    <value>Restore All</value>
+  </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Unsubscribe</value>
   </data>
 </root>

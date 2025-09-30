@@ -72,7 +72,33 @@ namespace DotNetNuke.Modules.ActiveForums
 
                                 if (!(tagName == string.Empty))
                                 {
-                                    DataProvider.Instance().Tags_Save(this.PortalId, this.ModuleId, tagId, tagName, 0, 0, 0, -1, false, -1, -1);
+                                    var tagController = new DotNetNuke.Modules.ActiveForums.Controllers.TagController();
+                                    DotNetNuke.Modules.ActiveForums.Entities.TagInfo tag = null;
+                                    if (tagId > 0)
+                                    {
+                                        tag = tagController.GetById(tagId);
+                                    }
+
+                                    if (tag != null)
+                                    {
+                                        tag.TagName = tagName;
+                                        tag.PortalId = this.PortalId;
+                                        tag.ModuleId = this.ModuleId;
+                                        tagController.Update(tag);
+                                        tagController.RecountItems(tag.TagId);
+                                    }
+                                    else
+                                    {
+                                        tag = new DotNetNuke.Modules.ActiveForums.Entities.TagInfo()
+                                        {
+
+                                            TagName = tagName,
+                                            PortalId = this.PortalId,
+                                            ModuleId = this.ModuleId,
+                                            Items = 0,
+                                        };
+                                        tagController.Insert(tag);
+                                    }
                                 }
 
                                 break;
@@ -85,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 int pageSize = Convert.ToInt32(e.Parameters[1]);
                 string sortColumn = e.Parameters[2].ToString();
                 string sort = e.Parameters[3].ToString();
-                this.agTags.Datasource = DataProvider.Instance().Tags_List(this.PortalId, this.ModuleId, false, pageIndex, pageSize, sort, sortColumn, -1, -1);
+                this.agTags.Datasource = DataProvider.Instance().Tags_List(this.PortalId, this.ModuleId, pageIndex, pageSize, sort, sortColumn);
                 this.agTags.Refresh(e.Output);
             }
             catch (Exception ex)
@@ -95,9 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void agTags_ItemBound(object sender, Modules.ActiveForums.Controls.ItemBoundEventArgs e)
         {
-            // e.Item(1) = Server.HtmlEncode(e.Item(1).ToString)
-            // e.Item(2) = Server.HtmlEncode(e.Item(2).ToString)
-            e.Item[4] = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + this.GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
+            e.Item[3] = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + this.GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
         }
         #endregion
 

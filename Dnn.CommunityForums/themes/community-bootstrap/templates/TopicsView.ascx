@@ -21,7 +21,11 @@
 								<div class="dcf-forum-subscribers">
 									<i class="fa fa-envelope fa-fw fa-grey"></i> <span id="af-topicsview-forumsubscribercount">[FORUM:SUBSCRIBERCOUNT]</span> [RESX:FORUMSUBSCRIBERCOUNT]
 								</div>
-								<div class="dcf-subscribe-forum">[FORUMSUBSCRIBE]</div>
+								<div class="dcf-subscribe-forum">
+                                    <span class="afnormal">
+										[FORUM:SUBSCRIBEONCLICK|<input type="button" class="dcf-btn-subs [FORUM:SUBSCRIBE-UNSUBSCRIBE-CSSCLASS]" value="[FORUM:SUBSCRIBE-UNSUBSCRIBE-LABEL]" onclick="{0}" />]
+                                    </span>
+								</div>
 							</div>
 						</div>
 					</div>

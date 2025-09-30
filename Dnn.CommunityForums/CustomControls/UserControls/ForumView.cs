@@ -392,7 +392,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(fi.Security.SubscribeRoleIds, this.ForumUser.UserRoleIds))
                 {
                     bool isSubscribed = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId);
-                    var subControl = new ToggleSubscribe(this.ForumModuleId, fi.ForumID, -1, 0);
+                    var subControl = new ToggleSubscribe(this.ModuleId, fi.ForumID, -1, 0);
                     subControl.Checked = isSubscribed;
                     subControl.DisplayMode = 1;
                     subControl.UserId = this.CurrentUserId;

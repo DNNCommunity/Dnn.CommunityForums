@@ -161,6 +161,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public bool LastPostIsTopic => this.LastReplyId == 0;
 
+        [IgnoreColumn]
         public string LastPostSubject
         {
             get
@@ -221,17 +222,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return this.lastPostInfo;
 
-            // return this.lastPostInfo = this.LastReplyId == 0 ? (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.LastTopicId) : new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetById(this.LastReplyId);
         }
 
-        [ColumnName("LastPostAuthorName")]
-        public string LastPostUserName { get; set; }
+        [IgnoreColumn]
+        public string LastPostUserName => this.LastPost != null && this.LastPost.Content != null ? this.LastPost.Content.AuthorName : string.Empty;
 
-        [ColumnName("LastPostAuthorId")]
-        public int LastPostUserID { get; set; }
+        [IgnoreColumn]
+        public int LastPostUserID => this.LastPost != null && this.LastPost.Content != null ? this.LastPost.Content.AuthorId : DotNetNuke.Common.Utilities.Null.NullInteger;
 
-        [ColumnName("LastPostDate")]
-        public DateTime? LastPostDateTime { get; set; }
+        [IgnoreColumn]
+        public DateTime? LastPostDateTime => this.LastPost != null && this.LastPost.Content != null ? (DateTime)this.LastPost.Content.DateUpdated : DotNetNuke.Common.Utilities.Null.NullDate;
 
         public int PermissionsId { get; set; }
 
@@ -785,6 +785,39 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
+        [IgnoreColumn]
+        public bool RunningInViewer
+        {
+            get
+            {
+                return this.PortalSettings.ActiveTab != null && this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
+                    m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) ||
+                    m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        [IgnoreColumn]
+        public int ForumsOrViewerModuleId
+        {
+            get
+            {
+                if (!this.RunningInViewer)
+                {
+                    return this.ModuleId;
+                }
+
+                if (this.PortalSettings.ActiveTab != null)
+                {
+                    foreach (DotNetNuke.Entities.Modules.ModuleInfo module in this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Where(m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) || m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        return module.ModuleID;
+                    }
+                }
+
+                return DotNetNuke.Common.Utilities.Null.NullInteger;
+            }
+        }
+
         /// <inheritdoc/>
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability => DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
@@ -818,7 +851,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             propertyName = propertyName.ToLowerInvariant();
             try
             {
-
                 switch (propertyName)
                 {
                     case "forumid":
@@ -889,6 +921,62 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "modlink":
                         var modLink = Utilities.NavigateURL(this.GetTabId(), this.portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={this.ForumID}" });
                         return PropertyAccess.FormatString(modLink, format);
+
+                    case "subscribe-unsubscribe-label":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString(
+                                    !new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId: this.PortalSettings.PortalId, moduleId: this.ModuleId, userId: accessingUser.UserID, forumId: this.ForumID)
+                                        ? Utilities.GetSharedResource("[RESX:Subscribe]")
+                                        : Utilities.GetSharedResource("[RESX:Unsubscribe]"),
+                                    format);
+                            }
+
+                            return string.Empty;
+                        }
+
+                    case "subscribed":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString(
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId: this.PortalSettings.PortalId, moduleId: this.ModuleId, userId: accessingUser.UserID, forumId: this.ForumID)
+                                        ? "true"
+                                        : "false",
+                                    format);
+                            }
+
+                            return string.Empty; 
+                        }
+
+                    case "subscribe-unsubscribe-cssclass":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString(
+                                    !new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId: this.PortalSettings.PortalId, moduleId: this.ModuleId, userId: accessingUser.UserID, forumId: this.ForumID)
+                                        ? "dnnPrimaryAction"
+                                        : "dnnSecondaryAction",
+                                    format);
+                            }
+
+                            return string.Empty; 
+                        }
+
+                    case "subscribeonclick":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString($"javascript:amaf_forumSubscribe({this.ForumsOrViewerModuleId},{this.ForumID});", format);
+                            }
+
+                            return string.Empty;
+                        }
                 }
             }
             catch (Exception ex)

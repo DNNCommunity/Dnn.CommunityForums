@@ -60,6 +60,8 @@ namespace DotNetNuke.Modules.ActiveForums
             //ForumsConfig.Sort_PermissionSets_080200();
             //ForumsConfig.Upgrade_PermissionSets_090000();
             //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
+            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();
+
 
 #endif
 
@@ -73,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     this.SocialGroupId = -1;
-                    if (this.Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.GroupId]))
+                    if (this.Request.QueryString[Literals.GroupId] != null && Utilities.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                     {
                         this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
                     }
@@ -87,6 +89,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.MySubscriptions)
                     {
                         ctl = Views.MySubscriptions;
+                    }
+                    else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.RecycleBin)
+                    {
+                        ctl = Views.RecycleBin;
                     }
                     else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.Likes)
                     {
@@ -171,6 +177,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 else if (view.ToUpperInvariant() == Views.MySubscriptions.ToUpperInvariant() && this.Request.IsAuthenticated)
                 {
                     ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/profile_mysubscriptions.ascx"));
+                }
+                else if (view.ToUpperInvariant() == Views.RecycleBin.ToUpperInvariant() && this.Request.IsAuthenticated)
+                {
+                    ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/af_recycle_bin.ascx"));
                 }
                 else if (view.ToUpperInvariant() == "FORUMVIEW")
                 {

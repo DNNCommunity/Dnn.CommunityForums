@@ -666,7 +666,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ctlQuickReply.ModApprove = this.bModerate;
                     ctlQuickReply.IsTrusted = this.isTrusted;
                     ctlQuickReply.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + this.topic.Subject;
-                    ctlQuickReply.AllowSubscribe = this.Request.IsAuthenticated && this.bSubscribe;
                     ctlQuickReply.AllowHTML = this.topic.Forum.FeatureSettings.AllowHTML;
                     ctlQuickReply.AllowScripts = this.topic.Forum.FeatureSettings.AllowScript;
                     ctlQuickReply.ForumId = this.ForumId;
@@ -761,7 +760,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Subscribe Option
             if (this.bSubscribe)
             {
-                var subControl = new ToggleSubscribe(this.ForumModuleId, this.ForumId, this.TopicId, 1);
+                var subControl = new ToggleSubscribe(this.ModuleId, this.ForumId, this.TopicId, 1);
                 subControl.Checked = this.isSubscribedTopic;
                 subControl.Text = "[RESX:Subscribe]";
                 sbOutput.Replace("[TOPICSUBSCRIBE]", subControl.Render());
@@ -817,12 +816,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (this.topic.IsLocked)
                 {
-                    sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-topic-lock-locked-label-" + this.TopicId.ToString() + "\" class=\"afnormal\">[RESX:TopicLocked]</span><a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, @params.ToArray()) + "\" class=\"dnnPrimaryAction dcf-topic-reply-link dcf-topic-reply-locked\">[RESX:AddReply]</a>");
+                    sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-topic-lock-locked-label-" + this.TopicId.ToString() + " afnormal\">[RESX:TopicLocked]</span><a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, @params.ToArray()) + "\" class=\"dnnPrimaryAction dcf-topic-reply-link dcf-topic-reply-locked\">[RESX:AddReply]</a>");
                     sbOutput.Replace("[QUICKREPLY]", "<div class=\"dcf-quickreply-wrapper\" style=\"display:none;\"><asp:placeholder id=\"plhQuickReply\" runat=\"server\" /></div>");
                 }
                 else
                 {
-                    sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-topic-lock-locked-label-" + this.TopicId.ToString() + "\" class=\"afnormal\"></span><a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, @params.ToArray()) + "\" class=\"dnnPrimaryAction dcf-topic-reply-link dcf-topic-reply-unlocked\">[RESX:AddReply]</a>");
+                    sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-topic-lock-locked-label-" + this.TopicId.ToString() + " afnormal\"></span><a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, @params.ToArray()) + "\" class=\"dnnPrimaryAction dcf-topic-reply-link dcf-topic-reply-unlocked\">[RESX:AddReply]</a>");
                     sbOutput.Replace("[QUICKREPLY]", "<div class=\"dcf-quickreply-wrapper\" style=\"display:block;\"><asp:placeholder id=\"plhQuickReply\" runat=\"server\" /></div>");
                 }
             }
@@ -1019,6 +1018,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sOutput = sOutput.Replace(sTopicTemplate, string.Empty);
                 }
             }
+
+            /* this handles token replacement for anything outside of the [TOPIC] or [REPLIES] sections */
+            sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(sOutput), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+            sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(sOutput), this.topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
 
             return sOutput;
         }

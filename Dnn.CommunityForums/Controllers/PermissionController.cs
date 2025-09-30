@@ -369,6 +369,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return roleIds;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         internal static HashSet<int> GetRoleIdsFromRoleIdArray(string[] roles)
         {
             return roles.Select(r => Convert.ToInt32(r)).ToHashSet();
