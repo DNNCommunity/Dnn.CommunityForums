@@ -1,4 +1,4 @@
-# Community Forums Module  
+# DNN Community Forums Module  
 
 ![DNN Community Forums Module Logo](Dnn.CommunityForums/images/Branding/Logo/DNN-Community-Forums-Logo-Horizontal.png?raw=true "DNN Community Forums Module Logo")
 
