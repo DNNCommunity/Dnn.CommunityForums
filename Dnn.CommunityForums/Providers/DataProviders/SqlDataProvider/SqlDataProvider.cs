@@ -403,27 +403,31 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
         #region Settings
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public override void Settings_Delete(int ModuleId, string GroupKey, string SettingName)
         {
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Settings_Delete", ModuleId, GroupKey, SettingName);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public override string Settings_Get(int ModuleId, string GroupKey, string SettingName)
         {
             return Convert.ToString(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Settings_Get", ModuleId, GroupKey, SettingName));
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public override System.Data.IDataReader Settings_List(int ModuleId, string GroupKey)
         {
             return SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Settings_List", ModuleId, GroupKey);
         }
 
-        // KR - grabs all settings for caching
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public override System.Data.IDataReader Settings_ListAll(int ModuleId)
         {
             return SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Settings_ListAll", ModuleId);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public override void Settings_Save(int ModuleId, string GroupKey, string SettingName, string SettingValue)
         {
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Settings_Save", ModuleId, GroupKey, SettingName, SettingValue);

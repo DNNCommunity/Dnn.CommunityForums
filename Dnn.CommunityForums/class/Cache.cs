@@ -366,42 +366,16 @@ namespace DotNetNuke.Modules.ActiveForums
             var ht = new Hashtable();
             if (useCache)
             {
-                object obj = SettingsCacheRetrieve(moduleId, cacheKey);
-                if (obj == null)
+                ht = (Hashtable)SettingsCacheRetrieve(moduleId, cacheKey);
+                if (ht == null)
                 {
-                    IDataReader dr = DataProvider.Instance().Settings_List(moduleId, settingsKey);
-                    while (dr.Read())
-                    {
-                        if (!ht.ContainsKey(dr["SettingName"].ToString()))
-                        {
-                            ht.Add(dr["SettingName"].ToString(), string.Empty);
-                        }
-
-                        ht[dr["SettingName"].ToString()] = dr["SettingValue"].ToString();
-                    }
-
-                    dr.Close();
+                    ht = new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().GetSettingsHashTableForModuleIdSettingsKey(moduleId, settingsKey);
                     SettingsCacheStore(moduleId, cacheKey, ht);
-                }
-                else
-                {
-                    ht = (Hashtable)obj;
                 }
             }
             else
             {
-                IDataReader dr = DataProvider.Instance().Settings_List(moduleId, settingsKey);
-                while (dr.Read())
-                {
-                    if (!ht.ContainsKey(dr["SettingName"].ToString()))
-                    {
-                        ht.Add(dr["SettingName"].ToString(), string.Empty);
-                    }
-
-                    ht[dr["SettingName"].ToString()] = dr["SettingValue"].ToString();
-                }
-
-                dr.Close();
+                ht = new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().GetSettingsHashTableForModuleIdSettingsKey(moduleId, settingsKey);
             }
 
             return ht;

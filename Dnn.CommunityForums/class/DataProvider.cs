@@ -210,14 +210,19 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Settings
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public abstract IDataReader Settings_List(int moduleId, string groupKey);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public abstract IDataReader Settings_ListAll(int moduleId);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public abstract string Settings_Get(int moduleId, string groupKey, string settingName);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public abstract void Settings_Delete(int moduleId, string groupKey, string settingName);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public abstract void Settings_Save(int moduleId, string groupKey, string settingName, string settingValue);
         #endregion
 

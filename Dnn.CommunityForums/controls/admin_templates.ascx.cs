@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(this.ModuleId);
+            ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(this.ModuleId);
             this.txtThemeName.Text = moduleSettings.Theme;
             this.txtTemplateFolder.Text = this.Server.MapPath(moduleSettings.TemplatePath);
         }

@@ -705,7 +705,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[AF:CONTROL:POSTICONS]") && this.ForumInfo.FeatureSettings.AllowPostIcon)
             {
                 template = template.Replace("[AF:UI:FIELDSET:POSTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:PostIcons]</legend><div class=\"affieldsetnote\">[RESX:PostIcons:Note]</div>");
-                template = template.Replace("[AF:CONTROL:POSTICONS]", "<af:posticons id=\"afposticons\" runat=\"server\" Theme=\"" + this.MainSettings.Theme + "\" />");
+                template = template.Replace("[AF:CONTROL:POSTICONS]", "<af:posticons id=\"afposticons\" runat=\"server\" Theme=\"" + this.ModuleSettings.Theme + "\" />");
                 template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", "</fieldset>");
                 /* tokens [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] can now surround post icons to support removing entire section; if using post icons, just remove the tokens*/
                 template = template.Replace("[AF:UI:SECTION:POSTICONS]", string.Empty);
@@ -723,7 +723,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (template.Contains("[AF:CONTROL:EMOTICONS]") && this.ForumInfo.FeatureSettings.AllowEmoticons)
             {
-                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(this.ForumModuleId, this.Page.ResolveUrl(this.MainSettings.ThemeLocation), this.EditorType) + "</fieldset>");
+                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(this.ForumModuleId, this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation), this.EditorType) + "</fieldset>");
             }
             else
             {
@@ -1035,7 +1035,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // not sure why this gets set twice.
             this.txtSubject.CssClass = "aftextbox dcf-topic-edit-subject";
-            string myTheme = this.MainSettings.Theme;
+            string myTheme = this.ModuleSettings.Theme;
             string myThemePath = this.Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + myTheme);
             this.txtSubject.MaxLength = 255;
             this.txtSummary.MaxLength = 2000;

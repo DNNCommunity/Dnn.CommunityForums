@@ -363,7 +363,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static bool CanLinkToProfile(DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        internal static bool CanLinkToProfile(DotNetNuke.Entities.Portals.PortalSettings portalSettings, ModuleSettings moduleSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             if (portalSettings == null)
             {
@@ -380,7 +380,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 portalSettings?.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger &&
                 portalSettings?.UserTabId != -1)
             {
-                var profileVisibility = mainSettings.ProfileVisibility;
+                var profileVisibility = moduleSettings.ProfileVisibility;
 
                 switch (profileVisibility)
                 {
@@ -409,7 +409,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return canLinkToProfile;
         }
 
-        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "")
+        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, ModuleSettings mainSettings, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "")
         {
             if (portalSettings == null)
             {
@@ -537,7 +537,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, userId);
         }
 
-        internal string GetUsersOnline(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        internal string GetUsersOnline(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings mainSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             bool isAdmin = forumUser.IsAdmin || forumUser.IsSuperUser;
             var sb = new StringBuilder();

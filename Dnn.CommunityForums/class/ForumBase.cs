@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public ControlsConfig ControlConfig { get; set; }
 
-        public string ThemePath => this.Page.ResolveUrl(this.MainSettings.ThemeLocation);
+        public string ThemePath => this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation);
 
         public string ForumIds { get; set; } = string.Empty;
 

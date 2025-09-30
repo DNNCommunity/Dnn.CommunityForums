@@ -21,8 +21,10 @@
 namespace DotNetNuke.Modules.ActiveForums.Helpers
 {
     using System;
+    using System.Collections;
     using System.Xml;
 
+    using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
@@ -47,16 +49,18 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     {
                         if (!SettingsBase.GetModuleSettings(module.ModuleID).IsInstalled)
                         {
-                            MoveSettingsForModuleInstanceToTabModuleInstance(module.ModuleID, tabModuleId: module.TabModuleID);
+                            MoveSettingsForModuleInstanceToTabModuleInstance_070011(module.ModuleID, tabModuleId: module.TabModuleID);
                         }
                     }
                 }
             }
         }
 
-        internal static void MoveSettingsForModuleInstanceToTabModuleInstance(int forumModuleId, int tabModuleId)
+        internal static void MoveSettingsForModuleInstanceToTabModuleInstance_070011(int forumModuleId, int tabModuleId)
         {
-            var currSettings = new SettingsInfo { ModuleId = forumModuleId, MainSettings = Settings.GeneralSettings(forumModuleId, "GEN") };
+            var ht = new Hashtable();
+            new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().GetSettingsForModuleIdSettingsKey(forumModuleId, "GEN").ForEach(s => ht.Add(s.SettingName, s.SettingValue));
+            var currSettings = new ModuleSettings { ModuleId = forumModuleId, MainSettings = ht };
 
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PageSize, currSettings.PageSize.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.UserNameDisplay, currSettings.UserNameDisplay);

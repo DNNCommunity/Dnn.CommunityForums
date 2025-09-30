@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 string templatePathFileName = Globals.TemplatesPath + templateInfo.FileName;
 
-                SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(moduleId);
+                ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(moduleId);
                 templatePathFileName = moduleSettings.TemplatePath + templateInfo.FileName;
                 if (!System.IO.Directory.Exists(Utilities.MapPath(moduleSettings.TemplatePath)))
                 {
@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public void Template_Delete(int moduleId, Enums.TemplateType templateType, string templateFileNameSuffix)
         {
             string fileNameBase = templateType.ToString().ToLowerInvariant();
-            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(moduleId);
+            ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(moduleId);
             try
             {
                 if (!string.IsNullOrEmpty(templateFileNameSuffix))
@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             string sTemplate = string.Empty;
             string fileName = string.Empty;
             string templateFilePathFileName = string.Empty;
-            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(moduleId);
+            ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(moduleId);
             templateBaseFileName = templateBaseFileName.ToLowerInvariant();
             string cacheKey = string.Format(CacheKeys.Template, moduleId, templateBaseFileName, templateFileNameSuffix);
             object obj = null;

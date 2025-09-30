@@ -218,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (!Utilities.HasFloodIntervalPassed(floodInterval: this.ForumInfo.MainSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: forumInfo))
             {
                 Controls.InfoMessage im = new Controls.InfoMessage();
-                im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), this.MainSettings.FloodInterval) + "</div>";
+                im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), this.ModuleSettings.FloodInterval) + "</div>";
                 this.plhMessage.Controls.Add(im);
                 return;
             }
@@ -259,7 +259,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sUsername = string.Empty;
             if (this.Request.IsAuthenticated)
             {
-                switch (this.MainSettings.UserNameDisplay.ToUpperInvariant())
+                switch (this.ModuleSettings.UserNameDisplay.ToUpperInvariant())
                 {
                     case "USERNAME":
                         sUsername = this.UserInfo.Username.Trim(' ');
