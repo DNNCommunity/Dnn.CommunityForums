@@ -811,9 +811,6 @@ De,
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>Ceci sera votre réglage par défault lors de la création d'un sujet ou l'ajout d'une réponse. Ceci n'affecte pas l'abonnement au niveau du forum.</value>
   </data>
-  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>S'abonner à des sujets</value>
-  </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve">
     <value>L'administrateur du forum peut vous avoir permis de choisir différents formulaires pour les abonnements. Vous pouvez choisir votre préférence ici.</value>
   </data>
@@ -1857,5 +1854,8 @@ De,
   </data>
   <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
     <value>Se désabonner</value>
+  </data>
+  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
+    <value>S’abonner automatiquement à Mes sujets</value>
   </data>
 </root>

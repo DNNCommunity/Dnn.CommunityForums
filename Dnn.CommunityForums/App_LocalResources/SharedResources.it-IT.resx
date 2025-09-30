@@ -814,9 +814,6 @@ Da
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>Questa sarà l'impostazione predefinita quando crei un argomento o aggiungi una risposta.  Ciò non influisce sulle iscrizioni a livello di forum.</value>
   </data>
-  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>Iscriviti agli argomenti</value>
-  </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve">
     <value>L'amministratore del forum potrebbe averti permesso di scegliere diverse forme di iscrizione.  È possibile selezionare la preferenza desiderata.</value>
   </data>
@@ -1860,5 +1857,8 @@ Da
   </data>
   <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
     <value>Disiscrizione</value>
+  </data>
+  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
+    <value>Iscrizione automatica ai miei argomenti</value>
   </data>
 </root>

@@ -904,7 +904,7 @@
     <value>Subscription Type</value>
   </data>
   <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>Subscribe to Topics</value>
+    <value>Auto-Subscribe to My Topics</value>
   </data>
   <data name="[RESX:Actions:ProfileUpdated].Text" xml:space="preserve">
     <value>Your profile has been updated.</value>
