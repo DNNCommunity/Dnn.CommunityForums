@@ -88,6 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.View)]
         public HttpResponseMessage SubscriberCount(int forumId, int topicId)
         {
             try
@@ -118,6 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.View)]
         public HttpResponseMessage SubscriberCountString(int forumId, int topicId)
         {
             try

@@ -87,6 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <remarks>https://dnndev.me/API/ActiveForums/Like/Get/1/1</remarks>
         [HttpGet]
         [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.View)]
         public HttpResponseMessage Get(int forumId, int contentId)
         {
             try
