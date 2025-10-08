@@ -304,9 +304,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="forumId">Forum ID</param>
         /// <returns>Success status</returns>
         [HttpDelete]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Delete(int forumId)
         {
             try
@@ -337,13 +336,20 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage List()
         {
             try
             {
+                var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
                 var forums = new List<DotNetNuke.Modules.ActiveForums.ViewModels.Forum>();
-                new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId: this.ForumModuleId).ForEach(f => forums.Add(new DotNetNuke.Modules.ActiveForums.ViewModels.Forum(f)));
+                new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId: this.ForumModuleId).ForEach(f =>
+                {
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security.ViewRoleIds, forumUser.UserRoleIds))
+                    {
+                        forums.Add(new DotNetNuke.Modules.ActiveForums.ViewModels.Forum(f));
+                    }
+                });
+
                 return this.Request.CreateResponse(HttpStatusCode.OK, forums);
             }
             catch (Exception ex)
@@ -358,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Moderators(int forumId)
         {
             try
@@ -378,7 +384,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage Subscriptions(int userId)
         {
             try
@@ -403,7 +408,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage Settings(int forumId)
         {
             try
@@ -433,7 +437,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage Security(int forumId)
         {
             try
