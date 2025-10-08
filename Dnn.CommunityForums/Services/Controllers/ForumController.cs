@@ -75,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <remarks>https://dnndev.me/API/ActiveForums/Forum/SubscriberCount?ForumId=xxx</remarks>
         [HttpGet]
         [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.View)]
         public HttpResponseMessage SubscriberCount(int forumId)
         {
             try
@@ -99,6 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <remarks>https://dnndev.me/API/ActiveForums/Forum/SubscriberCountString?ForumId=xxx</remarks>
         [HttpGet]
         [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.View)]
         public HttpResponseMessage SubscriberCountString(int forumId)
         {
             try
@@ -148,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <remarks>https://dnndev.me/API/ActiveForums/Forum/Get?forumId=x</remarks>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [ForumsAuthorize(SecureActions.View)]
         public HttpResponseMessage Get(int forumId)
         {
             try
@@ -178,9 +180,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="forum">ForumInfo</param>
         /// <returns>Created forum</returns>
         [HttpPost]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Create([FromBody] DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum)
         {
             try
@@ -212,9 +213,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="useGroupSecurity"></param>
         /// <returns>Created forum</returns>
         [HttpPost]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Create([FromBody] DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, bool useGroupFeatures, bool useGroupSecurity)
         {
             try
@@ -244,9 +244,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="forum">ForumInfo</param>
         /// <returns>updated forum</returns>
         [HttpPut]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Update([FromBody] DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum)
         {
             try
@@ -275,9 +274,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="useGroupSecurity"></param>
         /// <returns>Success status</returns>
         [HttpPut]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Update([FromBody] DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, bool useGroupFeatures, bool useGroupSecurity)
         {
             try
@@ -304,9 +302,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="forumId">Forum ID</param>
         /// <returns>Success status</returns>
         [HttpDelete]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Delete(int forumId)
         {
             try
@@ -337,13 +334,20 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage List()
         {
             try
             {
+                var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
                 var forums = new List<DotNetNuke.Modules.ActiveForums.ViewModels.Forum>();
-                new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId: this.ForumModuleId).ForEach(f => forums.Add(new DotNetNuke.Modules.ActiveForums.ViewModels.Forum(f)));
+                new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId: this.ForumModuleId).ForEach(f =>
+                {
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security.ViewRoleIds, forumUser.UserRoleIds) 
+                    {
+                        forums.Add(new DotNetNuke.Modules.ActiveForums.ViewModels.Forum(f));
+                    }
+                });
+
                 return this.Request.CreateResponse(HttpStatusCode.OK, forums);
             }
             catch (Exception ex)
@@ -358,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Moderators(int forumId)
         {
             try
@@ -378,7 +382,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage Subscriptions(int userId)
         {
             try
@@ -403,7 +406,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage Settings(int forumId)
         {
             try
@@ -433,7 +435,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage Security(int forumId)
         {
             try

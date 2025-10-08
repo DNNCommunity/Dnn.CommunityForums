@@ -39,7 +39,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <returns>settings</returns>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public IHttpActionResult GetAllSettings(string settingsKey)
         {
             try
@@ -61,7 +60,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <returns>setting</returns>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public IHttpActionResult GetSetting(string settingsKey, string key)
         {
             try
@@ -87,8 +85,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="value">value</param>
         /// <returns>HTTP status</returns>
         [HttpPost]
-        [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public IHttpActionResult SetSetting(string settingsKey, string key, [FromBody] string value)
         {
             try
@@ -111,8 +109,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="key">key</param>
         /// <returns>HTTP status</returns>
         [HttpDelete]
-        [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public IHttpActionResult DeleteSetting(string settingsKey, string key)
         {
             try
@@ -139,8 +137,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="newSettings">newSettings</param>
         /// <returns>HTTP status</returns>
         [HttpPut]
-        [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public IHttpActionResult UpdateAllSettings(string settingsKey, [FromBody] Hashtable newSettings)
         {
             try
@@ -161,8 +159,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="settingsKey">settingsKey</param>
         /// <returns>HTTP status</returns>
         [HttpDelete]
-        [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public IHttpActionResult DeleteAllSettings(string settingsKey)
         {
             try

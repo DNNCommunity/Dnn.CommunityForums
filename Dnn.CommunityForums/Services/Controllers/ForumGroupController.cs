@@ -45,7 +45,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <remarks>https://dnndev.me/API/ActiveForums/ForumGroup/Get?ForumGroupId=x</remarks>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage Get(int ForumGroupId)
         {
             try
@@ -75,9 +74,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="forumGroup">ForumGroupInfo</param>
         /// <returns>Created ForumGroup</returns>
         [HttpPost]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Create([FromBody] DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup)
         {
             try
@@ -108,9 +106,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="useDefaultSecurity"></param>
         /// <returns>Created ForumGroup</returns>
         [HttpPost]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Create([FromBody] DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup, bool useDefaultFeatures, bool useDefaultSecurity)
         {
             try
@@ -139,9 +136,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="forumGroup">ForumGroupInfo</param>
         /// <returns>updated ForumGroup</returns>
         [HttpPut]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Update([FromBody] DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup)
         {
             try
@@ -170,9 +166,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="useDefaultSecurity"></param>
         /// <returns>Success status</returns>
         [HttpPut]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Update([FromBody] DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup, bool useDefaultFeatures, bool useDefaultSecurity)
         {
             try
@@ -199,9 +194,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="forumGroupId">ForumGroup ID</param>
         /// <returns>Success status</returns>
         [HttpDelete]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Delete(int forumGroupId)
         {
             try
@@ -232,7 +226,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage List()
         {
             try
@@ -252,7 +245,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage Settings(int ForumGroupId)
         {
             try
@@ -282,7 +274,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// </summary>
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
         public HttpResponseMessage Security(int ForumGroupId)
         {
             try
