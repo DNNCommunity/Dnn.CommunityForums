@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.01.01
+            09.02.00
         </h3>
 <!--
 
@@ -85,7 +85,7 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            <li>FIX: Poor performance for avatar refresh queue on large sites (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1584">Issue 1584</a>)</li>
+            <li>FIX: Error moving topics to another forum (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1594">Issue 1594</a>)</li>
             
 <!--
              <li>None at this time.</li>
