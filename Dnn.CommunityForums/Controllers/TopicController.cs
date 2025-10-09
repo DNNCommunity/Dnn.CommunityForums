@@ -265,13 +265,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ti.Content.DateCreated = DateTime.UtcNow;
             }
 
-            if (ti.IsApproved && ti.Author.AuthorId > 0)
-            {
-                // TODO: put this in a better place and make it consistent with reply counter
-                DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
-            }
-
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(ti.Forum.PortalId, ti.Content.AuthorId);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(ti.ModuleId, ti.ForumId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(ti.ModuleId, ti.TopicId);
@@ -390,6 +383,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 pqc.Add(ProcessType.UpdateForumLastUpdated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, requestUrl: requestUrl);
 
                 Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
+
+                if (topic.IsApproved && topic.Content.AuthorId > 0)
+                {
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserTopicCount(portalId, topic.Content.AuthorId);
+                }
 
                 return true;
             }
