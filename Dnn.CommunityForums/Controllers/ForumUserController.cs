@@ -27,18 +27,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Web;
     using System.Web.UI.WebControls;
     using DotNetNuke.Data;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.GeneratedImage;
-    using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Services.Social.Notifications;
-    using DotNetNuke.UI.UserControls;
 
     internal class ForumUserController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
     {
@@ -222,11 +214,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumUser.UserId;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
         public bool GetUserIsAdmin(int portalId, int moduleId, int userId)
         {
             return this.GetByUserId(portalId, userId).IsAdmin;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
         public bool GetUserIsSuperUser(int portalId, int moduleId, int userId)
         {
             return this.GetByUserId(portalId, userId).IsSuperUser;
@@ -526,12 +520,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static void UpdateUserTopicCount(int portalId, int userId)
         {
-            string sSql = "UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles SET TopicCount = ISNULL((Select Count(t.TopicId) FROM ";
-            sSql += "{databaseOwner}{objectQualifier}activeforums_Topics as t INNER JOIN ";
-            sSql += "{databaseOwner}{objectQualifier}activeforums_Content as c ON t.ContentId = c.ContentId AND c.AuthorId = @1 INNER JOIN ";
-            sSql += "{databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = t.TopicId INNER JOIN ";
-            sSql += "{databaseOwner}{objectQualifier}activeforums_Forums as f ON ft.ForumId = f.ForumId ";
+            string sSql = "UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles SET TopicCount = ISNULL((SELECT COUNT(t.TopicId) ";
+            sSql += "FROM {databaseOwner}{objectQualifier}activeforums_Topics as t ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content as c ON c.ContentId = t.ContentId AND c.AuthorId = @1 ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = t.TopicId ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f ON f.ForumId = ft.ForumId ";
             sSql += "WHERE c.AuthorId = @1 AND t.IsApproved = 1 AND t.IsDeleted=0 AND f.PortalId=@0),0) ";
+            sSql += "WHERE UserId = @1 AND PortalId = @0";
+            DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, portalId, userId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, userId);
+        }
+
+        internal static void UpdateUserReplyCount(int portalId, int userId)
+        {
+            string sSql = "UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles SET ReplyCount = ISNULL((SELECT COUNT(r.ReplyId) ";
+            sSql += "FROM {databaseOwner}{objectQualifier}activeforums_Replies as r ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content as c ON c.ContentId = r.ContentId AND c.AuthorId = @1 ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = r.TopicId ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f ON f.ForumId = ft.ForumId ";
+            sSql += "WHERE c.AuthorId = @1 AND r.IsApproved = 1 AND r.IsDeleted=0 AND f.PortalId=@0),0) ";
             sSql += "WHERE UserId = @1 AND PortalId = @0";
             DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, portalId, userId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, userId);

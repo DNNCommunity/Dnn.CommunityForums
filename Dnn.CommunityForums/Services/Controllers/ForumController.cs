@@ -342,7 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 var forums = new List<DotNetNuke.Modules.ActiveForums.ViewModels.Forum>();
                 new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId: this.ForumModuleId).ForEach(f =>
                 {
-                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security.ViewRoleIds, forumUser.UserRoleIds) 
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security.ViewRoleIds, forumUser.UserRoleIds))
                     {
                         forums.Add(new DotNetNuke.Modules.ActiveForums.ViewModels.Forum(f));
                     }
