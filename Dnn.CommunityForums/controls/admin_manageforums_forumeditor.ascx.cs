@@ -438,7 +438,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 case "modulesettingssave":
                     {
-                        var sKey = $"M:{this.ModuleId}";
+                        var sKey = $"M{this.ModuleId}";
                         this.SaveSettings(sKey, e.Parameters);
 
                         this.hidEditorResult.Value = this.ModuleId.ToString();
@@ -449,7 +449,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "forumsettingssave":
                     {
                         var forumId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        var sKey = $"F:{forumId}";
+                        var sKey = $"F{forumId}";
                         this.SaveSettings(sKey, e.Parameters);
 
                         this.hidEditorResult.Value = forumId.ToString();
@@ -460,7 +460,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "groupsettingssave":
                     {
                         var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        var sKey = $"G:{groupId}";
+                        var sKey = $"G{groupId}";
                         this.SaveSettings(sKey, e.Parameters);
 
                         this.hidEditorResult.Value = groupId.ToString();

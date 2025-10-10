@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public int DefaultPermissionId => this.MainSettings.GetInt(SettingKeys.DefaultPermissionId);
 
-        public string DefaultSettingsKey => this.MainSettings.GetString(SettingKeys.DefaultSettingsKey) ?? $"M:{this.ModuleId}";
+        public string DefaultSettingsKey => this.MainSettings.GetString(SettingKeys.DefaultSettingsKey) ?? $"M{this.ModuleId}";
 
         public FeatureSettings DefaultFeatureSettings
         {

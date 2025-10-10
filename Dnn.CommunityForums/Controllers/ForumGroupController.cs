@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (!isNew || forumGroupInfo.InheritSettings)
                 {
                     // reset any forum settings keys previously mapped to the module default to map to new settings key
-                    forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
+                    forumGroupInfo.GroupSettingsKey = $"G{forumGroupInfo.ForumGroupId}";
                     foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.ForumSettingsKey == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey))
                     {
                         forum.ForumSettingsKey = forumGroupInfo.GroupSettingsKey;
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             forumGroupInfo = this.GetById(forumGroupInfo.ForumGroupId, forumGroupInfo.ModuleId);
             if (string.IsNullOrEmpty(forumGroupInfo.GroupSettingsKey))
             {
-                forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
+                forumGroupInfo.GroupSettingsKey = $"G{forumGroupInfo.ForumGroupId}";
                 this.Update(forumGroupInfo);
             }
 
@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             /* if now using default module settings, remove group settings */
             if (useDefaultFeatures)
             {
-                new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKey(forumGroupInfo.ModuleId, $"G:{forumGroupInfo.ForumGroupId}");
+                new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKey(forumGroupInfo.ModuleId, $"G{forumGroupInfo.ForumGroupId}");
             }
 
             ClearSettingsCache(forumGroupInfo.ModuleId);
