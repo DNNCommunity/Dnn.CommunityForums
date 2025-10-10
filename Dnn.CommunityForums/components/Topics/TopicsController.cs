@@ -326,6 +326,20 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     break;
+                case "09.02.00":
+                    try
+                    {
+                        ForumsConfig.Install_BadgeNotificationType_090200();
+                        new ForumsConfig().Install_DefaultBadges_090200();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
                 default:
                     break;
             }

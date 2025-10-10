@@ -18,11 +18,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Modules.ActiveForums.Enums;
+
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
     using System;
     using System.Text;
     using System.Web;
+    using Newtonsoft.Json.Linq;
 
     public class adminhelper : HandlerBase
     {
@@ -41,6 +44,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             FilterGet = 11,
             FilterSave = 12,
             FilterDelete = 13,
+            BadgeGet = 14,
+            BadgeSave = 15,
+            BadgeDelete = 16,
         }
 
         public override void ProcessRequest(HttpContext context)
@@ -100,7 +106,15 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                             break;
                         case Actions.FilterDelete:
                             this.FilterDelete();
-
+                            break;
+                        case Actions.BadgeGet:
+                            sOut = this.GetBadge();
+                            break;
+                        case Actions.BadgeSave:
+                            this.BadgeSave();
+                            break;
+                        case Actions.BadgeDelete:
+                            this.BadgeDelete();
                             break;
                     }
                 }
@@ -274,6 +288,154 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
             RewardController rc = new RewardController();
             rc.Reward_Delete(this.PortalId, this.ModuleId, rankId);
+        }
+
+        private string GetBadge()
+        {
+            int badgeId = -1;
+            if (this.Params.ContainsKey("BadgeId"))
+            {
+                badgeId = Convert.ToInt32(this.Params["BadgeId"]);
+            }
+
+            var badge = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().GetById(badgeId, this.ModuleId);
+            var url = string.Empty;
+            if (badge.FileId > 0)
+            {
+                var objFileInfo = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile(badge.FileId);
+                if (!ReferenceEquals(objFileInfo, null))
+                {
+                    url = objFileInfo.Folder + objFileInfo.FileName;
+                }
+            }
+
+            string sOut = "{";
+            sOut += Utilities.JSON.Pair("BadgeId", badge.BadgeId.ToString());
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("Name", badge.Name);
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("Description", badge.Description);
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("SortOrder", badge.SortOrder.ToString());
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("BadgeMetric", Convert.ToInt32(Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric), badge.BadgeMetric.ToString())).ToString());
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("BadgeMetricEnumName", badge.BadgeMetricEnumName);
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("Threshold", badge.Threshold.ToString());
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("FileId", badge.FileId.ToString());
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("ImageMarkup", badge.ImageMarkup);
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("ImageUrl", badge.GetBadgeImageUrl(portalId: this.PortalId, size: 16));
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("OneTimeAward", badge.OneTimeAward.ToString());
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("IntervalDays", badge.IntervalDays.ToString());
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("SendAwardNotification", badge.SendAwardNotification.ToString());
+            sOut += ",";
+            sOut += Utilities.JSON.Pair("SuppresssAwardNotificationOnBackfill", badge.SuppresssAwardNotificationOnBackfill.ToString());
+            sOut += "}";
+            return sOut;
+        }
+
+        private void BadgeSave()
+        {
+            var badgeController = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController();
+            var badgeId = Utilities.SafeConvertInt(this.Params["BadgeId"]);
+            var badge = badgeController.GetById(badgeId, this.ModuleId);
+            if (badge == null)
+            {
+                badge = new DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo();
+                badge.ModuleId = this.ModuleId;
+            }
+
+            if (this.Params.ContainsKey("BadgeId"))
+            {
+                badge.BadgeId = Utilities.SafeConvertInt(this.Params["BadgeId"]);
+            }
+
+            if (this.Params.ContainsKey("Name"))
+            {
+                badge.Name = this.Params["Name"].ToString();
+            }
+
+            if (this.Params.ContainsKey("Description"))
+            {
+                badge.Description = this.Params["Description"].ToString();
+            }
+
+            if (this.Params.ContainsKey("SortOrder"))
+            {
+                badge.SortOrder = Utilities.SafeConvertInt(this.Params["SortOrder"]);
+            }
+
+            if (this.Params.ContainsKey("BadgeMetric"))
+            {
+                badge.BadgeMetric = string.IsNullOrEmpty(this.Params["BadgeMetric"].ToString()) || this.Params["BadgeMetric"].ToString() == "null" ? BadgeMetric.BadgeMetricManual : (Enums.BadgeMetric)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric), this.Params["BadgeMetric"].ToString());
+            }
+
+            if (this.Params.ContainsKey("Threshold"))
+            {
+                badge.Threshold = Utilities.SafeConvertInt(this.Params["Threshold"]);
+            }
+
+            if (this.Params.ContainsKey("IntervalDays"))
+            {
+                badge.IntervalDays = Utilities.SafeConvertInt(this.Params["IntervalDays"]);
+            }
+
+            if (this.Params.ContainsKey("ImageMarkup"))
+            {
+                badge.ImageMarkup = this.Params["ImageMarkup"].ToString();
+            }
+
+            if (this.Params.ContainsKey("FileId"))
+            {
+                badge.FileId = Utilities.SafeConvertInt(this.Params["FileId"]);
+            }
+
+            if (this.Params.ContainsKey("OneTimeAward"))
+            {
+                badge.OneTimeAward = Utilities.SafeConvertBool(this.Params["OneTimeAward"].ToString());
+            }
+
+            if (this.Params.ContainsKey("SendAwardNotification"))
+            {
+                badge.SendAwardNotification = Utilities.SafeConvertBool(this.Params["SendAwardNotification"].ToString());
+            }
+
+            if (this.Params.ContainsKey("SuppresssAwardNotificationOnBackfill"))
+            {
+                badge.SuppresssAwardNotificationOnBackfill = Utilities.SafeConvertBool(this.Params["SuppresssAwardNotificationOnBackfill"].ToString());
+            }
+
+            if (badge.BadgeId == -1)
+            {
+                badgeController.Insert(badge);
+            }
+            else
+            {
+                badgeController.Update(badge);
+            }
+        }
+
+        private void BadgeDelete()
+        {
+            int badgeId = -1;
+            if (this.Params.ContainsKey("BadgeId"))
+            {
+                badgeId = Convert.ToInt32(this.Params["BadgeId"]);
+            }
+
+            if (badgeId == -1)
+            {
+                return;
+            }
+
+            new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().DeleteById(badgeId, this.ModuleId);
         }
 
         private void PropertySave()

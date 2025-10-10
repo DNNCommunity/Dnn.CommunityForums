@@ -53,6 +53,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int UserId { get; set; }
 
+        public int BadgeId { get; set; }
+
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
         public string RequestUrl { get; set; }

@@ -117,9 +117,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string ForumSettingsKey { get; set; }
 
-        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
-        public DateTime DateUpdated { get; set; } = DateTime.Now;
+        public DateTime DateUpdated { get; set; } = DateTime.UtcNow;
 
         public int LastTopicId { get; set; }
 

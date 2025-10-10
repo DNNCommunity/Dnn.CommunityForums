@@ -28,5 +28,8 @@
         <div class="dcf-user-rank">
             [FORUMAUTHOR:RANKDISPLAY]
         </div>
+        <div class="dcf-user-badges">
+            [FORUMAUTHOR:BADGES:10]
+        </div>
     </div>
 </div>

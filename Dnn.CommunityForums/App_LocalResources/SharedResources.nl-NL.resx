@@ -1897,4 +1897,37 @@ Van,
   <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
     <value>Automatisch abonneren op Mijn onderwerpen</value>
   </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Ontvang meldingen over badges</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Selecteer deze optie als u meldingen wilt ontvangen wanneer u een nieuwe prestatiebadge krijgt.</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsCongratulations].Text" xml:space="preserve">
+    <value>Gefeliciteerd! Je bent beloond met een nieuwe badge!</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORUMSLINK|Ga &lt;a href="{0}"&gt;naar&lt;/a&gt; om te blijven deelnemen en meer beloningen te verdienen.]</value>
+  </data>
+  <data name="[RESX:BadgeSendAwardNotification].Text" xml:space="preserve">
+    <value>Stuur de gebruiker een melding wanneer deze is toegekend</value>
+  </data>
+  <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
+    <value>Stuur een oudere gebruiker geen melding bij het aanvullen van awards</value>
+  </data>
+  <data name="[RESX:lastawarded].Text" xml:space="preserve">
+    <value>Laatst toegekend</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Insigne</value>
+  </data>
+  <data name="[RESX:BadgeUsersAssigned].Text" xml:space="preserve">
+    <value>Gebruikers met een badge: {0}</value>
+  </data>
+  <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
+    <value>Badges toegekend aan gebruiker: {0}</value>
+  </data>
+  <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
+    <value>Badge nog niet toegekend</value>
+  </data>
 </root>

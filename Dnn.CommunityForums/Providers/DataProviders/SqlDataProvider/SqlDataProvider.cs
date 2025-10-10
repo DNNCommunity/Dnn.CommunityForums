@@ -125,6 +125,13 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
+        #region Badges
+        public override IDataReader Badges_List(int ModuleId)
+        {
+            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Badges_List", ModuleId);
+        }
+
+        #endregion
         #region Filters
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
         public override void Filters_Delete(int PortalId, int ModuleId, int FilterId)

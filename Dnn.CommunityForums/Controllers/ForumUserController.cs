@@ -21,11 +21,13 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading;
     using System.Web;
     using System.Web.UI.WebControls;
+
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -57,6 +59,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             throw new NotImplementedException("There is no probably need to call this method; if you do, you probably should be using GetByUserId.");
         }
 
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo> GetActiveUsers(int portalId)
+        {
+            var forumUsers = this.Get().Where(u => u.PortalId.Equals(portalId));
+            var users = DotNetNuke.Entities.Users.UserController.GetUsers(includeDeleted: false, superUsersOnly: false, portalId: portalId);
+            var superUsers = DotNetNuke.Entities.Users.UserController.GetUsers(includeDeleted: false, superUsersOnly: true, portalId: DotNetNuke.Common.Utilities.Null.NullInteger);
+            users.AddRange(superUsers);
+            return forumUsers
+                .Join(
+                    users.Cast<DotNetNuke.Entities.Users.UserInfo>(),
+                    forumUser => forumUser.UserId,
+                    user => user.UserID,
+                    (forumUser, user) =>
+                    {
+                        forumUser.UserInfo = user;
+                        return forumUser;
+                    }
+                );
+        }
+
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetByUserId(int portalId, int userId)
         {
             var cachekey = this.GetCacheKey(portalId: portalId, id: userId);
@@ -82,6 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             PrefBlockSignatures = false,
                             PrefBlockAvatars = false,
                             PrefTopicSubscribe = false,
+                            BadgeNotificationsEnabled = true,
                             LikeNotificationsEnabled = true,
                             PrefJumpLastPost = false,
                             PrefDefaultShowReplies = false,

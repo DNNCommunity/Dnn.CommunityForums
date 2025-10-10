@@ -65,7 +65,6 @@
         <p>
             What's to follow are all of the relevant updates that have occurred during the development cycle of this release.
         </p>
--->
 
         <h4>New Features &amp; Enhancements</h4>
         <ul>

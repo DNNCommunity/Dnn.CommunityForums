@@ -12,4 +12,8 @@
 Posts:[AF:PROFILE:POSTCOUNT]
 [MODIPADDRESS]
 [AF:PROFILE:RANKDISPLAY]
+    
+    <div class="dcf-user-badges">
+        [FORUMAUTHOR:BADGES:10]
+    </div>
 </div>

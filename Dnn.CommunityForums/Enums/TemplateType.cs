@@ -48,5 +48,8 @@ namespace DotNetNuke.Modules.ActiveForums.Enums
         TopicResults,
         _userProfile,
         _memberList,
+        BadgeNotificationSubject,
+        BadgeNotificationBody,
+        UserBadge,
     }
 }

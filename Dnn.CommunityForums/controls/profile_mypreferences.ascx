@@ -37,7 +37,11 @@
     </div>
     <div class="dnnFormItem">
         <dnn:label controlname="chkLikeNotificationsEnabled" text="[RESX:LikeNotificationsEnabled]" suffix=":" runat="server" />
-        <asp:CheckBox ID="chkLikesNotificationsEnabled" runat="server" />
+        <asp:checkbox id="chkLikesNotificationsEnabled" runat="server" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:label controlname="chkBadgeNotificationsEnabled" text="[RESX:BadgeNotificationsEnabled]" suffix=":" runat="server" />
+        <asp:checkbox id="chkBadgeNotificationsEnabled" runat="server" />
     </div>
     <div class="dnnFormItem">
         <dnn:label controlname="chkPinNotificationsEnabled" text="[RESX:PinNotificationsEnabled]" suffix=":" runat="server" />

@@ -314,14 +314,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subForumAction,
             bool includeHiddenForums)
         {
-            string tmpGroupKey = string.Empty;
+            string tmpSettingsKey = string.Empty;
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => (includeHiddenForums || !f.Hidden) && f.ForumGroup != null && (includeHiddenForums || !f.ForumGroup.Hidden) && (forumUserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security?.ViewRoleIds, forumUserInfo.UserRoleIds))))
             {
-                string groupKey = $"{fi.GroupName}{fi.ForumGroupId}";
-                if (tmpGroupKey != groupKey)
+                string settingsKey = $"{fi.GroupName}{fi.ForumGroupId}";
+                if (tmpSettingsKey != settingsKey)
                 {
                     groupAction(fi);
-                    tmpGroupKey = groupKey;
+                    tmpSettingsKey = settingsKey;
                 }
 
                 if (fi.ParentForumId == 0)
