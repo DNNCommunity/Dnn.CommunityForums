@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
                 switch (badge.BadgeMetric)
                 {
                     case BadgeMetric.BadgeMetricNewUser:
-                        if (DateTime.UtcNow.Subtract(forumUser.DateCreated.Value).TotalDays < (badge.IntervalDays > 0 ? badge.IntervalDays : 30))
+                        if (DateTime.UtcNow.Subtract(forumUser.DateCreated).TotalDays < (badge.IntervalDays > 0 ? badge.IntervalDays : 30))
                         {
                             awardBadge = true;
                         }
