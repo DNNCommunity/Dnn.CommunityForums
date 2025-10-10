@@ -260,14 +260,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 copyDownGroupSettings = true;
             }
 
-            forumInfo.ForumSettingsKey = useGroupFeatures ? (forumGroupInfo != null ? forumGroupInfo.GroupSettingsKey : string.Empty) : (forumInfo.ForumID > 0 ? $"F:{forumInfo.ForumID}" : string.Empty);
+            forumInfo.ForumSettingsKey = useGroupFeatures ? (forumGroupInfo != null ? forumGroupInfo.GroupSettingsKey : string.Empty) : (forumInfo.ForumID > 0 ? $"F{forumInfo.ForumID}" : string.Empty);
 
             // TODO: When this method is updated to use DAL2 for update, uncomment Cacheable attribute on ForumInfo
             var forumId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forum_Save(portalId, forumInfo.ForumID, forumInfo.ModuleId, forumInfo.ForumGroupId, forumInfo.ParentForumId, forumInfo.ForumName, forumInfo.ForumDesc, forumInfo.SortOrder, forumInfo.Active, forumInfo.Hidden, forumInfo.ForumSettingsKey, forumInfo.PermissionsId, forumInfo.PrefixURL, forumInfo.SocialGroupId, forumInfo.HasProperties));
             forumInfo = this.GetById(forumId, forumInfo.ModuleId);
             if (!useGroupFeatures && string.IsNullOrEmpty(forumInfo.ForumSettingsKey))
             {
-                forumInfo.ForumSettingsKey = $"F:{forumId}";
+                forumInfo.ForumSettingsKey = $"F{forumId}";
                 this.Update(forumInfo);
             }
 
@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // if now inheriting group settings, remove any previously-defined forum settings
             if (forumInfo.InheritSettings)
             {
-                new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKey(forumInfo.ModuleId, $"F:{forumInfo.ForumID}");
+                new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKey(forumInfo.ModuleId, $"F{forumInfo.ForumID}");
             }
 
             // Clear the caches

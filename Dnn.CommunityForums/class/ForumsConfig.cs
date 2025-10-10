@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             Active = xNodeList[i].Attributes["active"].Value == "1",
                             Hidden = xNodeList[i].Attributes["hidden"].Value == "1",
                             SortOrder = i,
-                            GroupSettingsKey = $"M:{moduleId}",
+                            GroupSettingsKey = $"M{moduleId}",
                             PermissionsId = SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId,
                         };
                         var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         Active = cNodes[c].Attributes["active"].Value == "1",
                                         Hidden = cNodes[c].Attributes["hidden"].Value == "1",
                                         SortOrder = c,
-                                        ForumSettingsKey = $"G:{groupId}",
+                                        ForumSettingsKey = $"G{groupId}",
                                         PermissionsId = SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId,
                                     };
                                     new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, true, true, true);
@@ -572,7 +572,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         }
 
                                         templateInfo.Subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(templateInfo.Subject), portalSettings, portalSettings.DefaultLanguage).ToString();
-                                        DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(module.ModuleID, $"M:{module.ModuleID}", ForumSettingKeys.EmailNotificationSubjectTemplate, templateInfo.Subject);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(module.ModuleID, $"M{module.ModuleID}", ForumSettingKeys.EmailNotificationSubjectTemplate, templateInfo.Subject);
                                         DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
                                     }
                                     catch (Exception ex)
@@ -669,7 +669,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateDefaultPermissions(portalSettings, moduleId);
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.DefaultPermissionId, permissions.PermissionsId.ToString());
 
-                string sKey = $"M:{moduleId}";
+                string sKey = $"M{moduleId}";
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.DefaultSettingsKey, sKey);
                 if (string.IsNullOrEmpty(SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.EmailNotificationSubjectTemplate))
                 {
