@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.dgrdBadgeUsers.DataSource = this.GetBadges().ToList();
             this.dgrdBadgeUsers.DataBind();
-            this.dgrdBadgeUsers.PageSize = this.dgrdBadgeUsers.Rows.Count;
+            this.dgrdBadgeUsers.AllowPaging = false;
             this.dgrdBadgeUsers.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
         }
 
