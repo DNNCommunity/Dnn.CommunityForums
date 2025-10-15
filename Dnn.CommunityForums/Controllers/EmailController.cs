@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             {
                                 topicSubscriber.Email,
                             },
-                            Subject = Utilities.StripHTMLTag(TemplateUtils.ParseEmailTemplate(subjectTemplate, portalID: fi.PortalId, moduleID: moduleId, tabID: tabId, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: topicSubscriber.User, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl)),
+                            Subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(TemplateUtils.ParseEmailTemplate(subjectTemplate, portalID: fi.PortalId, moduleID: moduleId, tabID: tabId, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: topicSubscriber.User, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl))),
                             Body = TemplateUtils.ParseEmailTemplate(bodyTemplate, portalID: fi.PortalId, moduleID: moduleId, tabID: tabId, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: topicSubscriber.User, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl),
                         });
                     }
@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             {
                                 forumSubscriber.Email,
                             },
-                            Subject = Utilities.StripHTMLTag(TemplateUtils.ParseEmailTemplate(subjectTemplate, portalID: fi.PortalId, moduleID: moduleId, tabID: tabId, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: forumSubscriber.User, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl)),
+                            Subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(TemplateUtils.ParseEmailTemplate(subjectTemplate, portalID: fi.PortalId, moduleID: moduleId, tabID: tabId, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: forumSubscriber.User, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl))),
                             Body = TemplateUtils.ParseEmailTemplate(bodyTemplate, portalID: fi.PortalId, moduleID: moduleId, tabID: tabId, forumID: fi.ForumID, topicId: topicId, replyId: replyId, author: author, accessingUser: forumSubscriber.User, topicSubscriber: false, navigationManager: navigationManager, requestUrl: requestUrl, rawUrl: rawUrl),
                         });
                     }
