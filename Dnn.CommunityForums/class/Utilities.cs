@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Reflection;
     using System.Security.Cryptography;
+    using System.Security.Principal;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -487,6 +488,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!allowScript)
                 {
+                    sClean = RemoveScriptTags(sClean);
                     sClean = DecodeBrackets(sClean);
                     sClean = XSSFilter(sClean);
                 }
@@ -533,10 +535,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 else
                 {
                     strMessage = EncodeFormTags(strMessage);
-                    if (!allowHTML)
-                    {
-                        strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
-                    }
+                    strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
 
                     if (useFilter)
                     {
@@ -737,6 +736,38 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return sText;
+        }
+
+        internal static string RemoveScriptTags(string body = "")
+        {
+            if (!string.IsNullOrEmpty(body))
+            {
+                var tryEncoded = false;
+                for (var i = 0; i < 2; i++)
+                {
+                    var codeTagStartEndPositions = new List<(int Start, int End)>();
+
+                    const string codeTagPattern = @"<(?:code|pre)\b[^>]*>(.*?)</(?:code|pre)>";
+                    foreach (Match m in RegexUtils.GetCachedRegex(tryEncoded ? System.Net.WebUtility.HtmlEncode(codeTagPattern) : codeTagPattern, RegexOptions.IgnoreCase).Matches(body))
+                    {
+                        codeTagStartEndPositions.Add((m.Index, m.Index + m.Length));
+                    }
+
+                    const string scriptTagPattern = @"<script\b[^>]*>(.*?)</script>";
+                    foreach (Match m in RegexUtils.GetCachedRegex(tryEncoded ? System.Net.WebUtility.HtmlEncode(scriptTagPattern) : scriptTagPattern, RegexOptions.IgnoreCase).Matches(body))
+                    {
+                        bool insideCodeTag = m.Index >= 0 && codeTagStartEndPositions.Any(t => m.Index >= t.Start && m.Index < t.End);
+                        if (!insideCodeTag)
+                        {
+                            body = body.Replace(m.Value, string.Empty);
+                        }
+                    }
+
+                    tryEncoded = true;
+                }
+            }
+
+            return body;
         }
 
         public static string StripExecCode(string sText)
