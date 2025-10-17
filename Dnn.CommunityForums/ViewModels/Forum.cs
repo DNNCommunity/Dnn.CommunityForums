@@ -29,83 +29,89 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
         public Forum(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum)
         {
             this.forum = forum;
-            this.forum.Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
+            if (this.forum.Security == null)
+            {
+                this.forum.Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
+            }
         }
 
-        public int ForumId { get => this.forum.ForumID; set => this.forum.ForumID = value; }
+        public int Id { get => this.forum.ForumID; set => this.forum.ForumID = value; }
 
-        public string ForumName { get => this.forum.ForumName; set => this.forum.ForumName = value; }
+        public string Name { get => this.forum.ForumName; set => this.forum.ForumName = value; }
 
-        public string ForumDescription { get => this.forum.ForumDesc; set => this.forum.ForumDesc = value; }
+        public string Description { get => this.forum.ForumDesc; set => this.forum.ForumDesc = value; }
 
         public int PortalId { get => this.forum.PortalId; set => this.forum.PortalId = value; }
 
         public int ModuleId { get => this.forum.ModuleId; set => this.forum.ModuleId = value; }
 
-        public int ForumGroupId { get => this.forum.ForumGroupId; set => this.forum.ForumGroupId = value; }
+        public int GroupId { get => this.forum.ForumGroupId; set => this.forum.ForumGroupId = value; }
 
-        public string ForumGroupName => this.forum.GroupName;
+        public string GroupName => this.forum.GroupName;
 
-        public int ForumPermissionsId { get => this.forum.PermissionsId; set => this.forum.PermissionsId = value; }
+        public int PermissionsId { get => this.forum.PermissionsId; set => this.forum.PermissionsId = value; }
 
-        public int ForumLastTopicId => this.forum.LastTopicId;
+        public int LastTopicId => this.forum.LastTopicId;
 
-        public int ForumLastReplyId => this.forum.LastReplyId;
+        public int LastReplyId => this.forum.LastReplyId;
 
-        public int ForumLastPostID => this.forum.LastPostID;
+        public int LastPostID => this.forum.LastPostID;
 
-        public int ForumTotalTopics => this.forum.TotalTopics;
+        public int TotalTopics => this.forum.TotalTopics;
 
         public int TotalReplies => this.forum.TotalReplies;
 
-        public string ForumSettingsKey { get => this.forum.ForumSettingsKey; set => this.forum.ForumSettingsKey = value; }
+        public string SettingsKey { get => this.forum.ForumSettingsKey; set => this.forum.ForumSettingsKey = value; }
 
-        public bool ForumActive { get => this.forum.Active; set => this.forum.Active = value; }
+        public bool Active { get => this.forum.Active; set => this.forum.Active = value; }
 
-        public bool ForumHidden { get => this.forum.Hidden; set => this.forum.Hidden = value; }
+        public bool Hidden { get => this.forum.Hidden; set => this.forum.Hidden = value; }
 
-        public int ForumSubscriberCount => this.forum.SubscriberCount;
+        public int SubscriberCount => this.forum.SubscriberCount;
 
-        public string ForumURL => this.forum.ForumURL;
+        public string URL => this.forum.ForumURL;
 
-        public string ForumGroupPrefixURL => this.forum.GroupPrefixURL;
+        public string GroupPrefixURL => this.forum.GroupPrefixURL;
 
-        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo ForumSecurity => this.forum.Security;
+        public DotNetNuke.Modules.ActiveForums.ViewModels.Permissions Security => new DotNetNuke.Modules.ActiveForums.ViewModels.Permissions(this.forum.Security);
 
-        public string ForumSecurityCreate => this.forum.Security.Create;
-
-        public string ForumSecurityEdit => this.forum.Security.Edit;
-
-        public string ForumSecurityDelete => this.forum.Security.Delete;
-
-        public string ForumSecurityView => this.forum.Security.View;
-
-        public string ForumSecurityAnnounce => this.forum.Security.Announce;
-
-        public string ForumSecurityModerate => this.forum.Security.Moderate;
-
-        public string ForumSecurityMove => this.forum.Security.Move;
-
-        public string ForumSecuritySplit => this.forum.Security.Split;
-
-        public string ForumSecurityTrust => this.forum.Security.Trust;
-
-        public string ForumSecurityAttach => this.forum.Security.Attach;
-
-        public string ForumSecurityAuthRolesCreate => this.forum.Security.Ban;
-
-        public string ForumSecurityTag => this.forum.Security.Tag;
-
-        public string ForumSecuritySubscribe => this.forum.Security.Subscribe;
-
-        public string ForumPrefixURL => this.forum.PrefixURL;
+        public string PrefixURL => this.forum.PrefixURL;
 
         public int ParentForumId => this.forum.ParentForumId;
 
         public string ParentForumName => this.forum.ParentForumName;
 
-        public bool ForumHasProperties => this.forum.HasProperties;
+        public bool HasProperties => this.forum.HasProperties;
 
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> ForumProperties => this.forum.Properties;
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties => this.forum.Properties;
+
+        /// <summary>
+        /// Maps the current Forum view model to a ForumInfo entity.
+        /// </summary>
+        /// <returns>A new instance of ForumInfo with properties set from this view model.</returns>
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ToForumInfo()
+        {
+            var forumInfo = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
+            forumInfo.ForumID = this.Id;
+            forumInfo.ForumName = this.Name;
+            forumInfo.ForumDesc = this.Description;
+            forumInfo.PortalId = this.PortalId;
+            forumInfo.ModuleId = this.ModuleId;
+            forumInfo.ForumGroupId = this.GroupId;
+            forumInfo.PermissionsId = this.PermissionsId;
+            forumInfo.LastTopicId = this.LastTopicId;
+            forumInfo.LastReplyId = this.LastReplyId;
+            forumInfo.TotalTopics = this.TotalTopics;
+            forumInfo.TotalReplies = this.TotalReplies;
+            forumInfo.ForumSettingsKey = this.SettingsKey;
+            forumInfo.Active = this.Active;
+            forumInfo.Hidden = this.Hidden;
+            forumInfo.PrefixURL = this.PrefixURL;
+            forumInfo.ParentForumId = this.ParentForumId;
+            forumInfo.HasProperties = this.HasProperties;
+            forumInfo.Properties = this.Properties != null ? new List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>(this.Properties) : null;
+
+            return forumInfo;
+        }
     }
 }

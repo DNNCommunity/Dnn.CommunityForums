@@ -70,7 +70,7 @@ function amaf_deleteCategory(row){
 		</tr>
 	</table>
 	<div style="height:400px;overflow:auto;">
-	<am:ActiveGrid ID="agCategories" runat="server" DefaultColumn="CategoryName" PageSize="20000" ImagePath="<%=ImagePath%>">
+	<am:activegrid id="agCategories" runat="server" defaultcolumn="CategoryName" pagesize="20000" imagepath="~/DesktopModules/activeforums/images/">
 		<HeaderTemplate>
 			<table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width:100%;">
 					<tr>

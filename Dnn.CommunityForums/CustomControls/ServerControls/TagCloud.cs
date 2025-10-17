@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
+            ModuleSettings _mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
             Data.Common db = new Data.Common();
             IDataReader dr = db.TagCloud_Get(this.PortalId, this.ModuleId, this.ForumIds, this.TagCount);
             ControlUtils ctlUtils = new ControlUtils();

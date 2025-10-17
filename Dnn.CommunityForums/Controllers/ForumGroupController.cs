@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (!isNew || forumGroupInfo.InheritSettings)
                 {
                     // reset any forum settings keys previously mapped to the module default to map to new settings key
-                    forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
+                    forumGroupInfo.GroupSettingsKey = $"G{forumGroupInfo.ForumGroupId}";
                     foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.ForumSettingsKey == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey))
                     {
                         forum.ForumSettingsKey = forumGroupInfo.GroupSettingsKey;
@@ -135,14 +135,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             forumGroupInfo = this.GetById(forumGroupInfo.ForumGroupId, forumGroupInfo.ModuleId);
             if (string.IsNullOrEmpty(forumGroupInfo.GroupSettingsKey))
             {
-                forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
+                forumGroupInfo.GroupSettingsKey = $"G{forumGroupInfo.ForumGroupId}";
                 this.Update(forumGroupInfo);
             }
 
             // if new group and not using default features, copy default features to group features as starting point
             if (copyDownDefaultSettings)
             {
-                forumGroupInfo.FeatureSettings = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).ForumFeatureSettings;
+                forumGroupInfo.FeatureSettings = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultFeatureSettings;
                 FeatureSettings.Save(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, forumGroupInfo.FeatureSettings);
                 this.Update(forumGroupInfo);
             }
@@ -152,9 +152,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveIfUnused(permissionId: oldPermissionsId, moduleId: forumGroupInfo.ModuleId);
             }
 
-            if (useDefaultFeatures) /* if now using default module settings, remove group settings */
+            /* if now using default module settings, remove group settings */
+            if (useDefaultFeatures)
             {
-                DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND GroupKey = @1", forumGroupInfo.ModuleId, $"G:{forumGroupInfo.ForumGroupId}");
+                new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKey(forumGroupInfo.ModuleId, $"G{forumGroupInfo.ForumGroupId}");
             }
 
             ClearSettingsCache(forumGroupInfo.ModuleId);

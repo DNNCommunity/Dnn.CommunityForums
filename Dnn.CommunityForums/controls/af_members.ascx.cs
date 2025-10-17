@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
 
             this.lblHeader.Text = Utilities.GetSharedResource("[RESX:MemberDirectory]");
-            string sMode = this.MainSettings.MemberListMode;
+            string sMode = this.ModuleSettings.MemberListMode;
             if (!this.UserInfo.IsSuperUser)
             {
                 if (sMode == "DISABLED")

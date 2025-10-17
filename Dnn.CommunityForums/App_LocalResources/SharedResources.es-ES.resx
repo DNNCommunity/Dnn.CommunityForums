@@ -814,9 +814,6 @@ De
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>Esta será su configuración predeterminada cuando cree un tema o agregue una respuesta.  Esto no afecta a las suscripciones a nivel de foro.</value>
   </data>
-  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>Suscribirse a Temas</value>
-  </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve">
     <value>Es posible que el administrador del foro le haya permitido elegir diferentes formas de suscripción.  Puede seleccionar su preferencia deseada.</value>
   </data>
@@ -1860,5 +1857,41 @@ De
   </data>
   <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
     <value>Anular la suscripción</value>
+  </data>
+  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
+    <value>Suscríbete automáticamente a Mis temas</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Recibir notificaciones de premios de insignias</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Seleccione esta opción si desea recibir notificaciones cuando se le otorgue una nueva insignia de logro.</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsCongratulations].Text" xml:space="preserve">
+    <value>¡Felicidades! ¡Has sido recompensado con una nueva insignia!</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORUMSLINK| &lt;a href="{0}"&gt;Visite&lt;/a&gt; para seguir participando y ganar más recompensas.]</value>
+  </data>
+  <data name="[RESX:BadgeSendAwardNotification].Text" xml:space="preserve">
+    <value>Enviar una notificación al usuario cuando se otorgue</value>
+  </data>
+  <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
+    <value>No envíes una notificación a un usuario mayor cuando rellenes premios</value>
+  </data>
+  <data name="[RESX:lastawarded].Text" xml:space="preserve">
+    <value>Última adjudicación</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Insignia</value>
+  </data>
+  <data name="[RESX:BadgeUsersAssigned].Text" xml:space="preserve">
+    <value>Usuarios galardonados con la insignia: {0}</value>
+  </data>
+  <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
+    <value>Insignias otorgadas al Usuario: {0}</value>
+  </data>
+  <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
+    <value>Insignia aún no asignada</value>
   </data>
 </root>

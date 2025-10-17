@@ -1585,4 +1585,61 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
     <value>Enter a string to be used when retrieving templates. For example, if you want to have separate template files for moderated forums, enter 'moderated', and then templates will be retrieved using 'moderated' as part of the filename, e.g. 'TopicsView-moderated.ascx' rather than just 'TopicsView.ascx' when the TopicsView template is retrieved.</value>
   </data>
+  <data name="[RESX:BadgeName].Text" xml:space="preserve">
+    <value>Badge</value>
+  </data>
+  <data name="[RESX:SortOrder].Text" xml:space="preserve">
+    <value>Sort Order</value>
+  </data>
+  <data name="[RESX:Badges].Text" xml:space="preserve">
+    <value>Badges</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Badge</value>
+  </data>
+  <data name="[RESX:BadgeNew].Text" xml:space="preserve">
+    <value>New Badge</value>
+  </data>
+  <data name="[RESX:BadgeThreshold].Text" xml:space="preserve">
+    <value>Threshold</value>
+  </data>
+  <data name="[RESX:BadgeMetric].Text" xml:space="preserve">
+    <value>Metric</value>
+  </data>
+  <data name="[RESX:BadgeImage].Text" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
+    <value>Manual Award</value>
+  </data>
+  <data name="[RESX:Description].Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
+    <value>New User</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsCreated].Text" xml:space="preserve">
+    <value>Topics Created</value>
+  </data>
+  <data name="[RESX:BadgeMetricRepliesCreated].Text" xml:space="preserve">
+    <value>Replied to Topics</value>
+  </data>
+  <data name="[RESX:BadgeMetricLikesReceived].Text" xml:space="preserve">
+    <value>Likes Received</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
+    <value>Topics Read</value>
+  </data>
+  <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
+    <value>Update Users</value>
+  </data>
+  <data name="[RESX:BadgeImageMarkup].Text" xml:space="preserve">
+    <value>HTML markup for badge (e.g., font-awesome)</value>
+  </data>
+  <data name="[RESX:BadgeOneTimeAward].Text" xml:space="preserve">
+    <value>User can only earn badge one time</value>
+  </data>
+  <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
+    <value># of days between earning this badge</value>
+  </data>
 </root>

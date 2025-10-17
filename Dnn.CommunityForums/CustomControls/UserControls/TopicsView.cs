@@ -127,15 +127,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(topicsTemplate)).ToString();
-                topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyUserTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
-                topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+                topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyUserTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.ModuleSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+                topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.ModuleSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyTopicActionTokenSynonyms(new StringBuilder(topicsTemplate), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale, this.useListActions).ToString();
 
                 #endregion "Backward compatilbility -- remove in v10.00.00"
 
-                this.pageSize = this.MainSettings.PageSize;
+                this.pageSize = this.ModuleSettings.PageSize;
                 if (this.UserId > 0)
                 {
                     this.pageSize = this.UserDefaultPageSize;
@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 this.isSubscribedForum = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId);
                             }
 
-                            if (this.MainSettings.UseSkinBreadCrumb)
+                            if (this.ModuleSettings.UseSkinBreadCrumb)
                             {
                                 string groupURL = new ControlUtils().BuildUrl(this.PortalId, this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, string.Empty, this.ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
                                 DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + groupURL + "\">" + this.ForumInfo.ForumGroup.GroupName + "</a>");
@@ -215,7 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             if (!string.IsNullOrEmpty(this.MetaTemplate))
                             {
                                 this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(this.MetaTemplate)).ToString();
-                                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl).ToString();
+                                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl).ToString();
                                 this.MetaTitle = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[TITLE]", "[/TITLE]").Replace("[TITLE]", string.Empty).Replace("[/TITLE]", string.Empty);
                                 this.MetaTitle = this.MetaTitle.TruncateAtWord(SEOConstants.MaxMetaTitleLength);
                                 this.MetaDescription = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[DESCRIPTION]", "[/DESCRIPTION]").Replace("[DESCRIPTION]", string.Empty).Replace("[/DESCRIPTION]", string.Empty);
@@ -310,7 +310,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             StringBuilder stringBuilder = new StringBuilder(sOutput);
-            stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl);
+            stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(stringBuilder, this.ForumInfo, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl);
             sOutput = stringBuilder.ToString();
 
             sOutput = Utilities.LocalizeControl(sOutput);
@@ -371,7 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseControls(string Template)
         {
-            string MyTheme = this.MainSettings.Theme;
+            string MyTheme = this.ModuleSettings.Theme;
             string sOutput = Template;
             sOutput = "<%@ Register TagPrefix=\"ac\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>" + sOutput;
 
@@ -434,7 +434,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (this.Request.IsAuthenticated)
             {
                 string Url = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=sendto", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
-                sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + Url + "\" rel=\"nofollow\"><img src=\"" + Utilities.ResolveUrl(this.MainSettings.ThemeLocation + "/images/email16.png") + "\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
+                sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + Url + "\" rel=\"nofollow\"><img src=\"" + Utilities.ResolveUrl(this.ModuleSettings.ThemeLocation + "/images/email16.png") + "\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
             }
             else
             {
@@ -617,7 +617,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     stringBuilder.Replace("[AF:URL:LASTREAD]", string.Empty);
                 }
 
-                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(stringBuilder, topicInfo, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl);
+                stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(stringBuilder, topicInfo, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl);
                 stringBuilder.Replace("[LASTPOST]", string.Empty).Replace("[/LASTPOST]", string.Empty);
                 stringBuilder.Replace("[ROWCSS]", this.GetRowCSS(UserLastTopicRead, UserLastReplyRead, topicInfo.TopicId, topicInfo.LastReplyId, rowcount));
 
@@ -657,7 +657,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     intPages = Convert.ToInt32(System.Math.Ceiling(this.topicRowCount / (double)this.pageSize));
                     pager1.PageCount = intPages;
                     pager1.PageMode = PagerNav.Mode.Links;
-                    if (this.MainSettings.URLRewriteEnabled)
+                    if (this.ModuleSettings.URLRewriteEnabled)
                     {
                         pager1.BaseURL = URL.ForumLink(this.TabId, this.ForumInfo);
                     }
@@ -665,7 +665,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     pager1.CurrentPage = this.PageId;
                     pager1.TabID = Convert.ToInt32(this.Request.Params["TabId"]);
                     pager1.ForumID = this.ForumId;
-                    pager1.UseShortUrls = this.MainSettings.UseShortUrls;
+                    pager1.UseShortUrls = this.ModuleSettings.UseShortUrls;
                     pager1.PageText = Utilities.GetSharedResource("[RESX:Page]");
                     pager1.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
                     pager1.View = Views.Topics;
@@ -683,11 +683,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (pager2 != null)
                 {
                     pager2.PageMode = Modules.ActiveForums.Controls.PagerNav.Mode.Links;
-                    if (this.MainSettings.URLRewriteEnabled)
+                    if (this.ModuleSettings.URLRewriteEnabled)
                     {
                         pager2.BaseURL = URL.ForumLink(this.TabId, this.ForumInfo);
                     }
-                    pager2.UseShortUrls = this.MainSettings.UseShortUrls;
+                    pager2.UseShortUrls = this.ModuleSettings.UseShortUrls;
                     pager2.PageCount = intPages;
                     pager2.CurrentPage = this.PageId;
                     pager2.TabID = Convert.ToInt32(this.Request.Params["TabId"]);
@@ -707,7 +707,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (replies + 1 > this.pageSize)
             {
                 List<string> Params = new List<string>();
-                sOut = "<div class=\"afpagermini\">(<img src=\"" + this.MainSettings.ThemeLocation + "/images/icon_multipage.png\" alt=\"[RESX:MultiPageTopic]\" style=\"vertical-align:middle;\" />";
+                sOut = "<div class=\"afpagermini\">(<img src=\"" + this.ModuleSettings.ThemeLocation + "/images/icon_multipage.png\" alt=\"[RESX:MultiPageTopic]\" style=\"vertical-align:middle;\" />";
 
                 // Jump to pages
                 int intPostPages = 0;
@@ -718,7 +718,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
 
                         Params = new List<string> { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
-                        if (this.MainSettings.UseShortUrls)
+                        if (this.ModuleSettings.UseShortUrls)
                         {
                             Params = new List<string> { ParamKeys.TopicId + "=" + postID };
                         }
@@ -736,7 +736,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
 
                         Params = new List<string> { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
-                        if (this.MainSettings.UseShortUrls)
+                        if (this.ModuleSettings.UseShortUrls)
                         {
                             Params = new List<string> { ParamKeys.TopicId + "=" + postID };
                         }
@@ -756,7 +756,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     for (i = 1; i <= intPostPages; i++)
                     {
                         Params = new List<string> { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
-                        if (this.MainSettings.UseShortUrls)
+                        if (this.ModuleSettings.UseShortUrls)
                         {
                             Params = new List<string> { ParamKeys.TopicId + "=" + postID };
                         }

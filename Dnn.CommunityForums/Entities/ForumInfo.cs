@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
         private DotNetNuke.Modules.ActiveForums.Entities.IPostInfo lastPostInfo;
         private FeatureSettings featureSettings;
-        private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
+        private DotNetNuke.Modules.ActiveForums.ModuleSettings mainSettings;
         private PortalSettings portalSettings;
         private ModuleInfo moduleInfo;
         private int? subscriberCount;
@@ -117,9 +117,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string ForumSettingsKey { get; set; }
 
-        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
-        public DateTime DateUpdated { get; set; } = DateTime.Now;
+        public DateTime DateUpdated { get; set; } = DateTime.UtcNow;
 
         public int LastTopicId { get; set; }
 
@@ -547,7 +547,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        public SettingsInfo MainSettings
+        public DotNetNuke.Modules.ActiveForums.ModuleSettings MainSettings
         {
             get
             {
@@ -567,7 +567,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        internal SettingsInfo LoadMainSettings()
+        internal DotNetNuke.Modules.ActiveForums.ModuleSettings LoadMainSettings()
         {
             return this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
         }
@@ -713,7 +713,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        internal string GetForumFolderIcon(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings)
+        internal string GetForumFolderIcon(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.ModuleSettings mainSettings)
         {
             switch (this.GetForumStatusForUser(forumUser))
             {
@@ -908,7 +908,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "lastpostdisplayname":
                     case "lastpostauthordisplayname":
                         var forumUserController = new Controllers.ForumUserController(this.ModuleId);
-                        return this.LastPostID > 0 && this.LastPostUserID > 0 ? PropertyAccess.FormatString(Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, forumUserController.GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId), forumUserController.GetUserIsAdmin(accessingUser.PortalID, this.ModuleId, accessingUser.UserID) || forumUserController.GetUserIsSuperUser(accessingUser.PortalID, this.ModuleId, accessingUser.UserID), this.LastPostUserID, this.LastPostUserName, this.LastPostFirstName, this.LastPostLastName, this.LastPostDisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.LastPostDisplayName), format) : string.Empty;
+                        var forumUser = forumUserController.GetByUserId(accessingUser.PortalID, accessingUser.UserID);
+                        return this.LastPostID > 0 && this.LastPostUserID > 0 ? PropertyAccess.FormatString(Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, forumUser.GetIsMod(this.ModuleId), forumUser.IsAdmin || forumUser.IsSuperUser, this.LastPostUserID, this.LastPostUserName, this.LastPostFirstName, this.LastPostLastName, this.LastPostDisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.LastPostDisplayName), format) : string.Empty;
 
                     case "statuscssclass":
                         return PropertyAccess.FormatString(this.GetForumStatusCss(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);

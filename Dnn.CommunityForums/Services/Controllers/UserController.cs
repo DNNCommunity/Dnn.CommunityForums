@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
+    /// 
     public class UserController : ControllerBase<UserController>
     {
         /// <summary>

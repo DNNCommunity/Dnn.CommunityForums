@@ -1585,4 +1585,61 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
     <value>Geben Sie eine Zeichenfolge ein, die beim Abrufen von Vorlagen verwendet werden soll. Wenn Sie z. B. separate Vorlagendateien für moderierte Foren haben möchten, geben Sie "moderiert" ein, und dann werden die Vorlagen mit "moderiert" als Teil des Dateinamens abgerufen, z. B. "TopicsView-moderated.ascx" und nicht nur "TopicsView.ascx", wenn die TopicsView-Vorlage abgerufen wird.</value>
   </data>
+  <data name="[RESX:Description].Text" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="[RESX:BadgeName].Text" xml:space="preserve">
+    <value>Abzeichen</value>
+  </data>
+  <data name="[RESX:SortOrder].Text" xml:space="preserve">
+    <value>Sortierreihenfolge</value>
+  </data>
+  <data name="[RESX:Badges].Text" xml:space="preserve">
+    <value>Kennzeichen</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Abzeichen</value>
+  </data>
+  <data name="[RESX:BadgeNew].Text" xml:space="preserve">
+    <value>Neues Abzeichen</value>
+  </data>
+  <data name="[RESX:BadgeThreshold].Text" xml:space="preserve">
+    <value>Schwelle</value>
+  </data>
+  <data name="[RESX:BadgeMetric].Text" xml:space="preserve">
+    <value>Metrik</value>
+  </data>
+  <data name="[RESX:BadgeImage].Text" xml:space="preserve">
+    <value>Bild</value>
+  </data>
+  <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
+    <value>Neuer Benutzer</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsCreated].Text" xml:space="preserve">
+    <value>Erstellte Themen</value>
+  </data>
+  <data name="[RESX:BadgeMetricRepliesCreated].Text" xml:space="preserve">
+    <value>Auf Themen geantwortet</value>
+  </data>
+  <data name="[RESX:BadgeMetricLikesReceived].Text" xml:space="preserve">
+    <value>Erhaltene "Gefällt mir"-Angaben</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
+    <value>Gelesene Themen</value>
+  </data>
+  <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
+    <value>Aktualisieren von Benutzern</value>
+  </data>
+  <data name="[RESX:BadgeImageMarkup].Text" xml:space="preserve">
+    <value>HTML-Markup für Badge (z. B. font-awesome)</value>
+  </data>
+  <data name="[RESX:BadgeOneTimeAward].Text" xml:space="preserve">
+    <value>Der Benutzer kann das Abzeichen nur einmal verdienen</value>
+  </data>
+  <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
+    <value># der Tage zwischen dem Erhalt dieses Abzeichens</value>
+  </data>
+  <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
+    <value>Manuelle Auszeichnung</value>
+  </data>
 </root>

@@ -1,0 +1,39 @@
+﻿## These tests assume you have a DNN instance with DNN Community Forums installed and configured
+
+## change values in http-client.env.json to match your environment / browser session
+
+### first test is to verify a simple endpoint is reachable; we have a "Hello World" endpoint on each controller for this purpose"
+### the HelloWorld endpoint does not require authentication but does require TabId and ModuleId headers for 'supported modules' check
+GET {{hostname}}/API/ActiveForums/Forum/HelloWorld
+TabId: {{TabId}}
+ModuleId: {{Moduleid}}
+
+### test to get a forum
+GET {{hostname}}/API/ActiveForums/Forum/Get?ForumId=1
+tabid: {{TabId}}
+moduleid: {{Moduleid}}
+requestverificationtoken: {{requestverificationtoken}} 
+cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}}
+
+### test to get a forum list
+GET {{hostname}}/API/ActiveForums/Forum/List
+tabid: {{TabId}}
+moduleid: {{Moduleid}}
+requestverificationtoken: {{requestverificationtoken}} 
+cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}}
+
+### test to subscribe to a forum
+POST {{hostname}}/API/ActiveForums/Forum/Subscribe
+tabid: {{TabId}}
+moduleid: {{Moduleid}}
+requestverificationtoken: {{requestverificationtoken}}
+cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}} 
+content-type: application/json
+content: {"forumid":"1"}
+
+### test to get subscriber count to a forum
+GET {{hostname}}/API/ActiveForums/Forum/SubscriberCount?ForumId=1
+tabid: {{TabId}}
+moduleid: {{Moduleid}}
+requestverificationtoken: {{requestverificationtoken}}
+cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}} 

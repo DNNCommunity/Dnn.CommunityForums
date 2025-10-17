@@ -814,9 +814,6 @@ Von
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>Dies ist Ihre Standardeinstellung, wenn Sie ein Thema erstellen oder eine Antwort hinzufügen.  Dies hat keine Auswirkungen auf Abonnements auf Forumsebene.</value>
   </data>
-  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>Themen abonnieren</value>
-  </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve">
     <value>Der Forenadministrator hat Ihnen möglicherweise erlaubt, verschiedene Abonnementformen auszuwählen.  Sie können Ihre gewünschte Präferenz auswählen.</value>
   </data>
@@ -1861,5 +1858,41 @@ Von
   </data>
   <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
     <value>Abmelden</value>
+  </data>
+  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
+    <value>Automatisches Abonnieren von "Meine Themen"</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Erhalten Sie Benachrichtigungen über Abzeichenauszeichnungen</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Wählen Sie diese Option aus, wenn Sie Benachrichtigungen erhalten möchten, wenn Sie ein neues Erfolgsabzeichen erhalten.</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsCongratulations].Text" xml:space="preserve">
+    <value>Glückwunsch! Sie wurden mit einem neuen Abzeichen belohnt!</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORENLINK|Bitte &lt;a href="{0}"&gt;besuchen Sie&lt;/a&gt; , um weiter teilzunehmen und weitere Belohnungen zu erhalten.]</value>
+  </data>
+  <data name="[RESX:BadgeSendAwardNotification].Text" xml:space="preserve">
+    <value>Senden Sie dem Benutzer eine Benachrichtigung, wenn er vergeben wird</value>
+  </data>
+  <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
+    <value>Senden Sie einem älteren Benutzer keine Benachrichtigung, wenn Sie Prämien auffüllen</value>
+  </data>
+  <data name="[RESX:lastawarded].Text" xml:space="preserve">
+    <value>Zuletzt verliehen</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Abzeichen</value>
+  </data>
+  <data name="[RESX:BadgeUsersAssigned].Text" xml:space="preserve">
+    <value>Benutzer, die mit dem Abzeichen ausgezeichnet wurden: {0}</value>
+  </data>
+  <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
+    <value>Abzeichen für Benutzer: {0}</value>
+  </data>
+  <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
+    <value>Badge noch nicht zugewiesen</value>
   </data>
 </root>

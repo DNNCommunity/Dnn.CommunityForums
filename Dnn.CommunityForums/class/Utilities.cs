@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : string.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
-                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
+                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser, requestUri: requestUri, rawUrl: rawUrl);
                 if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
                 {
@@ -1044,6 +1044,11 @@ namespace DotNetNuke.Modules.ActiveForums
             return GetUserFormattedDateTime(dateTime, userCultureInfo, timeZoneOffset, "g");
         }
 
+        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        {
+            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, timeZoneOffset, "g");
+        }
+
         internal static string GetUserFormattedDateTime(DateTime? dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
         {
             if (dateTime != null)
@@ -1074,11 +1079,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return GetUserFormattedDateTime((DateTime?)dateTime, portalId, userId);
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
-        {
-            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, timeZoneOffset, "g");
-        }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
         public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)

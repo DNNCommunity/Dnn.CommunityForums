@@ -811,9 +811,6 @@ De,
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>Ceci sera votre réglage par défault lors de la création d'un sujet ou l'ajout d'une réponse. Ceci n'affecte pas l'abonnement au niveau du forum.</value>
   </data>
-  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>S'abonner à des sujets</value>
-  </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve">
     <value>L'administrateur du forum peut vous avoir permis de choisir différents formulaires pour les abonnements. Vous pouvez choisir votre préférence ici.</value>
   </data>
@@ -1857,5 +1854,41 @@ De,
   </data>
   <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
     <value>Se désabonner</value>
+  </data>
+  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
+    <value>S’abonner automatiquement à Mes sujets</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Recevoir des notifications d’attribution de badge</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Sélectionnez cette option si vous souhaitez recevoir des notifications lorsque vous recevez un nouvel insigne de succès.</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsCongratulations].Text" xml:space="preserve">
+    <value>Félicitations! Vous avez été récompensé par un nouveau badge !</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF :FORUMSLINK|Veuillez &lt;a href="{0}"&gt;vous y rendre&lt;/a&gt; pour continuer à participer et gagner plus de récompenses.]</value>
+  </data>
+  <data name="[RESX:BadgeSendAwardNotification].Text" xml:space="preserve">
+    <value>Envoyer une notification à l’utilisateur lorsqu’il est attribué</value>
+  </data>
+  <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
+    <value>N’envoyez pas de notification à un utilisateur plus âgé lors du rachat de récompenses</value>
+  </data>
+  <data name="[RESX:lastawarded].Text" xml:space="preserve">
+    <value>Dernier prix</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Insigne</value>
+  </data>
+  <data name="[RESX:BadgeUsersAssigned].Text" xml:space="preserve">
+    <value>Utilisateurs ayant reçu le badge : {0}</value>
+  </data>
+  <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
+    <value>Badges attribués à l’utilisateur : {0}</value>
+  </data>
+  <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
+    <value>Badge non encore attribué</value>
   </data>
 </root>
