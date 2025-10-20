@@ -340,6 +340,19 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     break;
+                case "09.03.00":
+                    try
+                    {
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
                 default:
                     break;
             }

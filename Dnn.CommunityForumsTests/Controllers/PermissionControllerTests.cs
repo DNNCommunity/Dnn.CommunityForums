@@ -326,7 +326,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -369,7 +369,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -412,7 +412,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -462,7 +462,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
             var requestedAction = mockPermissions.Object.View;
@@ -490,7 +490,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                         Moderate = emptyPermissions,
                         Move = emptyPermissions,
                         Split = emptyPermissions,
-                        Ban = emptyPermissions,
+                        ManageUsers = emptyPermissions,
                     },
                 };
 
@@ -530,7 +530,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Move = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Split = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Ban = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    ManageUsers = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                 },
             };
 
@@ -559,7 +559,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                          Moderate = $"{emptyPermissions}",
                          Move = $"{emptyPermissions}",
                          Split = $"{emptyPermissions}",
-                         Ban = $"{emptyPermissions}",
+                         ManageUsers = $"{emptyPermissions}",
                     },
                 };
 
@@ -600,7 +600,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Move = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Split = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Ban = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    ManageUsers = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                 },
             };
 
@@ -640,7 +640,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Move = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Split = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Ban = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    ManageUsers = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                 },
             };
 
@@ -680,7 +680,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = $"{emptyPermissions}",
                     Move = $"{emptyPermissions}",
                     Split = $"{emptyPermissions}",
-                    Ban = $"{emptyPermissions}",
+                    ManageUsers = $"{emptyPermissions}",
                 },
             };
 
@@ -778,7 +778,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Move = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Split = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Ban = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    ManageUsers = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                 },
             };
 

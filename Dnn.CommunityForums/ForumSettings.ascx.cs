@@ -426,6 +426,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080100();
                     DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
+                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
                 }
 
                 xDoc.LoadXml(this.ForumConfig);

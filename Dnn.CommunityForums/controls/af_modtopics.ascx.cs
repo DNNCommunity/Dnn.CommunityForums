@@ -354,7 +354,7 @@ namespace DotNetNuke.Modules.ActiveForums
             bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.ModerateRoleIds, ForumUser?.UserRoleIds);
             bModDelete = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.DeleteRoleIds, ForumUser?.UserRoleIds));
             bModEdit = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.EditRoleIds, ForumUser?.UserRoleIds));
-            bModBan = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.BanRoleIds, ForumUser?.UserRoleIds));
+            bModBan = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.ManageUsersRoleIds, ForumUser?.UserRoleIds));
         }
 
         private string GetAttachments(int contentId, int portalID, int moduleID, DataTable dtAttach)

@@ -432,8 +432,8 @@
   <data name="[RESX:SecGrid:attach].Text" xml:space="preserve">
     <value>Attach</value>
   </data>
-  <data name="[RESX:SecGrid:ban].Text" xml:space="preserve">
-    <value>Ban</value>
+  <data name="[RESX:SecGrid:manageusers].Text" xml:space="preserve">
+    <value>Manage Users</value>
   </data>
   <data name="[RESX:SecGrid:create].Text" xml:space="preserve">
     <value>Create</value>

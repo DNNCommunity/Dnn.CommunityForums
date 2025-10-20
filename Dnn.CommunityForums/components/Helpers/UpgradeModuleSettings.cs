@@ -353,5 +353,68 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 }
             }
         }
+
+        internal static void UpgradeSocialGroupForumConfigModuleSettings_090300()
+        {
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+            {
+                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                {
+                    if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant())
+                    {
+                        var ForumConfig = module.ModuleSettings.GetString("ForumConfig", string.Empty);
+                        if (!string.IsNullOrEmpty(ForumConfig))
+                        {
+                            var xDoc = new XmlDocument();
+                            xDoc.LoadXml(ForumConfig);
+                            if (xDoc != null)
+                            {
+                                string[] secTypes = { "groupadmin", "groupmember", "registereduser", "anon" };
+                                foreach (string secType in secTypes)
+                                {
+                                    string xpath = $"//defaultforums/forum/security[@type='{secType}']";
+                                    foreach (var nodename in new string[] { "ban" })
+                                    {
+                                        if (xDoc.DocumentElement.SelectSingleNode(xpath).InnerXml.Contains(nodename))
+                                        {
+                                            try
+                                            {
+                                                xDoc.DocumentElement.SelectSingleNode(xpath).RemoveChild(xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode(nodename));
+                                            }
+                                            catch
+                                            {
+                                            }
+                                        }
+                                    }
+
+                                    foreach (var nodename in new string[] { "manageusers" })
+                                    {
+                                        if (!xDoc.DocumentElement.SelectSingleNode(xpath).InnerXml.Contains(nodename))
+                                        {
+                                            try
+                                            {
+                                                xDoc.DocumentElement.SelectSingleNode(xpath).AddElement(nodename, string.Empty);
+                                                xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode(nodename).AddAttribute("value", "false");
+                                            }
+                                            catch
+                                            {
+                                            }
+                                        }
+                                    }
+                                }
+
+                                ForumConfig = xDoc.OuterXml;
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", ForumConfig);
+                                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
+                                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
+                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
+                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
