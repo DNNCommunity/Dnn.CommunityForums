@@ -122,16 +122,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                     case "portallogourl":
                         {
                             var logoUrl = FileManager.Instance.GetUrl(FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.LogoFile));
-                            logoUrl = $"https://{this.PortalSettings.DefaultPortalAlias}{logoUrl}";
-                            logoUrl = Utilities.RemoveCultureFromUrl(this.PortalSettings, logoUrl);
-                            return PropertyAccess.FormatString(Utilities.ResolveUrl(url: logoUrl, defaultPortalAlias: this.PortalSettings.DefaultPortalAlias, sslEnabled: this.PortalSettings.SSLEnabled), format);
+                            return PropertyAccess.FormatString(Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl(url: $"https://{this.PortalSettings.DefaultPortalAlias}{logoUrl}", portalSettings: this.PortalSettings), portalSettings: this.PortalSettings), format);
                         }
 
                     case "portalurlwithoutculture":
                         {
                             var portalUrl = $"https://{this.PortalSettings.DefaultPortalAlias}";
-                            portalUrl = Utilities.RemoveCultureFromUrl(this.PortalSettings, portalUrl);
-                            return PropertyAccess.FormatString(Utilities.ResolveUrl(url: portalUrl, defaultPortalAlias: this.PortalSettings.DefaultPortalAlias, sslEnabled: this.PortalSettings.SSLEnabled), format);
+                            return PropertyAccess.FormatString(Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl(url: portalUrl, portalSettings: this.PortalSettings), portalSettings: this.PortalSettings), format);
                         }
 
                     case "loginlink":

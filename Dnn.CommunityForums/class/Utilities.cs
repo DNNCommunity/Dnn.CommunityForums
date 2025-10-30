@@ -34,6 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions.Portals;
@@ -1915,16 +1916,26 @@ namespace DotNetNuke.Modules.ActiveForums
             return expression != null && (double.TryParse(expression.ToString(), out _) || bool.TryParse(expression.ToString(), out _));
         }
 
-        internal static string ResolveUrlInTag(string template, string defaultPortalAlias, bool sslEnabled = true)
+        internal static string ResolveUrlInTag(string tag, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        {
+            return ResolveUrlInTag(tag: tag, defaultPortalAlias: portalSettings?.DefaultPortalAlias, sslEnabled: portalSettings?.SSLEnabled ?? true);
+        }
+
+        internal static string ResolveUrlInTag(string tag, string defaultPortalAlias, bool sslEnabled = true)
         {
             const string linkRegex = "(href|src)=\"(/[^\"]*?)\"";
-            var matches = Regex.Matches(template, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            var matches = Regex.Matches(tag, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
             foreach (Match match in matches)
             {
-                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{ResolveUrl(match.Groups[2].Value, defaultPortalAlias, sslEnabled)}\"");
+                tag = tag.Replace(match.Value, $"{match.Groups[1].Value}=\"{ResolveUrl(url: match.Groups[2].Value, defaultPortalAlias: defaultPortalAlias, sslEnabled: sslEnabled)}\"");
             }
 
-            return template;
+            return tag;
+        }
+
+        internal static string ResolveUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        {
+            return ResolveUrl(url: url, defaultPortalAlias: portalSettings?.DefaultPortalAlias, sslEnabled: portalSettings?.SSLEnabled ?? true);
         }
 
         internal static string ResolveUrl(string url, string defaultPortalAlias, bool sslEnabled = true)
@@ -2040,7 +2051,20 @@ namespace DotNetNuke.Modules.ActiveForums
             return false;
         }
 
-        internal static string RemoveCultureFromUrl(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string url)
+        internal static bool UseTipTapEditor(Entities.ForumInfo forumInfo, ForumUserInfo forumUserInfo, bool allowHTML)
+        {
+            if (allowHTML)
+            {
+                if (forumInfo.FeatureSettings.EditorType.Equals(EditorType.FORUMSTIPTAPEDITOR))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        internal static string RemoveCultureFromUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             if (!string.IsNullOrEmpty(portalSettings.PortalAlias?.CultureCode) && url.ToLowerInvariant().Contains($"/{portalSettings.PortalAlias?.CultureCode?.ToLowerInvariant()}/"))
             {

@@ -1,0 +1,19 @@
+.tiptap { border: solid 1px #ccc; background-color: #fff; padding: 5px; box-shadow: 2px 2px 5px rgba(0,0,0,0.3); position: absolute; width: 99%; height: 350px; overflow: auto; resize: vertical; }
+
+.dcf-tiptap-drag-handle {
+    &::after { display: flex; align-items: center; justify-content: center; width: 1rem; height: 1.25rem; content: '⠿'; font-weight: 700; cursor: grab; background: #0d0d0d10; color: #0d0d0d50; border-radius: 0.25rem; }
+}
+.dcf-tiptap-has-focus { border-radius: 3px; box-shadow: 0 0 0 2px var(--purple); }
+.dcf-mention-popup { background: white; border: 1px solid #b6b6b6; border-radius: 2px; padding: 2px; position: absolute; z-index: 9997; position: absolute; box-sizing: border-box; width: 200px; max-height: 300px; overflow: auto; padding: 0; margin: 0; }
+.dcf-mention-popup[hidden] {display: none;}
+
+.dcf-mention-popup .items { }
+.dcf-mention-popup .item { padding: 2px; cursor: pointer; border-radius: 1px; list-style-type: none; }
+
+.dcf-mention-popup .item:hover,
+.dcf-mention-popup .item.is-selected { background: #f0f0f0; }
+        
+.dcf-tiptap-show-boxes * {
+    outline: 1px dashed #888;
+    outline-offset: 2px;
+}

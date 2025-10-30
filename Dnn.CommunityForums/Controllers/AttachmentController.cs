@@ -301,7 +301,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         (match.Groups["src"].Value.EndsWith(file.FileName, StringComparison.InvariantCultureIgnoreCase) ||
                         (!string.IsNullOrEmpty(originalUrl) && match.Groups["src"].Value.ToLowerInvariant().Contains(originalUrl.ToLowerInvariant()))))
                     {
-                        var tag = Utilities.ResolveUrlInTag($"<img src=\"https://{content.Post.Forum.PortalSettings.DefaultPortalAlias}{this.fileManager.GetUrl(file)}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />", content.Post.Forum.PortalSettings.DefaultPortalAlias, content.Post.Forum.PortalSettings.SSLEnabled);
+                        var tag = Utilities.ResolveUrlInTag($"<img src=\"https://{content.Post.Forum.PortalSettings.DefaultPortalAlias}{this.fileManager.GetUrl(file)}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />", content.Post.Forum.PortalSettings);
                         content.Body = content.Body.Replace(match.Groups["tag"].Value, tag);
                         this.contentController.Save(content, content.ContentId);
                     }

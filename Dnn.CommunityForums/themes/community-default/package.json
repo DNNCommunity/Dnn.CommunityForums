@@ -9,10 +9,13 @@
     "merge-stream": "^2.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
     "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
     "gulp-less": "^5.0.0",
-    "gulp-sourcemaps": "^3.0.0"   
+    "gulp-sourcemaps": "^3.0.0"
   },
   "author": "Timo Breumelhof",
   "license": "MIT"

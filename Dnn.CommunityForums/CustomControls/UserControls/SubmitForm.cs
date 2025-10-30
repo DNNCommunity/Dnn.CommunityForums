@@ -23,11 +23,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.IO;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
+    using System.Xml.Linq;
 
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.Providers;
@@ -139,6 +142,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 tempBody = txtBody.Text;
                             }
 
+                            break;
+                        case EditorType.FORUMSTIPTAPEDITOR:
+                            tempBody = ((HiddenField)this.hidTipTapContent).Value;
                             break;
                         case EditorType.TEXTBOX:
                             tempBody = ((TextBox)this.txtEditor).Text;
@@ -330,12 +336,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected Label lblSubject = new Label();
         protected PlaceHolder plhEditor = new PlaceHolder();
         protected ImageButton btnPost = new ImageButton();
-        protected Button btnSubmit = new Button();
+
         protected ImageButton btnCancel = new ImageButton();
         protected ImageButton btnPreview = new ImageButton();
         protected PlaceHolder plhControl = new PlaceHolder();
         protected Control txtEditor = null;
-        protected TextBox txtAreaControl = null;
+        //protected TextBox txtAreaControl = null;
+        protected object txtAreaControl = null;
         protected af_posticonlist afposticons = new af_posticonlist();
         protected af_polledit afpolledit = new af_polledit();
         protected af_topicstatus aftopicstatus = new af_topicstatus();
@@ -352,6 +359,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected PlaceHolder plhUpload;
         protected PlaceHolder plhTopicReview = new PlaceHolder();
         protected TextBox txtTopicPriority = new TextBox();
+        protected HiddenField hidTipTapContent = new HiddenField();
 
         // Support for Anonymous
         protected TextBox txtUsername = new TextBox();
@@ -831,6 +839,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Unit editorWidth = Unit.Percentage(99.0);
             Unit editorHeight = Unit.Percentage(99.0);
 
+            if (this.EditorType.Equals(EditorType.FORUMSTIPTAPEDITOR) && !Utilities.UseTipTapEditor(this.ForumInfo, this.ForumUser, this.AllowHTML))
+            {
+                this.EditorType = EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS;
+            }
+
             if (this.EditorType.Equals(EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS) && !Utilities.UseCkEditor4WithForumsPlugins(this.ForumInfo, this.ForumUser, this.AllowHTML))
             {
                 this.EditorType = EditorType.HTMLEDITORPROVIDER;
@@ -848,6 +861,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         editor.TextMode = TextBoxMode.MultiLine;
                         editor.Rows = 4;
                         this.plhEditor?.Controls.Add(editor);
+                        this.clientId = editor.ClientID;
+                        break;
+                    }
+
+                case EditorType.FORUMSTIPTAPEDITOR:
+                    {
+                        var editor = new HtmlGenericControl("div");
+                        this.txtAreaControl = editor;
+                        editor.ID = "txtBody";
+                        this.plhEditor.Controls.Add(editor);
+                        this.plhEditor.Controls.Add(this.hidTipTapContent);
                         this.clientId = editor.ClientID;
                         break;
                     }
@@ -956,6 +980,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (this.EditorType.Equals(EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS))
             {
                 this.InjectPluginsForCkEditor4();
+            }
+            else if (this.EditorType.Equals(EditorType.FORUMSTIPTAPEDITOR))
+            {
+                this.InjectTipTapEditorScript();
             }
         }
 
@@ -1086,6 +1114,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     break;
+                case EditorType.FORUMSTIPTAPEDITOR:
+                    ((HtmlGenericControl)this.txtAreaControl).InnerHtml = this.body;
+                    break;
                 case EditorType.TEXTBOX:
                     ((TextBox)this.txtEditor).Text = this.body;
                     break;
@@ -1101,6 +1132,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append(" args.IsValid = true;};");
             this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "bodyval", sb.ToString(), true);
 
+
             // PostBack script for Submit button (btnPost)
             string amPostbackScript = @"
                 <script>
@@ -1109,14 +1141,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     function amPostback() {
                         if (dcnSubmitted) return; // Prevent double-click
                         dcnSubmitted = true;      // Submit button has been clicked
-                        " + this.Page.ClientScript.GetPostBackEventReference(this.btnPost, string.Empty) + // __doPostBack('btnPost', '');
-                        @"
-                    }
-                </script>";
+            ";
+
+            if (this.EditorType.Equals(EditorType.FORUMSTIPTAPEDITOR))
+            {
+                amPostbackScript = amPostbackScript + @"document.getElementById('" + this.hidTipTapContent.ClientID + @"').value = window.getTipTapHTML();";
+            }
+
+            amPostbackScript = amPostbackScript + this.Page.ClientScript.GetPostBackEventReference(this.btnPost, string.Empty);
+            amPostbackScript = amPostbackScript + @"}</script>";
             this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "ampost", amPostbackScript, false);
 
             this.btnPost.Click += this.btnPost_Click;
-            this.btnSubmit.Click += this.btnSubmit_Click;
 
             // This field is used to communicate attachment data between af_attach and af_post, etc.
             this.ctlAttach.AttachmentsClientId = this.AttachmentsClientId;
@@ -1191,9 +1227,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         break;
                     case "btnPreview":
                         this.btnPreview = (DotNetNuke.Modules.ActiveForums.Controls.ImageButton)ctrl;
-
-                        // Case "tsTags"
-                        //    tsTags = CType(ctrl, DotNetNuke.Modules.ActiveForums.Controls.TextSuggest)
                         break;
                     case "afpolledit":
                         this.afpolledit = (DotNetNuke.Modules.ActiveForums.af_polledit)ctrl;
@@ -1219,6 +1252,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
 
                         break;
+                    case "hidTipTapContent":
+                        if (this.EditorType.Equals(EditorType.FORUMSTIPTAPEDITOR))
+                        {
+                            this.hidTipTapContent = (HiddenField)ctrl;
+                        }
+
+                        break;
                 }
 
                 if (ctrl.Controls.Count > 0)
@@ -1226,10 +1266,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     this.LinkControls(ctrl.Controls);
                 }
             }
-        }
-
-        private void btnSubmit_Click(object sender, System.EventArgs e)
-        {
         }
 
         private void insertHTMLScript()
@@ -1288,7 +1324,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string GetAvatarTagForUserMentions()
         {
-            return Utilities.ResolveUrlInTag(template: "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" loading=\"lazy\" />", defaultPortalAlias: this.PortalSettings.DefaultPortalAlias, sslEnabled: this.PortalSettings.SSLEnabled);
+            return Utilities.ResolveUrlInTag(tag: "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" loading=\"lazy\" />", portalSettings: this.PortalSettings);
         }
 
         private string GetTagForUserMentions()
@@ -1299,6 +1335,47 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string GetTagForTagsMentions()
         {
             return Utilities.NavigateURL(this.ForumInfo.GetTabId(), string.Empty, new[] { $"{ParamKeys.ViewType}={Views.Search}", $"{ParamKeys.Tags}={{name}}" });
+        }
+
+        private void InjectTipTapEditorScript()
+        {
+            if (this.EditorType.Equals(EditorType.FORUMSTIPTAPEDITOR))
+            {
+                ClientResourceManager.RegisterStyleSheet(this.Page, $"{DotNetNuke.Modules.ActiveForums.Globals.ModulePath}/Resources/tiptap-editor3/tiptap-editor.css", priority: 102);
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.Append(@"
+                        import TipTapEditorController from '" + this.Page.ResolveUrl(string.Concat(DotNetNuke.Modules.ActiveForums.Globals.ModulePath, "scripts/tiptap-editor.bundle.js")) + @"'
+                        // Global reference to store editor instance
+                        window.tipTapEditorInstance = null;
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try
+                            {
+                                const element = document.getElementById('" + this.clientId + @"');
+                                if (element) {
+                                    window.tipTapEditorInstance = new TipTapEditorController('" + this.clientId + "', '" + HttpUtility.JavaScriptStringEncode(this.body) + @"'," + this.TabId + @"," + this.ForumInfo.ModuleId + @"," + this.ForumInfo.ForumID + @");
+                                } else {
+                                    console.error('Editor element not found:', '" + this.clientId + @"');
+                                }
+                            } catch(err) {
+                                console.error('Error initializing TipTap editor:', err);
+                            }
+                        });
+                        window.getTipTapHTML = function() {
+                            if (window.tipTapEditorInstance) {
+                                return window.tipTapEditorInstance.getHTML();
+                            }
+                            return '';
+                        }
+                        window.getTipTapText = function() {
+                            if (window.tipTapEditorInstance) {
+                                return window.tipTapEditorInstance.getText();
+                            }
+                            return '';
+                        }
+                    ");
+                this.Page.ClientScript.RegisterClientScriptBlock(type: this.Page.GetType(), key: "ForumsTipTapEditor", script: "<script type=\"module\">" + sb.ToString() + "</script>", addScriptTags: false);
+                ClientResourceManager.RegisterScript(this.Page, DotNetNuke.Modules.ActiveForums.Globals.ModulePath + "scripts/tiptap_editor.js", 102);
+            }
         }
 
         private void EmotScript()

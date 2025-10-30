@@ -1,11 +1,24 @@
 {
-  "version": "9.3.0.0",
+  "version": "9.8.0.0",
   "name": "dnn.community.forums",
   "private": true,
   "type": "module",
   "devDependencies": {
     "gulp": "^5.0.1",
     "gulp-cli": "^3.1.0",
-    "gulp-zip": "^6.1.0"
+    "gulp-zip": "^6.1.0",
+    "gulp-changed": "^4.0.3",
+    "gulp-newer": "^1.1.0",
+    "eslint": "^10.3.0",
+    "@tiptap/core": "^3.23.2",
+    "@tiptap/extensions": "^3.23.2",
+    "@tiptap/extension-drag-handle": "^3.23.2",
+    "@tiptap/extension-file-handler": "^3.23.2",
+    "@tiptap/extension-image": "^3.23.2",
+    "@tiptap/extension-mention": "^3.23.2",
+    "@tiptap/starter-kit": "^3.23.2",
+    "@tiptap/suggestion": "^3.23.2",
+    "rollup": "^4.60.3",
+    "@rollup/plugin-node-resolve": "^16.0.3"
   }
 }

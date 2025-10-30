@@ -1919,4 +1919,28 @@ Von
   <data name="ActiveTopics-2147483647min.Text" xml:space="preserve">
     <value>Ewig</value>
   </data>
+  <data name="[RESX:FORUMSTIPTAPEDITOR].Text" xml:space="preserve">
+    <value>Von Foren bereitgestellter TipTap-Editor</value>
+  </data>
+  <data name="[RESX:StrikeDesc].Text" xml:space="preserve">
+    <value>Strikethru-Text</value>
+  </data>
+  <data name="[RESX:UndoDesc].Text" xml:space="preserve">
+    <value>Text rückgängig machen Text bearbeiten</value>
+  </data>
+  <data name="[RESX:RedoDesc].Text" xml:space="preserve">
+    <value>Textbearbeitung neu</value>
+  </data>
+  <data name="[RESX:OrderedListDesc].Text" xml:space="preserve">
+    <value>Bestellte/Nummerierte Liste</value>
+  </data>
+  <data name="[RESX:BulletedListDesc].Text" xml:space="preserve">
+    <value>Aufzählungsliste</value>
+  </data>
+  <data name="[RESX:QuoteDesc].Text" xml:space="preserve">
+    <value>Zitierter Text</value>
+  </data>
+  <data name="[RESX:ShowBoxesDesc].Text" xml:space="preserve">
+    <value>Showblöcke</value>
+  </data>
 </root>

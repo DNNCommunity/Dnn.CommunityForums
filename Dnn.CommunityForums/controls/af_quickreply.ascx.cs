@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections.Generic;
+    using System.Web;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -30,7 +31,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Enums;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     using log4net.Plugin;
@@ -94,7 +94,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (this.Request.IsAuthenticated)
                 {
-            if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+                    if (Utilities.UseTipTapEditor(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+                    {
+                        this.btnSubmitLink.OnClientClick = "afQuickSubmitTipTap(); return false;";
+                    }
+                    else if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
                     {
                         this.btnSubmitLink.OnClientClick = "afQuickSubmitCkEditor4(); return false;";
                     }
@@ -178,7 +182,15 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.txtBody.Width = editorWidth;
                     this.txtBody.Height = editorHeight;
 
-                    if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+                    if (Utilities.UseTipTapEditor(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+                    {
+                        var editor = new HtmlGenericControl("div");
+                        editor.ID = "txtBody";
+                        this.plhEditor = (PlaceHolder)this.qR.FindControl("plhEditor");
+                        this.plhEditor.Controls.Add(editor);
+                        this.editorClientID = editor.ClientID;
+                    }
+                    else if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
                     {
                         var editor = (UI.UserControls.TextEditor)this.LoadControl("~/controls/TextEditor.ascx");
                         editor.ID = "txtBody";
@@ -204,7 +216,11 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+            if (Utilities.UseTipTapEditor(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+            {
+                this.InjectTipTapEditorScript();
+            }
+            else if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
             {
                 this.InjectMentionsPluginsForCkEditor4();
             }
@@ -264,9 +280,54 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        private void InjectTipTapEditorScript()
+        {
+            if (Utilities.UseTipTapEditor(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+            {
+                ClientResourceManager.RegisterStyleSheet(this.Page, $"{DotNetNuke.Modules.ActiveForums.Globals.ModulePath}/Resources/tiptap-editor3/tiptap-editor.css", priority: 102);
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.Append(@"
+                        import TipTapEditorController from '" + this.Page.ResolveUrl(string.Concat(DotNetNuke.Modules.ActiveForums.Globals.ModulePath, "scripts/tiptap-editor.bundle.js")) + @"'
+                        // Global reference to store editor instance
+                        window.tipTapEditorInstance = null;
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try
+                            {
+                                const element = document.getElementById('" + this.editorClientID + @"');
+                                if (element) {
+                                    window.tipTapEditorInstance = new TipTapEditorController('" + this.editorClientID + "', '" + string.Empty + @"'," + this.TabId + @"," + this.ForumInfo.ModuleId + @"," + this.ForumInfo.ForumID + @");
+                                } else {
+                                    console.error('Editor element not found:', '" + this.editorClientID + @"');
+                                }
+                            } catch(err) {
+                                console.error('Error initializing TipTap editor:', err);
+                            }
+                        });
+                        window.getTipTapHTML = function() {
+                            if (window.tipTapEditorInstance) {
+                                return window.tipTapEditorInstance.getHTML();
+                            }
+                            return '';
+                        }
+                        window.getTipTapText = function() {
+                            if (window.tipTapEditorInstance) {
+                                return window.tipTapEditorInstance.getText();
+                            }
+                            return '';
+                        }
+                    ");
+
+                sb.Append("$(document).ready(function() {$(\"#txtBody\").hide();});");
+                this.Page.ClientScript.RegisterClientScriptBlock(type: this.Page.GetType(), key: "ForumsTipTapEditor", script: "<script type=\"module\">" + sb.ToString() + "</script>", addScriptTags: false);
+                ClientResourceManager.RegisterScript(this.Page, DotNetNuke.Modules.ActiveForums.Globals.ModulePath + "scripts/tiptap_editor.js", 102);
+                this.txtBody.Visible = false;
+                this.btnToolBar.Visible = false;
+            }
+        }
+
         private string GetAvatarTagForUserMentions()
         {
-            return Utilities.ResolveUrlInTag(template: "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" loading=\"lazy\" />", defaultPortalAlias: this.PortalSettings.DefaultPortalAlias, sslEnabled: this.PortalSettings.SSLEnabled);
+            return Utilities.ResolveUrlInTag(tag: "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" loading=\"lazy\" />", portalSettings: this.PortalSettings);
         }
 
         private string GetTagForUserMentions()
