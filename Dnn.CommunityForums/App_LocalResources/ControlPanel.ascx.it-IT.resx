@@ -1300,9 +1300,6 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
     <value>Allegare</value>
   </data>
-  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Vietare</value>
-  </data>
   <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
     <value>Creare</value>
   </data>
@@ -1362,9 +1359,6 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   </data>
   <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
     <value>Può caricare e allegare file a nuovi argomenti e risposte.</value>
-  </data>
-  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Può bandire un utente non autorizzato, eliminando tutti i contenuti per l'utente e disabilitando il suo account utente DNN. Non può essere utilizzato su utenti con privilegi avanzati o amministratori. Deve essere concesso solo ai moderatori attendibili o ai ruoli di amministratore.</value>
   </data>
   <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
     <value>Consente di specificare le categorie a cui appartiene un nuovo argomento.</value>
@@ -1536,5 +1530,11 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   </data>
   <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
     <value>Premio Manuale</value>
+  </data>
+  <data name="[RESX:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Gestisci utenti</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Può gestire le opzioni di altri utenti, bandire un utente non autorizzato, eliminare tutti i contenuti per l'utente e disabilitare il suo account utente DNN. Non può essere utilizzato su utenti con privilegi avanzati o amministratori. Deve essere concesso solo ai moderatori attendibili o ai ruoli di amministratore.</value>
   </data>
 </root>

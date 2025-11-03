@@ -61,8 +61,6 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
 
         public HashSet<int> PollRoleIds => this.permissions.PollRoleIds;
 
-        public HashSet<int> BlockRoleIds => this.permissions.BlockRoleIds;
-
         public HashSet<int> TrustRoleIds => this.permissions.TrustRoleIds;
 
         public HashSet<int> SubscribeRoleIds => this.permissions.SubscribeRoleIds;
@@ -81,21 +79,19 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
 
         public HashSet<int> SplitRoleIds => this.permissions.SplitRoleIds;
 
-        public HashSet<int> BanRoleIds => this.permissions.BanRoleIds;
+        public HashSet<int> ManageUsersRoleIds => this.permissions.ManageUsersRoleIds;
 
         public bool EqualPermissions(Permissions other)
         {
             return !(other is null) &&
                    this.EqualPermissionMembers(this.AnnounceRoleIds, other.AnnounceRoleIds) &&
                    this.EqualPermissionMembers(this.AttachRoleIds, other.AttachRoleIds) &&
-                   this.EqualPermissionMembers(this.BanRoleIds, other.BanRoleIds) &&
-                   // EqualPermissionMembers(this.BlockRoleIds, other.BlockRoleIds) &&
                    this.EqualPermissionMembers(this.CategorizeRoleIds, other.CategorizeRoleIds) &&
                    this.EqualPermissionMembers(this.CreateRoleIds, other.CreateRoleIds) &&
                    this.EqualPermissionMembers(this.DeleteRoleIds, other.DeleteRoleIds) &&
                    this.EqualPermissionMembers(this.EditRoleIds, other.EditRoleIds) &&
                    this.EqualPermissionMembers(this.LockRoleIds, other.LockRoleIds) &&
-                   this.EqualPermissionMembers(this.ModerateRoleIds, other.ModerateRoleIds) &&
+                   this.EqualPermissionMembers(this.ManageUsersRoleIds, other.ManageUsersRoleIds) &&
                    this.EqualPermissionMembers(this.ModerateRoleIds, other.ModerateRoleIds) &&
                    this.EqualPermissionMembers(this.MoveRoleIds, other.MoveRoleIds) &&
                    this.EqualPermissionMembers(this.PinRoleIds, other.PinRoleIds) &&
@@ -134,7 +130,6 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
                 Pin = string.Join(";", this.PinRoleIds.Distinct().OrderBy(r => r)),
                 Attach = string.Join(";", this.AttachRoleIds.Distinct().OrderBy(r => r)),
                 Poll = string.Join(";", this.PollRoleIds.Distinct().OrderBy(r => r)),
-                Block = string.Join(";", this.BlockRoleIds.Distinct().OrderBy(r => r)),
                 Trust = string.Join(";", this.TrustRoleIds.Distinct().OrderBy(r => r)),
                 Subscribe = string.Join(";", this.SubscribeRoleIds.Distinct().OrderBy(r => r)),
                 Announce = string.Join(";", this.AnnounceRoleIds.Distinct().OrderBy(r => r)),
@@ -144,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
                 Moderate = string.Join(";", this.ModerateRoleIds.Distinct().OrderBy(r => r)),
                 Move = string.Join(";", this.MoveRoleIds.Distinct().OrderBy(r => r)),
                 Split = string.Join(";", this.SplitRoleIds.Distinct().OrderBy(r => r)),
-                Ban = string.Join(";", this.BanRoleIds.Distinct().OrderBy(r => r)),
+                ManageUsers = string.Join(";", this.ManageUsersRoleIds.Distinct().OrderBy(r => r)),
             };
 
             return entity;

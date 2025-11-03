@@ -38,7 +38,6 @@ namespace DotNetNuke.Modules.ActiveForums
         Split,
         Attach,
         Poll,
-        Block,
         Trust,
         Subscribe,
         Announce,
@@ -46,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
         Categorize,
         Prioritize,
         Moderate,
-        Ban,
+        ManageUsers,
     }
 
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]

@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -280,7 +280,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -364,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 

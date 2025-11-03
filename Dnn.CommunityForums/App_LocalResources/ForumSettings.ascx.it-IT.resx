@@ -327,9 +327,6 @@
   <data name="[RESX:SecGrid:attach].Text" xml:space="preserve">
     <value>Allegare</value>
   </data>
-  <data name="[RESX:SecGrid:ban].Text" xml:space="preserve">
-    <value>Vietare</value>
-  </data>
   <data name="[RESX:SecGrid:create].Text" xml:space="preserve">
     <value>Creare</value>
   </data>
@@ -401,5 +398,8 @@
   </data>
   <data name="AvatarRefreshDisabled.Text" xml:space="preserve">
     <value>Disabile</value>
+  </data>
+  <data name="[RESX:SecGrid:manageusers].Text" xml:space="preserve">
+    <value>Gestisci utenti</value>
   </data>
 </root>
