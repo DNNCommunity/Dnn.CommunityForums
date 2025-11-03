@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private string BuildItem(DataRow dr, int postTabID, int indent, bool includeBody, int portalId)
         {
-            SettingsInfo mainSettings = SettingsBase.GetModuleSettings(this.moduleID);
+            ModuleSettings mainSettings = SettingsBase.GetModuleSettings(this.moduleID);
             StringBuilder sb = new StringBuilder(1024);
             string[] @params = { ParamKeys.ForumId + "=" + dr["ForumID"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ViewType + "=" + Views.Topic };
             string uRL = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(postTabID, string.Empty, @params);

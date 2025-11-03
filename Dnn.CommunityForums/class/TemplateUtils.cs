@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var myTemplate = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey));
             if (string.IsNullOrEmpty(myTemplate))
             {
-                myTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.ProfileInfo, SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
+                myTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.ProfileInfo, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
                 if (cacheKey != string.Empty)
                 {
                     DataCache.SettingsCacheStore(moduleId, cacheKey, myTemplate);

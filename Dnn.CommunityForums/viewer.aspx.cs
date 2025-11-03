@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Diagnostics;
     using System.IO;
     using System.Text.RegularExpressions;
+    using System.Net.Http.Headers;
 
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;
@@ -91,20 +92,17 @@ namespace DotNetNuke.Modules.ActiveForums
             // Get the filename with the unique identifier prefix removed.
             var filename = Regex.Replace(attachment.FileName.TextOrEmpty(), @"__\d+__\d+__", string.Empty);
 
+            // Handle legacy inline attachments a bit differently
+            string contentDispositionType = (attachmentId > 0) ? "attachment" : "inline";
+            var contentDispositionValue = new ContentDispositionHeaderValue(contentDispositionType);
+            contentDispositionValue.FileName = filename;
+            string contentDisposition = contentDispositionValue.ToString();
+
             // Some legacy attachments may still be stored in the DB.
             if (attachment.FileData != null)
             {
                 this.Response.ContentType = attachment.ContentType;
-
-                if (attachmentId > 0)
-                {
-                    this.Response.AddHeader("Content-Disposition", "attachment; filename=" + this.Server.HtmlEncode(filename));
-                }
-                else // Handle legacy inline attachments a bit differently
-                {
-                    this.Response.AddHeader("Content-Disposition", "filename=" + this.Server.HtmlEncode(filename));
-                }
-
+                this.Response.AddHeader("Content-Disposition", contentDisposition);
                 this.Response.BinaryWrite(attachment.FileData);
                 this.Response.End();
                 return;
@@ -154,15 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.Response.Clear();
             this.Response.ContentType = attachment.ContentType;
 
-            if (attachmentId > 0)
-            {
-                this.Response.AddHeader("Content-Disposition", "attachment; filename=" + this.Server.HtmlEncode(filename));
-            }
-            else // Handle legacy inline attachments a bit differently
-            {
-                this.Response.AddHeader("Content-Disposition", "filename=" + this.Server.HtmlEncode(filename));
-            }
-
+            this.Response.AddHeader("Content-Disposition", contentDisposition);
             this.Response.AddHeader("Content-Length", length.ToString());
             this.Response.WriteFile(filePath);
             this.Response.Flush();

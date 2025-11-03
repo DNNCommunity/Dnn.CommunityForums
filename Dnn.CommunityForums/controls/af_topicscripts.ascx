@@ -39,7 +39,8 @@
         // Create the user editor
         $.fn.afUserEditor({
             openTriggerSelector: ".af-button-edituser",
-            servicesFramework: $.ServicesFramework(<%=ModuleId%>)
+            servicesFramework: $.ServicesFramework(<%=ModuleId%>), 
+            baseUrl: '<%=GetBaseUrl()%>',
         });
 
         // Split selected posts

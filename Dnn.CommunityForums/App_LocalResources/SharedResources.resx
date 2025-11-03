@@ -904,7 +904,7 @@
     <value>Subscription Type</value>
   </data>
   <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>Subscribe to Topics</value>
+    <value>Auto-Subscribe to My Topics</value>
   </data>
   <data name="[RESX:Actions:ProfileUpdated].Text" xml:space="preserve">
     <value>Your profile has been updated.</value>
@@ -1860,5 +1860,38 @@ From,
   </data>
   <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
     <value>Unsubscribe</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
+    <value>Receive Badge Award Notifications</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsEnabled].Help" xml:space="preserve">
+    <value>Select this option if you wish to receive notifications when you are awarded a new achievement badge.</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsCongratulations].Text" xml:space="preserve">
+    <value>Congratulations! You've been rewarded with a new badge!</value>
+  </data>
+  <data name="[RESX:BadgeNotificationsPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORUMSLINK|Please &lt;a href="{0}"&gt;visit&lt;/a&gt; to keep participating and earn more rewards.]</value>
+  </data>
+  <data name="[RESX:lastawarded].Text" xml:space="preserve">
+    <value>last awarded</value>
+  </data>
+  <data name="[RESX:BadgeSendAwardNotification].Text" xml:space="preserve">
+    <value>Send user a notification when awarded</value>
+  </data>
+  <data name="[RESX:BadgeSuppresssAwardNotificationOnBackfill].Text" xml:space="preserve">
+    <value>Don't send an older user a notification when backfilling awards</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Badge</value>
+  </data>
+  <data name="[RESX:BadgeUsersAssigned].Text" xml:space="preserve">
+    <value>Users awarded Badge: {0}</value>
+  </data>
+  <data name="[RESX:UserBadgesAssigned].Text" xml:space="preserve">
+    <value>Badges awarded to User: {0}</value>
+  </data>
+  <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
+    <value>Badge not yet assigned</value>
   </data>
 </root>

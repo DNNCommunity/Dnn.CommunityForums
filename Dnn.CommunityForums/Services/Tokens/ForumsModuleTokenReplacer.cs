@@ -134,6 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                                         string.Empty;
                         }
 
+                    case "forumslink":
                     case "toolbar-forums-onclick":
                         return PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId), format);
                     case "toolbar-controlpanel-onclick":

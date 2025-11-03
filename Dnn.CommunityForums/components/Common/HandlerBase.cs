@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         private int _groupid = -1;
         private int _upid = -1;
         private DotNetNuke.Entities.Portals.PortalSettings _ps;
-        private SettingsInfo _mainSettings;
+        private ModuleSettings _mainSettings;
         private bool _AdminRequired = false;
 
         public bool AdminRequired
@@ -137,7 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
         }
 
-        public SettingsInfo MainSettings
+        public ModuleSettings MainSettings
         {
             get
             {

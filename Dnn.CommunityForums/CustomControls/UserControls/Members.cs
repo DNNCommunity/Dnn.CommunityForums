@@ -97,8 +97,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void BuildControl()
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder(1024);
-            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(this.ForumModuleId);
-            string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType._memberList, SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
+            ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(this.ForumModuleId);
+            string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType._memberList, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
             if (!(sTemplate == string.Empty))
             {
                 string sGrid = TemplateUtils.GetTemplateSection(sTemplate, "[AF:CONTROL:LIST]", "[/AF:CONTROL:LIST]");
@@ -212,7 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             List<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo> upl = new List<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>();
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo upi = null;
-            this.pageSize = this.MainSettings.PageSize;
+            this.pageSize = this.ModuleSettings.PageSize;
             if (this.PageId == 1)
             {
                 this.rowIndex = 0;

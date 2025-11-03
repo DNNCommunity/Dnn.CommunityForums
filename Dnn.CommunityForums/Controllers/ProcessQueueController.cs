@@ -29,7 +29,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class ProcessQueueController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo>
     {
-        public bool Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, string requestUrl)
+        public bool Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, int badgeId, string requestUrl)
+        {
+            return this.Add(processType: processType, portalId: portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: badgeId, dateCreated: DateTime.UtcNow, requestUrl: requestUrl);
+        }
+
+        public bool Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, int badgeId, DateTime dateCreated, string requestUrl)
         {
             try
             {
@@ -46,7 +51,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     ContentId = contentId,
                     AuthorId = authorId,
                     UserId = userId,
-                    DateCreated = DateTime.UtcNow,
+                    BadgeId = badgeId,
+                    DateCreated = dateCreated,
                     RequestUrl = requestUrl,
                 });
                 return true;

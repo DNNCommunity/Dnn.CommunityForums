@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		.github\copilot-instructions.md = .github\copilot-instructions.md
 		LICENSE = LICENSE
 		README.md = README.md
 		stylecop.json = stylecop.json

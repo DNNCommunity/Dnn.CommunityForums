@@ -25,7 +25,9 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Web.UI.WebControls;
 
@@ -69,6 +71,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Create "Pin notification" core messaging notification type new in 08.02.00
                 ForumsConfig.Install_PinNotificationType_080200();
 
+                // Create "badge notification" core messaging notification type new in 09.02.00
+                ForumsConfig.Install_BadgeNotificationType_090200();
+
+                // Create default badges new in 09.02.00
+                new ForumsConfig().Install_DefaultBadges_090200();
                 return true;
             }
             catch (Exception ex)
@@ -172,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             Active = xNodeList[i].Attributes["active"].Value == "1",
                             Hidden = xNodeList[i].Attributes["hidden"].Value == "1",
                             SortOrder = i,
-                            GroupSettingsKey = $"M:{moduleId}",
+                            GroupSettingsKey = $"M{moduleId}",
                             PermissionsId = SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId,
                         };
                         var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
@@ -197,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         Active = cNodes[c].Attributes["active"].Value == "1",
                                         Hidden = cNodes[c].Attributes["hidden"].Value == "1",
                                         SortOrder = c,
-                                        ForumSettingsKey = $"G:{groupId}",
+                                        ForumSettingsKey = $"G{groupId}",
                                         PermissionsId = SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId,
                                     };
                                     new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, true, true, true);
@@ -565,7 +572,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         }
 
                                         templateInfo.Subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(templateInfo.Subject), portalSettings, portalSettings.DefaultLanguage).ToString();
-                                        Settings.SaveSetting(module.ModuleID, $"M:{module.ModuleID}", ForumSettingKeys.EmailNotificationSubjectTemplate, templateInfo.Subject);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(module.ModuleID, $"M{module.ModuleID}", ForumSettingKeys.EmailNotificationSubjectTemplate, templateInfo.Subject);
                                         DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
                                     }
                                     catch (Exception ex)
@@ -662,49 +669,49 @@ namespace DotNetNuke.Modules.ActiveForums
                 var permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateDefaultPermissions(portalSettings, moduleId);
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.DefaultPermissionId, permissions.PermissionsId.ToString());
 
-                string sKey = $"M:{moduleId}";
+                string sKey = $"M{moduleId}";
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.DefaultSettingsKey, sKey);
-                if (string.IsNullOrEmpty(SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.EmailNotificationSubjectTemplate))
+                if (string.IsNullOrEmpty(SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.EmailNotificationSubjectTemplate))
                 {
-                    Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EmailNotificationSubjectTemplate, "[FORUMAUTHOR:DISPLAYNAME] [POSTEDORREPLIEDTO] [SUBSCRIBEDFORUMORTOPICSUBJECTFORUMNAME] on [PORTAL:PORTALNAME]");
+                    DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EmailNotificationSubjectTemplate, "[FORUMAUTHOR:DISPLAYNAME] [POSTEDORREPLIEDTO] [SUBSCRIBEDFORUMORTOPICSUBJECTFORUMNAME] on [PORTAL:PORTALNAME]");
                 }
 
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EmailAddress, string.Empty);
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.UseFilter, "true");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowPostIcon, "false");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowLikes, "true");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowEmoticons, "false");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowScript, "false");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.IndexContent, "true");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowRSS, "true");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowAttach, "true");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachCount, "3");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxSize, "1000");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachTypeAllowed, "txt,tiff,pdf,xls,xlsx,doc,docx,ppt,pptx");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EmailAddress, string.Empty);
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.UseFilter, "true");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowPostIcon, "false");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowLikes, "true");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowEmoticons, "false");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowScript, "false");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.IndexContent, "true");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowRSS, "true");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowAttach, "true");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachCount, "3");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxSize, "1000");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachTypeAllowed, "txt,tiff,pdf,xls,xlsx,doc,docx,ppt,pptx");
 
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxHeight, "450");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxWidth, "450");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachAllowBrowseSite, "true");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxAttachHeight, "800");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxAttachWidth, "800");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowHTML, "true");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxHeight, "450");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxWidth, "450");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachAllowBrowseSite, "true");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxAttachHeight, "800");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxAttachWidth, "800");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowHTML, "true");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
 
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorHeight, "350");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorWidth, "99%");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorToolbar, "bold,italic,underline,quote");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorStyle, "2");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.IsModerated, "false");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.DefaultTrustLevel, "0");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AutoTrustLevel, "0");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ModApproveNotify, "0");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ModRejectNotify, "0");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ModMoveNotify, "0");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ModDeleteNotify, "0");
-                Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ModAlertNotify, "0");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorHeight, "350");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorWidth, "99%");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorToolbar, "bold,italic,underline,quote");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorStyle, "2");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.IsModerated, "false");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.DefaultTrustLevel, "0");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AutoTrustLevel, "0");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.ModApproveNotify, "0");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.ModRejectNotify, "0");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.ModMoveNotify, "0");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.ModDeleteNotify, "0");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.ModAlertNotify, "0");
 
                 DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(moduleId);
             }
@@ -766,7 +773,98 @@ namespace DotNetNuke.Modules.ActiveForums
                 perms.Trust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Trust) ? string.Empty : perms.Trust.Replace(":", ";")));
                 perms.View = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.View) ? string.Empty : perms.View.Replace(":", ";")));
                 new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
+            }
+        }
 
+        internal static void Install_BadgeNotificationType_090200()
+        {
+            string notificationTypeName = Globals.BadgeNotificationType;
+            string notificationTypeDescription = Globals.BadgeNotificationTypeDescription;
+            int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
+
+            NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
+            if (NotificationsController.Instance.GetNotificationType(notificationTypeName) == null)
+            {
+                NotificationsController.Instance.CreateNotificationType(type);
+            }
+        }
+
+        internal void Install_DefaultBadges_090200()
+        {
+            try
+            {
+                foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+                {
+                    foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                    {
+                        if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if (new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Get(module.ModuleID).Count().Equals(0))
+                            {
+                                var defaultBadgesFolder = DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFolder(portal.PortalId, Globals.DefaultBadgesFolderName) ?? DotNetNuke.Services.FileSystem.FolderManager.Instance.AddFolder(portal.PortalId, Globals.DefaultBadgesFolderName);
+                                var xDoc = new System.Xml.XmlDocument();
+                                xDoc.Load(this.sPath);
+                                if (xDoc != null)
+                                {
+                                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                                    System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//badges/badge");
+                                    if (xNodeList.Count > 0)
+                                    {
+                                        int i;
+                                        for (i = 0; i < xNodeList.Count; i++)
+                                        {
+                                            var fileId = -1;
+                                            try
+                                            {
+                                                var imageFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(xNodeList[i].Attributes["image"].Value);
+                                                if (System.IO.File.Exists(imageFile))
+                                                {
+                                                    var fileName = System.IO.Path.GetFileName(imageFile);
+                                                    using (var fileStream = new FileStream(imageFile, FileMode.Open, FileAccess.Read))
+                                                    {
+                                                        fileId = DotNetNuke.Services.FileSystem.FileManager.Instance.AddFile(defaultBadgesFolder, fileName, fileStream, true).FileId;
+                                                    }
+                                                }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                                            }
+
+                                            try
+                                            {
+                                                var badge = new DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo
+                                                {
+                                                    Name = xNodeList[i].Attributes["name"].Value,
+                                                    Description = xNodeList[i].Attributes["description"].Value,
+                                                    BadgeMetric = (DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric)Utilities.SafeConvertInt(xNodeList[i].Attributes["badgemetric"].Value),
+                                                    ModuleId = module.ModuleID,
+                                                    OneTimeAward = Utilities.SafeConvertBool(xNodeList[i].Attributes["onetimeaward"].Value, true),
+                                                    SortOrder = Utilities.SafeConvertInt(xNodeList[i].Attributes["sortorder"].Value),
+                                                    Threshold = Utilities.SafeConvertInt(xNodeList[i].Attributes["threshold"].Value),
+                                                    IntervalDays = Utilities.SafeConvertInt(xNodeList[i].Attributes["intervaldays"].Value),
+                                                    SendAwardNotification = true,
+                                                    ImageMarkup = xNodeList[i].Attributes["imagemarkup"].Value,
+                                                    FileId = fileId,
+                                                };
+                                                badge.SuppresssAwardNotificationOnBackfill = !badge.OneTimeAward && !badge.BadgeMetric.Equals(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric.BadgeMetricManual);
+                                                new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Insert(badge);
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
             }
         }
     }
