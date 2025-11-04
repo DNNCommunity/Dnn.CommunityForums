@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this.Settings.GetString(SettingKeys.Mode, "Standard");
+                return this.Settings.GetString(SettingKeys.Mode, ModuleModes.Standard);
             }
 
             set
@@ -425,12 +425,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this.Settings.GetInt("ForumGroupTemplate", -1);
+                return this.Settings.GetInt(SettingKeys.SocialGroupModeForumGroupTemplate, -1);
             }
 
             set
             {
-                this.UpdateModuleSettingCaseSensitive("ForumGroupTemplate", value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.SocialGroupModeForumGroupTemplate, value.ToString());
             }
         }
 
@@ -438,12 +438,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this.Settings.GetString("ForumConfig", string.Empty);
+                return this.Settings.GetString(SettingKeys.SocialGroupModeForumConfig, string.Empty);
             }
 
             set
             {
-                this.UpdateModuleSettingCaseSensitive("ForumConfig", value);
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.SocialGroupModeForumConfig, value);
             }
         }
 
