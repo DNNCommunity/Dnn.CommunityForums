@@ -444,6 +444,11 @@
                 <name>09.02.01-1492.SqlDataProvider</name>
                 <version>09.02.01</version>
             </script>
+            <script type="Install">
+                <path>sql</path>
+                <name>09.02.01-1619.SqlDataProvider</name>
+                <version>09.02.01</version>
+            </script>
             <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>

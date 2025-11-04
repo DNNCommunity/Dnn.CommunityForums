@@ -94,16 +94,6 @@
         <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
     </ItemGroup>
 
-    
-    <ItemGroup>
-      <Compile Update="controls\af_assign_badge_users.ascx.cs">
-        <SubType>ASPXCodeBehind</SubType>
-      </Compile>
-      <Compile Update="controls\af_assign_user_badges.ascx.cs">
-        <SubType>ASPXCodeBehind</SubType>
-      </Compile>
-    </ItemGroup>
-
     <Import Project="Module.build" />
 </Project>
  
