@@ -256,6 +256,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public const string DefaultSettingsKey = "DEFAULTSETTINGSKEY";
         public const string DefaultPermissionId = "DEFAULTPERMISSIONID";
+
+        public const string SocialGroupModeForumConfig = "ForumConfig";
+        public const string SocialGroupModeForumGroupTemplate= "ForumGroupTemplate";
     }
 
     public class ForumSettingKeys
@@ -389,6 +392,12 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TimeSpan = "ts";
         public const string Mode = "mode";
         public const string BadgeId = "badgeid";
+    }
+
+    public class ModuleModes
+    {
+        public const string Standard = "Standard";
+        public const string SocialGroup = "SocialGroup";
     }
 
     public class Modes
