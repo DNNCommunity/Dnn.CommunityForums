@@ -256,7 +256,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.TimeFormatString = !string.IsNullOrWhiteSpace(this.txtTimeFormat.Text) ? this.txtTimeFormat.Text : "h:mm tt";
                 this.DateFormatString = !string.IsNullOrWhiteSpace(this.txtDateFormat.Text) ? this.txtDateFormat.Text : "M/d/yyyy";
 
-                if (this.Mode.Equals("SocialGroup"))
+                if (this.Mode.Equals(ModuleModes.SocialGroup))
                 {
                     this.ForumGroupTemplate = Utilities.SafeConvertInt(this.drpForumGroupTemplate.SelectedValue);
                     var adminSec = this.txtGroupModSec.Value.Split(',');
@@ -271,8 +271,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, "ForumConfig");
-                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, "ForumGroupTemplate");
+                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, SettingKeys.SocialGroupModeForumConfig);
+                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, SettingKeys.SocialGroupModeForumGroupTemplate);
                     var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
                     fc.Get(this.ModuleId).Where(f => f.SocialGroupId != 0).ForEach(forum =>
                     {
@@ -426,7 +426,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080100();
                     DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
-                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
+                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090201();
                 }
 
                 xDoc.LoadXml(this.ForumConfig);

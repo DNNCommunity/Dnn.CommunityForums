@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ForumsConfig.Install_BadgeNotificationType_090200();
 
                 // Create default badges new in 09.02.00
-                new ForumsConfig().Install_DefaultBadges_090200();
+                new ForumsConfig().Install_DefaultBadges_090201();
                 return true;
             }
             catch (Exception ex)
@@ -788,7 +788,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal void Install_DefaultBadges_090200()
+        internal void Install_DefaultBadges_090201()
         {
             try
             {
@@ -798,60 +798,63 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            if (new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Get(module.ModuleID).Count().Equals(0))
+                            if (SettingsBase.GetModuleSettings(module.ModuleID).ModeIsStandard)
                             {
-                                var defaultBadgesFolder = DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFolder(portal.PortalId, Globals.DefaultBadgesFolderName) ?? DotNetNuke.Services.FileSystem.FolderManager.Instance.AddFolder(portal.PortalId, Globals.DefaultBadgesFolderName);
-                                var xDoc = new System.Xml.XmlDocument();
-                                xDoc.Load(this.sPath);
-                                if (xDoc != null)
+                                if (new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Get(module.ModuleID).Count().Equals(0))
                                 {
-                                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                                    System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//badges/badge");
-                                    if (xNodeList.Count > 0)
+                                    var defaultBadgesFolder = DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFolder(portal.PortalId, Globals.DefaultBadgesFolderName) ?? DotNetNuke.Services.FileSystem.FolderManager.Instance.AddFolder(portal.PortalId, Globals.DefaultBadgesFolderName);
+                                    var xDoc = new System.Xml.XmlDocument();
+                                    xDoc.Load(this.sPath);
+                                    if (xDoc != null)
                                     {
-                                        int i;
-                                        for (i = 0; i < xNodeList.Count; i++)
+                                        System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                                        System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//badges/badge");
+                                        if (xNodeList.Count > 0)
                                         {
-                                            var fileId = -1;
-                                            try
+                                            int i;
+                                            for (i = 0; i < xNodeList.Count; i++)
                                             {
-                                                var imageFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(xNodeList[i].Attributes["image"].Value);
-                                                if (System.IO.File.Exists(imageFile))
+                                                var fileId = -1;
+                                                try
                                                 {
-                                                    var fileName = System.IO.Path.GetFileName(imageFile);
-                                                    using (var fileStream = new FileStream(imageFile, FileMode.Open, FileAccess.Read))
+                                                    var imageFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(xNodeList[i].Attributes["image"].Value);
+                                                    if (System.IO.File.Exists(imageFile))
                                                     {
-                                                        fileId = DotNetNuke.Services.FileSystem.FileManager.Instance.AddFile(defaultBadgesFolder, fileName, fileStream, true).FileId;
+                                                        var fileName = System.IO.Path.GetFileName(imageFile);
+                                                        using (var fileStream = new FileStream(imageFile, FileMode.Open, FileAccess.Read))
+                                                        {
+                                                            fileId = DotNetNuke.Services.FileSystem.FileManager.Instance.AddFile(defaultBadgesFolder, fileName, fileStream, true).FileId;
+                                                        }
                                                     }
                                                 }
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
-                                            }
-
-                                            try
-                                            {
-                                                var badge = new DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo
+                                                catch (Exception ex)
                                                 {
-                                                    Name = xNodeList[i].Attributes["name"].Value,
-                                                    Description = xNodeList[i].Attributes["description"].Value,
-                                                    BadgeMetric = (DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric)Utilities.SafeConvertInt(xNodeList[i].Attributes["badgemetric"].Value),
-                                                    ModuleId = module.ModuleID,
-                                                    OneTimeAward = Utilities.SafeConvertBool(xNodeList[i].Attributes["onetimeaward"].Value, true),
-                                                    SortOrder = Utilities.SafeConvertInt(xNodeList[i].Attributes["sortorder"].Value),
-                                                    Threshold = Utilities.SafeConvertInt(xNodeList[i].Attributes["threshold"].Value),
-                                                    IntervalDays = Utilities.SafeConvertInt(xNodeList[i].Attributes["intervaldays"].Value),
-                                                    SendAwardNotification = true,
-                                                    ImageMarkup = xNodeList[i].Attributes["imagemarkup"].Value,
-                                                    FileId = fileId,
-                                                };
-                                                badge.SuppresssAwardNotificationOnBackfill = !badge.OneTimeAward && !badge.BadgeMetric.Equals(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric.BadgeMetricManual);
-                                                new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Insert(badge);
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                                                    DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                                                }
+
+                                                try
+                                                {
+                                                    var badge = new DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo
+                                                    {
+                                                        Name = xNodeList[i].Attributes["name"].Value,
+                                                        Description = xNodeList[i].Attributes["description"].Value,
+                                                        BadgeMetric = (DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric)Utilities.SafeConvertInt(xNodeList[i].Attributes["badgemetric"].Value),
+                                                        ModuleId = module.ModuleID,
+                                                        OneTimeAward = Utilities.SafeConvertBool(xNodeList[i].Attributes["onetimeaward"].Value, true),
+                                                        SortOrder = Utilities.SafeConvertInt(xNodeList[i].Attributes["sortorder"].Value),
+                                                        Threshold = Utilities.SafeConvertInt(xNodeList[i].Attributes["threshold"].Value),
+                                                        IntervalDays = Utilities.SafeConvertInt(xNodeList[i].Attributes["intervaldays"].Value),
+                                                        SendAwardNotification = true,
+                                                        ImageMarkup = xNodeList[i].Attributes["imagemarkup"].Value,
+                                                        FileId = fileId,
+                                                    };
+                                                    badge.SuppresssAwardNotificationOnBackfill = !badge.OneTimeAward && !badge.BadgeMetric.Equals(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric.BadgeMetricManual);
+                                                    new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Insert(badge);
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                                                }
                                             }
                                         }
                                     }
