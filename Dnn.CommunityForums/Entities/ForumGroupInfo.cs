@@ -21,6 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
+    using System.Linq;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
@@ -39,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
         private FeatureSettings featureSettings;
-        private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
+        private DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings;
         private PortalSettings portalSettings;
         private ModuleInfo moduleInfo;
         private int? tabId;
@@ -78,10 +79,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string ThemeLocation => Utilities.ResolveUrl(SettingsBase.GetModuleSettings(this.ModuleId).ThemeLocation);
 
         [IgnoreColumn]
-        public bool InheritSecurity => this.PermissionsId == this.MainSettings.DefaultPermissionId;
+        public bool InheritSecurity => this.PermissionsId == this.ModuleSettings.DefaultPermissionId;
 
         [IgnoreColumn]
-        public bool InheritSettings => this.GroupSettingsKey == this.MainSettings.DefaultSettingsKey;
+        public bool InheritSettings => this.GroupSettingsKey == this.ModuleSettings.DefaultSettingsKey;
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
@@ -147,29 +148,29 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        public SettingsInfo MainSettings
+        public DotNetNuke.Modules.ActiveForums.ModuleSettings ModuleSettings
         {
             get
             {
-                if (this.mainSettings == null)
+                if (this.moduleSettings == null)
                 {
-                    this.mainSettings = this.LoadMainSettings();
+                    this.moduleSettings = this.LoadModuleSettings();
                     this.UpdateCache();
                 }
 
-                return this.mainSettings;
+                return this.moduleSettings;
             }
 
             set
             {
-                this.mainSettings = value;
+                this.moduleSettings = value;
                 this.UpdateCache();
             }
         }
 
-        internal SettingsInfo LoadMainSettings()
+        internal DotNetNuke.Modules.ActiveForums.ModuleSettings LoadModuleSettings()
         {
-            return this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
+            return this.moduleSettings = SettingsBase.GetModuleSettings(this.ModuleId);
         }
 
         [IgnoreColumn]
@@ -222,6 +223,39 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         internal ModuleInfo LoadModuleInfo()
         {
             return this.moduleInfo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
+        }
+
+        [IgnoreColumn]
+        public bool RunningInViewer
+        {
+            get
+            {
+                return this.PortalSettings.ActiveTab != null && this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
+                    m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) ||
+                    m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        [IgnoreColumn]
+        public int ForumsOrViewerModuleId
+        {
+            get
+            {
+                if (!this.RunningInViewer)
+                {
+                    return this.ModuleId;
+                }
+
+                if (this.PortalSettings.ActiveTab != null)
+                {
+                    foreach (DotNetNuke.Entities.Modules.ModuleInfo module in this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Where(m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) || m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        return module.ModuleID;
+                    }
+                }
+
+                return DotNetNuke.Common.Utilities.Null.NullInteger;
+            }
         }
 
         [IgnoreColumn]

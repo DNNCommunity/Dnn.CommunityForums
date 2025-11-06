@@ -7,8 +7,8 @@
     <span>[RESX:Topic] [RESX:Subscriptions]:</span>
     <asp:updatepanel id="updatePanel1" updatemode="Conditional" runat="server" childrenastriggers="True">
         <contenttemplate>
-            <asp:GridView ID="dgrdTopicSubs" AutoGenerateColumns="false" 
-                Width="100%" CellPadding="4" GridLines="None" CssClass="dnnGrid" runat="server">
+            <asp:gridview id="dgrdTopicSubs" autogeneratecolumns="false" allowpaging="false"
+                width="100%" cellpadding="4" gridlines="None" cssclass="dnnGrid" runat="server">
                 <HeaderStyle CssClass="dnnGridHeader" VerticalAlign="Top" HorizontalAlign="Left" />
                 <RowStyle CssClass="dnnGridItem" HorizontalAlign="Left" />
                 <AlternatingRowStyle CssClass="dnnGridAltItem" />
@@ -36,7 +36,7 @@
     <span>[RESX:Forum] [RESX:Subscriptions]:</span>
     <asp:updatepanel id="updatePanel2" updatemode="Conditional" runat="server" childrenastriggers="True">
         <contenttemplate>
-            <asp:GridView ID="dgrdForumSubs" AutoGenerateColumns="false" AllowPaging="true" PageSize="25"
+            <asp:GridView ID="dgrdForumSubs" AutoGenerateColumns="false" AllowPaging="false"
                 Width="100%" CellPadding="4" GridLines="None" CssClass="dnnGrid" runat="server">
                 <HeaderStyle CssClass="dnnGridHeader" VerticalAlign="Top" HorizontalAlign="Left" />
                 <RowStyle CssClass="dnnGridItem" HorizontalAlign="Left" />

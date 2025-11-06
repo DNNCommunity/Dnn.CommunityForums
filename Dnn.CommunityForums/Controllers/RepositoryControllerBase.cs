@@ -84,12 +84,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal void Update(T item)
         {
+            var property = typeof(T).GetProperty("DateUpdated");
+            if (property != null && property.CanWrite && property.PropertyType == typeof(System.DateTime))
+            {
+                property.SetValue(item, System.DateTime.UtcNow, null);
+            }
             this.repo.Update(item);
-        }
-
-        public void Update(string sqlCondition, params object[] args)
-        {
-            this.repo.Update(sqlCondition, args);
         }
 
         internal void Insert(T item)

@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                     var portalSettings = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings();
                     var userInfo = portalSettings.UserInfo;
                     int moduleId = DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(moduleInfo.ModuleID, moduleInfo.TabID);
-                    if (this.PermissionNeeded is SecureActions.Ban)
+                    if (this.PermissionNeeded is SecureActions.ManageUsers)
                     {
                         return ServicesHelper.IsAuthorized(portalSettings, moduleId, DotNetNuke.Common.Utilities.Null.NullInteger, this.PermissionNeeded, userInfo);
                     }

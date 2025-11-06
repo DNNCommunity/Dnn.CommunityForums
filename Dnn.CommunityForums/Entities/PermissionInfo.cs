@@ -100,12 +100,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public HashSet<int> PollRoleIds => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.Poll);
 
-        [ColumnName("CanBlock")]
-        public string Block { get; set; }
-
-        [IgnoreColumn]
-        public HashSet<int> BlockRoleIds => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.Block);
-
         [ColumnName("CanTrust")]
         public string Trust { get; set; }
 
@@ -160,11 +154,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public HashSet<int> SplitRoleIds => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.Split);
 
-        [ColumnName("CanBan")]
-        public string Ban { get; set; }
+        [ColumnName("CanManageUsers")]
+        public string ManageUsers { get; set; }
 
         [IgnoreColumn]
-        public HashSet<int> BanRoleIds => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.Ban);
+        public HashSet<int> ManageUsersRoleIds => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.ManageUsers);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
@@ -185,14 +179,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return !(other is null) &&
                    this.EqualPermissionMembers(this.Announce, other.Announce) &&
                    this.EqualPermissionMembers(this.Attach, other.Attach) &&
-                   this.EqualPermissionMembers(this.Ban, other.Ban) &&
-                   // EqualPermissionMembers(this.Block, other.Block) &&
                    this.EqualPermissionMembers(this.Categorize, other.Categorize) &&
                    this.EqualPermissionMembers(this.Create, other.Create) &&
                    this.EqualPermissionMembers(this.Delete, other.Delete) &&
                    this.EqualPermissionMembers(this.Edit, other.Edit) &&
                    this.EqualPermissionMembers(this.Lock, other.Lock) &&
-                   this.EqualPermissionMembers(this.Moderate, other.Moderate) &&
+                   this.EqualPermissionMembers(this.ManageUsers, other.ManageUsers) &&
                    this.EqualPermissionMembers(this.Moderate, other.Moderate) &&
                    this.EqualPermissionMembers(this.Move, other.Move) &&
                    this.EqualPermissionMembers(this.Pin, other.Pin) &&
@@ -226,11 +218,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             var thisPermsRoles= thisPermissions.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
             var otherPermsRoles = otherPermissions.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
-            
+
             return thisPermsRoles.SetEquals(otherPermsRoles);
         }
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.PermissionsId);
     }
-
 }

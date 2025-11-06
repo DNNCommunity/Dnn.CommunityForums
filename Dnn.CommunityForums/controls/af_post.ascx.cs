@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ForumUser.TrustLevel = -1;
             }
             this.userIsTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, this.ForumUser.TrustLevel, this.canTrust, this.ForumInfo.FeatureSettings.AutoTrustLevel, this.ForumUser.PostCount);
-            this.themePath = this.Page.ResolveUrl(this.MainSettings.ThemeLocation);
+            this.themePath = this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation);
             this.Spinner = this.Page.ResolveUrl(this.themePath + "/images/loading.gif");
             this.isApproved = !this.ForumInfo.FeatureSettings.IsModerated || this.userIsTrusted || this.canModApprove;
 
@@ -282,9 +282,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Context.ApplicationInstance.CompleteRequest();
             }
 
-            if (!Utilities.HasFloodIntervalPassed(floodInterval: this.MainSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: this.ForumInfo))
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: this.ModuleSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: this.ForumInfo))
             {
-                this.plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Error:FloodControl]"), this.MainSettings.FloodInterval) + "</div>" });
+                this.plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Error:FloodControl]"), this.ModuleSettings.FloodInterval) + "</div>" });
                 return;
             }
             if (!this.Page.IsValid || !Utilities.InputIsValid(this.ctlForm.Body.Trim()) || !Utilities.InputIsValid(this.ctlForm.Subject))
@@ -381,7 +381,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var im = new InfoMessage
                 {
-                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalNotReached]"), this.MainSettings.EditInterval) + "</div>",
+                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalNotReached]"), this.ModuleSettings.EditInterval) + "</div>",
                 };
                 this.plhMessage.Controls.Add(im);
                 this.plhContent.Controls.Clear();
@@ -467,7 +467,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var im = new Controls.InfoMessage
                 {
-                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalNotReached]"), this.MainSettings.EditInterval.ToString()) + "</div>",
+                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalNotReached]"), this.ModuleSettings.EditInterval.ToString()) + "</div>",
                 };
                 this.plhMessage.Controls.Add(im);
                 this.plhContent.Controls.Clear();
@@ -503,7 +503,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = template.Replace("[RESX:CreateNewTopic]", "[RESX:EditingExistingTopic]");
             }
 
-            if (this.MainSettings.UseSkinBreadCrumb)
+            if (this.ModuleSettings.UseSkinBreadCrumb)
             {
                 var sCrumb = "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.GroupId + "=" + this.ForumInfo.ForumGroupId.ToString()) + "\">" + this.ForumInfo.GroupName + "</a>|";
                 sCrumb += "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.ForumId + "=" + this.ForumInfo.ForumID.ToString()) + "\">" + this.ForumInfo.ForumName + "</a>";
@@ -534,7 +534,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ReplyEditor, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
 
 #region "Backward compatilbility -- remove in v10.00.00"
-            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.ModuleSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
 #endregion "Backward compatilbility -- remove in v10.00.00"
 
@@ -543,7 +543,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = template.Replace("[RESX:ReplyToTopic]", "[RESX:EditingExistingReply]");
             }
 
-            if (this.MainSettings.UseSkinBreadCrumb)
+            if (this.ModuleSettings.UseSkinBreadCrumb)
             {
                 template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
             }
@@ -614,13 +614,14 @@ namespace DotNetNuke.Modules.ActiveForums
                             if (post != null)
                             {
                                 var sPostedBy = Utilities.GetSharedResource("[RESX:PostedBy]") + " {0} {1} {2}";
-                                sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, post.Author.AuthorId, post.Author.Username, post.Author.FirstName, post.Author.LastName, post.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(post.Content.DateCreated, this.PortalId, this.UserId));
+                                sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ModuleSettings, false, false, post.Author.AuthorId, post.Author.Username, post.Author.FirstName, post.Author.LastName, post.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(post.Content.DateCreated, this.PortalId, this.UserId));
                                 var body = post.Content.Body;
                                 if (this.allowHTML && this.editorType != EditorTypes.TEXTBOX)
                                 {
                                     if (body.ToUpperInvariant().Contains("<CODE") || body.ToUpperInvariant().Contains("[CODE]"))
                                     {
-                                        body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
+                                        //body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
+                                        body = Utilities.EncodeCodeBlocks(body);
                                     }
                                 }
                                 else
@@ -681,7 +682,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (this.Request.IsAuthenticated)
             {
                 authorId = this.UserInfo.UserID;
-                switch (this.MainSettings.UserNameDisplay.ToUpperInvariant())
+                switch (this.ModuleSettings.UserNameDisplay.ToUpperInvariant())
                 {
                     case "USERNAME":
                         authorName = this.UserInfo.Username.Trim(' ');
@@ -935,7 +936,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (this.Request.IsAuthenticated)
             {
                 authorId = this.UserInfo.UserID;
-                switch (this.MainSettings.UserNameDisplay.ToUpperInvariant())
+                switch (this.ModuleSettings.UserNameDisplay.ToUpperInvariant())
                 {
                     case "USERNAME":
                         authorName = this.UserInfo.Username.Trim(' ');

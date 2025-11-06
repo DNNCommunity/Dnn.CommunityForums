@@ -27,7 +27,11 @@
                     <div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUM:SUBSCRIBERCOUNT]&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
 					
 					<div class="dcf-topic-controls">
-						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
+						<div class="dcf-subscribe-topic">
+                            <span class="afnormal">
+								[FORUMTOPIC:SUBSCRIBEONCLICK|<input type="button" class="dcf-btn-subs [FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-CSSCLASS]" value="[FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-LABEL]" onclick="{0}" />]
+							</span>
+						</div>
 						<div class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</div>
 					</div>
 				</div>
@@ -169,7 +173,9 @@
 
     <div class="dcf-tools dcf-tools-bottom">
         <div class="dcf-button-reply">[ADDREPLY]</div>
-		<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
+		<div class="dcf-subscribe-topic">
+            [FORUMTOPIC:SUBSCRIBEONCLICK|<input type="button" class="dcf-btn-subs [FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-CSSCLASS]" value="[FORUMTOPIC:SUBSCRIBE-UNSUBSCRIBE-LABEL]" onclick="{0}" />]
+		</div>
        	<div class="dcf-pager">[PAGER2]</div>
     </div>
 

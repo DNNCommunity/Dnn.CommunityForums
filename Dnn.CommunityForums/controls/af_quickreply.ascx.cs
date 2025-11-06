@@ -37,7 +37,6 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.WebControls.PlaceHolder plhMessage = new PlaceHolder();
         protected System.Web.UI.WebControls.Label reqBody = new Label();
         protected System.Web.UI.HtmlControls.HtmlGenericControl btnToolBar = new HtmlGenericControl();
-        protected System.Web.UI.HtmlControls.HtmlGenericControl divSubscribe = new HtmlGenericControl();
         protected System.Web.UI.WebControls.LinkButton btnSubmitLink = new LinkButton();
         protected TextBox txtUsername = new TextBox();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqUsername = new System.Web.UI.WebControls.RequiredFieldValidator();
@@ -65,6 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool AllowScripts { get; set; } = false;
 
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v10.0.0.0. Not Used")]
         public bool AllowSubscribe { get; set; } = false;
 
         #region Event Handlers
@@ -84,8 +84,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (this.Request.IsAuthenticated)
                 {
                     this.btnSubmitLink.OnClientClick = "afQuickSubmit(); return false;";
-
-                    this.AllowSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.SubscribeRoleIds, this.ForumUser.UserRoleIds);
                 }
                 else
                 {
@@ -94,20 +92,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.reqBody.Text = "<img src=\"" + this.ImagePath + "/images/warning.png\" />";
                     this.reqSecurityCode.Text = "<img src=\"" + this.ImagePath + "/images/warning.png\" />";
                     this.btnSubmitLink.Click += this.ambtnSubmit_Click;
-
-                    this.AllowSubscribe = false;
                 }
 
                 this.btnToolBar.Visible = this.UseFilter;
-                this.divSubscribe.Visible = this.AllowSubscribe;
-                this.divSubscribe.Visible = !this.UserPrefTopicSubscribe; /* if user has preference set for auto subscribe, no need to show them the subscribe option */
-                if (this.divSubscribe.Visible)
-                {
-                    var subControl = new ToggleSubscribe(this.ForumModuleId, this.ForumId, this.TopicId, 1);
-                    subControl.Checked = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId, this.TopicId);
-                    subControl.Text = "[RESX:Subscribe]";
-                    this.divSubscribe.InnerHtml = subControl.Render();
-                }
 
                 if (Utilities.InputIsValid(this.Request.Form["txtBody"]) && this.Request.IsAuthenticated & ((!string.IsNullOrEmpty(this.Request.Form["hidReply1"]) && string.IsNullOrEmpty(this.Request.Form["hidReply2"])) | this.Request.Browser.IsMobileDevice))
                 {
@@ -201,9 +188,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     case "ctlCaptcha":
                         this.ctlCaptcha = (DotNetNuke.UI.WebControls.CaptchaControl)ctrl;
                         break;
-                    case "divSubscribe":
-                        this.divSubscribe = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
-                        break;
                     case "btnSubmitLink":
                         this.btnSubmitLink = (System.Web.UI.WebControls.LinkButton)ctrl;
                         break;
@@ -234,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (!Utilities.HasFloodIntervalPassed(floodInterval: this.ForumInfo.MainSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: forumInfo))
             {
                 Controls.InfoMessage im = new Controls.InfoMessage();
-                im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), this.MainSettings.FloodInterval) + "</div>";
+                im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), this.ModuleSettings.FloodInterval) + "</div>";
                 this.plhMessage.Controls.Add(im);
                 return;
             }
@@ -275,7 +259,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sUsername = string.Empty;
             if (this.Request.IsAuthenticated)
             {
-                switch (this.MainSettings.UserNameDisplay.ToUpperInvariant())
+                switch (this.ModuleSettings.UserNameDisplay.ToUpperInvariant())
                 {
                     case "USERNAME":
                         sUsername = this.UserInfo.Username.Trim(' ');
@@ -308,7 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.AllowHTML = this.IsHtmlPermitted(this.ForumInfo.FeatureSettings.EditorPermittedUsers, this.IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds));
             }
 
-            sBody = Utilities.CleanString(this.PortalId, this.Request.Form["txtBody"], this.AllowHTML, EditorTypes.TEXTBOX, this.UseFilter, this.AllowScripts, this.ForumModuleId, this.ThemePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
+            sBody = Utilities.CleanString(this.PortalId, CodeParser.ConvertCodeBrackets(this.Request.Form["txtBody"]), this.AllowHTML, EditorTypes.TEXTBOX, this.UseFilter, this.AllowScripts, this.ForumModuleId, this.ThemePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
             ri.Content.AuthorId = this.UserId;
             ri.Content.AuthorName = sUsername;
             ri.Content.Body = sBody;

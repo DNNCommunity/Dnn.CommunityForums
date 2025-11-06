@@ -153,8 +153,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 case "move":
                                     permissions.Move = AddPermToSet(roleId.ToString(), permissions.Move);
                                     break;
-                                case "ban":
-                                    permissions.Ban = AddPermToSet(roleId.ToString(), permissions.Ban);
+                                case "manageusers":
+                                    permissions.ManageUsers = AddPermToSet(roleId.ToString(), permissions.ManageUsers);
                                     break;
                             }
                         }
@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             permissionInfo.ModuleId = moduleId;
             return permissionInfo;
         }
-        
+
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo CreateAdminPermissions(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int moduleId)
         {
             return this.Insert(GetAdminPermissions(portalSettings: portalSettings, moduleId: moduleId));
@@ -296,7 +296,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Pin = adminRoleId,
                 Attach = adminRoleId,
                 Poll = adminRoleId,
-                Block = adminRoleId,
                 Trust = adminRoleId,
                 Subscribe = adminRoleId,
                 Announce = adminRoleId,
@@ -304,7 +303,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Moderate = adminRoleId,
                 Move = adminRoleId,
                 Split = adminRoleId,
-                Ban = adminRoleId,
+                ManageUsers = adminRoleId,
                 ModuleId = moduleId,
             };
             return permissionInfo;
@@ -325,7 +324,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Pin = emptyPermissions,
                 Attach = emptyPermissions,
                 Poll = emptyPermissions,
-                Block = emptyPermissions,
                 Trust = emptyPermissions,
                 Subscribe = emptyPermissions,
                 Announce = emptyPermissions,
@@ -333,7 +331,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Moderate = emptyPermissions,
                 Move = emptyPermissions,
                 Split = emptyPermissions,
-                Ban = emptyPermissions,
+                ManageUsers = emptyPermissions,
                 ModuleId = moduleId,
             };
         }
@@ -352,7 +350,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return roleIds;
         }
-        
+
         internal static string GetRoleIds(HashSet<int> roleIds)
         {
             return string.Join(";", roleIds.Distinct().OrderBy(r => r));
@@ -641,8 +639,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     return permission.Move;
                 case SecureActions.Split:
                     return permission.Split;
-                case SecureActions.Ban:
-                    return permission.Ban;
+                case SecureActions.ManageUsers:
+                    return permission.ManageUsers;
                 default:
                     return emptyPermissions;
             }
@@ -800,7 +798,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Announce, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Attach, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Ban, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.ManageUsers, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Categorize, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Create, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Delete, roleObjects);
@@ -910,8 +908,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     case SecureActions.Split:
                         permission.Split = permSet;
                         break;
-                    case SecureActions.Ban:
-                        permission.Ban = permSet;
+                    case SecureActions.ManageUsers:
+                        permission.ManageUsers = permSet;
                         break;
                     default:
                         break;

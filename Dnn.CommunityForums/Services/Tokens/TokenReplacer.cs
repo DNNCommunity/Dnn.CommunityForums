@@ -46,6 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         private const string PropertySource_forumuser = "forumuser";
         private const string PropertySource_like = "forumlike";
         private const string PropertySource_user = "user";
+        private const string PropertySource_badge = "badge";
         private const string PropertySource_profile = "profile";
         private const string PropertySource_membership = "membership";
         private const string PropertySource_forumauthor = "forumauthor";
@@ -346,7 +347,32 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
+        
+        public TokenReplacer(PortalSettings portalSettings, UserBadgeInfo userBadgeInfo, Uri requestUri, string rawUrl)
+        {
+            userBadgeInfo.ForumUser.RawUrl = rawUrl;
+            userBadgeInfo.ForumUser.RequestUri = requestUri;
+            this.PropertySource[PropertySource_resx] = new ResourceStringTokenReplacer();
+            this.PropertySource[PropertySource_forumuser] = userBadgeInfo.ForumUser;
+            this.PropertySource[PropertySource_badge] = userBadgeInfo;
+            this.PropertySource[PropertySource_user] = userBadgeInfo.ForumUser.UserInfo;
+            this.PropertySource[PropertySource_profile] = new ProfilePropertyAccess(userBadgeInfo.ForumUser.UserInfo);
+            this.PropertySource[PropertySource_membership] = new MembershipPropertyAccess(userBadgeInfo.ForumUser.UserInfo);
+            this.PropertySource[PropertySource_tab] = portalSettings.ActiveTab;
+            this.PropertySource[PropertySource_module] = userBadgeInfo.ForumUser.ModuleInfo;
+            this.PropertySource[PropertySource_portal] = portalSettings;
+            try
+            {
+                this.PropertySource[PropertySource_host] = new HostPropertyAccess();
+            }
 
+            /* this allows unit tests to complete */
+            catch (System.ArgumentNullException)
+            {
+            }
+
+            this.CurrentAccessLevel = Scope.DefaultSettings;
+        }
         public new string ReplaceTokens(string source)
         {
             return base.ReplaceTokens(source);
@@ -362,7 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
-        internal static StringBuilder ReplaceForumTokens(StringBuilder template, ForumInfo forum, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, int tabId, CurrentUserTypes currentUserType, Uri requestUri, string rawUrl)
+        internal static StringBuilder ReplaceForumTokens(StringBuilder template, ForumInfo forum, PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, INavigationManager navigationManager, ForumUserInfo forumUser, int tabId, CurrentUserTypes currentUserType, Uri requestUri, string rawUrl)
         {
             /* if no last post or subject missing, remove associated last topic tokens */
             if (forum.LastPostID == 0 || string.IsNullOrEmpty(System.Net.WebUtility.HtmlDecode(forum.LastPostSubject)))
@@ -379,7 +405,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             if (template.ToString().Contains("[AF:CONTROL:ADDFAVORITE]"))
             {
                 var forumUrl = new ControlUtils().BuildUrl(forum.PortalId, tabId, forum.ModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, -1, -1, string.Empty, 1, -1, forum.SocialGroupId);
-                template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + forum.ForumName + "','" + forumUrl + "');\"><img src=\"" + mainSettings.ThemeLocation + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>");
+                template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + forum.ForumName + "','" + forumUrl + "');\"><img src=\"" + moduleSettings.ThemeLocation + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>");
             }
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
@@ -389,7 +415,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
-        internal static StringBuilder ReplaceForumGroupTokens(StringBuilder template, ForumGroupInfo forumGroup, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, int tabId, CurrentUserTypes currentUserType, Uri requestUri, string rawUrl)
+        internal static StringBuilder ReplaceForumGroupTokens(StringBuilder template, ForumGroupInfo forumGroup, PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, INavigationManager navigationManager, ForumUserInfo forumUser, int tabId, CurrentUserTypes currentUserType, Uri requestUri, string rawUrl)
         {
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, forumGroup, requestUri, rawUrl) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
@@ -399,7 +425,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
-        internal static StringBuilder ReplaceAuthorTokens(StringBuilder template, PortalSettings portalSettings, SettingsInfo mainSettings, AuthorInfo author, ForumUserInfo accessingUser, Uri requestUri, string rawUrl, int forumModuleId)
+        internal static StringBuilder ReplaceAuthorTokens(StringBuilder template, PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, AuthorInfo author, ForumUserInfo accessingUser, Uri requestUri, string rawUrl, int forumModuleId)
         {
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, author, accessingUser, requestUri, rawUrl) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = accessingUser?.UserInfo, };
@@ -409,7 +435,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
-        internal static StringBuilder ReplaceUserTokens(StringBuilder template, PortalSettings portalSettings, SettingsInfo mainSettings, ForumUserInfo forumUser, ForumUserInfo accessingUser, Uri requestUri, string rawUrl, int forumModuleId)
+        internal static StringBuilder ReplaceUserTokens(StringBuilder template, PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, ForumUserInfo forumUser, ForumUserInfo accessingUser, Uri requestUri, string rawUrl, int forumModuleId)
         {
             var language = accessingUser?.UserInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
 
@@ -423,9 +449,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
-        internal static StringBuilder ReplaceTopicTokens(StringBuilder template, TopicInfo topic, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
+        internal static StringBuilder ReplaceTopicTokens(StringBuilder template, TopicInfo topic, PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
-            topic.Content.Body = ReplaceBody(topic.Content.Body, mainSettings, requestUri);
+            topic.Content.Body = ReplaceBody(topic.Content.Body, moduleSettings, requestUri);
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, topic, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
@@ -435,7 +461,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
-        private static string ReplaceBody(string body, SettingsInfo mainSettings, Uri uri)
+        private static string ReplaceBody(string body, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, Uri uri)
         {
             if (!string.IsNullOrEmpty(body))
             {
@@ -453,7 +479,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 }
 
                 body = Utilities.StripExecCode(body);
-                if (mainSettings.AutoLinkEnabled)
+                if (moduleSettings.AutoLinkEnabled)
                 {
                     body = Utilities.AutoLinks(body, uri.Host);
                 }
@@ -472,7 +498,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return body;
         }
 
-        internal static StringBuilder ReplacePostTokens(StringBuilder template, IPostInfo post, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
+        internal static StringBuilder ReplacePostTokens(StringBuilder template, IPostInfo post, PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
             /* if likes not allowed for forum, remove like-related tokens */
             if (!post.Forum.FeatureSettings.AllowLikes)
@@ -486,11 +512,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             var author = new AuthorInfo(post.PortalId, post.Forum.ModuleId, post.Author.AuthorId);
             if (template.ToString().Contains("[POSTINFO]"))
             {
-                var sPostInfo = TemplateUtils.GetPostInfo(post.ModuleId, author.ForumUser, post.Forum.ThemeLocation, post.Forum.GetIsMod(forumUser), post.Content.IPAddress, author.ForumUser.IsUserOnline, forumUser.CurrentUserType, forumUser.UserId, forumUser.PrefBlockAvatars, forumUser.UserInfo.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
+                var sPostInfo = TemplateUtils.GetPostInfo(post.ForumsOrViewerModuleId, author.ForumUser, post.Forum.ThemeLocation, post.Forum.GetIsMod(forumUser), post.Content.IPAddress, author.ForumUser.IsUserOnline, forumUser.CurrentUserType, forumUser.UserId, forumUser.PrefBlockAvatars, forumUser.UserInfo.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
                 template.Replace("[POSTINFO]", sPostInfo);
             }
 
-            post.Content.Body = ReplaceBody(post.Content.Body, mainSettings, requestUri);
+            post.Content.Body = ReplaceBody(post.Content.Body, moduleSettings, requestUri);
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, post, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
@@ -500,7 +526,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
-        internal static StringBuilder ReplaceLikeTokens(StringBuilder template, LikeInfo like, PortalSettings portalSettings, SettingsInfo mainSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
+        internal static StringBuilder ReplaceLikeTokens(StringBuilder template, LikeInfo like, PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
         {
             /* if likes not allowed for forum, remove like-related tokens */
             if (!like.Forum.FeatureSettings.AllowLikes)
@@ -510,6 +536,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
             var tokenReplacer = new TokenReplacer(portalSettings, forumUser, like, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
+            template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
+            template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
+
+            return template;
+        }
+
+        internal static StringBuilder ReplaceBadgeTokens(StringBuilder template, UserBadgeInfo userBadge, PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, INavigationManager navigationManager, ForumUserInfo forumUser, Uri requestUri, string rawUrl)
+        {
+            template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
+            var tokenReplacer = new TokenReplacer(portalSettings, userBadge, requestUri, rawUrl) { AccessingUser = forumUser.UserInfo, };
             template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
             template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
 
@@ -672,6 +708,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 "[FORUMTOPIC:ACTIONUNLOCKONCLICK",
                 "[FORUMPOST:LIKEONCLICK",
                 "[FORUMPOST:LIKESLINK",
+                "[FORUMTOPIC:SUBSCRIBEONCLICK",
+                "[FORUM:SUBSCRIBEONCLICK",
             };
             tokenPrefixes.ToList().ForEach(tokenPrefix => template = RemovePrefixedToken(template, tokenPrefix));
 
@@ -763,6 +801,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[DISPLAYNAME]", "[FORUM:LASTPOSTAUTHORDISPLAYNAMELINK", "[FORUMLASTPOSTAUTHORDISPLAYNAMELINK]", "[FORUM:LASTPOSTDISPLAYNAME]");
 
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[FORUMSUBSCRIBE]", "[FORUM:SUBSCRIBEONCLICK", "[FORUMSUBSCRIBE]");
+
+
             return template;
         }
 
@@ -776,7 +817,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
-        internal static StringBuilder MapLegacyUserTokenSynonyms(StringBuilder template, PortalSettings portalSettings, SettingsInfo mainSettings, string language)
+        internal static StringBuilder MapLegacyUserTokenSynonyms(StringBuilder template, PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, string language)
         {
             template = ReplaceTokenSynonym(template, "[SENDERUSERNAME]", "[USER:USERNAME]");
             template = ReplaceTokenSynonym(template, "[SENDERFIRSTNAME]", "[USER:FIRSTNAME]");
@@ -846,12 +887,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:BUTTON:EDITUSER]", "[FORUMUSER:EDITLINK", "[EDITUSERLINK]");
 
-            if (mainSettings.PMType == PMTypes.Disabled)
+            if (moduleSettings.PMType == PMTypes.Disabled)
             {
                 template.Replace("[AF:PROFILE:PMLINK]", string.Empty);
                 template.Replace("[AF:PROFILE:PMURL]", string.Empty);
             }
-            else if (mainSettings.PMType == PMTypes.Core)
+            else if (moduleSettings.PMType == PMTypes.Core)
             {
                 template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:PROFILE:PMLINK]", "[FORUMUSER:PMLINK", "[USERPMLINK]");
                 template.Replace("[AF:PROFILE:PMURL]", string.Empty);
@@ -860,7 +901,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             return template;
         }
 
-        internal static StringBuilder MapLegacyAuthorTokenSynonyms(StringBuilder template, PortalSettings portalSettings, SettingsInfo mainSettings, string language)
+        internal static StringBuilder MapLegacyAuthorTokenSynonyms(StringBuilder template, PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, string language)
         {
             template = ReplaceTokenSynonym(template, "[SENDERUSERNAME]", "[FORUMAUTHOR:USERNAME]");
             template = ReplaceTokenSynonym(template, "[SENDERFIRSTNAME]", "[FORUMAUTHOR:FIRSTNAME]");
@@ -930,12 +971,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:BUTTON:EDITUSER]", "[FORUMAUTHOR:EDITLINK", "[EDITAUTHORLINK]");
 
-            if (mainSettings.PMType == PMTypes.Disabled)
+            if (moduleSettings.PMType == PMTypes.Disabled)
             {
                 template.Replace("[AF:PROFILE:PMLINK]", string.Empty);
                 template.Replace("[AF:PROFILE:PMURL]", string.Empty);
             }
-            else if (mainSettings.PMType == PMTypes.Core)
+            else if (moduleSettings.PMType == PMTypes.Core)
             {
                 template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:PROFILE:PMLINK]", "[FORUMAUTHOR:PMLINK", "[AUTHORPMLINK]");
                 template.Replace("[AF:PROFILE:PMURL]", string.Empty);
@@ -994,6 +1035,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:ICONLINK:LASTREPLY]", "[FORUMTOPIC:LASTREPLYURL", "[ICONLINK-LASTREPLY]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:ICONLINK:LASTREAD]", "[FORUMTOPIC:LASTREADURL", "[ICONLINK-LASTREAD]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:CONTROL:STATUSICON]", "[FORUMTOPIC:STATUSID", "[TOPICSTATUS]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[TOPICSUBSCRIBE]", "[FORUMTOPIC:SUBSCRIBEONCLICK", "[TOPICSUBSCRIBE]");
             return template;
         }
 
@@ -1258,14 +1300,19 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
         internal string ReplaceEmbeddedTokens(string source)
         {
+            return this.ReplaceEmbeddedTokens(new StringBuilder(source)).ToString();
+        }
+
+        internal StringBuilder ReplaceEmbeddedTokens(StringBuilder source)
+        {
+            var sb = new StringBuilder(source.ToString());
             const string Pattern = @"(?<token>(?:(?<text>\[\])|\[(?:(?<object>[^{}\]\[:]+):(?<property>[^\]\[\|]+))(?:\|(?:(?<format>[^\]\[]+)\|(?<ifEmpty>[^\]\[]+))|\|(?:(?<format>[^\|\]\[]+)))?\])|(?<text>\[[^\]\[]+\])|(?<text>[^\]\[]+){0}\1)";
             try
             {
-                var matches = RegexUtils.GetCachedRegex(Pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace, 5).Matches(source);
+                var matches = RegexUtils.GetCachedRegex(Pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace, 5).Matches(sb.ToString());
 
                 if (matches.Count > 0)
                 {
-                    var sb = new StringBuilder(source);
                     foreach (Match match in matches)
                     {
                         if (!string.IsNullOrEmpty(match.Groups["token"]?.Value) && match.Groups["object"] != null && this.PropertySource.ContainsKey(match.Groups["object"].Value.ToLowerInvariant()))
@@ -1274,13 +1321,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                         }
                     }
 
-                    return sb.ToString();
+                    return sb;
                 }
             }
             catch (RegexMatchTimeoutException ex)
             {
                 Exceptions.LogException(ex);
-                return source;
+                return sb;
             }
             catch (Exception ex)
             {
@@ -1288,7 +1335,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 throw;
             }
 
-            return source;
+            return sb;
         }
     }
 }

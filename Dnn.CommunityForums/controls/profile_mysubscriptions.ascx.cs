@@ -49,10 +49,8 @@ namespace DotNetNuke.Modules.ActiveForums
             this.dgrdForumSubs.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Forum].Text");
             this.dgrdForumSubs.Columns[5].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:LastPost].Text");
 
-            //this.dgrdTopicSubs.PageIndexChanging += this.TopicSubsGridRow_PageIndexChanging;
-            this.dgrdTopicSubs.RowDataBound += this.OnTopicSubsGridRowDataBound;
-            //this.dgrdForumSubs.PageIndexChanging += this.ForumSubsGridRow_PageIndexChanging;
-            this.dgrdForumSubs.RowDataBound += this.OnForumSubsGridRowDataBound;
+            this.dgrdTopicSubs.RowDataBound += this.GridRowDataBound;
+            this.dgrdForumSubs.RowDataBound += this.GridRowDataBound;
             this.btnSubscribeAll.Click += this.btnSubscribeAll_Click;
         }
 
@@ -61,20 +59,6 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
             try
             {
-                //int _pageSize = this.MainSettings.PageSize;
-                //if (this.UserInfo.UserID > 0)
-                //{
-                //    _pageSize = this.UserDefaultPageSize;
-                //}
-
-                //if (_pageSize < 5)
-                //{
-                //    _pageSize = 10;
-                //}
-
-                //this.dgrdForumSubs.PageSize = _pageSize;
-                //this.dgrdTopicSubs.PageSize = _pageSize;
-
                 // TODO: Add moderator functionality to edit a user's subscriptions; this currently is just for a user to edit own subscriptions
                 this.UID = this.Request.QueryString[Literals.UserId] != null ? Convert.ToInt32(this.Request.QueryString[Literals.UserId]) : this.UserInfo.UserID;
                 if (this.UserId == this.UID | this.ForumUser.GetIsMod(this.ForumModuleId))
@@ -98,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums
             });
             this.dgrdTopicSubs.DataSource = subscribedTopics.ToList();
             this.dgrdTopicSubs.DataBind();
-            this.dgrdTopicSubs.PageSize = this.dgrdTopicSubs.Rows.Count;
+            this.dgrdTopicSubs.AllowPaging = false;
             this.dgrdTopicSubs.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
         }
 
@@ -106,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.dgrdForumSubs.DataSource = this.GetSubscriptions().ToList();
             this.dgrdForumSubs.DataBind();
-            this.dgrdForumSubs.PageSize = this.dgrdForumSubs.Rows.Count;
+            this.dgrdForumSubs.AllowPaging = false;
             this.dgrdForumSubs.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
         }
 
@@ -121,12 +105,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private IEnumerable<Entities.SubscriptionInfo> GetSubscriptions()
         {
-            var userPermSet = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID).UserPermSet;
+            var availableForums = new List<dynamic>();
             var availableForumsString = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ForumModuleId, this.ForumUser);
-            var availableForums = availableForumsString.Split(separator: new[] { ';' }, options: StringSplitOptions.RemoveEmptyEntries).Select(forum =>
+            availableForumsString.Split(separator: new[] { ';' }, options: StringSplitOptions.RemoveEmptyEntries).ForEach(forumId =>
             {
-                var Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(int.Parse(forum), this.ForumModuleId);
-                return new { ForumId = int.Parse(forum), Forum };
+                var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(int.Parse(forumId), this.ForumModuleId);
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security.SubscribeRoleIds, this.ForumUser.UserRoleIds))
+                {
+                    availableForums.Add(new { ForumId = int.Parse(forumId), Forum = forum });
+                }
             });
 
             var forumSubscriptions = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedForums(this.PortalId, this.ForumModuleId, this.UID);
@@ -143,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return mergedSubscriptions;
         }
 
-        protected void OnForumSubsGridRowDataBound(object sender, GridViewRowEventArgs e)
+        protected void GridRowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
@@ -157,7 +144,14 @@ namespace DotNetNuke.Modules.ActiveForums
                             var chkBox = cellControl as CheckBox;
                             if (!(chkBox == null))
                             {
-                                chkBox.Attributes.Add("onclick", "amaf_forumSubscribe(" + this.ForumModuleId + "," + subscriptionInfo.ForumId + ");");
+                                if (subscriptionInfo.TopicId > 0)
+                                {
+                                    chkBox.Attributes.Add("onclick", "amaf_topicSubscribe(" + this.ForumModuleId + "," + subscriptionInfo.ForumId + "," + subscriptionInfo.TopicId + ");");
+                                }
+                                else
+                                {
+                                    chkBox.Attributes.Add("onclick", "amaf_forumSubscribe(" + this.ForumModuleId + "," + subscriptionInfo.ForumId + ");");
+                                }
                                 chkBox.Enabled = true;
                             }
                         }
@@ -165,40 +159,5 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
-
-        protected void OnTopicSubsGridRowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo subscriptionInfo = e.Row.DataItem as DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo;
-                foreach (TableCell cell in e.Row.Cells)
-                {
-                    foreach (Control cellControl in cell.Controls)
-                    {
-                        if (cellControl is CheckBox)
-                        {
-                            var chkBox = cellControl as CheckBox;
-                            if (!(chkBox == null))
-                            {
-                                chkBox.Attributes.Add("onclick", "amaf_topicSubscribe(" + this.ForumModuleId + "," + subscriptionInfo.ForumId + "," + subscriptionInfo.TopicId + ");");
-                                chkBox.Enabled = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        //protected void ForumSubsGridRow_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        //{
-        //    this.dgrdForumSubs.PageIndex = e.NewPageIndex;
-        //    this.dgrdForumSubs.DataBind();
-        //}
-
-        //protected void TopicSubsGridRow_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        //{
-        //    this.dgrdTopicSubs.PageIndex = e.NewPageIndex;
-        //    this.dgrdTopicSubs.DataBind();
-        //}
     }
 }

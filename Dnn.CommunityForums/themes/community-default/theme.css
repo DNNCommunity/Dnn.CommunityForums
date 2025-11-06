@@ -556,8 +556,10 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  gap: 0.3em;
 }
-.dnn-community-forums .dcf-topic-view .dcf-tools .dnnPrimaryAction {
+.dnn-community-forums .dcf-topic-view .dcf-tools .dnnPrimaryAction,
+.dnn-community-forums .dcf-topic-view .dcf-tools .dnnSecondaryAction {
   margin-bottom: 0;
 }
 .dnn-community-forums .dcf-topic-view .dcf-tools-top {
@@ -732,7 +734,7 @@
 .dnn-community-forums .dcf-quick-reply .dcf-toolbar-buttons .fa:hover {
   color: #000;
 }
-.dnn-community-forums .dcf-quick-reply .dcf-subscribe-topic {
+.dnn-community-forums .dcf-quick-reply .dcf-buttons {
   margin: 1em 0;
 }
 .dnn-community-forums .af-search-header .af-search-title {

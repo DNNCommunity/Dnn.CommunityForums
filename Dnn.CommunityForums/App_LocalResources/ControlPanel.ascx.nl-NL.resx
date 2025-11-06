@@ -1450,9 +1450,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
     <value>Vastmaken</value>
   </data>
-  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Verbod</value>
-  </data>
   <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
     <value>Scheppen</value>
   </data>
@@ -1512,9 +1509,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
     <value>Kan bestanden uploaden en bijvoegen aan nieuwe onderwerpen en antwoorden.</value>
-  </data>
-  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Kan een malafide gebruiker verbannen, alle inhoud voor de gebruiker verwijderen en hun DNN-gebruikersaccount uitschakelen. Kan niet worden gebruikt voor supergebruikers of beheerders. Mag alleen worden verleend aan vertrouwde moderators of beheerdersrollen.</value>
   </data>
   <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
     <value>Kan aangeven tot welke categorieën een nieuw onderwerp behoort.</value>
@@ -1629,5 +1623,68 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
     <value>Voer een tekenreeks in die moet worden gebruikt bij het ophalen van sjablonen. Als u bijvoorbeeld aparte sjabloonbestanden wilt hebben voor gemodereerde forums, voert u 'gemodereerd' in, waarna sjablonen worden opgehaald met 'gemodereerd' als onderdeel van de bestandsnaam, bijvoorbeeld 'TopicsView-moderated.ascx' in plaats van alleen 'TopicsView.ascx' wanneer het TopicsView-sjabloon wordt opgehaald.</value>
+  </data>
+  <data name="[RESX:Description].Text" xml:space="preserve">
+    <value>Beschrijving</value>
+  </data>
+  <data name="[RESX:BadgeName].Text" xml:space="preserve">
+    <value>Insigne</value>
+  </data>
+  <data name="[RESX:SortOrder].Text" xml:space="preserve">
+    <value>Sorteervolgorde</value>
+  </data>
+  <data name="[RESX:Badges].Text" xml:space="preserve">
+    <value>Badges</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Insigne</value>
+  </data>
+  <data name="[RESX:BadgeNew].Text" xml:space="preserve">
+    <value>Nieuwe badge</value>
+  </data>
+  <data name="[RESX:BadgeThreshold].Text" xml:space="preserve">
+    <value>Drempel</value>
+  </data>
+  <data name="[RESX:BadgeMetric].Text" xml:space="preserve">
+    <value>Metriek</value>
+  </data>
+  <data name="[RESX:BadgeImage].Text" xml:space="preserve">
+    <value>Beeld</value>
+  </data>
+  <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
+    <value>Nieuwe gebruiker</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsCreated].Text" xml:space="preserve">
+    <value>Onderwerpen gemaakt</value>
+  </data>
+  <data name="[RESX:BadgeMetricRepliesCreated].Text" xml:space="preserve">
+    <value>Gereageerd op onderwerpen</value>
+  </data>
+  <data name="[RESX:BadgeMetricLikesReceived].Text" xml:space="preserve">
+    <value>Likes ontvangen</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
+    <value>Onderwerpen Lezen</value>
+  </data>
+  <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
+    <value>Gebruikers bijwerken</value>
+  </data>
+  <data name="[RESX:BadgeImageMarkup].Text" xml:space="preserve">
+    <value>HTML-opmaak voor badge (bijv. lettertype-geweldig)</value>
+  </data>
+  <data name="[RESX:BadgeOneTimeAward].Text" xml:space="preserve">
+    <value>De gebruiker kan slechts één keer een badge verdienen</value>
+  </data>
+  <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
+    <value># dagen tussen het verdienen van deze badge</value>
+  </data>
+  <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
+    <value>Handleiding Award</value>
+  </data>
+  <data name="[RESX:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Gebruikers beheren</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Kan opties van andere gebruikers beheren, een malafide gebruiker verbannen, alle inhoud voor de gebruiker verwijderen en hun DNN-gebruikersaccount uitschakelen. Kan niet worden gebruikt voor supergebruikers of -beheerders. Mag alleen worden verleend aan vertrouwde moderators of beheerdersrollen.</value>
   </data>
 </root>

@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System.Text.RegularExpressions;
 
-    public class CodeParser
+    public static class CodeParser
     {
         public static string ParseCode(string sCode)
         {
@@ -82,6 +82,13 @@ namespace DotNetNuke.Modules.ActiveForums
             sCode = sCode.Replace("&amp;#93;", "]");
 
             return sCode;
+        }
+
+        internal static string ConvertCodeBrackets(string text)
+        {
+            text = Regex.Replace(text, "\\[CODE\\]", "<pre><code>", RegexOptions.IgnoreCase);
+            text = Regex.Replace(text, "\\[\\/CODE\\]", "</code></pre>", RegexOptions.IgnoreCase);
+            return text;
         }
     }
 }

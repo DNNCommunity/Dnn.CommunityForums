@@ -38,18 +38,18 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, tUid);
                     if (ui != null)
                     {
-                        sDisplayName = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, ui.UserID, ui.Username, ui.FirstName, ui.LastName, ui.DisplayName);
+                        sDisplayName = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ModuleSettings, false, false, ui.UserID, ui.Username, ui.FirstName, ui.LastName, ui.DisplayName);
                     }
                 }
             }
             else
             {
                 tUid = this.UserId;
-                sDisplayName = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, this.UserId, this.UserInfo.Username, this.UserInfo.FirstName, this.UserInfo.LastName, this.UserInfo.DisplayName);
+                sDisplayName = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ModuleSettings, false, false, this.UserId, this.UserInfo.Username, this.UserInfo.FirstName, this.UserInfo.LastName, this.UserInfo.DisplayName);
             }
 
             this.lblHeader.Text = string.Format(Utilities.GetSharedResource("[RESX:ProfileForUser]"), sDisplayName);
-            if (this.MainSettings.UseSkinBreadCrumb)
+            if (this.ModuleSettings.UseSkinBreadCrumb)
             {
                 Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}=" + tUid.ToString() }) + "\">" + this.lblHeader.Text + "</a>");
             }

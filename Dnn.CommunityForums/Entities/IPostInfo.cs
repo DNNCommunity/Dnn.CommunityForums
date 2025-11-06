@@ -38,6 +38,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         int ModuleId { get; }
 
+        int ForumsOrViewerModuleId { get; }
+
         int ContentId { get; set; }
 
         bool IsTopic { get; }

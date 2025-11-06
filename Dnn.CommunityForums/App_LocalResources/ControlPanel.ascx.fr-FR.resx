@@ -1303,9 +1303,6 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
     <value>Joindre</value>
   </data>
-  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Bannir</value>
-  </data>
   <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
     <value>Créer</value>
   </data>
@@ -1365,9 +1362,6 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   </data>
   <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
     <value>Peut télécharger et joindre des fichiers à de nouveaux sujets et réponses.</value>
-  </data>
-  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Peut bannir un utilisateur malveillant, supprimer tout le contenu de l’utilisateur et désactiver son compte d’utilisateur DNN. Ne peut pas être utilisé sur les super-utilisateurs ou les administrateurs. Ne doit être accordé qu’aux modérateurs de confiance ou aux rôles d’administrateur.</value>
   </data>
   <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
     <value>Peut spécifier les catégories auxquelles appartient un nouveau sujet.</value>
@@ -1482,5 +1476,68 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   </data>
   <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
     <value>Entrez une chaîne à utiliser lors de la récupération des modèles. Par exemple, si vous souhaitez disposer de fichiers de modèle distincts pour les forums modérés, entrez « modéré », puis les modèles seront récupérés à l’aide de « modéré » dans le nom de fichier, par exemple « TopicsView-moderated.ascx » plutôt que simplement « TopicsView.ascx » lorsque le modèle TopicsView est récupéré.</value>
+  </data>
+  <data name="[RESX:Description].Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="[RESX:BadgeName].Text" xml:space="preserve">
+    <value>Insigne</value>
+  </data>
+  <data name="[RESX:SortOrder].Text" xml:space="preserve">
+    <value>Ordre de tri</value>
+  </data>
+  <data name="[RESX:Badges].Text" xml:space="preserve">
+    <value>Badges</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Insigne</value>
+  </data>
+  <data name="[RESX:BadgeNew].Text" xml:space="preserve">
+    <value>Nouveau badge</value>
+  </data>
+  <data name="[RESX:BadgeThreshold].Text" xml:space="preserve">
+    <value>Seuil</value>
+  </data>
+  <data name="[RESX:BadgeMetric].Text" xml:space="preserve">
+    <value>Métrique</value>
+  </data>
+  <data name="[RESX:BadgeImage].Text" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
+    <value>Nouvel utilisateur</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsCreated].Text" xml:space="preserve">
+    <value>Sujets créés</value>
+  </data>
+  <data name="[RESX:BadgeMetricRepliesCreated].Text" xml:space="preserve">
+    <value>Réponses aux rubriques</value>
+  </data>
+  <data name="[RESX:BadgeMetricLikesReceived].Text" xml:space="preserve">
+    <value>J’aime reçus</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
+    <value>Sujets lus</value>
+  </data>
+  <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
+    <value>Mettre à jour les utilisateurs</value>
+  </data>
+  <data name="[RESX:BadgeImageMarkup].Text" xml:space="preserve">
+    <value>Balisage HTML pour badge (par exemple, font-awesome)</value>
+  </data>
+  <data name="[RESX:BadgeOneTimeAward].Text" xml:space="preserve">
+    <value>L’utilisateur ne peut gagner un badge qu’une seule fois</value>
+  </data>
+  <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
+    <value># de jours entre l’obtention de ce badge</value>
+  </data>
+  <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
+    <value>Prix du manuel</value>
+  </data>
+  <data name="[RESX:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Gérer les utilisateurs</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Peut gérer les options d’autres utilisateurs, bannir un utilisateur malveillant, supprimer tout le contenu de l’utilisateur et désactiver son compte d’utilisateur DNN. Ne peut pas être utilisé sur les super-utilisateurs ou les administrateurs. Ne doit être accordé qu’aux modérateurs de confiance ou aux rôles d’administrateur.</value>
   </data>
 </root>

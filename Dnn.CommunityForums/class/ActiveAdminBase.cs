@@ -73,11 +73,11 @@ namespace DotNetNuke.Modules.ActiveForums
             return Utilities.GetSharedResource(key, true);
         }
 
-        public SettingsInfo MainSettings
+        public ModuleSettings MainSettings
         {
             get
             {
-                return new SettingsInfo { ModuleId = this.ModuleId, MainSettings = new ModuleController().GetModule(moduleID: this.ModuleId).ModuleSettings };
+                return new ModuleSettings { ModuleId = this.ModuleId, MainSettings = new ModuleController().GetModule(moduleID: this.ModuleId).ModuleSettings };
             }
         }
 

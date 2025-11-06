@@ -318,7 +318,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -326,7 +325,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -361,7 +360,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -369,7 +367,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -404,7 +402,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -412,7 +409,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -454,7 +451,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -462,7 +458,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
             var requestedAction = mockPermissions.Object.View;
@@ -482,7 +478,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                         Pin = emptyPermissions,
                         Attach = emptyPermissions,
                         Poll = emptyPermissions,
-                        Block = emptyPermissions,
                         Trust = emptyPermissions,
                         Subscribe = emptyPermissions,
                         Announce = emptyPermissions,
@@ -490,7 +485,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                         Moderate = emptyPermissions,
                         Move = emptyPermissions,
                         Split = emptyPermissions,
-                        Ban = emptyPermissions,
+                        ManageUsers = emptyPermissions,
                     },
                 };
 
@@ -523,14 +518,13 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Lock = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Pin = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Poll = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Block = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Trust = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Announce = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Prioritize = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Moderate = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Move = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Split = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Ban = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    ManageUsers = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                 },
             };
 
@@ -552,14 +546,13 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                          Lock = $"{emptyPermissions}",
                          Pin = $"{emptyPermissions}",
                          Poll = $"{emptyPermissions}",
-                         Block = $"{emptyPermissions}",
                          Trust = $"{emptyPermissions}",
                          Announce = $"{emptyPermissions}",
                          Prioritize = $"{emptyPermissions}",
                          Moderate = $"{emptyPermissions}",
                          Move = $"{emptyPermissions}",
                          Split = $"{emptyPermissions}",
-                         Ban = $"{emptyPermissions}",
+                         ManageUsers = $"{emptyPermissions}",
                     },
                 };
 
@@ -593,14 +586,13 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Lock = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Pin = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Poll = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Block = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Trust = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Announce = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Prioritize = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Moderate = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Move = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Split = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Ban = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    ManageUsers = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                 },
             };
 
@@ -632,7 +624,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Pin = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Attach = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Poll = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Block = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Trust = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Subscribe = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Announce = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
@@ -640,7 +631,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Move = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Split = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Ban = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    ManageUsers = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                 },
             };
 
@@ -672,7 +663,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Pin = $"{emptyPermissions}",
                     Attach = $"{emptyPermissions}",
                     Poll = $"{emptyPermissions}",
-                    Block = $"{emptyPermissions}",
                     Trust = $"{emptyPermissions}",
                     Subscribe = $"{emptyPermissions}",
                     Announce = $"{emptyPermissions}",
@@ -680,7 +670,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = $"{emptyPermissions}",
                     Move = $"{emptyPermissions}",
                     Split = $"{emptyPermissions}",
-                    Ban = $"{emptyPermissions}",
+                    ManageUsers = $"{emptyPermissions}",
                 },
             };
 
@@ -770,7 +760,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Pin = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Attach = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Poll = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Block = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Trust = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Subscribe = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Announce = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
@@ -778,7 +767,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     Moderate = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Move = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Split = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
-                    Ban = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    ManageUsers = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                 },
             };
 

@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
         private DotNetNuke.Modules.ActiveForums.Entities.IPostInfo lastPostInfo;
         private FeatureSettings featureSettings;
-        private DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings;
+        private DotNetNuke.Modules.ActiveForums.ModuleSettings mainSettings;
         private PortalSettings portalSettings;
         private ModuleInfo moduleInfo;
         private int? subscriberCount;
@@ -117,9 +117,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string ForumSettingsKey { get; set; }
 
-        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
-        public DateTime DateUpdated { get; set; } = DateTime.Now;
+        public DateTime DateUpdated { get; set; } = DateTime.UtcNow;
 
         public int LastTopicId { get; set; }
 
@@ -547,7 +547,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        public SettingsInfo MainSettings
+        public DotNetNuke.Modules.ActiveForums.ModuleSettings MainSettings
         {
             get
             {
@@ -567,7 +567,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        internal SettingsInfo LoadMainSettings()
+        internal DotNetNuke.Modules.ActiveForums.ModuleSettings LoadMainSettings()
         {
             return this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
         }
@@ -713,7 +713,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-        internal string GetForumFolderIcon(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings)
+        internal string GetForumFolderIcon(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.ModuleSettings mainSettings)
         {
             switch (this.GetForumStatusForUser(forumUser))
             {
@@ -785,6 +785,39 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
+        [IgnoreColumn]
+        public bool RunningInViewer
+        {
+            get
+            {
+                return this.PortalSettings.ActiveTab != null && this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
+                    m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) ||
+                    m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        [IgnoreColumn]
+        public int ForumsOrViewerModuleId
+        {
+            get
+            {
+                if (!this.RunningInViewer)
+                {
+                    return this.ModuleId;
+                }
+
+                if (this.PortalSettings.ActiveTab != null)
+                {
+                    foreach (DotNetNuke.Entities.Modules.ModuleInfo module in this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Where(m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) || m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        return module.ModuleID;
+                    }
+                }
+
+                return DotNetNuke.Common.Utilities.Null.NullInteger;
+            }
+        }
+
         /// <inheritdoc/>
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability => DotNetNuke.Services.Tokens.CacheLevel.notCacheable;
@@ -818,7 +851,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             propertyName = propertyName.ToLowerInvariant();
             try
             {
-
                 switch (propertyName)
                 {
                     case "forumid":
@@ -876,7 +908,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "lastpostdisplayname":
                     case "lastpostauthordisplayname":
                         var forumUserController = new Controllers.ForumUserController(this.ModuleId);
-                        return this.LastPostID > 0 && this.LastPostUserID > 0 ? PropertyAccess.FormatString(Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, forumUserController.GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId), forumUserController.GetUserIsAdmin(accessingUser.PortalID, this.ModuleId, accessingUser.UserID) || forumUserController.GetUserIsSuperUser(accessingUser.PortalID, this.ModuleId, accessingUser.UserID), this.LastPostUserID, this.LastPostUserName, this.LastPostFirstName, this.LastPostLastName, this.LastPostDisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.LastPostDisplayName), format) : string.Empty;
+                        var forumUser = forumUserController.GetByUserId(accessingUser.PortalID, accessingUser.UserID);
+                        return this.LastPostID > 0 && this.LastPostUserID > 0 ? PropertyAccess.FormatString(Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, forumUser.GetIsMod(this.ModuleId), forumUser.IsAdmin || forumUser.IsSuperUser, this.LastPostUserID, this.LastPostUserName, this.LastPostFirstName, this.LastPostLastName, this.LastPostDisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.LastPostDisplayName), format) : string.Empty;
 
                     case "statuscssclass":
                         return PropertyAccess.FormatString(this.GetForumStatusCss(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
@@ -889,6 +922,62 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "modlink":
                         var modLink = Utilities.NavigateURL(this.GetTabId(), this.portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={this.ForumID}" });
                         return PropertyAccess.FormatString(modLink, format);
+
+                    case "subscribe-unsubscribe-label":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString(
+                                    !new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId: this.PortalSettings.PortalId, moduleId: this.ModuleId, userId: accessingUser.UserID, forumId: this.ForumID)
+                                        ? Utilities.GetSharedResource("[RESX:Subscribe]")
+                                        : Utilities.GetSharedResource("[RESX:Unsubscribe]"),
+                                    format);
+                            }
+
+                            return string.Empty;
+                        }
+
+                    case "subscribed":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString(
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId: this.PortalSettings.PortalId, moduleId: this.ModuleId, userId: accessingUser.UserID, forumId: this.ForumID)
+                                        ? "true"
+                                        : "false",
+                                    format);
+                            }
+
+                            return string.Empty; 
+                        }
+
+                    case "subscribe-unsubscribe-cssclass":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString(
+                                    !new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId: this.PortalSettings.PortalId, moduleId: this.ModuleId, userId: accessingUser.UserID, forumId: this.ForumID)
+                                        ? "dnnPrimaryAction"
+                                        : "dnnSecondaryAction",
+                                    format);
+                            }
+
+                            return string.Empty; 
+                        }
+
+                    case "subscribeonclick":
+                        {
+                            var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
+                            if (bSubscribe)
+                            {
+                                return PropertyAccess.FormatString($"javascript:amaf_forumSubscribe({this.ForumsOrViewerModuleId},{this.ForumID});", format);
+                            }
+
+                            return string.Empty;
+                        }
                 }
             }
             catch (Exception ex)

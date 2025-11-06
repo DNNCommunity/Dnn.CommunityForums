@@ -61,13 +61,14 @@ namespace DotNetNuke.Modules.ActiveForums
             //ForumsConfig.Upgrade_PermissionSets_090000();
             //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
             //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();
+            //new ForumsConfig().Install_DefaultBadges_090100();
 
 
 #endif
 
             try
             {
-                if (this.MainSettings != null && this.MainSettings.InstallDate > Utilities.NullDate())
+                if (this.ModuleSettings != null && this.ModuleSettings.InstallDate > Utilities.NullDate())
                 {
                     if (this.ForumModuleId < 1)
                     {
@@ -102,6 +103,18 @@ namespace DotNetNuke.Modules.ActiveForums
                             opts = $"{ParamKeys.ContentId}={this.Request.QueryString[ParamKeys.ContentId]}";
                         }
                     }
+                    else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.BadgeUsers)
+                    {
+                        ctl = Views.BadgeUsers;
+                        if (this.Request.QueryString[ParamKeys.BadgeId] != null)
+                        {
+                            opts = $"{ParamKeys.BadgeId}={this.Request.QueryString[ParamKeys.BadgeId]}";
+                        }
+                    }
+                    else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.UserBadges)
+                    {
+                        ctl = Views.UserBadges;
+                    }
                     else if (this.Request.Params[ParamKeys.ViewType] != null)
                     {
                         ctl = this.Request.Params[ParamKeys.ViewType];
@@ -134,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (this.Request.IsAuthenticated)
                     {
-                        if (this.MainSettings.UsersOnlineEnabled)
+                        if (this.ModuleSettings.UsersOnlineEnabled)
                         {
                             DataProvider.Instance().Profiles_UpdateActivity(this.PortalId, this.UserId);
                         }
@@ -181,6 +194,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 else if (view.ToUpperInvariant() == Views.RecycleBin.ToUpperInvariant() && this.Request.IsAuthenticated)
                 {
                     ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/af_recycle_bin.ascx"));
+                }
+                else if (view.ToUpperInvariant() == Views.UserBadges.ToUpperInvariant() && this.Request.IsAuthenticated)
+                {
+                    ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/af_assign_user_badges.ascx"));
+                }
+                else if (view.ToUpperInvariant() == Views.BadgeUsers.ToUpperInvariant() && this.Request.IsAuthenticated)
+                {
+                    ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/af_assign_badge_users.ascx"));
                 }
                 else if (view.ToUpperInvariant() == "FORUMVIEW")
                 {
@@ -262,14 +283,14 @@ namespace DotNetNuke.Modules.ActiveForums
                             htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
                         }
 
-                        if (htSettings == null || htSettings.Count == 0 || !htSettings.ContainsKey("ForumGroupTemplate"))
+                        if (htSettings == null || htSettings.Count == 0 || !htSettings.ContainsKey(SettingKeys.SocialGroupModeForumGroupTemplate))
                         {
                             var ex = new Exception($"Unable to configure forum for Social Group: {this.SocialGroupId}");
                             DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                         }
                         else
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(this.PortalId, this.ModuleId, this.SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, !role.IsPublic, htSettings["ForumConfig"].ToString());
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(this.PortalId, this.ModuleId, this.SocialGroupId, Convert.ToInt32(htSettings[SettingKeys.SocialGroupModeForumGroupTemplate].ToString()), role.RoleName + " Discussions", role.Description, !role.IsPublic, htSettings[SettingKeys.SocialGroupModeForumConfig].ToString());
                             this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.PortalId, this.ForumModuleId, this.SocialGroupId);
                         }
                     }
@@ -287,8 +308,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ControlsConfig cc = new ControlsConfig();
                 cc.AppPath = this.Page.ResolveUrl(Globals.ModulePath);
-                cc.ThemePath = this.Page.ResolveUrl(this.MainSettings.ThemeLocation);
-                cc.TemplatePath = this.Page.ResolveUrl(this.MainSettings.TemplatePath + "/");
+                cc.ThemePath = this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation);
+                cc.TemplatePath = this.Page.ResolveUrl(this.ModuleSettings.TemplatePath + "/");
                 cc.PortalId = this.PortalId;
                 cc.PageId = this.TabId;
                 cc.ModuleId = this.ModuleId;
@@ -360,27 +381,27 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (System.IO.File.Exists(Utilities.MapPath(this.MainSettings.ThemeLocation + "theme.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "theme.min.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, this.MainSettings.ThemeLocation + "theme.min.css", priority: 12);
+                ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "theme.min.css", priority: 12);
             }
             else
             {
-                if (System.IO.File.Exists(Utilities.MapPath(this.MainSettings.ThemeLocation + "theme.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "theme.css")))
                 {
-                    ClientResourceManager.RegisterStyleSheet(this.Page, this.MainSettings.ThemeLocation + "theme.css", priority: 12);
+                    ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "theme.css", priority: 12);
                 }
             }
 
-            if (System.IO.File.Exists(Utilities.MapPath(this.MainSettings.ThemeLocation + "custom/theme.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "custom/theme.min.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, this.MainSettings.ThemeLocation + "custom/theme.min.css", priority: 13);
+                ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "custom/theme.min.css", priority: 13);
             }
             else
             {
-                if (System.IO.File.Exists(Utilities.MapPath(this.MainSettings.ThemeLocation + "custom/theme.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "custom/theme.css")))
                 {
-                    ClientResourceManager.RegisterStyleSheet(this.Page, this.MainSettings.ThemeLocation + "custom/theme.css", priority: 13);
+                    ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "custom/theme.css", priority: 13);
                 }
             }
 
@@ -421,7 +442,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner.gif") + "';";
             sb.AppendLine(sLoadImg);
             sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Utilities.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
-            if (HttpContext.Current.Request.IsAuthenticated && this.MainSettings.UsersOnlineEnabled)
+            if (HttpContext.Current.Request.IsAuthenticated && this.ModuleSettings.UsersOnlineEnabled)
             {
                 sb.AppendLine("setInterval('amaf_updateuseronline(" + this.ModuleId.ToString() + ")',120000);");
             }

@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int contentId = -1;
         private int userId = -1;
         private int archived = 0;
-        private SettingsInfo mainSettings = null;
+        private ModuleSettings mainSettings = null;
         private int urlType = 0; // 0=default, 1= views, 2 = category, 3 = tag
         private int otherId = -1;
         private int categoryId = -1;
@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.moduleId > 0)
             {
-                this.mainSettings = new SettingsInfo { ModuleId = this.moduleId, MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.moduleId, tabId: DotNetNuke.Common.Utilities.Null.NullInteger, ignoreCache: false).ModuleSettings };
+                this.mainSettings = new ModuleSettings { ModuleId = this.moduleId, MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.moduleId, tabId: DotNetNuke.Common.Utilities.Null.NullInteger, ignoreCache: false).ModuleSettings };
             }
 
             if (this.mainSettings == null)
@@ -510,6 +510,12 @@ namespace DotNetNuke.Modules.ActiveForums
                             break;
                         case 10:
                             v = GridTypes.Unresolved;
+                            break;
+                        case 11:
+                            v = GridTypes.BadgeUsers;
+                            break;
+                        case 12:
+                            v = GridTypes.UserBadges;
                             break;
                         case 13:
                             v = GridTypes.RecycleBin;

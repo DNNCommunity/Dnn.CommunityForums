@@ -58,14 +58,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (this.DisplayMode == 0)
             {
                 sb.Append("<span class=\"afnormal\">");
-                sb.Append("<input id=\"dcf-btn-subs\" type=\"button\" ");
+                sb.Append("<input id=\"amaf-chk-subs\" class=\"amaf-chk-subs\" type=\"checkbox\" ");
                 if (this.Checked)
                 {
-                    sb.Append("class=\"dcf-btn-subs dnnSecondaryAction\" value=\"[RESX:Unsubscribe]\" ");
-                }
-                else
-                {
-                    sb.Append("class=\"dcf-btn-subs dnnPrimaryAction\" value=\"[RESX:Subscribe]\" ");
+                    sb.Append("checked=\"checked\" ");
                 }
 
                 if (this.ToggleMode == 0)
@@ -77,6 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sb.Append(" onclick=\"amaf_topicSubscribe(" + this.ModuleId + "," + this.ForumId + "," + this.TopicId + ");\" />");
                 }
 
+                sb.Append("<label for=\"amaf-chk-subs\">" + this.Text + "</label>");
                 sb.Append("</span>");
             }
             else

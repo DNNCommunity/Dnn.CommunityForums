@@ -25,9 +25,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Avatars
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.UI.UserControls;
 
     public class AvatarRefreshQueue : DotNetNuke.Services.Scheduling.SchedulerClient
     {
@@ -96,10 +99,33 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Avatars
         {
             try
             {
-                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId: moduleId).Get().Where(u => (u.PortalId == portalId && !u.UserInfo.IsDeleted && !u.AvatarDisabled && !u.PrefBlockAvatars) &&
+                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId: moduleId).GetActiveUsers(portalId: portalId).Where(u => (!u.UserInfo.IsDeleted && !u.AvatarDisabled && !u.PrefBlockAvatars) &&
                                                                                                                                 ((string.IsNullOrEmpty(u.UserInfo.Profile.GetPropertyValue("Photo")) && !u.AvatarLastRefresh.HasValue) || /* anyone without an avatar who has never had their avatar refreshed */
                                                                                                                                  (u.AvatarLastRefresh.HasValue && DateTime.UtcNow.Subtract(u.AvatarLastRefresh.Value).TotalDays > 90))) /* or anyone whose avatar was last refreshed more than 90 days ago */
                                                                                                                                 .OrderByDescending(u => u.AvatarLastRefresh).Take(50).ToList();
+
+                //var forumUserController = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId: moduleId);
+                //string sSql = "SELECT TOP 50 fup.UserId FROM {databaseOwner}{objectQualifier}activeforums_UserProfiles fup ";
+                //sSql += "INNER JOIN {databaseOwner}{objectQualifier}UserPortals as up ON up.PortalId = fup.PortalId AND up.UserId = fup.UserId AND up.IsDeleted = 0 ";
+                //sSql += "INNER JOIN {databaseOwner}{objectQualifier}ProfilePropertyDefinition ppd ON ppd.PortalID = @0 AND ppd.PropertyName = 'Photo' ";
+                //sSql += "LEFT OUTER JOIN {databaseOwner}{objectQualifier}UserProfile as upr ON upr.UserId = fup.UserId AND upr.PropertyDefinitionID = ppd.PropertyDefinitionID ";
+                //sSql += "WHERE fup.PortalId = @0 AND fup.AvatarDisabled = 0 AND fup.PrefBlockAvatars = 0 ";
+                //sSql += "AND (   (fup.AvatarLastRefresh IS NULL AND upr.PropertyValue IS NULL) ";
+                //sSql += "     OR (fup.AvatarLastRefresh IS NOT NULL AND DATEDIFF(dd,GETUTCDATE(),fup.AvatarLastRefresh) > 90) ) ";
+                //sSql += "ORDER BY fup.AvatarLastRefresh DESC";
+                //var userIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, sSql, portalId);
+
+                //var users = new List<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>();
+                //foreach (var userId in userIds)
+                //{
+                //    var forumUser = forumUserController.GetByUserId(portalId: portalId, userId: userId);
+                //    if (forumUser != null)
+                //    {
+                //        users.Add(forumUser);
+                //    }
+                //}
+
+                //return users;
             }
             catch (Exception ex)
             {
