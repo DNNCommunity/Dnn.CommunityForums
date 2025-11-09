@@ -12,8 +12,7 @@
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
     "gulp-less": "^5.0.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "gulp-zip": "^5.1.0"
+    "gulp-sourcemaps": "^3.0.0"
   },
   "author": "Timo Breumelhof",
   "license": "MIT"
