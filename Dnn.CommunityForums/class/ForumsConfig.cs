@@ -841,6 +841,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                                         BadgeMetric = (DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric)Utilities.SafeConvertInt(xNodeList[i].Attributes["badgemetric"].Value),
                                                         ModuleId = module.ModuleID,
                                                         OneTimeAward = Utilities.SafeConvertBool(xNodeList[i].Attributes["onetimeaward"].Value, true),
+                                                        SuppresssAwardNotificationOnBackfill = Utilities.SafeConvertBool(xNodeList[i].Attributes["suppresssawardnotificationonbackfill"].Value, true),
                                                         SortOrder = Utilities.SafeConvertInt(xNodeList[i].Attributes["sortorder"].Value),
                                                         Threshold = Utilities.SafeConvertInt(xNodeList[i].Attributes["threshold"].Value),
                                                         IntervalDays = Utilities.SafeConvertInt(xNodeList[i].Attributes["intervaldays"].Value),
@@ -848,7 +849,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                                         ImageMarkup = xNodeList[i].Attributes["imagemarkup"].Value,
                                                         FileId = fileId,
                                                     };
-                                                    badge.SuppresssAwardNotificationOnBackfill = !badge.OneTimeAward && !badge.BadgeMetric.Equals(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric.BadgeMetricManual);
                                                     new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Insert(badge);
                                                 }
                                                 catch (Exception ex)
