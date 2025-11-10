@@ -441,17 +441,7 @@
             </script>>
             <script type="Install">
                 <path>sql</path>
-                <name>09.02.01-1492.SqlDataProvider</name>
-                <version>09.02.01</version>
-            </script>
-            <script type="Install">
-                <path>sql</path>
-                <name>09.02.01-1619.SqlDataProvider</name>
-                <version>09.02.01</version>
-            </script>
-            <script type="Install">
-                <path>sql</path>
-                <name>09.02.01-1620.SqlDataProvider</name>
+                <name>09.02.01.SqlDataProvider</name>
                 <version>09.02.01</version>
             </script>
             <script type="UnInstall">
