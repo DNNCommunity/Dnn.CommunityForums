@@ -165,3 +165,4 @@ themes/.gitignore
 /ResXManager.config.xml
 /Dnn.CommunityForums/node_modules
 /Dnn.CommunityForums/package-lock.json
+/package-lock.json
