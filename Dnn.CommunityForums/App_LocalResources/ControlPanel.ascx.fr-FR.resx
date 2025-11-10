@@ -1303,9 +1303,6 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
     <value>Joindre</value>
   </data>
-  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Bannir</value>
-  </data>
   <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
     <value>Créer</value>
   </data>
@@ -1365,9 +1362,6 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   </data>
   <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
     <value>Peut télécharger et joindre des fichiers à de nouveaux sujets et réponses.</value>
-  </data>
-  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Peut bannir un utilisateur malveillant, supprimer tout le contenu de l’utilisateur et désactiver son compte d’utilisateur DNN. Ne peut pas être utilisé sur les super-utilisateurs ou les administrateurs. Ne doit être accordé qu’aux modérateurs de confiance ou aux rôles d’administrateur.</value>
   </data>
   <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
     <value>Peut spécifier les catégories auxquelles appartient un nouveau sujet.</value>
@@ -1539,5 +1533,11 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   </data>
   <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
     <value>Prix du manuel</value>
+  </data>
+  <data name="[RESX:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Gérer les utilisateurs</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Peut gérer les options d’autres utilisateurs, bannir un utilisateur malveillant, supprimer tout le contenu de l’utilisateur et désactiver son compte d’utilisateur DNN. Ne peut pas être utilisé sur les super-utilisateurs ou les administrateurs. Ne doit être accordé qu’aux modérateurs de confiance ou aux rôles d’administrateur.</value>
   </data>
 </root>

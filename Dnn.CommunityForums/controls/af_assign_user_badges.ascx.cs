@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return new { badge.BadgeId, badge };
             });
 
-            var assignedBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ForumModuleId).GetForUser(this.PortalId, (int)this.userid);
+            var assignedBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ForumModuleId).GetForUser((int)this.userid);
             var assignedBadgeIds = assignedBadges.Select(userBadge =>
             {
                 return new { userBadge.UserBadgeId, userBadge.BadgeId, userBadge.DateAssigned, };

@@ -55,7 +55,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -63,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -161,7 +160,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -169,7 +167,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -272,7 +270,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -280,7 +277,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -356,7 +353,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -364,7 +360,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 

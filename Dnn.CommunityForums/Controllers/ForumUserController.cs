@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         forumUser.UserInfo = user;
                         return forumUser;
                     }
-                );
+                ).Where(forumUser => forumUser.IsAdmin || forumUser.IsSuperUser || forumUser.UserInfo.Membership.Approved);
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetByUserId(int portalId, int userId)

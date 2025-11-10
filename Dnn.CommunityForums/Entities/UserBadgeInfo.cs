@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int GetAwardCount()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController().BadgeCount(this.PortalId, this.UserId, this.BadgeId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ModuleId).BadgeCount(this.UserId, this.BadgeId);
         }
 
         [IgnoreColumn]

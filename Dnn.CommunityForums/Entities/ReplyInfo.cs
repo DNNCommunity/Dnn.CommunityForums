@@ -643,7 +643,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "actionbanonclick":
                         {
                             // (Note: can't ban yourself or a superuser/admin)
-                            var bBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.BanRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                            var bBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ManageUsersRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                             if ((bBan || accessingUser.IsAdmin || accessingUser.IsSuperUser) && (this.Author.AuthorId != -1) && (this.Author.AuthorId != accessingUser.UserID) && (this.Author != null) && (!this.Author.ForumUser.IsSuperUser) && (!this.Author.ForumUser.IsAdmin))
                             {
                                 var @params = new List<string>()

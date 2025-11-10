@@ -327,9 +327,6 @@
   <data name="[RESX:SecGrid:attach].Text" xml:space="preserve">
     <value>Vastmaken</value>
   </data>
-  <data name="[RESX:SecGrid:ban].Text" xml:space="preserve">
-    <value>Verbod</value>
-  </data>
   <data name="[RESX:SecGrid:create].Text" xml:space="preserve">
     <value>Scheppen</value>
   </data>
@@ -401,5 +398,8 @@
   </data>
   <data name="AvatarRefreshDisabled.Text" xml:space="preserve">
     <value>Uitgeschakeld</value>
+  </data>
+  <data name="[RESX:SecGrid:manageusers].Text" xml:space="preserve">
+    <value>Gebruikers beheren</value>
   </data>
 </root>

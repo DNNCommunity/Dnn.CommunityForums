@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     new string[,]
                     {
                         { Enum.GetName(typeof(SecureActions), SecureActions.Moderate), security.Moderate, },
-                        { Enum.GetName(typeof(SecureActions), SecureActions.Ban), security.Ban, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.ManageUsers), security.ManageUsers, },
                         { Enum.GetName(typeof(SecureActions), SecureActions.Move), security.Move, },
                         { Enum.GetName(typeof(SecureActions), SecureActions.Lock), security.Lock, },
                         { Enum.GetName(typeof(SecureActions), SecureActions.Pin), security.Pin, },

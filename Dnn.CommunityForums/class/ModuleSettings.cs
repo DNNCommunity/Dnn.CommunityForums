@@ -190,6 +190,10 @@ namespace DotNetNuke.Modules.ActiveForums
             get => this.defaultFeatureSettings ?? (this.defaultFeatureSettings = new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(moduleId: this.ModuleId, settingsKey: this.DefaultSettingsKey));
             set => this.defaultFeatureSettings = value;
         }
+
+        public bool ModeIsStandard => this.MainSettings.GetString(SettingKeys.Mode).Equals(ModuleModes.Standard);
+
+        public bool ModeIsSocial => this.MainSettings.GetString(SettingKeys.Mode).Equals(ModuleModes.SocialGroup);
     }
 
     public class SettingsInfo

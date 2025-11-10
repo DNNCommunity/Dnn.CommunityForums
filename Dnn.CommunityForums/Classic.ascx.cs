@@ -283,14 +283,14 @@ namespace DotNetNuke.Modules.ActiveForums
                             htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
                         }
 
-                        if (htSettings == null || htSettings.Count == 0 || !htSettings.ContainsKey("ForumGroupTemplate"))
+                        if (htSettings == null || htSettings.Count == 0 || !htSettings.ContainsKey(SettingKeys.SocialGroupModeForumGroupTemplate))
                         {
                             var ex = new Exception($"Unable to configure forum for Social Group: {this.SocialGroupId}");
                             DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                         }
                         else
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(this.PortalId, this.ModuleId, this.SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, !role.IsPublic, htSettings["ForumConfig"].ToString());
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(this.PortalId, this.ModuleId, this.SocialGroupId, Convert.ToInt32(htSettings[SettingKeys.SocialGroupModeForumGroupTemplate].ToString()), role.RoleName + " Discussions", role.Description, !role.IsPublic, htSettings[SettingKeys.SocialGroupModeForumConfig].ToString());
                             this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.PortalId, this.ForumModuleId, this.SocialGroupId);
                         }
                     }

@@ -1408,8 +1408,8 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
     <value>Attach</value>
   </data>
-  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Ban</value>
+  <data name="[RESX:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Manage Users</value>
   </data>
   <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
     <value>Create</value>
@@ -1471,8 +1471,8 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
     <value>Can upload and attach files to new topics and replies.</value>
   </data>
-  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Can banish a rogue user, deleting all content for the user, and disabling their DNN user account. Cannot be used on Super Users or Administrators. Should be granted only to trusted moderators or Administrator roles.</value>
+  <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Can manage options of other users, banish a rogue user, deleting all content for the user, and disabling their DNN user account. Cannot be used on Super Users or Administrators. Should be granted only to trusted moderators or Administrator roles.</value>
   </data>
   <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
     <value>Can specify what categories a new topic belongs to.</value>

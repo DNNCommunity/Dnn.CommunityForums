@@ -12,8 +12,8 @@
         <Description>Discussion Forum Module for DNN</Description>
         <Company>dnncommunity.org</Company>
         <Authors>dnncommunity.org</Authors>
-        <FileVersion>09.02.00.00</FileVersion>
-        <AssemblyVersion>09.02.00.00</AssemblyVersion>
+        <FileVersion>09.02.01.00</FileVersion>
+        <AssemblyVersion>09.02.01.00</AssemblyVersion>
 
         <IncludeSymbols>False</IncludeSymbols>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
@@ -92,16 +92,6 @@
     <ItemGroup>
         <InternalsVisibleTo Include="DotNetNuke.Modules.ActiveForumsTests" /> <!-- [assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForums.Tests")] -->
         <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
-    </ItemGroup>
-
-    
-    <ItemGroup>
-      <Compile Update="controls\af_assign_badge_users.ascx.cs">
-        <SubType>ASPXCodeBehind</SubType>
-      </Compile>
-      <Compile Update="controls\af_assign_user_badges.ascx.cs">
-        <SubType>ASPXCodeBehind</SubType>
-      </Compile>
     </ItemGroup>
 
     <Import Project="Module.build" />

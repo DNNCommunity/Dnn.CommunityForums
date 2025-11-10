@@ -327,9 +327,6 @@
   <data name="[RESX:SecGrid:attach].Text" xml:space="preserve">
     <value>Joindre</value>
   </data>
-  <data name="[RESX:SecGrid:ban].Text" xml:space="preserve">
-    <value>Bannir</value>
-  </data>
   <data name="[RESX:SecGrid:create].Text" xml:space="preserve">
     <value>Créer</value>
   </data>
@@ -395,5 +392,14 @@
   </data>
   <data name="AvatarRefreshGravatar.Text" xml:space="preserve">
     <value>Gravatar</value>
+  </data>
+  <data name="[RESX:SecGrid:manageusers].Text" xml:space="preserve">
+    <value>Gérer les utilisateurs</value>
+  </data>
+  <data name="AvatarRefreshType.Text" xml:space="preserve">
+    <value>Actualiser les avatars</value>
+  </data>
+  <data name="AvatarRefreshType.Help" xml:space="preserve">
+    <value>Actualise périodiquement les avatars à l’aide du service sélectionné</value>
   </data>
 </root>
