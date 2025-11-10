@@ -343,7 +343,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090201();
-                        new ForumsConfig().Install_DefaultBadges_090201();
+                        new ForumsConfig().Install_DefaultBadges_090201(upgrading: true);
                     }
                     catch (Exception ex)
                     {
