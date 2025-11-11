@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Data;
@@ -57,28 +58,26 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
         }
 
-        public ForumUserInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo userInfo)
+        public ForumUserInfo(int moduleId, DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo userInfo)
         {
             this.portalSettings = portalSettings;
             this.PortalId = portalSettings.PortalId;
+            this.ModuleId = moduleId;
             this.userInfo = userInfo;
         }
 
-        public ForumUserInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        public ForumUserInfo(int moduleId, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             this.portalSettings = portalSettings;
             this.PortalId = portalSettings.PortalId;
+            this.ModuleId = moduleId;
+            this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
         }
 
         public ForumUserInfo(int moduleId)
         {
             this.userInfo = new DotNetNuke.Entities.Users.UserInfo();
             this.ModuleId = moduleId;
-        }
-
-        public ForumUserInfo(DotNetNuke.Entities.Users.UserInfo userInfo)
-        {
-            this.userInfo = userInfo;
         }
 
         public ForumUserInfo(int moduleId, DotNetNuke.Entities.Users.UserInfo userInfo)
@@ -94,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int PortalId { get; set; }
 
         [IgnoreColumn]
-        internal int ModuleId { get; set; }
+        internal int ModuleId { get; set; } = -1;
 
         public int TopicCount { get; set; }
 

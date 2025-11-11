@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (UserBadges == null)
             {
-                UserBadges = this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2", this.portalId, this.moduleId, userId);
+                UserBadges = this.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", this.portalId, this.moduleId, userId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, UserBadges);
             }
 
@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (distinctUserBadges == null)
             {
-                distinctUserBadges = this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2", this.portalId, this.moduleId, userId)
+                distinctUserBadges = this.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", this.portalId, this.moduleId, userId)
                     .GroupBy(b => b.BadgeId)
                     .Select(g => g.OrderByDescending(b => b.DateAssigned).First())
                     .ToList();
@@ -97,17 +97,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForUserAndBadge(int userId, int badgeId)
         {
-            return this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND BadgeId = @3", this.portalId, this.moduleId, userId, badgeId);
+            return this.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2 AND BadgeId = @3", this.portalId, this.moduleId, userId, badgeId);
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo GetForUserAndBadgeAndDateAssigned(int userId, int badgeId, DateTime dateAssigned)
         {
-            return this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND BadgeId = @3 AND DateAssigned = @4", this.portalId, this.moduleId, userId, badgeId, dateAssigned).FirstOrDefault();
+            return this.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2 AND BadgeId = @3 AND DateAssigned = @4", this.portalId, this.moduleId, userId, badgeId, dateAssigned).FirstOrDefault();
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo GetLatestForUserAndBadge(int userId, int badgeId)
         {
-            return this.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND BadgeId = @3", this.portalId, this.moduleId, userId, badgeId).OrderByDescending(b => b.DateAssigned).FirstOrDefault();
+            return this.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2 AND BadgeId = @3", this.portalId, this.moduleId, userId, badgeId).OrderByDescending(b => b.DateAssigned).FirstOrDefault();
         }
 
         internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForBadge(int badgeId)
