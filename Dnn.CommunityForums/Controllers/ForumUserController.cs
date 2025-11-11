@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Web;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Collections;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -62,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo> GetActiveUsers(int portalId)
         {
             var forumUsers = this.Get().Where(u => u.PortalId.Equals(portalId));
+            forumUsers.ForEach(forumUser => forumUser.ModuleId = this.moduleId);
             var users = DotNetNuke.Entities.Users.UserController.GetUsers(includeDeleted: false, superUsersOnly: false, portalId: portalId);
             var superUsers = DotNetNuke.Entities.Users.UserController.GetUsers(includeDeleted: false, superUsersOnly: true, portalId: DotNetNuke.Common.Utilities.Null.NullInteger);
             users.AddRange(superUsers);
@@ -89,6 +91,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     user = this.Find("WHERE UserId = @0", userId).FirstOrDefault();
                     if (user != null)
                     {
+                        user.PortalId = portalId;
+                        user.ModuleId = this.moduleId;
                         user.UserInfo = DotNetNuke.Entities.Users.UserController.GetUserById(portalId: user.PortalId, userId: userId);
                     }
                     else
