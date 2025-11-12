@@ -46,15 +46,17 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.02.01
+            09.02.02
         </h3>
+        
+<!--
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by 
             <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>
             and 
             <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>. 
         </p>
-
+-->
 <!--
                , and
             <a href="https://github.com/LxLasso" target="_blank">@LxLasso</a>,
@@ -69,10 +71,11 @@
 -->
         <h4>New Features &amp; Enhancements</h4>
         <ul>
+            <li>None at this time.</li>
+<!-- 
             <li>UPDATE: When upgrading, don't send notifications during initial backfill of badge awards (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1632">Issue 1632</a>)</li>
             <li>UPDATE: When upgrading, don't install badges on forums in "Social Group" configuration; those can be added manually if desired (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1621">Issue 1621</a>)</li>
             <li>UPDATE: If multiple instances of DNN Community Forums are installed, only display user badges associated with the specific module instance (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1637">Issue 1637</a>)</li>
-<!-- 
             <li>NEW: (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/TBD">PR# TBD</a>)</li>
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
@@ -82,7 +85,7 @@
         <h4>Bug Fixes</h4>
         <ul>
             
-            <li>FIX: When deleting module, badges not being removed (missing cascade delete) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1619">Issue 1619</a>)</li>
+            <li>FIX: Incorrect SQL script delivered with 09.02.01 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1644">Issue 1644</a>)</li>
             
 <!--
              <li>None at this time.</li>
@@ -92,11 +95,12 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
+            <li>None at this time.</li>
+<!--
             <li>Source files for themes were not up-to-date (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1628">Issue 1628</a>)</li>
             <li>Rename "Ban" security permission to "Manage Users" (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1492">Issue 1492</a>)</li>
             <li>Better detection of when module is running in "Social Group" configuration (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1624">Issue 1624</a>)</li>
             <li>09.02.01 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1636">Issue 1636</a>)</li>
-<!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
 -->
