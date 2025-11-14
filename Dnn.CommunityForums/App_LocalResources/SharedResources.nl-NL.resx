@@ -900,9 +900,6 @@
   <data name="[RESX:PrefSubscriptionType].Text" xml:space="preserve">
     <value>Type abonnement</value>
   </data>
-  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>Abonneer op onderwerpen</value>
-  </data>
   <data name="[RESX:Actions:ProfileUpdated].Text" xml:space="preserve">
     <value>Uw profiel is bijgewerkt.</value>
   </data>
@@ -1099,7 +1096,7 @@ Van,
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>Dit is uw standaardinstelling wanneer u een onderwerp maakt of een antwoord toevoegt. Dit heeft geen invloed op abonnementen op forumniveau.</value>
   </data>
-  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
+  <data name="[RESX:Message:EditIntervalNotReached].Text" xml:space="preserve">
     <value>Dit forum staat toe dat u uw berichten kunt wijzigen tenminste {0} minuten nadat u het bericht heeft geplaatst.</value>
   </data>
   <data name="[RESX:SubmitVote].Text" xml:space="preserve">
@@ -1894,6 +1891,12 @@ Van,
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Een tag is een trefwoord of term die is gekoppeld aan de inhoud die u indient. Wanneer u meerdere tags invoert, scheidt u deze met een komma.</value>
   </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Uitschrijven</value>
+  </data>
+  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
+    <value>Automatisch abonneren op Mijn onderwerpen</value>
+  </data>
   <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
     <value>Ontvang meldingen over badges</value>
   </data>
@@ -1947,5 +1950,14 @@ Van,
   </data>
   <data name="[RESX:UserMentionNotificationCongratulations].Text" xml:space="preserve">
     <value>Hé, je bent genoemd!</value>
+  </data>
+  <data name="[RESX:TEXTBOX].Text" xml:space="preserve">
+    <value>Tekstvak</value>
+  </data>
+  <data name="[RESX:HTMLEDITORPROVIDER].Text" xml:space="preserve">
+    <value>Standaard DNN-editor</value>
+  </data>
+  <data name="[RESX:DNNCKEDITOR4PLUSFORUMSPLUGINS].Text" xml:space="preserve">
+    <value>DNN CKEditor4 plus Forums plugins</value>
   </data>
 </root>

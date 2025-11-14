@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     /// <inheritdoc/>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [SupportedModules(Globals.ModuleName + "," + Globals.ModuleName + " Viewer")] /* this MUST match DesktopModule.ModuleName so use new constant */
+    [SupportedModules(Globals.ModuleName + "," + Globals.ModuleName + " Viewer")] /* this MUST match DesktopModule.ModuleName so use constant */
     public class ControllerBase<T> : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(T));
@@ -40,8 +40,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services
         /// provide a simple method for testing
         /// </summary>
         /// <returns></returns>
-        [AllowAnonymous]
         [HttpGet]
+        [AllowAnonymous]
         public HttpResponseMessage HelloWorld()
         {
             try

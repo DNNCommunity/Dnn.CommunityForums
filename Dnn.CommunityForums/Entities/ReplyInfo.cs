@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Services.Tokens;
@@ -292,6 +293,39 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
+        public bool RunningInViewer
+        {
+            get
+            {
+                return this.Forum.PortalSettings.ActiveTab != null && this.Forum.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
+                    m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) ||
+                    m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        [IgnoreColumn]
+        public int ForumsOrViewerModuleId
+        {
+            get
+            {
+                if (!this.RunningInViewer)
+                {
+                    return this.ModuleId;
+                }
+
+                if (this.Forum.PortalSettings.ActiveTab != null)
+                {
+                    foreach (DotNetNuke.Entities.Modules.ModuleInfo module in this.Forum.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Where(m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) || m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        return module.ModuleID;
+                    }
+                }
+
+                return DotNetNuke.Common.Utilities.Null.NullInteger;
+            }
+        }
+
+        [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability
         {
             get
@@ -403,7 +437,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "summary":
                         return PropertyAccess.FormatString(Utilities.EncodeBrackets(length > 0 && this.Summary.Length > length ? this.Summary.Substring(0, length) : this.Summary), format);
                     case "body":
-                        return PropertyAccess.FormatString(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body, Utilities.EncodeBrackets(format));
+                        return PropertyAccess.FormatString(Utilities.EncodeBrackets(Utilities.EncodeCodeBlocks(length > 0 && this.Content.Body.Length > length ? this.Content.Body.Substring(0, length) : this.Content.Body)), format);
                     case "bodytitle":
                         return PropertyAccess.FormatString(Utilities.EncodeBrackets(GetTopicTitle(this.Content.Body)), format);
                     case "link":
@@ -450,7 +484,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             var bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ReplyRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                             if (this.Forum.FeatureSettings.AllowLikes)
                             {
-                                return PropertyAccess.FormatString(bReply ? $"amaf_likePost({this.Forum.ModuleId},{this.Forum.ForumID},{this.ContentId})" : string.Empty, format);
+                                return PropertyAccess.FormatString(bReply ? $"amaf_likePost({this.Forum.ForumsOrViewerModuleId},{this.Forum.ForumID},{this.ContentId})" : string.Empty, format);
                             }
                         }
 
@@ -582,7 +616,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                             if (bDelete && (bModerate || (this.Author.AuthorId == accessingUser.UserID && !this.Topic.IsLocked)))
                             {
-                                return PropertyAccess.FormatString($"amaf_postDel({this.ModuleId},{this.ForumId},{this.TopicId},{this.ReplyId})", format);
+                                return PropertyAccess.FormatString($"amaf_postDel({this.ForumsOrViewerModuleId},{this.ForumId},{this.TopicId},{this.ReplyId})", format);
                             }
                         }
 
@@ -609,7 +643,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "actionbanonclick":
                         {
                             // (Note: can't ban yourself or a superuser/admin)
-                            var bBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.BanRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
+                            var bBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ManageUsersRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                             if ((bBan || accessingUser.IsAdmin || accessingUser.IsSuperUser) && (this.Author.AuthorId != -1) && (this.Author.AuthorId != accessingUser.UserID) && (this.Author != null) && (!this.Author.ForumUser.IsSuperUser) && (!this.Author.ForumUser.IsAdmin))
                             {
                                 var @params = new List<string>()
@@ -634,7 +668,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 var bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ModerateRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));
                                 if (bEdit && (bModerate || (accessingUser.UserID == this.Topic.Author.AuthorId && !this.Topic.IsLocked)))
                                 {
-                                    return PropertyAccess.FormatString($"javascript:amaf_MarkAsAnswer({this.ModuleId},{this.ForumId},{this.TopicId},{this.ReplyId});", format);
+                                    return PropertyAccess.FormatString($"javascript:amaf_MarkAsAnswer({this.ForumsOrViewerModuleId},{this.ForumId},{this.TopicId},{this.ReplyId});", format);
                                 }
                             }
 

@@ -81,6 +81,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
                         }
                     }
                 });
+                badges.Where(b => !b.InitialBackfillCompletedDate.HasValue).ForEach(b => {
+                    b.InitialBackfillCompletedDate = DateTime.UtcNow;
+                    new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Update(b);
+                });
+
                 return badgeCount;
             }
             catch (Exception ex)
@@ -94,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
         {
             try
             {
-                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId: moduleId).Get().Where(u => (u.PortalId == portalId && !u.UserInfo.IsDeleted));
+                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId: moduleId).GetActiveUsers(portalId);
             }
             catch (Exception ex)
             {
@@ -129,7 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
                 switch (badge.BadgeMetric)
                 {
                     case BadgeMetric.BadgeMetricNewUser:
-                        if (DateTime.UtcNow.Subtract(forumUser.DateCreated.Value).TotalDays < (badge.IntervalDays > 0 ? badge.IntervalDays : 30))
+                        if (DateTime.UtcNow.Subtract(forumUser.DateCreated).TotalDays < (badge.IntervalDays > 0 ? badge.IntervalDays : 30))
                         {
                             awardBadge = true;
                         }

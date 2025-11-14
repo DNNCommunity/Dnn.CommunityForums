@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Data;
+    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web;
 
@@ -39,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int contentId = -1;
         private int userId = -1;
         private int archived = 0;
-        private SettingsInfo mainSettings = null;
+        private ModuleSettings mainSettings = null;
         private int urlType = 0; // 0=default, 1= views, 2 = category, 3 = tag
         private int otherId = -1;
         private int categoryId = -1;
@@ -218,10 +219,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
+            var urlToSearch = newSearchURL;
+            if (HttpContext.Current.Request.UserLanguages != null && HttpContext.Current.Request.UserLanguages.Length > 0 && urlToSearch.ToLowerInvariant().Contains(HttpContext.Current.Request.UserLanguages[0].ToLowerInvariant()))
+            {
+                urlToSearch = urlToSearch.Replace(HttpContext.Current.Request.UserLanguages[0].ToLowerInvariant() + "/", string.Empty);
+            }
+
             Data.Common db = new Data.Common();
             try
             {
-                using (IDataReader dr = db.URLSearch(portalId, newSearchURL))
+                using (IDataReader dr = db.URLSearch(portalId, urlToSearch))
                 {
                     while (dr.Read())
                     {
@@ -300,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.moduleId > 0)
             {
-                this.mainSettings = new SettingsInfo { ModuleId = this.moduleId, MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.moduleId, tabId: this.tabId, ignoreCache: false).ModuleSettings };
+                this.mainSettings = new ModuleSettings { ModuleId = this.moduleId, MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.moduleId, tabId: DotNetNuke.Common.Utilities.Null.NullInteger, ignoreCache: false).ModuleSettings };
             }
 
             if (this.mainSettings == null)
@@ -411,16 +418,29 @@ namespace DotNetNuke.Modules.ActiveForums
             if (canContinue)
             {
                 // avoid redirect, e.g. "/Forums" == "forums/"
-                if ((searchURL.StartsWith("/") || searchURL.EndsWith("/")) && searchURL.IndexOf("/") == searchURL.LastIndexOf("/") &&
-                    (newSearchURL.StartsWith("/") || newSearchURL.EndsWith("/")) && newSearchURL.IndexOf("/") == newSearchURL.LastIndexOf("/") &&
-                     searchURL.Replace("/", string.Empty).ToLowerInvariant() == newSearchURL.Replace("/", string.Empty).ToLowerInvariant())
+                var searchURL2 = searchURL;
+                if (HttpContext.Current.Request.UserLanguages != null && HttpContext.Current.Request.UserLanguages.Length > 0 && searchURL2.ToLowerInvariant().Contains(HttpContext.Current.Request.UserLanguages[0].ToLowerInvariant()))
+                {
+                    searchURL2 = searchURL2.Replace(HttpContext.Current.Request.UserLanguages[0].ToLowerInvariant() + "/", string.Empty);
+                }
+
+                var newSearchURL2 = newSearchURL;
+                if (HttpContext.Current.Request.UserLanguages != null && HttpContext.Current.Request.UserLanguages.Length > 0 && newSearchURL2.ToLowerInvariant().Contains(HttpContext.Current.Request.UserLanguages[0].ToLowerInvariant()))
+                {
+                    newSearchURL2 = newSearchURL2.Replace(HttpContext.Current.Request.UserLanguages[0].ToLowerInvariant() + "/", string.Empty);
+                }
+
+                // avoid redirect, e.g. "/Forums" == "forums/"
+                if (((searchURL2.StartsWith("/") && searchURL2.IndexOf("/") == searchURL2.LastIndexOf("/")) || (searchURL2.EndsWith("/") && searchURL2.IndexOf("/") == searchURL2.LastIndexOf("/"))) &&
+                    ((newSearchURL2.StartsWith("/") && newSearchURL2.IndexOf("/") == newSearchURL2.LastIndexOf("/")) || (newSearchURL2.EndsWith("/") && newSearchURL2.IndexOf("/") == newSearchURL2.LastIndexOf("/"))) &&
+                     (searchURL2.Replace("/", string.Empty).ToLowerInvariant() == newSearchURL2.Replace("/", string.Empty).ToLowerInvariant()))
                 {
                     return;
                 }
 
-                if (searchURL != newSearchURL)
+                if (searchURL2 != newSearchURL2)
                 {
-                    string urlTail = searchURL.Replace(newSearchURL, string.Empty);
+                    string urlTail = searchURL2.Replace(newSearchURL2, string.Empty);
                     if (urlTail.StartsWith("/"))
                     {
                         urlTail = urlTail.Substring(1);

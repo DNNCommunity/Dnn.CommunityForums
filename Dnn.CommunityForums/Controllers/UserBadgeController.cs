@@ -37,10 +37,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal override string cacheKeyTemplate => CacheKeys.UserBadgeInfo;
 
-        internal UserBadgeController()
-        {
-        }
-
         internal UserBadgeController(int portalId, int moduleId)
         {
             this.portalId = portalId;
@@ -68,28 +64,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return UserBadge;
         }
 
-        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForUser(int portalId, int userId)
+        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForUser(int userId)
         {
             var cachekey = string.Format(CacheKeys.UserBadges, this.moduleId, userId);
             var UserBadges = (IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo>)DataCache.ContentCacheRetrieve(this.moduleId, cachekey);
 
             if (UserBadges == null)
             {
-                UserBadges = this.Find("WHERE PortalId = @0 AND UserId = @1", portalId, userId);
+                UserBadges = this.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", this.portalId, this.moduleId, userId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, UserBadges);
             }
 
             return UserBadges;
         }
 
-        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetDistinctForUser(int portalId, int userId)
+        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetDistinctForUser(int userId)
         {
             var cachekey = string.Format(CacheKeys.UserBadges, this.moduleId, userId);
             var distinctUserBadges = (IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo>)DataCache.ContentCacheRetrieve(this.moduleId, cachekey);
 
             if (distinctUserBadges == null)
             {
-                distinctUserBadges = this.Find("WHERE PortalId = @0 AND UserId = @1", portalId, userId)
+                distinctUserBadges = this.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", this.portalId, this.moduleId, userId)
                     .GroupBy(b => b.BadgeId)
                     .Select(g => g.OrderByDescending(b => b.DateAssigned).First())
                     .ToList();
@@ -99,19 +95,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return distinctUserBadges;
         }
 
-        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForUserAndBadge(int portalId, int userId, int badgeId)
+        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForUserAndBadge(int userId, int badgeId)
         {
-            return this.Find("WHERE PortalId = @0 AND UserId = @1 AND BadgeId = @2", portalId, userId, badgeId);
+            return this.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2 AND BadgeId = @3", this.portalId, this.moduleId, userId, badgeId);
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo GetForUserAndBadgeAndDateAssigned(int portalId, int userId, int badgeId, DateTime dateAssigned)
+        internal DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo GetForUserAndBadgeAndDateAssigned(int userId, int badgeId, DateTime dateAssigned)
         {
-            return this.Find("WHERE PortalId = @0 AND UserId = @1 AND BadgeId = @2 AND DateAssigned = @3", portalId, userId, badgeId, dateAssigned).FirstOrDefault();
+            return this.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2 AND BadgeId = @3 AND DateAssigned = @4", this.portalId, this.moduleId, userId, badgeId, dateAssigned).FirstOrDefault();
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo GetLatestForUserAndBadge(int portalId, int userId, int badgeId)
+        internal DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo GetLatestForUserAndBadge(int userId, int badgeId)
         {
-            return this.Find("WHERE PortalId = @0 AND UserId = @1 AND BadgeId = @2", portalId, userId, badgeId).OrderByDescending(b => b.DateAssigned).FirstOrDefault();
+            return this.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2 AND BadgeId = @3", this.portalId, this.moduleId, userId, badgeId).OrderByDescending(b => b.DateAssigned).FirstOrDefault();
         }
 
         internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForBadge(int badgeId)
@@ -128,13 +124,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return UserBadges;
         }
 
-        internal int BadgeCount(int portalId, int userId, int badgeId)
+        internal int BadgeCount(int userId, int badgeId)
         {
             var cachekey = string.Format(CacheKeys.BadgeUserCount, this.moduleId, badgeId, userId);
             var count = (int?)DataCache.ContentCacheRetrieve(this.moduleId, cachekey);
             if (count == null)
             {
-                count = this.Count("WHERE PortalId = @0 AND UserId = @1 AND BadgeId = @2", portalId, userId, badgeId);
+                count = this.Count("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND BadgeId = @3", this.portalId, this.moduleId, userId, badgeId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, count);
             }
 
@@ -151,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var badge = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().GetById(badgeId);
                 if (badge.OneTimeAward)
                 {
-                    userBadge = userBadgeController.GetLatestForUserAndBadge(portalId: portalId, userId: userId, badgeId: badgeId);
+                    userBadge = userBadgeController.GetLatestForUserAndBadge(userId: userId, badgeId: badgeId);
                     if (userBadge != null)
                     {
                         // If the badge is one-time award and already assigned, do not reassign.
@@ -207,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                var userBadge = this.GetForUserAndBadgeAndDateAssigned(portalId: portalId, userId: userId, badgeId: badgeId, dateAssigned: dateAssigned);
+                var userBadge = this.GetForUserAndBadgeAndDateAssigned(userId: userId, badgeId: badgeId, dateAssigned: dateAssigned);
                 if (userBadge != null)
                 {
                     ClearBadgeCache(userBadge);
@@ -220,11 +216,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        public bool AssignUserBadgeAfterAction(int portalId, int userId, int badgeId, DateTime dateAssigned, string requestUrl)
+        internal bool AssignUserBadgeAfterAction(int portalId, int userId, int badgeId, DateTime dateAssigned, string requestUrl)
         {
             try
             {
-                var userBadge = this.GetForUserAndBadgeAndDateAssigned(portalId: portalId, userId: userId, badgeId: badgeId, dateAssigned: dateAssigned);
+                var userBadge = this.GetForUserAndBadgeAndDateAssigned(userId: userId, badgeId: badgeId, dateAssigned: dateAssigned);
                 if (userBadge == null)
                 {
                     // If the user badge does not exist, cannot proceed but return true to indicate no error occurred; we just won't send a notification but need to clear the process action from the queue.
@@ -235,17 +231,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 // Conditions:
                 // - The badge is configured to send award notifications.
                 // - The forum user has enabled badge notifications.
-                // - Either notifications are not suppressed for backfill, or the user account is less than 30 days old.
+                // - Either notifications are not suppressed for backfill, or user was assigned badge after backfill completed date.
                 if (userBadge.ForumUser.BadgeNotificationsEnabled
                     && userBadge.Badge.SendAwardNotification
                     && (!userBadge.Badge.SuppresssAwardNotificationOnBackfill
-                        || (DateTime.UtcNow - userBadge.ForumUser.DateCreated.Value).TotalDays < 30))
+                        || (userBadge.Badge.InitialBackfillCompletedDate.HasValue && userBadge.DateAssigned > userBadge.Badge.InitialBackfillCompletedDate.Value)))
                 {
-                    var subject = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.moduleId, Enums.TemplateType.BadgeNotificationSubject, SettingsBase.GetModuleSettings(this.moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
-                    subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(new StringBuilder(subject), userBadge, userBadge.ForumUser.PortalSettings, userBadge.ForumUser.MainSettings, new Services.URLNavigator().NavigationManager(), userBadge.ForumUser, string.IsNullOrEmpty(requestUrl) ? null : new Uri(requestUrl), string.IsNullOrEmpty(requestUrl) ? string.Empty : new Uri(requestUrl).PathAndQuery).ToString();
+                    var subject = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.moduleId, Enums.TemplateType.BadgeNotificationSubject, SettingsBase.GetModuleSettings(this.moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                    subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(new StringBuilder(subject), userBadge, userBadge.ForumUser.PortalSettings, userBadge.ForumUser.ModuleSettings, new Services.URLNavigator().NavigationManager(), userBadge.ForumUser, string.IsNullOrEmpty(requestUrl) ? null : new Uri(requestUrl), string.IsNullOrEmpty(requestUrl) ? string.Empty : new Uri(requestUrl).PathAndQuery).ToString();
                     subject = subject.Length > 400 ? subject.Substring(0, 400) : subject;
-                    var body = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.moduleId, Enums.TemplateType.BadgeNotificationBody, SettingsBase.GetModuleSettings(this.moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
-                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(new StringBuilder(body), userBadge, userBadge.ForumUser.PortalSettings, userBadge.ForumUser.MainSettings, new Services.URLNavigator().NavigationManager(), userBadge.ForumUser, string.IsNullOrEmpty(requestUrl) ? null : new Uri(requestUrl), string.IsNullOrEmpty(requestUrl) ? string.Empty : new Uri(requestUrl).PathAndQuery).ToString();
+                    var body = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.moduleId, Enums.TemplateType.BadgeNotificationBody, SettingsBase.GetModuleSettings(this.moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                    body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(new StringBuilder(body), userBadge, userBadge.ForumUser.PortalSettings, userBadge.ForumUser.ModuleSettings, new Services.URLNavigator().NavigationManager(), userBadge.ForumUser, string.IsNullOrEmpty(requestUrl) ? null : new Uri(requestUrl), string.IsNullOrEmpty(requestUrl) ? string.Empty : new Uri(requestUrl).PathAndQuery).ToString();
 
                     string notificationKey = BuildNotificationContextKey(this.portalId, this.moduleId, badgeId, userId, userBadge.DateAssigned);
 
@@ -272,7 +268,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static string BuildNotificationContextKey(int portalId, int moduleId, int badgeId, int userId, DateTime dateAssigned)
+        private static string BuildNotificationContextKey(int portalId, int moduleId, int badgeId, int userId, DateTime dateAssigned)
         {
             return $"{portalId}:{moduleId}:{badgeId}:{userId}:{dateAssigned}";
         }

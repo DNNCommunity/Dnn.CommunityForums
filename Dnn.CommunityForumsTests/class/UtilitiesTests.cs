@@ -18,11 +18,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Collections;
-
 namespace DotNetNuke.Modules.ActiveForumsTests
 {
     using System;
+    using System.Collections;
     using System.Globalization;
 
     using DotNetNuke.Modules.ActiveForums;
@@ -458,6 +457,197 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void EncodeCodeBlocks_NullOrEmpty_ReturnsInput()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(Utilities.EncodeCodeBlocks(null), Is.Null);
+                Assert.That(Utilities.EncodeCodeBlocks(string.Empty), Is.Empty);
+            });
+        }
+
+        [Test]
+        public void EncodeCodeBlocks_NoCodeTags_ReturnsInput()
+        {
+            var input = "This is a test without code tags.";
+            var result = Utilities.EncodeCodeBlocks(input);
+            Assert.That(result, Is.EqualTo(input));
+        }
+
+        [Test]
+        public void EncodeCodeBlocks_WithCodeTags_EncodesBlock()
+        {
+            var input = "Some text [code]int x = 1;[/code] more text";
+            var expectedEncoded = System.Net.WebUtility.HtmlEncode("[code]int x = 1;[/code]");
+            var result = Utilities.EncodeCodeBlocks(input);
+            Assert.That(result.Contains(expectedEncoded), Is.True);
+        }
+
+        [Test]
+        public void EncodeCodeBlocks_WithAngleCodeTags_EncodesBlock()
+        {
+            var input = "Some text <code>int y = 2;</code> more text";
+            var expectedEncoded = System.Net.WebUtility.HtmlEncode("<code>int y = 2;</code>");
+            var result = Utilities.EncodeCodeBlocks(input);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Contains(expectedEncoded), Is.True);
+                Assert.That(result.Contains("<code>int y = 2;</code>"), Is.False);
+            });
+        }
+
+        [Test]
+        public void EncodeCodeBlocks_MultipleCodeBlocks_EncodesAll()
+        {
+            var input = "[code]a[/code] and <code>b</code>";
+            var expected1 = System.Net.WebUtility.HtmlEncode("[code]a[/code]");
+            var expected2 = System.Net.WebUtility.HtmlEncode("<code>b</code>");
+            var result = Utilities.EncodeCodeBlocks(input);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Contains(expected1), Is.True);
+                Assert.That(result.Contains(expected2), Is.True);
+            });
+        }
+
+        [Test]
+        public void RemoveScriptTags_NullInput_ReturnsNull()
+        {
+            // Arrange
+            string input = null;
+
+            // Act
+            string result = Utilities.RemoveScriptTags(input);
+
+            // Assert
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
+        public void RemoveScriptTags_EmptyInput_ReturnsEmptyString()
+        {
+            // Arrange
+            string input = string.Empty;
+
+            // Act
+            string result = Utilities.RemoveScriptTags(input);
+
+            // Assert
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void RemoveScriptTags_NoScriptTags_ReturnsSameText()
+        {
+            // Arrange
+            string input = "This is regular text with <p>some HTML</p> but no script tags.";
+
+            // Act
+            string result = Utilities.RemoveScriptTags(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(input));
+        }
+
+        [Test]
+        public void RemoveScriptTags_WithScriptTags_RemovesScriptTags()
+        {
+            // Arrange
+            string input = "Text before <script>alert('test');</script> text after";
+            string expected = "Text before  text after";
+
+            // Act
+            string result = Utilities.RemoveScriptTags(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void RemoveScriptTags_MultipleScriptTags_RemovesAllScriptTags()
+        {
+            // Arrange
+            string input = "<script>script1</script>middle<script>script2</script>";
+            string expected = "middle";
+
+            // Act
+            string result = Utilities.RemoveScriptTags(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void RemoveScriptTags_ScriptTagsWithAttributes_RemovesEntireTag()
+        {
+            // Arrange
+            string input = "<script type=\"text/javascript\" src=\"test.js\">console.log('test');</script>";
+            string expected = "";
+
+            // Act
+            string result = Utilities.RemoveScriptTags(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void RemoveScriptTags_ScriptInsideCodeBlock_PreservesScript()
+        {
+            // Arrange
+            string input = "Before <code><script>alert('test');</script></code> After";
+            string expected = input;
+
+            // Act
+            string result = Utilities.RemoveScriptTags(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void RemoveScriptTags_ScriptInsidePreBlock_PreservesScript()
+        {
+            // Arrange
+            string input = "Before <pre><script>alert('test');</script></pre> After";
+            string expected = input;
+
+            // Act
+            string result = Utilities.RemoveScriptTags(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void RemoveScriptTags_EncodedScriptTags_RemovesEncodedTags()
+        {
+            // Arrange
+            string input = "Before &lt;script&gt;alert('test');&lt;/script&gt; After";
+            string expected = "Before  After";
+
+            // Act
+            string result = Utilities.RemoveScriptTags(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void RemoveScriptTags_MixedRegularAndEncodedTags_RemovesBoth()
+        {
+            // Arrange
+            string input = "<script>alert(1);</script> normal &lt;script&gt;alert(2);&lt;/script&gt;";
+            string expected = " normal ";
+
+            // Act
+            string result = Utilities.RemoveScriptTags(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
         }
     }
 }

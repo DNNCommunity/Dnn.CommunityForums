@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public ControlsConfig ControlConfig { get; set; }
 
-        public string ThemePath => this.Page.ResolveUrl(this.MainSettings.ThemeLocation);
+        public string ThemePath => this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation);
 
         public string ForumIds { get; set; } = string.Empty;
 
@@ -369,7 +369,21 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this.foruminfo ?? (this.foruminfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.PortalId, this.ForumModuleId, this.ForumId, true, this.TopicId));
+                if (this.foruminfo == null)
+                {
+                    this.foruminfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.PortalId, this.ForumModuleId, this.ForumId, true, this.TopicId);
+                }
+
+                if (this.foruminfo != null)
+                {
+                    this.foruminfo.PortalSettings = this.PortalSettings;
+                    if (this.foruminfo.ForumGroup != null)
+                    {
+                        this.foruminfo.ForumGroup.PortalSettings = this.PortalSettings;
+                    }
+                }
+
+                return this.foruminfo;
             }
 
             set

@@ -12,6 +12,8 @@
         <Description>Discussion Forum Module for DNN</Description>
         <Company>dnncommunity.org</Company>
         <Authors>dnncommunity.org</Authors>
+        <FileVersion>09.02.02.00</FileVersion>
+        <AssemblyVersion>09.02.02.00</AssemblyVersion>
         <FileVersion>09.03.00.00</FileVersion>
         <AssemblyVersion>09.03.00.00</AssemblyVersion>
 
@@ -49,7 +51,6 @@
 
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0" />
-        <PackageReference Include="datatables.net-dt" Version="2.3.3" />
         <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
         <PackageReference Include="DotNetNuke.Web.Client" Version="9.11.0" />

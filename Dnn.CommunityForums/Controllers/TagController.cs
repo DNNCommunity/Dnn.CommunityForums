@@ -83,74 +83,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     throw;
                 }
 
-                try
-                {
-                    /* tags inserted via the editor plugin have # in the URL (aftg=#), which needs to be removed */
-                    /* e.g. <a href="https://localhost/forums/afv/search?aftg=#tag1">#tag1</a> becomes <a href="https://localhost/forums/afv/search?aftg=tag1">#tag1</a> */
-                    post.Content.Body = post.Content.Body.Replace("/afv/search?aftg=#", "/afv/search?aftg=");
-                }
-                catch (RegexMatchTimeoutException ex)
-                {
-                    Exceptions.LogException(ex);
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                }
-            }
-        }
-
-        internal static void UpdateTopicTags(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post)
+        public void DeleteById(int tagId)
         {
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(post.Topic.Forum.Security.TagRoleIds, post.Author.ForumUser.UserRoleIds))
-            {
-                try
-                {
-                    var contentController = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController();
-                    var tagController = new DotNetNuke.Modules.ActiveForums.Controllers.TagController();
-
-                    const string tagsPattern = @"href="".*?/afv/search\?aftg=(?<tag>.+?)""";
-                    var tags = new List<string>();
-                    var matches = RegexUtils.GetCachedRegex(tagsPattern, RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace, 5).Matches(post.Content.Body);
-                    if (matches.Count > 0)
-                    {
-                        foreach (Match match in matches)
-                        {
-                            if (!string.IsNullOrEmpty(match.Groups["tag"]?.Value))
-                            {
-                                tags.Add(match.Groups["tag"].Value);
-                            }
-                        }
-
-                        var topicTagController = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController();
-                        var existingTags = topicTagController.GetForTopic(post.TopicId);
-                        tags.Distinct().ToList().ForEach(t =>
-                        {
-                            var tag = tagController.Find("WHERE TagName = @0", t).FirstOrDefault();
-                            if (tag == null)
-                            {
-                                tag = new DotNetNuke.Modules.ActiveForums.Entities.TagInfo()
-                                {
-                                    TagName = t,
-                                    ModuleId = post.ModuleId,
-                                    PortalId = post.PortalId,
-                                };
-                                tagController.Insert(tag);
-                            };
-
-                            // if the tag is not already associated with the topic, add it
-                            if (!existingTags.Any(et => et.TagId == tag.TagId))
-                            {
-                                topicTagController.AddTagToTopic(tag.TagId, post.TopicId);
-                            }
-                        });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                } 
-            }
+            /* delete all topic tags for this tag */
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().Delete("WHERE TagId = @0", tagId);
+            /* now delete the tag itself */
+            base.DeleteById(tagId);
         }
 
         internal void Delete(DotNetNuke.Modules.ActiveForums.Entities.TagInfo item)

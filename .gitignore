@@ -162,4 +162,4 @@ themes/.gitignore
 [Ww]ebsite/
 /BuildScripts/ICSharpCode.SharpZipLib.dll
 /BuildScripts/MSBuild.Community.Tasks.dll
-/.github/copilot-instructions.md
+/ResXManager.config.xml

@@ -28,19 +28,16 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.IO;
     using System.Linq;
     using System.Runtime.Serialization.Json;
-    using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
-    using System.Web.UI;
     using System.Web.UI.WebControls;
-    using System.Xml;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Controls;
-    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -57,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int contentId = -1;
         private int authorId = -1;
         private bool allowHTML;
-        private EditorTypes editorType = EditorTypes.TEXTBOX;
+        private EditorType editorType = EditorType.TEXTBOX;
         private bool canModEdit;
         private bool canModApprove;
         private bool canEdit;
@@ -120,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ForumUser.TrustLevel = -1;
             }
             this.userIsTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, this.ForumUser.TrustLevel, this.canTrust, this.ForumInfo.FeatureSettings.AutoTrustLevel, this.ForumUser.PostCount);
-            this.themePath = this.Page.ResolveUrl(this.MainSettings.ThemeLocation);
+            this.themePath = this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation);
             this.Spinner = this.Page.ResolveUrl(this.themePath + "/images/loading.gif");
             this.isApproved = !this.ForumInfo.FeatureSettings.IsModerated || this.userIsTrusted || this.canModApprove;
 
@@ -156,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (this.Request.Browser.IsMobileDevice)
                 {
-                    this.editorType = (EditorTypes)this.ForumInfo.FeatureSettings.EditorMobile;
+                    this.editorType = (EditorType)this.ForumInfo.FeatureSettings.EditorMobile;
                 }
                 else
                 {
@@ -165,35 +162,47 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                this.editorType = EditorTypes.TEXTBOX;
+                this.editorType = EditorType.TEXTBOX;
             }
 
             this.ctlForm.EditorType = this.editorType;
             this.ctlForm.ForumInfo = this.ForumInfo;
             this.ctlForm.RequireCaptcha = true;
+            ProviderConfiguration editorProvider = null;
             switch (this.editorType)
             {
-                case EditorTypes.TEXTBOX:
+                case EditorType.TEXTBOX:
                     ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/text_editor.js", 102);
                     break;
-                default:
+                case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
+                    editorProvider = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
+                    if (editorProvider != null && !string.IsNullOrEmpty(editorProvider.DefaultProvider) && (editorProvider.DefaultProvider.Contains("CKHtmlEditorProvider") || editorProvider.DefaultProvider.Contains("DNNConnect.CKE")))
                     {
-                        var prov = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
-
-                        if (prov.DefaultProvider.Contains("CKHtmlEditorProvider") || prov.DefaultProvider.Contains("DNNConnect.CKE"))
-                        {
-                            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/ck_editor.js", 102);
-                        }
-                        else if (prov.DefaultProvider.Contains("FckHtmlEditorProvider"))
-                        {
-                            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/fck_editor.js", 102);
-                        }
-                        else
-                        {
-                            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/other_editor.js", 102);
-                        }
+                        ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/ck_editor.js", 102);
+                    }
+                    else
+                    {
+                        this.editorType = EditorType.HTMLEDITORPROVIDER;
                     }
 
+                    break;
+                case EditorType.HTMLEDITORPROVIDER:
+                    editorProvider = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
+                    if (editorProvider != null && !string.IsNullOrEmpty(editorProvider.DefaultProvider) && (editorProvider.DefaultProvider.Contains("CKHtmlEditorProvider") || editorProvider.DefaultProvider.Contains("DNNConnect.CKE")))
+                    {
+                        ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/ck_editor.js", 102);
+                    }
+                    else if (editorProvider != null && !string.IsNullOrEmpty(editorProvider.DefaultProvider) && editorProvider.DefaultProvider.Contains("FckHtmlEditorProvider"))
+                    {
+                        ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/fck_editor.js", 102);
+                    }
+                    else
+                    {
+                        ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/other_editor.js", 102);
+                    }
+
+                    break;
+                default:
                     break;
             }
 
@@ -282,9 +291,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Context.ApplicationInstance.CompleteRequest();
             }
 
-            if (!Utilities.HasFloodIntervalPassed(floodInterval: this.MainSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: this.ForumInfo))
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: this.ModuleSettings.FloodInterval, forumUser: this.ForumUser, forumInfo: this.ForumInfo))
             {
-                this.plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Error:FloodControl]"), this.MainSettings.FloodInterval) + "</div>" });
+                this.plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Error:FloodControl]"), this.ModuleSettings.FloodInterval) + "</div>" });
                 return;
             }
             if (!this.Page.IsValid || !Utilities.InputIsValid(this.ctlForm.Body.Trim()) || !Utilities.InputIsValid(this.ctlForm.Subject))
@@ -377,11 +386,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                 this.Context.ApplicationInstance.CompleteRequest();
             }
-            else if (!this.canModEdit && ti.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 && DateTime.UtcNow.Subtract(ti.Content.DateCreated).TotalMinutes > this.MainSettings.EditInterval)
+            else if (!this.canModEdit && ti.Content.AuthorId == this.UserId && this.canEdit && !Utilities.HasEditIntervalPassed(editInterval: this.ForumInfo.MainSettings.EditInterval, forumUser: this.ForumUser, forumInfo: this.ForumInfo, postInfo: ti))
             {
                 var im = new InfoMessage
                 {
-                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalReached]"), this.MainSettings.EditInterval) + "</div>",
+                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalNotReached]"), this.ModuleSettings.EditInterval) + "</div>",
                 };
                 this.plhMessage.Controls.Add(im);
                 this.plhContent.Controls.Clear();
@@ -392,7 +401,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var sBody = System.Net.WebUtility.HtmlDecode(ti.Content.Body);
                 var sSubject = System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
                 sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this.allowHTML, this.editorType);
-                sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorTypes.TEXTBOX);
+                sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorType.TEXTBOX);
                 this.ctlForm.Subject = sSubject;
                 this.ctlForm.Summary = System.Net.WebUtility.HtmlDecode(ti.Content.Summary);
                 this.ctlForm.Body = sBody;
@@ -467,7 +476,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var im = new Controls.InfoMessage
                 {
-                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalReached]"), this.MainSettings.EditInterval.ToString()) + "</div>",
+                    Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Message:EditIntervalNotReached]"), this.ModuleSettings.EditInterval.ToString()) + "</div>",
                 };
                 this.plhMessage.Controls.Add(im);
                 this.plhContent.Controls.Clear();
@@ -477,7 +486,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var sBody = System.Net.WebUtility.HtmlDecode(ri.Content.Body);
                 var sSubject = System.Net.WebUtility.HtmlDecode(ri.Content.Subject);
                 sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this.allowHTML, this.editorType);
-                sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorTypes.TEXTBOX);
+                sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorType.TEXTBOX);
                 this.ctlForm.Subject = sSubject;
                 this.ctlForm.Body = sBody;
                 this.ctlForm.IsApproved = ri.IsApproved;
@@ -503,7 +512,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = template.Replace("[RESX:CreateNewTopic]", "[RESX:EditingExistingTopic]");
             }
 
-            if (this.MainSettings.UseSkinBreadCrumb)
+            if (this.ModuleSettings.UseSkinBreadCrumb)
             {
                 var sCrumb = "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.GroupId + "=" + this.ForumInfo.ForumGroupId.ToString()) + "\">" + this.ForumInfo.GroupName + "</a>|";
                 sCrumb += "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.ForumId + "=" + this.ForumInfo.ForumID.ToString()) + "\">" + this.ForumInfo.ForumName + "</a>";
@@ -534,7 +543,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ReplyEditor, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
 
 #region "Backward compatilbility -- remove in v10.00.00"
-            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.MainSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
+            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.ModuleSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
             template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
 #endregion "Backward compatilbility -- remove in v10.00.00"
 
@@ -543,7 +552,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = template.Replace("[RESX:ReplyToTopic]", "[RESX:EditingExistingReply]");
             }
 
-            if (this.MainSettings.UseSkinBreadCrumb)
+            if (this.ModuleSettings.UseSkinBreadCrumb)
             {
                 template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
             }
@@ -614,13 +623,14 @@ namespace DotNetNuke.Modules.ActiveForums
                             if (post != null)
                             {
                                 var sPostedBy = Utilities.GetSharedResource("[RESX:PostedBy]") + " {0} {1} {2}";
-                                sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, false, false, post.Author.AuthorId, post.Author.Username, post.Author.FirstName, post.Author.LastName, post.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(post.Content.DateCreated, this.PortalId, this.UserId));
+                                sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ModuleSettings, false, false, post.Author.AuthorId, post.Author.Username, post.Author.FirstName, post.Author.LastName, post.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(post.Content.DateCreated, this.PortalId, this.UserId));
                                 var body = post.Content.Body;
-                                if (this.allowHTML && this.editorType != EditorTypes.TEXTBOX)
+                                if (this.allowHTML && this.editorType != EditorType.TEXTBOX)
                                 {
                                     if (body.ToUpperInvariant().Contains("<CODE") || body.ToUpperInvariant().Contains("[CODE]"))
                                     {
-                                        body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
+                                        //body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
+                                        body = Utilities.EncodeCodeBlocks(body);
                                     }
                                 }
                                 else
@@ -631,7 +641,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 if (isQuote)
                                 {
                                     this.ctlForm.EditorMode = SubmitForm.EditorModes.Quote;
-                                    if (this.allowHTML && this.editorType != EditorTypes.TEXTBOX)
+                                    if (this.allowHTML && this.editorType != EditorType.TEXTBOX)
                                     {
                                         body = "<blockquote>" + System.Environment.NewLine + sPostedBy + System.Environment.NewLine + "<br />" + System.Environment.NewLine + body + System.Environment.NewLine + "</blockquote><br /><br />";
                                     }
@@ -673,7 +683,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var subject = this.ctlForm.Subject;
             var body = this.ctlForm.Body;
-            subject = Utilities.CleanString(this.PortalId, Utilities.XSSFilter(subject, true), false, EditorTypes.TEXTBOX, this.ForumInfo.FeatureSettings.UseFilter, false, this.ForumModuleId, this.themePath, false);
+            subject = Utilities.CleanString(this.PortalId, Utilities.XSSFilter(subject, true), false, EditorType.TEXTBOX, this.ForumInfo.FeatureSettings.UseFilter, false, this.ForumModuleId, this.themePath, false);
             body = Utilities.CleanString(this.PortalId, body, this.allowHTML, this.editorType, this.ForumInfo.FeatureSettings.UseFilter, this.ForumInfo.FeatureSettings.AllowScript, this.ForumModuleId, this.themePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
             var summary = this.ctlForm.Summary;
             int authorId;
@@ -681,7 +691,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (this.Request.IsAuthenticated)
             {
                 authorId = this.UserInfo.UserID;
-                switch (this.MainSettings.UserNameDisplay.ToUpperInvariant())
+                switch (this.ModuleSettings.UserNameDisplay.ToUpperInvariant())
                 {
                     case "USERNAME":
                         authorName = this.UserInfo.Username.Trim(' ');
@@ -706,7 +716,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 authorId = -1;
-                authorName = Utilities.CleanString(this.PortalId, this.ctlForm.AuthorName, false, EditorTypes.TEXTBOX, true, false, this.ForumModuleId, this.themePath, false);
+                authorName = Utilities.CleanString(this.PortalId, this.ctlForm.AuthorName, false, EditorType.TEXTBOX, true, false, this.ForumModuleId, this.themePath, false);
                 if (authorName.Trim() == string.Empty)
                 {
                     return;
@@ -823,7 +833,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var tags = tagForm.Split(',');
                     foreach (var tag in tags)
                     {
-                        var sTag = Utilities.CleanString(this.PortalId, tag.Trim(), false, EditorTypes.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);
+                        var sTag = Utilities.CleanString(this.PortalId, tag.Trim(), false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);
                         DataProvider.Instance().Tags_Save(this.PortalId, this.ForumModuleId, -1, sTag, 0, this.TopicId);
                     }
                 }
@@ -865,7 +875,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (opt.Trim() != string.Empty)
                         {
-                            var value = Utilities.CleanString(this.PortalId, opt, false, EditorTypes.TEXTBOX, true, false, this.ForumModuleId, string.Empty, false);
+                            var value = Utilities.CleanString(this.PortalId, opt, false, EditorType.TEXTBOX, true, false, this.ForumModuleId, string.Empty, false);
                             DataProvider.Instance().Poll_Option_Save(-1, pollId, value.Trim(), this.TopicId);
                         }
                     }
@@ -921,7 +931,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var subject = this.ctlForm.Subject;
             var body = this.ctlForm.Body;
-            subject = Utilities.CleanString(this.PortalId, subject, false, EditorTypes.TEXTBOX, this.ForumInfo.FeatureSettings.UseFilter, false, this.ForumModuleId, this.themePath, false);
+            subject = Utilities.CleanString(this.PortalId, subject, false, EditorType.TEXTBOX, this.ForumInfo.FeatureSettings.UseFilter, false, this.ForumModuleId, this.themePath, false);
             body = Utilities.CleanString(this.PortalId, body, this.allowHTML, this.editorType, this.ForumInfo.FeatureSettings.UseFilter, this.ForumInfo.FeatureSettings.AllowScript, this.ForumModuleId, this.themePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
 
             // This HTML decode is used to make Quote functionality work properly even when it appears in Text Box instead of Editor
@@ -935,7 +945,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (this.Request.IsAuthenticated)
             {
                 authorId = this.UserInfo.UserID;
-                switch (this.MainSettings.UserNameDisplay.ToUpperInvariant())
+                switch (this.ModuleSettings.UserNameDisplay.ToUpperInvariant())
                 {
                     case "USERNAME":
                         authorName = this.UserInfo.Username.Trim(' ');
@@ -960,7 +970,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 authorId = -1;
-                authorName = Utilities.CleanString(this.PortalId, this.ctlForm.AuthorName, false, EditorTypes.TEXTBOX, true, false, this.ForumModuleId, this.themePath, false);
+                authorName = Utilities.CleanString(this.PortalId, this.ctlForm.AuthorName, false, EditorType.TEXTBOX, true, false, this.ForumModuleId, this.themePath, false);
                 if (authorName.Trim() == string.Empty)
                 {
                     return;

@@ -23,6 +23,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Web.UI;
 
+    using DotNetNuke.Modules.ActiveForums.Enums;
+
     public partial class af_sendto : ForumBase
     {
         protected global::System.Web.UI.WebControls.TextBox txtRecipName;
@@ -70,21 +72,21 @@ namespace DotNetNuke.Modules.ActiveForums
                             this.txtRecipSubject.Text = subjectDefault;
                             string messageDefault = this.GetSharedResource("[RESX:EmailMessageDefault]");
                             string sURL = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId });
-                            if (this.MainSettings.UseShortUrls)
+                            if (this.ModuleSettings.UseShortUrls)
                             {
                                 sURL = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.TopicId + "=" + this.TopicId });
                             }
 
                             messageDefault = messageDefault.Replace("[TOPICLINK]", sURL);
-                            messageDefault = messageDefault.Replace("[DISPLAYNAME]", $"<span class='af-profile-name'>{DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings: this.PortalSettings, mainSettings: this.MainSettings, isMod: false, isAdmin: false, userId: this.UserId, username: this.UserInfo.Username, firstName: this.UserInfo.FirstName, lastName: this.UserInfo.LastName, displayName: this.UserInfo.DisplayName)}</span>");
+                            messageDefault = messageDefault.Replace("[DISPLAYNAME]", $"<span class='af-profile-name'>{DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings: this.PortalSettings, mainSettings: this.ModuleSettings, isMod: false, isAdmin: false, userId: this.UserId, username: this.UserInfo.Username, firstName: this.UserInfo.FirstName, lastName: this.UserInfo.LastName, displayName: this.UserInfo.DisplayName)}</span>");
                             this.txtMessage.Text = messageDefault;
                         }
                     }
 
-                    if (this.MainSettings.UseSkinBreadCrumb)
+                    if (this.ModuleSettings.UseSkinBreadCrumb)
                     {
                         string sCrumb = "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.GroupId + "=" + this.ForumGroupId) + "\">" + this.ForumInfo.GroupName + "</a>|";
-                        if (this.MainSettings.UseShortUrls)
+                        if (this.ModuleSettings.UseShortUrls)
                         {
                             sCrumb += "<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.ForumId + "=" + this.ForumId) + "\">" + this.ForumInfo.ForumName + "</a>";
                             sCrumb += "|<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.TopicId + "=" + this.TopicId) + "\">" + topicSubject + "</a>";
@@ -146,8 +148,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 string sEmail = this.txtRecipEmail.Text;
                 string sEmailName = this.txtRecipName.Text;
                 string sMessage = this.txtMessage.Text;
-                sSubject = Utilities.CleanString(this.PortalId, sSubject.Trim(), false, EditorTypes.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
-                sMessage = Utilities.CleanString(this.PortalId, sMessage.Trim(), false, EditorTypes.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
+                sSubject = Utilities.CleanString(this.PortalId, sSubject.Trim(), false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
+                sMessage = Utilities.CleanString(this.PortalId, sMessage.Trim(), false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
                 string sUrl = this.NavigateUrl(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.SendToComplete });
                 try
                 {

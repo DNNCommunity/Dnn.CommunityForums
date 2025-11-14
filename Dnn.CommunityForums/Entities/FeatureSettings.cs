@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Collections;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Modules.ActiveForums.Enums;
 
     public class FeatureSettings
     {
@@ -41,10 +42,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal static void Save(int moduleId, string settingsKey, FeatureSettings settings)
         {
+            new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKey(moduleId, settingsKey);
             foreach (DictionaryEntry setting in settings.featureSettings)
             {
-                Settings.SaveSetting(moduleId, settingsKey, setting.Key.ToString(), setting.Value.ToString());
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, settingsKey, setting.Key.ToString(), setting.Value.ToString());
             }
+        }
+
+        internal static void Delete(int moduleId, string settingsKey, string settingName)
+        {
+            new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKeySettingName(moduleId, settingsKey, settingName);
         }
 
         [IgnoreColumn]
@@ -99,26 +106,26 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string EditorHeight => Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.EditorHeight], "400");
 
         [IgnoreColumn]
-        public EditorTypes EditorMobile
+        public EditorType EditorMobile
         {
             get
             {
-                EditorTypes parseValue;
-                return Enum.TryParse(Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.EditorMobile], EditorTypes.HTMLEDITORPROVIDER.ToString()), true, out parseValue)
+                EditorType parseValue;
+                return Enum.TryParse(Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.EditorMobile], EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS.ToString()), true, out parseValue)
                     ? parseValue
-                    : EditorTypes.HTMLEDITORPROVIDER;
+                    : EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS;
             }
         }
 
         [IgnoreColumn]
-        public EditorTypes EditorType
+        public EditorType EditorType
         {
             get
             {
-                EditorTypes parseValue;
-                return Enum.TryParse(Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.EditorType], EditorTypes.HTMLEDITORPROVIDER.ToString()), true, out parseValue)
+                EditorType parseValue;
+                return Enum.TryParse(Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.EditorType], EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS.ToString()), true, out parseValue)
                     ? parseValue
-                    : EditorTypes.HTMLEDITORPROVIDER;
+                    : EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS;
             }
         }
 

@@ -1450,9 +1450,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
     <value>Vastmaken</value>
   </data>
-  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Verbod</value>
-  </data>
   <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
     <value>Scheppen</value>
   </data>
@@ -1512,9 +1509,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
     <value>Kan bestanden uploaden en bijvoegen aan nieuwe onderwerpen en antwoorden.</value>
-  </data>
-  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Kan een malafide gebruiker verbannen, alle inhoud voor de gebruiker verwijderen en hun DNN-gebruikersaccount uitschakelen. Kan niet worden gebruikt voor supergebruikers of beheerders. Mag alleen worden verleend aan vertrouwde moderators of beheerdersrollen.</value>
   </data>
   <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
     <value>Kan aangeven tot welke categorieën een nieuw onderwerp behoort.</value>
@@ -1686,5 +1680,11 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
     <value>Handleiding Award</value>
+  </data>
+  <data name="[RESX:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Gebruikers beheren</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Kan opties van andere gebruikers beheren, een malafide gebruiker verbannen, alle inhoud voor de gebruiker verwijderen en hun DNN-gebruikersaccount uitschakelen. Kan niet worden gebruikt voor supergebruikers of -beheerders. Mag alleen worden verleend aan vertrouwde moderators of beheerdersrollen.</value>
   </data>
 </root>

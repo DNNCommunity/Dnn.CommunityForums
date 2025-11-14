@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Reflection;
     using System.Security.Cryptography;
+    using System.Security.Principal;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -39,6 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Enums;
 
     public abstract partial class Utilities
     {
@@ -115,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : string.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
-                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).ForumFeatureSettings.TemplateFileNameSuffix);
+                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser, requestUri: requestUri, rawUrl: rawUrl);
                 if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
                 {
@@ -366,9 +368,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static string PrepareForEdit(int portalId, int moduleId, string themePath, string text, bool allowHTML, EditorTypes editorType)
+        internal static string PrepareForEdit(int portalId, int moduleId, string themePath, string text, bool allowHTML, EditorType editorType)
         {
-            if (!allowHTML || editorType == EditorTypes.TEXTBOX)
+            if (!allowHTML || editorType == EditorType.TEXTBOX)
             {
                 text = DecodeBrackets(text);
                 text = ReplaceHtmlBreakTagWithNewLine(text);
@@ -462,14 +464,14 @@ namespace DotNetNuke.Modules.ActiveForums
             return text;
         }
 
-        public static string CleanString(int portalId, string text, bool allowHTML, EditorTypes editorType, bool useFilter, bool allowScript, int moduleId, string themePath, bool processEmoticons)
+        public static string CleanString(int portalId, string text, bool allowHTML, EditorType editorType, bool useFilter, bool allowScript, int moduleId, string themePath, bool processEmoticons)
         {
             var sClean = text;
 
             // If HTML is not allowed or if this comes from the TextBox editor (quick reply), the HTML needs to be encoded.
             if (sClean != string.Empty)
             {
-                sClean = editorType == EditorTypes.TEXTBOX ? CleanTextBox(portalId, sClean, allowHTML, useFilter, moduleId, themePath, processEmoticons) : CleanEditor(portalId, sClean, useFilter, moduleId, themePath, processEmoticons);
+                sClean = editorType == EditorType.TEXTBOX ? CleanTextBox(portalId, sClean, allowHTML, useFilter, moduleId, themePath, processEmoticons) : CleanEditor(portalId, sClean, useFilter, moduleId, themePath, processEmoticons);
 
                 var pattern = @"(<a [^>]*>)(?'url'(\S*?))(</a>)";
                 foreach (Match match in RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase).Matches(sClean))
@@ -487,6 +489,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!allowScript)
                 {
+                    sClean = RemoveScriptTags(sClean);
                     sClean = DecodeBrackets(sClean);
                     sClean = XSSFilter(sClean);
                 }
@@ -520,7 +523,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
                     }
 
-                    strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
+                    //strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
                     strMessage = ReplaceNewLineWithHtmlBreakTag(strMessage);
 
                     i = 0;
@@ -533,10 +536,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 else
                 {
                     strMessage = EncodeFormTags(strMessage);
-                    if (!allowHTML)
-                    {
-                        strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
-                    }
+                    strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
 
                     if (useFilter)
                     {
@@ -546,7 +546,22 @@ namespace DotNetNuke.Modules.ActiveForums
                     strMessage = ReplaceNewLineWithHtmlBreakTag(strMessage);
                 }
 
-                strMessage = EncodeBrackets(strMessage);
+                //strMessage = EncodeBrackets(strMessage);
+            }
+
+            return strMessage;
+        }
+
+        internal static string EncodeCodeBlocks(string text)
+        {
+            string strMessage = text;
+            if (!String.IsNullOrEmpty(strMessage) && (strMessage.ToUpperInvariant().Contains("[CODE]") || strMessage.ToUpperInvariant().Contains("<CODE")))
+            {
+                var pattern = @"[\[<]code[\]>](?<codeblock>(?s:.)*?)[\[<]\/code[\]>]";
+                foreach (Match m in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(strMessage))
+                {
+                    strMessage = strMessage.Replace(m.Value, System.Web.HttpUtility.HtmlEncode(m.Value));
+                }
             }
 
             return strMessage;
@@ -722,6 +737,38 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return sText;
+        }
+
+        internal static string RemoveScriptTags(string body = "")
+        {
+            if (!string.IsNullOrEmpty(body))
+            {
+                var tryEncoded = false;
+                for (var i = 0; i < 2; i++)
+                {
+                    var codeTagStartEndPositions = new List<(int Start, int End)>();
+
+                    const string codeTagPattern = @"<(?:code|pre)\b[^>]*>(.*?)</(?:code|pre)>";
+                    foreach (Match m in RegexUtils.GetCachedRegex(tryEncoded ? System.Net.WebUtility.HtmlEncode(codeTagPattern) : codeTagPattern, RegexOptions.IgnoreCase).Matches(body))
+                    {
+                        codeTagStartEndPositions.Add((m.Index, m.Index + m.Length));
+                    }
+
+                    const string scriptTagPattern = @"<script\b[^>]*>(.*?)</script>";
+                    foreach (Match m in RegexUtils.GetCachedRegex(tryEncoded ? System.Net.WebUtility.HtmlEncode(scriptTagPattern) : scriptTagPattern, RegexOptions.IgnoreCase).Matches(body))
+                    {
+                        bool insideCodeTag = m.Index >= 0 && codeTagStartEndPositions.Any(t => m.Index >= t.Start && m.Index < t.End);
+                        if (!insideCodeTag)
+                        {
+                            body = body.Replace(m.Value, string.Empty);
+                        }
+                    }
+
+                    tryEncoded = true;
+                }
+            }
+
+            return body;
         }
 
         public static string StripExecCode(string sText)
@@ -1029,6 +1076,11 @@ namespace DotNetNuke.Modules.ActiveForums
             return GetUserFormattedDateTime(dateTime, userCultureInfo, timeZoneOffset, "g");
         }
 
+        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        {
+            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, timeZoneOffset, "g");
+        }
+
         internal static string GetUserFormattedDateTime(DateTime? dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
         {
             if (dateTime != null)
@@ -1059,11 +1111,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return GetUserFormattedDateTime((DateTime?)dateTime, portalId, userId);
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
-        {
-            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, timeZoneOffset, "g");
-        }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
         public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)

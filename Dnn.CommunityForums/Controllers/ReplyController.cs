@@ -325,6 +325,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
 
+                if (reply.IsApproved && reply.Content.AuthorId > 0)
+                {
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserReplyCount(portalId, reply.Content.AuthorId);
+                }
+
+                
                 DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(reply);
                 DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController.ProcessUserMentions(reply);
 

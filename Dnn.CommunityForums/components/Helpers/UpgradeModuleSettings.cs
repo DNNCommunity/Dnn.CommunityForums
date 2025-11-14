@@ -21,8 +21,11 @@
 namespace DotNetNuke.Modules.ActiveForums.Helpers
 {
     using System;
+    using System.Collections;
+    using System.Linq;
     using System.Xml;
 
+    using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
@@ -47,16 +50,18 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     {
                         if (!SettingsBase.GetModuleSettings(module.ModuleID).IsInstalled)
                         {
-                            MoveSettingsForModuleInstanceToTabModuleInstance(module.ModuleID, tabModuleId: module.TabModuleID);
+                            MoveSettingsForModuleInstanceToTabModuleInstance_070011(module.ModuleID, tabModuleId: module.TabModuleID);
                         }
                     }
                 }
             }
         }
 
-        internal static void MoveSettingsForModuleInstanceToTabModuleInstance(int forumModuleId, int tabModuleId)
+        internal static void MoveSettingsForModuleInstanceToTabModuleInstance_070011(int forumModuleId, int tabModuleId)
         {
-            var currSettings = new SettingsInfo { ModuleId = forumModuleId, MainSettings = Settings.GeneralSettings(forumModuleId, "GEN") };
+            var ht = new Hashtable();
+            new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().GetSettingsForModuleIdSettingsKey(forumModuleId, "GEN").ForEach(s => ht.Add(s.SettingName, s.SettingValue));
+            var currSettings = new ModuleSettings { ModuleId = forumModuleId, MainSettings = ht };
 
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PageSize, currSettings.PageSize.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.UserNameDisplay, currSettings.UserNameDisplay);
@@ -149,13 +154,13 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant())
                     {
                         /*remove four settings previously stored in both TabModuleSettings *and* ModuleSettings -- just store in ModuleSettings */
-                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "ForumConfig");
-                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "ForumGroupTemplate");
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, SettingKeys.SocialGroupModeForumConfig);
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, SettingKeys.SocialGroupModeForumGroupTemplate);
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "MODE");
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "AllowIndex");
                         DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
                         DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
-                        var forumConfig = module.ModuleSettings.GetString("ForumConfig", string.Empty);
+                        var forumConfig = module.ModuleSettings.GetString(SettingKeys.SocialGroupModeForumConfig, string.Empty);
                         if (!string.IsNullOrEmpty(forumConfig))
                         {
                             var xDoc = new XmlDocument();
@@ -175,8 +180,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 }
 
                                 forumConfig = xDoc.OuterXml;
-                                DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
-                                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", forumConfig);
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig);
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig, forumConfig);
                                 DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
                                 DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
                                 DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
@@ -196,7 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 {
                     if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant())
                     {
-                        var ForumConfig = module.ModuleSettings.GetString("ForumConfig", string.Empty);
+                        var ForumConfig = module.ModuleSettings.GetString(SettingKeys.SocialGroupModeForumConfig, string.Empty);
                         if (!string.IsNullOrEmpty(ForumConfig))
                         {
                             var xDoc = new XmlDocument();
@@ -240,8 +245,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 }
 
                                 ForumConfig = xDoc.OuterXml;
-                                DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
-                                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", ForumConfig);
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig);
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig, ForumConfig);
                                 DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
                                 DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
                                 DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
@@ -341,6 +346,86 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant().Equals(Globals.ModuleName.ToLowerInvariant()))
                     {
                         DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.AvatarRefresh, Globals.AvatarRefreshGravatar);
+                        DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
+                        DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
+                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
+                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                    }
+                }
+            }
+        }
+
+        internal static void UpgradeSocialGroupForumConfigModuleSettings_090201()
+        {
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+            {
+                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                {
+                    if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant())
+                    {
+                        if (SettingsBase.GetModuleSettings(module.ModuleID).ModeIsSocial)
+                        {
+                            var ForumConfig = module.ModuleSettings.GetString(SettingKeys.SocialGroupModeForumConfig, string.Empty);
+                            if (!string.IsNullOrEmpty(ForumConfig))
+                            {
+                                var xDoc = new XmlDocument();
+                                xDoc.LoadXml(ForumConfig);
+                                if (xDoc != null)
+                                {
+                                    string[] secTypes = { "groupadmin", "groupmember", "registereduser", "anon" };
+                                    foreach (string secType in secTypes)
+                                    {
+                                        string xpath = $"//defaultforums/forum/security[@type='{secType}']";
+                                        foreach (var nodename in new string[] { "ban" })
+                                        {
+                                            if (xDoc.DocumentElement.SelectSingleNode(xpath).InnerXml.Contains(nodename))
+                                            {
+                                                try
+                                                {
+                                                    xDoc.DocumentElement.SelectSingleNode(xpath).RemoveChild(xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode(nodename));
+                                                }
+                                                catch
+                                                {
+                                                }
+                                            }
+                                        }
+
+                                        foreach (var nodename in new string[] { "manageusers" })
+                                        {
+                                            if (!xDoc.DocumentElement.SelectSingleNode(xpath).InnerXml.Contains(nodename))
+                                            {
+                                                try
+                                                {
+                                                    xDoc.DocumentElement.SelectSingleNode(xpath).AddElement(nodename, string.Empty);
+                                                    xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode(nodename).AddAttribute("value", "false");
+                                                }
+                                                catch
+                                                {
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    ForumConfig = xDoc.OuterXml;
+                                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig);
+                                    DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig, ForumConfig);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
+
+                            // set  fix any forums that have SocialGroupId set to 0
+                            fc.GetForums(module.ModuleID).Where(f => !f.SocialGroupId.Equals(0)).ForEach(forum =>
+                            {
+                                forum.SocialGroupId = 0;
+                                fc.Update(forum);
+                            });
+                            DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig);
+                            DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumGroupTemplate);
+                        }
+
                         DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
                         DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
                         DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);

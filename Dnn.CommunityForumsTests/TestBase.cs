@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
         internal Mock<DotNetNuke.Entities.Modules.ModuleInfo> mockModule;
 
-        internal Mock<DotNetNuke.Modules.ActiveForums.SettingsInfo> MainSettings;
+        internal Mock<DotNetNuke.Modules.ActiveForums.ModuleSettings> MainSettings;
 
         [SetUp]
 
@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             MockComponentProvider.CreateNew<LoggingProvider>();
             MockComponentProvider.CreateEventLogController();
 
-            this.MainSettings = new Mock<DotNetNuke.Modules.ActiveForums.SettingsInfo>();
+            this.MainSettings = new Mock<DotNetNuke.Modules.ActiveForums.ModuleSettings>();
             this.SetupMainSettings();
 
             this.mockHostController = new Mock<IHostController>();

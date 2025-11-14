@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnInit(e);
 
             this.post = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId, this.ForumModuleId).Post;
-            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.Likes, this.post.Forum.FeatureSettings.TemplateFileNameSuffix ?? SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.Likes, this.post.Forum.FeatureSettings.TemplateFileNameSuffix ?? SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
 
             try
             {
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (this.post != null)
                         {
-                            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(template), this.post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
+                            template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(template), this.post, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
                             if (control.GetType().FullName == "System.Web.UI.LiteralControl")
                             {
                                 ((System.Web.UI.LiteralControl)control).Text = template;
@@ -193,7 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (this.post != null)
                         {
 
-                            itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), this.post, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
+                            itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(itemTemplate), this.post, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
 
                             if (control.GetType().FullName == "System.Web.UI.LiteralControl")
                             {
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             if (like != null)
                             {
-                                itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceLikeTokens(new StringBuilder(itemTemplate), like, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
+                                itemTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceLikeTokens(new StringBuilder(itemTemplate), like, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString();
                                 if (control.GetType().FullName == "System.Web.UI.LiteralControl")
                                 {
                                     ((System.Web.UI.LiteralControl)control).Text = itemTemplate;
@@ -258,7 +258,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindLikes()
         {
-            this.pageSize = (this.UserId > 0) ? this.UserDefaultPageSize : this.MainSettings.PageSize;
+            this.pageSize = (this.UserId > 0) ? this.UserDefaultPageSize : this.ModuleSettings.PageSize;
 
             if (this.pageSize < 5)
             {
@@ -346,13 +346,13 @@ namespace DotNetNuke.Modules.ActiveForums
             pager.CurrentPage = this.PageId;
             pager.TabID = this.TabId;
             pager.ForumID = this.ForumId;
-            pager.UseShortUrls = this.MainSettings.UseShortUrls;
+            pager.UseShortUrls = this.ModuleSettings.UseShortUrls;
             pager.ContentId = this.ContentId;
             pager.PageText = Utilities.GetSharedResource("[RESX:Page]");
             pager.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
             pager.View = Views.Likes;
             pager.PageMode = PagerNav.Mode.Links;
-            pager.BaseURL = URL.ForumLink(this.TabId, this.post.Forum) + this.post.Topic.TopicUrl + "/" + this.MainSettings.PrefixURLLikes + "/" + this.ContentId;
+            pager.BaseURL = URL.ForumLink(this.TabId, this.post.Forum) + this.post.Topic.TopicUrl + "/" + this.ModuleSettings.PrefixURLLikes + "/" + this.ContentId;
 
             pager.Params = this.Parameters.ToArray();
         }

@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// <summary>
         /// Gets or sets the file Id for the badge.
         /// </summary>
-        public int FileId { get; set; }
+        public int FileId{ get; set; }
 
         /// <summary>
         /// Gets or sets the SortOrder for the badge.
@@ -95,6 +95,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// Gets or sets the SendAwardNotification.
         /// </summary>
         public bool SendAwardNotification { get; set; }
+
+        /// <summary>
+        /// Gets or sets the InitialBackfillCompletedDate.
+        /// </summary>
+        public DateTime? InitialBackfillCompletedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the SuppresssAwardNotificationOnBackfill.

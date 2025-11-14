@@ -19,7 +19,9 @@ amaf.resx = {
     UnPinConfirm: '[RESX:Confirm:UnPin]',
     LockConfirm: '[RESX:Confirm:Lock]',
     UnLockConfirm: '[RESX:Confirm:UnLock]',
-    TopicLocked: '[RESX:TopicLocked]'
+    TopicLocked: '[RESX:TopicLocked]',
+    Subscribe: '[RESX:Subscribe]',
+    Unsubscribe: '[RESX:Unsubscribe]'
 };
 
 

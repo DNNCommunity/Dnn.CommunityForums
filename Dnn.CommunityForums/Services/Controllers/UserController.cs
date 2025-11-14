@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
+    /// 
     public class UserController : ControllerBase<UserController>
     {
         /// <summary>
@@ -135,6 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     {
                         int totalRecords = 0;
                         var users = DotNetNuke.Entities.Users.UserController.GetUsersByDisplayName(portalId: portalId, nameToMatch: $"%{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(query, 20)}%", pageIndex: -1, pageSize: 0, totalRecords: ref totalRecords, includeDeleted: false, superUsersOnly: false);
+                        users.AddRange(DotNetNuke.Entities.Users.UserController.GetUsersByDisplayName(portalId: Null.NullInteger, nameToMatch: $"%{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(query, 20)}%", pageIndex: -1, pageSize: 0, totalRecords: ref totalRecords, includeDeleted: false, superUsersOnly: true));
 
                         if (users != null && users.Count > 0)
                         {
@@ -144,9 +146,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                                 userList.Add(new UserIdDisplayNamePair() { id = user.UserID, name = user.DisplayName, portalSettings = this.PortalSettings, });
                             }
                         }
+
+                        DataCache.UserCacheStore(cachekey, userList);
                     }
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, userList.Select(u=> new { id = u.id, name = u.name, avatarImgTag = u.avatarImgTag}).ToList());
+                    if (userList != null && userList.Count > 0)
+                    {
+                        return this.Request.CreateResponse(HttpStatusCode.OK, userList.Select(u => new { id = u.id, name = u.name, avatarImgTag = u.avatarImgTag }).ToList());
+                    }
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.NoContent);

@@ -98,13 +98,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     upi.PinNotificationsEnabled = this.chkPinNotificationsEnabled.Checked;
                     upi.BadgeNotificationsEnabled = this.chkBadgeNotificationsEnabled.Checked;
                     upi.EnableNotificationsForOwnContent = this.chkEnableNotificationsForOwnContent.Checked;
-                    if (this.MainSettings.AllowSignatures == 1 || this.MainSettings.AllowSignatures == 0)
+                    if (this.ModuleSettings.AllowSignatures == 1 || this.ModuleSettings.AllowSignatures == 0)
                     {
                         upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, true);
                         upi.Signature = Utilities.StripHTMLTag(upi.Signature);
                         upi.Signature = System.Net.WebUtility.HtmlEncode(upi.Signature);
                     }
-                    else if (this.MainSettings.AllowSignatures == 2)
+                    else if (this.ModuleSettings.AllowSignatures == 2)
                     {
                         upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
                     }

@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicResults, SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicResults, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
 
             try
             {
@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
                     if (topic != null)
                     {
-                        itemTemplate = Utilities.DecodeBrackets(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.MainSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString());
+                        itemTemplate = Utilities.DecodeBrackets(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString());
                         ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text = itemTemplate;
                     }
                 }
@@ -147,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindPosts(string sort = "ASC")
         {
-            this.pageSize = (this.UserId > 0) ? this.UserDefaultPageSize : this.MainSettings.PageSize;
+            this.pageSize = (this.UserId > 0) ? this.UserDefaultPageSize : this.ModuleSettings.PageSize;
 
             if (this.pageSize < 5)
             {
@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                 }
 
-                if (this.MainSettings.UseSkinBreadCrumb)
+                if (this.ModuleSettings.UseSkinBreadCrumb)
                 {
                     Environment.UpdateBreadCrumb(this.Page.Controls, $"<a href=\"{Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}={gview}" })}\">{this.lblHeader.Text}</a>");
                 }
@@ -432,16 +432,16 @@ namespace DotNetNuke.Modules.ActiveForums
 
             pager.PageMode = Modules.ActiveForums.Controls.PagerNav.Mode.Links;
 
-            if (this.MainSettings.URLRewriteEnabled)
+            if (this.ModuleSettings.URLRewriteEnabled)
             {
-                if (!string.IsNullOrEmpty(this.MainSettings.PrefixURLBase))
+                if (!string.IsNullOrEmpty(this.ModuleSettings.PrefixURLBase))
                 {
-                    pager.BaseURL = "/" + this.MainSettings.PrefixURLBase;
+                    pager.BaseURL = "/" + this.ModuleSettings.PrefixURLBase;
                 }
 
-                if (!string.IsNullOrEmpty(this.MainSettings.PrefixURLOther))
+                if (!string.IsNullOrEmpty(this.ModuleSettings.PrefixURLOther))
                 {
-                    pager.BaseURL += "/" + this.MainSettings.PrefixURLOther;
+                    pager.BaseURL += "/" + this.ModuleSettings.PrefixURLOther;
                 }
 
                 pager.BaseURL += "/" + this.Request.Params[ParamKeys.GridType] + "/";
@@ -454,7 +454,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string GetArrowPath()
         {
-            string theme = this.Page.ResolveUrl(this.MainSettings.ThemeLocation + "/images/miniarrow_down.png");
+            string theme = this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation + "/images/miniarrow_down.png");
             return theme;
         }
 

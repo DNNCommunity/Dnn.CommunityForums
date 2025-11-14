@@ -21,24 +21,19 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading;
     using System.Web;
     using System.Web.UI.WebControls;
-    using DotNetNuke.Data;
+
+    using DotNetNuke.Collections;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.GeneratedImage;
-    using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Services.Social.Notifications;
-    using DotNetNuke.UI.UserControls;
 
     internal class ForumUserController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
     {
@@ -65,6 +60,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             throw new NotImplementedException("There is no probably need to call this method; if you do, you probably should be using GetByUserId.");
         }
 
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo> GetActiveUsers(int portalId)
+        {
+            var forumUsers = this.Get().Where(u => u.PortalId.Equals(portalId));
+            forumUsers.ForEach(forumUser => forumUser.ModuleId = this.moduleId);
+            var users = DotNetNuke.Entities.Users.UserController.GetUsers(includeDeleted: false, superUsersOnly: false, portalId: portalId);
+            var superUsers = DotNetNuke.Entities.Users.UserController.GetUsers(includeDeleted: false, superUsersOnly: true, portalId: DotNetNuke.Common.Utilities.Null.NullInteger);
+            users.AddRange(superUsers);
+            return forumUsers
+                .Join(
+                    users.Cast<DotNetNuke.Entities.Users.UserInfo>(),
+                    forumUser => forumUser.UserId,
+                    user => user.UserID,
+                    (forumUser, user) =>
+                    {
+                        forumUser.UserInfo = user;
+                        return forumUser;
+                    }
+                ).Where(forumUser => forumUser.IsAdmin || forumUser.IsSuperUser || forumUser.UserInfo.Membership.Approved);
+        }
+
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetByUserId(int portalId, int userId)
         {
             var cachekey = this.GetCacheKey(portalId: portalId, id: userId);
@@ -76,6 +91,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     user = this.Find("WHERE UserId = @0", userId).FirstOrDefault();
                     if (user != null)
                     {
+                        user.PortalId = portalId;
+                        user.ModuleId = this.moduleId;
                         user.UserInfo = DotNetNuke.Entities.Users.UserController.GetUserById(portalId: user.PortalId, userId: userId);
                     }
                     else
@@ -224,11 +241,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumUser.UserId;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
         public bool GetUserIsAdmin(int portalId, int moduleId, int userId)
         {
             return this.GetByUserId(portalId, userId).IsAdmin;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
         public bool GetUserIsSuperUser(int portalId, int moduleId, int userId)
         {
             return this.GetByUserId(portalId, userId).IsSuperUser;
@@ -365,7 +384,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static bool CanLinkToProfile(DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        internal static bool CanLinkToProfile(DotNetNuke.Entities.Portals.PortalSettings portalSettings, ModuleSettings moduleSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo accessingUser, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             if (portalSettings == null)
             {
@@ -382,7 +401,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 portalSettings?.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger &&
                 portalSettings?.UserTabId != -1)
             {
-                var profileVisibility = mainSettings.ProfileVisibility;
+                var profileVisibility = moduleSettings.ProfileVisibility;
 
                 switch (profileVisibility)
                 {
@@ -411,7 +430,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return canLinkToProfile;
         }
 
-        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "")
+        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, ModuleSettings mainSettings, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "")
         {
             if (portalSettings == null)
             {
@@ -528,18 +547,31 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static void UpdateUserTopicCount(int portalId, int userId)
         {
-            string sSql = "UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles SET TopicCount = ISNULL((Select Count(t.TopicId) FROM ";
-            sSql += "{databaseOwner}{objectQualifier}activeforums_Topics as t INNER JOIN ";
-            sSql += "{databaseOwner}{objectQualifier}activeforums_Content as c ON t.ContentId = c.ContentId AND c.AuthorId = @1 INNER JOIN ";
-            sSql += "{databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = t.TopicId INNER JOIN ";
-            sSql += "{databaseOwner}{objectQualifier}activeforums_Forums as f ON ft.ForumId = f.ForumId ";
+            string sSql = "UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles SET TopicCount = ISNULL((SELECT COUNT(t.TopicId) ";
+            sSql += "FROM {databaseOwner}{objectQualifier}activeforums_Topics as t ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content as c ON c.ContentId = t.ContentId AND c.AuthorId = @1 ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = t.TopicId ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f ON f.ForumId = ft.ForumId ";
             sSql += "WHERE c.AuthorId = @1 AND t.IsApproved = 1 AND t.IsDeleted=0 AND f.PortalId=@0),0) ";
             sSql += "WHERE UserId = @1 AND PortalId = @0";
             DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, portalId, userId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, userId);
         }
 
-        internal string GetUsersOnline(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.SettingsInfo mainSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        internal static void UpdateUserReplyCount(int portalId, int userId)
+        {
+            string sSql = "UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles SET ReplyCount = ISNULL((SELECT COUNT(r.ReplyId) ";
+            sSql += "FROM {databaseOwner}{objectQualifier}activeforums_Replies as r ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content as c ON c.ContentId = r.ContentId AND c.AuthorId = @1 ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = r.TopicId ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f ON f.ForumId = ft.ForumId ";
+            sSql += "WHERE c.AuthorId = @1 AND r.IsApproved = 1 AND r.IsDeleted=0 AND f.PortalId=@0),0) ";
+            sSql += "WHERE UserId = @1 AND PortalId = @0";
+            DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, portalId, userId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, userId);
+        }
+
+        internal string GetUsersOnline(DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings mainSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             bool isAdmin = forumUser.IsAdmin || forumUser.IsSuperUser;
             var sb = new StringBuilder();

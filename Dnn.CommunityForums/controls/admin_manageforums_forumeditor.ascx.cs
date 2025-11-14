@@ -24,9 +24,9 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Text;
     using System.Web.UI.WebControls;
-    using DotNetNuke.Security.Roles;
 
-    using AFSettings = DotNetNuke.Modules.ActiveForums.Settings;
+    using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Security.Roles;
 
     public partial class admin_manageforums_forumeditor : ActiveAdminBase
     {
@@ -155,12 +155,16 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected override void OnLoad(EventArgs e)
         {
-            base.OnLoad(e);
+            if (!this.IsPostBack)
+            {
+                base.OnLoad(e);
 
-            this.litTopicPropButton.Text = "<div><a href=\"\" onclick=\"afadmin_LoadPropForm();return false;\" class=\"btnadd afroundall\">[RESX:AddProperty]</a></div>";
-            this.litPropLoad.Text = Utilities.GetFileResource("DotNetNuke.Modules.ActiveForums.scripts.afadmin.properties.js");
+                this.litTopicPropButton.Text = "<div><a href=\"\" onclick=\"afadmin_LoadPropForm();return false;\" class=\"btnadd afroundall\">[RESX:AddProperty]</a></div>";
+                this.litPropLoad.Text = Utilities.GetFileResource("DotNetNuke.Modules.ActiveForums.scripts.afadmin.properties.js");
 
-            this.BindRoles();
+                this.BindRoles();
+                this.BindEditorTypes();
+            }
 
             var sepChar = '|';
             if (this.Params != null && !string.IsNullOrEmpty(this.Params))
@@ -440,7 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 case "modulesettingssave":
                     {
-                        var sKey = $"M:{this.ModuleId}";
+                        var sKey = $"M{this.ModuleId}";
                         this.SaveSettings(sKey, e.Parameters);
 
                         this.hidEditorResult.Value = this.ModuleId.ToString();
@@ -451,7 +455,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "forumsettingssave":
                     {
                         var forumId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        var sKey = $"F:{forumId}";
+                        var sKey = $"F{forumId}";
                         this.SaveSettings(sKey, e.Parameters);
 
                         this.hidEditorResult.Value = forumId.ToString();
@@ -462,7 +466,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "groupsettingssave":
                     {
                         var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        var sKey = $"G:{groupId}";
+                        var sKey = $"G{groupId}";
                         this.SaveSettings(sKey, e.Parameters);
 
                         this.hidEditorResult.Value = groupId.ToString();
@@ -497,50 +501,50 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void SaveSettings(string sKey, string[] parameters)
         {
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, parameters[2]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.TopicTemplateId, parameters[3]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EmailAddress, parameters[4]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.UseFilter, parameters[5]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowPostIcon, parameters[6]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowEmoticons, parameters[7]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowScript, parameters[8]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.IndexContent, parameters[9]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowRSS, parameters[10]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowAttach, parameters[11]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AttachCount, parameters[12]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AttachMaxSize, parameters[13]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AttachTypeAllowed, parameters[14]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EditorMobile, parameters[15]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowLikes, parameters[16]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ReplyPostCount, parameters[17]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AttachAllowBrowseSite, parameters[18]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AttachInsertAllowed, parameters[19]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.MaxAttachWidth, parameters[20]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.MaxAttachHeight, parameters[21]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, parameters[22]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowHTML, parameters[23]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EditorType, parameters[24]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EditorHeight, parameters[25]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EditorWidth, parameters[26]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.CreatePostCount, parameters[27]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoSubscribeNewTopicsOnly, parameters[28]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EditorPermittedUsers, parameters[29]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.TopicFormId, parameters[30]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ReplyFormId, parameters[31]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoSubscribeRoles, parameters[32]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ProfileTemplateId, parameters[33]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.IsModerated, parameters[34]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.DefaultTrustLevel, parameters[35]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoTrustLevel, parameters[36]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModApproveNotify, parameters[37]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModRejectNotify, parameters[38]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModMoveNotify, parameters[39]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModDeleteNotify, parameters[40]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModAlertNotify, parameters[41]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoSubscribeEnabled, parameters[42]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, parameters[43]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EmailNotificationSubjectTemplate, parameters[44]);
-            AFSettings.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.TemplateFileNameSuffix, parameters[45]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, parameters[2]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.TopicTemplateId, parameters[3]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EmailAddress, parameters[4]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.UseFilter, parameters[5]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowPostIcon, parameters[6]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowEmoticons, parameters[7]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowScript, parameters[8]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.IndexContent, parameters[9]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowRSS, parameters[10]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowAttach, parameters[11]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AttachCount, parameters[12]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AttachMaxSize, parameters[13]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AttachTypeAllowed, parameters[14]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EditorMobile, parameters[15]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowLikes, parameters[16]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ReplyPostCount, parameters[17]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AttachAllowBrowseSite, parameters[18]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AttachInsertAllowed, parameters[19]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.MaxAttachWidth, parameters[20]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.MaxAttachHeight, parameters[21]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, parameters[22]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AllowHTML, parameters[23]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EditorType, parameters[24]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EditorHeight, parameters[25]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EditorWidth, parameters[26]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.CreatePostCount, parameters[27]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoSubscribeNewTopicsOnly, parameters[28]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EditorPermittedUsers, parameters[29]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.TopicFormId, parameters[30]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ReplyFormId, parameters[31]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoSubscribeRoles, parameters[32]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ProfileTemplateId, parameters[33]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.IsModerated, parameters[34]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.DefaultTrustLevel, parameters[35]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoTrustLevel, parameters[36]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModApproveNotify, parameters[37]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModRejectNotify, parameters[38]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModMoveNotify, parameters[39]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModDeleteNotify, parameters[40]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.ModAlertNotify, parameters[41]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoSubscribeEnabled, parameters[42]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, parameters[43]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EmailNotificationSubjectTemplate, parameters[44]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.TemplateFileNameSuffix, parameters[45]);
         }
 
         private void LoadForum(int forumId)
@@ -653,7 +657,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.trGroups.Visible = false;
             this.reqGroups.Enabled = false;
 
-            this.LoadFeatureSettings(this.MainSettings.ForumFeatureSettings);
+            this.LoadFeatureSettings(this.MainSettings.DefaultFeatureSettings);
         }
 
         private void LoadFeatureSettings(DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings featureSettings)
@@ -719,14 +723,14 @@ namespace DotNetNuke.Modules.ActiveForums
             // if switching from HTML off to HTML on, switch editor to HTML editor, or vice versa
             if (this.rdHTMLOff.Checked && featureSettings.AllowHTML)
             {
-                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorTypes.FORUMSEDITOR);
-                Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorTypes.FORUMSEDITOR);
+                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS);
+                Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS);
             }
 
             if (this.rdHTMLOn.Checked && !featureSettings.AllowHTML)
             {
-                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorTypes.TEXTBOX);
-                Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorTypes.TEXTBOX);
+                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorType.TEXTBOX);
+                Utilities.SelectListItemByValue(this.drpEditorMobile, (int)EditorType.TEXTBOX);
             }
 
             this.rdHTMLOn.Checked = featureSettings.AllowHTML;
@@ -872,6 +876,11 @@ namespace DotNetNuke.Modules.ActiveForums
             this.drpRoles.Items.Insert(0, new ListItem("[RESX:DropDownDefault]", string.Empty));
         }
 
+        private void BindEditorTypes()
+        {
+            Utilities.BindEnum(pDDL: this.drpEditorTypes, enumType: typeof(Enums.EditorType), pColValue: string.Empty, addEmptyValue: false, localize: true, excludeIndex: -1);
+            Utilities.BindEnum(pDDL: this.drpEditorMobile, enumType: typeof(Enums.EditorType), pColValue: string.Empty, addEmptyValue: false, localize: true, excludeIndex: -1);
+        }
         #endregion
 
     }

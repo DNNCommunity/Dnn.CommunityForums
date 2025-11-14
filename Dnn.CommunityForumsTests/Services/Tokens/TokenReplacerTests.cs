@@ -55,7 +55,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -63,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -161,7 +160,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -169,7 +167,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -272,7 +270,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -280,7 +277,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -356,7 +353,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Pin = emptyPermissions,
                     Attach = emptyPermissions,
                     Poll = emptyPermissions,
-                    Block = emptyPermissions,
                     Trust = emptyPermissions,
                     Subscribe = emptyPermissions,
                     Announce = emptyPermissions,
@@ -364,7 +360,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     Moderate = emptyPermissions,
                     Move = emptyPermissions,
                     Split = emptyPermissions,
-                    Ban = emptyPermissions,
+                    ManageUsers = emptyPermissions,
                 },
             };
 
@@ -380,6 +376,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
                     {
                         GroupName = "Test Forum Group",
+                        PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
+                        FeatureSettings = new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(featureSettings),
+                        Security = mockPermissions.Object,
                     },
                     FeatureSettings = new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(featureSettings),
                 },
@@ -424,7 +423,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
-        
+
         [Test]
         public void RemovePrefixedToken1()
         {

@@ -580,7 +580,7 @@ Von
   <data name="[RESX:MemberSince].Text" xml:space="preserve">
     <value>Mitglied seit</value>
   </data>
-  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
+  <data name="[RESX:Message:EditIntervalNotReached].Text" xml:space="preserve">
     <value>In diesem Forum können Sie Ihren Beitrag nur innerhalb von {0} Minuten ab dem Zeitpunkt bearbeiten, an dem Sie Ihren Beitrag erstellt haben.</value>
   </data>
   <data name="[RESX:Message].Text" xml:space="preserve">
@@ -813,9 +813,6 @@ Von
   </data>
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>Dies ist Ihre Standardeinstellung, wenn Sie ein Thema erstellen oder eine Antwort hinzufügen.  Dies hat keine Auswirkungen auf Abonnements auf Forumsebene.</value>
-  </data>
-  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>Themen abonnieren</value>
   </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve">
     <value>Der Forenadministrator hat Ihnen möglicherweise erlaubt, verschiedene Abonnementformen auszuwählen.  Sie können Ihre gewünschte Präferenz auswählen.</value>
@@ -1859,6 +1856,12 @@ Von
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Ein Tag ist ein Schlüsselwort oder ein Begriff, der mit dem Inhalt verknüpft ist, den Sie einreichen. Wenn Sie mehrere Tags eingeben, trennen Sie diese durch ein Komma.</value>
   </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Abmelden</value>
+  </data>
+  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
+    <value>Automatisches Abonnieren von "Meine Themen"</value>
+  </data>
   <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
     <value>Erhalten Sie Benachrichtigungen über Abzeichenauszeichnungen</value>
   </data>
@@ -1912,5 +1915,14 @@ Von
   </data>
   <data name="[RESX:UserMentionNotificationCongratulations].Text" xml:space="preserve">
     <value>Hey, du wurdest erwähnt!</value>
+  </data>
+  <data name="[RESX:TEXTBOX].Text" xml:space="preserve">
+    <value>Textfeld</value>
+  </data>
+  <data name="[RESX:HTMLEDITORPROVIDER].Text" xml:space="preserve">
+    <value>Standardmäßiger DNN-Editor</value>
+  </data>
+  <data name="[RESX:DNNCKEDITOR4PLUSFORUMSPLUGINS].Text" xml:space="preserve">
+    <value>DNN CKEditor4 plus Foren-Plugins</value>
   </data>
 </root>

@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     using System.Web;
     using System.Web.Http;
 
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Web.Api;
 
@@ -88,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.View)]
         public HttpResponseMessage SubscriberCount(int forumId, int topicId)
         {
             try
@@ -118,6 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.View)]
         public HttpResponseMessage SubscriberCountString(int forumId, int topicId)
         {
             try
@@ -520,7 +523,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                                     string[] tags = tagForm.Split(',');
                                     foreach (string tag in tags)
                                     {
-                                        string sTag = Utilities.CleanString(this.ActiveModule.PortalID, tag.Trim(), false, EditorTypes.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);
+                                        string sTag = Utilities.CleanString(this.ActiveModule.PortalID, tag.Trim(), false, EditorType.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);
                                         DataProvider.Instance().Tags_Save(this.ActiveModule.PortalID, this.ForumModuleId, -1, sTag, 0, topicId);
                                     }
                                 }

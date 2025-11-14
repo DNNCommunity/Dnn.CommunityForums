@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo CurrentUser
         {
-            get { return this.currentUser ?? (this.currentUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).DNNGetCurrentUser(this.PortalId, this.UserId)); }
+            get { return this.currentUser ?? (this.currentUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).DNNGetCurrentUser(portalId: this.PortalId, moduleId: this.ModuleId)); }
         }
 
         private string AuthorizedForums
@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return this.authorizedForums ??
                        (this.authorizedForums =
-                       DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, this.Settings.Forums, this.CurrentUser.UserRoleIds));
+                       DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(moduleId: -1, forumIds: this.Settings.Forums, userRoleIds: this.CurrentUser.UserRoleIds));
             }
         }
 

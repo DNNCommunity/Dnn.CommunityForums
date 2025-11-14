@@ -21,6 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
+    using System.Linq;
     using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
@@ -120,6 +121,39 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author => this.Content?.Post?.Author;
+
+        [IgnoreColumn]
+        public bool RunningInViewer
+        {
+            get
+            {
+                return this.Content?.Post?.Forum?.PortalSettings?.ActiveTab != null && this.Content.Post.Forum.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
+                    m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) ||
+                    m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        [IgnoreColumn]
+        public int ForumsOrViewerModuleId
+        {
+            get
+            {
+                if (!this.RunningInViewer)
+                {
+                    return this.ModuleId;
+                }
+
+                if (this.Content?.Post?.Forum.PortalSettings.ActiveTab != null)
+                {
+                    foreach (DotNetNuke.Entities.Modules.ModuleInfo module in this.Content?.Post?.Forum.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Where(m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) || m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        return module.ModuleID;
+                    }
+                }
+
+                return DotNetNuke.Common.Utilities.Null.NullInteger;
+            }
+        }
 
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability

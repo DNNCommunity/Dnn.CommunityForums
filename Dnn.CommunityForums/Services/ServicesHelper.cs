@@ -33,10 +33,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services
             try
             {
                 var roles = new HashSet<int>();
-                if (permissionRequired is SecureActions.Ban)
+                if (permissionRequired is SecureActions.ManageUsers)
                 {
                     var moduleDefaultSecurity = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId: SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId, moduleId: moduleId);
-                    roles = moduleDefaultSecurity.BanRoleIds;
+                    roles = moduleDefaultSecurity.ManageUsersRoleIds;
                 }
                 else
                 {
@@ -72,9 +72,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                             break;
                         case SecureActions.Poll:
                             roles = fi.Security.PollRoleIds;
-                            break;
-                        case SecureActions.Block:
-                            roles = fi.Security.BlockRoleIds;
                             break;
                         case SecureActions.Trust:
                             roles = fi.Security.TrustRoleIds;

@@ -33,6 +33,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         internal override string cacheKeyTemplate => CacheKeys.BadgeInfo;
 
+        /// <summary>
+        /// Gets all active badges.
+        /// </summary>
+        /// <returns>List of active badges.</returns>
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo> GetActiveBadges(int moduleId)
+        {
+            return this.Get().Where(b => b.ModuleId.Equals(moduleId));
+        }
+
         internal DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo GetById(int badgeId, int moduleId)
         {
             var cachekey = this.GetCacheKey(moduleId: moduleId, id: badgeId);

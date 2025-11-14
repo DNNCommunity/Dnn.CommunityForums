@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
             int oldForumId = (int)ti.ForumId;
-            SettingsInfo settings = SettingsBase.GetModuleSettings(ti.ModuleId);
+            ModuleSettings settings = SettingsBase.GetModuleSettings(ti.ModuleId);
             if (settings.URLRewriteEnabled)
             {
                 try
@@ -265,20 +265,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topic.Content.DateCreated = DateTime.UtcNow;
             }
 
-            if (topic.IsApproved && topic.Author.AuthorId > 0)
-            {
-                // TODO: put this in a better place and make it consistent with reply counter
-                DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserTopicCount(topic.Forum.PortalId, topic.Author.AuthorId);
-            }
-
-            var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: topic.ForumId, moduleId: topic.ModuleId);
-            DotNetNuke.Modules.ActiveForums.Controllers.TagController.CleanUpTags(topic, forum);
-
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(topic.Forum.PortalId, topic.Content.AuthorId);
-            Utilities.UpdateModuleLastContentModifiedOnDate(topic.ModuleId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(topic.ModuleId, topic.ForumId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(topic.ModuleId, topic.TopicId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(topic.ModuleId, topic.ContentId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(ti.ModuleId, ti.ForumId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(ti.ModuleId, ti.TopicId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(ti.ModuleId, ti.ContentId);
 
             // if existing topic, update associated journal item
             if (topic.TopicId > 0)
@@ -322,7 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(reply.ModuleId, reply.ReplyId);
                 });
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopic(topicId);
-                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, (int)SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, (int)SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(ti.ModuleId, ti.ForumId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(ti.ModuleId, ti.TopicId);
@@ -395,7 +385,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
 
-                DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(topic);
+                if (topic.IsApproved && topic.Content.AuthorId > 0)
+                {
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserTopicCount(portalId, topic.Content.AuthorId);
+                }
+
                 DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController.ProcessUserMentions(topic);
 
                 return true;

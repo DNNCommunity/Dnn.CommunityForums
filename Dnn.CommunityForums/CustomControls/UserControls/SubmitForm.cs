@@ -34,7 +34,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.UI.UserControls;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:SubmitForm runat=server></{0}:SubmitForm>")]
     public class SubmitForm : TopicBase
@@ -127,18 +131,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     switch (this.EditorType)
                     {
-                        // Case EditorTypes.ACTIVEEDITOR
-                        //    Dim txtEditor As New ActiveEditorControls.ActiveEditor
-                        //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
-                        //    Body = txtEditor.Text
-                        case EditorTypes.HTMLEDITORPROVIDER:
+                        case EditorType.HTMLEDITORPROVIDER:
+                        case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
                             tempBody = ((UI.UserControls.TextEditor)this.plhEditor.FindControl("txtBody")).Text;
                             break;
-                        case EditorTypes.FORUMSEDITOR:
-                        case EditorTypes.FORUMSEDITORLITE:
-                            tempBody = ((TextBox)this.txtAreaControl).Text;
-                            break;
-                        case EditorTypes.TEXTBOX:
+                        case EditorType.TEXTBOX:
                             tempBody = ((TextBox)this.txtEditor).Text;
                             break;
                     }
@@ -161,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public ImageButton CancelButton { get; set; } = new ImageButton();
 
-        public EditorTypes EditorType { get; set; }
+        public EditorType EditorType { get; set; }
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo { get; set; }
 
@@ -352,7 +349,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected TextBox txtSummary = new TextBox();
         protected Label lblSubject = new Label();
 
-        // Protected editorActiveEditor As ActiveEditorControls.ActiveEditort
         protected UI.UserControls.TextEditor editorDNN;
         protected PlaceHolder plhEditor = new PlaceHolder();
         protected ImageButton btnPost = new ImageButton();
@@ -717,7 +713,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[AF:CONTROL:POSTICONS]") && this.ForumInfo.FeatureSettings.AllowPostIcon)
             {
                 template = template.Replace("[AF:UI:FIELDSET:POSTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:PostIcons]</legend><div class=\"affieldsetnote\">[RESX:PostIcons:Note]</div>");
-                template = template.Replace("[AF:CONTROL:POSTICONS]", "<af:posticons id=\"afposticons\" runat=\"server\" Theme=\"" + this.MainSettings.Theme + "\" />");
+                template = template.Replace("[AF:CONTROL:POSTICONS]", "<af:posticons id=\"afposticons\" runat=\"server\" Theme=\"" + this.ModuleSettings.Theme + "\" />");
                 template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", "</fieldset>");
                 /* tokens [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] can now surround post icons to support removing entire section; if using post icons, just remove the tokens*/
                 template = template.Replace("[AF:UI:SECTION:POSTICONS]", string.Empty);
@@ -735,7 +731,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (template.Contains("[AF:CONTROL:EMOTICONS]") && this.ForumInfo.FeatureSettings.AllowEmoticons)
             {
-                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(this.ForumModuleId, this.Page.ResolveUrl(this.MainSettings.ThemeLocation), this.EditorType) + "</fieldset>");
+                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(this.ForumModuleId, this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation), this.EditorType) + "</fieldset>");
             }
             else
             {
@@ -805,7 +801,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (this.TopicId > 0)
                 {
-                    var subControl = new ToggleSubscribe(this.ForumModuleId, this.ForumInfo.ForumID, this.TopicId, 1);
+                    var subControl = new ToggleSubscribe(this.ModuleId, this.ForumInfo.ForumID, this.TopicId, 1);
                     subControl.Checked = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumInfo.ForumID, this.TopicId);
                     subControl.Text = "[RESX:Subscribe]";
                     sb.Append("<tr><td colspan=\"2\">" + subControl.Render() + "</td></tr>");
@@ -892,7 +888,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             editorHeight = Convert.ToString(this.ForumInfo.FeatureSettings.EditorHeight) != null ? Unit.Parse(this.ForumInfo.FeatureSettings.EditorHeight) : Unit.Pixel(400);
             switch (this.EditorType)
             {
-                case EditorTypes.TEXTBOX:
+                case EditorType.TEXTBOX:
                     {
                         var editor = new TextBox();
                         this.txtEditor = editor;
@@ -906,23 +902,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         break;
                     }
 
-                case EditorTypes.FORUMSEDITOR:
-                case EditorTypes.FORUMSEDITORLITE:
-                    {
-                        var editor = new TextBox();
-                        this.txtAreaControl = editor;
-                        editor.ID = "txtBody";
-                        editor.Width = editorWidth;
-                        editor.Height = editorHeight;
-                        editor.TextMode = TextBoxMode.MultiLine;
-                        editor.Rows = 10;
-                        editor.Columns = 80;
-                        this.plhEditor.Controls.Add(editor);
-                        this.clientId = editor.ClientID;
-                        break;
-                    }
-
-                case EditorTypes.HTMLEDITORPROVIDER:
+                case EditorType.HTMLEDITORPROVIDER:
+                case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
                     {
                         var editor = new UI.UserControls.TextEditor();
                         this.txtEditor = editor;
@@ -1018,6 +999,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.OnBubbleClick(e);
         }
 
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (this.EditorType.Equals(EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS))
+            {
+                this.InjectMentionsPluginsForCkEditor4();
+            }
+        }
+
         protected override void Render(HtmlTextWriter writer)
         {
             var stringWriter = new System.IO.StringWriter();
@@ -1062,7 +1053,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // not sure why this gets set twice.
             this.txtSubject.CssClass = "aftextbox dcf-topic-edit-subject";
-            string myTheme = this.MainSettings.Theme;
+            string myTheme = this.ModuleSettings.Theme;
             string myThemePath = this.Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + myTheme);
             this.txtSubject.MaxLength = 255;
             this.txtSummary.MaxLength = 2000;
@@ -1145,18 +1136,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             switch (this.EditorType)
             {
-                // Case EditorTypes.ACTIVEEDITOR
-                //    Dim txtEditor As New ActiveEditorControls.ActiveEditor
-                //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
-                //    txtEditor.Text = _Body
-                case EditorTypes.HTMLEDITORPROVIDER:
+                case EditorType.HTMLEDITORPROVIDER:
+                case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
                     ((UI.UserControls.TextEditor)this.plhEditor.FindControl("txtBody")).Text = this.body;
                     break;
-                case EditorTypes.FORUMSEDITOR:
-                case EditorTypes.FORUMSEDITORLITE:
-                    ((TextBox)this.txtAreaControl).Text = this.body;
-                    break;
-                case EditorTypes.TEXTBOX:
+                case EditorType.TEXTBOX:
                     ((TextBox)this.txtEditor).Text = this.body;
                     break;
             }
@@ -1220,13 +1204,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     case "plhEditor":
                         switch (this.EditorType)
                         {
-                            // Case EditorTypes.ACTIVEEDITOR
-                            //    Dim txtEditor As New ActiveEditorControls.ActiveEditor
-                            //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
-                            case EditorTypes.HTMLEDITORPROVIDER:
+                            case EditorType.HTMLEDITORPROVIDER:
+                            case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
                                 var txtEditor = new UI.UserControls.TextEditor();
                                 break;
-                            case EditorTypes.TEXTBOX:
+                            case EditorType.TEXTBOX:
                                 var txtEditor1 = (TextBox)this.plhEditor.Controls[0];
                                 break;
                         }
@@ -1313,58 +1295,50 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "editorHTML", sb.ToString(), true);
         }
 
-        private void insertForumsEditorScript()
+        private void InjectMentionsPluginsForCkEditor4()
         {
-            if (this.EditorType.Equals(EditorTypes.FORUMSEDITOR) || this.EditorType.Equals(EditorTypes.FORUMSEDITORLITE))
+            if (this.EditorType.Equals(EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS))
             {
-                var usertag = Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId={id}" });
-                var avatartag = Utilities.ResolveUrl(this.PortalSettings, "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />");
-                ClientResourceManager.RegisterScript(this.Page, string.Concat(Globals.ModulePath, "resources/ckeditor-4.22.1/ckeditor.js"), FileOrder.Js.DefaultPriority + 2, "DnnPageHeaderProvider");
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                sb.Append("window.onload = function () { CKEDITOR.replace( '" + this.clientId + "', {versionCheck: false});};");
-                sb.Append("CKEDITOR.config.mentions = [");
-                sb.Append(" { feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 1, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatartag + "{name}</li>', outputTemplate: `<a href=\"" + usertag + "\">" + avatartag + "&nbsp;{name}</a>` }");
+                var editorProvider = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
+                if (editorProvider != null && !string.IsNullOrEmpty(editorProvider.DefaultProvider) && (editorProvider.DefaultProvider.Contains("CKHtmlEditorProvider") || editorProvider.DefaultProvider.Contains("DNNConnect.CKE")))
+                { 
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                    sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(Globals.ModulePath + "Resources/ckeditor-4.22.1-additional-plugins/customConfig.js") + "';");
+                    var extraPlugins = new string[] { "mentions", "ajax", "autocomplete", "textmatch", "textwatcher", "xml" };
+                    foreach (string plugin in extraPlugins)
+                    {
+                        sb.Append($"editorConfigeditortxtBody.extraPlugins += `,{plugin}`;");
+                    }
 
-                var tagtag = Utilities.NavigateURL(this.ForumInfo.GetTabId(), string.Empty, new[] { $"{ParamKeys.ViewType}={Views.Search}", string.Concat(ParamKeys.Tags, "={name}") });
-                sb.Append(",");
-                sb.Append("{ feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/Tag/Matches?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '#', minChars: 2, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-tag\">" + "{name}</li>', outputTemplate: `<a href=\"" + tagtag + "\" class=\"dcf-tag-link\">{name}</a>` },");
+                    var userTag = this.GetTagForUserMentions();
+                    var avatarTag = this.GetAvatarTagForUserMentions();
 
-                sb.Append("];");
-                var lang = string.Empty;
-                if (this.Request.QueryString["language"] != null)
-                {
-                    lang = this.Request.QueryString["language"];
+                    sb.Append("editorConfigeditortxtBody.mentions = [");
+                    sb.Append(" { feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 3, throttle: 100, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatarTag + "{name}</li>', outputTemplate: `<a href=\"" + userTag + "\">" + avatarTag + "&nbsp;{name}</a>` },");
+                    sb.Append("];");
+                    
+        //        if (this.ForumUser.IsAnonymous || (!this.ForumUser.IsAdmin && !this.ForumUser.IsSuperUser && !this.ForumInfo.GetIsMod(this.ForumUser)))
+        //        {
+        //            sb.Append("CKEDITOR.config.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] },{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }];");
+
+        //            sb.Append("CKEDITOR.config.toolbarCanCollapse = false;");
+        //            sb.Append("CKEDITOR.config.toolbarStartupExpanded = true;");
+        //            sb.Append("CKEDITOR.config.removePlugins = 'elementspath';");
+        //            sb.Append("CKEDITOR.config.resize_enabled = false;");
+        //        }
+                    this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), $"{this.EditorClientId}_txtBody_CKE_Config", sb.ToString(), true);
                 }
-
-                if (string.IsNullOrEmpty(lang))
-                {
-                    lang = this.UserInfo.Profile.PreferredLocale;
-                }
-
-                if (string.IsNullOrEmpty(lang))
-                {
-                    lang = this.PortalSettings.DefaultLanguage;
-                }
-
-                if (string.IsNullOrEmpty(lang))
-                {
-                    lang = "en-US";
-                }
-
-                sb.Append("CKEDITOR.config.language = '" + lang.Substring(0, 2) + "';");
-
-                if (this.ForumUser.IsAnonymous || (!this.ForumUser.IsAdmin && !this.ForumUser.IsSuperUser && !this.ForumInfo.GetIsMod(this.ForumUser)))
-                {
-                    sb.Append("CKEDITOR.config.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] },{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }, { name: 'links', items: [ 'Link' ] }, { name: 'insert', items: [ 'Image', 'Smiley', 'Code' ] } ];");
-
-                    sb.Append("CKEDITOR.config.toolbarCanCollapse = false;");
-                    sb.Append("CKEDITOR.config.toolbarStartupExpanded = true;");
-                    sb.Append("CKEDITOR.config.removePlugins = 'elementspath';");
-                    sb.Append("CKEDITOR.config.resize_enabled = false;");
-                }
-
-                this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "ForumsEditor", sb.ToString(), true);
             }
+        }
+
+        private string GetAvatarTagForUserMentions()
+        {
+            return Utilities.ResolveUrl(this.PortalSettings, "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />");
+        }
+
+        private string GetTagForUserMentions()
+        {
+            return Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId={id}" });
         }
 
         private void EmotScript()

@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Tag)]
+        [ForumsAuthorize(SecureActions.Edit)]
         public HttpResponseMessage Matches(int forumId, string query)
         {
             return this.Match($"%{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(query, 20)}%");
@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Tag)]
+        [ForumsAuthorize(SecureActions.Edit)]
         public HttpResponseMessage BeginsWith(int forumId, string query)
         {
             return this.Match($"{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(query, 20)}%");

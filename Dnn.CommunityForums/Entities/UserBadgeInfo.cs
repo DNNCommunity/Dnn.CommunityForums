@@ -107,7 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo GetBadge() => this.badgeInfo = new Controllers.BadgeController().GetById(this.BadgeId, this.ModuleId);
-
+        
         [IgnoreColumn]
         public string BadgeName { get => this.badgeName ?? (this.badgeName = this.Badge.Name); set => this.badgeName = value; }
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int GetAwardCount()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController().BadgeCount(this.PortalId, this.UserId, this.BadgeId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ModuleId).BadgeCount(this.UserId, this.BadgeId);
         }
 
         [IgnoreColumn]

@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType._userProfile, SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
+            string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType._userProfile, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
 
             if (this.ProfileMode == ProfileModes.Edit)
             {
@@ -226,7 +226,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ForumView ctlForums = new ForumView();
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
-                ctlForums.DisplayTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, (Enums.TemplateType)Enum.Parse(typeof(Enums.TemplateType),  "ForumTracking", true), SettingsBase.GetModuleSettings(this.ForumModuleId).ForumFeatureSettings.TemplateFileNameSuffix);
+                ctlForums.DisplayTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, (Enums.TemplateType)Enum.Parse(typeof(Enums.TemplateType),  "ForumTracking", true), SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
                 ctlForums.CurrentUserId = this.UID;
                 ctlForums.ForumIds = user.UserForums;
                 this.plhTracker.Controls.Add(ctlForums);
@@ -358,13 +358,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
                 if (user != null)
                 {
-                    if (this.MainSettings.AllowSignatures == 1)
+                    if (this.ModuleSettings.AllowSignatures == 1)
                     {
                         user.Signature = Utilities.XSSFilter(this.txtSignature.Text, true);
                         user.Signature = Utilities.StripHTMLTag(user.Signature);
                         user.Signature = System.Net.WebUtility.HtmlEncode(user.Signature);
                     }
-                    else if (this.MainSettings.AllowSignatures == 2)
+                    else if (this.ModuleSettings.AllowSignatures == 2)
                     {
                         user.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
                     }

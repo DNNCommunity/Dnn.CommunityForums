@@ -24,11 +24,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public partial class af_attach : ForumBase
     {
-        public EditorTypes EditorType { get; set; }
+        public EditorType EditorType { get; set; }
 
         public string AttachmentsClientId { get; set; }
 

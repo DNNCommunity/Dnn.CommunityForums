@@ -1405,9 +1405,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
     <value>Anhängen</value>
   </data>
-  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Sperre</value>
-  </data>
   <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
     <value>Erzeugen</value>
   </data>
@@ -1467,9 +1464,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   </data>
   <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
     <value>Kann Dateien hochladen und an neue Themen und Antworten anhängen.</value>
-  </data>
-  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
-    <value>Kann einen nicht autorisierten Benutzer verbannen, indem er alle Inhalte für den Benutzer löscht und sein DNN-Benutzerkonto deaktiviert. Kann nicht für Superuser oder Administratoren verwendet werden. Sollte nur vertrauenswürdigen Moderatoren oder Administratorrollen gewährt werden.</value>
   </data>
   <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
     <value>Kann angeben, zu welchen Kategorien ein neues Thema gehört.</value>
@@ -1641,5 +1635,11 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   </data>
   <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
     <value>Manuelle Auszeichnung</value>
+  </data>
+  <data name="[RESX:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Verwalten von Benutzern</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Kann Optionen anderer Benutzer verwalten, einen nicht autorisierten Benutzer verbannen, alle Inhalte für den Benutzer löschen und sein DNN-Benutzerkonto deaktivieren. Kann nicht für Superuser oder Administratoren verwendet werden. Sollte nur vertrauenswürdigen Moderatoren oder Administratorrollen gewährt werden.</value>
   </data>
 </root>

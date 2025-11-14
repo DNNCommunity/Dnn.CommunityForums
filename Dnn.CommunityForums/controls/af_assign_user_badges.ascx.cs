@@ -48,7 +48,6 @@ namespace DotNetNuke.Modules.ActiveForums
             this.dgrdUserBadges.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Badge]");
             this.dgrdUserBadges.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Date]", isAdmin: true) + " (UTC)";
 
-//            this.dgrdUserBadges.PageIndexChanging += this.UserBadgesGridRowPageIndexChanging;
             this.dgrdUserBadges.RowDataBound += this.OnUserBadgesGridRowDataBound;
         }
 
@@ -57,20 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
             try
             {
-                int _pageSize = this.MainSettings.PageSize;
-                if (this.UserInfo.UserID > 0)
-                {
-                    _pageSize = this.UserDefaultPageSize;
-                }
-
-                if (_pageSize < 5)
-                {
-                    _pageSize = 10;
-                }
-
-
-
-                if (this.userid > 0 && this.ForumUser.GetIsMod(this.ForumModuleId))
+                if (this.userid > 0 && this.ForumUser.IsAdmin)
                 {
                     this.BindUserBadges();
                 }
@@ -81,25 +67,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private int User
-        {
-            get
-            {
-                if (!this.userid.HasValue)
-                {
-                    int parsedUserId;
-                    this.userid = int.TryParse(this.Request.Params[ParamKeys.UserId], out parsedUserId) ? parsedUserId : 0;
-                }
-
-                return this.userid.Value;
-            }
-        }
-
         private void BindUserBadges()
         {
             this.dgrdUserBadges.DataSource = this.GetBadges().ToList();
             this.dgrdUserBadges.DataBind();
-            this.dgrdUserBadges.PageSize = this.dgrdUserBadges.Rows.Count;
+            this.dgrdUserBadges.AllowPaging = false;
             this.dgrdUserBadges.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
         }
 
@@ -110,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return new { badge.BadgeId, badge };
             });
 
-            var assignedBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ForumModuleId).GetForUser(this.PortalId, (int)this.userid);
+            var assignedBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ForumModuleId).GetForUser((int)this.userid);
             var assignedBadgeIds = assignedBadges.Select(userBadge =>
             {
                 return new { userBadge.UserBadgeId, userBadge.BadgeId, userBadge.DateAssigned, };
@@ -149,12 +121,5 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
-
-        //protected void UserBadgesGridRowPageIndexChanging(object sender, GridViewPageEventArgs e)
-        //{
-        //    this.dgrdUserBadges.PageIndex = e.NewPageIndex;
-        //    this.dgrdUserBadges.DataBind();
-        //    this.dgrdUserBadges.WrapGridViewInDataTableNet(this.PortalSettings, this.UserInfo);
-        //}
     }
 }

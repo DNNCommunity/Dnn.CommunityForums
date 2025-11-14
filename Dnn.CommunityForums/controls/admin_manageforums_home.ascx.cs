@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "admin_check.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsOn]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsOn]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\"/>";
                     }
-                    else if (group.FeatureSettings.EqualSettings(SettingsBase.GetModuleSettings(this.ModuleId).ForumFeatureSettings))
+                    else if (group.FeatureSettings.EqualSettings(SettingsBase.GetModuleSettings(this.ModuleId).DefaultFeatureSettings))
                     {
                         inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "info32.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsRecommended]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSettingsRecommended]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" />";
                     }

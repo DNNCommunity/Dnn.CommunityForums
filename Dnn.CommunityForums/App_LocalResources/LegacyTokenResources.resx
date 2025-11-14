@@ -420,4 +420,10 @@
   <data name="[SUBJECTLINK].Text" xml:space="preserve">
     <value>&lt;a href="{0}" class="dcf-topic-link"&gt;[FORUMTOPIC:SUBJECT]&lt;/a&gt;</value>
   </data>
+  <data name="[TOPICSUBSCRIBE].Text" xml:space="preserve">
+    <value>&lt;input id="amaf-chk-subs" type="checkbox" checked="[FORUMTOPIC:SUBSCRIBED]" class="amaf-chk-subs" onclick="{0}" /&gt;&lt;label for="amaf-chk-subs"&gt;[RESX:Subscribe]&lt;/label&gt;</value>
+  </data>
+  <data name="[FORUMSUBSCRIBE].Text" xml:space="preserve">
+    <value>&lt;input id="amaf-chk-subs" type="checkbox" checked="[FORUM:SUBSCRIBED]" class="amaf-chk-subs" onclick="{0}" /&gt;&lt;label for="amaf-chk-subs"&gt;[RESX:Subscribe]&lt;/label&gt;</value>
+  </data>
 </root>

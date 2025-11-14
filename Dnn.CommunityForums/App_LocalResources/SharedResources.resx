@@ -904,7 +904,7 @@
     <value>Subscription Type</value>
   </data>
   <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>Subscribe to Topics</value>
+    <value>Auto-Subscribe to My Topics</value>
   </data>
   <data name="[RESX:Actions:ProfileUpdated].Text" xml:space="preserve">
     <value>Your profile has been updated.</value>
@@ -1102,7 +1102,7 @@ From,
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>This will be your default setting when you are creating a topic or adding a reply.  This does not affect forum level subscriptions.</value>
   </data>
-  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
+  <data name="[RESX:Message:EditIntervalNotReached].Text" xml:space="preserve">
     <value>This forum only allows you to edit your post within {0} minutes from the time you created your post.</value>
   </data>
   <data name="[RESX:SubmitVote].Text" xml:space="preserve">
@@ -1858,6 +1858,9 @@ From,
   <data name="[RESX:RestoreAll].Text" xml:space="preserve">
     <value>Restore All</value>
   </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Unsubscribe</value>
+  </data>
   <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
     <value>Receive Badge Award Notifications</value>
   </data>
@@ -1911,5 +1914,14 @@ From,
   </data>
   <data name="[RESX:MySettingsLinkText].Text" xml:space="preserve">
     <value>To manage your forums preferences, please visit:</value>
+  </data>
+  <data name="[RESX:TEXTBOX].Text" xml:space="preserve">
+    <value>TextBox</value>
+  </data>
+  <data name="[RESX:HTMLEDITORPROVIDER].Text" xml:space="preserve">
+    <value>Default DNN Editor</value>
+  </data>
+  <data name="[RESX:DNNCKEDITOR4PLUSFORUMSPLUGINS].Text" xml:space="preserve">
+    <value>DNN CKEditor4 plus Forums plugins</value>
   </data>
 </root>

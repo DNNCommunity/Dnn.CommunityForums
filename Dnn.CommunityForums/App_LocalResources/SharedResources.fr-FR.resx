@@ -580,7 +580,7 @@ De,
   <data name="[RESX:MemberSince].Text" xml:space="preserve">
     <value>Membre depuis</value>
   </data>
-  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve">
+  <data name="[RESX:Message:EditIntervalNotReached].Text" xml:space="preserve">
     <value>Ce forums permet seulement l'édition de publications en moins de {0} minutes suite à la publication initiale.</value>
   </data>
   <data name="[RESX:Message].Text" xml:space="preserve">
@@ -810,9 +810,6 @@ De,
   </data>
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve">
     <value>Ceci sera votre réglage par défault lors de la création d'un sujet ou l'ajout d'une réponse. Ceci n'affecte pas l'abonnement au niveau du forum.</value>
-  </data>
-  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
-    <value>S'abonner à des sujets</value>
   </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve">
     <value>L'administrateur du forum peut vous avoir permis de choisir différents formulaires pour les abonnements. Vous pouvez choisir votre préférence ici.</value>
@@ -1855,6 +1852,12 @@ De,
   <data name="[RESX:Tags:Note].Text" xml:space="preserve">
     <value>Une balise est un mot-clé ou un terme associé au contenu que vous soumettez. Lorsque vous saisissez plusieurs balises, séparez-les par une virgule.</value>
   </data>
+  <data name="[RESX:Unsubscribe].Text" xml:space="preserve">
+    <value>Se désabonner</value>
+  </data>
+  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve">
+    <value>S’abonner automatiquement à Mes sujets</value>
+  </data>
   <data name="[RESX:BadgeNotificationsEnabled].Text" xml:space="preserve">
     <value>Recevoir des notifications d’attribution de badge</value>
   </data>
@@ -1908,5 +1911,14 @@ De,
   </data>
   <data name="[RESX:UserMentionNotificationCongratulations].Text" xml:space="preserve">
     <value>Hé, vous avez été mentionné !</value>
+  </data>
+  <data name="[RESX:TEXTBOX].Text" xml:space="preserve">
+    <value>Boîte de texte</value>
+  </data>
+  <data name="[RESX:HTMLEDITORPROVIDER].Text" xml:space="preserve">
+    <value>Éditeur DNN par défaut</value>
+  </data>
+  <data name="[RESX:DNNCKEDITOR4PLUSFORUMSPLUGINS].Text" xml:space="preserve">
+    <value>Plugins DNN CKEditor4 plus Forums</value>
   </data>
 </root>

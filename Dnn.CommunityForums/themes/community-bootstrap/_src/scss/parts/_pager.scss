@@ -1,4 +1,5 @@
 .afpager{
+
     td{
 
         padding: $spacer-sm;
@@ -6,7 +7,11 @@
 
     .af_pager{
 
-        padding: $spacer-sm;
+        padding: $spacer-sm  0 $spacer-sm $spacer-sm;
+        &:after{
+
+        content: " / "
+        }
        
     }
 }

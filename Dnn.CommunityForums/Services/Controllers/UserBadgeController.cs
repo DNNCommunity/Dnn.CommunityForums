@@ -54,8 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/UserBadge/Assign</remarks>
         [HttpPost]
-        [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Ban)]
+        [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage Assign(UserBadgeDto dto)
         {
             try
@@ -70,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     }
                     else
                     {
-                        userBadge = userBadgeController.GetLatestForUserAndBadge(portalId: this.PortalSettings.PortalId, userId: dto.UserId, badgeId: dto.BadgeId);
+                        userBadge = userBadgeController.GetLatestForUserAndBadge(userId: dto.UserId, badgeId: dto.BadgeId);
                     }
 
                     if (userBadge == null && dto.Assign.Equals(true))

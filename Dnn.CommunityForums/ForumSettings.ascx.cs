@@ -22,11 +22,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Web;
     using System.Web.UI.WebControls;
     using System.Xml;
 
+    using DotNetNuke.Collections;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Framework;
@@ -254,17 +256,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.TimeFormatString = !string.IsNullOrWhiteSpace(this.txtTimeFormat.Text) ? this.txtTimeFormat.Text : "h:mm tt";
                 this.DateFormatString = !string.IsNullOrWhiteSpace(this.txtDateFormat.Text) ? this.txtDateFormat.Text : "M/d/yyyy";
 
-                this.ForumGroupTemplate = Utilities.SafeConvertInt(this.drpForumGroupTemplate.SelectedValue);
-                var adminSec = this.txtGroupModSec.Value.Split(',');
-                this.SaveForumSecurity("groupadmin", adminSec);
-                var memSec = this.txtGroupMemSec.Value.Split(',');
-                this.SaveForumSecurity("groupmember", memSec);
-                var regSec = this.txtGroupRegSec.Value.Split(',');
-                this.SaveForumSecurity("registereduser", regSec);
-                var anonSec = this.txtGroupAnonSec.Value.Split(',');
-                this.SaveForumSecurity("anon", anonSec);
-
-                DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdatePermissionsForSocialGroupForums(this.ModuleId);
+                if (this.Mode.Equals(ModuleModes.SocialGroup))
+                {
+                    this.ForumGroupTemplate = Utilities.SafeConvertInt(this.drpForumGroupTemplate.SelectedValue);
+                    var adminSec = this.txtGroupModSec.Value.Split(',');
+                    this.SaveForumSecurity("groupadmin", adminSec);
+                    var memSec = this.txtGroupMemSec.Value.Split(',');
+                    this.SaveForumSecurity("groupmember", memSec);
+                    var regSec = this.txtGroupRegSec.Value.Split(',');
+                    this.SaveForumSecurity("registereduser", regSec);
+                    var anonSec = this.txtGroupAnonSec.Value.Split(',');
+                    this.SaveForumSecurity("anon", anonSec);
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdatePermissionsForSocialGroupForums(this.ModuleId);
+                }
+                else
+                {
+                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, SettingKeys.SocialGroupModeForumConfig);
+                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, SettingKeys.SocialGroupModeForumGroupTemplate);
+                    var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
+                    fc.Get(this.ModuleId).Where(f => f.SocialGroupId != 0).ForEach(forum =>
+                    {
+                        forum.SocialGroupId = 0;
+                        fc.Update(forum);
+                    });
+                }
 
                 try
                 {
@@ -411,6 +426,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080100();
                     DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
+                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090201();
                 }
 
                 xDoc.LoadXml(this.ForumConfig);

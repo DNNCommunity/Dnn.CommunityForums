@@ -95,9 +95,15 @@ function amaf_topicSubscribe(mid, fid, tid) {
             url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Subscribe',
             beforeSend: sf.setModuleHeaders
         }).done(function (data) {
-            amaf_UpdateTopicSubscriberCount(mid, fid, tid);
             $('input[type=checkbox].amaf-chk-subs')
                 .prop('checked', data);
+            if (data === true) {
+                $('input[type=button].dcf-btn-subs').prop('value', amaf.resx.Unsubscribe).toggleClass('dnnPrimaryAction').toggleClass('dnnSecondaryAction');
+            } 
+            else { 
+                $('input[type=button].dcf-btn-subs').prop('value', amaf.resx.Subscribe).toggleClass('dnnPrimaryAction').toggleClass('dnnSecondaryAction');
+            }
+            amaf_UpdateTopicSubscriberCount(mid, fid, tid);
         }).fail(function (xhr, status) {
             alert('error subscribing to topic');
         });
@@ -131,9 +137,14 @@ function amaf_forumSubscribe(mid, fid) {
         url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Forum/Subscribe',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
-        amaf_UpdateForumSubscriberCount(mid, fid);
         $('input[type=checkbox].amaf-chk-subs')
             .prop('checked', data);
+        if (data === true) {
+            $('input[type=button].dcf-btn-subs').prop('value', amaf.resx.Unsubscribe).toggleClass('dnnPrimaryAction').toggleClass('dnnSecondaryAction');
+        } 
+        else { 
+            $('input[type=button].dcf-btn-subs').prop('value', amaf.resx.Subscribe).toggleClass('dnnPrimaryAction').toggleClass('dnnSecondaryAction');
+        }
         $('img#amaf-sub-' + fid).each(function () {
             var imgSrc = $(this).attr('src');
             if (data) {
@@ -143,6 +154,7 @@ function amaf_forumSubscribe(mid, fid) {
                 $(this).attr('src', imgSrc.replace(/email_checked/, 'email_unchecked'));
             }
         });
+        amaf_UpdateForumSubscriberCount(mid, fid);
     }).fail(function (xhr, status) {
         alert('error subscribing to forum');
     });

@@ -1,8 +1,6 @@
 SET NOCOUNT ON 
 GO
 
-/* --------------------- */
-
 
 /* --------------------- */
 /* issue 1517 - begin - add user mention notification option to user profile */
@@ -87,6 +85,10 @@ ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserMentions] ADD CONS
 	[FK_{objectQualifier}activeforums_UserMentions_UserProfiles] FOREIGN KEY (PortalId, UserId) 
 	REFERENCES {databaseOwner}[{objectQualifier}activeforums_UserProfiles] (PortalId, UserId) 
 	ON DELETE CASCADE 
+GO
+
+/* set EDITORTYPE setting to use editor with new mentions feature */
+UPDATE {databaseOwner}[{objectQualifier}activeforums_Settings] SET SettingValue = '3' WHERE SettingName = 'EDITORTYPE' AND SettingValue = '3'
 GO
 
 /* issue 1518 - end - add UserMentions table */
