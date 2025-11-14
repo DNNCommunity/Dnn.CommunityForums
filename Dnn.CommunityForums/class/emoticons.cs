@@ -1,4 +1,4 @@
-// Copyright (c) by DNN Community
+﻿// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -22,17 +22,19 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
 
+    using DotNetNuke.Modules.ActiveForums.Enums;
+
     [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
     public class emoticons
     {
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
-        public string LoadEmoticons(EditorTypes type, int moduleId, string imagePath)
+        public string LoadEmoticons(EditorType type, int moduleId, string imagePath)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(moduleId, imagePath, type);
         }
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
-        public string RegisterEmotIcons(int moduleId, string imagePath, EditorTypes insertType)
+        public string RegisterEmotIcons(int moduleId, string imagePath, EditorType insertType)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(moduleId, imagePath, insertType);
         }

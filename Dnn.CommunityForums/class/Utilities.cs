@@ -40,6 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Enums;
 
     public abstract partial class Utilities
     {
@@ -367,9 +368,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static string PrepareForEdit(int portalId, int moduleId, string themePath, string text, bool allowHTML, EditorTypes editorType)
+        internal static string PrepareForEdit(int portalId, int moduleId, string themePath, string text, bool allowHTML, EditorType editorType)
         {
-            if (!allowHTML || editorType == EditorTypes.TEXTBOX)
+            if (!allowHTML || editorType == EditorType.TEXTBOX)
             {
                 text = DecodeBrackets(text);
                 text = ReplaceHtmlBreakTagWithNewLine(text);
@@ -463,14 +464,14 @@ namespace DotNetNuke.Modules.ActiveForums
             return text;
         }
 
-        public static string CleanString(int portalId, string text, bool allowHTML, EditorTypes editorType, bool useFilter, bool allowScript, int moduleId, string themePath, bool processEmoticons)
+        public static string CleanString(int portalId, string text, bool allowHTML, EditorType editorType, bool useFilter, bool allowScript, int moduleId, string themePath, bool processEmoticons)
         {
             var sClean = text;
 
             // If HTML is not allowed or if this comes from the TextBox editor (quick reply), the HTML needs to be encoded.
             if (sClean != string.Empty)
             {
-                sClean = editorType == EditorTypes.TEXTBOX ? CleanTextBox(portalId, sClean, allowHTML, useFilter, moduleId, themePath, processEmoticons) : CleanEditor(portalId, sClean, useFilter, moduleId, themePath, processEmoticons);
+                sClean = editorType == EditorType.TEXTBOX ? CleanTextBox(portalId, sClean, allowHTML, useFilter, moduleId, themePath, processEmoticons) : CleanEditor(portalId, sClean, useFilter, moduleId, themePath, processEmoticons);
 
                 var pattern = @"(<a [^>]*>)(?'url'(\S*?))(</a>)";
                 foreach (Match match in RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase).Matches(sClean))

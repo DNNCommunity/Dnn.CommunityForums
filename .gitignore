@@ -163,6 +163,3 @@ themes/.gitignore
 /BuildScripts/ICSharpCode.SharpZipLib.dll
 /BuildScripts/MSBuild.Community.Tasks.dll
 /ResXManager.config.xml
-/Dnn.CommunityForums/node_modules
-/Dnn.CommunityForums/package-lock.json
-/package-lock.json

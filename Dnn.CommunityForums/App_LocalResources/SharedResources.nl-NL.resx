@@ -1930,4 +1930,34 @@ Van,
   <data name="[RESX:BadgeNotAssigned].Text" xml:space="preserve">
     <value>Badge nog niet toegekend</value>
   </data>
+  <data name="[RESX:UserMentionNotificationsEnabled].Text" xml:space="preserve">
+    <value>Ontvang meldingen over vermeldingen van gebruikers</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationsEnabled].Help" xml:space="preserve">
+    <value>Selecteer deze optie als je meldingen wilt ontvangen wanneer een andere gebruiker je vermeldt in een bericht.</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationPleaseVisit].Text" xml:space="preserve">
+    <value>[DCF:FORUMSLINK| &lt;a href="{0}"&gt;Bezoek alsjeblieft&lt;/a&gt; om te blijven deelnemen!]</value>
+  </data>
+  <data name="[RESX:mentioned].Text" xml:space="preserve">
+    <value>eerder vernoemde</value>
+  </data>
+  <data name="[RESX:youwerementioned].Text" xml:space="preserve">
+    <value>Je werd genoemd</value>
+  </data>
+  <data name="[RESX:MySettingsLinkText].Text" xml:space="preserve">
+    <value>Om je forumvoorkeuren te beheren, ga je naar:</value>
+  </data>
+  <data name="[RESX:UserMentionNotificationCongratulations].Text" xml:space="preserve">
+    <value>Hé, je bent genoemd!</value>
+  </data>
+  <data name="[RESX:TEXTBOX].Text" xml:space="preserve">
+    <value>Tekstvak</value>
+  </data>
+  <data name="[RESX:HTMLEDITORPROVIDER].Text" xml:space="preserve">
+    <value>Standaard DNN-editor</value>
+  </data>
+  <data name="[RESX:DNNCKEDITOR4PLUSFORUMSPLUGINS].Text" xml:space="preserve">
+    <value>DNN CKEditor4 plus Forums plugins</value>
+  </data>
 </root>
