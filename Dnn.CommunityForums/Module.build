@@ -10,6 +10,12 @@
     <FullModulePath>$(WebsitePath)\DesktopModules\$(ModulePath)</FullModulePath>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\ModulePackage.Targets" />
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition=" '$(Configuration)' == 'Release' ">
+    <Exec Command="npm install" />
+    <Exec Command="npm install --global gulp-cli" />
+    <Exec Command="$(MSBuildProjectDirectory)/node_modules/.bin/gulp --series buildScss source" WorkingDirectory="$(MSBuildProjectDirectory)/themes/community-bootstrap" />
+    <Exec Command="$(MSBuildProjectDirectory)/node_modules/.bin/gulp --series buildLess source" WorkingDirectory="$(MSBuildProjectDirectory)/themes/community-default" />
+  </Target>
   <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;PackageModule">
   </Target>
   <Target Name="GetFiles">
