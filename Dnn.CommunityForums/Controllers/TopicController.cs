@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Collections;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
@@ -26,9 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Text;
     using System.Web;
 
-    using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
@@ -257,12 +257,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicsViewPrefix, moduleId));
         }
 
-        public static int Save(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic)
+        public static int Save(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
-            topic.Content.DateUpdated = DateTime.UtcNow;
-            if (topic.TopicId < 1)
+            ti.Content.DateUpdated = DateTime.UtcNow;
+            if (ti.TopicId < 1)
             {
-                topic.Content.DateCreated = DateTime.UtcNow;
+                ti.Content.DateCreated = DateTime.UtcNow;
             }
 
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
@@ -271,14 +271,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(ti.ModuleId, ti.ContentId);
 
             // if existing topic, update associated journal item
-            if (topic.TopicId > 0)
+            if (ti.TopicId > 0)
             {
-                string sUrl = new ControlUtils().BuildUrl(topic.PortalId, topic.Forum.GetTabId(), topic.ModuleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, topic.ForumId, topic.TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
-                new Social().UpdateJournalItemForPost(topic.PortalId, topic.ModuleId, topic.Forum.GetTabId(), topic.ForumId, topic.TopicId, 0, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body);
+                string sUrl = new ControlUtils().BuildUrl(ti.PortalId, ti.Forum.GetTabId(), ti.ModuleId, ti.Forum.ForumGroup.PrefixURL, ti.Forum.PrefixURL, ti.Forum.ForumGroupId, ti.ForumId, ti.TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, ti.Forum.SocialGroupId);
+                new Social().UpdateJournalItemForPost(ti.PortalId, ti.ModuleId, ti.Forum.GetTabId(), ti.ForumId, ti.TopicId, 0, ti.Author.AuthorId, sUrl, ti.Content.Subject, string.Empty, ti.Content.Body);
             }
 
             // TODO: convert to use DAL2?
-            return Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Save(topic.Forum.PortalId, topic.ModuleId, topic.TopicId, topic.ViewCount, topic.ReplyCount, topic.IsLocked, topic.IsPinned, topic.TopicIcon, topic.StatusId, topic.IsApproved, topic.IsDeleted, topic.IsAnnounce, topic.IsArchived, topic.AnnounceStart ?? Utilities.NullDate(), topic.AnnounceEnd ?? Utilities.NullDate(), topic.Content.Subject.Trim(), topic.Content.Body.Trim(), topic.Content.Summary.Trim(), topic.Content.DateCreated, topic.Content.DateUpdated, topic.Content.AuthorId, topic.Content.AuthorName, topic.Content.IPAddress, (int)topic.TopicType, topic.Priority, topic.TopicUrl, topic.TopicData));
+            return Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Save(ti.Forum.PortalId, ti.ModuleId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart ?? Utilities.NullDate(), ti.AnnounceEnd ?? Utilities.NullDate(), ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
         }
 
         public void Restore(int portalId, int forumId, int topicId)

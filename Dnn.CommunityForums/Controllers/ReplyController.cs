@@ -56,12 +56,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 ri.ModuleId = this.moduleId;
                 ri.GetTopic();
-                ri.Topic.ModuleId = this.moduleId;
                 ri.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ri.Topic.ForumId, this.moduleId);
                 if (ri.Forum != null)
                 {
                     ri.PortalId = ri.Forum.PortalId;
-                    ri.ModuleId = ri.Forum.ModuleId;
                 }
 
                 ri.GetContent();
@@ -205,47 +203,45 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return replyId;
         }
 
-        public int Reply_Save(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply)
+        public int Reply_Save(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri)
         {
-            reply.Content.DateUpdated = DateTime.UtcNow;
-            if (reply.ReplyId < 1)
+            ri.Content.DateUpdated = DateTime.UtcNow;
+            if (ri.ReplyId < 1)
             {
-                reply.Content.DateCreated = DateTime.UtcNow;
+                ri.Content.DateCreated = DateTime.UtcNow;
             }
 
             Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
 
             // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, reply.Content.AuthorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, ri.Content.AuthorId);
 
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(reply.ModuleId, reply.ForumId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(reply.ModuleId, reply.ReplyId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(reply.ModuleId, reply.TopicId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(reply.ModuleId, reply.ContentId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(ri.ModuleId, ri.ForumId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(ri.ModuleId, ri.ReplyId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(ri.ModuleId, ri.TopicId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(ri.ModuleId, ri.ContentId);
 
             // if existing topic, update associated journal item
-            if (reply.ReplyId > 0)
+            if (ri.ReplyId > 0)
             {
-                string fullURL = new ControlUtils().BuildUrl(portalId, reply.Forum.GetTabId(), moduleId, reply.Forum.ForumGroup.PrefixURL, reply.Forum.PrefixURL, reply.Forum.ForumGroupId, reply.ForumId, reply.TopicId, reply.Topic.TopicUrl, -1, -1, string.Empty, 1, reply.ReplyId, reply.Forum.SocialGroupId);
+                string fullURL = new ControlUtils().BuildUrl(portalId, ri.Forum.GetTabId(), moduleId, ri.Forum.ForumGroup.PrefixURL, ri.Forum.PrefixURL, ri.Forum.ForumGroupId, ri.ForumId, ri.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, ri.ReplyId, ri.Forum.SocialGroupId);
 
                 if (fullURL.Contains("~/"))
                 {
-                    fullURL = Utilities.NavigateURL(reply.Forum.GetTabId(), string.Empty, new string[] { $"{ParamKeys.TopicId}={reply.TopicId}", $"{ParamKeys.ContentJumpId}={reply.ReplyId}", });
+                    fullURL = Utilities.NavigateURL(ri.Forum.GetTabId(), string.Empty, new string[] { $"{ParamKeys.TopicId}={ri.TopicId}", $"{ParamKeys.ContentJumpId}={ri.ReplyId}", });
                 }
 
                 if (fullURL.EndsWith("/"))
                 {
-                    fullURL += Utilities.UseFriendlyURLs(moduleId) ? $"#{reply.ReplyId}" : $"{ParamKeys.ContentJumpId}={reply.ReplyId}";
+                    fullURL += Utilities.UseFriendlyURLs(moduleId) ? $"#{ri.ReplyId}" : $"{ParamKeys.ContentJumpId}={ri.ReplyId}";
                 }
 
-                new Social().UpdateJournalItemForPost(reply.PortalId, reply.ModuleId, reply.Forum.GetTabId(), reply.ForumId, reply.TopicId, reply.ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body);
+                new Social().UpdateJournalItemForPost(ri.PortalId, ri.ModuleId, ri.Forum.GetTabId(), ri.ForumId, ri.TopicId, ri.ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, ri.Content.Body);
             }
 
-            var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: reply.ForumId, moduleId: moduleId);
-            DotNetNuke.Modules.ActiveForums.Controllers.TagController.CleanUpTags(reply, forum);
-            int replyId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Save(portalId, reply.TopicId, reply.ReplyId, reply.ReplyToId, reply.StatusId, reply.IsApproved, reply.IsDeleted, reply.Content.Subject.Trim(), reply.Content.Body.Trim(), reply.Content.DateCreated, reply.Content.DateUpdated, reply.Content.AuthorId, reply.Content.AuthorName, reply.Content.IPAddress));
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, reply.ForumId, reply.TopicId);
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(reply.ForumId);
+            int replyId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Save(portalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, ri.ForumId, ri.TopicId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(ri.ForumId);
             return replyId;
         }
 
@@ -330,8 +326,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserReplyCount(portalId, reply.Content.AuthorId);
                 }
 
-                
-                DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(reply);
+
                 DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController.ProcessUserMentions(reply);
 
                 return true;

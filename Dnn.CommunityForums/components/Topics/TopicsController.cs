@@ -317,34 +317,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090100();
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();
-                        ForumsConfig.Install_UserMentionNotificationType_090300();
-                    }
-                    catch (Exception ex)
-                    {
-                        LogError(ex.Message, ex);
-                        Exceptions.LogException(ex);
-                        return "Failed";
-                    }
-
-                    break;
-                case "09.02.00":
-                    try
-                    {
-                        ForumsConfig.Install_BadgeNotificationType_090200();
-                        new ForumsConfig().Install_DefaultBadges_090200();
-                    }
-                    catch (Exception ex)
-                    {
-                        LogError(ex.Message, ex);
-                        Exceptions.LogException(ex);
-                        return "Failed";
-                    }
-
-                    break;
-                case "09.03.00":
-                    try
-                    {
-                        ForumsConfig.Install_UserMentionNotificationType_090300();
                     }
                     catch (Exception ex)
                     {

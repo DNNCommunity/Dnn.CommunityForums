@@ -170,10 +170,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract void Ranks_Delete(int portalId, int moduleId, int rankId);
         #endregion
 
-        #region Badges
-        public abstract IDataReader Badges_List(int moduleId);
-        #endregion
-
         #region Replies/Comments
         public abstract int Reply_Save(int portalId, int topicId, int replyId, int replyToId, int statusId, bool isApproved, bool isDeleted, string subject, string body, DateTime dateCreated, DateTime dateUpdated, int authorId, string authorName, string iPAddress);
 

@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Web.Client;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -41,7 +39,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.Client.Providers;
 
     public partial class af_post : ForumBase
     {
