@@ -1,0 +1,11 @@
+{
+  "version": "9.3.0.0",
+  "name": "dnn.community.forums",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "gulp": "^5.0.1",
+    "gulp-cli": "^3.1.0",
+    "gulp-zip": "^6.1.0"
+  }
+}

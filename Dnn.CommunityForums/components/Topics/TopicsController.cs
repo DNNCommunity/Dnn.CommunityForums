@@ -330,7 +330,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         ForumsConfig.Install_BadgeNotificationType_090200();
-                        new ForumsConfig().Install_DefaultBadges_090200();
                     }
                     catch (Exception ex)
                     {

@@ -5,9 +5,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const rename = require('gulp-rename');
 const  merge = require('merge-stream');
 
-const zip = require('gulp-zip');
-
-
+const zip = require('gulp-zip').default;
 
 // LESS ----------------------
 
