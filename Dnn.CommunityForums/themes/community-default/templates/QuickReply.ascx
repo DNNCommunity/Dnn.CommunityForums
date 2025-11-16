@@ -32,7 +32,8 @@
 								<i class="fa fa-code fa-fw" accesskey="c" onclick="insertCode('[code] [/code]');" onmouseover="window.status='[RESX:CodeDesc]'; return true;" title='[RESX:CodeDesc]' onmouseout="window.status=''; return true;"></i>
 								
 							</div>
-                        <asp:textbox id="txtBody" runat="server" name="txtBody" class="aftextbox" style="height: 120px" height="5" textmode="multiline" width="250"></asp:textbox>
+                        <asp:textbox id="txtBody" runat="server" name="txtBody" class="aftextbox" style="height:120px;" height="5" textmode="multiline" width="250"></asp:textbox>
+                        <asp:placeholder id="plhEditor" runat="server" />
                     </div>
 					
 					[AF:UI:ANON]
