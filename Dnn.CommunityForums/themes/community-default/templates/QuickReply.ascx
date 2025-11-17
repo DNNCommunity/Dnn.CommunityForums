@@ -34,6 +34,7 @@
 							</div>
                         <asp:textbox id="txtBody" runat="server" name="txtBody" class="aftextbox" style="height:120px;" height="5" textmode="multiline" width="250"></asp:textbox>
                         <asp:placeholder id="plhEditor" runat="server" />
+						
                     </div>
 					
 					[AF:UI:ANON]
