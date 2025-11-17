@@ -195,7 +195,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         editor.HtmlEncode = false; // Turn Encoding off or passed already Encoded HTML.
                         this.plhEditor = new PlaceHolder();
                         this.plhEditor = (PlaceHolder)this.qR.FindControl("plhEditor");
-                        this.plhEditor.Controls.Add(editor);
+                        this.qR.Controls.Add(editor);
                         //////////System.Text.StringBuilder sb = new System.Text.StringBuilder();
                         ////////////sb.Append("var afeditor = '" + editor.ClientID + "';");
                         //////////sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(Globals.ModulePath + "Resources/ckeditor-4.22.1-additional-plugins/customConfig.js") + "';");
