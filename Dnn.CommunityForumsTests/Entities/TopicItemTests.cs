@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
                     },
                 },
             };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.mockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {
@@ -109,8 +109,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
                     {
                         View = Globals.DefaultAnonRoles + "|-1;||",
                     },
-                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo { GroupName = "Test Forum Group" }
-                }
+                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo { GroupName = "Test Forum Group" },
+                },
             };
 
             var mockTopic = new Mock<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
@@ -125,8 +125,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
                         ContentId = 1,
                         ModuleId = 1,
                         Subject = "Test Topic",
-                        Body = "Test Topic"
-                    }
+                        Body = "Test Topic",
+                    },
                 },
             };
 
@@ -141,9 +141,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
                     {
                         PreferredLocale = "en-US",
                     },
-                }
+                },
             };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.mockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {

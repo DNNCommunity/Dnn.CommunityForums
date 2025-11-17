@@ -798,7 +798,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                     {
                         PreferredLocale = "en-US",
                     },
-                }
+                },
             };
 
             var expectedResult = expectedRoles.Select(r => Convert.ToInt32(r)).ToHashSet<int>();
