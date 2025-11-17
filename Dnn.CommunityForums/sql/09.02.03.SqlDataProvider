@@ -4,6 +4,7 @@ GO
 /* --------------------- */
 
 /* issue 1492 - begin - Rename CanBan -> CanManageUsers in activeforums_Permissions */
+/* originally included in 09.02.01 but not packaged correctly so re-execute */
 
 IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanBan' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
 exec sp_rename '{databaseOwner}{objectQualifier}activeforums_Permissions.CanBan', 'CanManageUsers', 'COLUMN'
@@ -18,6 +19,7 @@ GO
 /* --------------------- */
 
 /* issue 1619 - begin - fix missing cascade delete for activeforums_Badges from Modules */
+/* originally included in 09.02.01 but not packaged correctly so re-execute */
 
 /* activeforums_Badges - cascade delete from Modules */
 IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Badges_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Badges]'))
@@ -42,6 +44,7 @@ GO
 /* --------------------- */
 
 /* issue 1620 - begin - keep badges within module instance */
+/* originally included in 09.02.01 but not packaged correctly so re-execute */
 
 /* drop/create index IX_activeforums_UserBadges_Alt3 */
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_UserBadges') AND name = N'IX_{objectQualifier}activeforums_UserBadges_Alt3')
@@ -60,5 +63,55 @@ CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_UserBadges_Alt3
 GO
 
 /* issue 1620 - end - keep badges within module instance */
+
+/* --------------------- */
+
+/* issue 1644 - begin - fix user badge indexes */
+/* originally included in 09.02.02 but not packaged correctly so re-execute */
+
+/* drop constraint */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_UserBadges_Badges]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserBadges]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserBadges] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_UserBadges_UserProfiles]
+GO
+
+/* drop/create index IX_activeforums_UserBadges_Alt1 */
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_UserBadges') AND name = N'IX_{objectQualifier}activeforums_UserBadges_Alt1')
+DROP INDEX [IX_{objectQualifier}activeforums_UserBadges_Alt1] ON {databaseOwner}{objectQualifier}activeforums_UserBadges 
+GO
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_UserBadges_Alt1
+    ON {databaseOwner}[{objectQualifier}activeforums_UserBadges] 
+    (
+    PortalId ASC,
+    UserId ASC,
+    BadgeId ASC,
+    DateAssigned ASC
+    ) 
+GO
+
+/* add constraint FK_activeforums_UserBadges_UserProfiles */
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserBadges] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_UserBadges_UserProfiles] FOREIGN KEY (PortalId, UserId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_UserProfiles] (PortalId, UserId) 
+	ON DELETE CASCADE 
+GO
+
+/* drop/create index IX_activeforums_UserBadges_Alt3 */
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_UserBadges') AND name = N'IX_{objectQualifier}activeforums_UserBadges_Alt3')
+DROP INDEX [IX_{objectQualifier}activeforums_UserBadges_Alt3] ON {databaseOwner}{objectQualifier}activeforums_UserBadges 
+GO
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_UserBadges_Alt3
+    ON {databaseOwner}[{objectQualifier}activeforums_UserBadges] 
+    (
+    PortalId ASC,
+    ModuleId ASC,
+    UserId ASC,
+    BadgeId ASC,
+    DateAssigned ASC
+    ) 
+
+GO
+
+/* issue 1644 - end - fix user badge indexes */
 
 /* --------------------- */
