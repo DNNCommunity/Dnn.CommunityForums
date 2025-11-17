@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.02.02
+            09.02.03
         </h3>
         
 <!--
@@ -85,7 +85,8 @@
         <h4>Bug Fixes</h4>
         <ul>
             
-            <li>FIX: Incorrect SQL script delivered with 09.02.01 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1644">Issue 1644</a>)</li>
+<li>FIX: Incorrect SQL scripts delivered with 09.02.01 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1644">Issue 1644</a>)</li>
+<li>FIX: Incorrect SQL scripts delivered with 09.02.02 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1650">Issue 1650</a>)</li>
             
 <!--
              <li>None at this time.</li>

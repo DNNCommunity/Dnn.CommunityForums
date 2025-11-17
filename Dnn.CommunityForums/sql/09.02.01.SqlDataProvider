@@ -45,7 +45,7 @@ GO
 
 /* drop/create index IX_activeforums_UserBadges_Alt3 */
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_UserBadges') AND name = N'IX_{objectQualifier}activeforums_UserBadges_Alt3')
-DROP INDEX [IX_{objectQualifier}activeforums_UserBadges_Alt1] ON {databaseOwner}{objectQualifier}activeforums_UserBadges 
+DROP INDEX [IX_{objectQualifier}activeforums_UserBadges_Alt3] ON {databaseOwner}{objectQualifier}activeforums_UserBadges 
 GO
 CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_UserBadges_Alt3
     ON {databaseOwner}[{objectQualifier}activeforums_UserBadges] 
