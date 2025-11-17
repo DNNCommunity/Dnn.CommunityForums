@@ -195,7 +195,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         editor.HtmlEncode = false; // Turn Encoding off or passed already Encoded HTML.
                         this.plhEditor = new PlaceHolder();
                         this.plhEditor = (PlaceHolder)this.qR.FindControl("plhEditor");
-                        this.qR.Controls.Add(editor);
+                        this.plhEditor.Controls.Add(editor);
+                        this.txtBody.Visible=false;
                         //////////System.Text.StringBuilder sb = new System.Text.StringBuilder();
                         ////////////sb.Append("var afeditor = '" + editor.ClientID + "';");
                         //////////sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(Globals.ModulePath + "Resources/ckeditor-4.22.1-additional-plugins/customConfig.js") + "';");
@@ -293,7 +294,44 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
+            this.InjectMentionsPluginsForCkEditor4();
+        }
 
+        private void InjectMentionsPluginsForCkEditor4()
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.PortalId, this.ForumModuleId, this.ForumId, false, this.TopicId);
+            if (forumInfo.FeatureSettings.EditorType.Equals(EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS))
+            {
+                var editorProvider = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
+                if (editorProvider != null && !string.IsNullOrEmpty(editorProvider.DefaultProvider) && (editorProvider.DefaultProvider.Contains("CKHtmlEditorProvider") || editorProvider.DefaultProvider.Contains("DNNConnect.CKE")))
+                {
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                    sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(Globals.ModulePath + "Resources/ckeditor-4.22.1-additional-plugins/customConfig.js") + "';");
+                    var extraPlugins = new string[] { "mentions", "ajax", "autocomplete", "textmatch", "textwatcher", "xml" };
+                    foreach (string plugin in extraPlugins)
+                    {
+                        sb.Append($"editorConfigeditortxtBody.extraPlugins += `,{plugin}`;");
+                    }
+
+                    var userTag = this.GetTagForUserMentions();
+                    var avatarTag = this.GetAvatarTagForUserMentions();
+
+                    sb.Append("editorConfigeditortxtBody.mentions = [");
+                    sb.Append(" { feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 3, throttle: 100, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatarTag + "{name}</li>', outputTemplate: `<a href=\"" + userTag + "\">" + avatarTag + "&nbsp;{name}</a>` },");
+                    sb.Append("];");
+                    
+        //        if (this.ForumUser.IsAnonymous || (!this.ForumUser.IsAdmin && !this.ForumUser.IsSuperUser && !this.ForumInfo.GetIsMod(this.ForumUser)))
+        //        {
+        //            sb.Append("CKEDITOR.config.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] },{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }];");
+
+        //            sb.Append("CKEDITOR.config.toolbarCanCollapse = false;");
+        //            sb.Append("CKEDITOR.config.toolbarStartupExpanded = true;");
+        //            sb.Append("CKEDITOR.config.removePlugins = 'elementspath';");
+        //            sb.Append("CKEDITOR.config.resize_enabled = false;");
+        //        }
+                    this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), $"{this.txtEditor.ClientID}_txtBody_CKE_Config", sb.ToString(), true);
+                }
+            }
         }
         private string GetAvatarTagForUserMentions()
         {
