@@ -13,7 +13,6 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^3.0.0",
-    "gulp-zip": "^5.1.0",
     "sass": "^1.71.1"
   },
   "author": "Timo Breumelhof",

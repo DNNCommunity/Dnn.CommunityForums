@@ -18,14 +18,21 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Runtime.CompilerServices;
+    using System.Text;
     using System.Web.Http;
 
+    using DotNetNuke.UI.UserControls;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -104,6 +111,69 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+
+        /// <summary>
+        /// Fired by UI to get users for mentions in editor
+        /// </summary>
+        /// <param name="forumId" type="int"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/User/GetUsersForEditorMentions?ForumId=xxx&query={encodedQuery}</remarks>
+        [HttpGet]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.Edit)]
+        public HttpResponseMessage GetUsersForEditorMentions(int forumId, string query)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(query))
+                {
+                    int portalId = this.PortalSettings.PortalId;
+                    var cachekey = string.Format(CacheKeys.UserMentionQuery, portalId, query);
+                    var userList = DataCache.UserCacheRetrieve(cachekey) as List<UserIdDisplayNamePair>;
+                    if (userList == null)
+                    {
+                        int totalRecords = 0;
+                        var users = DotNetNuke.Entities.Users.UserController.GetUsersByDisplayName(portalId: portalId, nameToMatch: $"%{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(query, 20)}%", pageIndex: -1, pageSize: 0, totalRecords: ref totalRecords, includeDeleted: false, superUsersOnly: false);
+                        users.AddRange(DotNetNuke.Entities.Users.UserController.GetUsersByDisplayName(portalId: Null.NullInteger, nameToMatch: $"%{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(query, 20)}%", pageIndex: -1, pageSize: 0, totalRecords: ref totalRecords, includeDeleted: false, superUsersOnly: true));
+
+                        if (users != null && users.Count > 0)
+                        {
+                            userList = new List<UserIdDisplayNamePair>();
+                            foreach (DotNetNuke.Entities.Users.UserInfo user in users)
+                            {
+                                userList.Add(new UserIdDisplayNamePair() { id = user.UserID, name = user.DisplayName, portalSettings = this.PortalSettings, });
+                            }
+                        }
+
+                        DataCache.UserCacheStore(cachekey, userList);
+                    }
+
+                    if (userList != null && userList.Count > 0)
+                    {
+                        return this.Request.CreateResponse(HttpStatusCode.OK, userList.Select(u => new { id = u.id, name = u.name, avatarImgTag = u.avatarImgTag }).ToList());
+                    }
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+
+        private struct UserIdDisplayNamePair
+        {
+            public int id { get; set; }
+
+            public string name { get; set; }
+            public DotNetNuke.Entities.Portals.PortalSettings portalSettings { get; set; }
+            public string avatarImgTag => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(this.portalSettings, this.id, 22, 22); 
+            
         }
     }
 }

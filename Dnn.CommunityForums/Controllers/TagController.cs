@@ -18,6 +18,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System.Linq;
@@ -41,9 +48,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             });
         }
 
-        internal void DeleteById(int id)
+        public void DeleteById(int tagId)
         {
-            this.Delete(this.GetById(id));
+            /* delete all topic tags for this tag */
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().Delete("WHERE TagId = @0", tagId);
+            /* now delete the tag itself */
+            base.DeleteById(tagId);
         }
 
         internal void Delete(DotNetNuke.Modules.ActiveForums.Entities.TagInfo item)

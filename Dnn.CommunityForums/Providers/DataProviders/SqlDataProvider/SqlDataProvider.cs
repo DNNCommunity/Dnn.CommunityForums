@@ -318,6 +318,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
+
         #region Replies/Comments
         public override IDataReader Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
         {

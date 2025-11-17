@@ -36,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
@@ -443,7 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         if (dto.NewTopicId < 1)
                         {
-                            var subject = Utilities.CleanString(portalSettings.PortalId, dto.Subject, false, EditorTypes.TEXTBOX, false, false, this.ActiveModule.ModuleID, string.Empty, false);
+                            var subject = Utilities.CleanString(portalSettings.PortalId, dto.Subject, false, EditorType.TEXTBOX, false, false, this.ActiveModule.ModuleID, string.Empty, false);
                             var replies = dto.Replies.Split('|');
                             var firstReply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ActiveModule.ModuleID).GetById(Convert.ToInt32(replies[0]));
                             var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId, this.ActiveModule.ModuleID);
