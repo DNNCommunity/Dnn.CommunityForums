@@ -33,6 +33,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using log4net.Plugin;
+
     public partial class af_quickreplyform : ForumBase
     {
         private const string TargetCollapsible = "groupQR";
@@ -196,7 +198,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.plhEditor = new PlaceHolder();
                         this.plhEditor = (PlaceHolder)this.qR.FindControl("plhEditor");
                         this.plhEditor.Controls.Add(editor);
-                        this.txtBody.Visible=false;
+                        this.txtBody.Visible = false;
+                        this.btnToolBar.Visible = false;
                         //////////System.Text.StringBuilder sb = new System.Text.StringBuilder();
                         ////////////sb.Append("var afeditor = '" + editor.ClientID + "';");
                         //////////sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(Globals.ModulePath + "Resources/ckeditor-4.22.1-additional-plugins/customConfig.js") + "';");
@@ -307,7 +310,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     System.Text.StringBuilder sb = new System.Text.StringBuilder();
                     sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(Globals.ModulePath + "Resources/ckeditor-4.22.1-additional-plugins/customConfig.js") + "';");
-                    var extraPlugins = new string[] { "mentions", "ajax", "autocomplete", "textmatch", "textwatcher", "xml" };
+                    var extraPlugins = new string[] { "mentions", "ajax", "autocomplete", "textmatch", "textwatcher", "xml", "codeTag"};
                     foreach (string plugin in extraPlugins)
                     {
                         sb.Append($"editorConfigeditortxtBody.extraPlugins += `,{plugin}`;");
@@ -319,20 +322,17 @@ namespace DotNetNuke.Modules.ActiveForums
                     sb.Append("editorConfigeditortxtBody.mentions = [");
                     sb.Append(" { feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 3, throttle: 100, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatarTag + "{name}</li>', outputTemplate: `<a href=\"" + userTag + "\">" + avatarTag + "&nbsp;{name}</a>` },");
                     sb.Append("];");
-                    
-        //        if (this.ForumUser.IsAnonymous || (!this.ForumUser.IsAdmin && !this.ForumUser.IsSuperUser && !this.ForumInfo.GetIsMod(this.ForumUser)))
-        //        {
-        //            sb.Append("CKEDITOR.config.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] },{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }];");
-
-        //            sb.Append("CKEDITOR.config.toolbarCanCollapse = false;");
-        //            sb.Append("CKEDITOR.config.toolbarStartupExpanded = true;");
-        //            sb.Append("CKEDITOR.config.removePlugins = 'elementspath';");
-        //            sb.Append("CKEDITOR.config.resize_enabled = false;");
-        //        }
+                    sb.Append("editorConfigeditortxtBody.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] }, { name: 'links', items: [ 'Link' ] },  { name: 'insert', items: [ 'Image', 'Smiley', 'Code' ] } ];");
+                    sb.Append("editorConfigeditortxtBody.toolbarCanCollapse = false;");
+                    sb.Append("editorConfigeditortxtBody.toolbarStartupExpanded = true;");
+                    sb.Append("editorConfigeditortxtBody.removePlugins = 'elementspath,wordcount';");
+                    sb.Append("editorConfigeditortxtBody.resize_enabled = true;");
+                    sb.Append("editorConfigeditortxtBody.removeButtons = 'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,PasteFromWord,Print,Preview,ExportPdf,NewPage,Save,Replace,Find,BGColor,TextColor,HorizontalRule,Anchor,Unlink,BidiLtr,BidiRtl,Language,CreateDiv,CopyFormatting,RemoveFormat,Subscript,Superscript,Strike,Format,Source,Templates,SelectAll,Scayt,PasteText,Styles,Font,FontSize,About,Maximize,Table,SpecialChar,PageBreak,Iframe,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Indent,Outdent,NumberedList,BulletedList';");
                     this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), $"{this.txtEditor.ClientID}_txtBody_CKE_Config", sb.ToString(), true);
                 }
             }
         }
+
         private string GetAvatarTagForUserMentions()
         {
             return Utilities.ResolveUrl(this.PortalSettings, "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />");
@@ -342,6 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId={id}" });
         }
+
         private void LinkControls(ControlCollection ctrls)
         {
             foreach (Control ctrl in ctrls)

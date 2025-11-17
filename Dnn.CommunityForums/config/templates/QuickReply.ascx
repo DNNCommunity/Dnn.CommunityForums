@@ -25,7 +25,9 @@
 							<input type="button" class="afButton" accesskey="c" name="afCode" value="[RESX:Code]" style="font-weight:bold;" onclick="insertCode('[code] [/code]');" onmouseover="window.status='[RESX:CodeDesc]';  return true;" title='[RESX:CodeDesc]' onmouseout="window.status=''; return true;" />
 							</div>
 							<asp:textbox id="txtBody" runat="server" name="txtBody" class="aftextbox" style="height: 120px" height="5" textmode="multiline" width="250"></asp:textbox></td>
-						<td valign="top">
+                        <asp:placeholder id="plhEditor" runat="server" />
+
+                        <td valign="top">
 						</td>
 					</tr>
 				</table>
