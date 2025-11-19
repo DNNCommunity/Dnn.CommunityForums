@@ -56,6 +56,8 @@ namespace DotNetNuke.Modules.ActiveForums
         //protected Control txtEditor = null;
         private string editorClientID = string.Empty;
 
+        public string EditorClientId => this.editorClientID;
+
         public string SubmitText = Utilities.GetSharedResource("Submit.Text");
 
         public bool RequireCaptcha { get; set; } = true;
@@ -95,7 +97,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (this.Request.IsAuthenticated)
                 {
-                    this.btnSubmitLink.OnClientClick = "afQuickSubmit(); return false;";
+                    if (this.UseCkEditor4)
+                    {
+                        this.btnSubmitLink.OnClientClick = "afQuickSubmitCkEditor4(); return false;";
+                    }
+                    else
+                    {
+                        this.btnSubmitLink.OnClientClick = "afQuickSubmit(); return false;";
+                    }
                 }
                 else
                 {
@@ -107,7 +116,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 this.btnToolBar.Visible = this.UseFilter;
-
                 if (Utilities.InputIsValid(this.Request.Form["txtBody"]) && this.Request.IsAuthenticated & ((!string.IsNullOrEmpty(this.Request.Form["hidReply1"]) && string.IsNullOrEmpty(this.Request.Form["hidReply2"])) | this.Request.Browser.IsMobileDevice))
                 {
                     this.SaveQuickReply();
@@ -253,7 +261,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 sb.Append("editorConfigeditortxtBody.removePlugins = 'elementspath,wordcount';");
                 sb.Append("editorConfigeditortxtBody.resize_enabled = true;");
                 sb.Append("editorConfigeditortxtBody.removeButtons = 'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,PasteFromWord,Print,Preview,ExportPdf,NewPage,Save,Replace,Find,BGColor,TextColor,HorizontalRule,Anchor,Unlink,BidiLtr,BidiRtl,Language,CreateDiv,CopyFormatting,RemoveFormat,Subscript,Superscript,Strike,Format,Source,Templates,SelectAll,Scayt,PasteText,Styles,Font,FontSize,About,Maximize,Table,SpecialChar,PageBreak,Iframe,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Indent,Outdent,NumberedList,BulletedList';");
+                sb.Append("var afeditor = '" + this.editorClientID + "';");
                 this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), $"{this.editorClientID}_txtBody_CKE_Config", sb.ToString(), true);
+                ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/ck_editor.js", 102);
             }
         }
 
