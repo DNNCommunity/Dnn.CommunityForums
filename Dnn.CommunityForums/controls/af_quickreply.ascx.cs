@@ -259,11 +259,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 sb.Append("editorConfigeditortxtBody.resize_enabled = true;");
                 sb.Append("editorConfigeditortxtBody.removeButtons = 'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,PasteFromWord,Print,Preview,ExportPdf,NewPage,Save,Replace,Find,BGColor,TextColor,HorizontalRule,Anchor,Unlink,BidiLtr,BidiRtl,Language,CreateDiv,CopyFormatting,RemoveFormat,Subscript,Superscript,Strike,Format,Source,Templates,SelectAll,Scayt,PasteText,Styles,Font,FontSize,About,Maximize,Table,SpecialChar,PageBreak,Iframe,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Indent,Outdent,NumberedList,BulletedList';");
                 sb.Append("var afeditor = '" + this.editorClientID + "';");
+                sb.Append("$(document).ready(function() {$(\"#txtBody\").hide();});");
                 this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), $"{this.editorClientID}_txtBody_CKE_Config", sb.ToString(), true);
                 ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/ck_editor.js", 102);
-                this.txtBody.Attributes.Add("display", "none");
+                this.txtBody.Visible = false;
                 this.btnToolBar.Visible = false;
-
             }
         }
 
