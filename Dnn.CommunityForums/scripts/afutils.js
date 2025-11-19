@@ -386,7 +386,7 @@ function afQuickSubmitCkEditor4() {
     var hid = document.getElementById('hidReply1');
     hid.value = 'true';
     var txtBody = document.getElementById('txtBody');
-    txtBody.value = afeditor_getBody();
+    txtBody.value = amaf_getBody();
     document.forms[0].submit();
 };
 function amaf_catSelect(obj) {

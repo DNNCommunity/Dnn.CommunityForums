@@ -197,12 +197,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         editor.Mode = "RICH";
                         editor.Width = editorWidth;
                         editor.Height = editorHeight;
-                        editor.HtmlEncode = false; // Turn Encoding off or passed already Encoded HTML.
-                          //this.plhEditor = new PlaceHolder();
+                        editor.HtmlEncode = false;
                         this.plhEditor = (PlaceHolder)this.qR.FindControl("plhEditor");
                         this.plhEditor.Controls.Add(editor);
-                        //this.txtBody.Visible = false;
-                        //this.btnToolBar.Visible = false;
                         this.editorClientID = editor.ClientID;
                     }
                 }
@@ -264,6 +261,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 sb.Append("var afeditor = '" + this.editorClientID + "';");
                 this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), $"{this.editorClientID}_txtBody_CKE_Config", sb.ToString(), true);
                 ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/ck_editor.js", 102);
+                this.txtBody.Attributes.Add("display", "none");
+                this.btnToolBar.Visible = false;
+
             }
         }
 
