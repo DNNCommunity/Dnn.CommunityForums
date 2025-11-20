@@ -6,9 +6,6 @@
   "devDependencies": {
     "gulp": "^5.0.1",
     "gulp-cli": "^3.1.0",
-    "gulp-zip": "^6.1.0",
-    "gulp-changed": "^4.0.3",
-    "gulp-newer": "^1.1.0",
-    "eslint": "^8.45.0"
+    "gulp-zip": "^6.1.0"
   }
 }
