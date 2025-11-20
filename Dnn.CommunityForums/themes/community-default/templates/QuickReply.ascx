@@ -10,16 +10,9 @@
 	<section class="dcf-section" id="groupQR">
 			<div class="dcf-group">
 				<asp:PlaceHolder ID="plhMessage" runat="server" />
-				<div>
-<%--					<div class="dcf-qr-subject"> 
-						<h4 class="dcf-title dcf-title-4">[RESX:Subject]:</h4> 
-						<input type="text" id="txtSubject" class="dcf-textbox" readonly="readonly" value="[SUBJECT]" />
-					</div> --%>
 					<div class="dcf-qr-text">
 						
 						<asp:Label ID="reqBody" runat="server" Visible="false" />
-												   
-<%--						<h4 class="dcf-title dcf-title-4">[RESX:Body]:</h4>--%>
 						
 						<div class="dcf-toolbar dcf-toolbar-buttons" id="btnToolBar" runat="server">	
 							

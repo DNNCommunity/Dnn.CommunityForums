@@ -1703,3 +1703,7 @@ div.dcf-mod-edit-wrap {
 .dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-image-tooltip:hover::before { opacity: 1; visibility: visible; }
 .dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-count { background-color: red; border-radius: 5px; color: white; padding: 1px 3px; font-size: 11px; position: relative; top: 10px; left: 20px; z-index: 9; }
 .dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-count:empty { padding:0; }
+
+/* quick reply */
+.dcf-group .dcf-qr-text {padding-top: 1rem;}
+
