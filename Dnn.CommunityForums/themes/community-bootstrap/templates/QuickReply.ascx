@@ -13,18 +13,11 @@
 			<div class="dcf-group">
 				<asp:PlaceHolder ID="plhMessage" runat="server" />
 				<div>
-					<div class="dcf-qr-subject"> 
-						<h4 class="dcf-title h5 mb-2">[RESX:Subject]:</h4> 
-						<input type="text" id="txtSubject" class="dcf-textbox" readonly="readonly" value="[SUBJECT]" />
-					</div> 
 					<div class="dcf-qr-text">
 						
 						<asp:Label ID="reqBody" runat="server" Visible="false" />
-												
-						<h4 class="dcf-title h5 mb-2">[RESX:Body]:</h4>
 						
-							<div class="dcf-toolbar dcf-toolbar-buttons" id="btnToolBar" runat="server">	
-							
+							<div class="dcf-toolbar dcf-toolbar-buttons" id="btnToolBar" runat="server">								
 								 
 								<i class="fa fa-bold fa-fw" accesskey="b" onclick="insertCode('[b] [/b]');" onmouseover="window.status='[RESX:BoldDesc]'; return true;" onmouseout="window.status=''; return true;"></i>
 								<i class="fa fa-italic fa-fw" accesskey="i" onclick="insertCode('[i] [/i]');" onmouseover="window.status='[RESX:ItalicsDesc]'; return true;" onmouseout="window.status=''; return true;"></i>
