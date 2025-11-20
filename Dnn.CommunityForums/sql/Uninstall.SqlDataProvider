@@ -775,14 +775,14 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserBadges]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_UserBadges]
 GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserMentions]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_UserMentions]
+GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_UserProfiles]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Badges]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Badges]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserMentions]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}activeforums_UserMentions]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Queue]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Queue]
