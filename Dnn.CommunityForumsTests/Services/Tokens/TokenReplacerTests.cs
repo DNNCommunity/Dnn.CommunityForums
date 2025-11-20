@@ -93,9 +93,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     {
                         PreferredLocale = "en-US",
                     },
-                }
+                },
             };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.mockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {
@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                         ModuleId = 1,
                         Subject = "Test Topic",
                         Body = "Test Topic",
-                    }
+                    },
                 },
             };
 
@@ -199,9 +199,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     {
                         PreferredLocale = "en-US",
                     },
-                }
+                },
             };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.mockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {
@@ -227,7 +227,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                         ModuleId = 1,
                         Subject = "Test Topic",
                         Body = "Test Topic",
-                    }
+                    },
                 },
             };
 
@@ -308,9 +308,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     {
                         PreferredLocale = "en-US",
                     },
-                }
+                },
             };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.mockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {
@@ -397,7 +397,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                     },
                 },
             };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.mockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {
