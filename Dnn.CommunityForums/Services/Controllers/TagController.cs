@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (!string.IsNullOrEmpty(matchString))
                 {
-                    var matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Find("WHERE IsCategory=0 AND PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName", this.ActiveModule.PortalID, this.ForumModuleId, matchString).Select(t => new { id = t.TagId, name = t.TagName }).ToList();
+                    var matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Find("WHERE PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName", this.ActiveModule.PortalID, this.ForumModuleId, matchString).Select(t => new { id = t.TagId, name = t.TagName }).ToList();
                     if (matchingTags.Count > 0)
                     {
                         return this.Request.CreateResponse(HttpStatusCode.OK, matchingTags);

@@ -382,6 +382,13 @@ function afQuickSubmit() {
     hid.value = 'true';
     document.forms[0].submit();
 };
+function afQuickSubmitCkEditor4() {
+    var hid = document.getElementById('hidReply1');
+    hid.value = 'true';
+    var txtBody = document.getElementById('txtBody');
+    txtBody.value = amaf_getBody();
+    document.forms[0].submit();
+};
 function amaf_catSelect(obj) {
     var chkv = document.getElementById('amaf-catselect');
     chkv.value = '';

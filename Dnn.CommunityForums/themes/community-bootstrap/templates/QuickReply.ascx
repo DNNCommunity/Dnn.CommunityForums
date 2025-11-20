@@ -34,8 +34,10 @@
 								<i class="fa fa-code fa-fw" accesskey="c" onclick="insertCode('[code] [/code]');" onmouseover="window.status='[RESX:CodeDesc]'; return true;" title='[RESX:CodeDesc]' onmouseout="window.status=''; return true;"></i>
 
 							</div>
-							<textarea id="txtBody" name="txtBody" class="dcf-textbox w-100" rows="5"></textarea>
-						</div>
+                        <textarea id="txtBody" name="txtBody" class="dcf-textbox" rows="5" cols="250"></textarea>
+                        <asp:placeholder id="plhEditor" runat="server" />
+
+                    </div>
 					
 					[AF:UI:ANON]
 						<div class="dcf-qr-username">

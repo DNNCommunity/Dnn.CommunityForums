@@ -24,8 +24,10 @@
 							<input type="button" class="afButton" accesskey="m" name="afImage" value="[RESX:Image]" style="font-weight:bold;" onclick="insertCode('[img] [/img]');" onmouseover="window.status='[RESX:ImageDesc]';  return true;" onmouseout="window.status=''; return true;" />
 							<input type="button" class="afButton" accesskey="c" name="afCode" value="[RESX:Code]" style="font-weight:bold;" onclick="insertCode('[code] [/code]');" onmouseover="window.status='[RESX:CodeDesc]';  return true;" title='[RESX:CodeDesc]' onmouseout="window.status=''; return true;" />
 							</div>
-							<textarea id="txtBody" name="txtBody" class="aftextbox" style="height:120px" rows="5" cols="250"></textarea></td>
-						<td valign="top">
+							<asp:textbox id="txtBody" runat="server" name="txtBody" class="aftextbox" style="height: 120px" height="5" textmode="multiline" width="250"></asp:textbox></td>
+                        <asp:placeholder id="plhEditor" runat="server" />
+
+                        <td valign="top">
 						</td>
 					</tr>
 				</table>

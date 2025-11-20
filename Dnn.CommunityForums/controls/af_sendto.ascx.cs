@@ -27,6 +27,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class af_sendto : ForumBase
     {
+        protected global::System.Web.UI.WebControls.TextBox txtRecipName;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator reqName;
+        protected global::System.Web.UI.WebControls.TextBox txtRecipEmail;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator reqEmail;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator regEmail;
+        protected global::System.Web.UI.WebControls.TextBox txtRecipSubject;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator reqSubject;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator reqMessage;
+        protected global::System.Web.UI.WebControls.TextBox txtMessage;
+        protected global::System.Web.UI.WebControls.LinkButton btnSend;
+        protected global::System.Web.UI.WebControls.LinkButton btnCancel;
+
         private bool bcUpdated = false;
 
         protected override void OnLoad(EventArgs e)

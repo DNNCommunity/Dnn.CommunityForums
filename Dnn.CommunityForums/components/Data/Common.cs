@@ -105,7 +105,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Tags_GetByName", portalId, moduleId, tagName.Replace("-", " ").ToLowerInvariant(), isCategory));
         }
-
         #endregion
         #region TopMembers
         public IDataReader TopMembers_Get(int portalId, int rows)

@@ -4,3 +4,4 @@ CKEDITOR.plugins.addExternal('autocomplete', '/DesktopModules/ActiveForums/Resou
 CKEDITOR.plugins.addExternal('textmatch', '/DesktopModules/ActiveForums/Resources/ckeditor-4.22.1-additional-plugins/textmatch/');
 CKEDITOR.plugins.addExternal('textwatcher', '/DesktopModules/ActiveForums/Resources/ckeditor-4.22.1-additional-plugins/textwatcher/');
 CKEDITOR.plugins.addExternal('xml', '/DesktopModules/ActiveForums/Resources/ckeditor-4.22.1-additional-plugins/xml/');
+CKEDITOR.plugins.addExternal('codeTag', '/DesktopModules/ActiveForums/Resources/ckeditor-4.22.1-additional-plugins/codeTag/');
