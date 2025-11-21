@@ -300,12 +300,6 @@
   <data name="[RESX:EditControl].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Control de edición de contenido</value>
   </data>
-  <data name="[RESX:EditorHeight].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Alto</value>
-  </data>
-  <data name="[RESX:EditorMobile].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Usuarios de dispositivos móviles</value>
-  </data>
   <data name="[RESX:EditorStyle].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Estilo</value>
   </data>
@@ -314,9 +308,6 @@
   </data>
   <data name="[RESX:EditorType].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Editor</value>
-  </data>
-  <data name="[RESX:EditorWidth].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Ancho</value>
   </data>
   <data name="[RESX:EditTimeLimit].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Intervalo de edición</value>

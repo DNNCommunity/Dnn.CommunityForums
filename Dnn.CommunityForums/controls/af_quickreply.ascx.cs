@@ -68,12 +68,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool CanTrust { get; set; } = false;
 
-        public bool IsTrusted { get; set; } = false;
-
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v10.0.0.0. Not Used")]
         public bool TrustDefault => throw new NotImplementedException();
 
-        public bool AllowHTML => this.ForumInfo.FeatureSettings.AllowHTML && this.IsHtmlPermitted(this.ForumInfo.FeatureSettings.EditorPermittedUsers, this.IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds));
+        public bool AllowHTML => Utilities.CanUserPostHTML(this.ForumInfo, this.ForumUser);
 
         public bool AllowScripts => this.ForumInfo.FeatureSettings.AllowScript;
 
@@ -96,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (this.Request.IsAuthenticated)
                 {
-                    if (this.UseCkEditor4)
+            if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
                     {
                         this.btnSubmitLink.OnClientClick = "afQuickSubmitCkEditor4(); return false;";
                     }
@@ -174,18 +172,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.qR.Controls.Add(ctl);
                 if (!this.IsPostBack)
                 {
-                    var editorWidth = Convert.ToString(this.ForumInfo.FeatureSettings.EditorWidth) != null
-                                ? Convert.ToString(this.ForumInfo.FeatureSettings.EditorWidth).IndexOf("%", 0, StringComparison.Ordinal) + 1 > 0 ? Unit.Percentage(Convert.ToDouble(Convert.ToString(this.ForumInfo.FeatureSettings.EditorWidth).TrimEnd('%'))) : Unit.Parse(this.ForumInfo.FeatureSettings.EditorWidth)
-                                : Unit.Pixel(600);
 
-                    var editorHeight = Convert.ToString(this.ForumInfo.FeatureSettings.EditorHeight) != null
-                                ? Unit.Parse(this.ForumInfo.FeatureSettings.EditorHeight) :
-                                Unit.Pixel(400);
-
+                    Unit editorWidth = Unit.Percentage(99.0);
+                    Unit editorHeight = Unit.Percentage(99.0);
                     this.txtBody.Width = editorWidth;
                     this.txtBody.Height = editorHeight;
 
-                    if (this.UseCkEditor4)
+                    if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
                     {
                         var editor = (UI.UserControls.TextEditor)this.LoadControl("~/controls/TextEditor.ascx");
                         editor.ID = "txtBody";
@@ -211,39 +204,19 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (this.UseCkEditor4)
+            if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
             {
                 this.InjectMentionsPluginsForCkEditor4();
             }
         }
 
-        private bool UseCkEditor4
-        {
-            get
-            {
-                if (this.AllowHTML)
-                {
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.PortalId, this.ForumModuleId, this.ForumId, false, this.TopicId);
-                    if (forumInfo.FeatureSettings.EditorType.Equals(EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS))
-                    {
-                        var editorProvider = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
-                        if (editorProvider != null && !string.IsNullOrEmpty(editorProvider.DefaultProvider) && (editorProvider.DefaultProvider.Contains("CKHtmlEditorProvider") || editorProvider.DefaultProvider.Contains("DNNConnect.CKE")))
-                        {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            }
-        }
 
         private void InjectMentionsPluginsForCkEditor4()
         {
-            if (this.UseCkEditor4)
+            if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
             {
                 var sb = new System.Text.StringBuilder();
-                sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(Globals.ModulePath + "Resources/ckeditor-4.22.1-additional-plugins/customConfig.js") + "';");
+                sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(Globals.ModulePath + "Resources/ckeditor4-additional-plugins/customConfig.js") + "';");
                 var extraPlugins = new string[] { "mentions", "ajax", "autocomplete", "textmatch", "textwatcher", "xml", "codeTag"};
                 foreach (string plugin in extraPlugins)
                 {
@@ -256,7 +229,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 sb.Append("editorConfigeditortxtBody.mentions = [");
                 sb.Append(" { feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 3, throttle: 100, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatarTag + "{name}</li>', outputTemplate: `<a href=\"" + userTag + "\">" + avatarTag + "&nbsp;{name}</a>` },");
                 sb.Append("];");
-                sb.Append("editorConfigeditortxtBody.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] }, { name: 'links', items: [ 'Link' ] },  { name: 'insert', items: [ 'Image', 'Smiley', 'Code' ] } ];");
+                if (this.Request.Browser.IsMobileDevice)
+                {
+                    sb.Append("editorConfigeditortxtBody.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] }, { name: 'insert', items: [ 'Code' ] } ];");
+                }
+                else
+                {
+                    sb.Append("editorConfigeditortxtBody.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] }, { name: 'links', items: [ 'Link' ] }, { name: 'insert', items: [ 'Image', 'Smiley', 'Code' ] } ];");
+                }
+
                 sb.Append("editorConfigeditortxtBody.toolbarCanCollapse = false;");
                 sb.Append("editorConfigeditortxtBody.toolbarStartupExpanded = true;");
                 sb.Append("editorConfigeditortxtBody.removePlugins = 'elementspath,wordcount';");

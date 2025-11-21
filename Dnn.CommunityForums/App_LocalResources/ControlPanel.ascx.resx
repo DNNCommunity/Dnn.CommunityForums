@@ -210,9 +210,6 @@
   <data name="[RESX:EditorWidth].Text" xml:space="preserve">
     <value>Width</value>
   </data>
-  <data name="[RESX:EditorMobile].Text" xml:space="preserve">
-    <value>Mobile users</value>
-  </data>
   <data name="[RESX:EmailAddress].Text" xml:space="preserve">
     <value>Email Address</value>
   </data>

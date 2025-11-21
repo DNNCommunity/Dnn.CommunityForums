@@ -702,7 +702,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowHTML, "true");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS).ToString());
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS).ToString());
 
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorHeight, "350");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorWidth, "99%");

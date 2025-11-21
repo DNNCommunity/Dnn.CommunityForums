@@ -39,8 +39,10 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Security.Permissions;
 
     public abstract partial class Utilities
     {
@@ -1842,6 +1844,64 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 return sb.ToString();
             }
+        }
+
+        internal static bool CanUserPostHTML(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo)
+        {
+            return forumInfo.FeatureSettings.AllowHTML && IsHtmlPermitted(forumInfo, forumUserInfo, UserIsTrusted(forumInfo, forumUserInfo), DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.ModerateRoleIds, forumUserInfo.UserRoleIds));
+
+        }
+
+        internal static bool UserIsTrusted(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo)
+        {
+            return IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, forumUserInfo.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.TrustRoleIds, forumUserInfo.UserRoleIds));
+        }
+
+        internal static bool IsHtmlPermitted(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo, bool userIsTrusted, bool userIsModerator)
+        {
+            if (forumInfo.FeatureSettings.EditorPermittedUsers == HTMLPermittedUsers.AllUsers)
+            {
+                return true;
+            }
+
+            if (forumInfo.FeatureSettings.EditorPermittedUsers == HTMLPermittedUsers.AuthenticatedUsers && forumUserInfo.IsAuthenticated)
+            {
+                return true;
+            }
+
+            if (forumInfo.FeatureSettings.EditorPermittedUsers == HTMLPermittedUsers.TrustedUsers && userIsTrusted)
+            {
+                return true;
+            }
+
+            if (forumInfo.FeatureSettings.EditorPermittedUsers == HTMLPermittedUsers.Moderators && userIsModerator)
+            {
+                return true;
+            }
+
+            if (forumInfo.FeatureSettings.EditorPermittedUsers == HTMLPermittedUsers.Administrators && ModulePermissionController.HasModulePermission(forumInfo.ModuleInfo.ModulePermissions, "EDIT"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        internal static bool UseCkEditor4WithForumsPlugins(Entities.ForumInfo forumInfo, ForumUserInfo forumUserInfo, bool allowHTML)
+        {
+            if (allowHTML)
+            {
+                if (forumInfo.FeatureSettings.EditorType.Equals(EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS))
+                {
+                    var editorProvider = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
+                    if (editorProvider != null && !string.IsNullOrEmpty(editorProvider.DefaultProvider) && (editorProvider.DefaultProvider.Contains("CKHtmlEditorProvider") || editorProvider.DefaultProvider.Contains("DNNConnect.CKE")))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -405,12 +405,6 @@
   <data name="[RESX:EditControl].Text" xml:space="preserve">
     <value>Content Wijzig Control</value>
   </data>
-  <data name="[RESX:EditorHeight].Text" xml:space="preserve">
-    <value>Hoogte</value>
-  </data>
-  <data name="[RESX:EditorMobile].Text" xml:space="preserve">
-    <value>Mobiele gebruikers</value>
-  </data>
   <data name="[RESX:EditorStyle].Text" xml:space="preserve">
     <value>Stijl</value>
   </data>
@@ -419,9 +413,6 @@
   </data>
   <data name="[RESX:EditorType].Text" xml:space="preserve">
     <value>Editor</value>
-  </data>
-  <data name="[RESX:EditorWidth].Text" xml:space="preserve">
-    <value>Breedte</value>
   </data>
   <data name="[RESX:EditTimeLimit].Text" xml:space="preserve">
     <value>Wijzig Interval</value>
