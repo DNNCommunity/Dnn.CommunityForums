@@ -479,13 +479,9 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Helper Methods
         private bool SecurityCheck(DotNetNuke.Modules.ActiveForums.SecureActions secType)
         {
-            if (this.ForumUser == null)
-            {
-                return false;
-            }
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess( this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoleIds);
-
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess( this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoleIds);
+            return this.ForumUser == null
+                ? false
+                : DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess( this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoleIds);
         }
 
         protected string GetSharedResource(string key)
@@ -493,35 +489,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return Localization.GetString(key, Globals.SharedResourceFile);
         }
 
-        internal bool IsHtmlPermitted(HTMLPermittedUsers permittedMode, bool userIsTrusted, bool userIsModerator)
-        {
-            if (permittedMode == HTMLPermittedUsers.AllUsers)
-            {
-                return true;
-            }
-
-            if (permittedMode == HTMLPermittedUsers.AuthenticatedUsers && this.Request.IsAuthenticated)
-            {
-                return true;
-            }
-
-            if (permittedMode == HTMLPermittedUsers.TrustedUsers && userIsTrusted)
-            {
-                return true;
-            }
-
-            if (permittedMode == HTMLPermittedUsers.Moderators && userIsModerator)
-            {
-                return true;
-            }
-
-            if (permittedMode == HTMLPermittedUsers.Administrators && ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "EDIT"))
-            {
-                return true;
-            }
-
-            return false;
-        }
 
         #endregion
 

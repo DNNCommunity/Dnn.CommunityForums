@@ -95,3 +95,11 @@ GO
 
 /* --------------------- */
 
+/* issue 1658 - begin - remove obsolete editor settings */
+
+DELETE FROM {databaseOwner}[{objectQualifier}activeforums_Settings] WHERE SettingName IN ('EDITORWIDTH', 'EDITORHEIGHT', 'EDITORMOBILE', 'EDITORSTYLE', 'EDITORTOOLBAR')
+GO
+
+/* issue 1658 - end - remove obsolete editor settings */
+
+/* --------------------- */

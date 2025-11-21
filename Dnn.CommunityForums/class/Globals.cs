@@ -264,11 +264,16 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AllowEmoticons = "ALLOWEMOTICONS";
         public const string AllowPostIcon = "ALLOWPOSTICON";
         public const string EditorType = "EDITORTYPE";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string EditorWidth = "EDITORWIDTH";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string EditorHeight = "EDITORHEIGHT";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string EditorToolbar = "EDITORTOOLBAR";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string EditorStyle = "EDITORSTYLE";
         public const string EditorPermittedUsers = "EDITORPERMITTEDUSERS";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string EditorMobile = "EDITORMOBILE";
         public const string AttachCount = "ATTACHCOUNT";
         public const string AttachMaxSize = "ATTACHMAXSIZE";

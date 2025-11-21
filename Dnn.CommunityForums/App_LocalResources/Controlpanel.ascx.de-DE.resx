@@ -405,12 +405,6 @@
   <data name="[RESX:EditControl].Text" xml:space="preserve">
     <value>Kontrolle über die Bearbeitung von Inhalten</value>
   </data>
-  <data name="[RESX:EditorHeight].Text" xml:space="preserve">
-    <value>Höhe</value>
-  </data>
-  <data name="[RESX:EditorMobile].Text" xml:space="preserve">
-    <value>Mobile Benutzer</value>
-  </data>
   <data name="[RESX:EditorStyle].Text" xml:space="preserve">
     <value>Stil</value>
   </data>
@@ -419,9 +413,6 @@
   </data>
   <data name="[RESX:EditorType].Text" xml:space="preserve">
     <value>Texteditor</value>
-  </data>
-  <data name="[RESX:EditorWidth].Text" xml:space="preserve">
-    <value>Breite</value>
   </data>
   <data name="[RESX:EditTimeLimit].Text" xml:space="preserve">
     <value>Bearbeitungsintervall</value>

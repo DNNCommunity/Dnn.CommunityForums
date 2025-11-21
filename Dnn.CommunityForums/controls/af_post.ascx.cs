@@ -142,26 +142,11 @@ namespace DotNetNuke.Modules.ActiveForums
             this.ctlForm.ModuleConfiguration = this.ModuleConfiguration;
             if (this.ForumInfo.FeatureSettings.AllowHTML)
             {
-                this.allowHTML = this.IsHtmlPermitted(this.ForumInfo.FeatureSettings.EditorPermittedUsers, this.userIsTrusted, this.canModEdit);
+                this.allowHTML = Utilities.IsHtmlPermitted(this.ForumInfo, this.ForumUser, this.userIsTrusted, this.canModEdit);
             }
 
+            this.editorType = this.allowHTML ? this.ForumInfo.FeatureSettings.EditorType : EditorType.TEXTBOX;
             this.ctlForm.AllowHTML = this.allowHTML;
-            if (this.allowHTML)
-            {
-                if (this.Request.Browser.IsMobileDevice)
-                {
-                    this.editorType = (EditorType)this.ForumInfo.FeatureSettings.EditorMobile;
-                }
-                else
-                {
-                    this.editorType = this.ForumInfo.FeatureSettings.EditorType;
-                }
-            }
-            else
-            {
-                this.editorType = EditorType.TEXTBOX;
-            }
-
             this.ctlForm.EditorType = this.editorType;
             this.ctlForm.ForumInfo = this.ForumInfo;
             this.ctlForm.RequireCaptcha = true;

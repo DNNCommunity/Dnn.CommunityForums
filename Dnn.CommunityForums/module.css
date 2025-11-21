@@ -1704,6 +1704,11 @@ div.dcf-mod-edit-wrap {
 .dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-count { background-color: red; border-radius: 5px; color: white; padding: 1px 3px; font-size: 11px; position: relative; top: 10px; left: 20px; z-index: 9; }
 .dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-count:empty { padding:0; }
 
-/* quick reply */
+/* quick reply - issue 1661 */
 .dcf-group .dcf-qr-text {padding-top: 1rem;}
 
+/* mobile UI - Issue 1658 */
+@media only screen and (max-width: 490px), only screen and (max-device-width: 490px) {
+    .dcf-topic-view .dcf-tools-bottom .dcf-subscribe-topic { display: none !important; }
+    .dcf-topic-view .dcf-tools-bottom .dcf-button-reply { display: none !important; }
+}

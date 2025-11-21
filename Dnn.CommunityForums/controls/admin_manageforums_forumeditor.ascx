@@ -261,21 +261,11 @@ function saveSettings(){
     } else {
 		var EditorType = 0;
 	};
-	var EditorHeight = document.getElementById("<%=txtEditorHeight.ClientID%>").value;
-	var EditorWidth = document.getElementById("<%=txtEditorWidth.ClientID%>").value;
 	var ed6 = document.getElementById("<%=drpPermittedRoles.ClientID%>");
     if (ed6.selectedIndex >= 0) {
         var EditorPermittedRoles = ed6.options[ed6.selectedIndex].value;
     } else {
         var EditorPermittedRoles = 0;
-    };
-	var edm = document.getElementById("<%=drpEditorMobile.ClientID%>");
-    if (edm.selectedIndex >= 0) {
-        var EditorMobile = edm.options[edm.selectedIndex].value;
-    } else if (AllowHtml == true) {
-        var EditorMobile = 3;/* default to forums-delivered CK Editor 4 */
-        } else {
-		var EditorMobile = 0;
     };
 		
 	var IsModerated = document.getElementById("<%=rdModOn.ClientID%>").checked;
@@ -308,11 +298,11 @@ function saveSettings(){
     var AllowLikes = document.getElementById("<%=rdLikesOn.ClientID%>").checked;
 	
     var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
-	<%=cbEditorAction.ClientID%>.Callback(settingsAction, forumid, null, null, EmailAddress, UseFilter, AllowPostIcon, AllowEmoticons, AllowScripts,
-		IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, EditorMobile, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, AttachInsertAllowed, MaxAttachWidth,
-		MaxAttachHeight, AttachConvertToJGPAllowed, AllowHtml, EditorType, EditorHeight, EditorWidth, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles, null, null,
-		AutoSubscribeRoles, null, IsModerated, DefaultTrustLevel, AutoTrustLevel, modNotifyApprove, modNotifyReject, modNotifyMove, modNotifyDelete,
-        modNotifyAlert, AutoSubscribeEnabled, null, EmailNotificationSubjectTemplate, TemplateFileNameSuffix);
+	<%=cbEditorAction.ClientID%>.Callback(settingsAction, forumid, EmailAddress, UseFilter, AllowPostIcon, AllowEmoticons, AllowScripts,
+		IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, AttachInsertAllowed, MaxAttachWidth,
+		MaxAttachHeight, AttachConvertToJGPAllowed, AllowHtml, EditorType, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles,
+		AutoSubscribeRoles, IsModerated, DefaultTrustLevel, AutoTrustLevel, modNotifyApprove, modNotifyReject, modNotifyMove, modNotifyDelete,
+        modNotifyAlert, AutoSubscribeEnabled, EmailNotificationSubjectTemplate, TemplateFileNameSuffix);
 
 
 };
@@ -1371,33 +1361,6 @@ function afadmin_getProperties() {
 				<td class="amcpbold" style="white-space: nowrap">[RESX:EditorType]:</td>
 				<td>
 					<asp:DropDownList ID="drpEditorTypes" runat="server" CssClass="amcptxtbx" >
-					</asp:DropDownList>
-				</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td class="amcpbold">[RESX:EditorHeight]:</td>
-				<td>
-					<asp:TextBox ID="txtEditorHeight" runat="server" CssClass="amcptxtbx" Text="400" /></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td class="amcpbold">[RESX:EditorWidth]:</td>
-				<td>
-					<asp:TextBox ID="txtEditorWidth" runat="server" CssClass="amcptxtbx" Text="99%" /></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td class="amcpbold">[RESX:EditorMobile]:</td>
-				<td>
-					<asp:DropDownList ID="drpEditorMobile" runat="server" CssClass="amcptxtbx">
-						<asp:ListItem Value="0">TextBox</asp:ListItem>
-						<asp:ListItem Value="2" Selected="False">Default DNN Editor</asp:ListItem>
-                        <asp:listitem value="3" selected="True">Forums Editor (Full)</asp:listitem>
-                        <%--<asp:listitem selected="False" value="4">Forums Editor (Light)</asp:listitem>--%>
 					</asp:DropDownList>
 				</td>
 				<td></td>
