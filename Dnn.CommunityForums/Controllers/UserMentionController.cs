@@ -30,6 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
 
@@ -101,43 +102,52 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                DotNetNuke.Modules.ActiveForums.Entities.UserMentionInfo UserMention = this.Find("WHERE ContentId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
-                if (UserMention == null)
+                DotNetNuke.Modules.ActiveForums.Entities.UserMentionInfo userMention = this.Find("WHERE ContentId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
+                if (userMention == null)
                 {
-                    UserMention = new DotNetNuke.Modules.ActiveForums.Entities.UserMentionInfo
+                    var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId); // this will create user if not exists
+                    if (user == null)
                     {
-                        ContentId = contentId,
-                        UserId = userId,
-                        PortalId = portalId,
-                        ModuleId = moduleId,
-                        DateMentioned = DateTime.UtcNow,
-                    };
-                    this.Insert(UserMention);
-                    if (UserMention.ForumUser.UserMentionNotificationsEnabled)
-                    {
-                        var subject = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.UserMentionNotificationSubject, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
-                        subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), UserMention.Content.Post, UserMention.ForumUser.PortalSettings, UserMention.ForumUser.ModuleSettings, new Services.URLNavigator().NavigationManager(), UserMention.ForumUser, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery).ToString();
-                        subject = subject.Length > 400 ? subject.Substring(0, 400) : subject;
-                        var body = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.UserMentionNotificationBody, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
-                        body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), UserMention.Content.Post, UserMention.ForumUser.PortalSettings, UserMention.ForumUser.ModuleSettings, new Services.URLNavigator().NavigationManager(), UserMention.ForumUser, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery).ToString();
-
-                        string notificationKey = BuildNotificationContextKey(portalId, moduleId, contentId, userId);
-
-                        NotificationType notificationType = NotificationsController.Instance.GetNotificationType(Globals.UserMentionNotificationType);
-                        Notification notification = new Notification
-                        {
-                            NotificationTypeID = notificationType.NotificationTypeId,
-                            Subject = subject,
-                            Body = body,
-                            IncludeDismissAction = true,
-                            SenderUserID = authorId,
-                            Context = notificationKey,
-                        };
-                        var users = new List<DotNetNuke.Entities.Users.UserInfo> { UserMention.ForumUser.UserInfo };
-                        NotificationsController.Instance.SendNotification(notification, portalId, null, users);
+                        DotNetNuke.Modules.ActiveForums.Exceptions.LogException(new ArgumentException($"User mention for User: {userId} could not be processed because user doesn't exist; skipping user mention."));
+                        return true;
                     }
+                    else
+                    {
+                        userMention = new DotNetNuke.Modules.ActiveForums.Entities.UserMentionInfo
+                        {
+                            ContentId = contentId,
+                            UserId = userId,
+                            PortalId = portalId,
+                            ModuleId = moduleId,
+                            DateMentioned = DateTime.UtcNow,
+                        };
+                        this.Insert(userMention);
+                        if (userMention.ForumUser.UserMentionNotificationsEnabled)
+                        {
+                            var subject = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.UserMentionNotificationSubject, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                            subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), userMention.Content.Post, userMention.ForumUser.PortalSettings, userMention.ForumUser.ModuleSettings, new Services.URLNavigator().NavigationManager(), userMention.ForumUser, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery).ToString();
+                            subject = subject.Length > 400 ? subject.Substring(0, 400) : subject;
+                            var body = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.UserMentionNotificationBody, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                            body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), userMention.Content.Post, userMention.ForumUser.PortalSettings, userMention.ForumUser.ModuleSettings, new Services.URLNavigator().NavigationManager(), userMention.ForumUser, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery).ToString();
 
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.UserMentionInfo, moduleId, UserMention.UserMentionId));
+                            string notificationKey = BuildNotificationContextKey(portalId, moduleId, contentId, userId);
+
+                            NotificationType notificationType = NotificationsController.Instance.GetNotificationType(Globals.UserMentionNotificationType);
+                            Notification notification = new Notification
+                            {
+                                NotificationTypeID = notificationType.NotificationTypeId,
+                                Subject = subject,
+                                Body = body,
+                                IncludeDismissAction = true,
+                                SenderUserID = authorId,
+                                Context = notificationKey,
+                            };
+                            var users = new List<DotNetNuke.Entities.Users.UserInfo> { userMention.ForumUser.UserInfo };
+                            NotificationsController.Instance.SendNotification(notification, portalId, null, users);
+                        }
+
+                        DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.UserMentionInfo, moduleId, userMention.UserMentionId));
+                    }
                 }
 
                 return true;

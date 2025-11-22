@@ -191,9 +191,9 @@ namespace DotNetNuke.Modules.ActiveForums
             set => this.defaultFeatureSettings = value;
         }
 
-        public bool ModeIsStandard => this.MainSettings.GetString(SettingKeys.Mode).Equals(ModuleModes.Standard);
+        public bool ModeIsStandard => this.MainSettings.GetString(SettingKeys.Mode, ModuleModes.Standard).Equals(ModuleModes.Standard);
 
-        public bool ModeIsSocial => this.MainSettings.GetString(SettingKeys.Mode).Equals(ModuleModes.SocialGroup);
+        public bool ModeIsSocial => this.MainSettings.GetString(SettingKeys.Mode, ModuleModes.Standard).Equals(ModuleModes.SocialGroup);
     }
 
     public class SettingsInfo

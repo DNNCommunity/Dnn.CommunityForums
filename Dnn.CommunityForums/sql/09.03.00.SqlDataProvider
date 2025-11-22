@@ -103,3 +103,23 @@ GO
 /* issue 1658 - end - remove obsolete editor settings */
 
 /* --------------------- */
+
+/* issue 1659 - begin - add mention to security matrix */
+
+
+/* add CanMention to activeforums_Permissions */
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'CanMention' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Permissions] ADD
+	[CanMention] [nvarchar](1000) NULL
+END
+GO
+
+/* default CanMention to match CanEdit */
+UPDATE {databaseOwner}[{objectQualifier}activeforums_Permissions]
+SET CanMention = CanEdit
+GO
+
+/* issue 1659 - end - add mention to security matrix */
+
+/* --------------------- */

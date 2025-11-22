@@ -80,7 +80,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// Gets or sets the PortalId.
         /// </summary>
         public int PortalId { get; set; }
-
+        
+        /// <summary>
         /// Gets or sets the ModuleId.
         /// </summary>
         public int ModuleId { get; set; }

@@ -85,6 +85,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                         case SecureActions.Tag:
                             roles = fi.Security.TagRoleIds;
                             break;
+                        case SecureActions.Mention:
+                            roles = fi.Security.MentionRoleIds;
+                            break;
                         case SecureActions.Categorize:
                             roles = fi.Security.CategorizeRoleIds;
                             break;

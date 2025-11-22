@@ -103,6 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             PortalId = portalId,
                             TopicCount = 0,
                             ReplyCount = 0,
+                            DateCreated = DateTime.UtcNow,
                             DateLastActivity = DateTime.UtcNow,
                             PrefBlockSignatures = false,
                             PrefBlockAvatars = false,

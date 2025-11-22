@@ -69,6 +69,8 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
 
         public HashSet<int> TagRoleIds => this.permissions.TagRoleIds;
 
+        public HashSet<int> MentionRoleIds => this.permissions.MentionRoleIds;
+
         public HashSet<int> CategorizeRoleIds => this.permissions.CategorizeRoleIds;
 
         public HashSet<int> PrioritizeRoleIds => this.permissions.PrioritizeRoleIds;
@@ -134,6 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
                 Subscribe = string.Join(";", this.SubscribeRoleIds.Distinct().OrderBy(r => r)),
                 Announce = string.Join(";", this.AnnounceRoleIds.Distinct().OrderBy(r => r)),
                 Tag = string.Join(";", this.TagRoleIds.Distinct().OrderBy(r => r)),
+                Mention = string.Join(";", this.MentionRoleIds.Distinct().OrderBy(r => r)),
                 Categorize = string.Join(";", this.CategorizeRoleIds.Distinct().OrderBy(r => r)),
                 Prioritize = string.Join(";", this.PrioritizeRoleIds.Distinct().OrderBy(r => r)),
                 Moderate = string.Join(";", this.ModerateRoleIds.Distinct().OrderBy(r => r)),

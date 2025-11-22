@@ -1639,4 +1639,10 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
     <value># of days between earning this badge</value>
   </data>
+  <data name="[RESX:Tips:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Can mention other users in posts.</value>
+  </data>
+  <data name="[RESX:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Mention</value>
+  </data>
 </root>

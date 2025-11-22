@@ -402,4 +402,7 @@
   <data name="AvatarRefreshType.Help" xml:space="preserve">
     <value>Actualise périodiquement les avatars à l’aide du service sélectionné</value>
   </data>
+  <data name="[RESX:SecGrid:mention].Text" xml:space="preserve">
+    <value>Mentionner</value>
+  </data>
 </root>
