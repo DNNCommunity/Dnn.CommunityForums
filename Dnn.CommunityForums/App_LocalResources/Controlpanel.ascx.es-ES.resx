@@ -1528,4 +1528,22 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
     <value>Puede administrar las opciones de otros usuarios, desterrar a un usuario deshonesto, eliminar todo el contenido del usuario y deshabilitar su cuenta de usuario DNN. No se puede utilizar en superusuarios ni administradores. Solo se debe conceder a moderadores de confianza o roles de administrador.</value>
   </data>
+  <data name="[RESX:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Mención</value>
+  </data>
+  <data name="[RESX:UserMentionVisibility].Text" xml:space="preserve">
+    <value>Visibilidad de las menciones de usuario</value>
+  </data>
+  <data name="[RESX:RegisteredUsersPlusAdmins].Text" xml:space="preserve">
+    <value>Usuarios y administradores registrados, pero no superusuarios</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Puede mencionar a otros usuarios en las publicaciones (si la función está activada para el foro)</value>
+  </data>
+  <data name="[RESX:Tips:UserMentions].Text" xml:space="preserve">
+    <value>Si está activado, puedes elegir qué lista de usuarios disponibles mostrar cuando un usuario empiece a mencionar usar @ en una publicación</value>
+  </data>
+  <data name="[RESX:UserMentions].Text" xml:space="preserve">
+    <value>Menciones de usuarios</value>
+  </data>
 </root>

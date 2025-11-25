@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected Controls.admin_securitygrid ctlSecurityGrid = new Controls.admin_securitygrid();
 
         protected System.Web.UI.WebControls.Literal litScripts;
-        protected System.Web.UI.HtmlControls.HtmlGenericControl span_Parent; 
+        protected System.Web.UI.HtmlControls.HtmlGenericControl span_Parent;
         protected System.Web.UI.WebControls.Literal litTabs;
         protected System.Web.UI.HtmlControls.HtmlTableRow trGroups;
         protected System.Web.UI.WebControls.DropDownList drpGroups;
@@ -94,12 +94,14 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.HtmlControls.HtmlGenericControl cfgAttach;
         protected System.Web.UI.WebControls.RadioButton rdHTMLOn;
         protected System.Web.UI.WebControls.RadioButton rdHTMLOff;
+        protected System.Web.UI.HtmlControls.HtmlGenericControl cfgMentions;
+        protected System.Web.UI.WebControls.RadioButton rdMentionsOn;
+        protected System.Web.UI.WebControls.RadioButton rdMentionsOff;
         protected System.Web.UI.HtmlControls.HtmlGenericControl cfgHTML;
         protected System.Web.UI.HtmlControls.HtmlTableRow trAutoSub;
         protected System.Web.UI.WebControls.RadioButton rdAutoSubOn;
         protected System.Web.UI.WebControls.RadioButton rdAutoSubOff;
         protected System.Web.UI.HtmlControls.HtmlGenericControl cfgAutoSub;
-        protected System.Web.UI.HtmlControls.HtmlTableRow trAllowLikes;
         protected System.Web.UI.WebControls.RadioButton rdLikesOn;
         protected System.Web.UI.WebControls.RadioButton rdLikesOff;
         protected System.Web.UI.WebControls.Label lblMaintWarn;
@@ -140,6 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.WebControls.CheckBox chkSocialTopicsOnly;
         protected System.Web.UI.WebControls.DropDownList drpSocialSecurityOption;
         protected System.Web.UI.WebControls.Literal litPropLoad;
+        protected System.Web.UI.WebControls.DropDownList drpUserMentionVisibility;
 
         #region Event Handlers
 
@@ -161,6 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 this.BindRoles();
                 this.BindEditorTypes();
+                this.BindUserMentionVisibility();
             }
 
             var sepChar = '|';
@@ -262,7 +266,12 @@ namespace DotNetNuke.Modules.ActiveForums
             this.rdModOff.Attributes.Add("value", "0");
             this.cfgMod.Attributes.Add("style", "display:none;");
             this.cfgMod.InnerHtml = propImage;
-
+            this.rdMentionsOn.Attributes.Add("value", "1");
+            this.rdMentionsOff.Attributes.Add("value", "0");
+            this.rdMentionsOn.Attributes.Add("onclick", "toggleMentions(this);");
+            this.rdMentionsOff.Attributes.Add("onclick", "toggleMentions(this);");
+            this.cfgMentions.Attributes.Add("style", "display:none;");
+            this.cfgMentions.InnerHtml = propImage;
             this.trAutoSub.Visible = true;
             this.rdAutoSubOn.Attributes.Add("onclick", "toggleAutoSub(this);");
             this.rdAutoSubOff.Attributes.Add("onclick", "toggleAutoSub(this);");
@@ -312,6 +321,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.cfgAutoSub.Attributes.Add("onclick", "showProp(this,'subProp')");
 
                 this.cfgAttach.Attributes.Add("onclick", "showProp(this,'attachProp')");
+
+                this.cfgMentions.Attributes.Add("onclick", "showProp(this,'mentionsProp')");
 
                 var sb = new StringBuilder();
                 sb.Append("<script type=\"text/javascript\">");
@@ -531,6 +542,8 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.AutoSubscribeEnabled, parameters[34]);
             DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.EmailNotificationSubjectTemplate, parameters[35]);
             DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.TemplateFileNameSuffix, parameters[36]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.UserMentions, parameters[37]);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(this.ModuleId, sKey, ForumSettingKeys.UserMentionVisibility, parameters[38]);
         }
 
         private void LoadForum(int forumId)
@@ -648,9 +661,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadFeatureSettings(DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings featureSettings)
         {
-
             Utilities.SelectListItemByValue(this.drpDefaultTrust, (int)featureSettings.DefaultTrustValue);
             Utilities.SelectListItemByValue(this.drpEditorTypes, (int)featureSettings.EditorType);
+            Utilities.SelectListItemByValue(this.drpUserMentionVisibility, (int)featureSettings.UserMentionVisibility);
             Utilities.SelectListItemByValue(this.drpPermittedRoles, (int)featureSettings.EditorPermittedUsers);
 
             this.txtAutoTrustLevel.Text = featureSettings.AutoTrustLevel.ToString();
@@ -738,6 +751,18 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 this.cfgMod.Attributes.Add("style", "display:none;");
+            }
+
+            this.rdMentionsOn.Checked = featureSettings.UserMentions;
+            this.rdMentionsOff.Checked = !featureSettings.UserMentions;
+
+            if (featureSettings.UserMentions)
+            {
+                this.cfgMentions.Attributes.Remove("style");
+            }
+            else
+            {
+                this.cfgMentions.Attributes.Add("style", "display:none;");
             }
 
             this.rdAutoSubOn.Checked = featureSettings.AutoSubscribeEnabled;
@@ -859,6 +884,11 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindEditorTypes()
         {
             Utilities.BindEnum(pDDL: this.drpEditorTypes, enumType: typeof(Enums.EditorType), pColValue: string.Empty, addEmptyValue: false, localize: true, excludeIndex: -1);
+        }
+
+        private void BindUserMentionVisibility()
+        {
+            Utilities.BindEnum(pDDL: this.drpUserMentionVisibility, enumType: typeof(Enums.UserMentionVisibility), pColValue: string.Empty, addEmptyValue: false, localize: true, excludeIndex: -1);
         }
         #endregion
 

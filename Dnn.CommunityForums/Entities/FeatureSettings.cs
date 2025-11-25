@@ -279,9 +279,24 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public string EditorToolBar => throw new NotImplementedException();
 
+        [IgnoreColumn]
+        public bool UserMentions => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.UserMentions], true);
+
+        [IgnoreColumn]
+        public DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility UserMentionVisibility
+        {
+            get
+            {
+                DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility parseValue;
+                return Enum.TryParse(Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.UserMentionVisibility], DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.RegisteredUsers.ToString()), true, out parseValue)
+                    ? parseValue
+                    : DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.RegisteredUsers;
+            }
+        }
+
         public bool EqualSettings(FeatureSettings other)
         {
-            return !(other is null) && this.AllowAttach == other.AllowAttach && this.AllowEmoticons == other.AllowEmoticons && this.AllowHTML == other.AllowHTML && this.AllowLikes == other.AllowLikes && this.AllowPostIcon == other.AllowPostIcon && this.AllowRSS == other.AllowRSS && this.AllowScript == other.AllowScript && this.AllowSubscribe == other.AllowSubscribe && this.AttachCount == other.AttachCount && this.AttachMaxSize == other.AttachMaxSize && this.AttachTypeAllowed == other.AttachTypeAllowed && this.AttachAllowBrowseSite == other.AttachAllowBrowseSite && this.MaxAttachWidth == other.MaxAttachWidth && this.MaxAttachHeight == other.MaxAttachHeight && this.AttachInsertAllowed == other.AttachInsertAllowed && this.ConvertingToJpegAllowed == other.ConvertingToJpegAllowed && this.EditorType == other.EditorType && this.EditorPermittedUsers == other.EditorPermittedUsers && this.EmailAddress == other.EmailAddress && this.IndexContent == other.IndexContent && this.IsModerated == other.IsModerated && this.UseFilter == other.UseFilter && this.AutoTrustLevel == other.AutoTrustLevel && this.DefaultTrustValue == other.DefaultTrustValue && this.ModApproveNotify == other.ModApproveNotify && this.ModRejectNotify == other.ModRejectNotify && this.ModMoveNotify == other.ModMoveNotify && this.ModDeleteNotify == other.ModDeleteNotify && this.ModAlertNotify == other.ModAlertNotify && this.AllowTags == other.AllowTags && this.AutoSubscribeEnabled == other.AutoSubscribeEnabled && this.AutoSubscribeRoles == other.AutoSubscribeRoles && this.AutoSubscribeNewTopicsOnly == other.AutoSubscribeNewTopicsOnly && this.CreatePostCount == other.CreatePostCount && this.ReplyPostCount == other.ReplyPostCount;
+            return !(other is null) && this.AllowAttach == other.AllowAttach && this.AllowEmoticons == other.AllowEmoticons && this.AllowHTML == other.AllowHTML && this.AllowLikes == other.AllowLikes && this.AllowPostIcon == other.AllowPostIcon && this.AllowRSS == other.AllowRSS && this.AllowScript == other.AllowScript && this.AllowSubscribe == other.AllowSubscribe && this.AttachCount == other.AttachCount && this.AttachMaxSize == other.AttachMaxSize && this.AttachTypeAllowed == other.AttachTypeAllowed && this.AttachAllowBrowseSite == other.AttachAllowBrowseSite && this.MaxAttachWidth == other.MaxAttachWidth && this.MaxAttachHeight == other.MaxAttachHeight && this.AttachInsertAllowed == other.AttachInsertAllowed && this.ConvertingToJpegAllowed == other.ConvertingToJpegAllowed && this.EditorType == other.EditorType && this.EditorPermittedUsers == other.EditorPermittedUsers && this.EmailAddress == other.EmailAddress && this.IndexContent == other.IndexContent && this.IsModerated == other.IsModerated && this.UseFilter == other.UseFilter && this.AutoTrustLevel == other.AutoTrustLevel && this.DefaultTrustValue == other.DefaultTrustValue && this.ModApproveNotify == other.ModApproveNotify && this.ModRejectNotify == other.ModRejectNotify && this.ModMoveNotify == other.ModMoveNotify && this.ModDeleteNotify == other.ModDeleteNotify && this.ModAlertNotify == other.ModAlertNotify && this.AllowTags == other.AllowTags && this.AutoSubscribeEnabled == other.AutoSubscribeEnabled && this.AutoSubscribeRoles == other.AutoSubscribeRoles && this.AutoSubscribeNewTopicsOnly == other.AutoSubscribeNewTopicsOnly && this.CreatePostCount == other.CreatePostCount && this.ReplyPostCount == other.ReplyPostCount && this.UserMentionVisibility == other.UserMentionVisibility;
         }
     }
 }
