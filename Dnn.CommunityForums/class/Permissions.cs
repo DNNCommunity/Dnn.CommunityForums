@@ -42,6 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums
         Subscribe,
         Announce,
         Tag,
+        Mention,
         Categorize,
         Prioritize,
         Moderate,

@@ -990,7 +990,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.EditorType.Equals(EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS))
             {
-                this.InjectMentionsPluginsForCkEditor4();
+                this.InjectPluginsForCkEditor4();
             }
         }
 
@@ -1279,7 +1279,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "editorHTML", sb.ToString(), true);
         }
 
-        private void InjectMentionsPluginsForCkEditor4()
+        private void InjectPluginsForCkEditor4()
         {
             if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
             {
@@ -1294,9 +1294,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var userTag = this.GetTagForUserMentions();
                 var avatarTag = this.GetAvatarTagForUserMentions();
 
-                sb.Append("editorConfigeditortxtBody.mentions = [");
-                sb.Append(" { feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 3, throttle: 100, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatarTag + "{name}</li>', outputTemplate: `<a href=\"" + userTag + "\">" + avatarTag + "&nbsp;{name}</a>` },");
-                sb.Append("];");
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.MentionRoleIds, this.ForumUser.UserRoleIds))
+                {
+                    sb.Append("editorConfigeditortxtBody.mentions = [");
+                    sb.Append(" { feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 3, throttle: 100, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatarTag + "{name}</li>', outputTemplate: `<a href=\"" + userTag + "\">" + avatarTag + "&nbsp;{name}</a>` },");
+                    sb.Append("];");
+                }
+
                 if (this.Request.Browser.IsMobileDevice)
                 {
                     sb.Append("editorConfigeditortxtBody.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] }, { name: 'insert', items: [ 'Code' ] } ];");

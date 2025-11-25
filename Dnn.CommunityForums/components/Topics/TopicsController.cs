@@ -357,6 +357,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         ForumsConfig.Install_UserMentionNotificationType_090300();
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
                     }
                     catch (Exception ex)
                     {

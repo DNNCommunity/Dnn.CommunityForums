@@ -507,4 +507,7 @@
   <data name="AvatarRefreshDisabled.Text" xml:space="preserve">
     <value>Disabled</value>
   </data>
+  <data name="[RESX:SecGrid:mention].Text" xml:space="preserve">
+    <value>Mention</value>
+  </data>
 </root>

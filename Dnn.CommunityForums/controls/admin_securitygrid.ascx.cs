@@ -135,6 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         { Enum.GetName(typeof(SecureActions), SecureActions.Categorize), security.Categorize, },
                         { Enum.GetName(typeof(SecureActions), SecureActions.Prioritize), security.Prioritize, },
                         { Enum.GetName(typeof(SecureActions), SecureActions.Tag), security.Tag, },
+                        { Enum.GetName(typeof(SecureActions), SecureActions.Mention), security.Mention, },
                     },
                     new string[,]
                     {

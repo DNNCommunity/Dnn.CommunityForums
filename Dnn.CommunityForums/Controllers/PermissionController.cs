@@ -261,6 +261,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 SecureActions.Reply,
                 SecureActions.Subscribe,
                 SecureActions.Attach,
+                SecureActions.Mention,
+                SecureActions.Tag,
             };
             foreach (var access in requestedAccessList)
             {
@@ -629,6 +631,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     return permission.Subscribe;
                 case SecureActions.Tag:
                     return permission.Tag;
+                case SecureActions.Mention:
+                    return permission.Mention;
                 case SecureActions.Trust:
                     return permission.Trust;
                 case SecureActions.View:
@@ -798,13 +802,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Announce, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Attach, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.ManageUsers, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Categorize, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Create, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Delete, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Edit, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Lock, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.ManageUsers, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Moderate, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Mention, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Move, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Pin, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Poll, roleObjects);
@@ -898,6 +903,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         break;
                     case SecureActions.View:
                         permission.View = permSet;
+                        break;
+                    case SecureActions.Mention:
+                        permission.Mention = permSet;
                         break;
                     case SecureActions.Moderate:
                         permission.Moderate = permSet;

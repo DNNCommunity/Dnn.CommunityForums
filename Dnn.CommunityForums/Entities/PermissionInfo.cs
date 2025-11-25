@@ -160,6 +160,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public HashSet<int> ManageUsersRoleIds => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.ManageUsers);
 
+        [ColumnName("CanMention")]
+        public string Mention { get; set; }
+
+        [IgnoreColumn]
+        public HashSet<int> MentionRoleIds => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.Mention);
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
         public ObjectType Type { get; set; }
@@ -185,6 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                    this.EqualPermissionMembers(this.Edit, other.Edit) &&
                    this.EqualPermissionMembers(this.Lock, other.Lock) &&
                    this.EqualPermissionMembers(this.ManageUsers, other.ManageUsers) &&
+                   this.EqualPermissionMembers(this.Mention, other.Mention) &&
                    this.EqualPermissionMembers(this.Moderate, other.Moderate) &&
                    this.EqualPermissionMembers(this.Move, other.Move) &&
                    this.EqualPermissionMembers(this.Pin, other.Pin) &&
@@ -216,7 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return true;
             }
 
-            var thisPermsRoles= thisPermissions.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+            var thisPermsRoles = thisPermissions.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
             var otherPermsRoles = otherPermissions.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
 
             return thisPermsRoles.SetEquals(otherPermsRoles);

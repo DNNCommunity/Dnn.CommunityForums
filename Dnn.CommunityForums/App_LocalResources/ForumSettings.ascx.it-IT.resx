@@ -402,4 +402,7 @@
   <data name="[RESX:SecGrid:manageusers].Text" xml:space="preserve">
     <value>Gestisci utenti</value>
   </data>
+  <data name="[RESX:SecGrid:mention].Text" xml:space="preserve">
+    <value>Menzionare</value>
+  </data>
 </root>

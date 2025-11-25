@@ -346,49 +346,6 @@ function amGetScrollHeight() {
 
     return h ? h : 0;
 };
-function insertCode(sText) {
-    var newMessage;
-    var strMessage = document.getElementById('txtBody').value;
-    newMessage = strMessage + sText;
-    document.getElementById('txtBody').value = newMessage;
-    document.getElementById('txtBody').focus();
-    return;
-};
-function nothing() {
-    return;
-};
-
-
-function insertQuote() {
-    var txt = "";
-    if (document.getSelection) {
-        txt = document.getSelection();
-    } else if (document.selection && document.selection.createRange) {
-        txt = document.selection.createRange().text;
-    } else {
-        return;
-    };
-    if (txt != "") {
-        var s = new String();
-        s += "[quote]";
-        s += txt + "[/quote]";
-        insertCode(s);
-    } else {
-        insertCode('[quote] [/quote]');
-    };
-};
-function afQuickSubmit() {
-    var hid = document.getElementById('hidReply1');
-    hid.value = 'true';
-    document.forms[0].submit();
-};
-function afQuickSubmitCkEditor4() {
-    var hid = document.getElementById('hidReply1');
-    hid.value = 'true';
-    var txtBody = document.getElementById('txtBody');
-    txtBody.value = amaf_getBody();
-    document.forms[0].submit();
-};
 function amaf_catSelect(obj) {
     var chkv = document.getElementById('amaf-catselect');
     chkv.value = '';

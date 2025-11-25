@@ -354,7 +354,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 }
             }
         }
-
+        
         internal static void UpgradeSocialGroupForumConfigModuleSettings_090201()
         {
             foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
@@ -424,6 +424,59 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                             });
                             DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig);
                             DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumGroupTemplate);
+                        }
+
+                        DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
+                        DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
+                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
+                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                    }
+                }
+            }
+        }
+
+        internal static void UpgradeSocialGroupForumConfigModuleSettings_090300()
+        {
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+            {
+                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                {
+                    if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant())
+                    {
+                        if (SettingsBase.GetModuleSettings(module.ModuleID).ModeIsSocial)
+                        {
+                            var forumConfig = module.ModuleSettings.GetString(SettingKeys.SocialGroupModeForumConfig, string.Empty);
+                            if (!string.IsNullOrEmpty(forumConfig))
+                            {
+                                var xDoc = new XmlDocument();
+                                xDoc.LoadXml(forumConfig);
+                                if (xDoc != null)
+                                {
+                                    string[] secTypes = { "groupadmin", "groupmember", "registereduser", "anon" };
+                                    foreach (string secType in secTypes)
+                                    {
+                                        string xpath = $"//defaultforums/forum/security[@type='{secType}']";
+                                        foreach (var nodename in new string[] { "tag", "mention" })
+                                        {
+                                            if (!xDoc.DocumentElement.SelectSingleNode(xpath).InnerXml.Contains(nodename))
+                                            {
+                                                try
+                                                {
+                                                    xDoc.DocumentElement.SelectSingleNode(xpath).AddElement(nodename, string.Empty);
+                                                    xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode(nodename).AddAttribute("value", secType.Equals("anon") || secType.Equals("registereduser") ? "false" : "true");
+                                                }
+                                                catch
+                                                {
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    forumConfig = xDoc.OuterXml;
+                                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig);
+                                    DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig, forumConfig);
+                                }
+                            }
                         }
 
                         DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
