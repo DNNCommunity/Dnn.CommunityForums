@@ -296,13 +296,21 @@ function saveSettings(){
 	if (AutoSubscribeNewTopicsOnly == null){AutoSubscribeNewTopicsOnly = false;};
 
     var AllowLikes = document.getElementById("<%=rdLikesOn.ClientID%>").checked;
-	
+
+	var UserMentions = document.getElementById("<%=rdMentionsOn.ClientID%>").checked;	
+    var umvd1 = document.getElementById("<%=drpUserMentionVisibility.ClientID%>");
+    if (umvd1.selectedIndex > 0) {
+        var UserMentionVisibility = umvd1.options[umvd1.selectedIndex].value;
+    } else {
+        var UserMentionVisibility = 0;
+    }
+
     var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
 	<%=cbEditorAction.ClientID%>.Callback(settingsAction, forumid, EmailAddress, UseFilter, AllowPostIcon, AllowEmoticons, AllowScripts,
 		IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, AttachInsertAllowed, MaxAttachWidth,
 		MaxAttachHeight, AttachConvertToJGPAllowed, AllowHtml, EditorType, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles,
 		AutoSubscribeRoles, IsModerated, DefaultTrustLevel, AutoTrustLevel, modNotifyApprove, modNotifyReject, modNotifyMove, modNotifyDelete,
-        modNotifyAlert, AutoSubscribeEnabled, EmailNotificationSubjectTemplate, TemplateFileNameSuffix);
+        modNotifyAlert, AutoSubscribeEnabled, EmailNotificationSubjectTemplate, TemplateFileNameSuffix, UserMentions, UserMentionVisibility);
 
 
 };
@@ -342,6 +350,17 @@ function toggleAttach(obj){
 	};
 };
 
+function toggleMentions(obj){
+	closeAllProp();
+	var mentions = document.getElementById("<%=cfgMentions.ClientID%>");
+	if (obj.value == '1'){
+		mentions.style.display = '';
+	}else{
+		mentions.style.display = 'none';
+		var winDiv = document.getElementById('mentionsProp');
+		mentions.style.display = 'none';
+	};
+};
 
 	function showProp(obj,win){
         var propertyWindow = document.getElementById(win);
@@ -1208,18 +1227,34 @@ function afadmin_getProperties() {
                         </td>
                     </tr>
 
-                    <tr id="trAllowLikes" runat="server">
+                    <tr>
                         <td>
                             <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:AllowLikes]');" onmouseout="amHideTip(this);" /></td>
 
                         <td class="amcpbold" style="white-space: nowrap;">[RESX:AllowLikes]:</td>
                         <td align="center">
-                            <asp:radiobutton id="rdLikesOn" groupname="AllowLikes" runat="server" />
+                            <asp:radiobutton id="rdLikesOn" groupname="AllowLikes" runat="server" checked="true" />
                         </td>
                         <td align="center">
-                            <asp:radiobutton id="rdLikesOff" groupname="AllowLikes" runat="server" checked="true" />
+                            <asp:radiobutton id="rdLikesOff" groupname="AllowLikes" runat="server" />
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/tooltip.png")%>" onmouseover="amShowTip(this, '[RESX:Tips:UserMentions]');" onmouseout="amHideTip(this);" /></td>
+
+                        <td class="amcpbold" style="white-space: nowrap;">[RESX:UserMentions]:</td>
+                        <td align="center">
+                            <asp:radiobutton id="rdMentionsOn" groupname="UserMentions" runat="server" checked="true" />
+                        </td>
+                        <td align="center">
+                            <asp:radiobutton id="rdMentionsOff" groupname="UserMentions" runat="server" />
+                        </td>
+                        <td width="100%">
+                            <div id="cfgMentions" runat="server" class="amcfgbtn" style="display: none;"></div>
+                        </td>
+                    </tr>
+                    
                 </table>
             </div>
         </div>
@@ -1368,6 +1403,25 @@ function afadmin_getProperties() {
 		</table>
 	</div>
 </div>
+
+
+<!-- Forum Features User Mentions -->
+<div class="ammodalpop" style="display: none; position: absolute;" id="mentionsProp">
+    <div style="margin: 0px; padding: 10px;">
+        <table cellpadding="0" cellspacing="2" border="0" style="margin: 0px; padding: 0px;">
+            <tr>
+                <td></td>
+                <td class="amcpbold" style="white-space: nowrap">[RESX:UserMentionVisibility]:</td>
+                <td>
+                    <asp:dropdownlist id="drpUserMentionVisibility" runat="server" cssclass="amcptxtbx">
+                    </asp:dropdownlist>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
 <div class="ammodalpop" style="display: none; position: absolute;" id="modProp">
     <div style="margin: 0px; padding: 10px;">
 

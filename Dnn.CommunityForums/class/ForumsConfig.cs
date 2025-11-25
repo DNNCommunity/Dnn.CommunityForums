@@ -703,10 +703,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowHTML, "true");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS).ToString());
 
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorHeight, "350");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorWidth, "99%");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorToolbar, "bold,italic,underline,quote");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorStyle, "2");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.UserMentions, "true");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.UserMentionVisibility, ((int)DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.RegisteredUsers).ToString());
+
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.IsModerated, "false");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.DefaultTrustLevel, "0");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AutoTrustLevel, "0");
@@ -885,6 +884,26 @@ namespace DotNetNuke.Modules.ActiveForums
                 NotificationsController.Instance.CreateNotificationType(type);
             }
         }
-
+        
+        internal static void Upgrade_AddUserMentionVisibilityForumSetting_090300()
+        {
+            try
+            {
+                foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+                {
+                    foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                    {
+                        if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant())
+                        {
+                            Install_Upgrade_ForumDefaultSettingsAndSecurity(portalId: module.PortalID, moduleId: module.ModuleID);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
     }
 }

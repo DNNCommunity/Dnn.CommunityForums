@@ -1528,4 +1528,22 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
     <value>Può gestire le opzioni di altri utenti, bandire un utente non autorizzato, eliminare tutti i contenuti per l'utente e disabilitare il suo account utente DNN. Non può essere utilizzato su utenti con privilegi avanzati o amministratori. Deve essere concesso solo ai moderatori attendibili o ai ruoli di amministratore.</value>
   </data>
+  <data name="[RESX:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Menzionare</value>
+  </data>
+  <data name="[RESX:UserMentionVisibility].Text" xml:space="preserve">
+    <value>Visibilità delle menzioni utente</value>
+  </data>
+  <data name="[RESX:RegisteredUsersPlusAdmins].Text" xml:space="preserve">
+    <value>Utenti registrati e amministratori ma non Super User</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Può menzionare altri utenti nei post (se la funzione è abilitata per il forum)</value>
+  </data>
+  <data name="[RESX:Tips:UserMentions].Text" xml:space="preserve">
+    <value>Se abilitato, puoi scegliere quale elenco di utenti disponibili mostrare quando un utente inizia a menzionare @ in un post</value>
+  </data>
+  <data name="[RESX:UserMentions].Text" xml:space="preserve">
+    <value>Menzioni degli utenti</value>
+  </data>
 </root>

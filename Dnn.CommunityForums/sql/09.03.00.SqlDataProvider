@@ -123,3 +123,51 @@ GO
 /* issue 1659 - end - add mention to security matrix */
 
 /* --------------------- */
+
+/* issue 1660 - begin - add default user mention enabled and registered users visibility to forum settings */
+
+INSERT INTO [dbo].[activeforums_Settings] (ModuleId, SettingsKey, SettingName, SettingValue)
+SELECT t.ModuleId,
+       t.SettingsKey,
+       'USERMENTIONS' AS SettingName,
+       'true' AS SettingValue
+FROM (
+    SELECT DISTINCT ModuleId, SettingsKey
+    FROM [dbo].[activeforums_Settings]
+) t
+INNER JOIN [dbo].[activeforums_Settings] s
+    ON s.ModuleId = t.ModuleId
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM [dbo].[activeforums_Settings] existing
+    WHERE existing.ModuleId = t.ModuleId
+      AND existing.SettingsKey = t.SettingsKey
+      AND existing.SettingName = 'USERMENTIONS'
+)
+GROUP BY t.ModuleId, t.SettingsKey;
+GO
+
+INSERT INTO [dbo].[activeforums_Settings] (ModuleId, SettingsKey, SettingName, SettingValue)
+SELECT t.ModuleId,
+       t.SettingsKey,
+       'USERMENTIONVISIBILITY' AS SettingName,
+       '1' AS SettingValue /* registered users */
+FROM (
+    SELECT DISTINCT ModuleId, SettingsKey
+    FROM [dbo].[activeforums_Settings]
+) t
+INNER JOIN [dbo].[activeforums_Settings] s
+    ON s.ModuleId = t.ModuleId
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM [dbo].[activeforums_Settings] existing
+    WHERE existing.ModuleId = t.ModuleId
+      AND existing.SettingsKey = t.SettingsKey
+      AND existing.SettingName = 'USERMENTIONVISIBILITY'
+)
+GROUP BY t.ModuleId, t.SettingsKey;
+GO
+
+/* issue 1660 - end - add default user mention settings to forum settings */
+
+/* --------------------- */

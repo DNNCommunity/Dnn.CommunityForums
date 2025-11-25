@@ -1633,4 +1633,22 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
     <value>Kann Optionen anderer Benutzer verwalten, einen nicht autorisierten Benutzer verbannen, alle Inhalte für den Benutzer löschen und sein DNN-Benutzerkonto deaktivieren. Kann nicht für Superuser oder Administratoren verwendet werden. Sollte nur vertrauenswürdigen Moderatoren oder Administratorrollen gewährt werden.</value>
   </data>
+  <data name="[RESX:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Erwähnen</value>
+  </data>
+  <data name="[RESX:UserMentionVisibility].Text" xml:space="preserve">
+    <value>Benutzer-Erwähnungssichtbarkeit</value>
+  </data>
+  <data name="[RESX:RegisteredUsersPlusAdmins].Text" xml:space="preserve">
+    <value>Registrierte Benutzer und Administratoren, aber keine Supernutzer</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Kann andere Nutzer in Beiträgen erwähnen (sofern Funktion im Forum aktiviert ist).</value>
+  </data>
+  <data name="[RESX:Tips:UserMentions].Text" xml:space="preserve">
+    <value>Wenn aktiviert, kannst du auswählen, welche Liste verfügbarer Nutzer angezeigt werden soll, wenn ein Nutzer beginnt, @ in einem Beitrag zu erwähnen.</value>
+  </data>
+  <data name="[RESX:UserMentions].Text" xml:space="preserve">
+    <value>Benutzerhinweise</value>
+  </data>
 </root>
