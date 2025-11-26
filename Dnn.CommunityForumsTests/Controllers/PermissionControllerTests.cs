@@ -54,12 +54,12 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetRoleNameTest()
         {
             // Arrange
-            var role = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}";
+            var role = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers;
             var portalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
             var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers}";
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), role);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), TODO);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));

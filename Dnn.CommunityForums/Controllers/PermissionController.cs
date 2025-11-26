@@ -437,7 +437,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 roleNames = string.Concat(roleNames + DotNetNuke.Common.Globals.glbRoleUnauthUserName, ";");
                                 break;
                             default:
-                                roleName = GetRoleName(portalSettings: portalSettings, role: role);
+                                roleName = GetRoleName(portalSettings: portalSettings, roleId: Utilities.SafeConvertInt(role));
                                 if (roleName != null)
                                 {
                                     roleNames = string.Concat(roleNames + roleName, ";");
@@ -457,9 +457,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static string GetRoleName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string role)
+        internal static string GetRoleName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int roleId)
         {
-            return GetRoles(portalSettings).Where(r => r.RoleID == Utilities.SafeConvertInt(role)).Select(r => r.RoleName).FirstOrDefault();
+            return GetRoles(portalSettings).Where(r => r.RoleID == Utilities.SafeConvertInt(roleId)).Select(r => r.RoleName).FirstOrDefault();
         }
 
         internal static int GetRoleId(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string roleName)
@@ -518,7 +518,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 nvc.Add(Common.Globals.glbRoleUnauthUser, DotNetNuke.Common.Globals.glbRoleUnauthUserName);
                                 break;
                             default:
-                                roleName = GetRoleName(portalSettings, role);
+                                roleName = GetRoleName(portalSettings, Utilities.SafeConvertInt(role));
                                 if (roleName != null)
                                 {
                                     nvc.Add(role, roleName);

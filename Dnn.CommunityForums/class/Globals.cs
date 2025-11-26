@@ -326,6 +326,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ProfileTemplateId = "PROFILETEMPLATEID";
         public const string EmailNotificationSubjectTemplate = "EMAILNOTIFICATIONSUBJECTTEMPLATE";
 
+        public const string UserMentions = "USERMENTIONS";
+        public const string UserMentionVisibility = "USERMENTIONVISIBILITY";
+
         public const string ModApproveNotify = "MODAPPROVENOTIFY";
         public const string ModRejectNotify = "MODREJECTNOTIFY";
         public const string ModMoveNotify = "MODMOVENOTIFY";
@@ -551,7 +554,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string UserRoles = "AF-userroles-{0}";
         public const string CultureInfoForUser = "AF-usercultureinfo-{0}";
         public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
-        public const string UserMentionQuery = "AF-{0}-usermentionquery-{1}";
+        public const string UserMentionQuery = "AF-{0}-usermentionquery-{1}-{2}";
         public const string UserMentionInfo = "AF-{0}-usermentioninfo-{1}";
     }
 
