@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers}";
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), TODO);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), (int)role);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
