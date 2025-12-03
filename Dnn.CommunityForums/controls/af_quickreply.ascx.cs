@@ -247,10 +247,30 @@ namespace DotNetNuke.Modules.ActiveForums
                 sb.Append("editorConfigeditortxtBody.removePlugins = 'elementspath,wordcount';");
                 sb.Append("editorConfigeditortxtBody.resize_enabled = true;");
                 sb.Append("editorConfigeditortxtBody.removeButtons = 'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,PasteFromWord,Print,Preview,ExportPdf,NewPage,Save,Replace,Find,BGColor,TextColor,HorizontalRule,Anchor,Unlink,BidiLtr,BidiRtl,Language,CreateDiv,CopyFormatting,RemoveFormat,Subscript,Superscript,Strike,Format,Source,Templates,SelectAll,Scayt,PasteText,Styles,Font,FontSize,About,Maximize,Table,SpecialChar,PageBreak,Iframe,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Indent,Outdent,NumberedList,BulletedList';");
+
+                // insert script to 1) set variable afeditor for amaf* scripts, 2) hide ckeditor options link normally shown to administrators, and 3) to bind ctrl+enter to submit
                 sb.Append("var afeditor = '" + this.editorClientID + "';");
-                sb.Append("$(document).ready(function() {$(\"#txtBody\").hide();$(\"#" + this.editorClientID + "_txtBody_ckoptions\").hide();});");
-                this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), $"{this.editorClientID}_txtBody_CKE_Config", sb.ToString(), true);
+                
+                this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), $"{this.editorClientID}_txtBody_CKE_Config1", sb.ToString(), true);
+
+                sb = new System.Text.StringBuilder();
+                sb.Append("$(document).ready(function() {");
+                sb.Append("$(\"#txtBody\").hide();$(\"#" + this.editorClientID + "_txtBody_ckoptions\").hide();");
+                sb.Append("CKEDITOR.instances['" + this.editorClientID + "_txtBody'].on('instanceReady', function () {");
+                sb.Append("        CKEDITOR.instances['" + this.editorClientID + "_txtBody'].addCommand('submitForm', {");
+                sb.Append("            exec: function () {");
+                sb.Append("                afQuickSubmitCkEditor4();");
+                sb.Append("            }");
+                sb.Append("        });");
+                sb.Append("        CKEDITOR.instances['" + this.editorClientID + "_txtBody'].setKeystroke([");
+                sb.Append("            [CKEDITOR.CTRL + 13, 'submitForm'] /* ctrl-Enter key code */");
+                sb.Append("        ]);");
+                sb.Append("    });");
+                sb.Append("});");
+                
+                this.Page.ClientScript.RegisterClientScriptBlock(this.txtBody.GetType(), $"2{this.editorClientID}", sb.ToString(), true);
                 ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/ck_editor.js", 102);
+
                 this.txtBody.Visible = false;
                 this.btnToolBar.Visible = false;
             }

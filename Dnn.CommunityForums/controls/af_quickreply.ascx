@@ -49,24 +49,12 @@ function afQuickSubmitCkEditor4() {
     }
 };
 $(document).on("keydown", "#txtBody", function (e) {
-    if ((e.ctrlKey || e.metaKey) && (e.keyCode == 13 || e.keyCode == 13)) {
+    if ((e.ctrlKey || e.metaKey) && (e.keyCode == 13)) {
         // Ctrl + Enter pressed
         afQuickSubmit();
     }
 });
 
-$(document).on("keydown", "#qR", function (e) {
-    if ((e.ctrlKey || e.metaKey) && (e.keyCode == 13 || e.keyCode == 13)) {
-        // Ctrl + Enter pressed
-        afQuickSubmitCkEditor4();
-    }
-});
-document.addEventListener("keydown", function(event) {
-if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
-        // Ctrl + Enter pressed
-        afQuickSubmitCkEditor4();
-}
-});
 //-->
 </script>
 
