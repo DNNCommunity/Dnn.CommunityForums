@@ -84,11 +84,11 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-              <li>None at this time.</li>
+              <li>FIX: Primary portal alias ignored when generating some links (was just using first available alias) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1651">Issue 1651</a>)</li>
             
 <!--
-<li>FIX: Incorrect SQL scripts delivered with 09.02.01 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1644">Issue 1644</a>)</li>
-           
+
+          <li>None at this time.</li> 
 
 -->
         </ul>
