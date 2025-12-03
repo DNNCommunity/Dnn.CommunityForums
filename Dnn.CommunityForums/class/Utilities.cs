@@ -34,6 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -272,7 +273,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     psc.LoadPortalSettings(portalSettings);
                 }
 
-                portalSettings.PortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault();
+                var portalAliases = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+                portalSettings.PortalAlias = portalAliases.FirstOrDefault(pa => pa.IsPrimary) ?? portalAliases.FirstOrDefault();
                 return portalSettings;
             }
             catch (Exception ex)
