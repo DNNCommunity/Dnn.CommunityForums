@@ -88,7 +88,7 @@ ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_UserMentions] ADD CONS
 GO
 
 /* set EDITORTYPE setting to use editor with new mentions feature */
-UPDATE {databaseOwner}[{objectQualifier}activeforums_Settings] SET SettingValue = '3' WHERE SettingName = 'EDITORTYPE' AND SettingValue = '3'
+UPDATE {databaseOwner}[{objectQualifier}activeforums_Settings] SET SettingValue = '3' WHERE SettingName = 'EDITORTYPE' AND SettingValue = '2'
 GO
 
 /* issue 1518 - end - add UserMentions table */
