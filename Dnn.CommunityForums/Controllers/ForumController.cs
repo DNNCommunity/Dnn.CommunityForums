@@ -144,28 +144,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumId <= 0 ? null : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
         }
 
-        public static string GetForumsForUser(int portalId, int moduleId, ForumUserInfo forumUser, string permissionType = "CanView", bool strict = false)
+        public static string GetForumsForUser(int portalId, int moduleId, ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SecureActions action = DotNetNuke.Modules.ActiveForums.SecureActions.View, string permissionType = "CanView")
         {
-            // Setting strict to true enforces the actual permission
-            // If strict is false, forums will show up in the list if they are not hidden for users
-            // that don't otherwise have access
             var forumIds = string.Empty;
             DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId);
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
             {
                 var roles = new HashSet<int>();
-                switch (permissionType)
+                switch (action)
                 {
-                    case "CanView":
+                    case DotNetNuke.Modules.ActiveForums.SecureActions.View:
                         roles = f.Security?.ViewRoleIds;
                         break;
-                    case "CanRead":
+                    case DotNetNuke.Modules.ActiveForums.SecureActions.Read:
                         roles = f.Security?.ReadRoleIds;
                         break;
-                    case "CanApprove":
+                    case DotNetNuke.Modules.ActiveForums.SecureActions.Moderate:
                         roles = f.Security?.ModerateRoleIds;
                         break;
-                    case "CanEdit":
+                    case DotNetNuke.Modules.ActiveForums.SecureActions.Edit:
                         roles = f.Security?.EditRoleIds;
                         break;
                     default:
@@ -175,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 var hasPermissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(roles, forumUser.UserRoleIds);
 
-                if ((hasPermissions || (!strict && !f.Hidden && (permissionType == "CanView" || permissionType == "CanRead"))) && f.Active)
+                if (hasPermissions)
                 {
                     forumIds += string.Concat(f.ForumID, ";");
                 }
