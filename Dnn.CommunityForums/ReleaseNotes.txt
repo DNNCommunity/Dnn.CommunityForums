@@ -72,6 +72,8 @@
         <h4>New Features &amp; Enhancements</h4>
         <ul>
             <li>NEW: Implement @user mentions / editor improvements (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/User-Mentions">User Mentions wiki article on DNN Community Forums</a>)</li>
+            <li>UPDATE: Improved styling for user badge display (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1603">Issue 1603</a>)</li>
+
 <!-- 
             <li>UPDATE: When upgrading, don't send notifications during initial backfill of badge awards (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1632">Issue 1632</a>)</li>
             <li>UPDATE: When upgrading, don't install badges on forums in "Social Group" configuration; those can be added manually if desired (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1621">Issue 1621</a>)</li>
@@ -86,6 +88,7 @@
         <ul>
               <li>FIX: Primary portal alias ignored when generating some links (was just using first available alias) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1651">Issue 1651</a>)</li>
               <li>FIX: In filtered topic views, blank lines showing for topics that user doesn't have permissions to read (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1676">Issue 1676</a>)</li>
+              <li>FIX: Users being awarded badges based on total counts rather than interval-based counts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1681">Issue 1681</a>)</li>
             
 <!--
 
