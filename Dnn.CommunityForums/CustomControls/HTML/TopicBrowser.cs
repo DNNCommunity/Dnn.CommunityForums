@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string Render()
         {
-            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ModuleId, this.ForumUser, "CanEdit");
+            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Edit);
             if (!string.IsNullOrEmpty(fs))
             {
                 this._canEdit = true;

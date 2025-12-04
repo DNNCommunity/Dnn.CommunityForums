@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.rowIndex = (this.PageId - 1) * this.pageSize;
 
             var db = new Data.Common();
-            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ForumModuleId, this.ForumUser, "CanRead");
+            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ForumModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
 
             if (this.Request.Params[ParamKeys.GridType] != null)
             {
