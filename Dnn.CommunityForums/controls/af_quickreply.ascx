@@ -54,7 +54,6 @@ $(document).on("keydown", "#txtBody", function (e) {
         afQuickSubmit();
     }
 });
-
 //-->
 </script>
 
