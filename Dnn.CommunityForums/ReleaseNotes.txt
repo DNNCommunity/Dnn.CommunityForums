@@ -85,6 +85,7 @@
         <h4>Bug Fixes</h4>
         <ul>
               <li>FIX: Primary portal alias ignored when generating some links (was just using first available alias) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1651">Issue 1651</a>)</li>
+              <li>FIX: In filtered topic views, blank lines showing for topics that user doesn't have permissions to read (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1676">Issue 1676</a>)</li>
             
 <!--
 
