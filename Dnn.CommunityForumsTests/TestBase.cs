@@ -365,7 +365,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                     PortalID = this.portalController.Object.GetCurrentPortalSettings().PortalId,
                     ModuleTitle = "Test Module",
 
-                }
+                },
 
             };
 

@@ -427,11 +427,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080100();
                     DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
                     DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090201();
+                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
                 }
 
                 xDoc.LoadXml(this.ForumConfig);
             }
 
+            const int ColumnSeparatorBasicAdmin = 11;
             if (xDoc != null)
             {
                 XmlNode xRoot = xDoc.DocumentElement;
@@ -472,7 +474,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 i = 0;
-                sb.Append("<tr id=\"hd1\"><td></td><td colspan=\"10\" class=\"afgridhd sec1\">" + this.LocalizeString("UserPermissions") + "</td><td colspan=\"7\" class=\"afgridhd sec2\">" + this.LocalizeString("ModeratorPermissions") + "</td></tr>");
+                sb.Append($"<tr id=\"hd1\"><td></td><td colspan=\"{ColumnSeparatorBasicAdmin + 1}\" class=\"afgridhd sec1\">" + this.LocalizeString("UserPermissions") + "</td><td colspan=\"3\" class=\"afgridhd sec2\">" + this.LocalizeString("ModeratorPermissions") + "</td></tr>");
                 sb.Append("<tr id=\"hd2\"><td></td>");
                 string sClass;
                 for (i = 0; i <= xNodeList.Count - 1; i++)
@@ -486,7 +488,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sClass += " colend";
                     }
-                    else if (i == 9)
+                    else if (i == ColumnSeparatorBasicAdmin)
                     {
                         sClass += " gridsep";
                     }
@@ -502,7 +504,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 for (i = 0; i <= xNodeList.Count - 1; i++)
                 {
                     sClass = "gridcheck";
-                    if (i <= 9)
+                    if (i <= ColumnSeparatorBasicAdmin)
                     {
                         sClass += " sec1";
                     }
@@ -516,7 +518,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sClass += " colend";
                     }
 
-                    if (i == 9)
+                    if (i == ColumnSeparatorBasicAdmin)
                     {
                         // sClass &= " gridsep"
                     }
@@ -541,7 +543,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 for (i = 0; i <= xNodeList.Count - 1; i++)
                 {
                     sClass = "gridcheck";
-                    if (i <= 9)
+                    if (i <= ColumnSeparatorBasicAdmin)
                     {
                         sClass += " sec1";
                     }
@@ -555,7 +557,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sClass += " colend";
                     }
 
-                    if (i == 9)
+                    if (i == ColumnSeparatorBasicAdmin)
                     {
                         // sClass &= " gridsep"
                     }
@@ -580,7 +582,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 for (i = 0; i <= xNodeList.Count - 1; i++)
                 {
                     sClass = "gridcheck";
-                    if (i <= 9)
+                    if (i <= ColumnSeparatorBasicAdmin)
                     {
                         sClass += " sec1";
                     }
@@ -594,7 +596,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sClass += " colend";
                     }
 
-                    if (i == 9)
+                    if (i == ColumnSeparatorBasicAdmin)
                     {
                         // sClass &= " gridsep"
                     }
@@ -618,7 +620,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 for (i = 0; i <= xNodeList.Count - 1; i++)
                 {
                     sClass = "gridcheck";
-                    if (i <= 9)
+                    if (i <= ColumnSeparatorBasicAdmin)
                     {
                         sClass += " sec1";
                     }
@@ -632,7 +634,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sClass += " colend";
                     }
 
-                    if (i == 9)
+                    if (i == ColumnSeparatorBasicAdmin)
                     {
                         // sClass &= " gridsep"
                     }

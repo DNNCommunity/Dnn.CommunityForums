@@ -34,12 +34,16 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Security.Permissions;
 
     public abstract partial class Utilities
     {
@@ -269,7 +273,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     psc.LoadPortalSettings(portalSettings);
                 }
 
-                portalSettings.PortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault();
+                var portalAliases = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+                portalSettings.PortalAlias = portalAliases.FirstOrDefault(pa => pa.IsPrimary) ?? portalAliases.FirstOrDefault();
                 return portalSettings;
             }
             catch (Exception ex)
@@ -367,9 +372,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static string PrepareForEdit(int portalId, int moduleId, string themePath, string text, bool allowHTML, EditorTypes editorType)
+        internal static string PrepareForEdit(int portalId, int moduleId, string themePath, string text, bool allowHTML, EditorType editorType)
         {
-            if (!allowHTML || editorType == EditorTypes.TEXTBOX)
+            if (!allowHTML || editorType == EditorType.TEXTBOX)
             {
                 text = DecodeBrackets(text);
                 text = ReplaceHtmlBreakTagWithNewLine(text);
@@ -463,14 +468,14 @@ namespace DotNetNuke.Modules.ActiveForums
             return text;
         }
 
-        public static string CleanString(int portalId, string text, bool allowHTML, EditorTypes editorType, bool useFilter, bool allowScript, int moduleId, string themePath, bool processEmoticons)
+        public static string CleanString(int portalId, string text, bool allowHTML, EditorType editorType, bool useFilter, bool allowScript, int moduleId, string themePath, bool processEmoticons)
         {
             var sClean = text;
 
             // If HTML is not allowed or if this comes from the TextBox editor (quick reply), the HTML needs to be encoded.
             if (sClean != string.Empty)
             {
-                sClean = editorType == EditorTypes.TEXTBOX ? CleanTextBox(portalId, sClean, allowHTML, useFilter, moduleId, themePath, processEmoticons) : CleanEditor(portalId, sClean, useFilter, moduleId, themePath, processEmoticons);
+                sClean = editorType == EditorType.TEXTBOX ? CleanTextBox(portalId, sClean, allowHTML, useFilter, moduleId, themePath, processEmoticons) : CleanEditor(portalId, sClean, useFilter, moduleId, themePath, processEmoticons);
 
                 var pattern = @"(<a [^>]*>)(?'url'(\S*?))(</a>)";
                 foreach (Match match in RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase).Matches(sClean))
@@ -1841,6 +1846,64 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 return sb.ToString();
             }
+        }
+
+        internal static bool CanUserPostHTML(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo)
+        {
+            return forumInfo.FeatureSettings.AllowHTML && IsHtmlPermitted(forumInfo, forumUserInfo, UserIsTrusted(forumInfo, forumUserInfo), DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.ModerateRoleIds, forumUserInfo.UserRoleIds));
+
+        }
+
+        internal static bool UserIsTrusted(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo)
+        {
+            return IsTrusted((int)forumInfo.FeatureSettings.DefaultTrustValue, forumUserInfo.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forumInfo.Security.TrustRoleIds, forumUserInfo.UserRoleIds));
+        }
+
+        internal static bool IsHtmlPermitted(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo, bool userIsTrusted, bool userIsModerator)
+        {
+            if (forumInfo.FeatureSettings.EditorPermittedUsers == HTMLPermittedUsers.AllUsers)
+            {
+                return true;
+            }
+
+            if (forumInfo.FeatureSettings.EditorPermittedUsers == HTMLPermittedUsers.AuthenticatedUsers && forumUserInfo.IsAuthenticated)
+            {
+                return true;
+            }
+
+            if (forumInfo.FeatureSettings.EditorPermittedUsers == HTMLPermittedUsers.TrustedUsers && userIsTrusted)
+            {
+                return true;
+            }
+
+            if (forumInfo.FeatureSettings.EditorPermittedUsers == HTMLPermittedUsers.Moderators && userIsModerator)
+            {
+                return true;
+            }
+
+            if (forumInfo.FeatureSettings.EditorPermittedUsers == HTMLPermittedUsers.Administrators && ModulePermissionController.HasModulePermission(forumInfo.ModuleInfo.ModulePermissions, "EDIT"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        internal static bool UseCkEditor4WithForumsPlugins(Entities.ForumInfo forumInfo, ForumUserInfo forumUserInfo, bool allowHTML)
+        {
+            if (allowHTML)
+            {
+                if (forumInfo.FeatureSettings.EditorType.Equals(EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS))
+                {
+                    var editorProvider = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
+                    if (editorProvider != null && !string.IsNullOrEmpty(editorProvider.DefaultProvider) && (editorProvider.DefaultProvider.Contains("CKHtmlEditorProvider") || editorProvider.DefaultProvider.Contains("DNNConnect.CKE")))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

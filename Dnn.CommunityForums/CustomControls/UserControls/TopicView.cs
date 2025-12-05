@@ -280,8 +280,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.bSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanSplit"].ToString()), this.ForumUser.UserRoleIds);
             this.bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanTrust"].ToString()), this.ForumUser.UserRoleIds);
 
-            this.isTrusted = Utilities.IsTrusted((int)this.ForumInfo.FeatureSettings.DefaultTrustValue, this.ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TrustRoleIds, this.ForumUser.UserRoleIds));
-
             // TODO: Eventually this will use DAL2 to load from stored procedure into object model, but for now populate topic object model from stored procedure results
             this.topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
             {
@@ -664,10 +662,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ctlQuickReply.ModuleConfiguration = this.ModuleConfiguration;
                     ctlQuickReply.CanTrust = this.bTrust;
                     ctlQuickReply.ModApprove = this.bModerate;
-                    ctlQuickReply.IsTrusted = this.isTrusted;
                     ctlQuickReply.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + this.topic.Subject;
-                    ctlQuickReply.AllowHTML = this.topic.Forum.FeatureSettings.AllowHTML;
-                    ctlQuickReply.AllowScripts = this.topic.Forum.FeatureSettings.AllowScript;
                     ctlQuickReply.ForumId = this.ForumId;
                     ctlQuickReply.SocialGroupId = this.SocialGroupId;
                     ctlQuickReply.ForumModuleId = this.ForumModuleId;

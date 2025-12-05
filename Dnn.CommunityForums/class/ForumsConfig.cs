@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
     using Microsoft.ApplicationBlocks.Data;
@@ -74,8 +74,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Create "badge notification" core messaging notification type new in 09.02.00
                 ForumsConfig.Install_BadgeNotificationType_090200();
 
-                // Create default badges new in 09.02.00
+                // Create default badges new in 09.02.01
                 new ForumsConfig().Install_DefaultBadges_090201(upgrading: false);
+
+                // Create "user mention notification" core messaging notification type new in 09.03.00
+                ForumsConfig.Install_UserMentionNotificationType_090300();
+
                 return true;
             }
             catch (Exception ex)
@@ -204,7 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         Active = cNodes[c].Attributes["active"].Value == "1",
                                         Hidden = cNodes[c].Attributes["hidden"].Value == "1",
                                         SortOrder = c,
-                                        ForumSettingsKey = $"G{groupId}",
+                                        ForumSettingsKey = $"M{moduleId}",
                                         PermissionsId = SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId,
                                     };
                                     new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, true, true, true);
@@ -697,13 +701,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowHTML, "true");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS).ToString());
 
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorHeight, "350");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorWidth, "99%");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorToolbar, "bold,italic,underline,quote");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorStyle, "2");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.UserMentions, "true");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.UserMentionVisibility, ((int)DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.RegisteredUsers).ToString());
+
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.IsModerated, "false");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.DefaultTrustLevel, "0");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AutoTrustLevel, "0");
@@ -867,6 +869,40 @@ namespace DotNetNuke.Modules.ActiveForums
             catch (Exception ex)
             {
                 DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+            }
+        }
+
+        internal static void Install_UserMentionNotificationType_090300()
+        {
+            string notificationTypeName = Globals.UserMentionNotificationType;
+            string notificationTypeDescription = Globals.UserMentionNotificationTypeDescription;
+            int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
+
+            NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
+            if (NotificationsController.Instance.GetNotificationType(notificationTypeName) == null)
+            {
+                NotificationsController.Instance.CreateNotificationType(type);
+            }
+        }
+        
+        internal static void Upgrade_AddUserMentionVisibilityForumSetting_090300()
+        {
+            try
+            {
+                foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+                {
+                    foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                    {
+                        if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant())
+                        {
+                            Install_Upgrade_ForumDefaultSettingsAndSecurity(portalId: module.PortalID, moduleId: module.ModuleID);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
     }

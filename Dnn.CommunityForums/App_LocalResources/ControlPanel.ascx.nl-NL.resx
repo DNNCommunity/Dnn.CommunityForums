@@ -405,12 +405,6 @@
   <data name="[RESX:EditControl].Text" xml:space="preserve">
     <value>Content Wijzig Control</value>
   </data>
-  <data name="[RESX:EditorHeight].Text" xml:space="preserve">
-    <value>Hoogte</value>
-  </data>
-  <data name="[RESX:EditorMobile].Text" xml:space="preserve">
-    <value>Mobiele gebruikers</value>
-  </data>
   <data name="[RESX:EditorStyle].Text" xml:space="preserve">
     <value>Stijl</value>
   </data>
@@ -419,9 +413,6 @@
   </data>
   <data name="[RESX:EditorType].Text" xml:space="preserve">
     <value>Editor</value>
-  </data>
-  <data name="[RESX:EditorWidth].Text" xml:space="preserve">
-    <value>Breedte</value>
   </data>
   <data name="[RESX:EditTimeLimit].Text" xml:space="preserve">
     <value>Wijzig Interval</value>
@@ -1686,5 +1677,23 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
     <value>Kan opties van andere gebruikers beheren, een malafide gebruiker verbannen, alle inhoud voor de gebruiker verwijderen en hun DNN-gebruikersaccount uitschakelen. Kan niet worden gebruikt voor supergebruikers of -beheerders. Mag alleen worden verleend aan vertrouwde moderators of beheerdersrollen.</value>
+  </data>
+  <data name="[RESX:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Vermelden</value>
+  </data>
+  <data name="[RESX:UserMentionVisibility].Text" xml:space="preserve">
+    <value>Zichtbaarheid van gebruikersvermelding</value>
+  </data>
+  <data name="[RESX:RegisteredUsersPlusAdmins].Text" xml:space="preserve">
+    <value>Geregistreerde gebruikers en beheerders, maar geen supergebruikers</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Kan andere gebruikers noemen in berichten (als functies ingeschakeld zijn voor het forum).</value>
+  </data>
+  <data name="[RESX:Tips:UserMentions].Text" xml:space="preserve">
+    <value>Als het ingeschakeld is, kun je kiezen welke lijst van beschikbare gebruikers je toont wanneer een gebruiker begint te vermelden dat je @ gebruikt in een bericht</value>
+  </data>
+  <data name="[RESX:UserMentions].Text" xml:space="preserve">
+    <value>Gebruikersvermeldingen</value>
   </data>
 </root>

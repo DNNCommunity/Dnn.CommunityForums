@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        this.LogError(ex.Message, ex);
+                        LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }
@@ -344,6 +344,20 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090201();
                         new ForumsConfig().Install_DefaultBadges_090201(upgrading: true);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                case "09.03.00":
+                    try
+                    {
+                        ForumsConfig.Install_UserMentionNotificationType_090300();
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
                     }
                     catch (Exception ex)
                     {

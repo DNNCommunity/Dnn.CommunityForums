@@ -300,12 +300,6 @@
   <data name="[RESX:EditControl].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Contrôle de modification de contenu</value>
   </data>
-  <data name="[RESX:EditorHeight].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Hauteur</value>
-  </data>
-  <data name="[RESX:EditorMobile].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Utilisateurs mobiles</value>
-  </data>
   <data name="[RESX:EditorStyle].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Style</value>
   </data>
@@ -314,9 +308,6 @@
   </data>
   <data name="[RESX:EditorType].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Éditeur</value>
-  </data>
-  <data name="[RESX:EditorWidth].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Largeur</value>
   </data>
   <data name="[RESX:EditTimeLimit].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Modifier l’intervalle</value>
@@ -1539,5 +1530,23 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   </data>
   <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
     <value>Peut gérer les options d’autres utilisateurs, bannir un utilisateur malveillant, supprimer tout le contenu de l’utilisateur et désactiver son compte d’utilisateur DNN. Ne peut pas être utilisé sur les super-utilisateurs ou les administrateurs. Ne doit être accordé qu’aux modérateurs de confiance ou aux rôles d’administrateur.</value>
+  </data>
+  <data name="[RESX:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Mentionner</value>
+  </data>
+  <data name="[RESX:UserMentionVisibility].Text" xml:space="preserve">
+    <value>Visibilité des mentions utilisateur</value>
+  </data>
+  <data name="[RESX:RegisteredUsersPlusAdmins].Text" xml:space="preserve">
+    <value>Utilisateurs et administrateurs enregistrés mais pas Super Utilisateurs</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Peut mentionner d’autres utilisateurs dans les posts (si la fonction du forum est activée)</value>
+  </data>
+  <data name="[RESX:Tips:UserMentions].Text" xml:space="preserve">
+    <value>Si activé, vous pouvez choisir quelle liste d’utilisateurs disponibles afficher lorsqu’un utilisateur commence à mentionner l’utilisation de @ dans un post</value>
+  </data>
+  <data name="[RESX:UserMentions].Text" xml:space="preserve">
+    <value>Mentions d’utilisateurs</value>
   </data>
 </root>

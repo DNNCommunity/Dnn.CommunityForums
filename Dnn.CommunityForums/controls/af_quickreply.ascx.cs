@@ -26,7 +26,14 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Collections;
+    using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Controls;
+    using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using log4net.Plugin;
 
     public partial class af_quickreplyform : ForumBase
     {
@@ -39,16 +46,21 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.HtmlControls.HtmlGenericControl btnToolBar = new HtmlGenericControl();
         protected System.Web.UI.WebControls.LinkButton btnSubmitLink = new LinkButton();
         protected TextBox txtUsername = new TextBox();
+        protected TextBox txtBody = new TextBox();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqUsername = new System.Web.UI.WebControls.RequiredFieldValidator();
         protected UI.WebControls.CaptchaControl ctlCaptcha = new UI.WebControls.CaptchaControl();
         protected System.Web.UI.WebControls.Label reqSecurityCode = new System.Web.UI.WebControls.RequiredFieldValidator();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqCaptcha = new System.Web.UI.WebControls.RequiredFieldValidator();
 
+        protected PlaceHolder plhEditor = new PlaceHolder();
+        private string editorClientID = string.Empty;
+
         public string SubmitText = Utilities.GetSharedResource("Submit.Text");
 
         public bool RequireCaptcha { get; set; } = true;
 
-        public bool UseFilter { get; set; } = true;
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v10.0.0.0. Not Used")]
+        public bool UseFilter => throw new NotImplementedException();
 
         public string Subject { get; set; } = string.Empty;
 
@@ -56,16 +68,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool CanTrust { get; set; } = false;
 
-        public bool IsTrusted { get; set; } = false;
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v10.0.0.0. Not Used")]
+        public bool TrustDefault => throw new NotImplementedException();
 
-        public bool TrustDefault { get; set; } = false;
+        public bool AllowHTML => Utilities.CanUserPostHTML(this.ForumInfo, this.ForumUser);
 
-        public bool AllowHTML { get; set; } = false;
-
-        public bool AllowScripts { get; set; } = false;
+        public bool AllowScripts => this.ForumInfo.FeatureSettings.AllowScript;
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v10.0.0.0. Not Used")]
-        public bool AllowSubscribe { get; set; } = false;
+        public bool AllowSubscribe => throw new NotImplementedException();
 
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
@@ -83,7 +94,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (this.Request.IsAuthenticated)
                 {
-                    this.btnSubmitLink.OnClientClick = "afQuickSubmit(); return false;";
+            if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+                    {
+                        this.btnSubmitLink.OnClientClick = "afQuickSubmitCkEditor4(); return false;";
+                    }
+                    else
+                    {
+                        this.btnSubmitLink.OnClientClick = "afQuickSubmit(); return false;";
+                    }
                 }
                 else
                 {
@@ -93,8 +111,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.reqSecurityCode.Text = "<img src=\"" + this.ImagePath + "/images/warning.png\" />";
                     this.btnSubmitLink.Click += this.ambtnSubmit_Click;
                 }
-
-                this.btnToolBar.Visible = this.UseFilter;
 
                 if (Utilities.InputIsValid(this.Request.Form["txtBody"]) && this.Request.IsAuthenticated & ((!string.IsNullOrEmpty(this.Request.Form["hidReply1"]) && string.IsNullOrEmpty(this.Request.Form["hidReply2"])) | this.Request.Browser.IsMobileDevice))
                 {
@@ -154,11 +170,104 @@ namespace DotNetNuke.Modules.ActiveForums
                 Control ctl = this.ParseControl(template);
                 this.LinkControls(ctl.Controls);
                 this.qR.Controls.Add(ctl);
+                if (!this.IsPostBack)
+                {
+
+                    Unit editorWidth = Unit.Percentage(99.0);
+                    Unit editorHeight = Unit.Percentage(99.0);
+                    this.txtBody.Width = editorWidth;
+                    this.txtBody.Height = editorHeight;
+
+                    if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+                    {
+                        var editor = (UI.UserControls.TextEditor)this.LoadControl("~/controls/TextEditor.ascx");
+                        editor.ID = "txtBody";
+                        editor.ChooseMode = false;
+                        editor.DefaultMode = "R";
+                        editor.ChooseRender = false;
+                        editor.Mode = "RICH";
+                        editor.Width = editorWidth;
+                        editor.Height = editorHeight;
+                        editor.HtmlEncode = false;
+                        this.plhEditor = (PlaceHolder)this.qR.FindControl("plhEditor");
+                        this.plhEditor.Controls.Add(editor);
+                        this.editorClientID = editor.ClientID;
+                    }
+                }
             }
             catch (Exception)
             {
                 throw;
             }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+            {
+                this.InjectMentionsPluginsForCkEditor4();
+            }
+        }
+
+
+        private void InjectMentionsPluginsForCkEditor4()
+        {
+            if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+            {
+                var sb = new System.Text.StringBuilder();
+                sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(Globals.ModulePath + "Resources/ckeditor4-additional-plugins/customConfigQuickReply.js") + "';");
+                var extraPlugins = new string[] { "mentions", "ajax", "autocomplete", "textmatch", "textwatcher", "xml", "codeTag"};
+                foreach (string plugin in extraPlugins)
+                {
+                    sb.Append($"editorConfigeditortxtBody.extraPlugins += `,{plugin}`;");
+                }
+
+                var userTag = this.GetTagForUserMentions();
+                var avatarTag = this.GetAvatarTagForUserMentions();
+
+                if (this.ForumInfo.FeatureSettings.UserMentions && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.MentionRoleIds, this.ForumUser.UserRoleIds))
+                {
+                    sb.Append("editorConfigeditortxtBody.mentions = [");
+                    sb.Append(" { feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 3, throttle: 100, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatarTag + "{name}</li>', outputTemplate: `<a href=\"" + userTag + "\">" + avatarTag + "&nbsp;{name}</a>` },");
+                    sb.Append("];");
+                }
+
+                if (this.Request.Browser.IsMobileDevice)
+                {
+                    sb.Append("editorConfigeditortxtBody.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] }, { name: 'insert', items: [ 'Code' ] } ];");
+                }
+                else
+                {
+                    sb.Append("editorConfigeditortxtBody.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] }, { name: 'links', items: [ 'Link' ] }, { name: 'insert', items: [ 'Image', 'Smiley', 'Code' ] } ];");
+                }
+
+                sb.Append("editorConfigeditortxtBody.toolbarCanCollapse = false;");
+                sb.Append("editorConfigeditortxtBody.toolbarStartupExpanded = true;");
+                sb.Append("editorConfigeditortxtBody.removePlugins = 'elementspath,wordcount';");
+                sb.Append("editorConfigeditortxtBody.resize_enabled = true;");
+                sb.Append("editorConfigeditortxtBody.removeButtons = 'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,PasteFromWord,Print,Preview,ExportPdf,NewPage,Save,Replace,Find,BGColor,TextColor,HorizontalRule,Anchor,Unlink,BidiLtr,BidiRtl,Language,CreateDiv,CopyFormatting,RemoveFormat,Subscript,Superscript,Strike,Format,Source,Templates,SelectAll,Scayt,PasteText,Styles,Font,FontSize,About,Maximize,Table,SpecialChar,PageBreak,Iframe,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Indent,Outdent,NumberedList,BulletedList';");
+
+                sb.Append("var afeditor = '" + this.editorClientID + "';");
+                sb.Append("$(document).ready(function() {$(\"#txtBody\").hide();$(\"#" + this.editorClientID + "_txtBody_ckoptions\").hide();});");
+
+                this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), $"{this.editorClientID}_txtBody_CKE_Config", sb.ToString(), true);
+
+                ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/ck_editor.js", 102);
+
+                this.txtBody.Visible = false;
+                this.btnToolBar.Visible = false;
+            }
+        }
+
+        private string GetAvatarTagForUserMentions()
+        {
+            return Utilities.ResolveUrl(this.PortalSettings, "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />");
+        }
+
+        private string GetTagForUserMentions()
+        {
+            return Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId={id}" });
         }
 
         private void LinkControls(ControlCollection ctrls)
@@ -175,6 +284,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                     case "txtUsername":
                         this.txtUsername = (System.Web.UI.WebControls.TextBox)ctrl;
+                        break;
+                    case "txtBody":
+                        this.txtBody = (System.Web.UI.WebControls.TextBox)ctrl;
                         break;
                     case "reqBody":
                         this.reqBody = (Label)ctrl;
@@ -254,6 +366,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             ri.ReplyToId = this.TopicId;
             ri.TopicId = this.TopicId;
+            ri.ForumId = this.ForumId;
             ri.StatusId = -1;
             ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             string sUsername = string.Empty;
@@ -283,16 +396,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                sUsername = Utilities.CleanString(this.PortalId, this.txtUsername.Text, false, EditorTypes.TEXTBOX, true, false, this.ForumModuleId, this.ThemePath, false);
+                sUsername = Utilities.CleanString(this.PortalId, this.txtUsername.Text, false, EditorType.TEXTBOX, true, false, this.ForumModuleId, this.ThemePath, false);
             }
 
-            string sBody = string.Empty;
-            if (this.AllowHTML)
-            {
-                this.AllowHTML = this.IsHtmlPermitted(this.ForumInfo.FeatureSettings.EditorPermittedUsers, this.IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds));
-            }
-
-            sBody = Utilities.CleanString(this.PortalId, CodeParser.ConvertCodeBrackets(this.Request.Form["txtBody"]), this.AllowHTML, EditorTypes.TEXTBOX, this.UseFilter, this.AllowScripts, this.ForumModuleId, this.ThemePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
+            string sBody = Utilities.CleanString(portalId: this.PortalId, text: CodeParser.ConvertCodeBrackets(this.Request.Form["txtBody"]), allowHTML: this.AllowHTML, editorType: EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS, useFilter: true, allowScript: this.AllowScripts, moduleId: this.ForumModuleId, themePath: this.ThemePath, processEmoticons: this.ForumInfo.FeatureSettings.AllowEmoticons);
             ri.Content.AuthorId = this.UserId;
             ri.Content.AuthorName = sUsername;
             ri.Content.Body = sBody;

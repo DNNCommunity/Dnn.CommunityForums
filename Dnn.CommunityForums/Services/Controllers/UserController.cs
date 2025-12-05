@@ -18,14 +18,27 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Data;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Runtime.CompilerServices;
+    using System.Text;
     using System.Web.Http;
 
+    using DotNetNuke.Collections;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.UI.UserControls;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -104,6 +117,127 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+
+        /// <summary>
+        /// Fired by UI to get users for mentions in editor
+        /// </summary>
+        /// <param name="forumId" type="int"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/User/GetUsersForEditorMentions?ForumId=xxx&query={encodedQuery}</remarks>
+        [HttpGet]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.Mention)]
+        public HttpResponseMessage GetUsersForEditorMentions(int forumId, string query)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(query))
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
+
+                var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: this.ForumModuleId);
+                if (forum == null || !forum.FeatureSettings.UserMentions)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
+
+                var cachekey = string.Format(CacheKeys.UserMentionQuery, forumId, query, forum.FeatureSettings.UserMentionVisibility.Equals(DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.FriendsOnly) ? this.UserInfo.UserID : DotNetNuke.Common.Utilities.Null.NullInteger);
+                var userList = DataCache.UserCacheRetrieve(cachekey) as List<UserIdDisplayNamePair>;
+                if (userList == null)
+                {
+                    List<UserInfo> users = null;
+                    int totalRecords = 0;
+                    var fragment = DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(query, 20);
+                    if (forum.SocialGroupId > 0)
+                    {
+                        var roleName = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(this.PortalSettings, forum.SocialGroupId);
+                        users = DotNetNuke.Security.Roles.RoleController.Instance.GetUsersByRole(portalId: this.PortalSettings.PortalId, roleName: roleName)
+                            .Where(u => u.DisplayName.IndexOf(fragment, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                            .ToList();
+                    }
+                    else if (forum.FeatureSettings.UserMentionVisibility.Equals(DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.FriendsOnly))
+                    {
+                        users = new List<UserInfo>();
+                        DotNetNuke.Entities.Users.Social.RelationshipController.Instance.GetRelationshipsByPortalId(this.PortalSettings.PortalId).Where(relationship => relationship.RelationshipTypeId.Equals((int)DotNetNuke.Entities.Users.DefaultRelationshipTypes.Friends)).ForEach(relationship =>
+                        {
+                            foreach (var userRelationship in this.UserInfo.Social.UserRelationships.Where(userRelationship => userRelationship.RelationshipId.Equals(relationship.RelationshipId) && userRelationship.Status.Equals(RelationshipStatus.Accepted)))
+                            {
+                                users.Add(DotNetNuke.Entities.Users.UserController.GetUserById(portalId: this.PortalSettings.PortalId, userId: userRelationship.RelatedUserId));
+                            }
+                        });
+
+                        users.RemoveAll(u => !(u.DisplayName.IndexOf(fragment, StringComparison.InvariantCultureIgnoreCase) >= 0));
+                    }
+                    else
+                    {
+                        users = DotNetNuke.Entities.Users.UserController.GetUsersByDisplayName(
+                            portalId: this.PortalSettings.PortalId,
+                            nameToMatch: $"%{fragment}%",
+                            pageIndex: -1,
+                            pageSize: 0,
+                            totalRecords: ref totalRecords,
+                            includeDeleted: false,
+                            superUsersOnly: false)
+                        .Cast<UserInfo>().ToList();
+
+                        if (forum.FeatureSettings.UserMentionVisibility.Equals(DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.RegisteredUsers))
+                        {
+                            users.RemoveAll(user => user.IsAdmin);
+                        }
+                        else if (forum.FeatureSettings.UserMentionVisibility.Equals(DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.Everyone))
+                        {
+                            users.AddRange(
+                                DotNetNuke.Entities.Users.UserController.GetUsersByDisplayName(
+                                    portalId: Null.NullInteger,
+                                    nameToMatch: $"%{fragment}%",
+                                    pageIndex: -1,
+                                    pageSize: 0,
+                                    totalRecords: ref totalRecords,
+                                    includeDeleted: false,
+                                    superUsersOnly: true)
+                                .Cast<UserInfo>());
+                        }
+                    }
+
+                    if (users != null && users.Count > 0)
+                    {
+                        userList = new List<UserIdDisplayNamePair>();
+                        foreach (DotNetNuke.Entities.Users.UserInfo user in users)
+                        {
+                            userList.Add(new UserIdDisplayNamePair() { id = user.UserID, name = user.DisplayName, portalSettings = this.PortalSettings, });
+                        }
+                    }
+
+                    DataCache.UserCacheStore(cachekey, userList);
+                }
+
+                if (userList != null && userList.Count > 0)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.OK, userList.Select(u => new { id = u.id, name = u.name, avatarImgTag = u.avatarImgTag }).ToList());
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+
+        private struct UserIdDisplayNamePair
+        {
+            public int id { get; set; }
+
+            public string name { get; set; }
+
+            public DotNetNuke.Entities.Portals.PortalSettings portalSettings { get; set; }
+
+            public string avatarImgTag => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(this.portalSettings, this.id, 22, 22); 
         }
     }
 }

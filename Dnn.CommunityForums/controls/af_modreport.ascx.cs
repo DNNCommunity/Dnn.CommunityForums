@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Services.Social.Notifications;
 
     public partial class af_modreport : ForumBase
@@ -115,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (this.Request.IsAuthenticated)
             {
                 string comments = this.drpReasons.SelectedItem.Value + "<br>";
-                comments += Utilities.CleanString(this.PortalId, this.txtComments.Text, false, EditorTypes.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);
+                comments += Utilities.CleanString(this.PortalId, this.txtComments.Text, false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);
                 string sUrl = this.SocialGroupId > 0
                     ? Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + Literals.GroupId + "=" + this.SocialGroupId })
                     : Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent });

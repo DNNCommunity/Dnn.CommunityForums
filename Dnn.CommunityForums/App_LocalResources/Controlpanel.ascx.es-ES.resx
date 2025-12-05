@@ -300,12 +300,6 @@
   <data name="[RESX:EditControl].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Control de edición de contenido</value>
   </data>
-  <data name="[RESX:EditorHeight].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Alto</value>
-  </data>
-  <data name="[RESX:EditorMobile].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Usuarios de dispositivos móviles</value>
-  </data>
   <data name="[RESX:EditorStyle].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Estilo</value>
   </data>
@@ -314,9 +308,6 @@
   </data>
   <data name="[RESX:EditorType].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Editor</value>
-  </data>
-  <data name="[RESX:EditorWidth].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Ancho</value>
   </data>
   <data name="[RESX:EditTimeLimit].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Intervalo de edición</value>
@@ -1536,5 +1527,23 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   </data>
   <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
     <value>Puede administrar las opciones de otros usuarios, desterrar a un usuario deshonesto, eliminar todo el contenido del usuario y deshabilitar su cuenta de usuario DNN. No se puede utilizar en superusuarios ni administradores. Solo se debe conceder a moderadores de confianza o roles de administrador.</value>
+  </data>
+  <data name="[RESX:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Mención</value>
+  </data>
+  <data name="[RESX:UserMentionVisibility].Text" xml:space="preserve">
+    <value>Visibilidad de las menciones de usuario</value>
+  </data>
+  <data name="[RESX:RegisteredUsersPlusAdmins].Text" xml:space="preserve">
+    <value>Usuarios y administradores registrados, pero no superusuarios</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Puede mencionar a otros usuarios en las publicaciones (si la función está activada para el foro)</value>
+  </data>
+  <data name="[RESX:Tips:UserMentions].Text" xml:space="preserve">
+    <value>Si está activado, puedes elegir qué lista de usuarios disponibles mostrar cuando un usuario empiece a mencionar usar @ en una publicación</value>
+  </data>
+  <data name="[RESX:UserMentions].Text" xml:space="preserve">
+    <value>Menciones de usuarios</value>
   </data>
 </root>

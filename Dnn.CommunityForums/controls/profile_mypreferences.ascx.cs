@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.WebControls.CheckBox chkLikesNotificationsEnabled;
         protected global::System.Web.UI.WebControls.CheckBox chkPinNotificationsEnabled;
         protected global::System.Web.UI.WebControls.CheckBox chkBadgeNotificationsEnabled;
+        protected global::System.Web.UI.WebControls.CheckBox chkUserMentionNotificationsEnabled;
         protected global::System.Web.UI.WebControls.CheckBox chkEnableNotificationsForOwnContent;
         protected global::System.Web.UI.WebControls.CheckBox chkPrefBlockAvatars;
         protected global::System.Web.UI.WebControls.CheckBox chkPrefBlockSignatures;
@@ -69,6 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.chkPinNotificationsEnabled.Checked = ui.PinNotificationsEnabled;
                 this.chkBadgeNotificationsEnabled.Checked = ui.BadgeNotificationsEnabled;
                 this.chkEnableNotificationsForOwnContent.Checked = ui.EnableNotificationsForOwnContent;
+                this.chkUserMentionNotificationsEnabled.Checked = ui.UserMentionNotificationsEnabled;
                 this.txtSignature.Text = ui.Signature;
             }
         }
@@ -92,6 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     upi.PrefBlockAvatars = this.chkPrefBlockAvatars.Checked;
                     upi.PrefBlockSignatures = this.chkPrefBlockSignatures.Checked;
                     upi.LikeNotificationsEnabled = this.chkLikesNotificationsEnabled.Checked;
+                    upi.UserMentionNotificationsEnabled = this.chkUserMentionNotificationsEnabled.Checked;
                     upi.PinNotificationsEnabled = this.chkPinNotificationsEnabled.Checked;
                     upi.BadgeNotificationsEnabled = this.chkBadgeNotificationsEnabled.Checked;
                     upi.EnableNotificationsForOwnContent = this.chkEnableNotificationsForOwnContent.Checked;

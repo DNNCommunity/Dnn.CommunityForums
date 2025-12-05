@@ -41,13 +41,6 @@ namespace DotNetNuke.Modules.ActiveForums
         SuperUser,
     }
 
-    public enum EditorTypes
-    {
-        TEXTBOX,
-        ACTIVEEDITOR,
-        HTMLEDITORPROVIDER,
-    }
-
     public enum HTMLPermittedUsers
     {
         AllUsers,
@@ -183,6 +176,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string PinNotificationTypeDescription = Globals.ModuleFriendlyName + " Pin Notification";
         public const string BadgeNotificationType = "DCF-BadgeNotification";
         public const string BadgeNotificationTypeDescription = Globals.ModuleFriendlyName + " Badge Notification";
+        public const string UserMentionNotificationType = "DCF-UserMentionNotification";
+        public const string UserMentionNotificationTypeDescription = Globals.ModuleFriendlyName + " User Mention Notification";
 
         public static Version ModuleVersion => new Version(DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).Version);
     }
@@ -269,11 +264,16 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AllowEmoticons = "ALLOWEMOTICONS";
         public const string AllowPostIcon = "ALLOWPOSTICON";
         public const string EditorType = "EDITORTYPE";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string EditorWidth = "EDITORWIDTH";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string EditorHeight = "EDITORHEIGHT";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string EditorToolbar = "EDITORTOOLBAR";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string EditorStyle = "EDITORSTYLE";
         public const string EditorPermittedUsers = "EDITORPERMITTEDUSERS";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string EditorMobile = "EDITORMOBILE";
         public const string AttachCount = "ATTACHCOUNT";
         public const string AttachMaxSize = "ATTACHMAXSIZE";
@@ -325,6 +325,9 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string ProfileTemplateId = "PROFILETEMPLATEID";
         public const string EmailNotificationSubjectTemplate = "EMAILNOTIFICATIONSUBJECTTEMPLATE";
+
+        public const string UserMentions = "USERMENTIONS";
+        public const string UserMentionVisibility = "USERMENTIONVISIBILITY";
 
         public const string ModApproveNotify = "MODAPPROVENOTIFY";
         public const string ModRejectNotify = "MODREJECTNOTIFY";
@@ -551,6 +554,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string UserRoles = "AF-userroles-{0}";
         public const string CultureInfoForUser = "AF-usercultureinfo-{0}";
         public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
+        public const string UserMentionQuery = "AF-{0}-usermentionquery-{1}-{2}";
+        public const string UserMentionInfo = "AF-{0}-usermentioninfo-{1}";
     }
 
     public class SortColumns

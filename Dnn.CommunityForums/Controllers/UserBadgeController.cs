@@ -157,32 +157,40 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 if (award)
                 {
-                    userBadge = new DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo
+                    var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId); // this will create user if not exists
+                    if (user == null)
                     {
-                        BadgeId = badgeId,
-                        UserId = userId,
-                        PortalId = portalId,
-                        ModuleId = moduleId,
-                        DateAssigned = DateTime.UtcNow,
-                    };
-                    userBadgeController.Insert(userBadge);
-                    ClearBadgeCache(userBadge);
+                        DotNetNuke.Modules.ActiveForums.Exceptions.LogException(new ArgumentException($"User badge assigned for User: {userId} but could not be processed because user doesn't exist; skipping user badge award."));
+                    }
+                    else
+                    {
+                        userBadge = new DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo
+                        {
+                            BadgeId = badgeId,
+                            UserId = userId,
+                            PortalId = portalId,
+                            ModuleId = moduleId,
+                            DateAssigned = DateTime.UtcNow,
+                        };
+                        userBadgeController.Insert(userBadge);
+                        ClearBadgeCache(userBadge);
 
-                    new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(
-                    processType: ProcessType.BadgeAssigned,
-                    portalId: portalId,
-                    tabId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                    moduleId: moduleId,
-                    forumGroupId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                    forumId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                    topicId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                    replyId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                    contentId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                    authorId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                    userId: userId,
-                    badgeId: badgeId,
-                    dateCreated: userBadge.DateAssigned,
-                    requestUrl: requestUrl);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(
+                        processType: ProcessType.BadgeAssigned,
+                        portalId: portalId,
+                        tabId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                        moduleId: moduleId,
+                        forumGroupId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                        forumId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                        topicId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                        replyId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                        contentId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                        authorId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                        userId: userId,
+                        badgeId: badgeId,
+                        dateCreated: userBadge.DateAssigned,
+                        requestUrl: requestUrl);
+                    }
                 }
             }
             catch (Exception e)

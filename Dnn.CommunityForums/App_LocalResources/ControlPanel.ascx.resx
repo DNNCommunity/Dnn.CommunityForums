@@ -195,9 +195,6 @@
   <data name="[RESX:Disabled].Text" xml:space="preserve">
     <value>Off</value>
   </data>
-  <data name="[RESX:EditorHeight].Text" xml:space="preserve">
-    <value>Height</value>
-  </data>
   <data name="[RESX:EditorStyle].Text" xml:space="preserve">
     <value>Style</value>
   </data>
@@ -206,12 +203,6 @@
   </data>
   <data name="[RESX:EditorType].Text" xml:space="preserve">
     <value>Editor</value>
-  </data>
-  <data name="[RESX:EditorWidth].Text" xml:space="preserve">
-    <value>Width</value>
-  </data>
-  <data name="[RESX:EditorMobile].Text" xml:space="preserve">
-    <value>Mobile users</value>
   </data>
   <data name="[RESX:EmailAddress].Text" xml:space="preserve">
     <value>Email Address</value>
@@ -1641,5 +1632,23 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   </data>
   <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
     <value># of days between earning this badge</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Can mention other users in posts (if feature enabled for forum)</value>
+  </data>
+  <data name="[RESX:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Mention</value>
+  </data>
+  <data name="[RESX:Tips:UserMentions].Text" xml:space="preserve">
+    <value>If enabled, you can choose which list of available users to display when a user starts to mention using @ in a post</value>
+  </data>
+  <data name="[RESX:UserMentionVisibility].Text" xml:space="preserve">
+    <value>User Mention Visibility</value>
+  </data>
+  <data name="[RESX:RegisteredUsersPlusAdmins].Text" xml:space="preserve">
+    <value>Registered Users and Administrators but not Super Users</value>
+  </data>
+  <data name="[RESX:UserMentions].Text" xml:space="preserve">
+    <value>User Mentions</value>
   </data>
 </root>

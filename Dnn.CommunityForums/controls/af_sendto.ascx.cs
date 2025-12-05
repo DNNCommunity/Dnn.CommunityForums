@@ -23,8 +23,22 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Web.UI;
 
+    using DotNetNuke.Modules.ActiveForums.Enums;
+
     public partial class af_sendto : ForumBase
     {
+        protected global::System.Web.UI.WebControls.TextBox txtRecipName;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator reqName;
+        protected global::System.Web.UI.WebControls.TextBox txtRecipEmail;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator reqEmail;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator regEmail;
+        protected global::System.Web.UI.WebControls.TextBox txtRecipSubject;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator reqSubject;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator reqMessage;
+        protected global::System.Web.UI.WebControls.TextBox txtMessage;
+        protected global::System.Web.UI.WebControls.LinkButton btnSend;
+        protected global::System.Web.UI.WebControls.LinkButton btnCancel;
+
         private bool bcUpdated = false;
 
         protected override void OnLoad(EventArgs e)
@@ -134,8 +148,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 string sEmail = this.txtRecipEmail.Text;
                 string sEmailName = this.txtRecipName.Text;
                 string sMessage = this.txtMessage.Text;
-                sSubject = Utilities.CleanString(this.PortalId, sSubject.Trim(), false, EditorTypes.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
-                sMessage = Utilities.CleanString(this.PortalId, sMessage.Trim(), false, EditorTypes.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
+                sSubject = Utilities.CleanString(this.PortalId, sSubject.Trim(), false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
+                sMessage = Utilities.CleanString(this.PortalId, sMessage.Trim(), false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
                 string sUrl = this.NavigateUrl(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.SendToComplete });
                 try
                 {

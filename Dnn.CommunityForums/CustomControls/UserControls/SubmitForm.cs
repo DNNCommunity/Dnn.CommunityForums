@@ -28,6 +28,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.UI.UserControls;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:SubmitForm runat=server></{0}:SubmitForm>")]
     public class SubmitForm : TopicBase
     {
@@ -119,14 +126,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     switch (this.EditorType)
                     {
-                        // Case EditorTypes.ACTIVEEDITOR
-                        //    Dim txtEditor As New ActiveEditorControls.ActiveEditor
-                        //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
-                        //    Body = txtEditor.Text
-                        case EditorTypes.HTMLEDITORPROVIDER:
+                        case EditorType.HTMLEDITORPROVIDER:
+                        case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
                             tempBody = ((UI.UserControls.TextEditor)this.plhEditor.FindControl("txtBody")).Text;
                             break;
-                        case EditorTypes.TEXTBOX:
+                        case EditorType.TEXTBOX:
                             tempBody = ((TextBox)this.txtEditor).Text;
                             break;
                     }
@@ -149,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public ImageButton CancelButton { get; set; } = new ImageButton();
 
-        public EditorTypes EditorType { get; set; }
+        public EditorType EditorType { get; set; }
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo { get; set; }
 
@@ -340,8 +344,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected TextBox txtSummary = new TextBox();
         protected Label lblSubject = new Label();
 
-        // Protected editorActiveEditor As ActiveEditorControls.ActiveEditor
-        protected TextBox editorTextBox;
         protected UI.UserControls.TextEditor editorDNN;
         protected PlaceHolder plhEditor = new PlaceHolder();
         protected ImageButton btnPost = new ImageButton();
@@ -350,6 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected ImageButton btnPreview = new ImageButton();
         protected PlaceHolder plhControl = new PlaceHolder();
         protected Control txtEditor = null;
+        protected TextBox txtAreaControl = null;
         protected af_posticonlist afposticons = new af_posticonlist();
         protected af_polledit afpolledit = new af_polledit();
         protected af_topicstatus aftopicstatus = new af_topicstatus();
@@ -754,10 +757,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            // If str.Contains("[AF:CONTROL:FORUMTREE]") Then
-            //    str = str.Replace("[AF:CONTROL:FORUMTREE]", "<af:forumtree id=""ctlForumTree"" runat=""server"" showcheckboxes=""true"" ModuleId=""" & ModuleId & """ />")
-            //    sHeader &= "<%@ register src=""~/DesktopModules/ActiveForums/controls/af_forumtree.ascx"" tagprefix=""af"" tagname=""forumtree"" %>"
-            // End If
             template = Utilities.LocalizeControl(template);
             template = Utilities.StripTokens(template);
             return template;
@@ -862,25 +861,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.calEndDate.SelectedDate = Utilities.GetUserFormattedDateTime(this.AnnounceEnd, this.PortalId, this.UserId);
             }
 
-            this.plhEditor = new PlaceHolder();
             this.plhEditor = (PlaceHolder)this.FindControl("plhEditor");
 
-            // 'plhEditor.Controls.Clear()
-            Unit editorWidth;
-            Unit editorHeight;
-            if (Convert.ToString(this.ForumInfo.FeatureSettings.EditorWidth) != null)
+            Unit editorWidth = Unit.Percentage(99.0);
+            Unit editorHeight = Unit.Percentage(99.0);
+
+            if (this.EditorType.Equals(EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS) && !Utilities.UseCkEditor4WithForumsPlugins(this.ForumInfo, this.ForumUser, this.AllowHTML))
             {
-                editorWidth = Convert.ToString(this.ForumInfo.FeatureSettings.EditorWidth).IndexOf("%", 0, StringComparison.Ordinal) + 1 > 0 ? Unit.Percentage(Convert.ToDouble(Convert.ToString(this.ForumInfo.FeatureSettings.EditorWidth).TrimEnd('%'))) : Unit.Parse(this.ForumInfo.FeatureSettings.EditorWidth);
-            }
-            else
-            {
-                editorWidth = Unit.Pixel(600);
+                this.EditorType = EditorType.HTMLEDITORPROVIDER;
             }
 
-            editorHeight = Convert.ToString(this.ForumInfo.FeatureSettings.EditorHeight) != null ? Unit.Parse(this.ForumInfo.FeatureSettings.EditorHeight) : Unit.Pixel(400);
             switch (this.EditorType)
             {
-                case EditorTypes.TEXTBOX:
+                case EditorType.TEXTBOX:
                     {
                         var editor = new TextBox();
                         this.txtEditor = editor;
@@ -894,9 +887,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         break;
                     }
 
-                case EditorTypes.HTMLEDITORPROVIDER:
+                case EditorType.HTMLEDITORPROVIDER:
+                case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
                     {
-                        // TODO: figure out why the editor no longer has any WYSIWYG functionality
                         var editor = new UI.UserControls.TextEditor();
                         this.txtEditor = editor;
                         editor = (UI.UserControls.TextEditor)this.LoadControl("~/controls/TextEditor.ascx");
@@ -989,6 +982,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             this.OnBubbleClick(e);
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (this.EditorType.Equals(EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS))
+            {
+                this.InjectPluginsForCkEditor4();
+            }
         }
 
         protected override void Render(HtmlTextWriter writer)
@@ -1118,14 +1121,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             switch (this.EditorType)
             {
-                // Case EditorTypes.ACTIVEEDITOR
-                //    Dim txtEditor As New ActiveEditorControls.ActiveEditor
-                //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
-                //    txtEditor.Text = _Body
-                case EditorTypes.HTMLEDITORPROVIDER:
+                case EditorType.HTMLEDITORPROVIDER:
+                case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
                     ((UI.UserControls.TextEditor)this.plhEditor.FindControl("txtBody")).Text = this.body;
                     break;
-                case EditorTypes.TEXTBOX:
+                case EditorType.TEXTBOX:
                     ((TextBox)this.txtEditor).Text = this.body;
                     break;
             }
@@ -1188,13 +1188,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     case "plhEditor":
                         switch (this.EditorType)
                         {
-                            // Case EditorTypes.ACTIVEEDITOR
-                            //    Dim txtEditor As New ActiveEditorControls.ActiveEditor
-                            //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
-                            case EditorTypes.HTMLEDITORPROVIDER:
+                            case EditorType.HTMLEDITORPROVIDER:
+                            case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
                                 var txtEditor = new UI.UserControls.TextEditor();
                                 break;
-                            case EditorTypes.TEXTBOX:
+                            case EditorType.TEXTBOX:
                                 var txtEditor1 = (TextBox)this.plhEditor.Controls[0];
                                 break;
                         }
@@ -1279,6 +1277,53 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sb.Append("var afeditor = '" + this.clientId + "';");
             this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "editorHTML", sb.ToString(), true);
+        }
+
+        private void InjectPluginsForCkEditor4()
+        {
+            if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(Globals.ModulePath + "Resources/ckeditor4-additional-plugins/customConfig.js") + "';");
+                var extraPlugins = new string[] { "mentions", "ajax", "autocomplete", "textmatch", "textwatcher", "xml", "codeTag" };
+                foreach (string plugin in extraPlugins)
+                {
+                    sb.Append($"editorConfigeditortxtBody.extraPlugins += `,{plugin}`;");
+                }
+
+                var userTag = this.GetTagForUserMentions();
+                var avatarTag = this.GetAvatarTagForUserMentions();
+
+                if (this.ForumInfo.FeatureSettings.UserMentions && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.MentionRoleIds, this.ForumUser.UserRoleIds))
+                {
+                    sb.Append("editorConfigeditortxtBody.mentions = [");
+                    sb.Append(" { feed: function( opts, callback ) { " + "var sf = $.ServicesFramework(" + this.ForumModuleId + ");" + "var url = dnn.getVar('sf_siteRoot', '/') + 'API/ActiveForums/User/GetUsersForEditorMentions?forumId=" + this.ForumInfo.ForumID.ToString() + "&query=';" + "var xhr = new XMLHttpRequest();xhr.onreadystatechange = function() { if ( xhr.readyState == 4 ) { if ( xhr.status == 200 ) { callback( JSON.parse( this.responseText ) ); } else { callback( [] ); } } }; xhr.open( 'GET', url + opts.query ); xhr.setRequestHeader('RequestVerificationToken',$('[name=\"__RequestVerificationToken\"]').val()); xhr.setRequestHeader('ModuleId'," + this.ForumModuleId + "); xhr.setRequestHeader('TabId'," + this.TabId + "); xhr.send(); }, marker: '@', minChars: 3, throttle: 100, followingSpace: true, itemTemplate: '<li data-id=\"{id}\" class=\"dcf-mentions-user\">" + avatarTag + "{name}</li>', outputTemplate: `<a href=\"" + userTag + "\">" + avatarTag + "&nbsp;{name}</a>` },");
+                    sb.Append("];");
+                }
+
+                if (this.Request.Browser.IsMobileDevice)
+                {
+                    sb.Append("editorConfigeditortxtBody.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] }, { name: 'insert', items: [ 'Code' ] } ];");
+                    sb.Append("editorConfigeditortxtBody.toolbarCanCollapse = false;");
+                    sb.Append("editorConfigeditortxtBody.toolbarStartupExpanded = true;");
+                    sb.Append("editorConfigeditortxtBody.removePlugins = 'elementspath,wordcount';");
+                    sb.Append("editorConfigeditortxtBody.resize_enabled = true;");
+                    sb.Append("editorConfigeditortxtBody.removeButtons = 'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,PasteFromWord,Print,Preview,ExportPdf,NewPage,Save,Replace,Find,BGColor,TextColor,HorizontalRule,Anchor,Unlink,BidiLtr,BidiRtl,Language,CreateDiv,CopyFormatting,RemoveFormat,Subscript,Superscript,Strike,Format,Source,Templates,SelectAll,Scayt,PasteText,Styles,Font,FontSize,About,Maximize,Table,SpecialChar,PageBreak,Iframe,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Indent,Outdent,NumberedList,BulletedList';");
+                }
+
+                sb.Append("$(document).ready(function() {$(\"#txtBody\").hide();$(\"#" + this.EditorClientId + "_txtBody_ckoptions\").hide();});");
+                this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), $"{this.EditorClientId}_txtBody_CKE_Config", sb.ToString(), true);
+            }
+        }
+
+        private string GetAvatarTagForUserMentions()
+        {
+            return Utilities.ResolveUrl(this.PortalSettings, "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />");
+        }
+
+        private string GetTagForUserMentions()
+        {
+            return Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId={id}" });
         }
 
         private void EmotScript()

@@ -124,9 +124,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
                 }
 
                 var lastAward = forumUser.Badges.Where(b => b.BadgeId.Equals(badge.BadgeId)).OrderByDescending(b => b.DateAssigned).FirstOrDefault();
-                if (lastAward != null && lastAward.DateAssigned.AddDays(badge.IntervalDays) > DateTime.UtcNow)
+                if (lastAward != null && (badge.IntervalDays.Equals(0) || lastAward.DateAssigned.AddDays(badge.IntervalDays) > DateTime.UtcNow))
                 {
-                    // Badge has already been awarded within the interval period
+                    // Badge has already been awarded within the interval period or interval is zero (only awardable once per user)
                     return false;
                 }
 
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
                         break;
                     case BadgeMetric.BadgeMetricLikesReceived:
                         if ((badge.IntervalDays > 0 && forumUser.GetLikeCountForUserSince(DateTime.UtcNow.AddDays(-1 * badge.IntervalDays)) >= badge.Threshold) ||
-                            (forumUser.GetLikeCountForUser() >= badge.Threshold))
+                            (badge.IntervalDays.Equals(0) && forumUser.GetLikeCountForUser() >= badge.Threshold))
                         {
                             awardBadge = true;
                         }
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
                         break;
                     case BadgeMetric.BadgeMetricTopicsCreated:
                         if ((badge.IntervalDays > 0 && forumUser.GetTopicCountSince(DateTime.UtcNow.AddDays(-1 * badge.IntervalDays)) >= badge.Threshold) ||
-                            (forumUser.TopicCount >= badge.Threshold))
+                            (badge.IntervalDays.Equals(0) && forumUser.TopicCount >= badge.Threshold))
                         {
                             awardBadge = true;
                         }
@@ -158,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
                         break;
                     case BadgeMetric.BadgeMetricRepliesCreated:
                         if ((badge.IntervalDays > 0 && forumUser.GetReplyCountSince(DateTime.UtcNow.AddDays(-1 * badge.IntervalDays)) >= badge.Threshold) ||
-                            (forumUser.ReplyCount >= badge.Threshold))
+                            (badge.IntervalDays.Equals(0) && forumUser.ReplyCount >= badge.Threshold))
                         {
                             awardBadge = true;
                         }
@@ -166,7 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
                         break;
                     case BadgeMetric.BadgeMetricTopicsRead:
                         if ((badge.IntervalDays > 0 && forumUser.GetTopicReadCountSince(DateTime.UtcNow.AddDays(-1 * badge.IntervalDays)) >= badge.Threshold) ||
-                            (forumUser.GetTopicReadCount() >= badge.Threshold))
+                            (badge.IntervalDays.Equals(0) && forumUser.GetTopicReadCount() >= badge.Threshold))
                         {
                             awardBadge = true;
                         }

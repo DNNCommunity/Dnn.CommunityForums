@@ -261,6 +261,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 SecureActions.Reply,
                 SecureActions.Subscribe,
                 SecureActions.Attach,
+                SecureActions.Mention,
+                SecureActions.Tag,
             };
             foreach (var access in requestedAccessList)
             {
@@ -435,7 +437,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 roleNames = string.Concat(roleNames + DotNetNuke.Common.Globals.glbRoleUnauthUserName, ";");
                                 break;
                             default:
-                                roleName = GetRoleName(portalSettings: portalSettings, role: role);
+                                roleName = GetRoleName(portalSettings: portalSettings, roleId: Utilities.SafeConvertInt(role));
                                 if (roleName != null)
                                 {
                                     roleNames = string.Concat(roleNames + roleName, ";");
@@ -455,9 +457,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static string GetRoleName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string role)
+        internal static string GetRoleName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int roleId)
         {
-            return GetRoles(portalSettings).Where(r => r.RoleID == Utilities.SafeConvertInt(role)).Select(r => r.RoleName).FirstOrDefault();
+            return GetRoles(portalSettings).Where(r => r.RoleID == Utilities.SafeConvertInt(roleId)).Select(r => r.RoleName).FirstOrDefault();
         }
 
         internal static int GetRoleId(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string roleName)
@@ -516,7 +518,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 nvc.Add(Common.Globals.glbRoleUnauthUser, DotNetNuke.Common.Globals.glbRoleUnauthUserName);
                                 break;
                             default:
-                                roleName = GetRoleName(portalSettings, role);
+                                roleName = GetRoleName(portalSettings, Utilities.SafeConvertInt(role));
                                 if (roleName != null)
                                 {
                                     nvc.Add(role, roleName);
@@ -629,6 +631,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     return permission.Subscribe;
                 case SecureActions.Tag:
                     return permission.Tag;
+                case SecureActions.Mention:
+                    return permission.Mention;
                 case SecureActions.Trust:
                     return permission.Trust;
                 case SecureActions.View:
@@ -798,13 +802,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Announce, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Attach, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.ManageUsers, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Categorize, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Create, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Delete, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Edit, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Lock, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.ManageUsers, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Moderate, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Mention, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Move, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Pin, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, permissionInfo.Poll, roleObjects);
@@ -898,6 +903,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         break;
                     case SecureActions.View:
                         permission.View = permSet;
+                        break;
+                    case SecureActions.Mention:
+                        permission.Mention = permSet;
                         break;
                     case SecureActions.Moderate:
                         permission.Moderate = permSet;

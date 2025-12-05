@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.02.03
+            09.03.00
         </h3>
         
 <!--
@@ -71,7 +71,9 @@
 -->
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-            <li>None at this time.</li>
+            <li>NEW: Implement @user mentions / editor improvements (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/User-Mentions">User Mentions wiki article on DNN Community Forums</a>)</li>
+            <li>UPDATE: Improved styling for user badge display (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1603">Issue 1603</a>)</li>
+
 <!-- 
             <li>UPDATE: When upgrading, don't send notifications during initial backfill of badge awards (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1632">Issue 1632</a>)</li>
             <li>UPDATE: When upgrading, don't install badges on forums in "Social Group" configuration; those can be added manually if desired (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1621">Issue 1621</a>)</li>
@@ -84,24 +86,28 @@
 
         <h4>Bug Fixes</h4>
         <ul>
-            
-<li>FIX: Incorrect SQL scripts delivered with 09.02.01 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1644">Issue 1644</a>)</li>
-<li>FIX: Incorrect SQL scripts delivered with 09.02.02 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1650">Issue 1650</a>)</li>
+              <li>FIX: Primary portal alias ignored when generating some links (was just using first available alias) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1651">Issue 1651</a>)</li>
+              <li>FIX: In filtered topic views, blank lines showing for topics that user doesn't have permissions to read (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1676">Issue 1676</a>)</li>
+              <li>FIX: Users being awarded badges based on total counts rather than interval-based counts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1681">Issue 1681</a>)</li>
             
 <!--
-             <li>None at this time.</li>
+
+          <li>None at this time.</li> 
 
 -->
         </ul>
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            <li>None at this time.</li>
+            <li>Add 'gulp' theme building tasks to module build (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1647">Issue 1647</a>)</li>
+            <li>09.00.03 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1671">Issue 1671</a>)</li>
+                        
+
 <!--
             <li>Source files for themes were not up-to-date (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1628">Issue 1628</a>)</li>
             <li>Rename "Ban" security permission to "Manage Users" (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1492">Issue 1492</a>)</li>
             <li>Better detection of when module is running in "Social Group" configuration (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1624">Issue 1624</a>)</li>
-            <li>09.02.01 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1636">Issue 1636</a>)</li>
+            <li>09.00.03 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1671">Issue 1671</a>)</li>
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
 -->
