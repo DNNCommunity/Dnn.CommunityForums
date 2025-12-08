@@ -10,7 +10,8 @@
 	<section class="dcf-section" id="groupQR">
 			<div class="dcf-group">
 				<asp:PlaceHolder ID="plhMessage" runat="server" />
-					<div class="dcf-qr-text">
+                <div>
+                    <div class="dcf-qr-text">
 						
 						<asp:Label ID="reqBody" runat="server" Visible="false" />
 						
