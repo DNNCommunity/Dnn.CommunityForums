@@ -373,6 +373,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             this.CurrentAccessLevel = Scope.DefaultSettings;
         }
+
         public new string ReplaceTokens(string source)
         {
             return base.ReplaceTokens(source);
@@ -757,6 +758,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:MostLiked]", "[DCF:TOOLBAR-MOSTLIKED-ONCLICK", "[AF:TB:MostLiked]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:MostReplies]", "[DCF:TOOLBAR-MOSTREPLIES-ONCLICK", "[AF:TB:MostReplies]");
             template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:Forums]", "[DCF:TOOLBAR-FORUMS-ONCLICK", "[AF:TB:Forums]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:SearchURL]", "[DCF:TOOLBAR-SEARCHURL", "[AF:TB:SearchURL]");
+            template = ReplaceLegacyTokenWithFormatString(template, portalSettings, language, "[AF:TB:SearchText]", "[DCF:TOOLBAR-SEARCHTEXT", "[AF:TB:SearchText]");
 
             return template;
         }
