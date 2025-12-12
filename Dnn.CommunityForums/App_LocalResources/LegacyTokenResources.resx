@@ -426,4 +426,10 @@
   <data name="[FORUMSUBSCRIBE].Text" xml:space="preserve">
     <value>&lt;input id="amaf-chk-subs" type="checkbox" checked="[FORUM:SUBSCRIBED]" class="amaf-chk-subs" onclick="{0}" /&gt;&lt;label for="amaf-chk-subs"&gt;[RESX:Subscribe]&lt;/label&gt;</value>
   </data>
+  <data name="[AF:TB:SearchURL].Text" xml:space="preserve">
+    <value>&lt;a href="{0}" class="dcf-search-option-advanced"&gt;[RESX:SearchAdvanced]&lt;/a&gt;</value>
+  </data>
+  <data name="[AF:TB:SearchText].Text" xml:space="preserve">
+    <value>&lt;span class="dcf-search-link-text"&gt;{0}&lt;/span&gt;</value>
+  </data>
 </root>
