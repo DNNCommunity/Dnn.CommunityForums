@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Web;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
@@ -216,12 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, reply.Content.AuthorId);
 
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(reply.ModuleId, reply.ForumId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(reply.ModuleId, reply.ReplyId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(reply.ModuleId, reply.TopicId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(reply.ModuleId, reply.ContentId);
-
-            // if existing topic, update associated journal item
+            // if existing reply being edited, update associated journal item & tags
             if (reply.ReplyId > 0)
             {
                 string fullURL = new ControlUtils().BuildUrl(portalId, reply.Forum.GetTabId(), moduleId, reply.Forum.ForumGroup.PrefixURL, reply.Forum.PrefixURL, reply.Forum.ForumGroupId, reply.ForumId, reply.TopicId, reply.Topic.TopicUrl, -1, -1, string.Empty, 1, reply.ReplyId, reply.Forum.SocialGroupId);
@@ -236,6 +232,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     fullURL += Utilities.UseFriendlyURLs(moduleId) ? $"#{reply.ReplyId}" : $"{ParamKeys.ContentJumpId}={reply.ReplyId}";
                 }
 
+                DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(reply);
                 new Social().UpdateJournalItemForPost(reply.PortalId, reply.ModuleId, reply.Forum.GetTabId(), reply.ForumId, reply.TopicId, reply.ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body);
             }
 
@@ -244,6 +241,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             int replyId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Save(portalId, reply.TopicId, reply.ReplyId, reply.ReplyToId, reply.StatusId, reply.IsApproved, reply.IsDeleted, reply.Content.Subject.Trim(), reply.Content.Body.Trim(), reply.Content.DateCreated, reply.Content.DateUpdated, reply.Content.AuthorId, reply.Content.AuthorName, reply.Content.IPAddress));
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, reply.ForumId, reply.TopicId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(reply.ForumId);
+
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(reply.ModuleId, reply.ForumId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(reply.ModuleId, reply.ReplyId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(reply.ModuleId, reply.TopicId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(reply.ModuleId, reply.ContentId);
+
             return replyId;
         }
 
@@ -323,12 +326,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
 
-                if (reply.IsApproved && reply.Content.AuthorId > 0)
+                if (reply.Content.AuthorId > 0)
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserReplyCount(portalId, reply.Content.AuthorId);
                 }
 
-
+                DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(reply);
                 DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController.ProcessUserMentions(reply);
 
                 return true;

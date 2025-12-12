@@ -108,20 +108,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     var contentController = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController();
                     var tagController = new DotNetNuke.Modules.ActiveForums.Controllers.TagController();
+                    var tags = ParseTagsFromBody(post.Content.Body);
 
-                    const string tagsPattern = @"href="".*?/afv/search\?aftg=(?<tag>.+?)""";
-                    var tags = new List<string>();
-                    var matches = RegexUtils.GetCachedRegex(tagsPattern, RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace, 5).Matches(post.Content.Body);
-                    if (matches.Count > 0)
+                    if (tags.Count > 0)
                     {
-                        foreach (Match match in matches)
-                        {
-                            if (!string.IsNullOrEmpty(match.Groups["tag"]?.Value))
-                            {
-                                tags.Add(match.Groups["tag"].Value);
-                            }
-                        }
-
                         var topicTagController = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController();
                         var existingTags = topicTagController.GetForTopic(post.TopicId);
                         tags.Distinct().ToList().ForEach(t =>
@@ -136,7 +126,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                     PortalId = post.PortalId,
                                 };
                                 tagController.Insert(tag);
-                            };
+                            }
+                            ;
 
                             // if the tag is not already associated with the topic, add it
                             if (!existingTags.Any(et => et.TagId == tag.TagId))
@@ -149,8 +140,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 catch (Exception ex)
                 {
                     Exceptions.LogException(ex);
-                } 
+                }
             }
+        }
+
+        internal static List<string> ParseTagsFromBody(string body)
+        {
+            const string tagsPattern = @"href="".*?/afv/search\?aftg=(?<tag>.+?)""";
+            var tags = new List<string>();
+            var matches = RegexUtils.GetCachedRegex(tagsPattern, RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace, 5).Matches(body);
+            if (matches.Count > 0)
+            {
+                foreach (Match match in matches)
+                {
+                    if (!string.IsNullOrEmpty(match.Groups["tag"]?.Value))
+                    {
+                        tags.Add(match.Groups["tag"].Value);
+                    }
+                }
+            }
+
+            return tags;
         }
 
         internal void Delete(DotNetNuke.Modules.ActiveForums.Entities.TagInfo item)

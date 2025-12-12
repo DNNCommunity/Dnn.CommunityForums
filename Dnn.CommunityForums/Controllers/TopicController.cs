@@ -268,17 +268,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: topic.ForumId, moduleId: topic.ModuleId);
             DotNetNuke.Modules.ActiveForums.Controllers.TagController.CleanUpTags(topic, forum);
-            Utilities.UpdateModuleLastContentModifiedOnDate(topic.ModuleId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(topic.ModuleId, topic.ForumId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(topic.ModuleId, topic.TopicId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(topic.ModuleId, topic.ContentId);
 
-            // if existing topic, update associated journal item
+            // if editing existing topic, update associated journal item & tags
             if (topic.TopicId > 0)
             {
+                DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(topic);
                 string sUrl = new ControlUtils().BuildUrl(topic.PortalId, topic.Forum.GetTabId(), topic.ModuleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, topic.ForumId, topic.TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
                 new Social().UpdateJournalItemForPost(topic.PortalId, topic.ModuleId, topic.Forum.GetTabId(), topic.ForumId, topic.TopicId, 0, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body);
+
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(topic.ModuleId, topic.TopicId);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(topic.ModuleId, topic.ContentId);
             }
+
+            Utilities.UpdateModuleLastContentModifiedOnDate(topic.ModuleId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(topic.ModuleId, topic.ForumId);
 
             // TODO: convert to use DAL2?
             return Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Save(topic.Forum.PortalId, topic.ModuleId, topic.TopicId, topic.ViewCount, topic.ReplyCount, topic.IsLocked, topic.IsPinned, topic.TopicIcon, topic.StatusId, topic.IsApproved, topic.IsDeleted, topic.IsAnnounce, topic.IsArchived, topic.AnnounceStart ?? Utilities.NullDate(), topic.AnnounceEnd ?? Utilities.NullDate(), topic.Content.Subject.Trim(), topic.Content.Body.Trim(), topic.Content.Summary.Trim(), topic.Content.DateCreated, topic.Content.DateUpdated, topic.Content.AuthorId, topic.Content.AuthorName, topic.Content.IPAddress, (int)topic.TopicType, topic.Priority, topic.TopicUrl, topic.TopicData));
@@ -388,11 +391,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
 
-                if (topic.IsApproved && topic.Content.AuthorId > 0)
+                if (topic.Content.AuthorId > 0)
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserTopicCount(portalId, topic.Content.AuthorId);
                 }
 
+                DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(topic);
                 DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController.ProcessUserMentions(topic);
 
                 return true;
