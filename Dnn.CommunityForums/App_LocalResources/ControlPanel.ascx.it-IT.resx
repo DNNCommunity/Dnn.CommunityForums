@@ -1390,9 +1390,6 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:Tips:SecGrid:Subscribe].Text" xml:space="preserve">
     <value>Può iscriversi per ricevere notifiche via e-mail su nuovi argomenti e risposte.</value>
   </data>
-  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
-    <value>Può aggiungere tag agli argomenti e alle risposte.</value>
-  </data>
   <data name="[RESX:Tips:SecGrid:Trust].Text" xml:space="preserve">
     <value>L'utente con sicurezza Attendibile ignora automaticamente la moderazione se configurato per un forum.</value>
   </data>
@@ -1545,5 +1542,8 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   </data>
   <data name="[RESX:UserMentions].Text" xml:space="preserve">
     <value>Menzioni degli utenti</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Può aggiungere/gestire tag su argomenti. Qualsiasi tag inserito nei post (argomenti e/o risposte) viene aggiunto automaticamente all'argomento così come la lista dei tag disponibili nei forum.</value>
   </data>
 </root>

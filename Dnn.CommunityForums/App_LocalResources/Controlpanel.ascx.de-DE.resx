@@ -1495,9 +1495,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:Tips:SecGrid:Subscribe].Text" xml:space="preserve">
     <value>Sie können sich anmelden, um E-Mail-Benachrichtigungen über neue Themen und Antworten zu erhalten.</value>
   </data>
-  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
-    <value>Kann Tags zu Themen und Antworten hinzufügen.</value>
-  </data>
   <data name="[RESX:Tips:SecGrid:Trust].Text" xml:space="preserve">
     <value>Benutzer mit vertrauenswürdiger Sicherheit umgehen die Moderation automatisch, wenn sie für ein Forum konfiguriert sind.</value>
   </data>
@@ -1650,5 +1647,8 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   </data>
   <data name="[RESX:UserMentions].Text" xml:space="preserve">
     <value>Benutzerhinweise</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Kann Tags zu Themen hinzufügen/verwalten. Alle in Beiträgen (Themen und/oder Antworten) eingetragenen Tags werden automatisch dem Thema sowie der Liste der im Forum verfügbaren Tags hinzugefügt.</value>
   </data>
 </root>
