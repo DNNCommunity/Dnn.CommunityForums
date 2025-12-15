@@ -534,7 +534,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (!string.IsNullOrWhiteSpace(imgUrl) && imgUrl.ToLower().EndsWith("gif"))
             {
-                imgUrl = $"https://{portalSettings.DefaultPortalAlias}/{imgUrl}";
+                if (!imgUrl.StartsWith("/"))
+                {
+                    imgUrl = "/" + imgUrl;
+                }
+                imgUrl = $"https://{portalSettings.DefaultPortalAlias}{imgUrl}";
                 imgTag = string.Format("<img class='af-avatar' alt='' src='{0}' height='{1}px' width='{2}px' />", imgUrl, avatarHeight, avatarWidth);
             }
             else
