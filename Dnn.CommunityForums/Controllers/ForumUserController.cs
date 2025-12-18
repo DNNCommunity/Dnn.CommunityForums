@@ -530,15 +530,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             string imgUrl = string.Empty;
             string imgTag = string.Empty;
 
-            if (user != null) imgUrl = user.Profile.PhotoURL;
+            if (user != null)
+            {
+                imgUrl = user.Profile.PhotoURL;
+            }
 
-            if (!string.IsNullOrWhiteSpace(imgUrl) && imgUrl.ToLower().EndsWith("gif"))
+            if (!string.IsNullOrWhiteSpace(imgUrl) && imgUrl.ToLower().Contains(".gif") && !imgUrl.Equals("/images/no_avatar.gif", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (!imgUrl.StartsWith("/"))
                 {
                     imgUrl = "/" + imgUrl;
                 }
+
                 imgUrl = $"https://{portalSettings.DefaultPortalAlias}{imgUrl}";
+                if (!string.IsNullOrEmpty(portalSettings.PortalAlias.CultureCode) && imgUrl.ToLowerInvariant().Contains($"/{portalSettings.PortalAlias.CultureCode.ToLowerInvariant()}/"))
+                {
+                    imgUrl = imgUrl.ToLowerInvariant().Replace($"/{portalSettings.PortalAlias.CultureCode.ToLowerInvariant()}/", "/");
+                }
+
                 imgTag = string.Format("<img class='af-avatar' alt='' src='{0}' height='{1}px' width='{2}px' />", imgUrl, avatarHeight, avatarWidth);
             }
             else
