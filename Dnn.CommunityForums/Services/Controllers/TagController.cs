@@ -21,12 +21,16 @@
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Web.Api;
+
+    using Newtonsoft.Json;
 
     /// <summary>
     /// <inheritdoc/>
@@ -73,14 +77,28 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (!string.IsNullOrEmpty(matchString))
                 {
-                    var matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Find("WHERE PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName", this.ActiveModule.PortalID, this.ForumModuleId, $"{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(matchString, 20)}%").Select(t => new { id = t.TagId, name = t.TagName }).ToList();
+                    var cachekey = string.Format(CacheKeys.TagMatches, this.ForumModuleId, matchString);
+                    var matchingTags = DataCache.ContentCacheRetrieve(this.ForumModuleId, cachekey) as List<TagMatchDto>;
+                    if (matchingTags == null)
+                    {
+                        matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController()
+                        .Find(
+                            "WHERE PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName",
+                            this.ActiveModule.PortalID,
+                            this.ForumModuleId,
+                            $"{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(matchString, 20)}%")
+                        .Select(t => new TagMatchDto { Id = t.TagId, Name = t.TagName })
+                        .ToList();
+                        DataCache.ContentCacheStore(this.ForumModuleId, cachekey, matchingTags);
+                    }
+
                     if (matchingTags.Count > 0)
                     {
                         return this.Request.CreateResponse(HttpStatusCode.OK, matchingTags);
                     }
-
-                    return this.Request.CreateResponse(HttpStatusCode.NoContent);
                 }
+
+                return this.Request.CreateResponse(HttpStatusCode.NoContent);
             }
             catch (Exception ex)
             {
@@ -90,5 +108,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
+        private struct TagMatchDto
+        {
+            [JsonProperty(propertyName: "id")]
+            public int Id { get; set; }
+
+            [JsonProperty(propertyName: "name")]
+            public string Name { get; set; }
+        }
     }
 }
