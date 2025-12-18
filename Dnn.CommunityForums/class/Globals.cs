@@ -556,6 +556,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
         public const string UserMentionQuery = "AF-{0}-usermentionquery-{1}-{2}";
         public const string UserMentionInfo = "AF-{0}-usermentioninfo-{1}";
+        public const string TagMatches = "AF-{0}-tagmatches-{1}";
     }
 
     public class SortColumns
