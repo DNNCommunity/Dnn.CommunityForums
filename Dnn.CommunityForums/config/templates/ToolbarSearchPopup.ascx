@@ -15,10 +15,10 @@
         }
     };
 </script>
-<div class="dcf-quick-search aftb-search" data-searchurl="[AF:TB:SearchURL]">
+<div class="dcf-quick-search aftb-search" data-searchurl="[DCF:TOOLBAR-SEARCHURL]">
     <span class="dcf-search-link aftb-search-link">
         <span>
-            <i class="fa fa-search fa-fw fa-blue"></i><span class="dcf-search-link-text">[AF:TB:SearchText]</span>
+            <i class="fa fa-search fa-fw fa-blue"></i>[DCF:TOOLBAR-SEARCHTEXT|<span class="dcf-search-link-text">{0}</span>][FORUM:TOOLBAR-SEARCHTEXT|<span class="dcf-search-link-text">{0}</span>]
         </span>
         <span class="ui-icon ui-icon-triangle-1-s"></span>
     </span>
@@ -28,7 +28,7 @@
             <button id="btnSearch" type="submit" class="dcf-search-button">[RESX:Search]</button>
         </div>
         <div class="dcf-search-options">
-            <a class="dcf-search-option-advanced" href="[AF:TB:AdvancedSearchURL]">[RESX:SearchAdvanced]</a>
+            [DCF:TOOLBAR-SEARCHURL|<a class="dcf-search-option-advanced" href="{0}">[RESX:SearchAdvanced]</a>]
             <span class="dcf-search-option-topics">
                 <input type="radio" name="afsrt" value="0" checked="checked" /><span class="dcf-search-option-text">[RESX:SearchByTopics]</span>
             </span>

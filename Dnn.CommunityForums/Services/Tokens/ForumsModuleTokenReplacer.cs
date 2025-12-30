@@ -137,6 +137,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                     case "forumslink":
                     case "toolbar-forums-onclick":
                         return PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId), format);
+                    case "toolbar-searchurl":
+                        return PropertyAccess.FormatString(System.Net.WebUtility.HtmlEncode(Utilities.NavigateURL(this.TabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search"})), format);
+                    case "toolbar-searchtext":
+                        return PropertyAccess.FormatString("[RESX:SearchAllForums]", format);
                     case "toolbar-controlpanel-onclick":
                         return accessingUser.IsSuperUser || accessingUser.IsAdmin ?
                             PropertyAccess.FormatString(Utilities.NavigateURL(this.ForumTabId, "EDIT", $"mid={this.ForumModuleId}"), format) :

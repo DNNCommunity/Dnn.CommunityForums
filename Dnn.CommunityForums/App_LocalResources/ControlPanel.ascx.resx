@@ -1508,7 +1508,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
     <value>Can sign up to receive email notifications about new topics and replies.</value>
   </data>
   <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
-    <value>Can add tags to topics and replies.</value>
+    <value>Can add/manage tags on topics. Any tags entered in posts (topics and/or replies) are automatically added to the topic as well as the list of tags available across theforums.</value>
   </data>
   <data name="[RESX:Tips:SecGrid:Trust].Text" xml:space="preserve">
     <value>User with Trust security automatically bypasses moderation if configured for a forum.</value>

@@ -872,6 +872,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "forumlink":
                     case "forumurl":
                         return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.GetTabId(), this.ModuleId, this.ForumGroup.PrefixURL, this.PrefixURL, this.ForumGroupId, this.ForumID, -1, -1, string.Empty, 1, -1, this.SocialGroupId), format);
+                    
                     case "parentforumlink":
                         return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.GetTabId(), this.ModuleId, this.ForumGroup.PrefixURL, this.ParentForumUrlPrefix, this.ForumGroupId, this.ParentForumId, -1, -1, string.Empty, 1, -1, this.SocialGroupId), format);
                     case "parentforumname":
@@ -978,6 +979,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                             return string.Empty;
                         }
+
+                    case "toolbar-searchurl":
+                        return PropertyAccess.FormatString(System.Net.WebUtility.HtmlEncode(Utilities.NavigateURL(this.GetTabId(), string.Empty, new[] { $"{ParamKeys.ViewType}=search", $"f={this.ForumID}" })), format);
+
+                    case "toolbar-searchtext":
+                        return PropertyAccess.FormatString("[RESX:SearchSingleForum]", format);
                 }
             }
             catch (Exception ex)

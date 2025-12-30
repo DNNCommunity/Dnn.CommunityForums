@@ -41,6 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Security.Permissions;
@@ -138,10 +139,17 @@ namespace DotNetNuke.Modules.ActiveForums
             StringBuilder templateStringBuilder = new StringBuilder(template);
             templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyToolbarTokenSynonyms(templateStringBuilder, portalSettings, language);
 
-            // Search popup
-            templateStringBuilder.Replace("[AF:TB:SearchURL]", System.Net.WebUtility.HtmlEncode(NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search", $"f={forumId}" })));
-            templateStringBuilder.Replace("[AF:TB:AdvancedSearchURL]", System.Net.WebUtility.HtmlEncode(NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}=searchadvanced", $"f={forumId}" })));
-            templateStringBuilder.Replace("[AF:TB:SearchText]", forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]");
+            if (forumId > 0)
+            {
+                var forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, forumModuleId);
+                templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, forumInfo, GetPortalSettings(portalId), SettingsBase.GetModuleSettings(forumModuleId), new Services.URLNavigator().NavigationManager(), forumUser, tabId, forumUser.CurrentUserType, requestUri, rawUrl);
+                templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemovePrefixedToken(templateStringBuilder, "DCF:TOOLBAR-SEARCHTEXT");
+            }
+            else
+            {
+                templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemovePrefixedToken(templateStringBuilder, "FORUM:TOOLBAR-SEARCHTEXT");
+            }
+
             templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId, requestUri, rawUrl);
             return Utilities.LocalizeControl(templateStringBuilder.ToString());
         }

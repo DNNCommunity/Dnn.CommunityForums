@@ -804,15 +804,17 @@ namespace DotNetNuke.Modules.ActiveForums
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TagRoleIds, this.ForumUser.UserRoleIds))
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopic(this.TopicId);
-                var tagForm = string.Empty;
+
+                var currentTopicTags = DotNetNuke.Modules.ActiveForums.Controllers.TagController.ParseTagsFromBody(ti.Content.Body);
+                var tagForm = string.Join(",", currentTopicTags);
                 if (this.Request.Form["txtTags"] != null)
                 {
-                    tagForm = this.Request.Form["txtTags"];
+                    tagForm = tagForm + "," + this.Request.Form["txtTags"];
                 }
 
                 if (tagForm != string.Empty)
-                {   
-                    var tags = tagForm.Split(',');
+                {
+                    var tags = tagForm.Split(',').Distinct();
                     foreach (var tag in tags)
                     {
                         var sTag = Utilities.CleanString(this.PortalId, tag.Trim(), false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);

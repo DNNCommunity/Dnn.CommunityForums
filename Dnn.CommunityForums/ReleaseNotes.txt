@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.03.00
+            09.04.00
         </h3>
         
 <!--
@@ -71,8 +71,8 @@
 -->
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-            <li>NEW: Implement @user mentions / editor improvements (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/User-Mentions">User Mentions wiki article on DNN Community Forums</a>)</li>
-            <li>UPDATE: Improved styling for user badge display (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1603">Issue 1603</a>)</li>
+            <li>NEW: Implement #tags in editor / editor improvements (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Tags">Tags wiki article on DNN Community Forums</a>)</li>
+            <li>UPDATE: Toolbar search popup template (ToolbarSearchPopup.ascx) now uses token replacement (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1696">PR 1696</a>)</li>
 
 <!-- 
             <li>UPDATE: When upgrading, don't send notifications during initial backfill of badge awards (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1632">Issue 1632</a>)</li>
@@ -85,29 +85,30 @@
         </ul>
 
         <h4>Bug Fixes</h4>
+
         <ul>
+        <li>FIX: Missing &lt;div&gt; tag in Quick Reply template in community-default theme (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1691">Issue 1691</a>)</li>
+        <li>FIX: "No avatar" avatar not showing on multi-language sites (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1702">Issue 1702</a>)</li>
+<!--
+          <li>None at this time.</li> 
               <li>FIX: Primary portal alias ignored when generating some links (was just using first available alias) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1651">Issue 1651</a>)</li>
               <li>FIX: In filtered topic views, blank lines showing for topics that user doesn't have permissions to read (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1676">Issue 1676</a>)</li>
               <li>FIX: Users being awarded badges based on total counts rather than interval-based counts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1681">Issue 1681</a>)</li>
             
-<!--
-
-          <li>None at this time.</li> 
 
 -->
         </ul>
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            <li>Add 'gulp' theme building tasks to module build (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1647">Issue 1647</a>)</li>
-            <li>09.00.03 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1671">Issue 1671</a>)</li>
+            <li>09.04.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1701">Issue 1701</a>)</li>
                         
 
 <!--
             <li>Source files for themes were not up-to-date (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1628">Issue 1628</a>)</li>
             <li>Rename "Ban" security permission to "Manage Users" (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1492">Issue 1492</a>)</li>
             <li>Better detection of when module is running in "Social Group" configuration (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1624">Issue 1624</a>)</li>
-            <li>09.00.03 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1671">Issue 1671</a>)</li>
+            <li>09.00.04 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1701">Issue 1701</a>)</li>
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
 -->

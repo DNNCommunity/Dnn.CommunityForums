@@ -1393,9 +1393,6 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:SecGrid:Subscribe].Text" xml:space="preserve">
     <value>Vous pouvez vous inscrire pour recevoir des notifications par e-mail sur les nouveaux sujets et les réponses.</value>
   </data>
-  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
-    <value>Peut ajouter des balises aux sujets et aux réponses.</value>
-  </data>
   <data name="[RESX:Tips:SecGrid:Trust].Text" xml:space="preserve">
     <value>La sécurité des utilisateurs avec confiance contourne automatiquement la modération si elle est configurée pour un forum.</value>
   </data>
@@ -1548,5 +1545,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   </data>
   <data name="[RESX:UserMentions].Text" xml:space="preserve">
     <value>Mentions d’utilisateurs</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Peut ajouter/gérer des tags sur des sujets. Tous les tags entrés dans les publications (sujets et/ou réponses) sont automatiquement ajoutés au sujet ainsi que la liste des tags disponibles sur les forums.</value>
   </data>
 </root>

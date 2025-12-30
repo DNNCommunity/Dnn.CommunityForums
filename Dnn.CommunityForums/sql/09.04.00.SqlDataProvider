@@ -1,0 +1,79 @@
+SET NOCOUNT ON 
+GO
+
+/* --------------------- */
+/* issue 168 - begin - improve tags functionality */
+
+
+/* drop old activeforums_Topics_Tags indexes and replace with new indexes */
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tags') AND name = N'IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt')
+DROP INDEX [IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt] ON {databaseOwner}{objectQualifier}activeforums_Topics_Tags 
+GO
+
+IF (OBJECT_ID(N'{databaseOwner}[PK_{objectQualifier}activeforums_Topics_Tags]', 'PK') IS NOT NULL)
+BEGIN
+    ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags] DROP CONSTRAINT [PK_{objectQualifier}activeforums_Topics_Tags]
+END
+GO
+
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'TopicTagid' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tags]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags] 
+		ADD TopicTagid INT IDENTITY(1,1)
+END
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags] 
+	ADD CONSTRAINT [PK_{objectQualifier}activeforums_Topics_Tags] PRIMARY KEY CLUSTERED ( [TopicTagid] ASC  ) 
+		WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) 
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tags') AND name = N'IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt1')
+DROP INDEX [IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt1] ON {databaseOwner}{objectQualifier}activeforums_Topics_Tags 
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tags') AND name = N'IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt1')
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt1 ON {databaseOwner}[{objectQualifier}activeforums_Topics_Tags]
+	(
+	TagId,
+	TopicId
+	) 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tags') AND name = N'IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt2')
+DROP INDEX [IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt2] ON {databaseOwner}{objectQualifier}activeforums_Topics_Tags 
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tags') AND name = N'IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt2')
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt2 ON {databaseOwner}[{objectQualifier}activeforums_Topics_Tags]
+	(
+	TopicId,
+	TagId
+	) 
+GO
+
+/* activeforums_Topics_Tags - cascade delete from activeforums_Topics */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Topics_Tags_Topics]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tags]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Topics_Tags_Topics]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Topics_Tags_Topics] FOREIGN KEY (TopicId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Topics] (TopicId)
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Topics_Tags - cascade delete from activeforums_Tags */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Topics_Tags_Tags]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tags]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Topics_Tags_Tags]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Topics_Tags_Tags] FOREIGN KEY (TagId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Tags] (TagId)
+	ON DELETE NO ACTION
+GO
+
+/* issue 168 - end - improve tags functionality */
+/* --------------------- */
+
+
