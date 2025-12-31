@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI;
     using System.Web.UI.WebControls;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:UserProfile runat=server></{0}:UserProfile>")]
     public class UserProfile : ProfileBase
@@ -228,7 +229,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForums.DisplayTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, (Enums.TemplateType)Enum.Parse(typeof(Enums.TemplateType),  "ForumTracking", true), SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
                 ctlForums.CurrentUserId = this.UID;
-                ctlForums.ForumIds = user.UserForums;
+                ctlForums.ForumIds = user.UserForums.ToHashSetFromDelimitedString<int>(";");
                 this.plhTracker.Controls.Add(ctlForums);
             }
 

@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Text;
     using System.Web.UI;
 
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Security.Roles;
 
     public partial class admin_securitygrid : ActiveAdminBase
@@ -80,28 +81,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void BuildNewGrid(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security, int permissionsId)
         {
-            // Roles
-            string[] roles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(this.PortalSettings, security).Split(';');
-            int[] roleIds = new int[roles.Length - 2 + 1];
-            int i = 0;
-            for (i = 0; i <= roles.Length - 2; i++)
-            {
-                if (!string.IsNullOrEmpty(roles[i]))
-                {
-                    roleIds[i] = Convert.ToInt32(roles[i]);
-                }
-            }
-
-            Array.Sort(roleIds);
-            string tmp = string.Empty;
-            foreach (int n in roleIds)
-            {
-                tmp += n.ToString() + ";";
-            }
-
+            var roles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsUsedByPermissionInfo(this.PortalSettings, security).FromHashSetToDelimitedString<int>(";");
             List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo> pl = new List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
 
-            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(this.PortalSettings, tmp);
+            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(this.PortalSettings, roles);
             foreach (string key in nvc.AllKeys)
             {
                 DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
@@ -167,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         break;
                 }
 
-                i = 0;
+                int i = 0;
                 string[,] grid = new string[pl.Count + 1, 2 + gridSecurityActions[gridIndex].GetUpperBound(0) + 1];
 
                 sb.Append($"<h6>{gridHeader}</h6>");

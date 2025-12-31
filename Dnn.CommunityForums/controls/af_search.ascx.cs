@@ -30,6 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Controls;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
 
     public partial class af_search : ForumBase
     {
@@ -547,7 +548,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // An intersection of the forums allows vs forums requested.
             var parseId = 0;
 
-            var sForumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
+            var sForumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read).FromHashSetToDelimitedString<int>(";");
             var forumsAllowed = sForumsAllowed.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
             var forumsRequested = this.Forums.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
 
@@ -560,7 +561,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                forumsToSearch = forumsRequested.Where(forumsAllowed.Contains).Aggregate(forumsToSearch, (current, f) => current + (current.Length == 0 ? String.Empty : ":") + f);
+                forumsToSearch = forumsRequested.Where(forumsAllowed.Contains).Aggregate(forumsToSearch, (current, f) => current + (current.Length == 0 ? string.Empty : ":") + f);
             }
 
             const int maxCacheHours = 1;

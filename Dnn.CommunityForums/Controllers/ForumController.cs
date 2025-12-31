@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Collections;
     using DotNetNuke.Data;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
 
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
     {
@@ -123,9 +124,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forums;
         }
 
-        public static string GetForumIdsBySocialGroup(int portalId, int moduleId, int socialGroupId)
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use HashSet<int> GetForumIdsBySocialGroup(int moduleId, int socialGroupId)")]
+        public static string GetForumIdsBySocialGroup(int portalId, int moduleId, int socialGroupId) => GetForumIdsBySocialGroup(moduleId, socialGroupId).FromHashSetToDelimitedString<int>(";");
+
+        internal static HashSet<int> GetForumIdsBySocialGroup(int moduleId, int socialGroupId)
         {
-            return socialGroupId > 0 ? string.Join(";", new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Find("WHERE SocialGroupId = @0 AND ModuleId = @1", socialGroupId, moduleId).Select(f => f.ForumID.ToString()).ToArray()) : string.Empty;
+            return socialGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Find("WHERE SocialGroupId = @0 AND ModuleId = @1", socialGroupId, moduleId).Select(f => f.ForumID).Distinct().ToHashSet() : new HashSet<int>();
         }
 
         internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache, int topicId)
@@ -144,9 +148,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumId <= 0 ? null : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
         }
 
-        public static string GetForumsForUser(int portalId, int moduleId, ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SecureActions action = DotNetNuke.Modules.ActiveForums.SecureActions.View, string permissionType = "CanView")
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use HashSet<int> GetForumsForUser(int moduleId, ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SecureActions action)")]
+        public static string GetForumsForUser(int portalId, int moduleId, ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SecureActions action = DotNetNuke.Modules.ActiveForums.SecureActions.View, string permissionType = "CanView") => GetForumsForUser(moduleId: moduleId, forumUser: forumUser, action: action).FromHashSetToDelimitedString(";");
+
+        internal static HashSet<int> GetForumsForUser(int moduleId, ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SecureActions action = DotNetNuke.Modules.ActiveForums.SecureActions.View)
         {
-            var forumIds = string.Empty;
+            var forumIds = new HashSet<int>();
             DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId);
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
             {
@@ -174,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 if (hasPermissions)
                 {
-                    forumIds += string.Concat(f.ForumID, ";");
+                    forumIds.Add(f.ForumID);
                 }
             }
 
