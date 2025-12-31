@@ -447,9 +447,6 @@
   <data name="[RESX:EnableFilter].Text" xml:space="preserve">
     <value>Filter</value>
   </data>
-  <data name="[RESX:EnableFullText].Text" xml:space="preserve">
-    <value>Volltext aktivieren</value>
-  </data>
   <data name="[RESX:EnablePoints].Text" xml:space="preserve">
     <value>Punktesystem</value>
   </data>
@@ -557,12 +554,6 @@
   </data>
   <data name="[RESX:FullName].Text" xml:space="preserve">
     <value>Vollständiger Name</value>
-  </data>
-  <data name="[RESX:FullTextSearch:Intro].Text" xml:space="preserve">
-    <value>Die Volltextsuche bietet eine bessere Leistung und genauere Ergebnisse.</value>
-  </data>
-  <data name="[RESX:FullTextSearch].Text" xml:space="preserve">
-    <value>Volltextsuche</value>
   </data>
   <data name="[RESX:GetSupport].Text" xml:space="preserve">
     <value>Klicken Sie hier, um Support für DNN-Community-Foren zu erhalten.</value>

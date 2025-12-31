@@ -1,19 +1,18 @@
-.af-adv-search{
+.af-adv-search {
 
-    .af-adv-search-header{
-        .af-adv-search-title{
-            display:block;
-            
+    .af-adv-search-header {
+        .af-adv-search-title {
+            display: block;
         }
     }
-    .af-adv-search-row, .af-adv-search-footer{
-        padding: $spacer-md 0;
-        
-        
-        border-bottom: solid 1px #ddd; // For now..
 
-        label{
-            min-width: 20em;
+    .af-adv-search-row, .af-adv-search-footer {
+        padding: $spacer-md 0;
+
+        label {
+            min-width: 12em;
+            text-align: right;
+            vertical-align: top;
         }
     }
 }

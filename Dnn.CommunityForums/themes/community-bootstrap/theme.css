@@ -194,21 +194,22 @@
   flex-grow: 1;
   padding: 0 0.25rem;
 }
-.dnn-community-forums .dcf-toolbars .dcf-quick-search .dcf-search-input .dcf-search-button {
-  border: none;
-  margin-left: 0.25rem;
-  padding: 0 0.25rem;
+.dnn-community-forums .dcf-toolbars .dcf-quick-search .dcf-search-input .dcf-search-icon-button {
+  float: right;
+  position: relative;
+  cursor: pointer;
+  top: 0px;
+  right: 0px;
+  background-color: transparent;
+  border: solid 1px #bbb;
+  border-left: none 0px transparent;
 }
 .dnn-community-forums .dcf-toolbars .dcf-quick-search .dcf-search-options .dcf-search-option-advanced {
   display: block;
   width: 100%;
+  text-align: right;
+  font-size: 0.9em;
   padding: 0.25rem 0;
-}
-.dnn-community-forums .dcf-toolbars .dcf-quick-search .dcf-search-options .dcf-search-option-topics {
-  margin-right: 0.75rem;
-}
-.dnn-community-forums .dcf-toolbars .dcf-quick-search .dcf-search-options .dcf-search-option-text {
-  margin-left: 0.25rem;
 }
 .dnn-community-forums .dcf-sort select {
   margin-left: 0.25rem;
@@ -321,10 +322,11 @@
 }
 .dnn-community-forums .af-adv-search .af-adv-search-row, .dnn-community-forums .af-adv-search .af-adv-search-footer {
   padding: 0.75rem 0;
-  border-bottom: solid 1px #ddd;
 }
 .dnn-community-forums .af-adv-search .af-adv-search-row label, .dnn-community-forums .af-adv-search .af-adv-search-footer label {
-  min-width: 20em;
+  min-width: 12em;
+  text-align: right;
+  vertical-align: top;
 }
 .dnn-community-forums .afpager td {
   padding: 0.25rem;
