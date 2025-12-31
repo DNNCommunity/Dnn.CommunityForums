@@ -138,18 +138,6 @@
   <data name="FullName.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Nome e Cognome</value>
   </data>
-  <data name="FullTextAzure.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>La ricerca full-text non è supportata in SQL Azure.</value>
-  </data>
-  <data name="FullTextNotInstalled.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>La ricerca full-text non è installata in SQL Server.</value>
-  </data>
-  <data name="FullTextSearch.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>La ricerca full-text offre prestazioni migliori e risultati più accurati.  Contattare il provider di hosting per assicurarsi che la ricerca full-text sia abilitata per il database.</value>
-  </data>
-  <data name="FullTextSearch.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Abilitare la ricerca full-text</value>
-  </data>
   <data name="GroupAdmin.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Proprietari di gruppi</value>
   </data>

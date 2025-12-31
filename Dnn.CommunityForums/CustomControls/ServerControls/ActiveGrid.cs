@@ -599,7 +599,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 str.Append("window." + this.ClientID + ".Column='" + this.DefaultColumn + "';");
                 if (this.DefaultSort == Sort.Ascending)
                 {
-                    str.Append("window." + this.ClientID + ".Sort='ASC';");
+                    str.Append("window." + this.ClientID + ".SearchSortType='ASC';");
                     str.Append("window." + this.ClientID + ".DefaultSort='ASC';");
                 }
 

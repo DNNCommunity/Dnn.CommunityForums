@@ -29,12 +29,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Web;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.Social.Notifications;
 
     internal class TopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
@@ -312,6 +316,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 new Social().DeleteJournalItemForPost(ti.PortalId, ti.ForumId, topicId, 0);
 
+                if (ti.Forum.FeatureSettings.IndexContent)
+                {
+                    var searchDoc = new SearchDocumentToDelete
+                    {
+                        UniqueKey = $"{ti.ModuleId}-{ti.ContentId}",
+                        ModuleId = ti.ModuleId,
+                        PortalId = ti.PortalId,
+                        SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
+                    };
+                    DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searchDoc);
+                }
+
                 var replyController = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(ti.ModuleId);
                 replyController.GetByTopicId(topicId).ForEach(reply =>
                 {
@@ -326,6 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));
                 DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
                 DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
+
 
                 if (deleteBehavior.Equals(DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Recycle))
                 {
