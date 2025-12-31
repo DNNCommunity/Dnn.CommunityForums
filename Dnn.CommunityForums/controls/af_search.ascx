@@ -5,7 +5,7 @@
 
     $(document).ready(function() {
 
-        $('.af-search-modify').button({ "icons": { "primary": "ui-icon-wrench" } }).click(function () {
+        $('.af-search-modify').button().click(function () {
             document.location.href = '<%=GetSearchUrl()%>';
             return false;
         });

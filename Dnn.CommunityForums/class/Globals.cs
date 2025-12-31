@@ -25,7 +25,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Modules;
 
     #region Enumerations
-
+    
+    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
     public enum AttachStores
     {
         FILESYSTEM,
@@ -136,6 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public const string ModuleName = "Active Forums";
+        public const string ModuleOwnerName = "DNN Community";
         public const string ModuleFriendlyName = "DNN Community Forums";
         public const string ModulePath = "~/DesktopModules/ActiveForums/";
         public const string ModuleConfigPath = Globals.ModulePath + "config/";
@@ -359,6 +361,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public const string Tag = "tg";
         public const string Query = "q";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string SearchType = "k";
         public const string User = "uid";
         public const string Author = "author";
@@ -366,6 +369,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Sort = "srt";
         public const string ResultType = "rt";
         public const string TimeSpan = "ts";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string Columns = "c";
         public const string Forums = "f";
     }

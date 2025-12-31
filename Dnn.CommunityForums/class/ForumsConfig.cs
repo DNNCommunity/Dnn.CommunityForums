@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Data.SqlTypes;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -38,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
+
     using Microsoft.ApplicationBlocks.Data;
 
     public class ForumsConfig
@@ -372,7 +374,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string connectionString = new Connection().connectionString;
             string dbPrefix = new Connection().dbPrefix;
 
-            using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT f.PortalId,f.ModuleId,ft.ForumId,t.topicId,c.Subject FROM {dbPrefix}Topics t INNER JOIN {dbPrefix}ForumTopics ft ON ft.TopicId = t.TopicId INNER JOIN {dbPrefix}Content c ON c.ContentId = t.ContentId INNER JOIN {dbPrefix}Forums f ON f.ForumId = ft.ForumId WHERE t.URL = ''"))
+            using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT f.PortalId,f.ModuleId,ft.ForumId,t.topicId,c.Subject FROM {dbPrefix}SearchByTopics t INNER JOIN {dbPrefix}ForumTopics ft ON ft.TopicId = t.TopicId INNER JOIN {dbPrefix}Content c ON c.ContentId = t.ContentId INNER JOIN {dbPrefix}Forums f ON f.ForumId = ft.ForumId WHERE t.URL = ''"))
             {
                 while (dr.Read())
                 {
@@ -884,7 +886,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 NotificationsController.Instance.CreateNotificationType(type);
             }
         }
-        
+
         internal static void Upgrade_AddUserMentionVisibilityForumSetting_090300()
         {
             try
@@ -903,6 +905,36 @@ namespace DotNetNuke.Modules.ActiveForums
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        internal static void Reset_DNN_Search_Documents_090500()
+        {
+            try
+            {
+                foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+                {
+                    foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                    {
+                        if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            try
+                            {
+                                DotNetNuke.Services.Search.Internals.InternalSearchController.Instance.DeleteSearchDocumentsByModule(portal.PortalId, module.ModuleID, module.ModuleDefID);
+                                module.LastContentModifiedOnDate = SqlDateTime.MinValue.Value.AddDays(1);
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModule(module);
+                            }
+                            catch (Exception ex)
+                            {
+                                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
             }
         }
     }
