@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Abstractions.Portals;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -35,7 +37,18 @@ namespace DotNetNuke.Modules.ActiveForums
     public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
     {
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
-        
+        private readonly IPortalAliasService portalAliasService;
+
+        public TopicsController()
+            : this(new DotNetNuke.Entities.Portals.PortalAliasController())
+        {
+        }
+
+        public TopicsController(IPortalAliasService portalAliasService)
+        {
+            this.portalAliasService = portalAliasService;
+        }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate()")]
         public int Topic_QuickCreate(int portalId, int moduleId, int forumId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalId, moduleId, forumId, subject, body, userId, displayName, isApproved, iPAddress);
 
@@ -98,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
             /* since this code runs without HttpContext, get https:// by looking at page settings */
             bool isHttps = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
             bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
-            string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
+            string primaryPortalAlias = this.portalAliasService.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HttpAlias;
 
             Dictionary<int, string> authorizedRolesForForum = new Dictionary<int, string>();
             Dictionary<int, string> forumUrlPrefixes = new Dictionary<int, string>();
