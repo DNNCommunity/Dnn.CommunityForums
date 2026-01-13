@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             StringBuilder sb = new StringBuilder(1024);
             sb.Append("<table class=\"dashInner\" cellpadding=\"2\" width=\"100%\">");
-            sb.Append("<tr><td class=\"dashHD\">[RESX:ForumName]</td><td class=\"dashHD\" align=\"center\" style=\"text-align:center;\">[RESX:SearchByTopics]</td><td class=\"dashHD\" align=\"center\" style=\"text-align:center;\">[RESX:Replies]</td></tr>");
+            sb.Append("<tr><td class=\"dashHD\">[RESX:ForumName]</td><td class=\"dashHD\" align=\"center\" style=\"text-align:center;\">[RESX:Topics]</td><td class=\"dashHD\" align=\"center\" style=\"text-align:center;\">[RESX:Replies]</td></tr>");
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow dr in dt.Rows)
