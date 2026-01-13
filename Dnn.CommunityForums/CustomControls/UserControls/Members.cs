@@ -203,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sb.Append("<td align=center>");
             sb.Append("<a href=\"" + this.NavigateUrl(this.TabId, string.Empty, ParamKeys.ViewType + "=members") + "\" class=\"CommandButton\">");
-            sb.Append(Utilities.GetSharedResource("[RESX:SearchTypeAllKeywords]"));
+            sb.Append(Utilities.GetSharedResource("[RESX:All]"));
             sb.Append("</a></td></tr></table></div>");
             return sb.ToString();
         }
