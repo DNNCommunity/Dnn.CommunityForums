@@ -35,18 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums
     #region Topics Controller
     public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
     {
-        private readonly IPortalAliasService portalAliasService;
-
-        public TopicsController()
-            : this(new DotNetNuke.Entities.Portals.PortalAliasController())
-        {
-        }
-
-        public TopicsController(IPortalAliasService portalAliasService)
-        {
-            this.portalAliasService = portalAliasService;
-        }
-
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate()")]
