@@ -138,18 +138,6 @@
   <data name="FullName.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Voor- en achternaam</value>
   </data>
-  <data name="FullTextAzure.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Zoeken in volledige tekst wordt niet ondersteund in SQL Azure.</value>
-  </data>
-  <data name="FullTextNotInstalled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Zoeken in volledige tekst is niet geïnstalleerd op SQL Server.</value>
-  </data>
-  <data name="FullTextSearch.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Zoeken in volledige tekst zorgt voor betere prestaties en nauwkeurigere resultaten.  Neem contact op met uw hostingprovider om ervoor te zorgen dat zoeken in volledige tekst is ingeschakeld voor uw database.</value>
-  </data>
-  <data name="FullTextSearch.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Zoeken in volledige tekst inschakelen</value>
-  </data>
   <data name="GroupAdmin.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Groepseigenaren</value>
   </data>

@@ -4,7 +4,7 @@
         <am:pagernav id="PagerTop" runat="server" />
         <h2 class="af-search-title">[RESX:Search]</h2>
         <br />
-        <button class="af-search-modify">[RESX:SearchModify]</button>
+        <button class="af-search-modify dnnSecondaryAction">[RESX:SearchModify]</button>
         <br />
         <asp:PlaceHolder runat="server" ID="phKeywords">
             <span class="af-search-criteria">[RESX:SearchKeywords]<b>

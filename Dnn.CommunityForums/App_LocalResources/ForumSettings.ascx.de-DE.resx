@@ -243,18 +243,6 @@
   <data name="FullName.Text" xml:space="preserve">
     <value>Vollständiger Name</value>
   </data>
-  <data name="FullTextAzure.Text" xml:space="preserve">
-    <value>Die Volltextsuche wird in SQL Azure nicht unterstützt.</value>
-  </data>
-  <data name="FullTextNotInstalled.Text" xml:space="preserve">
-    <value>Die Volltextsuche ist auf dem SQL Server nicht installiert.</value>
-  </data>
-  <data name="FullTextSearch.Help" xml:space="preserve">
-    <value>Die Volltextsuche bietet eine bessere Leistung und genauere Ergebnisse.  Wenden Sie sich an Ihren Hostinganbieter, um sicherzustellen, dass die Volltextsuche für Ihre Datenbank aktiviert ist.</value>
-  </data>
-  <data name="FullTextSearch.Text" xml:space="preserve">
-    <value>Volltextsuche aktivieren</value>
-  </data>
   <data name="GroupAdmin.Text" xml:space="preserve">
     <value>Gruppenbesitzer</value>
   </data>
