@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Search.Entities;
@@ -34,8 +35,20 @@ namespace DotNetNuke.Modules.ActiveForums
     #region Topics Controller
     public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
     {
+        private readonly IPortalAliasService portalAliasService;
+
+        public TopicsController()
+            : this(new DotNetNuke.Entities.Portals.PortalAliasController())
+        {
+        }
+
+        public TopicsController(IPortalAliasService portalAliasService)
+        {
+            this.portalAliasService = portalAliasService;
+        }
+
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
-        
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate()")]
         public int Topic_QuickCreate(int portalId, int moduleId, int forumId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalId, moduleId, forumId, subject, body, userId, displayName, isApproved, iPAddress);
 
