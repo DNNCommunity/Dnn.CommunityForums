@@ -30,6 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.UI.Utilities;
@@ -268,16 +269,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.ForumTabId = this.ForumTabId;
                 ctl.ForumGroupId = this.ForumGroupId;
                 ctl.ParentForumId = this.ParentForumId;
-                if (string.IsNullOrEmpty(this.ForumIds))
+                if (!this.ForumIds.Any())
                 {
                     this.ForumIds = this.UserForumsList;
                 }
 
                 if (this.SocialGroupId > 0)
                 {
-                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.PortalId, this.ForumModuleId, this.SocialGroupId);
+                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
 
-                    if (string.IsNullOrEmpty(this.ForumIds))
+                    if (!this.ForumIds.Any())
                     {
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: this.PortalId, roleId: this.SocialGroupId);
                         Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).TabModuleSettings;
@@ -294,7 +295,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         else
                         {
                             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(this.PortalId, this.ModuleId, this.SocialGroupId, Convert.ToInt32(htSettings[SettingKeys.SocialGroupModeForumGroupTemplate].ToString()), role.RoleName + " Discussions", role.Description, !role.IsPublic, htSettings[SettingKeys.SocialGroupModeForumConfig].ToString());
-                            this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.PortalId, this.ForumModuleId, this.SocialGroupId);
+                            this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
                         }
                     }
                 }

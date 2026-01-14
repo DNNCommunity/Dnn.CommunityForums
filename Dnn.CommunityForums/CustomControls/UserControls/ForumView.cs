@@ -203,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         if (obj == null)
                         {
                             this.Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                            foreach (string forumId in this.ForumIds.Split(separator: ";".ToCharArray(), options: StringSplitOptions.RemoveEmptyEntries))
+                            foreach (var forumId in this.ForumIds)
                             {
                                 this.Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(forumId), this.ForumModuleId));
                             }

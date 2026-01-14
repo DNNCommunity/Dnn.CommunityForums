@@ -23,6 +23,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.ComponentModel;
     using System.Web.UI;
 
+    using DotNetNuke.Modules.ActiveForums.Extensions;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicsNavigator runat=server></{0}:TopicsNavigator>")]
     public class TopicsNavigator : ForumBase
     {
@@ -115,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                tb.ForumIds = this.UserForumsList;
+                tb.ForumIds = this.UserForumsList.FromHashSetToDelimitedString<int>(";");
             }
 
             if (this.Request.QueryString["atg"] != null && Utilities.IsNumeric(this.Request.QueryString["atg"]))

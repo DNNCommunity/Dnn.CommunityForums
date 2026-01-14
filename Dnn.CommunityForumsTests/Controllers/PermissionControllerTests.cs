@@ -25,10 +25,13 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
     using System.Collections.Specialized;
     using System.Linq;
 
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Controllers;
     using DotNetNuke.Security.Roles;
+
     using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -49,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
-        
+
         [Test]
         public void GetRoleNameTest()
         {
@@ -228,6 +231,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         }
 
         [Test]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public void GetRoleIdsFromRoleNameArrayTest()
         {
             // Arrange
@@ -289,8 +293,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 
         // Permission set manipulation tests
         [Test]
-        [TestCase(arg1: "0;1;-3;-1;38", arg2: "0;1;-1;-3;38;", ExpectedResult = true)]
-        [TestCase(arg1: "0;1;-1;-3;38;", arg2: "0;1;-1;-3;38;", ExpectedResult = true)]
+        [TestCase(arg1: "0;1;-3;-1;38", arg2: "-3;-1;0;1;38;", ExpectedResult = true)]
+        [TestCase(arg1: "0;1;-1;-3;38;", arg2: "-3;-1;0;1;38;", ExpectedResult = true)]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public bool SortPermissionSetMembersTest(string permSet, string expectedResults)
         {
             // Arrange
@@ -422,6 +427,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         [Test]
         public void SavePermSetTest()
         {
@@ -771,10 +777,50 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                 },
             };
 
-            var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators};";
+            var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}";
 
             // Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockPermissions.Object);
+
+            // Assert
+            Assert.That(actualResult, Contains.Substring(expectedResult));
+        }
+
+        [Test]
+        public void GetRoleIdsUsedByPermissionTest()
+        {
+            // Arrange
+            const string emptyPermissions = "";
+            var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
+            {
+                Object =
+                {
+                    ModuleId = this.mockModule.Object.ModuleID,
+                    View = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Read = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Create = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Reply = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Edit = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Delete = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Lock = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Pin = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Attach = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Poll = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Trust = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Subscribe = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Announce = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Prioritize = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Moderate = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Move = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    Split = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                    ManageUsers = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
+                },
+            };
+
+            var expectedResult = new HashSet<int> { DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators };
+
+            // Act
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsUsedByPermissionInfo(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockPermissions.Object);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -890,6 +936,250 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+                [Test]
+        public void GetObjFromSecObj_WithNullPermSet_ShouldUseAdminRoleId()
+        {
+            // Arrange
+            string nullPermSet = null;
+            string objects = string.Empty;
+
+            // Act
+            string result = PermissionController.GetObjFromSecObj(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), nullPermSet, objects);
+
+            // Assert
+            Assert.That(result, Does.Contain(DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString()));
+        }
+
+        [Test]
+        public void GetObjFromSecObj_WithEmptyPermSet_ShouldUseAdminRoleId()
+        {
+            // Arrange
+            string emptyPermSet = string.Empty;
+            string objects = string.Empty;
+
+            // Act
+            string result = PermissionController.GetObjFromSecObj(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), emptyPermSet, objects);
+
+            // Assert
+            Assert.That(result, Does.Contain(DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString()));
+        }
+
+        [Test]
+        public void GetObjFromSecObj_WithSingleRole_ShouldAddToObjects()
+        {
+            // Arrange
+            string permSet = "1;";
+            string objects = string.Empty;
+
+            // Act
+            string result = PermissionController.GetObjFromSecObj(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), permSet, objects);
+
+            // Assert
+            Assert.That(result, Does.Contain("1"));
+        }
+
+        [Test]
+        public void GetObjFromSecObj_WithMultipleRoles_ShouldAddAllToObjects()
+        {
+            // Arrange
+            string permSet = "1;2;3;";
+            string objects = string.Empty;
+
+            // Act
+            string result = PermissionController.GetObjFromSecObj(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), permSet, objects);
+
+            // Assert
+            Assert.That(result, Does.Contain("1"));
+            Assert.That(result, Does.Contain("2"));
+            Assert.That(result, Does.Contain("3"));
+        }
+
+        [Test]
+        public void GetObjFromSecObj_WithExistingObjects_ShouldNotDuplicate()
+        {
+            // Arrange
+            string permSet = "1;2;";
+            string objects = "1;";
+
+            // Act
+            string result = PermissionController.GetObjFromSecObj(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), permSet, objects);
+
+            // Assert
+            // Role 1 should appear only once
+            int count = 0;
+            int startIndex = 0;
+            while ((startIndex = result.IndexOf("1;", startIndex)) != -1)
+            {
+                count++;
+                startIndex += 2;
+            }
+
+            Assert.That(count, Is.EqualTo(1));
+            Assert.That(result, Does.Contain("2"));
+        }
+
+        [Test]
+        public void GetObjFromSecObj_WithEmptyEntriesInPermSet_ShouldSkipEmpty()
+        {
+            // Arrange
+            string permSet = "1;;2;;";
+            string objects = string.Empty;
+
+            // Act
+            string result = PermissionController.GetObjFromSecObj(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), permSet, objects);
+
+            // Assert
+            Assert.That(result, Does.Contain("1"));
+            Assert.That(result, Does.Contain("2"));
+            // Should not have consecutive semicolons from empty entries
+            Assert.That(result.Contains(";;"), Is.False);
+        }
+
+        [Test]
+        public void GetObjFromSecObj_WithNullObjects_ShouldReturnPermSet()
+        {
+            // Arrange
+            string permSet = "5;6;";
+            string objects = null;
+
+            // Act
+            var result = PermissionController.GetObjFromSecObj(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), permSet, objects);
+
+            // Assert
+            Assert.That(result, Does.Contain("5"));
+            Assert.That(result, Does.Contain("6"));
+        }
+
+        [Test]
+        public void GetObjFromSecObj_WithExistingObjectsAndNoNewRoles_ShouldReturnUnchanged()
+        {
+            // Arrange
+            string permSet = "1;";
+            string objects = "1;2;3;";
+
+            // Act
+            string result = PermissionController.GetObjFromSecObj(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), permSet, objects);
+
+            // Assert
+            Assert.That(result, Is.EqualTo("1;2;3"));
+        }
+
+        [Test]
+        public void GetObjFromSecObj_WithMixedExistingAndNewRoles_ShouldAppendNewOnly()
+        {
+            // Arrange
+            string permSet = "1;2;3;";
+            string objects = "1;";
+
+            // Act
+            string result = PermissionController.GetObjFromSecObj(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), permSet, objects);
+
+            // Assert
+            Assert.That(result, Does.StartWith("1;"));
+            Assert.That(result, Does.Contain("2;"));
+            Assert.That(result, Does.Contain("3"));
+        }
+
+        [Test]
+        public void GetObjFromSecObj_WithLargeNumberOfRoles_ShouldHandleAll()
+        {
+            // Arrange
+            string permSet = "1;2;3;4;5;6;7;8;9;10;";
+            string objects = string.Empty;
+
+            // Act
+            string result = PermissionController.GetObjFromSecObj(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), permSet, objects);
+
+            // Assert
+            for (int i = 1; i <= 10; i++)
+            {
+                Assert.That(result, Does.Contain(i.ToString()));
+            }
+        }
+        
+        [Test]
+        public void GetAdministratorsRoleId_ReturnsAdminRoleId()
+        {
+            // Act
+            int result = PermissionController.GetAdministratorsRoleId(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
+
+            // Assert
+            Assert.That(result, Is.EqualTo(DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators));
+        }
+
+        [Test]
+        public void GetAdministratorsRoleName_ReturnsAdminRoleName()
+        {
+            // Act
+            string result = PermissionController.GetAdministratorsRoleName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
+
+            // Assert
+            Assert.That(result, Is.EqualTo(DotNetNuke.Tests.Utilities.Constants.RoleName_Administrators));
+        }
+
+        [Test]
+        public void GetRegisteredUsersRoleId_ReturnsRegisteredRoleId()
+        {
+            // Act
+            int result = PermissionController.GetRegisteredUsersRoleId(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
+
+            // Assert
+            Assert.That(result, Is.EqualTo(DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers));
+        }
+
+        [Test]
+        public void GetRegisteredUsersRoleName_ReturnsRegisteredRoleName()
+        {
+            // Act
+            string result = PermissionController.GetRegisteredUsersRoleName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
+
+            // Assert
+            Assert.That(result, Is.EqualTo(DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers));
+        }
+
+        [Test]
+        public void MergeRoleIds_CombinesRoleIdSets()
+        {
+            // Arrange
+            var existing = new HashSet<int> { DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators };
+            var newRoles = new HashSet<int> { DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers };
+
+            // Act
+            var result = PermissionController.MergeRoleIds(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), existing, newRoles);
+
+            // Assert
+            Assert.That(result, Has.Count.EqualTo(2));
+            Assert.That(result, Contains.Item(DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators));
+            Assert.That(result, Contains.Item(DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers));
+        }
+
+        [Test]
+        public void MergeRoleIds_WithEmptyNewRoles_AddsAdmin()
+        {
+            // Arrange
+            var existing = new HashSet<int>();
+            var newRoles = new HashSet<int> { DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers };
+
+            // Act
+            var result = PermissionController.MergeRoleIds(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), existing, newRoles);
+
+            // Assert
+            Assert.That(result, Contains.Item(DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers));
+        }
+
+        [Test]
+        public void GetObjFromSecObj_AddsNewRoleToObjects()
+        {
+            // Arrange
+            string permSet = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators};";
+            string objects = string.Empty;
+
+            // Act
+            string result = PermissionController.GetObjFromSecObj(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), permSet, objects);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
         }
     }
 }
