@@ -48,7 +48,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string calwidth = "150";
         private string calheight = "150";
         private string imageUrl = string.Empty;
-        private string nullDate = "01/01/1900";
         private string defaultTime = "08:00 AM";
         private string selectedTime = string.Empty;
         private bool showDateBox = true;
@@ -68,18 +67,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (this.selectedDate != string.Empty)
+                if (!string.IsNullOrEmpty(this.selectedDate))
                 {
                     try
                     {
-                        if (Convert.ToDateTime(this.selectedDate) <= Convert.ToDateTime(this.NullDate))
+                        if (Convert.ToDateTime(this.selectedDate).Date <= Convert.ToDateTime(Utilities.NullDate()).Date)
                         {
                             return string.Empty;
                         }
 
                         return this.selectedDate;
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         return string.Empty;
                     }
@@ -94,22 +93,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        /// <summary>
-        /// Default 1/1/1900.
-        /// </summary>
+        [Obsolete("Deprecated in Community Forums. Use Utilities.NullDate() instead. Scheduled removal in v10.0.0.")]
         [Bindable(true), Category("Appearance"), DefaultValue(""), Localizable(true)]
-        public string NullDate
-        {
-            get
-            {
-                return this.nullDate;
-            }
-
-            set
-            {
-                this.nullDate = value;
-            }
-        }
+        public string NullDate => throw new NotImplementedException();
 
         [Bindable(true), Category("Appearance"), DefaultValue(""), Localizable(true)]
         public string CalendarWidth
