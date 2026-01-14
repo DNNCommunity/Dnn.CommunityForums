@@ -32,6 +32,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
 
     internal partial class ReplyController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo>
     {
@@ -121,6 +123,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, reply.ModuleId));
 
             new Social().DeleteJournalItemForPost(portalId, forumId, topicId, replyId);
+
+            if (reply.Forum.FeatureSettings.IndexContent)
+            {
+                var searchDoc = new SearchDocumentToDelete
+                {
+                    UniqueKey = $"{reply.ModuleId}-{reply.ContentId}",
+                    ModuleId = reply.ModuleId,
+                    PortalId = reply.PortalId,
+                    SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
+                };
+                DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searchDoc);
+            }
 
             Utilities.UpdateModuleLastContentModifiedOnDate(reply.ModuleId);
             if (delBehavior.Equals(DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Recycle))

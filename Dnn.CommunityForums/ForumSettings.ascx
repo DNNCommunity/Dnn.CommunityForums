@@ -4,7 +4,7 @@
 <%@ Register TagPrefix="dnnjs" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <dnnjs:DnnJsInclude runat="server" FilePath="~/DesktopModules/ActiveForums/scripts/afadmin.js" />
 <style>
-	.urlToggle, .fullTextNote {float: left; left: 450px; position: absolute; top: 10px; }
+	.urlToggle, {float: left; left: 450px; position: absolute; top: 10px; }
 	.urlOptions, .pointOptions {width:400px;margin-left:185px;display:none;}
 	.pointOptions input[type="text"]{min-width:inherit;}
 </style>
@@ -209,16 +209,6 @@
                   </div>
 			  </div>
 
-		</div>
-		<div class="dnnFormItem">
-			<dnn:label ID="lblFullTextSearch" runat="server" resourcekey="FullTextSearch" Suffix=":" />
-			<asp:RadioButtonList ID="rdFullTextSearch" RepeatDirection="Horizontal" runat="server">
-                <asp:ListItem Value="True" resourcekey="Yes" />
-				<asp:ListItem Value="False" resourcekey="No" />
-			</asp:RadioButtonList>
-            <span class="fullTextNote">
-                <asp:Literal ID="ltrFullTextMessage" runat="server" />
-            </span>
 		</div>
 		<div class="dnnFormItem">
 			<dnn:label ID="lblCacheTemplates" runat="server" resourcekey="CacheTemplates" Suffix=":" />

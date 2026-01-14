@@ -23,8 +23,10 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Web;
+    using System.Web.Razor.Tokenizer.Symbols;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -332,9 +334,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 string sOut = null;
 
-                // TODO: this should be resources instead of harcoded text?
-                sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
-                sOut += string.Concat("<!-- DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->", System.Environment.NewLine);
+                sOut = System.Environment.NewLine + "<!-- Copyright (c) " + DateTime.UtcNow.Year.ToString() + " " + Globals.ModuleOwnerName + " -->" + System.Environment.NewLine;
+                sOut += string.Concat("<!-- " , Globals.ModuleFriendlyName, " ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->", System.Environment.NewLine);
 
                 Literal lit = new Literal();
                 lit.Text = sOut;

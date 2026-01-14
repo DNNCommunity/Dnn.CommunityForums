@@ -1715,3 +1715,5 @@ div.dcf-mod-edit-wrap {
     .dcf-topic-view .dcf-tools-bottom .dcf-subscribe-topic { display: none !important; }
     .dcf-topic-view .dcf-tools-bottom .dcf-button-reply { display: none !important; }
 }
+
+.dcf-search-icon-button { float: right; top: 4px; right: 20px; position: relative; cursor: pointer; }

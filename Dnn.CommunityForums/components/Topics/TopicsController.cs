@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Search.Entities;
@@ -35,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
     {
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
-        
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate()")]
         public int Topic_QuickCreate(int portalId, int moduleId, int forumId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalId, moduleId, forumId, subject, body, userId, displayName, isApproved, iPAddress);
 
@@ -84,17 +85,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
-            var ms = new ModuleSettings { ModuleId = moduleInfo.ModuleID, MainSettings = moduleInfo.ModuleSettings };
-            /* if not using soft deletes, remove and rebuild entire index;
-               note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
-               and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
-            */
-            if (ms.DeleteBehavior != DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Recycle)
-            {
-                DotNetNuke.Services.Search.Internals.InternalSearchController.Instance.DeleteSearchDocumentsByModule(moduleInfo.PortalID, moduleInfo.ModuleID, moduleInfo.ModuleDefID);
-                beginDateUtc = SqlDateTime.MinValue.Value.AddDays(1);
-            }
-
             /* since this code runs without HttpContext, get https:// by looking at page settings */
             bool isHttps = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
             bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
@@ -147,13 +137,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     // NOTE: indexer is called from scheduler and has no httpcontext
                     // so any code that relies on HttpContext cannot be used...
-                    string link = new ControlUtils().BuildUrl(moduleInfo.PortalID, moduleInfo.TabID, moduleInfo.ModuleID, forumGroupUrlPrefix, forumUrlPrefix, forumGroupId, forumid, topicid, topicURL, -1, -1, string.Empty, 1, contentid, forumInfo.SocialGroupId);
+                    string link = new ControlUtils().BuildUrl(portalId: moduleInfo.PortalID, tabId: moduleInfo.TabID, moduleId: moduleInfo.ModuleID, groupPrefix: forumGroupUrlPrefix, forumPrefix: forumUrlPrefix, forumGroupId: forumGroupId, forumID: forumid, topicId: topicid, topicURL: topicURL, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: contentid, socialGroupId: forumInfo.SocialGroupId);
                     if (!string.IsNullOrEmpty(link) && !link.StartsWith("http"))
                     {
                         link = (isHttps ? "https://" : "http://") + primaryPortalAlias + link;
                     }
 
-                    queryString = qsb.Clear().Append(ParamKeys.ForumId).Append("=").Append(forumid).Append("&").Append(ParamKeys.TopicId).Append("=").Append(topicid).Append("&").Append(ParamKeys.ViewType).Append("=").Append(Views.Topic).Append("&").Append(ParamKeys.ContentJumpId).Append("=").Append(jumpid).ToString();
+                    queryString = qsb.Clear().Append($"{ParamKeys.ForumId}={forumid}&{ParamKeys.TopicId}={topicid}&{ParamKeys.ViewType}={Views.Topic}&{ParamKeys.ContentJumpId}={jumpid}").ToString();
                     string permittedRolesCanView = string.Empty;
                     if (!authorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
                     {
@@ -164,7 +154,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     var searchDoc = new SearchDocument
                     {
-                        UniqueKey = moduleInfo.ModuleID.ToString() + "-" + contentid.ToString(),
+                        UniqueKey = $"{moduleInfo.ModuleID}-{contentid}",
+                        ModuleId = moduleInfo.ModuleID,
                         AuthorUserId = authorid,
                         PortalId = moduleInfo.PortalID,
                         Title = subject,
@@ -174,6 +165,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         QueryString = queryString,
                         ModifiedTimeUtc = dateupdated,
                         Tags = tags.Count > 0 ? tags : null,
+                        NumericKeys = new Dictionary<string, int> { { "ForumId", forumid }, { "TopicId", topicid }, { "ReplyId", replyId }, { "ContentId", contentid }, { "AuthorUserId", authorid } },
+                        TabId = moduleInfo.TabID,
                         Permissions = permittedRolesCanView,
                         IsActive = isApproved && !isDeleted,
                     };
@@ -358,6 +351,19 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ForumsConfig.Install_UserMentionNotificationType_090300();
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                case "09.05.00":
+                    try
+                    {
+                        ForumsConfig.Reset_DNN_Search_Documents_090500();
                     }
                     catch (Exception ex)
                     {

@@ -24,13 +24,13 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Services.Search;
 
     public partial class af_search : ForumBase
     {
@@ -53,25 +53,20 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private string searchText;
         private string tags;
-        private int? searchType;
         private int? authorUserId;
         private string authorUsername;
-        private int? searchColumns;
         private string forums;
         private int? searchDays;
-        private int? resultType;
+        private DotNetNuke.Modules.ActiveForums.Enums.SearchSortType? searchSortType;
+        private DotNetNuke.Modules.ActiveForums.Enums.SearchResultType? searchResultType;
         private int? searchId;
-        private int? sort;
+
+        private DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults searchResults;
 
         private List<string> parameters;
 
-        private int rowCount;
-
         private int pageSize = 20;
         private int rowIndex;
-
-        private int? searchAge;
-        private int? searchDuration;
 
         private Control ctl;
         private DataRow currentRow;
@@ -114,14 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string keywords;
 
                 // Note: Filter out any keywords that are not at least 3 characters in length
-                if (this.SearchType == 2 && !string.IsNullOrWhiteSpace(this.SearchText) && this.SearchText.Trim().Length >= 3) // Exact Match
-                {
-                    keywords = this.SearchText.Trim();
-                }
-                else
-                {
-                    keywords = string.Join(" ", this.SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).ToArray()).Trim();
-                }
+                keywords = string.Join(" ", this.SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).ToArray()).Trim();
 
                 if (!string.IsNullOrEmpty(keywords))
                 {
@@ -178,8 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 try
                 {
                     string itemTemplate = ((LiteralControl)repeaterItemEventArgs.Item.Controls[0]).Text;
-                    int topicId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["TopicId"].ToString(), 1);
-                    var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
+                    var topic = ((DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)repeaterItemEventArgs.Item.DataItem).Topic;
                     if (topic != null)
                     {
                         itemTemplate = Utilities.DecodeBrackets(DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(new StringBuilder(itemTemplate), topic, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl).ToString());
@@ -199,23 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post = null;
-                    int topicId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["TopicId"].ToString(), 1);
-                    int contentId = Utilities.SafeConvertInt(((System.Data.DataRowView)repeaterItemEventArgs.Item.DataItem)["ContentId"].ToString(), 1);
-                    var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetByContentId(contentId);
-                    if (reply != null)
-                    {
-                        post = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)reply;
-                    }
-                    else
-                    {
-                        var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(topicId);
-                        if (topic != null)
-                        {
-                            post = topic;
-                        }
-                    }
-
+                    var post = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)repeaterItemEventArgs.Item.DataItem;
                     if (post != null)
                     {
                         foreach (Control control in repeaterItemEventArgs.Item.Controls)
@@ -281,23 +252,21 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
         #region Properties
 
-        private string SearchText
-        {
-            get
-            {
-                if (this.searchText == null)
-                {
-                    this.searchText = this.Request.Params[SearchParamKeys.Query] + string.Empty;
-                    this.searchText = Utilities.XSSFilter(this.searchText);
-                    this.searchText = Utilities.StripHTMLTag(this.searchText);
-                    this.searchText = Utilities.CheckSqlString(this.searchText);
-                    this.searchText = this.SearchText.Replace("\"", string.Empty);
-                    this.searchText = this.searchText.Trim();
-                }
+        private int SearchId => (int)(this.searchId ?? (this.searchId = Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.Search], 0)));
 
-                return this.searchText;
-            }
-        }
+        private string SearchText => (string)(this.searchText ?? (this.searchText = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.Request.Params[SearchParamKeys.Query] + string.Empty))).Replace("\"", string.Empty).Trim()));
+
+        private string AuthorUsername => (string)(this.authorUsername ?? (this.authorUsername = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.Request.Params[SearchParamKeys.Author] + string.Empty))).Trim()));
+
+        private string Forums => (string)(this.forums ?? (this.forums = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.Request.Params[SearchParamKeys.Forums] + string.Empty))).Trim()));
+
+        private int AuthorUserId => (int)(this.authorUserId ?? (this.authorUserId = Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.User], 0)));
+
+        private DotNetNuke.Modules.ActiveForums.Enums.SearchResultType SearchResultType => (DotNetNuke.Modules.ActiveForums.Enums.SearchResultType)(this.searchResultType ?? (this.searchResultType = (DotNetNuke.Modules.ActiveForums.Enums.SearchResultType)Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.ResultType], (int)DotNetNuke.Modules.ActiveForums.Enums.SearchResultType.SearchByTopics)));
+
+        private DotNetNuke.Modules.ActiveForums.Enums.SearchSortType SearchSortType => (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)(this.searchSortType ?? (this.searchSortType = (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.Sort], (int)DotNetNuke.Modules.ActiveForums.Enums.SearchSortType.SearchSortTypeRelevance)));
+
+        private int SearchDays => (int)(this.searchDays ?? (this.searchDays = Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.TimeSpan], 0)));
 
         private string Tags
         {
@@ -313,145 +282,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.tags = this.Request.Params[ParamKeys.Tags] + string.Empty;
                     }
 
-                    this.tags = Utilities.XSSFilter(this.tags);
-                    this.tags = Utilities.StripHTMLTag(this.tags);
-                    this.tags = Utilities.CheckSqlString(this.tags);
-                    this.tags = this.tags.Trim();
+                    this.tags = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.tags))).Trim();
                 }
 
                 return this.tags;
-            }
-        }
-
-        private int SearchType
-        {
-            get
-            {
-                if (!this.searchType.HasValue)
-                {
-                    int parsedSearchType;
-                    this.searchType = int.TryParse(this.Request.Params[SearchParamKeys.SearchType], out parsedSearchType) ? parsedSearchType : 0;
-                }
-
-                return this.searchType.Value;
-            }
-        }
-
-        private string AuthorUsername
-        {
-            get
-            {
-                if (this.authorUsername == null)
-                {
-                    this.authorUsername = this.Request.Params[SearchParamKeys.Author] + string.Empty;
-                    this.authorUsername = Utilities.XSSFilter(this.authorUsername);
-                    this.authorUsername = Utilities.StripHTMLTag(this.authorUsername);
-                    this.authorUsername = Utilities.CheckSqlString(this.authorUsername);
-                    this.authorUsername = this.authorUsername.Trim();
-                }
-
-                return this.authorUsername;
-            }
-        }
-
-        private int AuthorUserId
-        {
-            get
-            {
-                if (!this.authorUserId.HasValue)
-                {
-                    int parsedValue;
-                    this.authorUserId = int.TryParse(this.Request.Params[SearchParamKeys.User], out parsedValue) ? parsedValue : 0;
-                }
-
-                return this.authorUserId.Value;
-            }
-        }
-
-        private int SearchColumns
-        {
-            get
-            {
-                if (!this.searchColumns.HasValue)
-                {
-                    int parsedSearchColumns;
-                    this.searchColumns = int.TryParse(this.Request.Params[SearchParamKeys.Columns], out parsedSearchColumns) ? parsedSearchColumns : 0;
-                }
-
-                return this.searchColumns.Value;
-            }
-        }
-
-        private string Forums
-        {
-            get
-            {
-                if (this.forums == null)
-                {
-                    this.forums = this.Request.Params[SearchParamKeys.Forums] + string.Empty;
-                    this.forums = Utilities.XSSFilter(this.forums);
-                    this.forums = Utilities.StripHTMLTag(this.forums);
-                    this.forums = Utilities.CheckSqlString(this.forums);
-                    this.forums = this.forums.Trim();
-                }
-
-                return this.forums;
-            }
-        }
-
-        private int SearchDays
-        {
-            get
-            {
-                if (!this.searchDays.HasValue)
-                {
-                    int parsedValue;
-                    this.searchDays = int.TryParse(this.Request.Params[SearchParamKeys.TimeSpan], out parsedValue) ? parsedValue : 0;
-                }
-
-                return this.searchDays.Value;
-            }
-        }
-
-        private int ResultType
-        {
-            get
-            {
-                if (!this.resultType.HasValue)
-                {
-                    int parsedValue;
-                    this.resultType = int.TryParse(this.Request.Params[SearchParamKeys.ResultType], out parsedValue) ? parsedValue : 0;
-                }
-
-                return this.resultType.Value;
-            }
-        }
-
-        private int SearchId
-        {
-            get
-            {
-                if (!this.searchId.HasValue)
-                {
-                    int parsedValue;
-                    this.searchId = int.TryParse(this.Request.Params[SearchParamKeys.Search], out parsedValue) ? parsedValue : 0;
-                }
-
-                return this.searchId.Value;
-            }
-        }
-
-        private int Sort
-        {
-            get
-            {
-                if (!this.sort.HasValue)
-                {
-                    int parsedValue;
-                    this.sort = int.TryParse(this.Request.Params[SearchParamKeys.Sort], out parsedValue) ? parsedValue : 0;
-                }
-
-                return this.sort.Value;
             }
         }
 
@@ -465,12 +299,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!string.IsNullOrWhiteSpace(this.SearchText))
                     {
-                        this.parameters.Add($"{SearchParamKeys.Query}=" + System.Net.WebUtility.UrlEncode(this.SearchText));
+                        this.parameters.Add($"{SearchParamKeys.Query}={System.Net.WebUtility.UrlEncode(this.SearchText)}");
                     }
 
                     if (!string.IsNullOrWhiteSpace(this.Tags))
                     {
-                        this.parameters.Add($"{SearchParamKeys.Tag}=" + System.Net.WebUtility.UrlEncode(this.Tags));
+                        this.parameters.Add($"{SearchParamKeys.Tag}={System.Net.WebUtility.UrlEncode(this.Tags)}");
                     }
 
                     if (this.SearchId > 0)
@@ -478,44 +312,34 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.parameters.Add($"{SearchParamKeys.Search}=" + this.SearchId);
                     }
 
-                    if (this.SearchType > 0)
+                    if ((int)this.SearchResultType > 0)
                     {
-                        this.parameters.Add($"{SearchParamKeys.SearchType}=" + this.SearchType);
-                    }
-
-                    if (this.ResultType > 0)
-                    {
-                        this.parameters.Add($"{SearchParamKeys.ResultType}=" + this.ResultType);
-                    }
-
-                    if (this.SearchColumns > 0)
-                    {
-                        this.parameters.Add($"{SearchParamKeys.Columns}=" + this.SearchColumns);
+                        this.parameters.Add($"{SearchParamKeys.ResultType}={(int)this.SearchResultType}");
                     }
 
                     if (this.SearchDays > 0)
                     {
-                        this.parameters.Add($"{SearchParamKeys.TimeSpan}=" + this.SearchDays);
+                        this.parameters.Add($"{SearchParamKeys.TimeSpan}={this.SearchDays}");
                     }
 
                     if (this.AuthorUserId > 0)
                     {
-                        this.parameters.Add($"{SearchParamKeys.User}=" + this.AuthorUserId);
+                        this.parameters.Add($"{SearchParamKeys.User}={this.AuthorUserId}");
                     }
 
-                    if (this.Sort > 0)
+                    if (this.SearchSortType > 0)
                     {
-                        this.parameters.Add($"{SearchParamKeys.Sort}=" + this.Sort);
+                        this.parameters.Add($"{SearchParamKeys.Sort}={(int)this.SearchSortType}");
                     }
 
                     if (!string.IsNullOrWhiteSpace(this.AuthorUsername))
                     {
-                        this.parameters.Add($"{SearchParamKeys.Author}=" + System.Net.WebUtility.UrlEncode(this.AuthorUsername));
+                        this.parameters.Add($"{SearchParamKeys.Author}={System.Net.WebUtility.UrlEncode(this.AuthorUsername)}");
                     }
 
                     if (!string.IsNullOrWhiteSpace(this.Forums))
                     {
-                        this.parameters.Add($"{SearchParamKeys.Forums}=" + System.Net.WebUtility.UrlEncode(this.Forums));
+                        this.parameters.Add($"{SearchParamKeys.Forums}={System.Net.WebUtility.UrlEncode(this.Forums)}");
                     }
                 }
 
@@ -529,20 +353,19 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindPosts()
         {
-            this.pageSize = (this.UserId > 0) ? this.UserDefaultPageSize : this.ModuleSettings.PageSize;
+            // If we don't have a search string, tag or user id, there is nothing we can do so exit
+            if (string.IsNullOrEmpty(this.SearchText) && string.IsNullOrEmpty(this.Tags) && string.IsNullOrEmpty(this.AuthorUsername) && this.AuthorUserId <= 0)
+            {
+                return;
+            }
 
+            this.pageSize = (this.UserId > 0) ? this.UserDefaultPageSize : this.ModuleSettings.PageSize;
             if (this.pageSize < 5)
             {
                 this.pageSize = 10;
             }
 
             this.rowIndex = (this.PageId - 1) * this.pageSize;
-
-            // If we don't have a search string, tag or user id, there is nothing we can do so exit
-            if (this.SearchText == string.Empty && this.Tags == string.Empty && this.AuthorUsername == String.Empty && this.AuthorUserId <= 0)
-            {
-                return;
-            }
 
             // Build the list of forums to search
             // An intersection of the forums allows vs forums requested.
@@ -565,18 +388,28 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             const int maxCacheHours = 1;
+            this.searchResults = SearchController.Provider.Search(
+                portalId: this.PortalId,
+                moduleId: this.ModuleId,
+                userId: this.UserId,
+                searchId: this.SearchId,
+                rowIndex: this.rowIndex,
+                pageSize: this.pageSize,
+                searchText: this.SearchText,
+                searchDays: this.SearchDays,
+                authorUserId: this.AuthorUserId,
+                authorUsername: this.AuthorUsername,
+                forumsToSearch: forumsToSearch,
+                tags: this.Tags,
+                resultType: this.SearchResultType,
+                sort: this.SearchSortType,
+                maxCacheHours: maxCacheHours,
+                fullText: this.ModuleSettings.FullText);
 
-            var ds = DataProvider.Instance().Search(this.PortalId, this.ModuleId, this.UserId, this.SearchId, this.rowIndex, this.pageSize, this.SearchText, this.SearchType, this.SearchColumns, this.SearchDays, this.AuthorUserId, this.AuthorUsername, forumsToSearch, this.Tags, this.ResultType, this.Sort, maxCacheHours, this.ModuleSettings.FullText);
+            this.searchId = (this.searchResults != null) ? this.searchResults.SearchId : 0;
 
-            var dtSummary = (ds != null) ? ds.Tables[0] : null;
-
-            this.searchId = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][0]) : 0;
-            this.rowCount = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][1]) : 0;
-            this.searchDuration = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][2]) : 0;
-            this.searchAge = (dtSummary != null) ? Convert.ToInt32(dtSummary.Rows[0][3]) : 0;
-
-            var totalSeconds = new TimeSpan(0, 0, 0, 0, this.searchDuration.Value).TotalSeconds;
-            var ageInMinutes = new TimeSpan(0, 0, 0, 0, this.searchAge.Value).TotalMinutes;
+            var totalSeconds = new TimeSpan(0, 0, 0, 0, this.searchResults.SearchDuration).TotalSeconds;
+            var ageInMinutes = new TimeSpan(0, 0, 0, 0, this.searchResults.SearchAge).TotalMinutes;
 
             this.litSearchDuration.Text = string.Format(this.GetSharedResource("[RESX:SearchDuration]"), totalSeconds);
 
@@ -587,22 +420,21 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.parameters = null; // We reset this so we make sure to get an updated version
 
-            var dtResults = (ds != null) ? ds.Tables[1] : null;
-            if (dtResults != null && dtResults.Rows.Count > 0)
+            if (this.searchResults?.Results?.Count > 0)
             {
-                this.litRecordCount.Text = string.Format(this.GetSharedResource("[RESX:SearchRecords]"), this.rowIndex + 1, this.rowIndex + dtResults.Rows.Count, this.rowCount);
+                this.litRecordCount.Text = string.Format(this.GetSharedResource("[RESX:SearchRecords]"), this.rowIndex + 1, this.rowIndex + this.searchResults?.Results?.Count, this.searchResults?.Results?.Count);
 
-                var rptResults = this.ResultType == 0 ? this.rptTopics : this.rptPosts;
+                var rptResults = this.SearchResultType.Equals(DotNetNuke.Modules.ActiveForums.Enums.SearchResultType.SearchByTopics) ? this.rptTopics : this.rptPosts;
 
                 this.pnlMessage.Visible = false;
 
                 try
                 {
                     rptResults.Visible = true;
-                    rptResults.DataSource = dtResults;
+                    rptResults.DataSource = this.searchResults?.Results;
                     rptResults.DataBind();
-                    this.BuildPager(this.PagerTop);
-                    this.BuildPager(this.PagerBottom);
+                    this.BuildPager(this.PagerTop, this.searchResults.Results.Count);
+                    this.BuildPager(this.PagerBottom, this.searchResults.Results.Count);
                 }
                 catch (Exception ex)
                 {
@@ -683,9 +515,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private void BuildPager(PagerNav pager)
+        private void BuildPager(PagerNav pager, int rowCount)
         {
-            var intPages = Convert.ToInt32(Math.Ceiling(this.rowCount / (double)this.pageSize));
+            var intPages = Convert.ToInt32(Math.Ceiling(rowCount / (double)this.pageSize));
 
             pager.PageCount = intPages;
             pager.CurrentPage = this.PageId;
@@ -726,42 +558,42 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string GetForumUrl() => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
 
         public string GetThreadUrl() => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
 
         public string GetPostUrl() => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
 
         public string GetIcon() => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
 
         public string GetLastPostAuthor() => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
 
         public string GetLastPostTime() => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public DataRow Get_currentRow() => this.currentRow;
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
         public int GetSocialGroupId() => this.SocialGroupId;
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
         public string GetMiniPager() => throw new NotImplementedException();
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
         public class Keyword
         {
-            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
             public string Value { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
             public string HtmlEncodedValue => throw new NotImplementedException();
         }
 

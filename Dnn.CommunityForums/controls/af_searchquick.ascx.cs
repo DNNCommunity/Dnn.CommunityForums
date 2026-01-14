@@ -25,6 +25,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class af_searchquick : ForumBase
     {
+        protected global::System.Web.UI.WebControls.TextBox txtSearch;
+        protected global::System.Web.UI.WebControls.LinkButton lnkSearch;
         public int MID;
         public int FID;
         public int TID;
@@ -53,8 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.SocialGroupId = Convert.ToInt32(this.Request.QueryString["GroupId"]);
                 }
 
-                // Put user code to initialize the page here
-                this.txtSearch.Attributes.Add("onkeydown", "if(event.keyCode == 13){document.getElementById('" + this.lnkSearch.ClientID + "').click();}");
+                this.txtSearch.Attributes.Add("onkeydown", "if(event.key === 'Enter' || event.KeyCode === 13){" + this.Page.ClientScript.GetPostBackEventReference(this.lnkSearch, string.Empty) + ";}");
             }
             catch (Exception exc)
             {
