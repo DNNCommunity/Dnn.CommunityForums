@@ -1461,9 +1461,6 @@ From,
   <data name="[RESX:SearchByTopics].Text" xml:space="preserve">
     <value>Topics</value>
   </data>
-  <data name="[RESX:SearchKeywords].Text" xml:space="preserve">
-    <value>Keyword(s):</value>
-  </data>
   <data name="[RESX:Reset].Text" xml:space="preserve">
     <value>Reset</value>
   </data>

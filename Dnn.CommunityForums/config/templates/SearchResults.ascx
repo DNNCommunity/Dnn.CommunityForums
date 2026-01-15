@@ -7,7 +7,7 @@
         <button class="af-search-modify dnnSecondaryAction">[RESX:SearchModify]</button>
         <br />
         <asp:PlaceHolder runat="server" ID="phKeywords">
-            <span class="af-search-criteria">[RESX:SearchKeywords]<b>
+            <span class="af-search-criteria">[RESX:Search] [RESX:For]:<b>
                 <asp:Literal runat="server" ID="litKeywords"></asp:Literal>
             </b>
             </span>

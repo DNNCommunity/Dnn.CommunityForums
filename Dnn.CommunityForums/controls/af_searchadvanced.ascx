@@ -3,7 +3,7 @@
     <div class="af-adv-search-box">
         <h2><asp:Literal runat="server" ID="litOptions" Text="[RESX:SearchOptions]" /></h2>
         <div class="af-adv-search-row">
-            <asp:Label runat="server" ID="lblSearch" Text="[RESX:SearchKeywords]" AssociatedControlID="txtSearch" />
+            <asp:label runat="server" id="lblSearch" text="[RESX:Search] [RESX:For]:" associatedcontrolid="txtSearch" />
             <asp:textbox runat="server" columns="50" maxlength="255" id="txtSearch" />
         </div>
         <div class="af-adv-search-row">

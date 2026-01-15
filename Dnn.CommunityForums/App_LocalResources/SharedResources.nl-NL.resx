@@ -1441,9 +1441,6 @@ Van,
   <data name="[RESX:SearchByTopics].Text" xml:space="preserve">
     <value>Onderwerpen</value>
   </data>
-  <data name="[RESX:SearchKeywords].Text" xml:space="preserve">
-    <value>Trefwoord (en):</value>
-  </data>
   <data name="[RESX:SearchAllForums].Text" xml:space="preserve">
     <value>Doorzoek forums</value>
   </data>
