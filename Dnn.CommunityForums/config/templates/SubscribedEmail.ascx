@@ -160,6 +160,8 @@
                                     <td valign="top" align="right">
                                         <strong>[RESX:EmailNotificationGreeting]</strong>
                                         <br />
+                                        [RESX:Forum]: [FORUM:FORUMNAME]
+									<br />
                                         [RESX:Subject]: [FORUMPOST:SUBJECT]
 									<br />
                                         [RESX:SearchBy] [FORUMPOST:AUTHORDISPLAYNAMELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMPOST:AUTHORDISPLAYNAME]</a>|[FORUMPOST:AUTHORDISPLAYNAME]]
