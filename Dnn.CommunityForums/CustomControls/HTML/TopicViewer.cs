@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     switch (row[i].GetType().ToString())
                     {
                         case "System.DateTime":
-                            value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), this.PortalId, this.UserId);
+                            value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), this.ForumUser);
                             break;
                     }
 

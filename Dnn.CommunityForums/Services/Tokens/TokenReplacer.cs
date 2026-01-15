@@ -582,7 +582,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 if (datetime != DateTime.MinValue && datetime != SqlDateTime.MinValue.Value && datetime != Utilities.NullDate())
                 {
-                    return template.Replace(token, Utilities.GetUserFormattedDateTime((DateTime?)datetime, portalSettings.PortalId, accessingUser.UserId, dateFormat));
+                    return template.Replace(token, Utilities.GetUserFormattedDateTime((DateTime?)datetime, accessingUser, dateFormat));
                 }
 
                 return template.Replace(token, string.Empty);
