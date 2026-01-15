@@ -973,9 +973,6 @@ De
   <data name="[RESX:SearchInForums].Text" xml:space="preserve">
     <value>Buscar en foro(s):</value>
   </data>
-  <data name="[RESX:SearchKeywords].Text" xml:space="preserve">
-    <value>Palabra(s) clave:</value>
-  </data>
   <data name="[RESX:SearchMatch].Text" xml:space="preserve">
     <value>Opciones de criterios</value>
   </data>

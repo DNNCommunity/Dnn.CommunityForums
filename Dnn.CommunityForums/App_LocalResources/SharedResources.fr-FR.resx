@@ -970,9 +970,6 @@ De,
   <data name="[RESX:SearchInForums].Text" xml:space="preserve">
     <value>Recherche dans le(s) forum(s):</value>
   </data>
-  <data name="[RESX:SearchKeywords].Text" xml:space="preserve">
-    <value>Mots clés:</value>
-  </data>
   <data name="[RESX:SearchMatch].Text" xml:space="preserve">
     <value>Options de critères</value>
   </data>

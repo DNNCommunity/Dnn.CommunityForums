@@ -200,22 +200,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var sb = new StringBuilder();
             int index = 1;
             var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId).Where(f => (includeHiddenForums || !f.Hidden) && (f.ForumGroup != null) && (includeHiddenForums || !f.ForumGroup.Hidden) && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security?.ViewRoleIds, currentUser.UserRoleIds)));
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums.ToList(), currentUser, fi =>
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(
+                forums: forums.ToList(),
+                forumUserInfo: currentUser,
+                groupAction: fi =>
                 {
                     sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", fi.GroupName);
                     index += 1;
                 },
-                fi =>
+                forumAction: fi =>
                 {
                     sb.AppendFormat("<option value=\"{0}\">{1}</option>", fi.ForumID.ToString(), "--" + fi.ForumName);
                     index += 1;
                 },
-                fi =>
+                subForumAction: fi =>
                 {
                     sb.AppendFormat("<option value=\"{0}\">----{1}</option>", fi.ForumID.ToString(), fi.ForumName);
                     index += 1;
                 },
-                includeHiddenForums);
+                includeHiddenForums: includeHiddenForums,
+                includeInactiveForums: includeHiddenForums);
             return sb.ToString();
         }
 
@@ -312,14 +316,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             ClearSettingsCache(moduleId);
         }
 
-        internal static void IterateForumsList(System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo,
+        internal static void IterateForumsList(
+            System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums,
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo,
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> groupAction,
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forumAction,
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subForumAction,
-            bool includeHiddenForums)
+            bool includeHiddenForums,
+            bool includeInactiveForums)
         {
             string tmpSettingsKey = string.Empty;
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => (includeHiddenForums || !f.Hidden) && f.ForumGroup != null && (includeHiddenForums || !f.ForumGroup.Hidden) && (forumUserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security?.ViewRoleIds, forumUserInfo.UserRoleIds))))
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => (includeHiddenForums || !f.Hidden) && f.ForumGroup != null && (includeHiddenForums || !f.ForumGroup.Hidden) && (includeInactiveForums || f.Active) && f.ForumGroup != null && (includeInactiveForums || f.ForumGroup.Active) && (forumUserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security?.ViewRoleIds, forumUserInfo.UserRoleIds))))
             {
                 string settingsKey = $"{fi.GroupName}{fi.ForumGroupId}";
                 if (tmpSettingsKey != settingsKey)
