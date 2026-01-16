@@ -649,5 +649,18 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             // Assert
             Assert.That(result, Is.EqualTo(expected));
         }
+
+        [Test]
+        [TestCase("https://localhost/en-us/portals/0/images/logo.png", ExpectedResult = "https://localhost/portals/0/images/logo.png")]
+        [TestCase("https://localhost/portals/0/images/logo.png", ExpectedResult = "https://localhost/portals/0/images/logo.png")]
+        public string RemoveCultureFromUrl(string url)
+        {
+            // Arrange
+
+            // Act
+            return Utilities.RemoveCultureFromUrl(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), url);
+
+            // Assert
+        }
     }
 }

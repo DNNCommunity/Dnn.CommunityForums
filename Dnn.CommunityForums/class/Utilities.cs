@@ -1922,5 +1922,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return false;
         }
+
+        internal static string RemoveCultureFromUrl(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string url)
+        {
+            if (!string.IsNullOrEmpty(portalSettings.PortalAlias?.CultureCode) && url.ToLowerInvariant().Contains($"/{portalSettings.PortalAlias?.CultureCode?.ToLowerInvariant()}/"))
+            {
+                url = url.ToLowerInvariant().Replace($"/{portalSettings.PortalAlias.CultureCode.ToLowerInvariant()}/", "/");
+            }
+
+            return url;
+        }
     }
 }
