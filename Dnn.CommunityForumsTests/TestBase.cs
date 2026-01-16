@@ -330,6 +330,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                 AdministratorRoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_Administrators,
                 RegisteredRoleId = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers,
                 RegisteredRoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers,
+                PortalAlias = new PortalAliasInfo { HTTPAlias = "localhost", CultureCode = "en-US", IsPrimary = true, },
+                CultureCode = "en-US",
             };
 
             this.portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);

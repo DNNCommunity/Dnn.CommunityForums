@@ -125,7 +125,7 @@
                                 <tr>
                                     <td class="headerContent">
                                         <a href="[PORTAL:SCHEME]://[PORTAL:URL]">
-                                            <img src="[PORTAL:SCHEME]://[PORTAL:URL][PORTAL:HOMEDIRECTORY][PORTAL:LOGOFILE]" style="max-width: 600px;" id="headerImage campaign-icon" width="200" />
+                                            <img src="[DCF:PORTALLOGOURL]" style="max-width: 600px;" id="headerImage campaign-icon" width="200" />
                                         </a>
 
                                     </td>
@@ -176,8 +176,7 @@
                                                 <td valign="top">
                                                     <table width="80" border="0" cellspacing="0" cellpadding="8" align="left">
                                                         <tr>
-                                                            <td>[FORUMAUTHOR:USERPROFILELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMAUTHOR:AVATAR:60]<br />
-                                                                [FORUMAUTHOR:DISPLAYNAME]</a>|[FORUMAUTHOR:DISPLAYNAME]]
+                                                            <td>[FORUMAUTHOR:USERPROFILELINK|<a href="{0}" class="af-profile-link" rel="nofollow">[FORUMAUTHOR:AVATAR:60]<br />[FORUMAUTHOR:DISPLAYNAME]</a>|[FORUMAUTHOR:AVATAR:60]<br />[FORUMAUTHOR:DISPLAYNAME]]
                                                             </td>
                                                         </tr>
                                                     </table>
