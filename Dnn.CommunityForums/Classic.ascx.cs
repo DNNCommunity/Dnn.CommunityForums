@@ -83,7 +83,15 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (this.Request.QueryString[Literals.GroupId] != null && Utilities.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                     {
                         this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
+                        this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
+                        if (this.ForumIds.Any())
+                        {
+                            this.ForumIds = new System.Collections.Generic.HashSet<int> { this.ForumIds.First() };
+                            this.ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumIds.First(), this.ForumModuleId);
+                            this.ForumId = this.ForumInfo.ForumID;
+                        }
                     }
+
                     string ctl = this.DefaultView;
                     string opts = string.Empty;
 
@@ -209,7 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else if (view.ToUpperInvariant() == "FORUMVIEW")
                 {
-                    ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.ForumView();
+                        ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.ForumView();
                 }
                 else if (view.ToUpperInvariant() == "ADVANCED")
                 {
@@ -217,8 +225,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else if ((view.ToUpperInvariant() == Views.Topics.ToUpperInvariant()) || (view.ToUpperInvariant() == "topics".ToUpperInvariant()))
                 {
-                    ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.TopicsView();
-                }
+                        ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.TopicsView();
+                    }
                 else if ((view.ToUpperInvariant() == Views.Topic.ToUpperInvariant()) || (view.ToUpperInvariant() == "topic".ToUpperInvariant()))
                 {
                     ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.TopicView();
@@ -298,6 +306,11 @@ namespace DotNetNuke.Modules.ActiveForums
                             this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
                         }
                     }
+
+                    //this.ForumIds = new System.Collections.Generic.HashSet<int> { this.ForumIds.First() };
+                    //this.ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumIds.First(), this.ForumModuleId);
+                    //this.ForumId = this.ForumInfo.ForumID;
+                    //ctl.ForumInfo = this.ForumInfo;
                 }
 
                 ctl.ForumIds = this.ForumIds;
