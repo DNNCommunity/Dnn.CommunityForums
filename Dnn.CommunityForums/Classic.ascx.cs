@@ -83,7 +83,15 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (this.Request.QueryString[Literals.GroupId] != null && Utilities.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                     {
                         this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
+                        this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
+                        if (this.ForumIds.Any())
+                        {
+                            this.ForumIds = new System.Collections.Generic.HashSet<int> { this.ForumIds.First() };
+                            this.ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumIds.First(), this.ForumModuleId);
+                            this.ForumId = this.ForumInfo.ForumID;
+                        }
                     }
+
                     string ctl = this.DefaultView;
                     string opts = string.Empty;
 
