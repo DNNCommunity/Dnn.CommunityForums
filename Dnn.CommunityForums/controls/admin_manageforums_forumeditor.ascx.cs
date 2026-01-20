@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Security.Roles;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public partial class admin_manageforums_forumeditor : ActiveAdminBase
     {
@@ -141,7 +142,6 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.WebControls.HiddenField hidRoles;
         protected System.Web.UI.WebControls.CheckBox chkSocialTopicsOnly;
         protected System.Web.UI.WebControls.DropDownList drpSocialSecurityOption;
-        protected System.Web.UI.WebControls.Literal litPropLoad;
         protected System.Web.UI.WebControls.DropDownList drpUserMentionVisibility;
 
         #region Event Handlers
@@ -151,6 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnInit(e);
 
             this.cbEditorAction.CallbackEvent += this.cbEditorAction_Callback;
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afadmin.properties.js", 102);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -160,7 +161,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 base.OnLoad(e);
 
                 this.litTopicPropButton.Text = "<div><a href=\"\" onclick=\"afadmin_LoadPropForm();return false;\" class=\"btnadd afroundall\">[RESX:AddProperty]</a></div>";
-                this.litPropLoad.Text = Utilities.GetFileResource("DotNetNuke.Modules.ActiveForums.scripts.afadmin.properties.js");
 
                 this.BindRoles();
                 this.BindEditorTypes();
@@ -865,6 +865,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     sb.Append("<div id=\"divClean\" onclick=\"toggleTab(this);\" class=\"amtab\"><div id=\"divClean_text\" class=\"amtabtext\">[RESX:Maintenance]</div></div>");
                     sb.Append("<div id=\"divProperties\" onclick=\"toggleTab(this);\" class=\"amtab\"><div id=\"divProperties_text\" class=\"amtabtext\">[RESX:TopicProperties]</div></div>");
+                    sb.Append("<script>var divProperties = document.getElementById(\"divProperties\");if (divProperties){divProperties.addEventListener(\"click\", afadmin_getProperties);}</script>");
                 }
             }
 
