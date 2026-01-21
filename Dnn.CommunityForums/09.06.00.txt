@@ -1,0 +1,5 @@
+DesktopModules\ActiveForums\CustomControls\Resources\cal_nextMonth.gif
+DesktopModules\ActiveForums\CustomControls\Resources\cal_prevMonth.gif
+DesktopModules\ActiveForums\CustomControls\Resources\calendar.gif
+DesktopModules\ActiveForums\CustomControls\Resources\datepicker.js
+DesktopModules\ActiveForums\scripts\calendar.css
