@@ -766,15 +766,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "userfirstname":
                         return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(this.UserInfo, "FirstName", accessingUser)
                             ? PropertyAccess.FormatString(string.IsNullOrEmpty(this.FirstName) ? this.Username : this.FirstName, format)
-                            : string.Empty;
+                            : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
                     case "userlastname":
                         return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(this.UserInfo, "LastName", accessingUser)
                             ? PropertyAccess.FormatString(string.IsNullOrEmpty(this.LastName) ? this.Username : this.LastName, format)
-                            : string.Empty;
+                            : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
                     case "useremail":
                         return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(this.UserInfo, "Email", accessingUser)
                             ? PropertyAccess.FormatString(string.IsNullOrEmpty(this.Email) ? string.Empty : this.Email, format)
-                            : string.Empty;
+                            : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
                     case "useridforpmlink":
                         return PropertyAccess.FormatString(accessingUser.UserID > 0 && this.UserId > 0 ? this.UserId.ToString() : string.Empty, format);
                     case "useridforeditlink":

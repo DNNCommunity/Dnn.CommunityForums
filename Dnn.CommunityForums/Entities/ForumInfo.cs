@@ -293,7 +293,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public DateTime LastRead { get; set; }
 
-        internal void UpdateCache() => DataCache.ForumCacheStore(this.GetCacheKey(), this);
 
         [IgnoreColumn]
         public string LastPostFirstName

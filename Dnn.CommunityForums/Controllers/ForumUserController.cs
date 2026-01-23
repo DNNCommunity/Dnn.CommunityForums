@@ -387,12 +387,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static bool IsPropertyVisible(DotNetNuke.Entities.Users.UserInfo user, string propertyName, DotNetNuke.Entities.Users.UserInfo accessingUser)
         {
+            if (accessingUser == null)
+            {
+                return false;
+            }
+
             if (user == null)
             {
                 return true;
             }
 
-            if (accessingUser != null && (accessingUser.IsSuperUser || accessingUser.IsAdmin || accessingUser.UserID == user.UserID))
+            if (accessingUser.IsSuperUser || accessingUser.IsAdmin || accessingUser.UserID == user.UserID)
             {
                 return true;
             }
@@ -409,9 +414,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 case DotNetNuke.Entities.Users.UserVisibilityMode.AllUsers:
                     return true;
                 case DotNetNuke.Entities.Users.UserVisibilityMode.MembersOnly:
-                    return accessingUser != null && accessingUser.UserID > 0;
+                    return accessingUser.UserID > 0;
                 case DotNetNuke.Entities.Users.UserVisibilityMode.AdminOnly:
-                    return accessingUser != null && (accessingUser.IsSuperUser || accessingUser.IsAdmin);
+                    return accessingUser.IsSuperUser || accessingUser.IsAdmin;
                 default:
                     return false;
             }
@@ -463,7 +468,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return canLinkToProfile;
         }
 
-        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, ModuleSettings mainSettings, bool isMod, bool isAdmin, int userId, string username, string firstName = null, string lastName = null, string displayName = null, UserInfo accessingUser = null)
+        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, ModuleSettings mainSettings, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", UserInfo accessingUser = null)
         {
             if (portalSettings == null)
             {
@@ -482,13 +487,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 case "DISPLAYNAME":
 
-                    if (displayName == null && userId > 0)
+                    if (string.IsNullOrEmpty(displayName) && userId > 0)
                     {
-                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
-                        displayName = user?.DisplayName;
-                        if (!IsPropertyVisible(user, "DisplayName", accessingUser))
+                        if (accessingUser == null)
                         {
-                            displayName = null;
+                            displayName = DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
+                        }
+                        else
+                        {
+                            user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                            displayName = user?.DisplayName;
+                            if (!IsPropertyVisible(user, "DisplayName", accessingUser))
+                            {
+                                displayName = DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
+                            }
                         }
                     }
 
@@ -508,13 +520,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 case "FIRSTNAME":
 
-                    if (firstName == null && userId > 0)
+                    if (string.IsNullOrEmpty(firstName) && userId > 0)
                     {
-                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
-                        firstName = user?.FirstName;
-                        if (!IsPropertyVisible(user, "FirstName", accessingUser))
+                        if (accessingUser == null)
                         {
-                            firstName = null;
+                            firstName = DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
+                        }
+                        else
+                        {
+                            user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                            firstName = user?.FirstName;
+                            if (!IsPropertyVisible(user, "FirstName", accessingUser))
+                            {
+                                firstName = DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
+                            }
                         }
                     }
 
@@ -523,13 +542,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 case "LASTNAME":
 
-                    if (lastName == null && userId > 0)
+                    if (string.IsNullOrEmpty(lastName) && userId > 0)
                     {
-                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
-                        lastName = user?.LastName;
-                        if (!IsPropertyVisible(user, "LastName", accessingUser))
+                        if (accessingUser == null)
                         {
-                            lastName = null;
+                            lastName = DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
+                        }
+                        else
+                        {
+                            user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                            lastName = user?.LastName;
+                            if (!IsPropertyVisible(user, "LastName", accessingUser))
+                            {
+                                lastName = DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
+                            }
                         }
                     }
 
@@ -537,19 +563,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     break;
 
                 case "FULLNAME":
-                    if (firstName == null && lastName == null && userId > 0)
+                    if (string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(lastName) && userId > 0)
                     {
-                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
-                        firstName = Utilities.SafeTrim(user?.FirstName);
-                        if (!IsPropertyVisible(user, "FirstName", accessingUser))
+                        if (accessingUser == null)
                         {
-                            firstName = null;
+                            firstName = DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
+                            lastName = DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
                         }
-
-                        lastName = Utilities.SafeTrim(user?.LastName);
-                        if (!IsPropertyVisible(user, "LastName", accessingUser))
+                        else
                         {
-                            lastName = null;
+                            user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                            firstName = Utilities.SafeTrim(user?.FirstName);
+                            if (!IsPropertyVisible(user, "FirstName", accessingUser))
+                            {
+                                firstName = DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
+                            }
+
+                            lastName = Utilities.SafeTrim(user?.LastName);
+                            if (!IsPropertyVisible(user, "LastName", accessingUser))
+                            {
+                                lastName = DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
+                            }
                         }
                     }
 
