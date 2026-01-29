@@ -120,6 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             PortalId = portalId,
                             ModuleId = moduleId,
                             DateMentioned = DateTime.UtcNow,
+                            ForumUser = user,
                         };
                         this.Insert(userMention);
                         if (userMention.ForumUser.UserMentionNotificationsEnabled)
