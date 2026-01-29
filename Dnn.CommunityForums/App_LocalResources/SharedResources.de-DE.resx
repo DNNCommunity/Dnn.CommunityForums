@@ -973,12 +973,6 @@ Von
   <data name="[RESX:SearchInForums].Text" xml:space="preserve">
     <value>Suche in Foren:</value>
   </data>
-  <data name="[RESX:SearchInputError].Text" xml:space="preserve">
-    <value>Bitte geben Sie ein Schlüsselwort, einen Benutzernamen oder ein Tag ein.</value>
-  </data>
-  <data name="[RESX:SearchKeywords].Text" xml:space="preserve">
-    <value>Schlagwort(e):</value>
-  </data>
   <data name="[RESX:SearchMatch].Text" xml:space="preserve">
     <value>Kriterien-Optionen</value>
   </data>
@@ -987,9 +981,6 @@ Von
   </data>
   <data name="[RESX:SearchOptions].Text" xml:space="preserve">
     <value>Nach Beiträgen suchen</value>
-  </data>
-  <data name="[RESX:SearchOptionsAdditional].Text" xml:space="preserve">
-    <value>Zusätzliche Optionen</value>
   </data>
   <data name="[RESX:SearchRecords].Text" xml:space="preserve">
     <value>Ergebnisse {0} - {1} von {2}</value>
@@ -1445,15 +1436,6 @@ Von
   <data name="DropDownSelect.Text" xml:space="preserve">
     <value>&lt;GRUPPE ODER FORUM WÄHLEN&gt;</value>
   </data>
-  <data name="[RESX:SearchTypeAllKeywords].Text" xml:space="preserve">
-    <value>ALLE Schlüsselwörter</value>
-  </data>
-  <data name="[RESX:SearchTypeANYKeywords].Text" xml:space="preserve">
-    <value>JEDES Schlüsselwort</value>
-  </data>
-  <data name="[RESX:SearchTypeExactMatch].Text" xml:space="preserve">
-    <value>Exakte Übereinstimmung</value>
-  </data>
   <data name="EditProfile.Text" xml:space="preserve">
     <value>Profil bearbeiten</value>
   </data>
@@ -1804,15 +1786,6 @@ Von
   <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
     <value>&lt;p&gt;[FORUMPOST:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;&lt;/a&gt;|[FORUMPOST:AUTHORDISPLAYNAME]] Inhalte veröffentlicht hat, die einer Moderation bedürfen.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Betreff:&lt;/strong&gt; [FORUMPOST:BETREFF]&lt;/p&gt;&lt;p&gt;Bitte überprüfen Sie den Inhalt und bestimmen Sie dessen Disposition.&lt;/p&gt;
 &lt;p&gt;Sie können:&lt;ol&gt;&lt;li&gt;das Thema genehmigen,&lt;/li&gt;&lt;li&gt;Ablehnen (Senden an das Poster zur Überarbeitung),&lt;/li&gt;&lt;li&gt;Löschen Sie es oder&lt;/li&gt;&lt;li&gt;den Benutzer zu sperren, dieses und alle anderen Themen oder Antworten, die von diesem Benutzer gepostet wurden, zu löschen&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Wenn Sie nicht allein anhand des Themas feststellen können, ob dieser Inhalt geeignet ist, verwenden Sie &lt;a href="[FORUM:MODLINK]"&gt;diesen Link&lt;/a&gt; , um Themen zu überprüfen und zu moderieren.&lt;/p&gt;</value>
-  </data>
-  <data name="[RESX:SearchSubjectAndTopic].Text" xml:space="preserve">
-    <value>Thema &amp; Thema</value>
-  </data>
-  <data name="[RESX:SearchSubjectOnly].Text" xml:space="preserve">
-    <value>Nur Betreff</value>
-  </data>
-  <data name="[RESX:SearchTopicOnly].Text" xml:space="preserve">
-    <value>Nur Thema</value>
   </data>
   <data name="[RESX:SearchSortTypeRelevance].Text" xml:space="preserve">
     <value>Relevanz</value>

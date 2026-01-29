@@ -1,9 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="false" Codebehind="af_searchquick.ascx.cs" Inherits="DotNetNuke.Modules.ActiveForums.af_searchquick" %>
-<table id="tblSearch" cellspacing="0" cellpadding="0" border="0" runat="server">
-	<tr>
-		<td><asp:Label id="lblSearch" runat="server" resourcekey="SearchCaption" CssClass="afnormal">Search this forum:</asp:Label></td>
-		<td><asp:TextBox id="txtSearch" runat="server" CssClass="afminisearchbox" /></td>
-		<td><div class="afsearchgo"><asp:LinkButton id="lnkSearch" runat="server"><img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/search.gif")%>" border="0" alt="[RESX:Search]" /></asp:LinkButton></div></td>
-
-	</tr>
-</table>
+<div class="dcf-quick-search-input">
+	<asp:textbox id="txtSearch" maxlength="255" placeholder="[RESX:SearchFor]" runat="server" cssclass="afminisearchbox" />
+    <asp:linkbutton id="lnkSearch" runat="server" text=""><i class="fa fa-search fa-fw fa-gray dcf-search-icon-button"></i></asp:linkbutton>                
+</div>

@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
 
     [TableName("activeforums_Permissions")]
     [PrimaryKey("PermissionsId", AutoIncrement = true)]
@@ -223,8 +224,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return true;
             }
 
-            var thisPermsRoles = thisPermissions.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
-            var otherPermsRoles = otherPermissions.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+            var thisPermsRoles = thisPermissions.ToHashSetFromDelimitedString<int>(";");
+            var otherPermsRoles = otherPermissions.ToHashSetFromDelimitedString<int>(";");
 
             return thisPermsRoles.SetEquals(otherPermsRoles);
         }

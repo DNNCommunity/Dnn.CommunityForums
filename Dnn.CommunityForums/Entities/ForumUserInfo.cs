@@ -35,6 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.UserControls;
 
@@ -411,7 +412,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (string.IsNullOrEmpty(this.userPermSet))
                 {
-                    this.userPermSet = string.Join(";", this.UserRoleIds);
+                    this.userPermSet = this.UserRoleIds.FromHashSetToDelimitedString<int>(";");
                     this.UpdateCache();
                 }
 

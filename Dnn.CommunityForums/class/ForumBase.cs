@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Xml;
 
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
@@ -42,6 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private bool? canCreate;
         private bool? canReply;
+        private HashSet<int> forumIds;
 
         #endregion
 
@@ -58,9 +60,25 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string ThemePath => this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation);
 
-        public string ForumIds { get; set; } = string.Empty;
+        internal HashSet<int> ForumIds
+        {
+            get
+            {
+                if (this.forumIds == null)
+                {
+                    this.forumIds = new HashSet<int>();
+                }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
+                return this.forumIds;
+            }
+
+            set
+            {
+                this.forumIds = value;
+            }
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int DefaultForumViewTemplateId { get; set; } = -1;
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]

@@ -10,18 +10,6 @@
 
 
 <script type="text/javascript">
-
-    var postdivs, afgrid;
-    function mozhackformaxwidth()
-    {
-        var shift = 0;
-        if ($(window).width() > 768) shift = 120;
-        var nwidth = afgrid.width() - shift;
-        if (nwidth > 300) {
-            postdivs.css("width", nwidth + "px");
-        }
-    }
-
     $(document).ready(function() {
 
         // Wire up core private message buttons
@@ -47,17 +35,7 @@
         $.fn.afSplitManager({
             openTriggerSelector: ".dcf-split-button-save",
             servicesFramework: $.ServicesFramework(<%=ModuleId%>)
-        });
-        if ($.browser.mozilla) {
-            postdivs = $(".afpostbody");
-            afgrid = $("#afgrid");
-            if (postdivs.length > 0) {
-                mozhackformaxwidth();
-                $(window).resize(function () {
-                    mozhackformaxwidth();
-                });
-            }
-        }
+        });        
     });
 
 </script>

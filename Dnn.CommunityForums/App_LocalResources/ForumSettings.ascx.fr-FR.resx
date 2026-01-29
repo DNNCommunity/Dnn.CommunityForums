@@ -138,18 +138,6 @@
   <data name="FullName.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Nom complet</value>
   </data>
-  <data name="FullTextAzure.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>La recherche en texte intégral n’est pas prise en charge sur SQL Azure.</value>
-  </data>
-  <data name="FullTextNotInstalled.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>La recherche en texte intégral n’est pas installée sur SQL Server.</value>
-  </data>
-  <data name="FullTextSearch.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>La recherche en texte intégral offre de meilleures performances et des résultats plus précis.  Contactez votre fournisseur d’hébergement pour vous assurer que la recherche en texte intégral est activée pour votre base de données.</value>
-  </data>
-  <data name="FullTextSearch.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Activer la recherche en texte intégral</value>
-  </data>
   <data name="GroupAdmin.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Propriétaires de groupes</value>
   </data>

@@ -495,15 +495,6 @@
   <data name="MoveText.Text" xml:space="preserve">
     <value>Verplaats bericht</value>
   </data>
-  <data name="[RESX:SearchTypeAllKeywords].Text" xml:space="preserve">
-    <value>ALLE sleutelwoorden</value>
-  </data>
-  <data name="[RESX:SearchTypeANYKeywords].Text" xml:space="preserve">
-    <value>ELK sleutelwoord</value>
-  </data>
-  <data name="[RESX:SearchTypeExactMatch].Text" xml:space="preserve">
-    <value>Exacte match</value>
-  </data>
   <data name="SearchType.Text" xml:space="preserve">
     <value>Zoek type</value>
   </data>
@@ -1450,17 +1441,11 @@ Van,
   <data name="[RESX:SearchByTopics].Text" xml:space="preserve">
     <value>Onderwerpen</value>
   </data>
-  <data name="[RESX:SearchKeywords].Text" xml:space="preserve">
-    <value>Trefwoord (en):</value>
-  </data>
   <data name="[RESX:SearchAllForums].Text" xml:space="preserve">
     <value>Doorzoek forums</value>
   </data>
   <data name="[RESX:SearchByTag].Text" xml:space="preserve">
     <value>Trefwoorden:</value>
-  </data>
-  <data name="[RESX:SearchOptionsAdditional].Text" xml:space="preserve">
-    <value>Toegevoegde opties</value>
   </data>
   <data name="[RESX:SearchOptions].Text" xml:space="preserve">
     <value>Zoeken naar berichten</value>
@@ -1512,9 +1497,6 @@ Van,
   </data>
   <data name="Yesterday.Text" xml:space="preserve">
     <value>Gisteren</value>
-  </data>
-  <data name="[RESX:SearchInputError].Text" xml:space="preserve">
-    <value>Voer een trefwoord, gebruikersnaam of tag in.</value>
   </data>
   <data name="MarkAllReadConfirm.Text" xml:space="preserve">
     <value>Markeer alle items als gelezen?</value>
@@ -1839,15 +1821,6 @@ Van,
   </data>
   <data name="[RESX:Reset].Text" xml:space="preserve">
     <value>Terugstellen</value>
-  </data>
-  <data name="[RESX:SearchSubjectAndTopic].Text" xml:space="preserve">
-    <value>Onderwerp en onderwerp</value>
-  </data>
-  <data name="[RESX:SearchSubjectOnly].Text" xml:space="preserve">
-    <value>Alleen onderwerp</value>
-  </data>
-  <data name="[RESX:SearchTopicOnly].Text" xml:space="preserve">
-    <value>Alleen onderwerp</value>
   </data>
   <data name="[RESX:SearchSortTypeRelevance].Text" xml:space="preserve">
     <value>Relevantie</value>

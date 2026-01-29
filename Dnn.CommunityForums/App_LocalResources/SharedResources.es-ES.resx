@@ -973,12 +973,6 @@ De
   <data name="[RESX:SearchInForums].Text" xml:space="preserve">
     <value>Buscar en foro(s):</value>
   </data>
-  <data name="[RESX:SearchInputError].Text" xml:space="preserve">
-    <value>Introduzca una palabra clave, un nombre de usuario o una etiqueta.</value>
-  </data>
-  <data name="[RESX:SearchKeywords].Text" xml:space="preserve">
-    <value>Palabra(s) clave:</value>
-  </data>
   <data name="[RESX:SearchMatch].Text" xml:space="preserve">
     <value>Opciones de criterios</value>
   </data>
@@ -987,9 +981,6 @@ De
   </data>
   <data name="[RESX:SearchOptions].Text" xml:space="preserve">
     <value>Búsqueda de publicaciones</value>
-  </data>
-  <data name="[RESX:SearchOptionsAdditional].Text" xml:space="preserve">
-    <value>Opciones adicionales</value>
   </data>
   <data name="[RESX:SearchRecords].Text" xml:space="preserve">
     <value>Resultados {0} - {1} de {2}</value>
@@ -1447,15 +1438,6 @@ De
   <data name="DropDownSelect.Text" xml:space="preserve">
     <value>&lt; SELECCIONE GRUPO O FORO &gt;</value>
   </data>
-  <data name="[RESX:SearchTypeAllKeywords].Text" xml:space="preserve">
-    <value>TODAS las palabras clave</value>
-  </data>
-  <data name="[RESX:SearchTypeANYKeywords].Text" xml:space="preserve">
-    <value>CUALQUIER palabra clave</value>
-  </data>
-  <data name="[RESX:SearchTypeExactMatch].Text" xml:space="preserve">
-    <value>Coincidencia exacta</value>
-  </data>
   <data name="EditProfile.Text" xml:space="preserve">
     <value>Editar perfil</value>
   </data>
@@ -1803,15 +1785,6 @@ De
   <data name="[RESX:NotificationBodyTopic].Text" xml:space="preserve">
     <value>&lt;p&gt;[PUBLICACIÓN EN EL FORO:AUTHORDISPLAYNAMELINK|&lt;i class="fa fa-user fa-fw fa-blue"&gt;&lt;/i&gt;nbsp;&lt;a href="{0}" class="af-profile-link" rel="nofollow"&gt;&lt;/a&gt;|[FORO:AUTHORDISPLAYNAME]] ha publicado contenido que requiere moderación.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Asunto:&lt;/strong&gt; [FORO:ASUNTO]&lt;/p&gt;&lt;p&gt;Revise el contenido y determine su disposición.&lt;/p&gt;
 &lt;p&gt;Puedes:&lt;ol&gt;&lt;li&gt;aprobar el tema,&lt;/li&gt;&lt;li&gt;rechazarlo (enviarlo al cartel para su revisión),&lt;/li&gt;&lt;li&gt;eliminarlo, o&lt;/li&gt;&lt;li&gt;Bloquear al usuario, eliminando este y cualquier otro tema o respuesta publicada por este usuario&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si no puedes determinar si este contenido es adecuado solo en función del tema, usa &lt;a href="[FORUM:MODLINK]"&gt;este enlace&lt;/a&gt; para revisar y moderar los temas.&lt;/p&gt;</value>
-  </data>
-  <data name="[RESX:SearchSubjectAndTopic].Text" xml:space="preserve">
-    <value>Asunto y Tema</value>
-  </data>
-  <data name="[RESX:SearchSubjectOnly].Text" xml:space="preserve">
-    <value>Solo sujeto</value>
-  </data>
-  <data name="[RESX:SearchTopicOnly].Text" xml:space="preserve">
-    <value>Solo tema</value>
   </data>
   <data name="[RESX:SearchSortTypeRelevance].Text" xml:space="preserve">
     <value>Pertinencia</value>

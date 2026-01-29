@@ -330,9 +330,6 @@
   <data name="[RESX:DisplayName].Text" xml:space="preserve">
     <value>Display Name</value>
   </data>
-  <data name="[RESX:EnableFullText].Text" xml:space="preserve">
-    <value>Enable Full-Text</value>
-  </data>
   <data name="[RESX:Filters].Text" xml:space="preserve">
     <value>Filters</value>
   </data>
@@ -1293,12 +1290,6 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   </data>
   <data name="[RESX:FriendlyURLOptions].Text" xml:space="preserve">
     <value>Friendly URL Options</value>
-  </data>
-  <data name="[RESX:FullTextSearch:Intro].Text" xml:space="preserve">
-    <value>Full-Text Search provides better performance and more accurate results.</value>
-  </data>
-  <data name="[RESX:FullTextSearch].Text" xml:space="preserve">
-    <value>Full-Text Search</value>
   </data>
   <data name="[RESX:MainFeatures:Intro].Text" xml:space="preserve">
     <value>The features below are used across all forums.  You can enable or disable certain features below.</value>

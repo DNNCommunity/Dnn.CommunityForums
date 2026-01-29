@@ -1027,10 +1027,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             bool isReply = !dr.GetInt("ReplyId").Equals(0);
 
-
             // Replace Tags Control
             var tags = dr.GetString("Tags");
-            if (string.IsNullOrWhiteSpace(tags))
+            if (tags.Equals(",") || string.IsNullOrWhiteSpace(tags))
             {
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, string.Empty, "[AF:CONTROL:TAGS]", "[/AF:CONTROL:TAGS]");
             }

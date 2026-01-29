@@ -21,10 +21,12 @@
 namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 {
     using System;
+    using System.IO;
 
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Tokens;
 
     internal class ForumsModuleTokenReplacer : DotNetNuke.Services.Tokens.BaseCustomTokenReplace, DotNetNuke.Services.Tokens.IPropertyAccess
@@ -117,6 +119,21 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
             {
                 switch (propertyName)
                 {
+                    case "portallogourl":
+                        {
+                            var logoUrl = FileManager.Instance.GetUrl(FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.LogoFile));
+                            logoUrl = $"https://{this.PortalSettings.DefaultPortalAlias}{logoUrl}";
+                            logoUrl = Utilities.RemoveCultureFromUrl(this.PortalSettings, logoUrl);
+                            return PropertyAccess.FormatString(Utilities.ResolveUrl(this.PortalSettings, logoUrl), format);
+                        }
+
+                    case "portalurlwithoutculture":
+                        {
+                            var portalUrl = $"https://{this.PortalSettings.DefaultPortalAlias}";
+                            portalUrl = Utilities.RemoveCultureFromUrl(this.PortalSettings, portalUrl);
+                            return PropertyAccess.FormatString(Utilities.ResolveUrl(this.PortalSettings, portalUrl), format);
+                        }
+
                     case "loginlink":
                         {
                             // [DCF:LOGINLINK|Please <a href="{0}">login</a> to join the conversation.]
@@ -136,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
                     case "forumslink":
                     case "toolbar-forums-onclick":
-                        return PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId), format);
+                        return PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId, this.PortalSettings, string.Empty, Array.Empty<string>()), format);
                     case "toolbar-searchurl":
                         return PropertyAccess.FormatString(System.Net.WebUtility.HtmlEncode(Utilities.NavigateURL(this.TabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search"})), format);
                     case "toolbar-searchtext":
@@ -206,5 +223,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 return this.PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, $"returnUrl={this.RawUrl}") : Utilities.NavigateURL(this.TabId, string.Empty, $"ctl=login&returnUrl={this.RawUrl}");
             }
         }
+
     }
 }
