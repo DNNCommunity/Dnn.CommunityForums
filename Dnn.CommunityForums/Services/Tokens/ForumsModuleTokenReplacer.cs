@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
                     case "forumslink":
                     case "toolbar-forums-onclick":
-                        return PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId), format);
+                        return PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId, this.PortalSettings, string.Empty, Array.Empty<string>()), format);
                     case "toolbar-searchurl":
                         return PropertyAccess.FormatString(System.Net.WebUtility.HtmlEncode(Utilities.NavigateURL(this.TabId, string.Empty, new[] { $"{ParamKeys.ViewType}=search"})), format);
                     case "toolbar-searchtext":
