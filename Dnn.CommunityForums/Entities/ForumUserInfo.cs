@@ -761,13 +761,20 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 this.Username,
                                 this.FirstName,
                                 this.LastName,
-                                this.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.Username), format);
+                                this.DisplayName,
+                                accessingUser).Replace("&amp;#", "&#").Replace("Anonymous", this.Username), format);
                     case "userfirstname":
-                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.FirstName) ? this.Username : this.FirstName, format);
+                        return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(this.UserInfo, "FirstName", accessingUser)
+                            ? PropertyAccess.FormatString(string.IsNullOrEmpty(this.FirstName) ? this.Username : this.FirstName, format)
+                            : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
                     case "userlastname":
-                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.LastName) ? this.Username : this.LastName, format);
+                        return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(this.UserInfo, "LastName", accessingUser)
+                            ? PropertyAccess.FormatString(string.IsNullOrEmpty(this.LastName) ? this.Username : this.LastName, format)
+                            : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
                     case "useremail":
-                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Email) ? string.Empty : this.Email, format);
+                        return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(this.UserInfo, "Email", accessingUser)
+                            ? PropertyAccess.FormatString(string.IsNullOrEmpty(this.Email) ? string.Empty : this.Email, format)
+                            : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
                     case "useridforpmlink":
                         return PropertyAccess.FormatString(accessingUser.UserID > 0 && this.UserId > 0 ? this.UserId.ToString() : string.Empty, format);
                     case "useridforeditlink":

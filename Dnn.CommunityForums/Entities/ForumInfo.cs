@@ -293,6 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public DateTime LastRead { get; set; }
 
+
         [IgnoreColumn]
         public string LastPostFirstName
         {
@@ -901,16 +902,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "lastpostusername":
                         return this.LastPostID < 1 ? string.Empty : PropertyAccess.FormatString(this.LastPostUserName, format);
                     case "lastpostfirstname":
-                        return this.LastPostID < 1 ? string.Empty : PropertyAccess.FormatString(this.LastPostFirstName, format);
+                        return this.LastPostID < 1 ? string.Empty : (DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(new DotNetNuke.Entities.Users.UserController().GetUser(this.PortalId, this.LastPostUserID), "FirstName", accessingUser) ? PropertyAccess.FormatString(this.LastPostFirstName, format) : string.Empty);
                     case "lastpostlastname":
-                        return this.LastPostID < 1 ? string.Empty : PropertyAccess.FormatString(this.LastPostLastName, format);
+                        return this.LastPostID < 1 ? string.Empty : (DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(new DotNetNuke.Entities.Users.UserController().GetUser(this.PortalId, this.LastPostUserID), "LastName", accessingUser) ? PropertyAccess.FormatString(this.LastPostLastName, format) : string.Empty);
                     case "lastpostauthordisplaynamelink":
                         return this.LastPostID > 0 && this.LastPostUserID > 0 && Controllers.ForumUserController.CanLinkToProfile(this.PortalSettings, this.MainSettings, this.ModuleId, new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, this.LastPostUserID)) ? PropertyAccess.FormatString(Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { $"userId={this.LastPostUserID}" }), format) : string.Empty;
                     case "lastpostdisplayname":
                     case "lastpostauthordisplayname":
                         var forumUserController = new Controllers.ForumUserController(this.ModuleId);
                         var forumUser = forumUserController.GetByUserId(accessingUser.PortalID, accessingUser.UserID);
-                        return this.LastPostID > 0 && this.LastPostUserID > 0 ? PropertyAccess.FormatString(Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, forumUser.GetIsMod(this.ModuleId), forumUser.IsAdmin || forumUser.IsSuperUser, this.LastPostUserID, this.LastPostUserName, this.LastPostFirstName, this.LastPostLastName, this.LastPostDisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.LastPostDisplayName), format) : string.Empty;
+                        return this.LastPostID > 0 && this.LastPostUserID > 0 ? PropertyAccess.FormatString(Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.MainSettings, forumUser.GetIsMod(this.ModuleId), forumUser.IsAdmin || forumUser.IsSuperUser, this.LastPostUserID, this.LastPostUserName, this.LastPostFirstName, this.LastPostLastName, this.LastPostDisplayName, accessingUser).Replace("&amp;#", "&#").Replace("Anonymous", this.LastPostDisplayName), format) : string.Empty;
 
                     case "statuscssclass":
                         return PropertyAccess.FormatString(this.GetForumStatusCss(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)), format);
