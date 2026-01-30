@@ -1642,4 +1642,7 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
     <value>Kann Tags zu Themen hinzufügen/verwalten. Alle in Beiträgen (Themen und/oder Antworten) eingetragenen Tags werden automatisch dem Thema sowie der Liste der im Forum verfügbaren Tags hinzugefügt.</value>
   </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>Nicht aktiv</value>
+  </data>
 </root>

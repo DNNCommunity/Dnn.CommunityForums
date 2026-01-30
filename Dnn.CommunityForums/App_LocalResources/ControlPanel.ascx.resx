@@ -1642,4 +1642,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:UserMentions].Text" xml:space="preserve">
     <value>User Mentions</value>
   </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>Not Active</value>
+  </data>
 </root>

@@ -1687,4 +1687,7 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
     <value>Kan tags toevoegen of beheren op onderwerpen. Alle tags die in berichten (onderwerpen en/of reacties) worden ingevoerd, worden automatisch toegevoegd aan het onderwerp, evenals aan de lijst van tags die beschikbaar zijn op de forums.</value>
   </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>Niet actief</value>
+  </data>
 </root>

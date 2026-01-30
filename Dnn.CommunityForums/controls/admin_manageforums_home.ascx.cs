@@ -24,6 +24,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
+
     public partial class admin_manageforums_home : ActiveAdminBase
     {
         private string arrowUp = string.Empty;
@@ -78,6 +80,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     sb.Append("<tr class=\"afgroupback\"><td class=\"afgroupback_left\">" + this.RenderSpacer(1, 4) + "</td><td colspan=\"3\" width=\"100%\" onmouseover=\"this.className='agrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + group.ForumGroupId + "|G');\">");
                     sb.Append(sGroupName);
+                    if (group.Hidden)
+                    {
+                        sb.Append(" <span class=\"amcpnormal\"> (" + this.GetSharedResource("[RESX:Hidden]") + ")</span>");
+                    }
+
+                    if (!group.Active)
+                    {
+                        sb.Append(" <span class=\"amcpnormal\"> (" + this.GetSharedResource("[RESX:NotActive]") + ")</span>");
+                    }
+
+
                     sb.Append("</td><td>");
                     var inheritance = string.Empty;
                     if (group.InheritSettings)
@@ -137,6 +150,16 @@ namespace DotNetNuke.Modules.ActiveForums
                                 string sForumName = forum.ForumName;
                                 sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + this.RenderSpacer(1, 4) + "</td><td style=\"width:15px;\" width=\"15\">" + this.RenderSpacer(5, 15) + "</td><td colspan=\"2\" width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + forum.ForumID + "|F');\">");
                                 sb.Append(sForumName);
+                                if (forum.Hidden)
+                                {
+                                    sb.Append(" <span class=\"amcpnormal\"> (" + this.GetSharedResource("[RESX:Hidden]") + ")</span>");
+                                }
+
+                                if (!forum.Active)
+                                {
+                                    sb.Append(" <span class=\"amcpnormal\"> (" + this.GetSharedResource("[RESX:NotActive]") + ")</span>");
+                                }
+
                                 sb.Append("</td><td>");
                                 inheritance = string.Empty;
                                 if (forum.InheritSettings)
@@ -214,6 +237,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 string sForumName = subforum.ForumName;
                 sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + this.RenderSpacer(1, 4) + "</td><td style=\"width:15px;\">" + this.RenderSpacer(5, 15) + "</td><td style=\"width:15px;\">" + this.RenderSpacer(5, 15) + "</td><td width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + subforum.ForumID + "|F');\">");
                 sb.Append(sForumName);
+                if (subforum.Hidden)
+                {
+                    sb.Append(" <span class=\"amcpnormal\"> (" + this.GetSharedResource("[RESX:Hidden]") + ")</span>");
+                }
+
+                if (!subforum.Active)
+                {
+                    sb.Append(" <span class=\"amcpnormal\"> (" + this.GetSharedResource("[RESX:NotActive]") + ")</span>");
+                }
+
                 sb.Append("</td><td>");
                 var inheritance = string.Empty;
                 if (forum.InheritSettings)
