@@ -507,7 +507,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ForumViewTemplate = "AF-{0}-fvt-{1}";
         public const string Toolbar = "AF-{0}-tb-{1}-{2}";
         public const string TemplatePrefix = "AF-{0}-tmpl-";
-        public const string Template = "AF-{0}-tmpl-{1}-{2}";
+        public const string Template = "AF-{0}-tmpl-{1}-{2}-{3}";
         public const string QuickReply = "AF-{0}-qr";
         public const string CacheEnabled = "AF-{0}-ce";
         public const string CachingTime = "AF-{0}-ct";

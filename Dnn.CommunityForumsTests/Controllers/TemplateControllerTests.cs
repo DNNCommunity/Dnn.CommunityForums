@@ -18,27 +18,29 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 {
-    using System;
-    using System.Text;
-    using System.Text.RegularExpressions;
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using NUnit.Framework;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Modules.ActiveForums.Enums;
-
-    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-    internal static class TemplateCache
+    [TestFixture]
+    public class TemplateControllerTests : DotNetNuke.Modules.ActiveForumsTests.TestBase
     {
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static string GetCachedTemplate(int moduleId, string TemplateType, int TemplateId)
+        [Test]
+        [TestCase(true, "AUTHENTICATED CONTENT", ExpectedResult = true)]
+        [TestCase(true, "UNAUTHENTICATED CONTENT", ExpectedResult = false)]
+        [TestCase(false, "UNAUTHENTICATED CONTENT", ExpectedResult = true)]
+        [TestCase(false, "AUTHENTICATED CONTENT", ExpectedResult = false)]
+        public bool Template_AuthenticatedSectionsTests(bool isAuthenticated, string expectedResult)
         {
-            if (TemplateId < 1)
-            {
-                return DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, (Enums.TemplateType)Enum.Parse(typeof(Enums.TemplateType), TemplateType, true), string.Empty, null);
-            }
+            // Arrange
+            string template = "[DCF:USERISAUTHENTICATED]AUTHENTICATED CONTENT[/DCF:USERISAUTHENTICATED][DCF:USERISNOTAUTHENTICATED]UNAUTHENTICATED CONTENT[/DCF:USERISNOTAUTHENTICATED]";
 
-            return DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, (DotNetNuke.Modules.ActiveForums.Enums.TemplateType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.Enums.TemplateType), TemplateId.ToString()), string.Empty, null);
+            // Act
+            string result = TemplateController.HandleAuthenticatedBasedTemplateSection(template, isAuthenticated);
+
+            // Assert
+            return result.Equals(expectedResult);
         }
     }
 }

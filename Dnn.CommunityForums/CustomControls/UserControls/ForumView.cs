@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-                string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ForumView, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ForumView, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this.ForumUser);
 
                 StringBuilder stringBuilder = new StringBuilder(sTemplate);
                 #region "Backward compatilbility -- remove in v10.00.00"

@@ -789,7 +789,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                         var badgeString = string.Empty;
                         var userBadgesToDisplay = this.Badges.GroupBy(b => b.BadgeId).Select(g => g.OrderByDescending(b => b.DateAssigned).First()).ToList().OrderBy(b => b.Badge.SortOrder).Take(length);
-                        var badgeTemplate = new StringBuilder(DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ModuleId, Enums.TemplateType.UserBadge, SettingsBase.GetModuleSettings(this.ModuleId).DefaultFeatureSettings.TemplateFileNameSuffix));
+                        var badgeTemplate = new StringBuilder(DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ModuleId, Enums.TemplateType.UserBadge, SettingsBase.GetModuleSettings(this.ModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this));
                         foreach (var userBadge in userBadgesToDisplay)
                         {
                             badgeString += DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(badgeTemplate, userBadge, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this.RequestUri, this.RawUrl);
