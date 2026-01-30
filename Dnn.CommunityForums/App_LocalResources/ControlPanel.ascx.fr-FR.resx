@@ -1540,4 +1540,7 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
     <value>Peut ajouter/gérer des tags sur des sujets. Tous les tags entrés dans les publications (sujets et/ou réponses) sont automatiquement ajoutés au sujet ainsi que la liste des tags disponibles sur les forums.</value>
   </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>Non actif</value>
+  </data>
 </root>
