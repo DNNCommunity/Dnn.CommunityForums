@@ -873,7 +873,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "forumlink":
                     case "forumurl":
                         return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.GetTabId(), this.ModuleId, this.ForumGroup.PrefixURL, this.PrefixURL, this.ForumGroupId, this.ForumID, -1, -1, string.Empty, 1, -1, this.SocialGroupId), format);
-                    
                     case "parentforumlink":
                         return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.GetTabId(), this.ModuleId, this.ForumGroup.PrefixURL, this.ParentForumUrlPrefix, this.ForumGroupId, this.ParentForumId, -1, -1, string.Empty, 1, -1, this.SocialGroupId), format);
                     case "parentforumname":
@@ -902,9 +901,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "lastpostusername":
                         return this.LastPostID < 1 ? string.Empty : PropertyAccess.FormatString(this.LastPostUserName, format);
                     case "lastpostfirstname":
-                        return this.LastPostID < 1 ? string.Empty : (DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(new DotNetNuke.Entities.Users.UserController().GetUser(this.PortalId, this.LastPostUserID), "FirstName", accessingUser) ? PropertyAccess.FormatString(this.LastPostFirstName, format) : string.Empty);
+                        return this.LastPostID < 1 ? string.Empty : (DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(new DotNetNuke.Entities.Users.UserController().GetUser(this.PortalId, this.LastPostUserID), "FirstName", accessingUser) ? PropertyAccess.FormatString(this.LastPostFirstName, format) : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked);
                     case "lastpostlastname":
-                        return this.LastPostID < 1 ? string.Empty : (DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(new DotNetNuke.Entities.Users.UserController().GetUser(this.PortalId, this.LastPostUserID), "LastName", accessingUser) ? PropertyAccess.FormatString(this.LastPostLastName, format) : string.Empty);
+                        return this.LastPostID < 1 ? string.Empty : (DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(new DotNetNuke.Entities.Users.UserController().GetUser(this.PortalId, this.LastPostUserID), "LastName", accessingUser) ? PropertyAccess.FormatString(this.LastPostLastName, format) : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked);
                     case "lastpostauthordisplaynamelink":
                         return this.LastPostID > 0 && this.LastPostUserID > 0 && Controllers.ForumUserController.CanLinkToProfile(this.PortalSettings, this.MainSettings, this.ModuleId, new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, this.LastPostUserID)) ? PropertyAccess.FormatString(Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { $"userId={this.LastPostUserID}" }), format) : string.Empty;
                     case "lastpostdisplayname":
