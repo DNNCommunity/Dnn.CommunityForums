@@ -842,7 +842,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         editor.Height = editorHeight;
                         editor.TextMode = TextBoxMode.MultiLine;
                         editor.Rows = 4;
-                        this.plhEditor.Controls.Add(editor);
+                        this.plhEditor?.Controls.Add(editor);
                         this.clientId = editor.ClientID;
                         break;
                     }
@@ -861,7 +861,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         editor.Width = editorWidth;
                         editor.HtmlEncode = false; // Turn Encoding off or passed already Encoded HTML.
                         editor.Height = editorHeight;
-                        this.plhEditor.Controls.Add(editor);
+                        this.plhEditor?.Controls.Add(editor);
                         this.clientId = editor.ClientID;
                         break;
                     }
