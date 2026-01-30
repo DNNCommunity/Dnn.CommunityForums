@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Text.RegularExpressions;
     using System.Web.UI;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Modules.ActiveForums.Entities;
 
     public class TemplateController
     {
@@ -92,10 +93,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static string Template_Get(int moduleId, Enums.TemplateType templateType, string templateFileNameSuffix)
         {
-            return Template_Get(moduleId, templateType.ToString(), templateFileNameSuffix);
+            return Template_Get(moduleId, templateType.ToString(), templateFileNameSuffix, null);
         }
 
-        private static string Template_Get(int moduleId, string templateBaseFileName, string templateFileNameSuffix)
+        internal static string Template_Get(int moduleId, Enums.TemplateType templateType, string templateFileNameSuffix, ForumUserInfo forumUser)
+        {
+            return Template_Get(moduleId, templateType.ToString(), templateFileNameSuffix, forumUser);
+        }
+
+        private static string Template_Get(int moduleId, string templateBaseFileName, string templateFileNameSuffix, ForumUserInfo forumUser)
         {
             bool fileFound = false;
             string sTemplate = string.Empty;
@@ -103,7 +109,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             string templateFilePathFileName = string.Empty;
             ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(moduleId);
             templateBaseFileName = templateBaseFileName.ToLowerInvariant();
-            string cacheKey = string.Format(CacheKeys.Template, moduleId, templateBaseFileName, templateFileNameSuffix);
+            bool isAuthenticated = forumUser?.IsAuthenticated ?? false;
+            string cacheKey = string.Format(CacheKeys.Template, moduleId, templateBaseFileName, templateFileNameSuffix, isAuthenticated);
             object obj = null;
             if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
             {
@@ -195,14 +202,47 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     var nestedTemplateName = nestedTemplateToken.Groups["templateName"]?.Value;
                     if (!string.IsNullOrEmpty(nestedTemplateName))
                     {
-                        sTemplate = sTemplate.Replace(token, Template_Get(moduleId, nestedTemplateName, templateFileNameSuffix));
+                        sTemplate = sTemplate.Replace(token, Template_Get(moduleId, nestedTemplateName, templateFileNameSuffix, forumUser));
                     }
                 }
             }
 
+            sTemplate = HandleAuthenticatedBasedTemplateSection(sTemplate, isAuthenticated);
+
             if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
             {
                 DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cacheKey, sTemplate);
+            }
+
+            return sTemplate;
+        }
+
+        internal static string HandleAuthenticatedBasedTemplateSection(string sTemplate, bool isAuthenticated)
+        {
+            if (sTemplate.ToUpperInvariant().Contains("DCF:USERISAUTHENTICATED"))
+            {
+                if (isAuthenticated)
+                {
+                    sTemplate = sTemplate.Replace("[DCF:USERISAUTHENTICATED]", string.Empty);
+                    sTemplate = sTemplate.Replace("[/DCF:USERISAUTHENTICATED]", string.Empty);
+                }
+                else
+                {
+                    sTemplate = TemplateUtils.ReplaceSubSection(sTemplate, string.Empty, "[DCF:USERISAUTHENTICATED]", "[/DCF:USERISAUTHENTICATED]");
+                }
+            }
+
+            if (sTemplate.ToUpperInvariant().Contains("DCF:USERISNOTAUTHENTICATED"))
+            {
+                if (!isAuthenticated)
+                {
+                    sTemplate = sTemplate.Replace("[DCF:USERISNOTAUTHENTICATED]", string.Empty);
+                    sTemplate = sTemplate.Replace("[/DCF:USERISNOTAUTHENTICATED]", string.Empty);
+                }
+                else
+                {
+                    sTemplate = TemplateUtils.ReplaceSubSection(sTemplate, string.Empty, "[DCF:USERISNOTAUTHENTICATED]", "[/DCF:USERISNOTAUTHENTICATED]");
+                }
             }
 
             return sTemplate;

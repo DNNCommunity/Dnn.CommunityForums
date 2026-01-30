@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.QuickReply, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.QuickReply, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix, this.ForumUser);
 
             try
             {

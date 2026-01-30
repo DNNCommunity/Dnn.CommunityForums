@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 (!string.IsNullOrEmpty(fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate) ?
                     fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate :
                     SettingsBase.GetModuleSettings(fi.ModuleId).DefaultFeatureSettings.EmailNotificationSubjectTemplate);
-            var bodyTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(fi.ModuleId, templateType, fi.FeatureSettings.TemplateFileNameSuffix);
+            var bodyTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(fi.ModuleId, templateType, fi.FeatureSettings.TemplateFileNameSuffix, null);
             var subject = TemplateUtils.ParseEmailTemplate(subjectTemplate, fi.PortalId, fi.ModuleId, tabId, fi.ForumID, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url, HttpContext.Current.Request.RawUrl);
             var body = TemplateUtils.ParseEmailTemplate(bodyTemplate, fi.PortalId, fi.ModuleId, tabId, fi.ForumID, topicId, replyId, author, accessingUser: author.ForumUser, topicSubscriber: false, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url, HttpContext.Current.Request.RawUrl);
 
@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var navigationManager = (INavigationManager)new Services.URLNavigator().NavigationManager();
             DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = Utilities.GetPortalSettings(fi.PortalId);
             var lstSubscriptionInfo = subs;
-            var bodyTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, TemplateType.SubscribedEmail, fi.FeatureSettings.TemplateFileNameSuffix);
+            var bodyTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, TemplateType.SubscribedEmail, fi.FeatureSettings.TemplateFileNameSuffix, null);
             var subjectTemplate = !string.IsNullOrEmpty(fi.FeatureSettings.EmailNotificationSubjectTemplate) ?
                 fi.FeatureSettings.EmailNotificationSubjectTemplate :
                 (!string.IsNullOrEmpty(fi.ForumGroup.FeatureSettings.EmailNotificationSubjectTemplate) ?
