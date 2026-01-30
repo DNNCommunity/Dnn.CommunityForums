@@ -772,9 +772,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             ? PropertyAccess.FormatString(string.IsNullOrEmpty(this.LastName) ? this.Username : this.LastName, format)
                             : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
                     case "useremail":
-                        return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(this.UserInfo, "Email", accessingUser)
-                            ? PropertyAccess.FormatString(string.IsNullOrEmpty(this.Email) ? string.Empty : this.Email, format)
-                            : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
+                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Email) ? string.Empty : this.Email, format);
                     case "useridforpmlink":
                         return PropertyAccess.FormatString(accessingUser.UserID > 0 && this.UserId > 0 ? this.UserId.ToString() : string.Empty, format);
                     case "useridforeditlink":
