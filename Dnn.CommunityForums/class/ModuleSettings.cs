@@ -117,6 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string TemplatePath => string.Concat(this.ThemeLocation, "templates/");
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public bool FullText => this.MainSettings.GetBoolean(SettingKeys.FullText);
 
         public string AllowSubTypes => this.MainSettings.GetString(SettingKeys.AllowSubTypes, string.Empty);

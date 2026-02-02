@@ -306,24 +306,18 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+
         public bool FullTextSearch
         {
             get
             {
-                return this.Settings.GetBoolean(SettingKeys.FullText);
+                throw new NotImplementedException();
             }
 
             set
             {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.FullText, value.ToString());
-                if (this.Settings.ContainsKey(SettingKeys.FullText))
-                {
-                    this.Settings[SettingKeys.FullText] = value.ToString();
-                }
-                else
-                {
-                    this.Settings.Add(SettingKeys.FullText, value.ToString());
-                }
+                throw new NotImplementedException();
             }
         }
 

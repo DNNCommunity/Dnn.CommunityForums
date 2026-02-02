@@ -403,8 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 tags: this.Tags,
                 resultType: this.SearchResultType,
                 sort: this.SearchSortType,
-                maxCacheHours: maxCacheHours,
-                fullText: this.ModuleSettings.FullText);
+                maxCacheHours: maxCacheHours);
 
             this.searchId = (this.searchResults != null) ? this.searchResults.SearchId : 0;
 

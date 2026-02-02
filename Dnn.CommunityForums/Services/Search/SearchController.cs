@@ -52,8 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
             string tags,
             SearchSortType sort,
             SearchResultType resultType,
-            int maxCacheHours,
-            bool fullText)
+            int maxCacheHours)
         {
             return Provider.Search(
                 portalId,
@@ -70,8 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                 tags,
                 resultType,
                 sort,
-                maxCacheHours,
-                fullText);
+                maxCacheHours);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
@@ -92,55 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                 string tags,
                 SearchResultType resultType,
                 SearchSortType sort,
-                int maxCacheHours,
-                bool fullText)
-            {
-                var ds = DataProvider.Instance().Search(
-                    portalId,
-                    moduleId,
-                    userId,
-                    searchId,
-                    rowIndex,
-                    pageSize,
-                    searchText,
-                    0, /*search any */
-                    0, /*search subject and topic*/
-                    searchDays,
-                    authorUserId,
-                    authorUsername,
-                    forumsToSearch,
-                    tags,
-                    (int)resultType,
-                    (int)sort,
-                    maxCacheHours,
-                    fullText);
-
-                var results = new DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults(ds.Tables[0]);
-                results.Results = new List<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo>();
-                foreach (System.Data.DataRow row in ds.Tables[1].Rows)
-                {
-                    DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post = null;
-                    var topicId = Utilities.SafeConvertInt(row["TopicId"], DotNetNuke.Common.Utilities.Null.NullInteger);
-                    var contentId = Utilities.SafeConvertInt(row["ContentId"], DotNetNuke.Common.Utilities.Null.NullInteger);
-                    var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).GetByContentId(contentId);
-                    if (reply != null)
-                    {
-                        post = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)reply;
-                    }
-                    else
-                    {
-                        var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
-                        if (topic != null)
-                        {
-                            post = topic;
-                        }
-                    }
-
-                    results.Results.Add(post);
-                }
-
-                return results;
-            }
+                int maxCacheHours) => throw new NotImplementedException();
         }
 
         private sealed class LuceneSearchController : DotNetNuke.Modules.ActiveForums.Services.Search.ISearchController
@@ -160,8 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                 string tags,
                 SearchResultType resultType,
                 SearchSortType sort,
-                int maxCacheHours,
-                bool fullText)
+                int maxCacheHours)
             {
                 DateTime startQuery = DateTime.UtcNow;
 
