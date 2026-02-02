@@ -218,6 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Theme = "THEME";
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string MailQueue = "MAILQUEUE";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string FullText = "FULLTEXT";
         public const string AllowSubTypes = "ALLOWSUBTYPES";
         public const string FloodInterval = "FLOODINTERVAL";

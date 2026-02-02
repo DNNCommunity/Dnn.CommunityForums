@@ -46,7 +46,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
         /// <param name="resultType">Type of results to return.</param>
         /// <param name="sort">Sort order.</param>
         /// <param name="maxCacheHours">Maximum cache duration in hours.</param>
-        /// <param name="fullText">Whether to use full-text search.</param>
         /// <returns>A <see cref="DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults"/> containing the search results.</returns>
         DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults Search(
             int portalId,
@@ -63,7 +62,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
             string tags,
             SearchResultType resultType,
             SearchSortType sort,
-            int maxCacheHours,
-            bool fullText);
+            int maxCacheHours);
     }
 }

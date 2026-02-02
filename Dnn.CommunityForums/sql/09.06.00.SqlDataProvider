@@ -1,0 +1,64 @@
+SET NOCOUNT ON 
+GO
+
+/* --------------------- */
+
+/* issue 1712 - begin - remove full-text search catalog, setup, and search procedures */
+
+IF OBJECTPROPERTY(object_id('{databaseOwner}{objectQualifier}activeforums_Content'),'TableHasActiveFulltextIndex') = 1
+BEGIN
+	exec sp_fulltext_table N'{databaseOwner}{objectQualifier}activeforums_Content', N'drop'					
+END
+GO
+ 
+IF EXISTS (SELECT * FROM sysfulltextcatalogs ftc WHERE ftc.name = N'{objectQualifier}activeforums_Catalog')
+BEGIN
+exec sp_fulltext_catalog '{objectQualifier}activeforums_Catalog', 'drop'
+END
+GO
+
+/* activeforums_Search_ManageFullText */
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_ManageFullText]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_ManageFullText]
+GO
+
+/* activeforums_Search_GetFullTextStatus */
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetFullTextStatus]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_GetFullTextStatus]
+GO
+
+/* activeforums_Search_Standard */
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_Standard]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_Standard]
+GO
+
+/* activeforums_Search_FullText */
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_FullText]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_FullText]
+GO
+
+/* activeforums_Functions_SplitText */
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Functions_SplitText]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}activeforums_Functions_SplitText]
+GO
+
+/* activeforums_Search */
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search]
+GO
+
+/* activeforums_SearchCache */
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_SearchCache]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_SearchCache]
+GO
+
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Search_GetSearchItems') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItems
+GO
+
+/* issue 1712 - end - remove full-text search catalog, setup, and search procedures */
+
+/* --------------------- */
+
+
