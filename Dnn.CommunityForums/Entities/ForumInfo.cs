@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Web;
+
 using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
@@ -34,6 +35,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
+
+    using Newtonsoft.Json;
 
     [TableName("activeforums_Forums")]
     [PrimaryKey("ForumID", AutoIncrement = true)] /* ForumID because needs to match property name NOT database column name */
@@ -359,14 +362,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
+        [JsonIgnore]
         public int LastPostLastPostID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
+        [JsonIgnore]
         public int LastPostParentPostID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
+        [JsonIgnore]
         public int CustomFieldType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         [IgnoreColumn]

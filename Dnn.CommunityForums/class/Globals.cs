@@ -562,6 +562,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string UserMentionQuery = "AF-{0}-usermentionquery-{1}-{2}";
         public const string UserMentionInfo = "AF-{0}-usermentioninfo-{1}";
         public const string TagMatches = "AF-{0}-tagmatches-{1}";
+        public const string SearchQuery = "AF-{0}-searchquery-{1}";
     }
 
     public class SortColumns

@@ -39,6 +39,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.UserControls;
 
+    using Newtonsoft.Json;
+
     [TableName("activeforums_UserProfiles")]
     [PrimaryKey("ProfileId", AutoIncrement = true)]
     [Scope("PortalId")]
@@ -184,6 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public Uri RequestUri { get; set; }
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string[] Roles => this.UserInfo?.Roles;
 
@@ -194,6 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string LastName => string.IsNullOrEmpty(this.UserInfo?.LastName) ? string.Empty : this.UserInfo?.LastName;
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string FullName => string.Concat(this.UserInfo?.FirstName, " ", this.UserInfo?.LastName);
 
@@ -260,6 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public string ForumsAllowed { get; set; }
 
@@ -426,6 +431,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public string UserRoles
         {

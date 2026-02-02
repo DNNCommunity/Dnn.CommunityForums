@@ -39,6 +39,8 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
 
         public List<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo> Results { get; set; }
 
+        public List<DotNetNuke.Modules.ActiveForums.ViewModels.Topic> Topics { get; set; }
+
         public SearchResults()
         {
         }
