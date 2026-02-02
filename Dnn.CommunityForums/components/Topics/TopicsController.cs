@@ -88,7 +88,9 @@ namespace DotNetNuke.Modules.ActiveForums
             /* since this code runs without HttpContext, get https:// by looking at page settings */
             bool isHttps = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
             bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
-            string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
+
+            var portalAliases = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID);
+            string primaryPortalAlias = (portalAliases.FirstOrDefault(pa => pa.IsPrimary) ?? portalAliases.FirstOrDefault()).HTTPAlias;
 
             Dictionary<int, string> authorizedRolesForForum = new Dictionary<int, string>();
             Dictionary<int, string> forumUrlPrefixes = new Dictionary<int, string>();
