@@ -34,34 +34,32 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="moduleId">The module identifier.</param>
         /// <param name="userId">The current user identifier.</param>
-        /// <param name="searchId">The search session identifier.</param>
         /// <param name="rowIndex">Zero-based index of the first result row to return.</param>
         /// <param name="pageSize">Number of rows to return.</param>
         /// <param name="searchText">The search text.</param>
-        /// <param name="searchDays">Limit results to the last N days.</param>
+        /// <param name="searchHours">Limit results to the last N hours.</param>
         /// <param name="authorUserId">Filter by author user id.</param>
         /// <param name="authorUsername">Filter by author username.</param>
         /// <param name="forumsToSearch">Comma-separated forum ids to search.</param>
         /// <param name="tags">Comma-separated tags to filter by.</param>
         /// <param name="resultType">Type of results to return.</param>
         /// <param name="sort">Sort order.</param>
-        /// <param name="maxCacheHours">Maximum cache duration in hours.</param>
+        /// 
+        /// 
         /// <returns>A <see cref="DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults"/> containing the search results.</returns>
         DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults Search(
             int portalId,
             int moduleId,
             int userId,
-            int searchId,
             int rowIndex,
             int pageSize,
             string searchText,
-            int searchDays,
+            int searchHours,
             int authorUserId,
             string authorUsername,
             string forumsToSearch,
             string tags,
             SearchResultType resultType,
-            SearchSortType sort,
-            int maxCacheHours);
+            SearchSortType sort);
     }
 }

@@ -44,6 +44,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         bool IsTopic { get; }
 
+        bool IsApproved { get; set; }
+
+        bool IsRejected { get; set; }
+
+        bool IsDeleted { get; set; }
+
         bool IsReply { get; }
 
         Uri RequestUri { get; set; }
