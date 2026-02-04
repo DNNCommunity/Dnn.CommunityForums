@@ -51,6 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.HtmlControls.HtmlTableRow trDesc;
         protected System.Web.UI.WebControls.TextBox txtForumDesc;
         protected System.Web.UI.HtmlControls.HtmlTableRow trPrefix;
+        protected DotNetNuke.Modules.ActiveForums.Controls.RequiredFieldValidator reqPrefix;
         protected System.Web.UI.WebControls.TextBox txtPrefixURL;
         protected System.Web.UI.HtmlControls.HtmlTable trActive;
         protected System.Web.UI.WebControls.CheckBox chkActive;
@@ -188,6 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.trActive.Visible = false;
                 this.trHidden.Visible = false;
                 this.reqGroups.Enabled = false;
+                this.reqPrefix.Enabled = false;
                 this.trDesc.Visible = false;
                 this.trInheritModuleFeatures.Visible = false;
                 this.trInheritModuleSecurity.Visible = false;
@@ -201,6 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 this.trGroups.Visible = false;
                 this.reqGroups.Enabled = false;
+                this.reqPrefix.Enabled = this.MainSettings.URLRewriteEnabled;
                 this.trDesc.Visible = false;
                 this.trInheritModuleFeatures.Visible = true;
                 this.trInheritModuleSecurity.Visible = true;
@@ -213,6 +216,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else if (this.editorType == "F")
             {
+                this.reqPrefix.Enabled = this.MainSettings.URLRewriteEnabled;
                 this.lblForumGroupName.Text = this.GetSharedResource("[RESX:ForumName]");
                 this.trInheritModuleFeatures.Visible = false;
                 this.trInheritModuleSecurity.Visible = false;
@@ -246,8 +250,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.imgOn = this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "admin_check.png");
             this.imgOff = this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "admin_stop.png");
+
             this.reqForumName.Text = "<img src=\"" + this.Page.ResolveUrl(RequiredImage) + "\" />";
             this.reqGroups.Text = "<img src=\"" + this.Page.ResolveUrl(RequiredImage) + "\" />";
+            this.reqPrefix.Text = "<img src=\"" + this.Page.ResolveUrl(RequiredImage) + "\" />";
             var propImage = "<img src=\"" + this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "properties16.png") + "\" alt=\"[RESX:ConfigureProperties]\" />";
 
             this.rdAttachOn.Attributes.Add("onclick", "toggleAttach(this);");
