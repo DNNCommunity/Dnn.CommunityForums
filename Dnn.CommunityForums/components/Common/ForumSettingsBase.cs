@@ -245,7 +245,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this.Settings.GetString(SettingKeys.PrefixURLBase, "forums");
+                return this.Settings.GetString(SettingKeys.PrefixURLBase, string.Empty);
             }
 
             set

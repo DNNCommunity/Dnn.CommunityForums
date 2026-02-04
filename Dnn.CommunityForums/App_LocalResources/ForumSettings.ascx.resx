@@ -253,7 +253,7 @@
     <value>New Topic</value>
   </data>
   <data name="URLPrefixBase.Help" xml:space="preserve">
-    <value>This is the text that will be used as the intial part of all forum URLs.  In most cases you will just want to enter "forum"</value>
+    <value>This is the text that will be used as the initial part of all forum URLs.  In most cases you will just want to enter "forums"</value>
   </data>
   <data name="URLPrefixBase.Text" xml:space="preserve">
     <value>Base Path</value>
