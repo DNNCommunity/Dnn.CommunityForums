@@ -144,6 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     PostId = contentId,
                     UserId = userId,
                     Checked = true,
+                    DateCreated = DateTime.UtcNow,
                 };
                 this.Insert(like);
                 new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.PostLiked,
@@ -158,7 +159,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                                                                              authorId: authorId,
                                                                                              userId: userId,
                                                                                              badgeId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                                                                                             requestUrl: requestUrl);
+                                                                                             requestUrl: requestUrl,
+                                                                                             dateCreated: like.DateCreated);
             }
 
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.LikeInfo, this.moduleId, like.Id));
