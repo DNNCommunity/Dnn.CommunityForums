@@ -380,7 +380,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.searchResults = SearchController.Provider.Search(
                 portalId: this.PortalId,
-                moduleId: this.ModuleId,
+                moduleId: this.ForumModuleId,
                 userId: this.UserId,
                 rowIndex: this.rowIndex,
                 pageSize: this.pageSize,
