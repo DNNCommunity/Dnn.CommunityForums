@@ -431,9 +431,22 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // avoid redirect, e.g. "/Forums" == "forums/"
-                if (((searchURL2.StartsWith("/") && searchURL2.IndexOf("/") == searchURL2.LastIndexOf("/")) || (searchURL2.EndsWith("/") && searchURL2.IndexOf("/") == searchURL2.LastIndexOf("/"))) &&
+                if (this.urlType.Equals(0) &&
+                    (((searchURL2.StartsWith("/") && searchURL2.IndexOf("/") == searchURL2.LastIndexOf("/")) || (searchURL2.EndsWith("/") && searchURL2.IndexOf("/") == searchURL2.LastIndexOf("/"))) &&
                     ((newSearchURL2.StartsWith("/") && newSearchURL2.IndexOf("/") == newSearchURL2.LastIndexOf("/")) || (newSearchURL2.EndsWith("/") && newSearchURL2.IndexOf("/") == newSearchURL2.LastIndexOf("/"))) &&
-                     (searchURL2.Replace("/", string.Empty).ToLowerInvariant() == newSearchURL2.Replace("/", string.Empty).ToLowerInvariant()))
+                     (searchURL2.Replace("/", string.Empty).ToLowerInvariant() == newSearchURL2.Replace("/", string.Empty).ToLowerInvariant())))
+                {
+                    return;
+                }
+
+                // avoid redirect, e.g. "/Support/Forums" == "support/forums/" ... starts or ends with /, same number of /, same text when ignoring /
+                if (this.urlType.Equals(0) &&
+                    this.forumId <= 0 &&
+                    this.topicId <= 0 &&
+                    ((searchURL2.StartsWith("/") || searchURL2.EndsWith("/")) &&
+                    (newSearchURL2.StartsWith("/") || newSearchURL2.EndsWith("/")) &&
+                    (newSearchURL2.ToCharArray().Where(c => c.Equals("/")).Count() == newSearchURL2.ToCharArray().Where(c => c.Equals("/")).Count()) &&
+                     (searchURL2.Replace("/", string.Empty).ToLowerInvariant() == newSearchURL2.Replace("/", string.Empty).ToLowerInvariant())))
                 {
                     return;
                 }
