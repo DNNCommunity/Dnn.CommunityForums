@@ -16,7 +16,7 @@
     function forumSave() {
         closeAllProp();
         var fgp = document.getElementById("<%=drpGroups.ClientID%>");
-        if(fgp && !AMPage.IsGroupValid('afforum')){return false};
+        if(!AMPage.IsGroupValid('afforum')){return false};
         af_showLoad();
         var fname = document.getElementById("<%=txtForumName.ClientID%>");
         if (fname) {
@@ -958,6 +958,9 @@ function afadmin_getProperties() {
                         <td class="amcpbold" valign="top">[RESX:VanityName]:</td>
                         <td width="100%">
                             <asp:textbox id="txtPrefixURL" runat="server" width="100%" cssclass="amcptxtbx" maxlength="50" onkeypress="return filterVanity(this,event);" />
+                        </td>
+                        <td>
+                            <am:requiredfieldvalidator id="reqPrefix" runat="server" text="*" controltovalidate="txtPrefixURL" validationgroup="afforum" />
                         </td>
                         <td>
                             <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/spacer.gif")%>" width="20" height="" /></td>
