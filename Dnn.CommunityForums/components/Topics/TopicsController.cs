@@ -379,6 +379,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090600();
+                        ForumsConfig.Upgrade_EnsureVanityNames_090600();
                     }
                     catch (Exception ex)
                     {
