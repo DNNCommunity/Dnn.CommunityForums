@@ -1,5 +1,4 @@
-﻿
-<!-- modeled on https://github.com/FritzAndFriends/SharpSite/pull/333 -->
+﻿<!-- modeled on https://github.com/FritzAndFriends/SharpSite/pull/333 -->
 
 You are a senior .NET developer, experienced in C#, JavaScript, HTML, ASP.NET Framework 4.8, CSS, and SQL.
 You understand the priciples of DNN (DotNetNuke) and how to develop DNN modules.
@@ -85,3 +84,32 @@ You use Visual Studio Enterprise for running, debugging, and testing DNN (DotNet
 
 ## API Documentation 
 - Ensure XML documentation for models and API methods for enhancing sufficient documentation.
+
+## Cross-repo references for `DotNetNuke`
+
+When code references the `DotNetNuke` namespace and the relevant types or source files are not present in this workspace, consult the following external GitHub repository (in order) to resolve and reference code:
+
+1. Primary external repository:
+   - URL: `https://github.com/dnnsoftware/Dnn.Platform`
+
+2. Resolution rules:
+   - Always prefer files that exist in the current workspace first.
+   - If a required `DotNetNuke` type or file is not found locally, use the `get_file` tool to fetch the matching file(s) from the primary external repository above.
+   - If multiple candidate files exist, prefer the file whose namespace and public surface match the requested symbols and which targets the closest .NET Framework version (target .NET Framework 4.7.2/4.8 compatibility).
+   - When fetching, prefer the latest stable commit on the default branch unless a specific tag/commit is provided.
+
+3. How to fetch and reference:
+   - Use `get_file` to load required source files (provide path relative to the repository root when possible).
+   - Treat fetched files as read-only references used to clarify API shape and behavior. Do not assume you can copy large blocks of third-party source verbatim without checking license and project policy.
+   - If code must be adapted or copied into this project, add an appropriate file header/license comment consistent with this repository's guidelines and ensure compliance with the external repository license.
+
+4. Ordering and additional repositories:
+   - If additional repos are needed, list them below this section in priority order with URLs and preferred subpaths.
+   - Example placeholder for additional repo(s):
+     <!--- `https://github.com/example/dnn-helpers` — preferred path: `src`-->
+
+5. Fallback behavior and errors:
+   - If the external repo cannot be accessed, fail gracefully: note the missing symbol and request the user to provide the file or a repository location.
+   - When in doubt about API compatibility or licensing, ask the user for clarification before copying code.
+
+Add or update repository URLs in this section as needed to point Copilot at other authoritative sources for the `DotNetNuke` namespace.
