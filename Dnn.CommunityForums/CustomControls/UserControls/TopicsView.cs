@@ -434,7 +434,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (this.Request.IsAuthenticated)
             {
                 string Url = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=sendto", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
-                sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + Url + "\" rel=\"nofollow\"><img src=\"" + Utilities.ResolveUrl(this.ModuleSettings.ThemeLocation + "/images/email16.png") + "\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
+                sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + Url + "\" rel=\"nofollow\"><img src=\"" + Utilities.ResolveRelativePath(this.ModuleSettings.ThemeLocation + "/images/email16.png") + "\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
             }
             else
             {

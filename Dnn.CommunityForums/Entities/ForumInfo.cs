@@ -478,7 +478,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        public string ThemeLocation => Utilities.ResolveUrl(SettingsBase.GetModuleSettings(this.ModuleId).ThemeLocation);
+        public string ThemeLocation => Utilities.ResolveRelativePath(SettingsBase.GetModuleSettings(this.ModuleId).ThemeLocation);
 
         [IgnoreColumn]
         internal DotNetNuke.Modules.ActiveForums.Enums.ForumStatus GetForumStatusForUser(ForumUserInfo forumUser)

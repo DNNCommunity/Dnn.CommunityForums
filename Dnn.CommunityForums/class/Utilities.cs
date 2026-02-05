@@ -985,7 +985,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
-        internal static string ResolveUrl(string url)
+        internal static string ResolveRelativePath(string url)
         {
             try
             {
@@ -1824,29 +1824,35 @@ namespace DotNetNuke.Modules.ActiveForums
             return expression != null && (double.TryParse(expression.ToString(), out _) || bool.TryParse(expression.ToString(), out _));
         }
 
-        internal static string ResolveUrl(PortalSettings portalSettings, string template)
+        internal static string ResolveUrlInTag(PortalSettings portalSettings, string template)
         {
             const string linkRegex = "(href|src)=\"(/[^\"]*?)\"";
             var matches = Regex.Matches(template, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
             foreach (Match match in matches)
             {
-                var link = match.Groups[2].Value;
-                var defaultAlias = portalSettings.DefaultPortalAlias;
-                var domain = DotNetNuke.Common.Globals.AddHTTP(defaultAlias);
-                if (defaultAlias.Contains("/"))
-                {
-                    var subDomain =
-                        defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
-                    if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        link = link.Substring(subDomain.Length);
-                    }
-                }
-
-                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{domain}{link}\"");
+                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{ResolveUrl(portalSettings, match.Groups[2].Value)}\"");
             }
 
             return template;
+        }
+
+        internal static string ResolveUrl(PortalSettings portalSettings, string url)
+        {
+            var link = url;
+            var defaultAlias = portalSettings.DefaultPortalAlias;
+            var domain = DotNetNuke.Common.Globals.AddHTTP(defaultAlias);
+            if (defaultAlias.Contains("/"))
+            {
+                var subDomain = defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
+                if (url.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    url = link.Substring(subDomain.Length);
+                }
+
+                url = url.Replace(url, $"{domain}{link}");
+            }
+
+            return url;
         }
 
         internal static string GetSha256Hash(string input)

@@ -1273,7 +1273,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string GetAvatarTagForUserMentions()
         {
-            return Utilities.ResolveUrl(this.PortalSettings, "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />");
+            return Utilities.ResolveUrlInTag(this.PortalSettings, "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />");
         }
 
         private string GetTagForUserMentions()

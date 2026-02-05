@@ -71,9 +71,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.Empty;
             }
 
-            var imgUrl = Utilities.ResolveUrl($"https://{this.PortalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=securefile&fileId={fileId}&h=16&w=16");
-            return $"<img src=\"{imgUrl}\" border=\"0\" alt=\"{badgeName}\" />";
-
+            var imgUrl = $"https://{this.PortalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=securefile&fileId={fileId}&h=16&w=16";
+            return Utilities.ResolveUrlInTag(this.PortalSettings, $"<img src=\"{imgUrl}\" border=\"0\" alt=\"{badgeName}\" />");
         }
 
         private string GetEnumName(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric badgeMetric)
