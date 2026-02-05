@@ -61,8 +61,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
         internal Mock<DotNetNuke.Modules.ActiveForums.ModuleSettings> MainSettings;
 
-        internal string DefaultPortalAlias = "localhost/en-us";
-
         [SetUp]
         public void SetUp()
         {
@@ -72,9 +70,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            
+
             serviceCollection.AddSingleton<IPortalAliasService, PortalAliasController>();
-            serviceCollection.AddSingleton<IPortalAliasService, IPortalAliasService>();
             serviceCollection.AddSingleton<IPortalAliasController, PortalAliasController>();
 
             ComponentFactory.Container = new SimpleContainer();
