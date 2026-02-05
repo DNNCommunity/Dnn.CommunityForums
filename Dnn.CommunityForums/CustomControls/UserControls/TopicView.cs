@@ -1040,12 +1040,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var tagList = string.Empty;
                 foreach (var tag in tags.Split(','))
                 {
-                    if (tagList != string.Empty)
+                    if (!string.IsNullOrEmpty(tag))
                     {
-                        tagList += ", ";
-                    }
+                        if (tagList != string.Empty)
+                        {
+                            tagList += ", ";
+                        }
 
-                    tagList += "<a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + "=search", ParamKeys.Tags + "=" + System.Net.WebUtility.UrlEncode(tag) }) + "\">" + tag + "</a>";
+                        tagList += "<a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + "=search", ParamKeys.Tags + "=" + System.Net.WebUtility.UrlEncode(tag) }) + "\">" + tag + "</a>";
+                    }
                 }
 
                 sOutput = sOutput.Replace("[AF:LABEL:TAGS]", tagList);
