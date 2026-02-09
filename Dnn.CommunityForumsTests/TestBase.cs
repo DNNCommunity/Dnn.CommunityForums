@@ -57,9 +57,11 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         private Mock<IRoleController> roleController;
         private Mock<IHostController> mockHostController;
 
-        internal Mock<DotNetNuke.Entities.Modules.ModuleInfo> mockModule;
+        internal Mock<DotNetNuke.Entities.Modules.ModuleInfo> MockModule;
 
         internal Mock<DotNetNuke.Modules.ActiveForums.ModuleSettings> MainSettings;
+
+        internal string DefaultPortalAlias = "localhost/en-us";
 
         [SetUp]
         public void SetUp()
@@ -70,8 +72,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IHostSettingsService, HostController>();
-
+            
             serviceCollection.AddSingleton<IPortalAliasService, PortalAliasController>();
+            serviceCollection.AddSingleton<IPortalAliasService, IPortalAliasService>();
             serviceCollection.AddSingleton<IPortalAliasController, PortalAliasController>();
 
             ComponentFactory.Container = new SimpleContainer();
@@ -391,7 +394,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
         private void SetupModuleInfo()
         {
-            this.mockModule = new Mock<DotNetNuke.Entities.Modules.ModuleInfo>
+            this.MockModule = new Mock<DotNetNuke.Entities.Modules.ModuleInfo>
             {
                 Object =
                 {
@@ -403,7 +406,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             };
 
-            this.moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(this.mockModule.Object);
+            this.moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(this.MockModule.Object);
         }
 
         private void SetupMainSettings()

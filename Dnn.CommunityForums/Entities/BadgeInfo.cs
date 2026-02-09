@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string GetBadgeImageUrl(int portalId, int size = 32)
         {
             var portalSettings = Utilities.GetPortalSettings(portalId);
-            return this.FileId <= 0 ? string.Empty : Utilities.ResolveUrl(portalSettings, $"https://{Utilities.GetPortalSettings(portalId).DefaultPortalAlias}/DnnImageHandler.ashx?mode=securefile&fileId={this.FileId}&h={size}&w={size}");
+            return this.FileId <= 0 ? string.Empty : Utilities.ResolveUrl(url: $"https://{portalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=securefile&fileId={this.FileId}&h={size}&w={size}", defaultPortalAlias: portalSettings.DefaultPortalAlias, sslEnabled: portalSettings.SSLEnabled);
         }
     }
 }
