@@ -666,24 +666,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test]
-        public void ResolveUrl_DefaultPortalAliasExists()
-        {
-            // Arrange
-            var expectedAlias = "localhost";
-            var expectedPortalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
-            var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
-
-            // Act
-
-            // Assert
-            Assert.That(portalSettings.PortalId, Is.EqualTo(expectedPortalId));
-            Assert.That(portalSettings.DefaultPortalAlias, Is.EqualTo(expectedAlias));
-        }
-
-<<<<<<< Updated upstream
-=======
-
-        [Test]
         public void ResolveUrl_DefaultPortalAliasThrowsException()
         {
             // Arrange
@@ -740,21 +722,5 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var expectedResult = DotNetNuke.Common.Globals.AddHTTP(originalAlias) + url;
             Assert.That(result, Is.EqualTo(expectedResult));
         }
-
-        [Test]
-        public void ResolveUrl_DefaultPortalAliasExists()
-        {
-            // Arrange
-            var expectedAlias = "localhost";
-            var expectedPortalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
-            var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
-
-            // Act
-
-            // Assert
-            Assert.That(portalSettings.PortalId, Is.EqualTo(expectedPortalId));
-            Assert.That(portalSettings.DefaultPortalAlias, Is.EqualTo(expectedAlias));
-        }
-
     }
 }

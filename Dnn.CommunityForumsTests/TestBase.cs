@@ -77,9 +77,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             serviceCollection.AddSingleton<IPortalAliasService, IPortalAliasService>();
             serviceCollection.AddSingleton<IPortalAliasController, PortalAliasController>();
 
-            serviceCollection.AddSingleton<IPortalAliasService, PortalAliasController>();
-            serviceCollection.AddSingleton<IPortalAliasController, PortalAliasController>();
-
             ComponentFactory.Container = new SimpleContainer();
             this.mockRoleProvider = MockComponentProvider.CreateRoleProvider();
 
