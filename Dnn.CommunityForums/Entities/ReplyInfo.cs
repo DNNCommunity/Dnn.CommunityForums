@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Policy;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Services.Tokens;
@@ -442,35 +443,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return PropertyAccess.FormatString(Utilities.EncodeBrackets(GetTopicTitle(this.Content.Body)), format);
                     case "link":
                         {
-                            string sTopicURL = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, this.GetTabId(), this.Forum.ModuleId, this.Forum.ForumGroup.PrefixURL, this.Forum.PrefixURL, this.Forum.ForumGroupId, this.Forum.ForumID, this.TopicId, this.Topic.TopicUrl, -1, -1, string.Empty, 1, this.ContentId, this.Forum.SocialGroupId);
                             string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty);
-                            ;
                             string sBodyTitle = GetTopicTitle(this.Content.Body);
-                            string slink;
-                            var @params = new List<string> { $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ContentJumpId}={this.ReplyId}", };
-
-                            if (this.Forum.SocialGroupId > 0)
-                            {
-                                @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
-                            }
-
-                            if (sTopicURL == string.Empty)
-                            {
-                                @params = new List<string>
-                                {
-                                    $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ReplyId}={this.ReplyId}", $"{ParamKeys.ViewType}={Views.Post}",
-                                };
-                                if (this.Forum.MainSettings.UseShortUrls)
-                                {
-                                    @params.Add($"{ParamKeys.ContentJumpId}={this.ReplyId}");
-                                }
-
-                                slink = "<a title=\"" + sBodyTitle + "\" href=\"" + Utilities.NavigateURL(this.GetTabId(), string.Empty, @params.ToArray()) + "\">" + subject + "</a>";
-                            }
-                            else
-                            {
-                                slink = "<a title=\"" + sBodyTitle + "\" href=\"" + sTopicURL + "\">" + subject + "</a>";
-                            }
+                            var slink = "<a title=\"" + sBodyTitle + "\" href=\"" + this.GetReplyLink() + "\">" + subject + "</a>";
 
                             return PropertyAccess.FormatString(slink, format);
                         }
@@ -732,6 +707,46 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
 
             return string.Empty;
+        }
+
+        [IgnoreColumn]
+        internal string GetReplyLink()
+        {
+            string link = new ControlUtils().BuildUrl(portalId: this.Forum.PortalSettings.PortalId, tabId: this.GetTabId(), moduleId: this.Forum.ModuleId, groupPrefix: this.Forum.ForumGroup.PrefixURL, forumPrefix: this.Forum.PrefixURL, forumGroupId: this.Forum.ForumGroupId, forumID: this.Forum.ForumID, topicId: this.TopicId, topicURL: this.Topic.TopicUrl, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: this.ContentId, socialGroupId: this.Forum.SocialGroupId);
+
+            if (!string.IsNullOrEmpty(link))
+                {
+                if (link.EndsWith("/"))
+                {
+                    link += Utilities.UseFriendlyURLs(this.ModuleId) ? $"#{this.ReplyId}" : $"?{ParamKeys.ContentJumpId}={this.ReplyId}";
+                }
+
+                return link;
+            }
+
+            var @params = new List<string>
+            {
+                $"{ParamKeys.ForumId}={this.ForumId}",
+                $"{ParamKeys.TopicId}={this.TopicId}",
+                $"{ParamKeys.ReplyId}={this.ReplyId}",
+                $"{ParamKeys.ViewType}={Views.Post}",
+                $"{ParamKeys.ContentJumpId}={this.ReplyId}",
+            };
+
+            if (this.Forum.SocialGroupId > 0)
+            {
+                @params.Add($"{Literals.GroupId}={this.Forum.SocialGroupId}");
+            }
+
+            if (this.Forum.MainSettings.UseShortUrls)
+            {
+                @params.Clear();
+                @params.Add($"{ParamKeys.ForumId}={this.ForumId}");
+                @params.Add($"{ParamKeys.TopicId}={this.TopicId}");
+                @params.Add($"{ParamKeys.ContentJumpId}={this.ReplyId}");
+            }
+
+            return Utilities.NavigateURL(this.GetTabId(), string.Empty, @params.ToArray());
         }
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ReplyId);
