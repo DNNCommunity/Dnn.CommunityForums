@@ -57,12 +57,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private PortalSettings portalSettings;
         private ModuleInfo moduleInfo;
         private int? subscriberCount;
-        private int? lastPostTopicId;
         private int? tabId;
-        private string lastPostTopicUrl;
         private string rssLink;
         private List<PropertyInfo> properties;
-        private string lastPostSubject;
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Entities.Portals.PortalSettings)")]
         public ForumInfo()
@@ -129,61 +126,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int LastReplyId { get; set; }
 
         [IgnoreColumn]
-        public int LastPostTopicId
-        {
-            get
-            {
-                if (!this.lastPostTopicId.HasValue)
-                {
-                    this.lastPostTopicId = this.LastReplyId == 0 ? this.LastTopicId : new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetById(this.LastReplyId).TopicId;
-                    this.UpdateCache();
-                }
-
-                return (int)this.lastPostTopicId;
-            }
-        }
+        public string LastPostTopicUrl => this.LastPost?.Topic?.TopicUrl;
 
         [IgnoreColumn]
-        public string LastPostTopicUrl
-        {
-            get
-            {
-                if (this.lastPostTopicUrl == null)
-                {
-                    this.lastPostTopicUrl = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.LastPostTopicId).TopicUrl;
-                    this.UpdateCache();
-                }
-
-                return this.lastPostTopicUrl;
-            }
-        }
-
-        [IgnoreColumn]
-        public bool LastPostIsReply => this.LastReplyId != 0;
-
-        [IgnoreColumn]
-        public bool LastPostIsTopic => this.LastReplyId == 0;
-
-        [IgnoreColumn]
-        public string LastPostSubject
-        {
-            get
-            {
-                if (this.lastPostSubject == null)
-                {
-                    this.lastPostSubject = this.LastPost?.Topic?.Subject;
-                    this.UpdateCache();
-                }
-
-                return this.lastPostSubject;
-            }
-
-            set
-            {
-                this.lastPostSubject = value;
-                this.UpdateCache();
-            }
-        }
+        public string LastPostSubject => this.LastPost?.Content.Subject;
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.IPostInfo LastPost
@@ -192,7 +138,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (this.lastPostInfo == null)
                 {
-
                     this.lastPostInfo = this.LoadLastPost();
                     this.UpdateCache();
                 }
@@ -209,32 +154,32 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal DotNetNuke.Modules.ActiveForums.Entities.IPostInfo LoadLastPost()
         {
-            if (this.LastReplyId == 0)
+            if (this.LastTopicId != 0)
             {
-                if (this.LastTopicId != 0)
-                {
-                    var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.LastTopicId);
-                    this.lastPostInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)ti;
-                }
+                this.lastPostInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.LastTopicId);
             }
-            else
+
+            if (this.LastReplyId != 0)
             {
                 var ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetById(this.LastReplyId);
-                this.lastPostInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)ri;
+                if (ri.Content.DateCreated > this.lastPostInfo.Content.DateCreated)
+                {
+                    this.lastPostInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)ri;
+                }
             }
 
+            this.UpdateCache();
             return this.lastPostInfo;
-
         }
 
         [IgnoreColumn]
-        public string LastPostUserName => this.LastPost != null && this.LastPost.Content != null ? this.LastPost.Content.AuthorName : string.Empty;
+        public string LastPostUserName => this.LastPost?.Content?.AuthorName ?? string.Empty;
 
         [IgnoreColumn]
-        public int LastPostUserID => this.LastPost != null && this.LastPost.Content != null ? this.LastPost.Content.AuthorId : DotNetNuke.Common.Utilities.Null.NullInteger;
+        public int LastPostUserID => this.LastPost?.Content?.AuthorId ?? DotNetNuke.Common.Utilities.Null.NullInteger;
 
         [IgnoreColumn]
-        public DateTime? LastPostDateTime => this.LastPost != null && this.LastPost.Content != null ? (DateTime)this.LastPost.Content.DateUpdated : DotNetNuke.Common.Utilities.Null.NullDate;
+        public DateTime? LastPostDateTime => this.LastPost?.Content?.DateUpdated;
 
         public int PermissionsId { get; set; }
 
