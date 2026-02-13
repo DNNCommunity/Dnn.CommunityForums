@@ -441,6 +441,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // avoid redirect, e.g. "/Support/Forums" == "support/forums/" ... starts or ends with /, same number of /, same text when ignoring /
                 if (this.urlType.Equals(0) &&
+                    this.forumgroupId <= 0 &&
                     this.forumId <= 0 &&
                     this.topicId <= 0 &&
                     ((searchURL2.StartsWith("/") || searchURL2.EndsWith("/")) &&
