@@ -677,8 +677,8 @@ SELECT TabId, ModuleID, ForumGroupId, ForumId, TopicId, Url,Archived,OtherId,Url
         /* this section handles tags on forums module pages */
 
         SELECT TabId, pu.ModuleId,-1 as ForumGroupId,-1 as ForumId,-1 as TopicId,
-		 (CASE WHEN TabPath <> '' THEN TabPath + '/' Else '' END) + URLTAGS + '/' + REPLACE(LOWER(t.TagName),' ','-') + '/' as URL,
-         0 as Archived,t.TagId,3 from (
+            (CASE WHEN TabPath <> '' THEN REPLACE(RIGHT(RTRIM(TabPath),LEN(RTRIM(TabPath))-2),'//','/') + '/' Else '' END) + (CASE WHEN ISNULL(UrlBase,'') <> '' AND LOWER(RTRIM(UrlBase))<>LOWER(RTRIM(TabName)) THEN UrlBase + '/' Else '' END) + URLTAGS + '/' + REPLACE(LOWER(t.TagName),' ','-') + '/' as URL,
+             0 as Archived,t.TagId,3 from (
 			SELECT m.TabId, ss.ModuleId, SettingValue,SettingName, tb.TabPath, tb.TabName FROM {databaseOwner}[{objectQualifier}ModuleSettings] as ss
 			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] as m ON m.ModuleID = ss.ModuleId
 			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] as tb ON tb.TabId = m.TabID

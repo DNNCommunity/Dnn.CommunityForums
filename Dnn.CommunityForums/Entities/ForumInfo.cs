@@ -742,7 +742,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                return this.PortalSettings.ActiveTab != null && this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
+                var portalSettings = Utilities.GetPortalSettings();
+                if (portalSettings == null)
+                {
+                    portalSettings = this.PortalSettings;
+                }
+
+                return portalSettings.ActiveTab != null && portalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
                     m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) ||
                     m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase));
             }
@@ -951,18 +957,34 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal int GetTabId()
         {
-            if (this.PortalSettings.ActiveTab?.TabID == -1 || this.PortalSettings.ActiveTab?.TabID == this.PortalSettings.HomeTabId)
+            var portalSettings = Utilities.GetPortalSettings();
+            if (portalSettings?.ActiveTab != null)
             {
-                if (this.tabId.HasValue)
+                if (portalSettings?.ActiveTab?.TabID == -1 || portalSettings?.ActiveTab?.TabID == portalSettings?.HomeTabId)
                 {
-                    return (int)this.tabId;
+                    if (this.tabId.HasValue)
+                    {
+                        return (int)this.tabId;
+                    }
+
+                    return this.ModuleInfo.TabID;
                 }
 
-                return this.ModuleInfo.TabID;
+                return (int)portalSettings.ActiveTab.TabID;
             }
 
-            if (this.PortalSettings.ActiveTab != null)
+            if (this.PortalSettings?.ActiveTab != null)
             {
+                if (this.PortalSettings?.ActiveTab?.TabID == -1 || this.PortalSettings?.ActiveTab?.TabID == this.PortalSettings?.HomeTabId)
+                {
+                    if (this.tabId.HasValue)
+                    {
+                        return (int)this.tabId;
+                    }
+
+                    return this.ModuleInfo.TabID;
+                }
+
                 return (int)this.PortalSettings.ActiveTab.TabID;
             }
 

@@ -37,16 +37,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     string viewType = Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFViewType]);
                     int tmpModuleId = Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]);
-                    int tmpForumId = Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumGroupId]);
+                    int tmpForumOrGroupId = Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumGroupId]);
                     if (viewType.ToLowerInvariant() == "topics")
                     {
                         viewType = Views.Topics;
-                        this.ctlForumLoader.ForumId = tmpForumId;
+                        this.ctlForumLoader.ForumId = tmpForumOrGroupId;
                     }
                     else
                     {
                         viewType = Views.ForumView;
-                        this.ctlForumLoader.ForumGroupId = tmpForumId;
+                        this.ctlForumLoader.ForumId = -1;
+                        this.ctlForumLoader.ForumGroupId = tmpForumOrGroupId;
                     }
 
                     this.ctlForumLoader.DefaultView = viewType;

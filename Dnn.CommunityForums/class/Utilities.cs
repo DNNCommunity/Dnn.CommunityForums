@@ -1534,7 +1534,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return contents;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int ModuleId, int forumId).")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int moduleId, int forumId).")]
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, moduleId, forumId);
@@ -1756,6 +1756,16 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return moduleId;
+        }
+
+        internal static bool RunningInViewer(int moduleId, int tabId)
+        {
+            if (moduleId > 0 && tabId > 0)
+            {
+                return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: moduleId, tabId: tabId, ignoreCache: false).DesktopModule?.ModuleName == string.Concat(Globals.ModuleName, " Viewer");
+            }
+
+            return false;
         }
 
         internal static void CopyFolder(DirectoryInfo source, DirectoryInfo target)
