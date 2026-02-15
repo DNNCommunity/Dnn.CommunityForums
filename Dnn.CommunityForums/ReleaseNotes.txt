@@ -102,6 +102,10 @@
         <li>FIX: VirtualPath exceptions in Admin Log (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1768">Issue 1768</a>)</li>
         <li>FIX: Annoying exception when editing a post and your authentication has expired (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1744">Issue 1744</a>)</li>
         <li>FIX: Exception in search crawler if no primary portal alias defined (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1756">Issue 1756</a>)</li>
+        <li>FIX: Friendly URL for just a single forum group shows multiple forum groups (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1775">Issue 1775</a>)</li>
+        <li>FIX: URLs for last reply are inconsistent between topic and reply (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1776">Issue 1776</a>)</li>
+        <li>FIX: Last post should consider a more recent reply to an earlier topic to be later than a newer topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1774">Issue 1774</a>)</li>
+        <li>FIX: Friendly URL doesn't show topics page if forum's vanity name is all numeric (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1780">Issue 1780</a>)</li>
 <!--
           <li>None at this time.</li> 
               <li>FIX: Primary portal alias ignored when generating some links (was just using first available alias) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1651">Issue 1651</a>)</li>
