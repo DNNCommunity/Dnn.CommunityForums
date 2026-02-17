@@ -451,7 +451,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         {
                             string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty);
                             string sBodyTitle = GetTopicTitle(this.Content.Body);
-                            var slink = "<a title=\"" + sBodyTitle + "\" href=\"" + this.GetReplyLink() + "\">" + subject + "</a>";
+                            var slink = "<a title=\"" + sBodyTitle + "\" href=\"" + this.GetLink() + "\">" + subject + "</a>";
 
                             return PropertyAccess.FormatString(slink, format);
                         }
@@ -716,7 +716,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        internal string GetReplyLink()
+        public string GetLink()
         {
             string link = new ControlUtils().BuildUrl(portalId: this.Forum.PortalSettings.PortalId, tabId: this.GetTabId(), moduleId: this.Forum.ModuleId, groupPrefix: this.Forum.ForumGroup.PrefixURL, forumPrefix: this.Forum.PrefixURL, forumGroupId: this.Forum.ForumGroupId, forumID: this.Forum.ForumID, topicId: this.TopicId, topicURL: this.Topic.TopicUrl, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: this.ContentId, socialGroupId: this.Forum.SocialGroupId);
 

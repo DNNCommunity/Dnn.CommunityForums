@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicViewPrefix, reply.ModuleId));
             DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, reply.ModuleId));
 
-            new Social().DeleteJournalItemForPost(portalId, forumId, topicId, replyId);
+            Social.DeleteJournalItemForPost(reply);
 
             if (reply.Forum.FeatureSettings.IndexContent)
             {
@@ -234,20 +234,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // if existing reply being edited, update associated journal item & tags
             if (reply.ReplyId > 0)
             {
-                string fullURL = new ControlUtils().BuildUrl(portalId, reply.Forum.GetTabId(), moduleId, reply.Forum.ForumGroup.PrefixURL, reply.Forum.PrefixURL, reply.Forum.ForumGroupId, reply.ForumId, reply.TopicId, reply.Topic.TopicUrl, -1, -1, string.Empty, 1, reply.ReplyId, reply.Forum.SocialGroupId);
-
-                if (fullURL.Contains("~/"))
-                {
-                    fullURL = Utilities.NavigateURL(reply.Forum.GetTabId(), string.Empty, new string[] { $"{ParamKeys.TopicId}={reply.TopicId}", $"{ParamKeys.ContentJumpId}={reply.ReplyId}", });
-                }
-
-                if (fullURL.EndsWith("/"))
-                {
-                    fullURL += Utilities.UseFriendlyURLs(moduleId) ? $"#{reply.ReplyId}" : $"{ParamKeys.ContentJumpId}={reply.ReplyId}";
-                }
-
                 DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(reply);
-                new Social().UpdateJournalItemForPost(reply.PortalId, reply.ModuleId, reply.Forum.GetTabId(), reply.ForumId, reply.TopicId, reply.ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body);
+                Social.UpdateJournalItemForPost(reply);
             }
 
             var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: reply.ForumId, moduleId: moduleId);
@@ -315,20 +303,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 Subscriptions.SendSubscriptions(-1, portalId, moduleId, tabId, reply.Forum, topicId, replyId, authorId, new Uri(requestUrl));
 
-                ControlUtils ctlUtils = new ControlUtils();
-                string fullURL = ctlUtils.BuildUrl(portalId, tabId, moduleId, reply.Forum.ForumGroup.PrefixURL, reply.Forum.PrefixURL, reply.Forum.ForumGroupId, forumId, topicId, reply.Topic.TopicUrl, -1, -1, string.Empty, 1, replyId, reply.Forum.SocialGroupId);
-
-                if (fullURL.Contains("~/"))
-                {
-                    fullURL = Utilities.NavigateURL(tabId, string.Empty, new string[] { $"{ParamKeys.TopicId}={replyId}", $"{ParamKeys.ContentJumpId}={replyId}", });
-                }
-
-                if (fullURL.EndsWith("/"))
-                {
-                    fullURL += Utilities.UseFriendlyURLs(moduleId) ? $"#{replyId}" : $"{ParamKeys.ContentJumpId}={replyId}";
-                }
-
-                new Social().AddReplyToJournal(portalId, moduleId, tabId, forumId, topicId, replyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, reply.Forum.Security.Read, reply.Forum.SocialGroupId);
+                Social.AddPostToJournal(reply);
 
                 DataCache.ContentCacheClear(reply.ModuleId, string.Format(CacheKeys.ForumInfo, reply.ModuleId, reply.ForumId));
                 DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.ForumViewPrefix, reply.ModuleId));

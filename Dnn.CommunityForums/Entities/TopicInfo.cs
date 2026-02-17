@@ -651,7 +651,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "subjectlink":
                         {
                             string sPollImage = (this.Topic.TopicType == TopicTypes.Poll ? DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.GetTokenFormatString("[POLLIMAGE]", this.Forum.PortalSettings, accessingUser.Profile.PreferredLocale) : string.Empty);
-                            return PropertyAccess.FormatString(this.GetTopicLink(), format) + sPollImage;
+                            return PropertyAccess.FormatString(this.GetLink(), format) + sPollImage;
                         }
 
                     case "lastreadurl":
@@ -660,7 +660,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             if (userLastReplyRead.HasValue && userLastReplyRead > 0)
                             {
                                 var lastReplyRead = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId: this.ModuleId).GetById((int)userLastReplyRead);
-                                return PropertyAccess.FormatString(lastReplyRead.GetReplyLink(), format);
+                                return PropertyAccess.FormatString(lastReplyRead.GetLink(), format);
                             }
 
                             return string.Empty;
@@ -670,7 +670,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         if (this.LastReplyId > 0)
                         {
                             var lastReply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId: this.ModuleId).GetById(this.LastReplyId);
-                            return PropertyAccess.FormatString(lastReply.GetReplyLink(), format);
+                            return PropertyAccess.FormatString(lastReply.GetLink(), format);
                         }
 
                         return string.Empty;
@@ -730,7 +730,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         if (this.PrevTopic != 0)
                         {
                             var prevTopic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.PrevTopic);
-                            return PropertyAccess.FormatString(prevTopic.GetTopicLink(), format);
+                            return PropertyAccess.FormatString(prevTopic.GetLink(), format);
                         }
 
                         return string.Empty;
@@ -740,7 +740,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         if (this.NextTopic != 0)
                         {
                             var nextTopic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.NextTopic);
-                            return PropertyAccess.FormatString(nextTopic.GetTopicLink(), format);
+                            return PropertyAccess.FormatString(nextTopic.GetLink(), format);
                         }
 
                         return string.Empty;
@@ -756,7 +756,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         {
                             string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(this.Subject)).Replace("\"", string.Empty).Replace("#", string.Empty).Replace("%", string.Empty).Replace("+", string.Empty);
                             string sBodyTitle = GetTopicTitle(this.Content.Body);
-                            var slink = "<a title=\"" + sBodyTitle + "\" href=\"" + this.GetTopicLink() + "\">" + subject + "</a>";
+                            var slink = "<a title=\"" + sBodyTitle + "\" href=\"" + this.GetLink() + "\">" + subject + "</a>";
 
                             return PropertyAccess.FormatString(slink, format);
                         }
@@ -1361,7 +1361,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        internal string GetTopicLink()
+        public string GetLink()
         {
             string link = new ControlUtils().BuildUrl(portalId: this.Forum.PortalSettings.PortalId, tabId: this.GetTabId(), moduleId: this.Forum.ModuleId, groupPrefix: this.Forum.ForumGroup.PrefixURL, forumPrefix: this.Forum.PrefixURL, forumGroupId: this.Forum.ForumGroupId, forumID: this.Forum.ForumID, topicId: this.TopicId, topicURL: this.TopicUrl, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: this.Forum.SocialGroupId);
             if (!string.IsNullOrEmpty(link))

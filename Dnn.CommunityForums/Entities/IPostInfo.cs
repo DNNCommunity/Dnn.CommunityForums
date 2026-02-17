@@ -71,5 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         DotNetNuke.Modules.ActiveForums.Enums.PostStatus GetPostStatusForUser(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
 
         string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
+
+        string GetLink();
     }
 }
