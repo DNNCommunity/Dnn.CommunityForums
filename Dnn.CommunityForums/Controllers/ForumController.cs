@@ -560,15 +560,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 subject = subject.Substring(0, length) + "...";
             }
 
-            string link;
-            if (fi.LastPost.IsReply)
-            {
-                link = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(fi.ModuleId).GetById(fi.LastReplyId).GetReplyLink();
-            }
-            else
-            {
-                link = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(fi.ModuleId).GetById(fi.LastTopicId).GetTopicLink();
-            }
+            string link = fi.LastPost.GetLink();
 
             return $"<a href=\"{link}\">{System.Net.WebUtility.HtmlEncode(subject)}</a>";
         }

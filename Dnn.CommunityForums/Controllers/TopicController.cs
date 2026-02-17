@@ -274,8 +274,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topic.TopicId > 0)
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(topic);
-                string sUrl = new ControlUtils().BuildUrl(topic.PortalId, topic.Forum.GetTabId(), topic.ModuleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, topic.ForumId, topic.TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
-                new Social().UpdateJournalItemForPost(topic.PortalId, topic.ModuleId, topic.Forum.GetTabId(), topic.ForumId, topic.TopicId, 0, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body);
+                Social.UpdateJournalItemForPost(topic);
 
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(topic.ModuleId, topic.TopicId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(topic.ModuleId, topic.ContentId);
@@ -311,7 +310,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = this.GetById(topicId);
             if (ti != null)
             {
-                new Social().DeleteJournalItemForPost(ti.PortalId, ti.ForumId, topicId, 0);
+                Social.DeleteJournalItemForPost(ti);
 
                 if (ti.Forum.FeatureSettings.IndexContent)
                 {
@@ -393,11 +392,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
 
                 Subscriptions.SendSubscriptions(-1, portalId, moduleId, tabId, topic.Forum, topicId, 0, topic.Content.AuthorId, new Uri(requestUrl));
-
-                string sUrl = new ControlUtils().BuildUrl(portalId, tabId, moduleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, forumId, topicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
-
-                Social amas = new Social();
-                amas.AddTopicToJournal(portalId, moduleId, tabId, forumId, topicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body, topic.Forum.Security.Read, topic.Forum.SocialGroupId);
+                Social.AddPostToJournal(topic);
 
                 var pqc = new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController();
                 pqc.Add(ProcessType.UpdateForumTopicPointers, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, requestUrl: requestUrl);
