@@ -39,6 +39,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.UserControls;
 
+    using Newtonsoft.Json;
+
     [TableName("activeforums_UserProfiles")]
     [PrimaryKey("ProfileId", AutoIncrement = true)]
     [Scope("PortalId")]
@@ -184,6 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public Uri RequestUri { get; set; }
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string[] Roles => this.UserInfo?.Roles;
 
@@ -194,6 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string LastName => string.IsNullOrEmpty(this.UserInfo?.LastName) ? string.Empty : this.UserInfo?.LastName;
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public string FullName => string.Concat(this.UserInfo?.FirstName, " ", this.UserInfo?.LastName);
 
@@ -260,6 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public string ForumsAllowed { get; set; }
 
@@ -426,6 +431,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public string UserRoles
         {
@@ -551,7 +557,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                return this.PortalSettings.ActiveTab != null && this.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
+                var portalSettings = Utilities.GetPortalSettings();
+                if (portalSettings == null)
+                {
+                    portalSettings = this.PortalSettings;
+                }
+
+                return portalSettings.ActiveTab != null && portalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
                     m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) ||
                     m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase));
             }
@@ -761,11 +773,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 this.Username,
                                 this.FirstName,
                                 this.LastName,
-                                this.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.Username), format);
+                                this.DisplayName,
+                                accessingUser).Replace("&amp;#", "&#").Replace("Anonymous", this.Username), format);
                     case "userfirstname":
-                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.FirstName) ? this.Username : this.FirstName, format);
+                        return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(this.UserInfo, "FirstName", accessingUser)
+                            ? PropertyAccess.FormatString(string.IsNullOrEmpty(this.FirstName) ? this.Username : this.FirstName, format)
+                            : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
                     case "userlastname":
-                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.LastName) ? this.Username : this.LastName, format);
+                        return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(this.UserInfo, "LastName", accessingUser)
+                            ? PropertyAccess.FormatString(string.IsNullOrEmpty(this.LastName) ? this.Username : this.LastName, format)
+                            : DotNetNuke.Services.Tokens.PropertyAccess.ContentLocked;
                     case "useremail":
                         return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Email) ? string.Empty : this.Email, format);
                     case "useridforpmlink":
@@ -782,7 +799,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                         var badgeString = string.Empty;
                         var userBadgesToDisplay = this.Badges.GroupBy(b => b.BadgeId).Select(g => g.OrderByDescending(b => b.DateAssigned).First()).ToList().OrderBy(b => b.Badge.SortOrder).Take(length);
-                        var badgeTemplate = new StringBuilder(DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ModuleId, Enums.TemplateType.UserBadge, SettingsBase.GetModuleSettings(this.ModuleId).DefaultFeatureSettings.TemplateFileNameSuffix));
+                        var badgeTemplate = new StringBuilder(DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ModuleId, Enums.TemplateType.UserBadge, SettingsBase.GetModuleSettings(this.ModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this));
                         foreach (var userBadge in userBadgesToDisplay)
                         {
                             badgeString += DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(badgeTemplate, userBadge, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this.RequestUri, this.RawUrl);

@@ -1,0 +1,26 @@
+﻿## These tests assume you have a DNN instance with DNN Community Forums installed and configured
+
+## change values in http-client.env.json to match your environment / browser session
+
+### first test is to verify a simple endpoint is reachable; we have a "Hello World" endpoint on each controller for this purpose
+### the HelloWorld endpoint does not require authentication but does require TabId and ModuleId headers for 'supported modules' check
+GET {{hostname}}/API/ActiveForums/Search/HelloWorld
+TabId: {{tabid}}
+ModuleId: {{moduleid}}
+
+### test simple search query - requires authentication
+GET {{hostname}}/API/ActiveForums/Search/Search?query=sample
+TabId: {{tabid}}
+ModuleId: {{moduleid}}
+requestverificationtoken: {{requestverificationtoken}}
+cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}}
+
+
+### test to update online users - requires authentication
+POST {{hostname}}/API/ActiveForums/Search/Search
+tabid: {{tabid}}
+moduleid: {{moduleid}}
+requestverificationtoken: {{requestverificationtoken}}
+cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}}
+content-type: application/json
+{"Query":"sample", "RowIndex":0, "PageSize":100, "SearchHours": 48, "ForumIds":"1,2", "ResultType":1, "SortResultsBy": 1}

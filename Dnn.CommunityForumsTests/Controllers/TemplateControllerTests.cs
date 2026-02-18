@@ -18,20 +18,29 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums.ViewModels
+namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 {
-    using System;
-    using System.Collections.Generic;
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using NUnit.Framework;
 
-    public class Topic : DotNetNuke.Modules.ActiveForums.ViewModels.IPost
+    [TestFixture]
+    public class TemplateControllerTests : DotNetNuke.Modules.ActiveForumsTests.TestBase
     {
-        public Topic()
+        [Test]
+        [TestCase(true, "AUTHENTICATED CONTENT", ExpectedResult = true)]
+        [TestCase(true, "UNAUTHENTICATED CONTENT", ExpectedResult = false)]
+        [TestCase(false, "UNAUTHENTICATED CONTENT", ExpectedResult = true)]
+        [TestCase(false, "AUTHENTICATED CONTENT", ExpectedResult = false)]
+        public bool Template_AuthenticatedSectionsTests(bool isAuthenticated, string expectedResult)
         {
-        }
+            // Arrange
+            string template = "[DCF:USERISAUTHENTICATED]AUTHENTICATED CONTENT[/DCF:USERISAUTHENTICATED][DCF:USERISNOTAUTHENTICATED]UNAUTHENTICATED CONTENT[/DCF:USERISNOTAUTHENTICATED]";
 
-        public Topic(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic)
-            : base(topic)
-        {
+            // Act
+            string result = TemplateController.HandleAuthenticatedBasedTemplateSection(template, isAuthenticated);
+
+            // Assert
+            return result.Equals(expectedResult);
         }
     }
 }

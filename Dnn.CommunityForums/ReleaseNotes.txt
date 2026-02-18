@@ -46,17 +46,20 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.05.00
+            09.06.00
         </h3>
-        
-<!--
+       
         <p>
             <b>THANK YOU</b> for all of the valuable contributions by 
-            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>
+ 
+<!--            <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>
             and 
-            <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>. 
-        </p>
+
 -->
+            <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a> and 
+            
+            <a href="https://github.com/SamuelJoseph23" target="_blank">@SamuelJoseph23</a>. 
+        </p>
 <!--
                , and
             <a href="https://github.com/LxLasso" target="_blank">@LxLasso</a>,
@@ -71,9 +74,13 @@
 -->
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-            <li>NEW: Many enhancements to forum search, including now using DNN Search (Lucene), making it Azure-compatible and no longer using SQL Server full-text search (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1720">PR 1720</a>)</li>
-            <li>UPDATE: Improved entry of dates for announcement topics (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1727">PR 1727</a>)</li>
-            <li>UPDATE: Forum name now included in email notifications (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1730">PR 1730</a>)</li>
+            <li>NEW: New template section tokens [DCF:USERISAUTHENTICATED]...[/DCF:USERISAUTHENTICATED] [DCF:USERISNOTAUTHENTICATED]...[/DCF:USERISNOTAUTHENTICATED] to show/hide content based on user being authenticated (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1750">PR 1750</a>)</li>
+            <li>NEW: Web API endpoints for forums search functionality (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1758">PR 1758</a>)</li>
+            <li>NEW: Require URL prefix for forum/forum groups in Control Panel when friendly URLs are enabled (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1765">PR 1765</a>)</li>
+            <li>NEW: During upgrade, ensure friendly URL/vanity names are properly populated when friendly URLs are enabled (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1767">PR 1767</a>)</li>
+            <li>NEW: In forums list in Control Panel, show labels for forums/forum groups that are hidden and/or not active (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1754">PR 1754</a>)</li>
+            <li>UPDATE: [FORUMAUTHOR:FIRSTNAME] and [FORUMAUTHOR:LASTNAME] tokens now honor DNN profile visibility settings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1740">PR 1740</a>)</li>
+            <li>UPDATE: Change icon in search popup from gray to blue to match toolbar icon (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1751">PR 1751</a>)</li>
 
 <!-- 
             <li>UPDATE: When upgrading, don't send notifications during initial backfill of badge awards (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1632">Issue 1632</a>)</li>
@@ -88,9 +95,17 @@
         <h4>Bug Fixes</h4>
 
         <ul>
-        <li>FIX: Topic properties not showing in Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1724">Issue 1724</a>)</li>
-        <li>FIX: JQuery browser tests no longer throw errors (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/58">Issue 58</a>)</li>
-        <li>FIX: Portal logo now showing in email notifications for multi-language sites (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1731">Issue 1731</a>)</li>
+        <li>FIX: Error when "liking" posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1759">Issue 1759</a>)</li>
+        <li>FIX: Friendly URLs not working when forums module installed on a sub page (e.g. /support/forums/) rather than top-level page (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1590">Issue 1590</a>)</li>
+        <li>FIX: Search results not showing when using Forum Viewer module (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1762">Issue 1762</a>)</li>
+        <li>FIX: Extra comma in list of tags in topics view (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1771">Issue 1771</a>)</li>
+        <li>FIX: VirtualPath exceptions in Admin Log (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1768">Issue 1768</a>)</li>
+        <li>FIX: Annoying exception when editing a post and your authentication has expired (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1744">Issue 1744</a>)</li>
+        <li>FIX: Exception in search crawler if no primary portal alias defined (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1756">Issue 1756</a>)</li>
+        <li>FIX: Friendly URL for just a single forum group shows multiple forum groups (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1775">Issue 1775</a>)</li>
+        <li>FIX: URLs for last reply are inconsistent between topic and reply (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1776">Issue 1776</a>)</li>
+        <li>FIX: Last post should consider a more recent reply to an earlier topic to be later than a newer topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1774">Issue 1774</a>)</li>
+        <li>FIX: Friendly URL doesn't show topics page if forum's vanity name is all numeric (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1780">Issue 1780</a>)</li>
 <!--
           <li>None at this time.</li> 
               <li>FIX: Primary portal alias ignored when generating some links (was just using first available alias) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1651">Issue 1651</a>)</li>
@@ -102,15 +117,12 @@
 
         <h4>Tasks / Development Updates (and Technical Debt)</h4>
         <ul>
-            <li>Refactor various Id-handling code to use HashSet<int> rather than delimited strings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1415">Issue 1415</a>)</li>
-            <li>09.05.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1733">Issue 1733</a>)</li>
+            <li>Remove SQL Server full-text search from activeforums_Content table and remove activeforums_Catalog (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1712">Issue 1712</a>)</li>
+            <li>Remove now-unused legacy date picker control (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1723">Issue 1723</a>)</li>
+            <li>09.06.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1766">Issue 1766</a>)</li>
                         
 
 <!--
-            <li>Source files for themes were not up-to-date (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1628">Issue 1628</a>)</li>
-            <li>Rename "Ban" security permission to "Manage Users" (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1492">Issue 1492</a>)</li>
-            <li>Better detection of when module is running in "Social Group" configuration (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1624">Issue 1624</a>)</li>
-            <li>09.00.04 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1701">Issue 1701</a>)</li>
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
 -->

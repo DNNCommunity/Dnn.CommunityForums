@@ -12,8 +12,8 @@
         <Description>Discussion Forum Module for DNN</Description>
         <Company>dnncommunity.org</Company>
         <Authors>dnncommunity.org</Authors>
-        <FileVersion>09.05.00.00</FileVersion>
-        <AssemblyVersion>09.05.00.00</AssemblyVersion>
+        <FileVersion>09.06.00.00</FileVersion>
+        <AssemblyVersion>09.06.00.00</AssemblyVersion>
         <IncludeSymbols>False</IncludeSymbols>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <AnalysisLevel>latest</AnalysisLevel>
@@ -36,8 +36,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="sql\FullTextInstallPart1.sql" />
-        <EmbeddedResource Include="sql\FullTextInstallPart2.sql" />
       <None Remove="CustomControls\Resources\TextSuggest.js" />
     </ItemGroup>
 

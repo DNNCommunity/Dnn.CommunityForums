@@ -21,26 +21,31 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
+    using System.Linq;
+    using System.Reflection;
 
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Sitemap;
 
-    public class Social
+    internal static class Social
     {
-        internal void AddTopicToJournal(int portalId, int moduleId, int tabId, int forumId, int topicId, int userId, string uRL, string subject, string summary, string body, string readRoles, int socialGroupId)
+        internal static void AddPostToJournal(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post)
         {
             try
             {
-                var ji = new JournalItem
+                if (post.Author?.AuthorId <= 0)
                 {
-                    PortalId = portalId,
-                    ProfileId = userId,
-                    UserId = userId,
-                    Title = subject,
-                    ItemData = new ItemData { Url = uRL },
-                };
+                    return;
+                }
+
+                var sUrl = post.GetLink();
+                var summary = post.Content.Summary;
                 if (string.IsNullOrEmpty(summary))
                 {
-                    summary = Utilities.StripQuoteTag(body);
+                    summary = Utilities.StripQuoteTag(post.Content.Body);
                     summary = Utilities.StripHTMLTag(summary);
                     if (summary.Length > 150)
                     {
@@ -48,47 +53,35 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-                ji.Summary = summary;
-                ji.Body = Utilities.StripQuoteTag(body);
-                ji.Body = Utilities.StripHTMLTag(body);
-                ji.JournalTypeId = 5;
-                ji.ObjectKey = $"{forumId}:{topicId}";
-                if (JournalController.Instance.GetJournalItemByKey(portalId, ji.ObjectKey) != null)
+                DeleteJournalItemForPost(post);
+                var ji = new JournalItem
                 {
-                    JournalController.Instance.DeleteJournalItemByKey(portalId, ji.ObjectKey);
+                    PortalId = post.PortalId,
+                    ProfileId = post.Author.AuthorId,
+                    UserId = post.Author.AuthorId,
+                    Title = post.Content.Subject,
+                    Summary = summary,
+                    Body = Utilities.StripHTMLTag(Utilities.StripQuoteTag(post.Content.Summary)),
+                    ItemData = new ItemData { Url = sUrl },
+                    JournalTypeId = post.IsTopic ? 5 : 6,
+                    ObjectKey = post.IsTopic ? $"{post.ForumId}:{post.TopicId}" : $"{post.ForumId}:{post.TopicId}:{post.ReplyId}",
+                    SecuritySet = string.Empty,
+                };
+
+                if (post.Forum.Security.ReadRoleIds.Contains(int.Parse(DotNetNuke.Common.Globals.glbRoleAllUsers)) ||
+                    post.Forum.Security.ReadRoleIds.Contains(int.Parse(DotNetNuke.Common.Globals.glbRoleUnauthUser)))
+                {
+                    ji.SecuritySet += "E,";
                 }
 
-                string roles = string.Empty;
-                if (!string.IsNullOrEmpty(readRoles))
+                post.Forum.Security.ReadRoleIds.Where(r => r != int.Parse(DotNetNuke.Common.Globals.glbRoleAllUsers) && r != int.Parse(DotNetNuke.Common.Globals.glbRoleUnauthUser)).ToList().ForEach(r => ji.SecuritySet += "R" + r + ",");
+
+                if (post.Forum.SocialGroupId > 0)
                 {
-                    if (readRoles.Contains("|"))
-                    {
-                        roles = readRoles.Substring(0, readRoles.IndexOf("|", StringComparison.Ordinal) - 1);
-                    }
+                    ji.SocialGroupId = post.Forum.SocialGroupId;
                 }
 
-                foreach (string s in roles.Split(';'))
-                {
-                    if ((s == DotNetNuke.Common.Globals.glbRoleAllUsers) | (s == DotNetNuke.Common.Globals.glbRoleUnauthUser))
-                    {
-                        /* cjh - securityset was null and throwing an error, thus journal items weren't added */
-                        if ((ji.SecuritySet != null) && !ji.SecuritySet.Contains("E,"))
-                        {
-                            ji.SecuritySet += "E,";
-                        }
-                    }
-                    else
-                    {
-                        ji.SecuritySet += "R" + s + ",";
-                    }
-                }
-
-                if (socialGroupId > 0)
-                {
-                    ji.SocialGroupId = socialGroupId;
-                }
-
-                JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId, tabId, true));
+                JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(post.PortalId, post.Forum.GetTabId(), true));
             }
             catch (Exception ex)
             {
@@ -96,17 +89,19 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal void UpdateJournalItemForPost(int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, int userId, string uRL, string subject, string summary, string body)
+        internal static void UpdateJournalItemForPost(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post)
         {
             try
             {
-                string objectKey = replyId <= 0 ? $"{forumId}:{topicId}" : $"{forumId}:{topicId}:{replyId}";
-                var ji = JournalController.Instance.GetJournalItemByKey(portalId, objectKey);
+                var sUrl = post.GetLink();
+                var objectKey = post.IsTopic ? $"{post.ForumId}:{post.TopicId}" : $"{post.ForumId}:{post.TopicId}:{post.ReplyId}";
+                var ji = JournalController.Instance.GetJournalItemByKey(post.PortalId, objectKey);
                 if (ji != null)
                 {
+                    var summary = post.Content.Summary;
                     if (string.IsNullOrEmpty(summary))
                     {
-                        summary = Utilities.StripQuoteTag(body);
+                        summary = Utilities.StripQuoteTag(post.Content.Body);
                         summary = Utilities.StripHTMLTag(summary);
                         if (summary.Length > 150)
                         {
@@ -114,13 +109,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
 
-                    ji.Title = subject;
+                    ji.Title = post.Content.Subject;
                     ji.Summary = summary;
-                    ji.ItemData = new ItemData { Url = uRL };
-                    ji.Body = Utilities.StripQuoteTag(body);
-                    ji.Body = Utilities.StripHTMLTag(body);
+                    ji.ItemData = new ItemData { Url = sUrl };
+                    ji.Body = Utilities.StripHTMLTag(Utilities.StripQuoteTag(post.Content.Summary));
                     ji.DateUpdated = DateTime.UtcNow;
-                    JournalController.Instance.UpdateJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId, tabId, true));
+                    JournalController.Instance.UpdateJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(post.ModuleId, post.Forum.GetTabId(), true));
                 }
             }
             catch (Exception ex)
@@ -129,89 +123,15 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal void DeleteJournalItemForPost(int portalId, int forumId, int topicId, int replyId)
+        internal static void DeleteJournalItemForPost(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post)
         {
             try
             {
-                var objectKey = replyId <= 0 ? $"{forumId}:{topicId}" : $"{forumId}:{topicId}:{replyId}";
-                var ji = JournalController.Instance.GetJournalItemByKey(portalId, objectKey);
+                var objectKey = post.IsTopic ? $"{post.ForumId}:{post.TopicId}" : $"{post.ForumId}:{post.TopicId}:{post.ReplyId}";
+                var ji = JournalController.Instance.GetJournalItemByKey(post.PortalId, objectKey);
                 if (ji != null)
                 {
-                    JournalController.Instance.DeleteJournalItemByKey(portalId, objectKey);
-                }
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-
-        internal void AddReplyToJournal(int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, int userId, string uRL, string subject, string summary, string body, string readRoles, int socialGroupId)
-        {
-            try
-            {
-                // make sure that this is a User before trying to create a journal item, you can't post a JI without
-                if (userId > 0)
-                {
-                    var ji = new JournalItem
-                    {
-                        PortalId = portalId,
-                        ProfileId = userId,
-                        UserId = userId,
-                        Title = subject,
-                        ItemData = new ItemData { Url = uRL },
-                    };
-                    if (string.IsNullOrEmpty(summary))
-                    {
-                        summary = Utilities.StripQuoteTag(body);
-                        summary = Utilities.StripHTMLTag(summary);
-                        if (summary.Length > 150)
-                        {
-                            summary = summary.Substring(0, 150) + "...";
-                        }
-                    }
-
-                    ji.Summary = summary;
-                    ji.Body = Utilities.StripQuoteTag(body);
-                    ji.Body = Utilities.StripHTMLTag(body);
-                    ji.JournalTypeId = 6;
-                    ji.ObjectKey = $"{forumId}:{topicId}:{replyId}";
-                    if (JournalController.Instance.GetJournalItemByKey(portalId, ji.ObjectKey) != null)
-                    {
-                        JournalController.Instance.DeleteJournalItemByKey(portalId, ji.ObjectKey);
-                    }
-
-                    string roles = string.Empty;
-                    if (!string.IsNullOrEmpty(readRoles))
-                    {
-                        if (readRoles.Contains("|"))
-                        {
-                            roles = readRoles.Substring(0, readRoles.IndexOf("|", StringComparison.Ordinal) - 1);
-                        }
-                    }
-
-                    foreach (string s in roles.Split(';'))
-                    {
-                        if ((s == DotNetNuke.Common.Globals.glbRoleAllUsers) | (s == DotNetNuke.Common.Globals.glbRoleUnauthUser))
-                        {
-                            /* cjh - securityset was null and throwing an error, thus journal items weren't added */
-                            if ((ji.SecuritySet != null) && (!ji.SecuritySet.Contains("E,")))
-                            {
-                                ji.SecuritySet += "E,";
-                            }
-                        }
-                        else
-                        {
-                            ji.SecuritySet += "R" + s + ",";
-                        }
-                    }
-
-                    if (socialGroupId > 0)
-                    {
-                        ji.SocialGroupId = socialGroupId;
-                    }
-
-                    JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: moduleId, tabId: tabId, ignoreCache: false));
+                    JournalController.Instance.DeleteJournalItemByKey(post.PortalId, objectKey);
                 }
             }
             catch (Exception ex)

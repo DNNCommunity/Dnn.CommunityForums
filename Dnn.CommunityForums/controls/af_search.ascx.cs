@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.SearchResults, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.SearchResults, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this.ForumUser);
 
             try
             {
@@ -266,7 +266,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private DotNetNuke.Modules.ActiveForums.Enums.SearchSortType SearchSortType => (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)(this.searchSortType ?? (this.searchSortType = (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.Sort], (int)DotNetNuke.Modules.ActiveForums.Enums.SearchSortType.SearchSortTypeRelevance)));
 
-        private int SearchDays => (int)(this.searchDays ?? (this.searchDays = Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.TimeSpan], 0)));
+        private int SearchHours => (int)(this.searchDays ?? (this.searchDays = Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.TimeSpan], 0)));
 
         private string Tags
         {
@@ -317,9 +317,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.parameters.Add($"{SearchParamKeys.ResultType}={(int)this.SearchResultType}");
                     }
 
-                    if (this.SearchDays > 0)
+                    if (this.SearchHours > 0)
                     {
-                        this.parameters.Add($"{SearchParamKeys.TimeSpan}={this.SearchDays}");
+                        this.parameters.Add($"{SearchParamKeys.TimeSpan}={this.SearchHours}");
                     }
 
                     if (this.AuthorUserId > 0)
@@ -371,40 +371,27 @@ namespace DotNetNuke.Modules.ActiveForums
             // An intersection of the forums allows vs forums requested.
             var parseId = 0;
 
-            var sForumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read).FromHashSetToDelimitedString<int>(";");
-            var forumsAllowed = sForumsAllowed.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
-            var forumsRequested = this.Forums.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
-
-            var forumsToSearch = string.Empty;
-
-            // If forums requested is empty or contains and entry less than or equal to zero, return all available forums
-            if (!forumsRequested.Any() || forumsRequested.Any(o => o <= 0))
+            var forumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
+            var forumsRequested = forumsAllowed;
+            if (!string.IsNullOrEmpty(this.Forums))
             {
-                forumsToSearch = forumsAllowed.Aggregate(forumsToSearch, (current, f) => current + (current.Length == 0 ? string.Empty : ":") + f);
-            }
-            else
-            {
-                forumsToSearch = forumsRequested.Where(forumsAllowed.Contains).Aggregate(forumsToSearch, (current, f) => current + (current.Length == 0 ? string.Empty : ":") + f);
+                forumsRequested = this.Forums.Split(new[] { ':', ';', ',' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToHashSet<int>();
             }
 
-            const int maxCacheHours = 1;
             this.searchResults = SearchController.Provider.Search(
                 portalId: this.PortalId,
-                moduleId: this.ModuleId,
+                moduleId: this.ForumModuleId,
                 userId: this.UserId,
-                searchId: this.SearchId,
                 rowIndex: this.rowIndex,
                 pageSize: this.pageSize,
                 searchText: this.SearchText,
-                searchDays: this.SearchDays,
+                searchHours: this.SearchHours,
                 authorUserId: this.AuthorUserId,
                 authorUsername: this.AuthorUsername,
-                forumsToSearch: forumsToSearch,
+                forumsToSearch: forumsRequested.Intersect(forumsAllowed).ToHashSet<int>().FromHashSetToDelimitedString(","),
                 tags: this.Tags,
                 resultType: this.SearchResultType,
-                sort: this.SearchSortType,
-                maxCacheHours: maxCacheHours,
-                fullText: this.ModuleSettings.FullText);
+                sort: this.SearchSortType);
 
             this.searchId = (this.searchResults != null) ? this.searchResults.SearchId : 0;
 

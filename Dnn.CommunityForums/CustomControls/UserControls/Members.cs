@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder(1024);
             ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(this.ForumModuleId);
-            string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType._memberList, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+            string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType._memberList, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this.ForumUser);
             if (!(sTemplate == string.Empty))
             {
                 string sGrid = TemplateUtils.GetTemplateSection(sTemplate, "[AF:CONTROL:LIST]", "[/AF:CONTROL:LIST]");

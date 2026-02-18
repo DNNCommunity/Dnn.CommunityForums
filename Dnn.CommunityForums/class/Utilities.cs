@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : string.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
-                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix, forumUser);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser, requestUri: requestUri, rawUrl: rawUrl);
                 if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
                 {
@@ -985,7 +985,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
-        internal static string ResolveUrl(string url)
+        internal static string ResolveRelativePath(string url)
         {
             try
             {
@@ -1534,7 +1534,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return contents;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int ModuleId, int forumId).")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int moduleId, int forumId).")]
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, moduleId, forumId);
@@ -1758,6 +1758,16 @@ namespace DotNetNuke.Modules.ActiveForums
             return moduleId;
         }
 
+        internal static bool RunningInViewer(int moduleId, int tabId)
+        {
+            if (moduleId > 0 && tabId > 0)
+            {
+                return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: moduleId, tabId: tabId, ignoreCache: false).DesktopModule?.ModuleName == string.Concat(Globals.ModuleName, " Viewer");
+            }
+
+            return false;
+        }
+
         internal static void CopyFolder(DirectoryInfo source, DirectoryInfo target)
         {
             try
@@ -1824,29 +1834,35 @@ namespace DotNetNuke.Modules.ActiveForums
             return expression != null && (double.TryParse(expression.ToString(), out _) || bool.TryParse(expression.ToString(), out _));
         }
 
-        internal static string ResolveUrl(PortalSettings portalSettings, string template)
+        internal static string ResolveUrlInTag(PortalSettings portalSettings, string template)
         {
             const string linkRegex = "(href|src)=\"(/[^\"]*?)\"";
             var matches = Regex.Matches(template, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
             foreach (Match match in matches)
             {
-                var link = match.Groups[2].Value;
-                var defaultAlias = portalSettings.DefaultPortalAlias;
-                var domain = DotNetNuke.Common.Globals.AddHTTP(defaultAlias);
-                if (defaultAlias.Contains("/"))
-                {
-                    var subDomain =
-                        defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
-                    if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        link = link.Substring(subDomain.Length);
-                    }
-                }
-
-                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{domain}{link}\"");
+                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{ResolveUrl(portalSettings, match.Groups[2].Value)}\"");
             }
 
             return template;
+        }
+
+        internal static string ResolveUrl(PortalSettings portalSettings, string url)
+        {
+            var link = url;
+            var defaultAlias = portalSettings.DefaultPortalAlias;
+            var domain = DotNetNuke.Common.Globals.AddHTTP(defaultAlias);
+            if (defaultAlias.Contains("/"))
+            {
+                var subDomain = defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
+                if (url.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    url = link.Substring(subDomain.Length);
+                }
+
+                url = url.Replace(url, $"{domain}{link}");
+            }
+
+            return url;
         }
 
         internal static string GetSha256Hash(string input)

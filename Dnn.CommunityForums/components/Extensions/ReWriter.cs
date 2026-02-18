@@ -144,11 +144,21 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
+            if ((sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("post")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("confirmaction")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("sendto")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("modreport")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("search")) | sUrl.Contains("dnnprintmode") || (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains(Views.ModerateTopics)))
+            {
+                return;
+            }
+
             string searchURL = sUrl;
             searchURL = searchURL.Replace(objPortalAliasInfo.HTTPAlias, string.Empty);
             if (searchURL.Length < 2)
             {
                 return;
+            }
+
+            if (HttpContext.Current.Request.UserLanguages != null && HttpContext.Current.Request.UserLanguages.Length > 0 && searchURL.ToLowerInvariant().Contains(HttpContext.Current.Request.UserLanguages[0].ToLowerInvariant()))
+            {
+                searchURL = searchURL.Replace(HttpContext.Current.Request.UserLanguages[0].ToLowerInvariant() + "/", string.Empty);
             }
 
             string query = string.Empty;
@@ -176,14 +186,31 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                foreach (string up in searchURL.Split('/'))
+                // if page number is part of the url, remove it, it will be restored later
+                if (searchURL.ToCharArray().Where(c => c.Equals('/')).Count() > 5)
                 {
-                    if (!string.IsNullOrEmpty(up))
+                    foreach (string up in searchURL.Split('/'))
                     {
-                        if (!Utilities.IsNumeric(up))
+                        if (!string.IsNullOrEmpty(up))
                         {
-                            newSearchURL += up + "/";
+                            if (!Utilities.IsNumeric(up))
+                            {
+                                newSearchURL += up + "/";
+                            }
                         }
+                    }
+                }
+                else
+                {
+                    newSearchURL = searchURL;
+                    if (newSearchURL.StartsWith("/"))
+                    {
+                        newSearchURL = newSearchURL.Substring(1);
+                    }
+
+                    if (!newSearchURL.EndsWith("/"))
+                    {
+                        newSearchURL = newSearchURL + "/";
                     }
                 }
             }
@@ -214,16 +241,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if ((sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("post")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("confirmaction")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("sendto")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("modreport")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("search")) | sUrl.Contains("dnnprintmode") || (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains(Views.ModerateTopics)))
-            {
-                return;
-            }
 
             var urlToSearch = newSearchURL;
-            if (HttpContext.Current.Request.UserLanguages != null && HttpContext.Current.Request.UserLanguages.Length > 0 && urlToSearch.ToLowerInvariant().Contains(HttpContext.Current.Request.UserLanguages[0].ToLowerInvariant()))
-            {
-                urlToSearch = urlToSearch.Replace(HttpContext.Current.Request.UserLanguages[0].ToLowerInvariant() + "/", string.Empty);
-            }
 
             Data.Common db = new Data.Common();
             try
@@ -431,9 +450,23 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // avoid redirect, e.g. "/Forums" == "forums/"
-                if (((searchURL2.StartsWith("/") && searchURL2.IndexOf("/") == searchURL2.LastIndexOf("/")) || (searchURL2.EndsWith("/") && searchURL2.IndexOf("/") == searchURL2.LastIndexOf("/"))) &&
+                if (this.urlType.Equals(0) &&
+                    (((searchURL2.StartsWith("/") && searchURL2.IndexOf("/") == searchURL2.LastIndexOf("/")) || (searchURL2.EndsWith("/") && searchURL2.IndexOf("/") == searchURL2.LastIndexOf("/"))) &&
                     ((newSearchURL2.StartsWith("/") && newSearchURL2.IndexOf("/") == newSearchURL2.LastIndexOf("/")) || (newSearchURL2.EndsWith("/") && newSearchURL2.IndexOf("/") == newSearchURL2.LastIndexOf("/"))) &&
-                     (searchURL2.Replace("/", string.Empty).ToLowerInvariant() == newSearchURL2.Replace("/", string.Empty).ToLowerInvariant()))
+                     (searchURL2.Replace("/", string.Empty).ToLowerInvariant() == newSearchURL2.Replace("/", string.Empty).ToLowerInvariant())))
+                {
+                    return;
+                }
+
+                // avoid redirect, e.g. "/Support/Forums" == "support/forums/" ... starts or ends with /, same number of /, same text when ignoring /
+                if (this.urlType.Equals(0) &&
+                    this.forumgroupId <= 0 &&
+                    this.forumId <= 0 &&
+                    this.topicId <= 0 &&
+                    ((searchURL2.StartsWith("/") || searchURL2.EndsWith("/")) &&
+                    (newSearchURL2.StartsWith("/") || newSearchURL2.EndsWith("/")) &&
+                    (newSearchURL2.ToCharArray().Where(c => c.Equals("/")).Count() == newSearchURL2.ToCharArray().Where(c => c.Equals("/")).Count()) &&
+                     (searchURL2.Replace("/", string.Empty).ToLowerInvariant() == newSearchURL2.Replace("/", string.Empty).ToLowerInvariant())))
                 {
                     return;
                 }

@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
     internal static class SearchController
     {
         /// <summary>
-        /// Gets or sets pluggable search provider - defaults to the DataProvider-backed implementation.
+        /// Gets or sets pluggable search provider - defaults to the Lucene-backed implementation.
         /// Tests can replace this with a mock implementation.
         /// </summary>
         internal static DotNetNuke.Modules.ActiveForums.Services.Search.ISearchController Provider { get; set; } = new DotNetNuke.Modules.ActiveForums.Services.Search.SearchController.LuceneSearchController();
@@ -41,106 +41,31 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
             int portalId,
             int moduleId,
             int userId,
-            int searchId,
             int rowIndex,
             int pageSize,
             string searchText,
-            int searchDays,
+            int searchHours,
             int authorUserId,
             string authorUsername,
             string forumsToSearch,
             string tags,
             SearchSortType sort,
-            SearchResultType resultType,
-            int maxCacheHours,
-            bool fullText)
+            SearchResultType resultType)
         {
             return Provider.Search(
                 portalId,
                 moduleId,
                 userId,
-                searchId,
                 rowIndex,
                 pageSize,
                 searchText,
-                searchDays,
+                searchHours,
                 authorUserId,
                 authorUsername,
                 forumsToSearch,
                 tags,
                 resultType,
-                sort,
-                maxCacheHours,
-                fullText);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        private sealed class DataProviderSearchController : DotNetNuke.Modules.ActiveForums.Services.Search.ISearchController
-        {
-            public DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults Search(
-                int portalId,
-                int moduleId,
-                int userId,
-                int searchId,
-                int rowIndex,
-                int pageSize,
-                string searchText,
-                int searchDays,
-                int authorUserId,
-                string authorUsername,
-                string forumsToSearch,
-                string tags,
-                SearchResultType resultType,
-                SearchSortType sort,
-                int maxCacheHours,
-                bool fullText)
-            {
-                var ds = DataProvider.Instance().Search(
-                    portalId,
-                    moduleId,
-                    userId,
-                    searchId,
-                    rowIndex,
-                    pageSize,
-                    searchText,
-                    0, /*search any */
-                    0, /*search subject and topic*/
-                    searchDays,
-                    authorUserId,
-                    authorUsername,
-                    forumsToSearch,
-                    tags,
-                    (int)resultType,
-                    (int)sort,
-                    maxCacheHours,
-                    fullText);
-
-                var results = new DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults(ds.Tables[0]);
-                results.Results = new List<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo>();
-                foreach (System.Data.DataRow row in ds.Tables[1].Rows)
-                {
-                    DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post = null;
-                    var topicId = Utilities.SafeConvertInt(row["TopicId"], DotNetNuke.Common.Utilities.Null.NullInteger);
-                    var contentId = Utilities.SafeConvertInt(row["ContentId"], DotNetNuke.Common.Utilities.Null.NullInteger);
-                    var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).GetByContentId(contentId);
-                    if (reply != null)
-                    {
-                        post = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)reply;
-                    }
-                    else
-                    {
-                        var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
-                        if (topic != null)
-                        {
-                            post = topic;
-                        }
-                    }
-
-                    results.Results.Add(post);
-                }
-
-                return results;
-            }
+                sort);
         }
 
         private sealed class LuceneSearchController : DotNetNuke.Modules.ActiveForums.Services.Search.ISearchController
@@ -149,19 +74,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                 int portalId,
                 int moduleId,
                 int userId,
-                int searchId,
                 int rowIndex,
                 int pageSize,
                 string searchText,
-                int searchDays,
+                int searchHours,
                 int authorUserId,
                 string authorUsername,
                 string forumsToSearch,
                 string tags,
                 SearchResultType resultType,
-                SearchSortType sort,
-                int maxCacheHours,
-                bool fullText)
+                SearchSortType sort)
             {
                 DateTime startQuery = DateTime.UtcNow;
 
@@ -170,13 +92,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                 query.PortalIds = new[] { portalId };
                 query.ModuleId = moduleId;
                 query.SearchTypeIds = new[] { SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId };
-                query.Tags = tags.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+                query.Tags = tags?.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
                 query.AllowLeadingWildcard = true;
                 query.WildCardSearch = true;
                 query.SortField = sort.Equals(SearchSortType.SearchSortTypeRelevance) ? SortFields.Relevance : SortFields.LastModified;
-                if (searchDays > 0)
+                if (searchHours > 0)
                 {
-                    query.BeginModifiedTimeUtc = DateTime.UtcNow.AddHours(-1 * searchDays); /* Parameter is searchDays but really is maxCacheHours */
+                    query.BeginModifiedTimeUtc = DateTime.UtcNow.AddHours(-1 * searchHours);
                     query.EndModifiedTimeUtc = DateTime.UtcNow;
                 }
 
@@ -187,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                     numericKeys.Add("AuthorUserId", authorUserId);
                 }
 
-                var forumIds = forumsToSearch.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(f => Utilities.SafeConvertInt(f)).ToList();
+                var forumIds = forumsToSearch.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(f => Utilities.SafeConvertInt(f)).ToList();
                 if (forumIds.Count == 1)
                 {
                     numericKeys.Add("ForumId", Utilities.SafeConvertInt(forumIds.First(), 0));

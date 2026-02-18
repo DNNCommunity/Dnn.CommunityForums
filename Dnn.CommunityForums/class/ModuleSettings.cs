@@ -26,6 +26,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Modules.ActiveForums.Entities;
 
+    using Newtonsoft.Json;
+
     public class ModuleSettings
     {
         private DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings defaultFeatureSettings;
@@ -76,6 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public string TimeFormatString => this.MainSettings.GetString(SettingKeys.TimeFormatString, "h:mm tt");
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [JsonIgnore]
         public int TimeZoneOffset => this.MainSettings.GetInt(SettingKeys.TimeZoneOffset);
 
         public bool UsersOnlineEnabled => this.MainSettings.GetBoolean(SettingKeys.UsersOnlineEnabled);
@@ -83,6 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public string MemberListMode => "Enabled";
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [JsonIgnore]
         public int ForumTemplateID => throw new NotImplementedException();
 
         public DateTime InstallDate => Utilities.SafeConvertDateTime(this.MainSettings[SettingKeys.InstallDate], Utilities.NullDate());
@@ -117,11 +121,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string TemplatePath => string.Concat(this.ThemeLocation, "templates/");
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [JsonIgnore]
         public bool FullText => this.MainSettings.GetBoolean(SettingKeys.FullText);
 
         public string AllowSubTypes => this.MainSettings.GetString(SettingKeys.AllowSubTypes, string.Empty);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [JsonIgnore]
         public bool MailQueue => true;
 
         public bool CacheTemplates => this.MainSettings.GetBoolean(SettingKeys.CacheTemplates, defaultValue: true);

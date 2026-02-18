@@ -127,7 +127,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                return this.Content?.Post?.Forum?.PortalSettings?.ActiveTab != null && this.Content.Post.Forum.PortalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
+                var portalSettings = Utilities.GetPortalSettings();
+                if (portalSettings == null)
+                {
+                    portalSettings = this.Topic.Forum.PortalSettings;
+                }
+
+                return portalSettings.ActiveTab != null && portalSettings.ActiveTab.Modules.Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Any(
                     m => m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName + " Viewer", StringComparison.OrdinalIgnoreCase) ||
                     m.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName + " Viewer", StringComparison.OrdinalIgnoreCase));
             }

@@ -127,13 +127,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             get
             {
                 string tempBody = null;
-                if (this.plhEditor.Controls.Count > 0)
+                if (this.plhEditor?.Controls?.Count > 0)
                 {
                     switch (this.EditorType)
                     {
                         case EditorType.HTMLEDITORPROVIDER:
                         case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
-                            tempBody = ((UI.UserControls.TextEditor)this.plhEditor.FindControl("txtBody")).Text;
+                            var txtBody = (UI.UserControls.TextEditor)this.plhEditor?.FindControl("txtBody");
+                            if (txtBody != null)
+                            {
+                                tempBody = txtBody.Text;
+                            }
+
                             break;
                         case EditorType.TEXTBOX:
                             tempBody = ((TextBox)this.txtEditor).Text;
@@ -842,7 +847,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         editor.Height = editorHeight;
                         editor.TextMode = TextBoxMode.MultiLine;
                         editor.Rows = 4;
-                        this.plhEditor.Controls.Add(editor);
+                        this.plhEditor?.Controls.Add(editor);
                         this.clientId = editor.ClientID;
                         break;
                     }
@@ -861,7 +866,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         editor.Width = editorWidth;
                         editor.HtmlEncode = false; // Turn Encoding off or passed already Encoded HTML.
                         editor.Height = editorHeight;
-                        this.plhEditor.Controls.Add(editor);
+                        this.plhEditor?.Controls.Add(editor);
                         this.clientId = editor.ClientID;
                         break;
                     }
@@ -1074,7 +1079,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 case EditorType.HTMLEDITORPROVIDER:
                 case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
-                    ((UI.UserControls.TextEditor)this.plhEditor.FindControl("txtBody")).Text = this.body;
+                    var txtEditor = (UI.UserControls.TextEditor)this.plhEditor?.FindControl("txtBody");
+                    if (txtEditor != null)
+                    {
+                        txtEditor.Text = this.body;
+                    }
+
                     break;
                 case EditorType.TEXTBOX:
                     ((TextBox)this.txtEditor).Text = this.body;
@@ -1141,10 +1151,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             case EditorType.HTMLEDITORPROVIDER:
                             case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
-                                var txtEditor = new UI.UserControls.TextEditor();
                                 break;
                             case EditorType.TEXTBOX:
-                                var txtEditor1 = (TextBox)this.plhEditor.Controls[0];
+                                break;
+                            default:
                                 break;
                         }
 
@@ -1273,7 +1283,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string GetAvatarTagForUserMentions()
         {
-            return Utilities.ResolveUrl(this.PortalSettings, "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />");
+            return Utilities.ResolveUrlInTag(this.PortalSettings, "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />");
         }
 
         private string GetTagForUserMentions()

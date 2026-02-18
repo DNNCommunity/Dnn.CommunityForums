@@ -294,6 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 try
                 {
                     DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.ForumViewPrefix, moduleId));
                     DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicReadCountPrefix, moduleId, forumId));
                     DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.ForumTrackingInfoPrefix, moduleId, forumId));
                 }

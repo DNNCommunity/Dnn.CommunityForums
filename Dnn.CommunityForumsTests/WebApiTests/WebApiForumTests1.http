@@ -5,35 +5,35 @@
 ### first test is to verify a simple endpoint is reachable; we have a "Hello World" endpoint on each controller for this purpose"
 ### the HelloWorld endpoint does not require authentication but does require TabId and ModuleId headers for 'supported modules' check
 GET {{hostname}}/API/ActiveForums/Forum/HelloWorld
-TabId: {{TabId}}
-ModuleId: {{Moduleid}}
+TabId: {{tabid}}
+ModuleId: {{moduleid}}
 
 ### test to get a forum
 GET {{hostname}}/API/ActiveForums/Forum/Get?ForumId=1
-tabid: {{TabId}}
-moduleid: {{Moduleid}}
+tabid: {{tabid}}
+moduleid: {{moduleid}}
 requestverificationtoken: {{requestverificationtoken}} 
 cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}}
 
 ### test to get a forum list
 GET {{hostname}}/API/ActiveForums/Forum/List
-tabid: {{TabId}}
-moduleid: {{Moduleid}}
+tabid: {{tabid}}
+moduleid: {{moduleid}}
 requestverificationtoken: {{requestverificationtoken}} 
 cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}}
 
 ### test to subscribe to a forum
 POST {{hostname}}/API/ActiveForums/Forum/Subscribe
-tabid: {{TabId}}
-moduleid: {{Moduleid}}
+tabid: {{tabid}}
+moduleid: {{moduleid}}
 requestverificationtoken: {{requestverificationtoken}}
 cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}} 
 content-type: application/json
-content: {"forumid":"1"}
+{"forumid":"1"}
 
 ### test to get subscriber count to a forum
 GET {{hostname}}/API/ActiveForums/Forum/SubscriberCount?ForumId=1
-tabid: {{TabId}}
-moduleid: {{Moduleid}}
+tabid: {{tabid}}
+moduleid: {{moduleid}}
 requestverificationtoken: {{requestverificationtoken}}
 cookie: .DOTNETNUKE={{.DOTNETNUKE}};__RequestVerificationToken={{__RequestVerificationToken}} 

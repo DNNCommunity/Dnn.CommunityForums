@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var myTemplate = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey));
             if (string.IsNullOrEmpty(myTemplate))
             {
-                myTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.ProfileInfo, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                myTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.ProfileInfo, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix, user);
                 if (cacheKey != string.Empty)
                 {
                     DataCache.SettingsCacheStore(moduleId, cacheKey, myTemplate);
@@ -515,7 +515,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string PreviewTopic(int topicTemplateID, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string body, string imagePath, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset, Uri requestUri, string rawUrl)
         {
-            var sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumInfo.ModuleId, Enums.TemplateType.TopicView, forumInfo.FeatureSettings.TemplateFileNameSuffix);
+            var sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumInfo.ModuleId, Enums.TemplateType.TopicView, forumInfo.FeatureSettings.TemplateFileNameSuffix, user);
             try
             {
                 var sbTopicTemplate = new StringBuilder(GetTemplateSection(sTemplate, "[TOPIC]", "[/TOPIC]"));

@@ -35,10 +35,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (TemplateId < 1)
             {
-                return DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, (Enums.TemplateType)Enum.Parse(typeof(Enums.TemplateType), TemplateType, true), string.Empty);
+                return DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, (Enums.TemplateType)Enum.Parse(typeof(Enums.TemplateType), TemplateType, true), string.Empty, null);
             }
 
-            return DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, (DotNetNuke.Modules.ActiveForums.Enums.TemplateType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.Enums.TemplateType), TemplateId.ToString()), string.Empty);
+            return DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, (DotNetNuke.Modules.ActiveForums.Enums.TemplateType)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.Enums.TemplateType), TemplateId.ToString()), string.Empty, null);
         }
     }
 }

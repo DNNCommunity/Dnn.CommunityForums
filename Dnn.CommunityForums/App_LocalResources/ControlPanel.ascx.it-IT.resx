@@ -1537,4 +1537,7 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
     <value>Può aggiungere/gestire tag su argomenti. Qualsiasi tag inserito nei post (argomenti e/o risposte) viene aggiunto automaticamente all'argomento così come la lista dei tag disponibili nei forum.</value>
   </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>Non attivo</value>
+  </data>
 </root>

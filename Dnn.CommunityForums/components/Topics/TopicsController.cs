@@ -88,7 +88,9 @@ namespace DotNetNuke.Modules.ActiveForums
             /* since this code runs without HttpContext, get https:// by looking at page settings */
             bool isHttps = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
             bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
-            string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
+
+            var portalAliases = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID);
+            string primaryPortalAlias = (portalAliases.FirstOrDefault(pa => pa.IsPrimary) ?? portalAliases.FirstOrDefault()).HTTPAlias;
 
             Dictionary<int, string> authorizedRolesForForum = new Dictionary<int, string>();
             Dictionary<int, string> forumUrlPrefixes = new Dictionary<int, string>();
@@ -364,6 +366,20 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         ForumsConfig.Reset_DNN_Search_Documents_090500();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                case "09.06.00":
+                    try
+                    {
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090600();
+                        ForumsConfig.Upgrade_EnsureVanityNames_090600();
                     }
                     catch (Exception ex)
                     {

@@ -78,7 +78,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.InstallDate, currSettings.InstallDate.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.IsInstalled, currSettings.IsInstalled.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.Theme, currSettings.Theme);
-            DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.FullText, currSettings.FullText.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.FloodInterval, currSettings.FloodInterval.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.EditInterval, currSettings.EditInterval.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.DeleteBehavior, currSettings.DeleteBehavior.ToString());
@@ -483,6 +482,22 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
                         DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
                         DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                    }
+                }
+            }
+        }
+
+        internal static void DeleteObsoleteModuleSettings_090600()
+        {
+            /* remove FULLTEXT */
+
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+            {
+                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                {
+                    if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant().Equals(Globals.ModuleName.ToLowerInvariant()))
+                    {
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "FULLTEXT");
                     }
                 }
             }

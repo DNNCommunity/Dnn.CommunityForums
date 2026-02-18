@@ -1537,4 +1537,7 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
     <value>Puede añadir/gestionar etiquetas en los temas. Cualquier etiqueta introducida en las publicaciones (temas y/o respuestas) se añade automáticamente al tema, así como a la lista de etiquetas disponibles en los foros.</value>
   </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>No activo</value>
+  </data>
 </root>

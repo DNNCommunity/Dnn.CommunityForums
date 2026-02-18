@@ -25,7 +25,7 @@
     <div class="dcf-search-popup aftb-search-popup">
         <div class="dcf-search-input">
             <input class="dcf-search-input" type="text" placeholder="[RESX:SearchFor]" maxlength="255" onkeydown="CheckEnterPressed(this, event)">
-            <button id="btnSearch" type="submit" class="dcf-search-icon-button"><i class="fa fa-search fa-fw fa-gray"></i></button>
+            <button id="btnSearch" type="submit" class="dcf-search-icon-button"><i class="fa fa-search fa-fw fa-blue"></i></button>
         </div>
         <div class="dcf-search-options">
             [DCF:TOOLBAR-SEARCHURL|<a class="dcf-search-option-advanced" href="{0}">[RESX:SearchAdvanced]</a>]

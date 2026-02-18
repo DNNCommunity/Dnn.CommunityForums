@@ -560,23 +560,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 subject = subject.Substring(0, length) + "...";
             }
 
-            if (fi.LastReplyId > 0)
-            {
-                var ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(fi.ModuleId).GetById(fi.LastReplyId);
-            }
+            string link = fi.LastPost.GetLink();
 
-            string sURL = new ControlUtils().TopicURL(tabId, fi.ModuleId, fi.LastPostTopicId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.LastPostTopicUrl);
-            if (sURL.Contains("~/"))
-            {
-                sURL = Utilities.NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.TopicId}={fi.LastPostTopicId}", fi.LastPostIsReply ? $"{ParamKeys.ContentJumpId}={fi.LastReplyId}" : string.Empty });
-            }
-
-            if (sURL.EndsWith("/") && fi.LastPostIsReply)
-            {
-                sURL += Utilities.UseFriendlyURLs(fi.ModuleId) ? $"#{fi.LastPostID}" : $"?{ParamKeys.ContentJumpId}={fi.LastPostID}";
-            }
-
-            return $"<a href=\"{sURL}\">{System.Net.WebUtility.HtmlEncode(subject)}</a>";
+            return $"<a href=\"{link}\">{System.Net.WebUtility.HtmlEncode(subject)}</a>";
         }
     }
 }
