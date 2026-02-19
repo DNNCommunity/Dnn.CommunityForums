@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
+    using System.Linq;
     using System.Text;
     using System.Web;
     using System.Web.UI;
@@ -339,7 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.ctlForumSubs = (ForumView)this.LoadControl(typeof(ForumView), null);
                 this.ctlForumSubs.ModuleConfiguration = this.ModuleConfiguration;
                 this.ctlForumSubs.ForumId = this.ForumId;
-                this.ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ForumModuleId).SubForums;
+                this.ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ForumModuleId).SubForums.Where(f => f.Active && !f.Hidden).ToList();
                 this.ctlForumSubs.ForumTabId = this.ForumTabId;
                 this.ctlForumSubs.ForumModuleId = this.ForumModuleId;
                 this.ctlForumSubs.SubsOnly = true;

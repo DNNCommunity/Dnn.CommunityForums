@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.06.01
+            09.06.02
         </h3>
 <!--       
         <p>
@@ -97,7 +97,7 @@
         <h4>Bug Fixes</h4>
 
         <ul>
-        <li>FIX: Friendly URLs not working on pages with alternate URLs (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1786">Issue 1786</a>)</li>
+        <li>FIX: Hidden forums showing in forum view (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1789">Issue 1789</a>)</li>
 <!--
           <li>None at this time.</li> 
               <li>FIX: Primary portal alias ignored when generating some links (was just using first available alias) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1651">Issue 1651</a>)</li>
