@@ -157,31 +157,34 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId);
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
             {
-                var roles = new HashSet<int>();
-                switch (action)
+                if (f.Active && !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden)
                 {
-                    case DotNetNuke.Modules.ActiveForums.SecureActions.View:
-                        roles = f.Security?.ViewRoleIds;
-                        break;
-                    case DotNetNuke.Modules.ActiveForums.SecureActions.Read:
-                        roles = f.Security?.ReadRoleIds;
-                        break;
-                    case DotNetNuke.Modules.ActiveForums.SecureActions.Moderate:
-                        roles = f.Security?.ModerateRoleIds;
-                        break;
-                    case DotNetNuke.Modules.ActiveForums.SecureActions.Edit:
-                        roles = f.Security?.EditRoleIds;
-                        break;
-                    default:
-                        roles = f.Security?.ViewRoleIds;
-                        break;
-                }
+                    var roles = new HashSet<int>();
+                    switch (action)
+                    {
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.View:
+                            roles = f.Security?.ViewRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Read:
+                            roles = f.Security?.ReadRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Moderate:
+                            roles = f.Security?.ModerateRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Edit:
+                            roles = f.Security?.EditRoleIds;
+                            break;
+                        default:
+                            roles = f.Security?.ViewRoleIds;
+                            break;
+                    }
 
-                var hasPermissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(roles, forumUser.UserRoleIds);
+                    var hasPermissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(roles, forumUser.UserRoleIds);
 
-                if (hasPermissions)
-                {
-                    forumIds.Add(f.ForumID);
+                    if (hasPermissions)
+                    {
+                        forumIds.Add(f.ForumID);
+                    }
                 }
             }
 
