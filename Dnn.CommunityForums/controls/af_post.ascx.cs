@@ -799,6 +799,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, this.ForumId, this.TopicId);
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
 
+            ti.Content.ExtractEmbeddedImages();
             this.SaveAttachments(ti.ContentId);
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TagRoleIds, this.ForumUser.UserRoleIds))
             {
@@ -1023,6 +1024,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var tmpReplyId = rc.Reply_Save(this.PortalId, this.ForumModuleId, ri);
             ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(tmpReplyId);
+            
+            ri.Content.ExtractEmbeddedImages();
             this.SaveAttachments(ri.ContentId);
             try
             {

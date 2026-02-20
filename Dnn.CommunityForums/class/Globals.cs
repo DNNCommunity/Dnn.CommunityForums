@@ -145,10 +145,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ModuleImagesPath = Globals.ModulePath + "images/";
         public const string TemplatesPath = Globals.ModulePath + "templates/";
         public const string ThemesPath = Globals.ModulePath + "themes/";
-        
+
         public const string AvatarRefreshGravatar = "GRAVATAR";
 
         public const string DefaultBadgesFolderName = "DNNCommunityForums/Badges";
+        public const string EmbeddedImagesFolderName = "DNNCommunityForums/EmbeddedImages";
 
         public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
