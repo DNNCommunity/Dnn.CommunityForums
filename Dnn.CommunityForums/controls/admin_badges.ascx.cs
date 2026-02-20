@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindBadgeImages()
         {
-            var folderInfo = DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFolder(this.PortalId, Globals.DefaultBadgesFolderName);
+            var folderInfo = DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFolder(this.PortalId, Globals.DefaultBadgesFolderName) ?? DotNetNuke.Services.FileSystem.FolderManager.Instance.AddFolder(this.PortalId, Globals.DefaultBadgesFolderName);
             foreach (var fileInfo in DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFiles(folderInfo, recursive: true))
             {
                 if (fileInfo.ContentType.ToLowerInvariant().Contains("image/"))
