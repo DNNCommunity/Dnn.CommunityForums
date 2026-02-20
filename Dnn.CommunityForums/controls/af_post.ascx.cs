@@ -71,17 +71,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            var oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
-            oLink.Attributes["rel"] = "stylesheet";
-            oLink.Attributes["type"] = "text/css";
-            oLink.Attributes["href"] = this.Page.ResolveUrl(Globals.ModulePath + "scripts/calendar.css");
-
-            var oCSS = this.Page.FindControl("CSS");
-            if (oCSS != null)
-            {
-                oCSS.Controls.Add(oLink);
-            }
-
             this.authorId = this.UserId;
             this.canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds);
             this.canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.EditRoleIds, this.ForumUser.UserRoleIds);
