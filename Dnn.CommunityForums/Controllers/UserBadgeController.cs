@@ -245,10 +245,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     && (!userBadge.Badge.SuppresssAwardNotificationOnBackfill
                         || (userBadge.Badge.InitialBackfillCompletedDate.HasValue && userBadge.DateAssigned > userBadge.Badge.InitialBackfillCompletedDate.Value)))
                 {
-                    var subject = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.moduleId, Enums.TemplateType.BadgeNotificationSubject, SettingsBase.GetModuleSettings(this.moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                    var subject = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.moduleId, Enums.TemplateType.BadgeNotificationSubject, SettingsBase.GetModuleSettings(this.moduleId).DefaultFeatureSettings.TemplateFileNameSuffix, userBadge.ForumUser);
                     subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(new StringBuilder(subject), userBadge, userBadge.ForumUser.PortalSettings, userBadge.ForumUser.ModuleSettings, new Services.URLNavigator().NavigationManager(), userBadge.ForumUser, string.IsNullOrEmpty(requestUrl) ? null : new Uri(requestUrl), string.IsNullOrEmpty(requestUrl) ? string.Empty : new Uri(requestUrl).PathAndQuery).ToString();
                     subject = subject.Length > 400 ? subject.Substring(0, 400) : subject;
-                    var body = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.moduleId, Enums.TemplateType.BadgeNotificationBody, SettingsBase.GetModuleSettings(this.moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                    var body = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.moduleId, Enums.TemplateType.BadgeNotificationBody, SettingsBase.GetModuleSettings(this.moduleId).DefaultFeatureSettings.TemplateFileNameSuffix, userBadge.ForumUser);
                     body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(new StringBuilder(body), userBadge, userBadge.ForumUser.PortalSettings, userBadge.ForumUser.ModuleSettings, new Services.URLNavigator().NavigationManager(), userBadge.ForumUser, string.IsNullOrEmpty(requestUrl) ? null : new Uri(requestUrl), string.IsNullOrEmpty(requestUrl) ? string.Empty : new Uri(requestUrl).PathAndQuery).ToString();
 
                     string notificationKey = BuildNotificationContextKey(this.portalId, this.moduleId, badgeId, userId, userBadge.DateAssigned);

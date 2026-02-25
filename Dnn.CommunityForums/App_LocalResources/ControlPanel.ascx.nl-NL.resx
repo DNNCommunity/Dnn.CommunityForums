@@ -447,9 +447,6 @@
   <data name="[RESX:EnableFilter].Text" xml:space="preserve">
     <value>Filters</value>
   </data>
-  <data name="[RESX:EnableFullText].Text" xml:space="preserve">
-    <value>Inschakelen Volledige Tekst</value>
-  </data>
   <data name="[RESX:EnablePoints].Text" xml:space="preserve">
     <value>Puntensysteem</value>
   </data>
@@ -557,12 +554,6 @@
   </data>
   <data name="[RESX:FullName].Text" xml:space="preserve">
     <value>Volledige Naam</value>
-  </data>
-  <data name="[RESX:FullTextSearch:Intro].Text" xml:space="preserve">
-    <value>Volledige-Tekst zoeken geeft betere resultaten en een hogere naukeurigheid bij zoekresultaten.</value>
-  </data>
-  <data name="[RESX:FullTextSearch].Text" xml:space="preserve">
-    <value>Volledige-Tekst Zoeken</value>
   </data>
   <data name="[RESX:GetSupport].Text" xml:space="preserve">
     <value>Klik voor ondersteuning voor DNN-communityforums</value>
@@ -1695,5 +1686,8 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
     <value>Kan tags toevoegen of beheren op onderwerpen. Alle tags die in berichten (onderwerpen en/of reacties) worden ingevoerd, worden automatisch toegevoegd aan het onderwerp, evenals aan de lijst van tags die beschikbaar zijn op de forums.</value>
+  </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>Niet actief</value>
   </data>
 </root>

@@ -26,6 +26,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Modules.ActiveForums.Enums;
 
+    using Newtonsoft.Json;
+
     public class FeatureSettings
     {
         internal readonly Hashtable featureSettings;
@@ -103,10 +105,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool ConvertingToJpegAllowed => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.ConvertingToJpegAllowed]);
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public string EditorHeight => throw new NotImplementedException();
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public EditorType EditorMobile => throw new NotImplementedException();
 
@@ -135,6 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public string EditorWidth => throw new NotImplementedException();
 
@@ -157,26 +162,32 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string TemplateFileNameSuffix => Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.TemplateFileNameSuffix], string.Empty);
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int TopicsTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.TopicsTemplateId]);
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int TopicTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.TopicTemplateId]);
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int TopicFormId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.TopicFormId]);
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ReplyFormId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ReplyFormId]);
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int QuickReplyFormId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.QuickReplyFormId]);
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ProfileTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ProfileTemplateId]);
 
@@ -199,25 +210,30 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ModApproveTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModApproveTemplateId]);
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ModRejectTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModRejectTemplateId]);
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ModMoveTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModMoveTemplateId]);
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ModDeleteTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModDeleteTemplateId]);
 
         [IgnoreColumn]
+        [JsonIgnore]
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
         public int ModNotifyTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModNotifyTemplateId]);
-        
+
         [IgnoreColumn]
         public bool ModApproveNotify => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.ModApproveNotify]);
 
@@ -259,6 +275,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
+        [JsonIgnore]
         public int AttachMaxHeight
         {
             get { return Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.AttachMaxHeight], 500); }
@@ -266,6 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
+        [JsonIgnore]
         public int AttachMaxWidth
         {
             get { return Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.AttachMaxWidth], 500); }
@@ -273,10 +291,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
+        [JsonIgnore]
         public int EditorStyle => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
+        [JsonIgnore]
         public string EditorToolBar => throw new NotImplementedException();
 
         [IgnoreColumn]

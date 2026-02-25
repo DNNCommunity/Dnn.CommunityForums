@@ -26,14 +26,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Text;
     using System.Web;
     using System.Web.UI;
+    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.UI.UserControls;
+    using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using log4net.DateFormatter;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:SubmitForm runat=server></{0}:SubmitForm>")]
     public class SubmitForm : TopicBase
@@ -59,8 +64,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool locked;
         private bool @checked;
         private bool pinned;
-        private DateTime announceStart = DateTime.MinValue;
-        private DateTime announceEnd = DateTime.MinValue;
+        private DateTime announceStart = Utilities.NullDate();
+        private DateTime announceEnd = Utilities.NullDate();
         private string pollQuestion;
         private string pollType;
         private string pollOptions;
@@ -122,13 +127,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             get
             {
                 string tempBody = null;
-                if (this.plhEditor.Controls.Count > 0)
+                if (this.plhEditor?.Controls?.Count > 0)
                 {
                     switch (this.EditorType)
                     {
                         case EditorType.HTMLEDITORPROVIDER:
                         case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
-                            tempBody = ((UI.UserControls.TextEditor)this.plhEditor.FindControl("txtBody")).Text;
+                            var txtBody = (UI.UserControls.TextEditor)this.plhEditor?.FindControl("txtBody");
+                            if (txtBody != null)
+                            {
+                                tempBody = txtBody.Text;
+                            }
+
                             break;
                         case EditorType.TEXTBOX:
                             tempBody = ((TextBox)this.txtEditor).Text;
@@ -197,12 +207,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        public bool IsAnnounce
-        {
-            get => this.chkAnnounce.Checked;
-            set => this.chkAnnounce.Checked = value;
-        }
-
         public int TopicPriority
         {
             get => int.Parse(this.txtTopicPriority.Text);
@@ -214,58 +218,44 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
         public DateTime AnnounceStart
-        {/* for announce, only set/get date without time */
+        {
             get
             {
-                if (this.calStartDate.SelectedDate == string.Empty && this.announceStart == DateTime.MinValue)
+                if (string.IsNullOrEmpty(this.calStartDate.Value) || (this.announceStart.Equals(DateTime.MinValue) || this.announceStart.Equals(Utilities.NullDate())))
                 {
-                    return Utilities.NullDate();
+                    return this.announceStart = Utilities.NullDate();
                 }
 
-                if (!string.IsNullOrEmpty(this.calStartDate.SelectedDate))
-                {
-                    return Convert.ToDateTime(this.calStartDate.SelectedDate).Date;
-                }
-
-                return this.announceStart;
+                return this.announceStart = Utilities.SafeConvertDateTime(this.calStartDate.Value).ToUniversalTime(this.ForumUser);
             }
 
             set
             {
-                this.announceStart = value;
-                this.calStartDate.SelectedDate = value.Date.ToString();
+                this.announceStart = Utilities.SafeConvertDateTime(value).FromUniversalTime(this.ForumUser);
+                this.calStartDate.Value = this.announceStart.Equals(Utilities.NullDate()) ? string.Empty : this.announceStart.ToString("yyyy-MM-dd");
             }
         }
 
         public DateTime AnnounceEnd
-        {/* for announce, only want date without time */
+        {
             get
             {
-                if (this.calEndDate.SelectedDate == string.Empty && this.announceEnd == DateTime.MinValue)
+                if (string.IsNullOrEmpty(this.calEndDate.Value) || (this.announceEnd.Equals(DateTime.MinValue) || this.announceEnd.Equals(Utilities.NullDate())))
                 {
-                    return Utilities.NullDate();
+                    return this.announceEnd = Utilities.NullDate();
                 }
 
-                if (!string.IsNullOrEmpty(this.calEndDate.SelectedDate))
-                {
-                    return Convert.ToDateTime(this.calEndDate.SelectedDate).Date;
-                }
-
-                return this.announceEnd;
+                return this.announceEnd = Utilities.SafeConvertDateTime(this.calEndDate.Value).ToUniversalTime(this.ForumUser);
             }
 
             set
             {
-                this.announceEnd = value;
-                this.calEndDate.SelectedDate = Convert.ToDateTime(value).Date.ToString();
+                this.announceEnd = Utilities.SafeConvertDateTime(value).FromUniversalTime(this.ForumUser);
+                this.calEndDate.Value = this.announceEnd.Equals(Utilities.NullDate()) ? string.Empty : this.announceEnd.ToString("yyyy-MM-dd");
             }
         }
 
-        public string EditorClientId
-        {
-            get
-            => this.clientId;
-        }
+        public string EditorClientId => this.clientId;
 
         public string AttachmentsClientId { get; set; }
 
@@ -293,8 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string PollType
         {
-            get
-            => this.afpolledit.PollType;
+            get => this.afpolledit.PollType;
             set
             {
                 this.pollType = value;
@@ -304,8 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string PollOptions
         {
-            get
-            => this.afpolledit.PollOptions;
+            get => this.afpolledit.PollOptions;
             set
             {
                 this.pollOptions = value;
@@ -317,16 +305,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public int StatusId
         {
-            get
-            => this.aftopicstatus.Status;
+            get => this.aftopicstatus.Status;
             set
             {
                 this.statusId = value;
                 this.aftopicstatus.Status = value;
             }
         }
-
-        public string PostBackScript { get; } = string.Empty;
 
         public int ContentId { get; set; } = -1;
 
@@ -343,8 +328,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected TextBox txtSubject = new TextBox();
         protected TextBox txtSummary = new TextBox();
         protected Label lblSubject = new Label();
-
-        protected UI.UserControls.TextEditor editorDNN;
         protected PlaceHolder plhEditor = new PlaceHolder();
         protected ImageButton btnPost = new ImageButton();
         protected Button btnSubmit = new Button();
@@ -358,18 +341,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected af_topicstatus aftopicstatus = new af_topicstatus();
         protected CheckBox chkLocked = new CheckBox();
         protected CheckBox chkPinned = new CheckBox();
-        protected CheckBox chkAnnounce = new CheckBox();
         protected CheckBox chkSubscribe = new CheckBox();
         protected CheckBox chkApproved = new CheckBox();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqSubject = new System.Web.UI.WebControls.RequiredFieldValidator();
         protected Label reqCustomBody = new Label();
-        protected DatePicker calStartDate = new DatePicker();
-        protected DatePicker calEndDate = new DatePicker();
+        protected HtmlInputGenericControl calStartDate = new HtmlInputGenericControl();
+        protected HtmlInputGenericControl calEndDate = new HtmlInputGenericControl();
         protected af_attach ctlAttach = new af_attach();
 
         protected PlaceHolder plhUpload;
-
-        // Protected WithEvents tsTags As DotNetNuke.Modules.ActiveForums.Controls.TextSuggest
         protected PlaceHolder plhTopicReview = new PlaceHolder();
         protected TextBox txtTopicPriority = new TextBox();
 
@@ -396,7 +376,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseForm(string template)
         {
-            template = Globals.ForumsControlsRegisterAMTag + template;
+            template = DotNetNuke.Modules.ActiveForums.Globals.ForumsControlsRegisterAMTag + template;
             template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_posticonlist.ascx\" tagprefix=\"af\" tagname=\"posticons\" %>" + template;
             template = template.Replace("[AF:INPUT:SUBJECT]", "<asp:textbox id=\"txtSubject\" cssclass=\"aftextbox dcf-topic-edit-subject\" runat=\"server\" />");
             template = template.Replace("[AF:REQ:SUBJECT]", "<asp:requiredfieldvalidator id=\"reqSubject\" validationgroup=\"afform\" ControlToValidate=\"txtSubject\" runat=\"server\" />");
@@ -421,7 +401,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (template.Contains("[AF:UI:ANON]"))
                 {
-                    template = Globals.DnnControlsRegisterTag + template;
+                    template = DotNetNuke.Modules.ActiveForums.Globals.DnnControlsRegisterTag + template;
                     template = template.Replace("[AF:INPUT:USERNAME]", "<asp:textbox id=\"txtUsername\" cssclass=\"aftextbox\" runat=\"server\" />");
                     template = template.Replace("[AF:REQ:USERNAME]", "<asp:requiredfieldvalidator id=\"reqUsername\" validationgroup=\"afform\" ControlToValidate=\"txtUsername\" runat=\"server\" />");
                     template = template.Replace("[AF:INPUT:CAPTCHA]", "<dnn:captchacontrol  id=\"ctlCaptcha\" captchawidth=\"130\" captchaheight=\"40\" cssclass=\"Normal\" runat=\"server\" errorstyle-cssclass=\"NormalRed\"  />");
@@ -822,7 +802,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sb.Append("<table cellpadding=\"2\" cellspacing=\"0\">");
                 sb.Append("<tr><td valign=\"top\" colspan=\"3\">[RESX:Announce]:</td></tr><tr><td></td>");
-                sb.Append("<td>[RESX:Announce:StartDate]:</td><td><am:datepicker id=\"calStartDate\" runat=\"server\" /></td></tr><tr><td></td><td>[RESX:Announce:EndDate]:</td><td><am:datepicker id=\"calEndDate\" runat=\"server\" /></td></tr>");
+                sb.Append("<td>[RESX:Announce:StartDate]:</td><td><input type=\"date\" inputmode=\"text\" placeholder=\"\" id=\"calStartDate\" runat=\"server\" /></td></tr><tr><td></td><td>[RESX:Announce:EndDate]:</td><td><input type=\"date\" placeholder=\"\" inputmode=\"text\" id=\"calEndDate\" runat=\"server\" /></td></tr>");
                 sb.Append("</table>");
                 bHasOptions = true;
             }
@@ -846,21 +826,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.Controls.Add(ctl.Controls[0]);
             }
 
-            this.calStartDate.NullDate = Utilities.NullDate().ToString();
-            this.calEndDate.NullDate = Utilities.NullDate().ToString();
-
-            // calStartDate.DateFormat = MainSettings.DateFormatString
-            // calEndDate.DateFormat = MainSettings.DateFormatString
-            if (!(this.AnnounceStart == Utilities.NullDate()))
-            {
-                this.calStartDate.SelectedDate = Utilities.GetUserFormattedDateTime(this.AnnounceStart, this.PortalId, this.UserId);
-            }
-
-            if (!(this.AnnounceEnd == Utilities.NullDate()))
-            {
-                this.calEndDate.SelectedDate = Utilities.GetUserFormattedDateTime(this.AnnounceEnd, this.PortalId, this.UserId);
-            }
-
             this.plhEditor = (PlaceHolder)this.FindControl("plhEditor");
 
             Unit editorWidth = Unit.Percentage(99.0);
@@ -882,7 +847,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         editor.Height = editorHeight;
                         editor.TextMode = TextBoxMode.MultiLine;
                         editor.Rows = 4;
-                        this.plhEditor.Controls.Add(editor);
+                        this.plhEditor?.Controls.Add(editor);
                         this.clientId = editor.ClientID;
                         break;
                     }
@@ -901,7 +866,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         editor.Width = editorWidth;
                         editor.HtmlEncode = false; // Turn Encoding off or passed already Encoded HTML.
                         editor.Height = editorHeight;
-                        this.plhEditor.Controls.Add(editor);
+                        this.plhEditor?.Controls.Add(editor);
                         this.clientId = editor.ClientID;
                         break;
                     }
@@ -1029,14 +994,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.LoadForm();
             this.LinkControls(this.Controls);
 
-            // If Not tsTags Is Nothing Then
-            //    tsTags.Delimiter = ","
-            //    tsTags.CharsTillLoad = 2
-            //    tsTags.SelectedText = _tags
-            //    tsTags.SelectedValue = _tags
-            // End If
-
-            // not sure why this gets set twice.
             this.txtSubject.CssClass = "aftextbox dcf-topic-edit-subject";
             string myTheme = this.ModuleSettings.Theme;
             string myThemePath = this.Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + myTheme);
@@ -1048,21 +1005,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.lblSubject.Text = this.subject;
             this.lblSubject.CssClass = "aftextbox";
 
-            // not sure why this gets set twice.
             this.txtSummary.CssClass = "aftextbox dcf-topic-edit-summary";
             this.chkLocked.Checked = this.locked;
             this.chkPinned.Checked = this.pinned;
             this.chkApproved.Checked = this.@checked;
 
             this.txtTopicPriority.Text = this.topicPriority.ToString();
-            if (this.AnnounceEnd > Utilities.NullDate())
+            if (this.announceEnd > Utilities.NullDate())
             {
-                this.calEndDate.SelectedDate = Utilities.GetUserFormattedDateTime(this.announceEnd, this.PortalId, this.UserId);
+                this.calEndDate.Value = this.announceEnd.ToString("yyyy-MM-dd");
             }
 
-            if (this.AnnounceStart > Utilities.NullDate())
+            if (this.announceStart > Utilities.NullDate())
             {
-                this.calStartDate.SelectedDate = Utilities.GetUserFormattedDateTime(this.announceStart, this.PortalId, this.UserId);
+                this.calStartDate.Value = this.announceStart.ToString("yyyy-MM-dd");
             }
 
             this.btnPost.ImageLocation = this.PostButton.ImageLocation;
@@ -1123,7 +1079,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 case EditorType.HTMLEDITORPROVIDER:
                 case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
-                    ((UI.UserControls.TextEditor)this.plhEditor.FindControl("txtBody")).Text = this.body;
+                    var txtEditor = (UI.UserControls.TextEditor)this.plhEditor?.FindControl("txtBody");
+                    if (txtEditor != null)
+                    {
+                        txtEditor.Text = this.body;
+                    }
+
                     break;
                 case EditorType.TEXTBOX:
                     ((TextBox)this.txtEditor).Text = this.body;
@@ -1190,10 +1151,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             case EditorType.HTMLEDITORPROVIDER:
                             case EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS:
-                                var txtEditor = new UI.UserControls.TextEditor();
                                 break;
                             case EditorType.TEXTBOX:
-                                var txtEditor1 = (TextBox)this.plhEditor.Controls[0];
+                                break;
+                            default:
                                 break;
                         }
 
@@ -1223,10 +1184,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         this.reqCustomBody = (Label)ctrl;
                         break;
                     case "calStartDate":
-                        this.calStartDate = (DotNetNuke.Modules.ActiveForums.Controls.DatePicker)ctrl;
+                        this.calStartDate = (HtmlInputGenericControl)ctrl;
                         break;
                     case "calEndDate":
-                        this.calEndDate = (DotNetNuke.Modules.ActiveForums.Controls.DatePicker)ctrl;
+                        this.calEndDate = (HtmlInputGenericControl)ctrl;
                         break;
                     case "btnPreview":
                         this.btnPreview = (DotNetNuke.Modules.ActiveForums.Controls.ImageButton)ctrl;
@@ -1284,7 +1245,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (Utilities.UseCkEditor4WithForumsPlugins(forumInfo: this.ForumInfo, forumUserInfo: this.ForumUser, allowHTML: this.AllowHTML))
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(Globals.ModulePath + "Resources/ckeditor4-additional-plugins/customConfig.js") + "';");
+                sb.Append("editorConfigeditortxtBody.customConfig = '" + this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModulePath + "Resources/ckeditor4-additional-plugins/customConfig.js") + "';");
                 var extraPlugins = new string[] { "mentions", "ajax", "autocomplete", "textmatch", "textwatcher", "xml", "codeTag" };
                 foreach (string plugin in extraPlugins)
                 {
@@ -1322,7 +1283,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string GetAvatarTagForUserMentions()
         {
-            return Utilities.ResolveUrl(this.PortalSettings, "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />");
+            return Utilities.ResolveUrlInTag(template: "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />", defaultPortalAlias: this.PortalSettings.DefaultPortalAlias, sslEnabled: this.PortalSettings.SSLEnabled);
         }
 
         private string GetTagForUserMentions()

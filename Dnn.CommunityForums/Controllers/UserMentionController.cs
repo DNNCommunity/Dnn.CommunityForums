@@ -120,14 +120,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             PortalId = portalId,
                             ModuleId = moduleId,
                             DateMentioned = DateTime.UtcNow,
+                            ForumUser = user,
                         };
                         this.Insert(userMention);
                         if (userMention.ForumUser.UserMentionNotificationsEnabled)
                         {
-                            var subject = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.UserMentionNotificationSubject, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                            var subject = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.UserMentionNotificationSubject, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix, userMention.ForumUser);
                             subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), userMention.Content.Post, userMention.ForumUser.PortalSettings, userMention.ForumUser.ModuleSettings, new Services.URLNavigator().NavigationManager(), userMention.ForumUser, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery).ToString();
                             subject = subject.Length > 400 ? subject.Substring(0, 400) : subject;
-                            var body = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.UserMentionNotificationBody, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                            var body = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.UserMentionNotificationBody, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix, userMention.ForumUser);
                             body = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(body), userMention.Content.Post, userMention.ForumUser.PortalSettings, userMention.ForumUser.ModuleSettings, new Services.URLNavigator().NavigationManager(), userMention.ForumUser, new Uri(requestUrl), new Uri(requestUrl).PathAndQuery).ToString();
 
                             string notificationKey = BuildNotificationContextKey(portalId, moduleId, contentId, userId);

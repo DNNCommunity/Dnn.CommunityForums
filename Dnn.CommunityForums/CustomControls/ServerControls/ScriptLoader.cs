@@ -36,8 +36,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public bool Callback { get; set; }
 
-        public bool DatePicker { get; set; }
-
         public bool RequiredFieldValidator { get; set; }
 
         #endregion
@@ -45,7 +43,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public ScriptLoader()
         {
             this.RequiredFieldValidator = false;
-            this.DatePicker = false;
             this.Callback = false;
             this.ActiveGrid = false;
             this.TextSuggest = false;
@@ -58,7 +55,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             base.OnLoad(e);
             ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/ActiveGrid.js", 102);
             ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/cb.js", 102);
-            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/datepicker.js", 102);
             ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/Validation.js", 102);
             ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "customcontrols/resources/MenuButton.js", 102);
         }

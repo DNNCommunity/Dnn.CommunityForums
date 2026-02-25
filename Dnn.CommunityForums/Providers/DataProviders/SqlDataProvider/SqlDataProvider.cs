@@ -344,26 +344,26 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Search
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Using Search_DotNetNuke(int moduleId, DateTime beginDateUtc)")]
-        public override IDataReader Search_DotNetNuke(int moduleId)
-        {
-            return SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Search_GetSearchItems", moduleId);
-        }
+        public override IDataReader Search_DotNetNuke(int moduleId) => throw new NotImplementedException();
 
         public override IDataReader Search_DotNetNuke(int moduleId, DateTime beginDateUtc)
         {
             return SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Search_GetSearchItemsFromBegDate", moduleId, beginDateUtc);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public override DataSet Search(int portalId, int moduleId, int userId, int searchId, int rowIndex, int maxRows, string searchString, int matchType, int searchField, int timespan, int authorId, string author, string forums, string tags, int resultType, int sort, int maxCacheHours, bool fullText)
         {
             return SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Search", portalId, moduleId, userId, searchId, rowIndex, maxRows, searchString, matchType, searchField, timespan, authorId, author, forums, tags, resultType, sort, maxCacheHours, fullText);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public override int Search_ManageFullText(bool enabled)
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Search_ManageFullText", enabled));
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public override int Search_GetFullTextStatus()
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Search_GetFullTextStatus"));

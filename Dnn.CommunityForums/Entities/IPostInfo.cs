@@ -44,6 +44,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         bool IsTopic { get; }
 
+        bool IsApproved { get; set; }
+
+        bool IsRejected { get; set; }
+
+        bool IsDeleted { get; set; }
+
         bool IsReply { get; }
 
         Uri RequestUri { get; set; }
@@ -65,5 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         DotNetNuke.Modules.ActiveForums.Enums.PostStatus GetPostStatusForUser(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
 
         string GetPostStatusCss(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser);
+
+        string GetLink();
     }
 }

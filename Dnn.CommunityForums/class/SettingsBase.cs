@@ -21,6 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
+    using System.Collections.Generic;
 
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
@@ -32,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UserId);
 
-        internal string UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ForumModuleId, this.ForumUser);
+        internal HashSet<int> UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumModuleId, this.ForumUser);
 
         public int ForumModuleId
         {

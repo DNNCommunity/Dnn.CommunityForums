@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -54,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     var forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, this.ForumModuleId);
                     if (forumGroup != null)
                     {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, forumGroup);
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.ViewModels.ForumGroup(forumGroup));
                     }
 
                     return this.Request.CreateResponse(HttpStatusCode.NotFound);

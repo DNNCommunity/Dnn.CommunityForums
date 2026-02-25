@@ -495,15 +495,6 @@
   <data name="MoveText.Text" xml:space="preserve">
     <value>Move Topic</value>
   </data>
-  <data name="[RESX:SearchTypeAllKeywords].Text" xml:space="preserve">
-    <value>ALL Keywords</value>
-  </data>
-  <data name="[RESX:SearchTypeANYKeywords].Text" xml:space="preserve">
-    <value>ANY Keyword</value>
-  </data>
-  <data name="[RESX:SearchTypeExactMatch].Text" xml:space="preserve">
-    <value>Exact Match</value>
-  </data>
   <data name="SearchType.Text" xml:space="preserve">
     <value>Search Type</value>
   </data>
@@ -1470,9 +1461,6 @@ From,
   <data name="[RESX:SearchByTopics].Text" xml:space="preserve">
     <value>Topics</value>
   </data>
-  <data name="[RESX:SearchKeywords].Text" xml:space="preserve">
-    <value>Keyword(s):</value>
-  </data>
   <data name="[RESX:Reset].Text" xml:space="preserve">
     <value>Reset</value>
   </data>
@@ -1481,9 +1469,6 @@ From,
   </data>
   <data name="[RESX:SearchByTag].Text" xml:space="preserve">
     <value>Tags:</value>
-  </data>
-  <data name="[RESX:SearchOptionsAdditional].Text" xml:space="preserve">
-    <value>Additional Options</value>
   </data>
   <data name="[RESX:SearchOptions].Text" xml:space="preserve">
     <value>Search for Posts</value>
@@ -1535,9 +1520,6 @@ From,
   </data>
   <data name="Yesterday.Text" xml:space="preserve">
     <value>Yesterday</value>
-  </data>
-  <data name="[RESX:SearchInputError].Text" xml:space="preserve">
-    <value>Please enter a keyword, username or tag.</value>
   </data>
   <data name="MarkAllReadConfirm.Text" xml:space="preserve">
     <value>Mark all items read?</value>
@@ -1806,15 +1788,6 @@ From,
   </data>
   <data name="[RESX:EnableNotificationsForOwnContent].Help" xml:space="preserve">
     <value>Select this option if you wish to receive notifications that new content has been posted even though you are the user who posted the content.</value>
-  </data>
-  <data name="[RESX:SearchSubjectAndTopic].Text" xml:space="preserve">
-    <value>Subject &amp; Topic</value>
-  </data>
-  <data name="[RESX:SearchSubjectOnly].Text" xml:space="preserve">
-    <value>Subject Only</value>
-  </data>
-  <data name="[RESX:SearchTopicOnly].Text" xml:space="preserve">
-    <value>Topic Only</value>
   </data>
   <data name="[RESX:SearchSortTypeRelevance].Text" xml:space="preserve">
     <value>Relevance</value>

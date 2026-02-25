@@ -80,23 +80,28 @@ namespace DotNetNuke.Modules.ActiveForums
             this.drpForums.Items.Clear();
             this.drpForums.Items.Insert(0, new ListItem(string.Empty, string.Empty));
             int index = 1;
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(this.Forums, this.ForumUser, fi =>
-            {
-                this.drpForums.Items.Insert(index, new ListItem(fi.GroupName, $"GROUPJUMP:{fi.ForumGroupId}"));
-                index += 1;
-            }, fi =>
-            {
-                this.drpForums.Items.Insert(index, new ListItem($"--{fi.ForumName}", $"FORUMJUMP:{fi.ForumID}"));
-                index += 1;
-            },
-            fi =>
-            {
-                this.drpForums.Items.Insert(index, new ListItem(
-                    fi.ForumName.Length > 30 ? $"{fi.ForumName.Substring(0, 27)}..." : fi.ForumName,
-                    $"FORUMJUMP:{fi.ForumID}"));
-                index += 1;
-            },
-            includeHiddenForums: false);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(
+                forums: this.Forums,
+                forumUserInfo: this.ForumUser,
+                groupAction: fi =>
+                {
+                    this.drpForums.Items.Insert(index, new ListItem(fi.GroupName, $"GROUPJUMP:{fi.ForumGroupId}"));
+                    index += 1;
+                },
+                forumAction: fi =>
+                {
+                    this.drpForums.Items.Insert(index, new ListItem($"--{fi.ForumName}", $"FORUMJUMP:{fi.ForumID}"));
+                    index += 1;
+                },
+                subForumAction: fi =>
+                {
+                    this.drpForums.Items.Insert(index, new ListItem(
+                        fi.ForumName.Length > 30 ? $"{fi.ForumName.Substring(0, 27)}..." : fi.ForumName,
+                        $"FORUMJUMP:{fi.ForumID}"));
+                    index += 1;
+                },
+                includeHiddenForums: false,
+                includeInactiveForums: false);
 
             if (this.GetViewType != null)
             {

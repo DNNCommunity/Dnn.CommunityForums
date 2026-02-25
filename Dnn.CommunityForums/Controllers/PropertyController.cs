@@ -52,9 +52,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 sb.Append(",");
                 sb.Append(Utilities.JSON.Pair("ObjectOwnerId", p.ObjectOwnerId.ToString()));
                 sb.Append(",");
-                sb.Append(Utilities.JSON.Pair("Name", p.Name.ToString()));
+                sb.Append(Utilities.JSON.Pair("Name", p.Name?.ToString()));
                 sb.Append(",");
-                sb.Append(Utilities.JSON.Pair("DataType", p.DataType.ToString()));
+                sb.Append(Utilities.JSON.Pair("DataType", p.DataType?.ToString()));
                 sb.Append(",");
                 sb.Append(Utilities.JSON.Pair("DefaultAccessControl", Convert.ToInt32(p.DefaultAccessControl).ToString()));
                 sb.Append(",");
@@ -66,13 +66,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 sb.Append(",");
                 sb.Append(Utilities.JSON.Pair("ValidationExpression", System.Net.WebUtility.UrlEncode(System.Net.WebUtility.HtmlEncode(p.ValidationExpression.ToString()))));
                 sb.Append(",");
-                sb.Append(Utilities.JSON.Pair("ViewTemplate", p.ViewTemplate.ToString()));
+                sb.Append(Utilities.JSON.Pair("ViewTemplate", p.ViewTemplate?.ToString()));
                 sb.Append(",");
-                sb.Append(Utilities.JSON.Pair("EditTemplate", p.EditTemplate.ToString()));
+                sb.Append(Utilities.JSON.Pair("EditTemplate", p.EditTemplate?.ToString()));
                 sb.Append(",");
                 sb.Append(Utilities.JSON.Pair("SortOrder", p.SortOrder.ToString()));
                 sb.Append(",");
-                sb.Append(Utilities.JSON.Pair("DefaultValue", p.DefaultValue.ToString()));
+                sb.Append(Utilities.JSON.Pair("DefaultValue", p.DefaultValue?.ToString()));
                 sb.Append(",");
                 sb.Append(Utilities.JSON.Pair("Label", System.Net.WebUtility.HtmlEncode("[RESX:" + p.Name + "]")));
                 sb.Append("},");

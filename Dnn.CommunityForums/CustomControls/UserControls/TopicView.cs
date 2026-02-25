@@ -446,7 +446,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sOutput = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicView, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
+                sOutput = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicView, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix, this.ForumUser);
             }
 
             sOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(sOutput)).ToString();
@@ -789,7 +789,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (sbOutput.ToString().Contains("[DCF:TEMPLATE-POSTACTIONS]"))
             {
                 this.useListActions = true;
-                sbOutput.Replace("[DCF:TEMPLATE-POSTACTIONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.PostActions, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix));
+                sbOutput.Replace("[DCF:TEMPLATE-POSTACTIONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.PostActions, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix, this.ForumUser));
             }
 
             sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyPostActionTokenSynonyms(sbOutput, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale, this.useListActions);
@@ -836,7 +836,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (sOutput.Contains("[SPLITBUTTONS]") && (this.bSplit && (this.bModerate || (this.topic.Author.AuthorId == this.UserId))) && (this.topic.ReplyCount > 0))
             {
-                sbOutput.Replace("[SPLITBUTTONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicSplitButtons, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix));
+                sbOutput.Replace("[SPLITBUTTONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicSplitButtons, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix, this.ForumUser));
                 sbOutput.Replace("[TOPICID]", this.TopicId.ToString());
             }
             else
@@ -1027,10 +1027,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             bool isReply = !dr.GetInt("ReplyId").Equals(0);
 
-
             // Replace Tags Control
             var tags = dr.GetString("Tags");
-            if (string.IsNullOrWhiteSpace(tags))
+            if (tags.Equals(",") || string.IsNullOrWhiteSpace(tags))
             {
                 sOutput = TemplateUtils.ReplaceSubSection(sOutput, string.Empty, "[AF:CONTROL:TAGS]", "[/AF:CONTROL:TAGS]");
             }
@@ -1041,12 +1040,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var tagList = string.Empty;
                 foreach (var tag in tags.Split(','))
                 {
-                    if (tagList != string.Empty)
+                    if (!string.IsNullOrEmpty(tag))
                     {
-                        tagList += ", ";
-                    }
+                        if (tagList != string.Empty)
+                        {
+                            tagList += ", ";
+                        }
 
-                    tagList += "<a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + "=search", ParamKeys.Tags + "=" + System.Net.WebUtility.UrlEncode(tag) }) + "\">" + tag + "</a>";
+                        tagList += "<a href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + "=search", ParamKeys.Tags + "=" + System.Net.WebUtility.UrlEncode(tag) }) + "\">" + tag + "</a>";
+                    }
                 }
 
                 sOutput = sOutput.Replace("[AF:LABEL:TAGS]", tagList);

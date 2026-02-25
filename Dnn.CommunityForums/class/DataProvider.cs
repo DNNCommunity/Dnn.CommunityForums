@@ -181,10 +181,13 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Search
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract DataSet Search(int portalId, int moduleId, int userId, int searchId, int rowIndex, int maxRows, string searchString, int matchType, int searchField, int timespan, int authorId, string author, string forums, string tags, int resultType, int sort, int maxCacheHours, bool fullText);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract int Search_ManageFullText(bool enabled);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract int Search_GetFullTextStatus();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Using Search_DotNetNuke(int moduleId, DateTime beginDateUtc)")]

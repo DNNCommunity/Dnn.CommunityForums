@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Controls;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
 
     public partial class af_grid : ForumBase
     {
@@ -53,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicResults, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicResults, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this.ForumUser);
 
             try
             {
@@ -157,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.rowIndex = (this.PageId - 1) * this.pageSize;
 
             var db = new Data.Common();
-            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ForumModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
+            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read).FromHashSetToDelimitedString<int>(";");
 
             if (this.Request.Params[ParamKeys.GridType] != null)
             {

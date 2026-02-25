@@ -198,12 +198,6 @@
   <data name="FullName.Text" xml:space="preserve">
     <value>Full Name</value>
   </data>
-  <data name="FullTextSearch.Help" xml:space="preserve">
-    <value>Full-Text Search provides better performance and more accurate results.  Contact your hosting provider to make sure full-text search is enabled for your database.</value>
-  </data>
-  <data name="FullTextSearch.Text" xml:space="preserve">
-    <value>Enable Full-Text Search</value>
-  </data>
   <data name="LastName.Text" xml:space="preserve">
     <value>Last Name</value>
   </data>
@@ -259,7 +253,7 @@
     <value>New Topic</value>
   </data>
   <data name="URLPrefixBase.Help" xml:space="preserve">
-    <value>This is the text that will be used as the intial part of all forum URLs.  In most cases you will just want to enter "forum"</value>
+    <value>This is the text that will be used as the initial part of all forum URLs.  In most cases you will just want to enter "forums"</value>
   </data>
   <data name="URLPrefixBase.Text" xml:space="preserve">
     <value>Base Path</value>
@@ -407,12 +401,6 @@
   </data>
   <data name="ProfileVisibility.Text" xml:space="preserve">
     <value>Profile Visibility</value>
-  </data>
-  <data name="FullTextAzure.Text" xml:space="preserve">
-    <value>Full text searching is not supported on SQL Azure.</value>
-  </data>
-  <data name="FullTextNotInstalled.Text" xml:space="preserve">
-    <value>Full text search is not installed on the SQL Server.</value>
   </data>
   <data name="CacheTemplates.Help" xml:space="preserve">
     <value>Should normally be enabled; disable if you are editing templates and want to see immediate results.</value>

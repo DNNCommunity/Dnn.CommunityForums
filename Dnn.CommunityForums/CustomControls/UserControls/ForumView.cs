@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-                string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ForumView, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ForumView, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this.ForumUser);
 
                 StringBuilder stringBuilder = new StringBuilder(sTemplate);
                 #region "Backward compatilbility -- remove in v10.00.00"
@@ -203,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         if (obj == null)
                         {
                             this.Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                            foreach (string forumId in this.ForumIds.Split(separator: ";".ToCharArray(), options: StringSplitOptions.RemoveEmptyEntries))
+                            foreach (var forumId in this.ForumIds)
                             {
                                 this.Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(forumId), this.ForumModuleId));
                             }

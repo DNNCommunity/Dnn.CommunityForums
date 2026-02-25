@@ -16,7 +16,7 @@
     function forumSave() {
         closeAllProp();
         var fgp = document.getElementById("<%=drpGroups.ClientID%>");
-        if(fgp && !AMPage.IsGroupValid('afforum')){return false};
+        if(!AMPage.IsGroupValid('afforum')){return false};
         af_showLoad();
         var fname = document.getElementById("<%=txtForumName.ClientID%>");
         if (fname) {
@@ -558,7 +558,6 @@ function maintRun(opt){
 	data.withNoReplies = noReplies;
 	data.dryRun = dryRun;
 	var sf = $.ServicesFramework(<%=ModuleId%>);
-			//sf.getAntiForgeryProperty(data);
 		$.ajax({
 			type: "POST",
 			url: sf.getServiceRoot('ActiveForums') + "AdminService/RunMaintenance",
@@ -650,8 +649,8 @@ function afadmin_getProperties() {
 	req.action = 4;
 	req.ObjectType = 1;
 	var objId = afGet('<%=hidForumId.ClientID%>');
-		req.ObjectOwnerId = objId;
-		afadmin_callback(JSON.stringify(req), afadmin_buildProperties);
+    req.ObjectOwnerId = objId;
+	afadmin_callback(JSON.stringify(req), afadmin_buildProperties);
 	};
 	function afadmin_buildProperties(result) {
 		asproplist = result;
@@ -758,6 +757,13 @@ function afadmin_getProperties() {
 		dr.className = 'propname afclear';
 		//dr.setAttribute('class', 'propname afclear');
 		var a = document.createElement('a');
+        var img = document.createElement('img');
+        img.src = imgPath + "delete16.png";
+        img.onclick = function() { afadmin_deleteProp(prop.PropertyId); };
+        a.appendChild(img);
+		a.onclick = function () { afadmin_deleteProp(prop.PropertyId); };
+		dr.appendChild(a);
+		a = document.createElement('a');
 		a.appendChild(document.createTextNode(prop.Name));
 		a.onclick = function () { afadmin_loadPropForm(this); };
 		dr.appendChild(a);
@@ -792,11 +798,11 @@ function afadmin_getProperties() {
 		dr.className = 'acl';
 		return l;
 	};
-	function afadmin_deleteProp() {
+	function afadmin_deleteProp(propertyid) {
 		if (confirm('[RESX:WARN:DeleteProperty]')) {
 			var tmp = {};
 			tmp.action = 3;
-			tmp.propertyid = afGet('hidPropertyId');
+			tmp.propertyid = propertyid;
 			afadmin_callback(JSON.stringify(tmp), afadmin_getProperties);
 		};
 	};
@@ -952,6 +958,9 @@ function afadmin_getProperties() {
                         <td class="amcpbold" valign="top">[RESX:VanityName]:</td>
                         <td width="100%">
                             <asp:textbox id="txtPrefixURL" runat="server" width="100%" cssclass="amcptxtbx" maxlength="50" onkeypress="return filterVanity(this,event);" />
+                        </td>
+                        <td>
+                            <am:requiredfieldvalidator id="reqPrefix" runat="server" text="*" controltovalidate="txtPrefixURL" validationgroup="afforum" />
                         </td>
                         <td>
                             <img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/spacer.gif")%>" width="20" height="" /></td>
@@ -1712,7 +1721,6 @@ function afadmin_getProperties() {
 
         <div class="afbuttonarea">
             <input type="button" title="[RESX:Save]" value="[RESX:Save]" id="btnSave" class="afbtn act" onclick="afadmin_saveProperty();" />
-            <!--<input type="button" title="[RESX:Delete]" value="[RESX:Delete]" onclick="afadmin_deleteProp();" id="btnDelete" class="afbtn dim" />-->
             <input type="button" title="[RESX:Cancel]" value="[RESX:Cancel]" onclick="afadmin_cancelPropForm();" id="btnCancel" class="afbtn dim" />
         </div>
         <input type="hidden" id="hidPropertyId" value="" />
@@ -1721,4 +1729,3 @@ function afadmin_getProperties() {
     </div>
 </div>
 
-<asp:literal id="litPropLoad" runat="server" />

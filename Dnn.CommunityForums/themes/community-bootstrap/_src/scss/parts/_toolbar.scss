@@ -27,7 +27,6 @@
 
 // Toolbar on top
 .dcf-toolbars {
-
     display: flex;
     flex-wrap: wrap;
     padding: $spacer-sm 0;
@@ -36,7 +35,6 @@
     .dcf-toolbar-user {
         flex-grow: 1;
         padding-bottom: $spacer-sm;
-
     }
 
     .dcf-toolbar-manage {
@@ -46,11 +44,7 @@
         @media screen and (min-width: $break-tablet) {
             justify-content: end;
         }
-
-
     }
-
-
     // Quick Search in toolbar
 
     .dcf-quick-search {
@@ -63,12 +57,12 @@
             text-align: right;
             cursor: pointer;
         }
-
         // Hide search text on mobile
-        .dcf-search-link-text{
-            display:none;
-            @media screen and (min-width: $break-tablet){
-                display:inline;
+        .dcf-search-link-text {
+            display: none;
+
+            @media screen and (min-width: $break-tablet) {
+                display: inline;
                 margin-left: 0.2em;
             }
         }
@@ -84,43 +78,37 @@
             left: auto !important;
             top: 2.5em;
         }
-
         // $button-width: 4em;
 
         .dcf-search-input {
-            display:flex;
+            display: flex;
+
             .dcf-search-input {
                 border: solid 1px #bbb;
                 flex-grow: 1;
                 padding: 0 $spacer-sm;
             }
 
-            .dcf-search-button {
-                border: none;
-                margin-left: $spacer-xs;
-                padding: 0 $spacer-sm;
+            .dcf-search-icon-button {
+                float: right;
+                position: relative;
+                cursor: pointer;
+                top: 0px;
+                right: 0px;
+                background-color: transparent;
+                border: solid 1px #bbb;
+                border-left: none 0px transparent;
             }
         }
 
-        .dcf-search-options{
-            .dcf-search-option-advanced{
+        .dcf-search-options {
+            .dcf-search-option-advanced {
                 display: block;
                 width: 100%;
+                text-align: right;
+                font-size: 0.9em;
                 padding: $spacer-sm 0;
             }
-
-            .dcf-search-option-topics{
-                margin-right: $spacer-md;
-            }
-
-            .dcf-search-option-text{
-                margin-left: $spacer-xs;
-            }
         }
-
-        
-
-
     }
-
 }

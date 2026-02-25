@@ -342,9 +342,6 @@
   <data name="[RESX:EnableFilter].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Filtri</value>
   </data>
-  <data name="[RESX:EnableFullText].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Abilita testo completo</value>
-  </data>
   <data name="[RESX:EnablePoints].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Sistema a punti</value>
   </data>
@@ -452,12 +449,6 @@
   </data>
   <data name="[RESX:FullName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Nome e Cognome</value>
-  </data>
-  <data name="[RESX:FullTextSearch:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>La ricerca full-text offre prestazioni migliori e risultati più accurati.</value>
-  </data>
-  <data name="[RESX:FullTextSearch].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Ricerca full-text</value>
   </data>
   <data name="[RESX:GetSupport].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Clicca per il supporto dei forum della community DNN</value>
@@ -1545,5 +1536,8 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   </data>
   <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
     <value>Può aggiungere/gestire tag su argomenti. Qualsiasi tag inserito nei post (argomenti e/o risposte) viene aggiunto automaticamente all'argomento così come la lista dei tag disponibili nei forum.</value>
+  </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>Non attivo</value>
   </data>
 </root>

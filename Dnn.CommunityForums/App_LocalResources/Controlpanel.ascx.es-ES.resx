@@ -342,9 +342,6 @@
   <data name="[RESX:EnableFilter].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Filtros</value>
   </data>
-  <data name="[RESX:EnableFullText].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Habilitar texto completo</value>
-  </data>
   <data name="[RESX:EnablePoints].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Sistema de puntos</value>
   </data>
@@ -452,12 +449,6 @@
   </data>
   <data name="[RESX:FullName].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Nombre completo</value>
-  </data>
-  <data name="[RESX:FullTextSearch:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>La búsqueda de texto completo proporciona un mejor rendimiento y resultados más precisos.</value>
-  </data>
-  <data name="[RESX:FullTextSearch].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Búsqueda de texto completo</value>
   </data>
   <data name="[RESX:GetSupport].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Haga clic para obtener asistencia en los foros de la comunidad de DNN</value>
@@ -1545,5 +1536,8 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   </data>
   <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
     <value>Puede añadir/gestionar etiquetas en los temas. Cualquier etiqueta introducida en las publicaciones (temas y/o respuestas) se añade automáticamente al tema, así como a la lista de etiquetas disponibles en los foros.</value>
+  </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>No activo</value>
   </data>
 </root>

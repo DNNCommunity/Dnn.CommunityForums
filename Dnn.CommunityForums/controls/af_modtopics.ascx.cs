@@ -286,7 +286,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sb.Append("<div class=\"afmodrow\">");
                         sb.Append("<table width=\"99%\">");
-                        sb.Append("<tr><td style=\"white-space:nowrap;\">" + Utilities.GetUserFormattedDateTime(Convert.ToDateTime(dr["DateCreated"]), this.PortalId, this.UserId) + "</td>");
+                        sb.Append("<tr><td style=\"white-space:nowrap;\">" + Utilities.GetUserFormattedDateTime(Convert.ToDateTime(dr["DateCreated"]), this.ForumUser) + "</td>");
                         sb.Append("<td class=\"dnnFormItem dnnActions dnnClear dnnRight\">");
                         if (this.bModerate)
                         {

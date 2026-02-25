@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnInit(e);
 
             this.post = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId, this.ForumModuleId).Post;
-            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.Likes, this.post.Forum.FeatureSettings.TemplateFileNameSuffix ?? SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.Likes, this.post.Forum.FeatureSettings.TemplateFileNameSuffix ?? SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this.ForumUser);
 
             try
             {

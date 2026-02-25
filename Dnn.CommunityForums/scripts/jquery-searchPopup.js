@@ -32,8 +32,6 @@
 
             $('button', obj).click(function () {
 
-                var resultType = obj.find('[type=radio]:checked').val();
-
                 var query = obj.find('[type=text]').val();
                 query = $.trim(query);
                 if (!query)
@@ -41,7 +39,7 @@
 
                 var searchUrl = obj.attr('data-searchUrl');
 
-                document.location.href = searchUrl + "?q=" + query + "&rt=" + resultType;
+                document.location.href = searchUrl + "?q=" + query;
                 
                 return false;
             });

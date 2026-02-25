@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
+    using System.Linq;
     using System.Text;
     using System.Web;
     using System.Web.UI;
@@ -95,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.AppRelativeVirtualPath = "~/";
 
                 string topicsTemplate = string.Empty;
-                topicsTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicsView, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
+                topicsTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicsView, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix, this.ForumUser);
                 if (topicsTemplate.Contains("[NOTOOLBAR]"))
                 {
                     if (HttpContext.Current.Items.Contains("ShowToolbar"))
@@ -123,7 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (topicsTemplate.Contains("[DCF:TEMPLATE-TOPICACTIONS]"))
                 {
                     this.useListActions = true;
-                    topicsTemplate = topicsTemplate.Replace("[DCF:TEMPLATE-TOPICACTIONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicActions, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix));
+                    topicsTemplate = topicsTemplate.Replace("[DCF:TEMPLATE-TOPICACTIONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicActions, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix, this.ForumUser));
                 }
 
                 topicsTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(topicsTemplate)).ToString();
@@ -339,7 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.ctlForumSubs = (ForumView)this.LoadControl(typeof(ForumView), null);
                 this.ctlForumSubs.ModuleConfiguration = this.ModuleConfiguration;
                 this.ctlForumSubs.ForumId = this.ForumId;
-                this.ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ForumModuleId).SubForums;
+                this.ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ForumModuleId).SubForums.Where(f => f.Active && !f.Hidden).ToList();
                 this.ctlForumSubs.ForumTabId = this.ForumTabId;
                 this.ctlForumSubs.ForumModuleId = this.ForumModuleId;
                 this.ctlForumSubs.SubsOnly = true;
@@ -434,7 +435,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (this.Request.IsAuthenticated)
             {
                 string Url = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=sendto", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
-                sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + Url + "\" rel=\"nofollow\"><img src=\"" + Utilities.ResolveUrl(this.ModuleSettings.ThemeLocation + "/images/email16.png") + "\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
+                sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + Url + "\" rel=\"nofollow\"><img src=\"" + Utilities.ResolveRelativePath(this.ModuleSettings.ThemeLocation + "/images/email16.png") + "\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
             }
             else
             {

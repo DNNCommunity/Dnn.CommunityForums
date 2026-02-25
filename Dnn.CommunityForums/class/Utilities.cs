@@ -44,6 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Security.Permissions;
 
     public abstract partial class Utilities
@@ -121,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : string.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
-                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix);
+                sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix, forumUser);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser, requestUri: requestUri, rawUrl: rawUrl);
                 if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
                 {
@@ -234,11 +235,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return false;
         }
 
-        public static DateTime NullDate()
-        {
-            var nfi = new CultureInfo("en-US", false).DateTimeFormat;
-            return DateTime.Parse("1/1/1900", nfi).ToUniversalTime();
-        }
+        public static DateTime NullDate() => new DateTime(1900, 1, 1).ToUniversalTime();
 
         public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings()
         {
@@ -989,7 +986,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
-        internal static string ResolveUrl(string url)
+        internal static string ResolveRelativePath(string url)
         {
             try
             {
@@ -1059,24 +1056,37 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static string GetUserFormattedDateTime(DateTime? dateTime, int portalId, int userId, string format)
+        internal static string GetUserFormattedDateTime(DateTime? dateTime, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, string format)
         {
             if (dateTime != null)
             {
-                CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
-                TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
+                CultureInfo userCultureInfo = GetCultureInfoForUser(forumUser.UserInfo);
+                TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(forumUser.UserInfo);
                 return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset((DateTime)dateTime), format);
             }
 
             return string.Empty;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         internal static string GetUserFormattedDateTime(DateTime? dateTime, int portalId, int userId)
         {
             if (dateTime != null)
             {
                 CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
                 TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
+                return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset((DateTime)dateTime));
+            }
+
+            return string.Empty;
+        }
+
+        internal static string GetUserFormattedDateTime(DateTime? dateTime, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            if (dateTime != null)
+            {
+                CultureInfo userCultureInfo = GetCultureInfoForUser(forumUser.UserInfo);
+                TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(forumUser.UserInfo);
                 return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset((DateTime)dateTime));
             }
 
@@ -1118,11 +1128,11 @@ namespace DotNetNuke.Modules.ActiveForums
             return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset(dateTime), format);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId)
         {
             return GetUserFormattedDateTime((DateTime?)dateTime, portalId, userId);
         }
-
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
         public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
@@ -1525,7 +1535,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return contents;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int ModuleId, int forumId).")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int moduleId, int forumId).")]
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, moduleId, forumId);
@@ -1749,6 +1759,16 @@ namespace DotNetNuke.Modules.ActiveForums
             return moduleId;
         }
 
+        internal static bool RunningInViewer(int moduleId, int tabId)
+        {
+            if (moduleId > 0 && tabId > 0)
+            {
+                return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: moduleId, tabId: tabId, ignoreCache: false).DesktopModule?.ModuleName == string.Concat(Globals.ModuleName, " Viewer");
+            }
+
+            return false;
+        }
+
         internal static void CopyFolder(DirectoryInfo source, DirectoryInfo target)
         {
             try
@@ -1815,29 +1835,55 @@ namespace DotNetNuke.Modules.ActiveForums
             return expression != null && (double.TryParse(expression.ToString(), out _) || bool.TryParse(expression.ToString(), out _));
         }
 
-        internal static string ResolveUrl(PortalSettings portalSettings, string template)
+        internal static string ResolveUrlInTag(string template, string defaultPortalAlias, bool sslEnabled = true)
         {
             const string linkRegex = "(href|src)=\"(/[^\"]*?)\"";
             var matches = Regex.Matches(template, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
             foreach (Match match in matches)
             {
-                var link = match.Groups[2].Value;
-                var defaultAlias = portalSettings.DefaultPortalAlias;
-                var domain = DotNetNuke.Common.Globals.AddHTTP(defaultAlias);
-                if (defaultAlias.Contains("/"))
-                {
-                    var subDomain =
-                        defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
-                    if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        link = link.Substring(subDomain.Length);
-                    }
-                }
-
-                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{domain}{link}\"");
+                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{ResolveUrl(match.Groups[2].Value, defaultPortalAlias, sslEnabled)}\"");
             }
 
             return template;
+        }
+
+        internal static string ResolveUrl(string url, string defaultPortalAlias, bool sslEnabled = true)
+        {
+            var link = string.Empty;
+            if (url.StartsWith("/", StringComparison.InvariantCultureIgnoreCase))
+            {
+                link = url;
+            }
+            else
+            {
+                var uriBuilder = new UriBuilder(url);
+                var pathAndQuery = $"{uriBuilder.Path}{uriBuilder.Query}";
+                link = pathAndQuery;
+            }
+
+            var defaultAlias = defaultPortalAlias;
+            var domain = DotNetNuke.Common.Globals.AddHTTP(defaultAlias);
+            if (defaultAlias.Contains("/"))
+            {
+                var subDomain = defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
+                if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    link = link.Substring(subDomain.Length);
+                }
+
+                url = url.Replace(url, $"{domain}{link}");
+            }
+
+            if (sslEnabled && url.StartsWith("http://"))
+            {
+                url = url.Replace("http://", "https://");
+            }
+            else if (!sslEnabled && url.StartsWith("https://"))
+            {
+                url = url.Replace("https://", "http://");
+            }
+
+            return url;
         }
 
         internal static string GetSha256Hash(string input)
@@ -1912,6 +1958,16 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return false;
+        }
+
+        internal static string RemoveCultureFromUrl(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string url)
+        {
+            if (!string.IsNullOrEmpty(portalSettings.PortalAlias?.CultureCode) && url.ToLowerInvariant().Contains($"/{portalSettings.PortalAlias?.CultureCode?.ToLowerInvariant()}/"))
+            {
+                url = url.ToLowerInvariant().Replace($"/{portalSettings.PortalAlias.CultureCode.ToLowerInvariant()}/", "/");
+            }
+
+            return url;
         }
     }
 }

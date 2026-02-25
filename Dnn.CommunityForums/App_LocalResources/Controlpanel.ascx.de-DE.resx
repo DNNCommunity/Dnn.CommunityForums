@@ -447,9 +447,6 @@
   <data name="[RESX:EnableFilter].Text" xml:space="preserve">
     <value>Filter</value>
   </data>
-  <data name="[RESX:EnableFullText].Text" xml:space="preserve">
-    <value>Volltext aktivieren</value>
-  </data>
   <data name="[RESX:EnablePoints].Text" xml:space="preserve">
     <value>Punktesystem</value>
   </data>
@@ -557,12 +554,6 @@
   </data>
   <data name="[RESX:FullName].Text" xml:space="preserve">
     <value>Vollständiger Name</value>
-  </data>
-  <data name="[RESX:FullTextSearch:Intro].Text" xml:space="preserve">
-    <value>Die Volltextsuche bietet eine bessere Leistung und genauere Ergebnisse.</value>
-  </data>
-  <data name="[RESX:FullTextSearch].Text" xml:space="preserve">
-    <value>Volltextsuche</value>
   </data>
   <data name="[RESX:GetSupport].Text" xml:space="preserve">
     <value>Klicken Sie hier, um Support für DNN-Community-Foren zu erhalten.</value>
@@ -1650,5 +1641,8 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   </data>
   <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
     <value>Kann Tags zu Themen hinzufügen/verwalten. Alle in Beiträgen (Themen und/oder Antworten) eingetragenen Tags werden automatisch dem Thema sowie der Liste der im Forum verfügbaren Tags hinzugefügt.</value>
+  </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>Nicht aktiv</value>
   </data>
 </root>

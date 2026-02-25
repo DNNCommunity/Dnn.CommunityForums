@@ -1,8 +1,5 @@
 SET NOCOUNT ON
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_ManageFullText]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_ManageFullText]
-GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topic_GetPrevNext]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION {databaseOwner}[{objectQualifier}activeforums_Topic_GetPrevNext]
 GO
@@ -71,9 +68,6 @@ DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MC_Forums
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Poll_HasVoted') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Poll_HasVoted
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Search_GetSearchItems') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItems
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Forum_ConfigCleanUp') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Forum_ConfigCleanUp
@@ -197,15 +191,6 @@ DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Reply_Get]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Reply_Save]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Reply_Save]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_FullText]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_FullText]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_ManageFullText]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_ManageFullText]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_Standard]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_Standard]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Security_GetByKey') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Security_GetByKey
@@ -914,46 +899,9 @@ GO
 
 /* 5.0.4 */
 
-/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}activeforums_Search]    Script Date: 03/14/2013 23:00:40 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search]
-GO
-
-/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}activeforums_Search_Standard]    Script Date: 03/12/2013 23:04:43 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_Standard]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_Standard]
-GO
-
-/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}activeforums_Search_FullText]    Script Date: 03/12/2013 23:05:18 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_FullText]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_FullText]
-GO
-
-/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}activeforums_Search_GetFullTextStatus]    Script Date: 03/12/2013 23:04:00 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetFullTextStatus]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_GetFullTextStatus]
-GO
-
-/****** Object:  UserDefinedFunction {databaseOwner}[{objectQualifier}activeforums_Functions_SplitText]    Script Date: 03/12/2013 23:08:46 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Functions_SplitText]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION {databaseOwner}[{objectQualifier}activeforums_Functions_SplitText]
-GO
-
 /****** Object:  UserDefinedFunction {databaseOwner}[{objectQualifier}activeforums_Functions_Split]    Script Date: 03/12/2013 23:09:07 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Functions_Split]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION {databaseOwner}[{objectQualifier}activeforums_Functions_Split]
-GO
-
-IF  EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}sysobjects WHERE id = OBJECT_ID(N'[DF__activefor__creat__7B863AD4]') AND type = 'D')
-BEGIN
-ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_SearchCache] DROP CONSTRAINT [DF__activefor__creat__7B863AD4]
-END
-
-GO
-
-/****** Object:  Table {databaseOwner}[{objectQualifier}activeforums_SearchCache]    Script Date: 03/12/2013 22:59:59 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_SearchCache]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}activeforums_SearchCache]
 GO
 
 /* 5.0.5 */

@@ -71,17 +71,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            var oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
-            oLink.Attributes["rel"] = "stylesheet";
-            oLink.Attributes["type"] = "text/css";
-            oLink.Attributes["href"] = this.Page.ResolveUrl(Globals.ModulePath + "scripts/calendar.css");
-
-            var oCSS = this.Page.FindControl("CSS");
-            if (oCSS != null)
-            {
-                oCSS.Controls.Add(oLink);
-            }
-
             this.authorId = this.UserId;
             this.canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ModerateRoleIds, this.ForumUser.UserRoleIds);
             this.canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.EditRoleIds, this.ForumUser.UserRoleIds);
@@ -488,7 +477,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void PrepareTopic()
         {
-            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicEditor, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicEditor, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix, this.ForumUser);
             if (this.isEdit)
             {
                 template = template.Replace("[RESX:CreateNewTopic]", "[RESX:EditingExistingTopic]");
@@ -522,7 +511,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
-            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ReplyEditor, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix);
+            string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ReplyEditor, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix, this.ForumUser);
 
 #region "Backward compatilbility -- remove in v10.00.00"
             template = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(new StringBuilder(template), this.PortalSettings, this.ModuleSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale).ToString();
@@ -605,7 +594,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             if (post != null)
                             {
                                 var sPostedBy = Utilities.GetSharedResource("[RESX:PostedBy]") + " {0} {1} {2}";
-                                sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ModuleSettings, false, false, post.Author.AuthorId, post.Author.Username, post.Author.FirstName, post.Author.LastName, post.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(post.Content.DateCreated, this.PortalId, this.UserId));
+                                sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ModuleSettings, false, false, post.Author.AuthorId, post.Author.Username, post.Author.FirstName, post.Author.LastName, post.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(post.Content.DateCreated, this.ForumUser));
                                 var body = post.Content.Body;
                                 if (this.allowHTML && this.editorType != EditorType.TEXTBOX)
                                 {
@@ -722,9 +711,19 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti.Forum = this.ForumInfo;
             }
 
-            ti.AnnounceEnd = this.ctlForm.AnnounceEnd;
-            ti.AnnounceStart = this.ctlForm.AnnounceStart;
             ti.Priority = this.ctlForm.TopicPriority;
+
+            ti.AnnounceEnd = this.ctlForm.AnnounceEnd;
+            if (ti.AnnounceEnd.Value.Equals(Utilities.NullDate()))
+            {
+                ti.AnnounceEnd = null;
+            }
+
+            ti.AnnounceStart = this.ctlForm.AnnounceStart;
+            if (ti.AnnounceStart.Value.Equals(Utilities.NullDate()))
+            {
+                ti.AnnounceStart = null;
+            }
 
             if (!this.isEdit)
             {
@@ -746,7 +745,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ti.Content.Body = body;
             ti.Content.Subject = subject;
             ti.Content.Summary = summary;
-            ti.IsAnnounce = ti.AnnounceEnd != Utilities.NullDate() && ti.AnnounceStart != Utilities.NullDate();
+            ti.IsAnnounce = ti.AnnounceEnd.HasValue && ti.AnnounceEnd != Utilities.NullDate() && ti.AnnounceStart.HasValue && ti.AnnounceStart != Utilities.NullDate();
 
             if (this.canModApprove && this.ForumInfo.FeatureSettings.IsModerated)
             {

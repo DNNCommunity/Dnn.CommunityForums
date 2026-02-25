@@ -23,11 +23,14 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Web;
+    using System.Web.Razor.Tokenizer.Symbols;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.UI.Utilities;
@@ -80,7 +83,15 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (this.Request.QueryString[Literals.GroupId] != null && Utilities.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                     {
                         this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
+                        this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
+                        if (this.ForumIds.Any())
+                        {
+                            this.ForumIds = new System.Collections.Generic.HashSet<int> { this.ForumIds.First() };
+                            this.ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumIds.First(), this.ForumModuleId);
+                            this.ForumId = this.ForumInfo.ForumID;
+                        }
                     }
+
                     string ctl = this.DefaultView;
                     string opts = string.Empty;
 
@@ -266,16 +277,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.ForumTabId = this.ForumTabId;
                 ctl.ForumGroupId = this.ForumGroupId;
                 ctl.ParentForumId = this.ParentForumId;
-                if (string.IsNullOrEmpty(this.ForumIds))
-                {
-                    this.ForumIds = this.UserForumsList;
-                }
-
                 if (this.SocialGroupId > 0)
                 {
-                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.PortalId, this.ForumModuleId, this.SocialGroupId);
+                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
 
-                    if (string.IsNullOrEmpty(this.ForumIds))
+                    if (!this.ForumIds.Any())
                     {
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: this.PortalId, roleId: this.SocialGroupId);
                         Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).TabModuleSettings;
@@ -292,15 +298,26 @@ namespace DotNetNuke.Modules.ActiveForums
                         else
                         {
                             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(this.PortalId, this.ModuleId, this.SocialGroupId, Convert.ToInt32(htSettings[SettingKeys.SocialGroupModeForumGroupTemplate].ToString()), role.RoleName + " Discussions", role.Description, !role.IsPublic, htSettings[SettingKeys.SocialGroupModeForumConfig].ToString());
-                            this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.PortalId, this.ForumModuleId, this.SocialGroupId);
+                            this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
                         }
                     }
                 }
+                else if (this.ForumId > 0)
+                {
+                    this.ForumIds = new System.Collections.Generic.HashSet<int> { this.ForumId };
+                }
+                else if (!this.ForumIds.Any())
+                {
+                    this.ForumIds = this.UserForumsList;
+                }
 
-                ctl.ForumIds = this.ForumIds;
                 ctl.SocialGroupId = this.SocialGroupId;
+                ctl.ForumIds = this.ForumIds;
+                if (this.ForumGroupId > 0)
+                {
+                    ctl.ForumIds.RemoveWhere(f => f != this.ForumGroupId);
+                }
 
-                // ctl.PostID = PostID
                 ctl.ModuleConfiguration = this.ModuleConfiguration;
                 if (!(options == string.Empty))
                 {
@@ -331,9 +348,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 string sOut = null;
 
-                // TODO: this should be resources instead of harcoded text?
-                sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
-                sOut += string.Concat("<!-- DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->", System.Environment.NewLine);
+                sOut = System.Environment.NewLine + "<!-- Copyright (c) " + DateTime.UtcNow.Year.ToString() + " " + Globals.ModuleOwnerName + " -->" + System.Environment.NewLine;
+                sOut += string.Concat("<!-- " , Globals.ModuleFriendlyName, " ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->", System.Environment.NewLine);
 
                 Literal lit = new Literal();
                 lit.Text = sOut;

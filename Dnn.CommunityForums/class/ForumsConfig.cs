@@ -25,19 +25,23 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Data.SqlTypes;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Text;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Collections;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
+
     using Microsoft.ApplicationBlocks.Data;
 
     public class ForumsConfig
@@ -884,7 +888,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 NotificationsController.Instance.CreateNotificationType(type);
             }
         }
-        
+
         internal static void Upgrade_AddUserMentionVisibilityForumSetting_090300()
         {
             try
@@ -903,6 +907,97 @@ namespace DotNetNuke.Modules.ActiveForums
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        internal static void Reset_DNN_Search_Documents_090500()
+        {
+            try
+            {
+                foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+                {
+                    foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                    {
+                        if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            try
+                            {
+                                DotNetNuke.Services.Search.Internals.InternalSearchController.Instance.DeleteSearchDocumentsByModule(portal.PortalId, module.ModuleID, module.ModuleDefID);
+                                module.LastContentModifiedOnDate = SqlDateTime.MinValue.Value.AddDays(1);
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModule(module);
+                            }
+                            catch (Exception ex)
+                            {
+                                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+            }
+        }
+
+        internal static void Upgrade_EnsureVanityNames_090600()
+        {
+            try
+            {
+                foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+                {
+                    foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                    {
+                        if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if (SettingsBase.GetModuleSettings(module.ModuleID).URLRewriteEnabled)
+                            {
+                                try
+                                {
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get().Where(forumGroup => forumGroup.ModuleId.Equals(module.ModuleID)).ForEach(forumGroup =>
+                                    {
+                                        if (string.IsNullOrEmpty(forumGroup.PrefixURL))
+                                        {
+                                            try
+                                            {
+                                                forumGroup.PrefixURL = $"G{forumGroup.ForumGroupId}";
+                                                new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Update(forumGroup);
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                                            }
+                                        }
+                                    });
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get().Where(forum => forum.ModuleId.Equals(module.ModuleID)).ForEach(forum =>
+                                    {
+                                        if (string.IsNullOrEmpty(forum.PrefixURL))
+                                        {
+                                            try
+                                            {
+                                                forum.PrefixURL = $"F{forum.ForumID}";
+                                                new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Update(forum);
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                                            }
+                                        }
+
+                                    });
+                                }
+                                catch (Exception ex)
+                                {
+                                    DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
             }
         }
     }

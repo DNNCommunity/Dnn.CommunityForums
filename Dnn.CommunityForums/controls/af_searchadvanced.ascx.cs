@@ -34,34 +34,27 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private string searchText;
         private string tags;
-        private int? searchType;
+        private DotNetNuke.Modules.ActiveForums.Enums.SearchResultType? searchResultType;
+        private DotNetNuke.Modules.ActiveForums.Enums.SearchSortType? searchSortType;
         private string authorUsername;
-        private int? searchColumns;
         private string forums;
         private int? searchDays;
-        private int? resultType;
-        private int? sort;
 
         #endregion
 
         #region Properties
 
-        private string SearchText
-        {
-            get
-            {
-                if (this.searchText == null)
-                {
-                    this.searchText = this.Request.Params[SearchParamKeys.Query] + string.Empty;
-                    this.searchText = Utilities.XSSFilter(this.searchText);
-                    this.searchText = Utilities.StripHTMLTag(this.searchText);
-                    this.searchText = Utilities.CheckSqlString(this.searchText);
-                    this.searchText = this.searchText.Trim();
-                }
+        private string SearchText => (string)(this.searchText ?? (this.searchText = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.Request.Params[SearchParamKeys.Query] + string.Empty))).Replace("\"", string.Empty).Trim()));
 
-                return this.searchText;
-            }
-        }
+        private string AuthorUsername => (string)(this.authorUsername ?? (this.authorUsername = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.Request.Params[SearchParamKeys.Author] + string.Empty))).Trim()));
+
+        private DotNetNuke.Modules.ActiveForums.Enums.SearchResultType SearchResultType => (DotNetNuke.Modules.ActiveForums.Enums.SearchResultType)(this.searchResultType ?? (this.searchResultType = (DotNetNuke.Modules.ActiveForums.Enums.SearchResultType)Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.ResultType], (int)DotNetNuke.Modules.ActiveForums.Enums.SearchResultType.SearchByTopics)));
+
+        private DotNetNuke.Modules.ActiveForums.Enums.SearchSortType SearchSortType => (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)(this.searchSortType ?? (this.searchSortType = (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.Sort], (int)DotNetNuke.Modules.ActiveForums.Enums.SearchSortType.SearchSortTypeRelevance)));
+
+        private string Forums => (string)(this.forums ?? (this.forums = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.Request.Params[SearchParamKeys.Forums] + string.Empty))).Trim()));
+
+        private int SearchDays => (int)(this.searchDays ?? (this.searchDays = Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.TimeSpan], 0)));
 
         private string Tags
         {
@@ -70,120 +63,19 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (this.tags == null)
                 {
                     this.tags = this.Request.Params[SearchParamKeys.Tag] + string.Empty;
-                    this.tags = Utilities.XSSFilter(this.tags);
-                    this.tags = Utilities.StripHTMLTag(this.tags);
-                    this.tags = Utilities.CheckSqlString(this.tags);
-                    this.tags = this.tags.Trim();
+
+                    // The tag links are generated with "aftg"
+                    if (this.tags == string.Empty)
+                    {
+                        this.tags = this.Request.Params[ParamKeys.Tags] + string.Empty;
+                    }
+
+                    this.tags = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.tags))).Trim();
                 }
 
                 return this.tags;
             }
         }
-
-        private int SearchType
-        {
-            get
-            {
-                if (!this.searchType.HasValue)
-                {
-                    int parsedSearchType;
-                    this.searchType = int.TryParse(this.Request.Params[SearchParamKeys.SearchType], out parsedSearchType) ? parsedSearchType : 0;
-                }
-
-                return this.searchType.Value;
-            }
-        }
-
-        private string AuthorUsername
-        {
-            get
-            {
-                if (this.authorUsername == null)
-                {
-                    this.authorUsername = this.Request.Params[SearchParamKeys.Author] + string.Empty;
-                    this.authorUsername = Utilities.XSSFilter(this.authorUsername);
-                    this.authorUsername = Utilities.StripHTMLTag(this.authorUsername);
-                    this.authorUsername = Utilities.CheckSqlString(this.authorUsername);
-                    this.authorUsername = this.authorUsername.Trim();
-                }
-
-                return this.authorUsername;
-            }
-        }
-
-        private int SearchColumns
-        {
-            get
-            {
-                if (!this.searchColumns.HasValue)
-                {
-                    int parsedSearchColumns;
-                    this.searchColumns = int.TryParse(this.Request.Params[SearchParamKeys.Columns], out parsedSearchColumns) ? parsedSearchColumns : 0;
-                }
-
-                return this.searchColumns.Value;
-            }
-        }
-
-        private string Forums
-        {
-            get
-            {
-                if (this.forums == null)
-                {
-                    this.forums = this.Request.Params[SearchParamKeys.Forums] + string.Empty;
-                    this.forums = Utilities.XSSFilter(this.forums);
-                    this.forums = Utilities.StripHTMLTag(this.forums);
-                    this.forums = Utilities.CheckSqlString(this.forums);
-                    this.forums = this.forums.Trim();
-                }
-
-                return this.forums;
-            }
-        }
-
-        private int SearchDays
-        {
-            get
-            {
-                if (!this.searchDays.HasValue)
-                {
-                    int parsedValue;
-                    this.searchDays = int.TryParse(this.Request.Params[SearchParamKeys.TimeSpan], out parsedValue) ? parsedValue : 0;
-                }
-
-                return this.searchDays.Value;
-            }
-        }
-
-        private int ResultType
-        {
-            get
-            {
-                if (!this.resultType.HasValue)
-                {
-                    int parsedValue;
-                    this.resultType = int.TryParse(this.Request.Params[SearchParamKeys.ResultType], out parsedValue) ? parsedValue : 0;
-                }
-
-                return this.resultType.Value;
-            }
-        }
-
-        private int Sort
-        {
-            get
-            {
-                if (!this.sort.HasValue)
-                {
-                    int parsedValue;
-                    this.sort = int.TryParse(this.Request.Params[SearchParamKeys.Sort], out parsedValue) ? parsedValue : 0;
-                }
-
-                return this.sort.Value;
-            }
-        }
-
         #endregion
 
         #region Event Handlers
@@ -202,7 +94,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 this.btnSearch.Click += this.btnSearch_Click;
-                this.btnSearch2.Click += this.btnSearch_Click;
 
                 if (this.Page.IsPostBack)
                 {
@@ -210,39 +101,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 this.txtSearch.Text = this.SearchText;
-
-                ListItem selectedItem = this.drpSearchColumns.Items.FindByValue(this.SearchColumns.ToString());
-                if (selectedItem != null)
-                {
-                    selectedItem.Selected = true;
-                }
-
-                selectedItem = this.drpSearchType.Items.FindByValue(this.SearchType.ToString());
-                if (selectedItem != null)
-                {
-                    selectedItem.Selected = true;
-                }
-
                 this.txtUserName.Text = this.AuthorUsername;
-
                 this.txtTags.Text = this.Tags;
-
-                // Additional Options
 
                 this.BindForumList();
                 this.BindSearchRange();
 
-                selectedItem = this.drpResultType.Items.FindByValue(this.ResultType.ToString());
-                if (selectedItem != null)
-                {
-                    selectedItem.Selected = true;
-                }
-
-                selectedItem = this.drpSort.Items.FindByValue(this.Sort.ToString());
-                if (selectedItem != null)
-                {
-                    selectedItem.Selected = true;
-                }
+                Utilities.BindEnum(pDDL: this.drpResultType, enumType: typeof(Enums.SearchResultType), pColValue: ((int)this.SearchResultType).ToString(), addEmptyValue: false, localize: true, excludeIndex: -1);
+                Utilities.BindEnum(pDDL: this.drpSort, enumType: typeof(Enums.SearchSortType), pColValue: ((int)this.SearchSortType).ToString(), addEmptyValue: false, localize: true, excludeIndex: -1);
 
                 // Update Meta Data
                 var basePage = this.BasePage;
@@ -257,48 +123,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            var searchText = this.txtSearch.Text;
-            var authorUsername = this.txtUserName.Text;
-            var tags = this.txtTags.Text;
-
+            var searchText = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.txtSearch.Text))).Replace("\"", string.Empty).Trim();
+            var authorUsername = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.txtUserName.Text))).Trim();
+            var tags = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.txtTags.Text))).Trim();
             if (string.IsNullOrWhiteSpace(searchText) && string.IsNullOrWhiteSpace(authorUsername) && string.IsNullOrWhiteSpace(tags))
             {
                 return;
             }
 
-            // Query
-            if (!string.IsNullOrWhiteSpace(searchText))
-            {
-                searchText = Utilities.XSSFilter(searchText);
-                searchText = Utilities.StripHTMLTag(searchText);
-                searchText = Utilities.CheckSqlString(searchText);
-                searchText = searchText.Trim();
-            }
-
-            // Author Name
-            if (!string.IsNullOrWhiteSpace(authorUsername))
-            {
-                authorUsername = this.txtUserName.Text;
-                authorUsername = Utilities.CheckSqlString(authorUsername);
-                authorUsername = Utilities.XSSFilter(authorUsername);
-                authorUsername = authorUsername.Trim();
-            }
-
-            // Tags
-            if (!string.IsNullOrWhiteSpace(tags))
-            {
-                tags = Utilities.XSSFilter(tags);
-                tags = Utilities.StripHTMLTag(tags);
-                tags = Utilities.CheckSqlString(tags);
-                tags = tags.Trim();
-            }
-
-            // Search Type, Search Column & Search Days
-            var searchType = Convert.ToInt32(this.drpSearchType.SelectedItem.Value);
-            var searchColumns = Convert.ToInt32(this.drpSearchColumns.SelectedItem.Value);
             var searchDays = Convert.ToInt32(this.drpSearchDays.SelectedItem.Value);
             var resultType = Convert.ToInt32(this.drpResultType.SelectedItem.Value);
-            var sort = Convert.ToInt32(this.drpSort.SelectedValue);
+            var sortType = Convert.ToInt32(this.drpSort.SelectedValue);
 
             // Selected Forums
             var forums = string.Empty;
@@ -331,16 +166,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 @params.Add($"{SearchParamKeys.Tag}={System.Net.WebUtility.UrlEncode(tags)}");
             }
 
-            if (searchType > 0)
-            {
-                @params.Add($"{SearchParamKeys.SearchType}={searchType}");
-            }
-
-            if (searchColumns > 0)
-            {
-                @params.Add($"{SearchParamKeys.Columns}={searchColumns}");
-            }
-
             if (searchDays > 0)
             {
                 @params.Add($"{SearchParamKeys.TimeSpan}={searchDays}");
@@ -351,9 +176,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 @params.Add($"{SearchParamKeys.ResultType}={resultType}");
             }
 
-            if (sort > 0)
+            if (sortType > 0)
             {
-                @params.Add($"{SearchParamKeys.Sort}={sort}");
+                @params.Add($"{SearchParamKeys.Sort}={sortType}");
             }
 
             if (!string.IsNullOrWhiteSpace(authorUsername))
@@ -416,23 +241,26 @@ namespace DotNetNuke.Modules.ActiveForums
             var forumsToSearch = this.Forums.Split(':').Where(o => int.TryParse(o, out parseId) && parseId > 0).Select(int.Parse).ToList();
 
             // Add the "All Forums" item
-            this.lbForums.Items.Add(new ListItem("All Forums", "0") { Selected = forumsToSearch.Count == 0 && this.ForumId <= 0 });
+            this.lbForums.Items.Add(new ListItem("[RESX:SearchRangeAll] [RESX:FORUMS]", "0") { Selected = forumsToSearch.Count == 0 && this.ForumId <= 0 });
 
             var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId);
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums, this.ForumUser,
-                fi =>
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(
+                forums: forums,
+                forumUserInfo: this.ForumUser,
+                groupAction: fi =>
                 {
                     this.lbForums.Items.Add(new ListItem(fi.GroupName, $"G{fi.ForumGroupId}"));
                 },
-                fi =>
+                forumAction: fi =>
                 {
                     this.lbForums.Items.Add(new ListItem($"{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = forumsToSearch.Contains(fi.ForumID) || this.ForumId == fi.ForumID });
                 },
-                fi =>
+                subForumAction: fi =>
                 {
                     this.lbForums.Items.Add(new ListItem($"--{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = forumsToSearch.Contains(fi.ForumID) || this.ForumId == fi.ForumID });
                 },
-                includeHiddenForums: false);
+                includeHiddenForums: false,
+                includeInactiveForums: false);
         }
 
         #endregion

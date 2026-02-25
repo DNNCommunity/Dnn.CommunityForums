@@ -342,9 +342,6 @@
   <data name="[RESX:EnableFilter].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Filtres</value>
   </data>
-  <data name="[RESX:EnableFullText].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Activer le texte intégral</value>
-  </data>
   <data name="[RESX:EnableMailQueue].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Activer la file d’attente des messages</value>
   </data>
@@ -455,12 +452,6 @@
   </data>
   <data name="[RESX:FullName].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Nom complet</value>
-  </data>
-  <data name="[RESX:FullTextSearch:Intro].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>La recherche en texte intégral offre de meilleures performances et des résultats plus précis.</value>
-  </data>
-  <data name="[RESX:FullTextSearch].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Recherche en texte intégral</value>
   </data>
   <data name="[RESX:GetSupport].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Cliquez pour obtenir de l’aide sur les forums de la communauté DNN</value>
@@ -1548,5 +1539,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   </data>
   <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
     <value>Peut ajouter/gérer des tags sur des sujets. Tous les tags entrés dans les publications (sujets et/ou réponses) sont automatiquement ajoutés au sujet ainsi que la liste des tags disponibles sur les forums.</value>
+  </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>Non actif</value>
   </data>
 </root>
