@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (!(sMessage == string.Empty) && !(sSubject == string.Empty))
                     {
-                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(this.PortalId, moduleId: this.ModuleId, fromEmail: this.UserInfo.Email, toEmail: sEmail, subject: sSubject, body: sMessage);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.EmailController().SendNotification(this.PortalId, moduleId: this.ModuleId, fromEmail: this.UserInfo.Email, toEmail: sEmail, subject: sSubject, body: sMessage);
                     }
                 }
                 catch (Exception ex)

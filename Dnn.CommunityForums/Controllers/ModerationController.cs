@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Collections.Generic;
     using System.Text;
 
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Social.Notifications;
 
@@ -46,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static bool SendModerationNotification(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int AuthorId, Uri requestUri, string rawUrl)
         {
-            var portalSettings = Utilities.GetPortalSettings(portalId);
+            var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portalId);
             var adminUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, portalSettings.AdministratorId);
             var mainSettings = SettingsBase.GetModuleSettings(moduleId);
             try

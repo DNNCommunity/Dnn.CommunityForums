@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Abstractions.Portals;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -31,7 +29,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Search.Entities;
 
     #region Topics Controller
@@ -39,13 +40,15 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
         private readonly IPortalAliasService portalAliasService;
+        private readonly IPortalSettings portalSettings;
+        private readonly IPortalController portalController;
 
         public TopicsController()
-            : this(new DotNetNuke.Entities.Portals.PortalAliasController())
+            : this(new DotNetNuke.Entities.Portals.PortalAliasController(), ServiceLocator<IPortalController, PortalController>.Instance, ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentSettings())
         {
         }
 
-        public TopicsController(IPortalAliasService portalAliasService)
+        public TopicsController(IPortalAliasService portalAliasService, IPortalController portalController, IPortalSettings portalSettings)
         {
             this.portalAliasService = portalAliasService;
         }
@@ -112,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 roles.Add(r.RoleName);
             }
 
-            var portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(moduleInfo.PortalID);
+            var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(moduleInfo.PortalID);
             string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(moduleInfo.PortalID, roles.ToArray());
             string queryString = string.Empty;
             System.Text.StringBuilder qsb = new System.Text.StringBuilder();
@@ -326,7 +329,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        LogError(ex.Message, ex);
+                        this.LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }

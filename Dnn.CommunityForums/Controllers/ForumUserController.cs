@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Log.EventLog;
 
@@ -426,7 +427,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             if (portalSettings == null)
             {
-                portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+                portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings();
             }
 
             if (portalSettings == null)
@@ -472,7 +473,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             if (portalSettings == null)
             {
-                portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+                portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings();
             }
 
             if (portalSettings == null)

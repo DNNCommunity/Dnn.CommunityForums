@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Literal lit = new Literal();
 
             var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
-            user.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ForumModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
+            user.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, this.UID);
             sTemplate = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sTemplate, author, this.ImagePath, this.ForumUser.CurrentUserType, false, false, string.Empty, this.UserInfo.UserID, this.TimeZoneOffset);
             sTemplate = this.RenderModals(sTemplate);
@@ -229,7 +229,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForums.DisplayTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, (Enums.TemplateType)Enum.Parse(typeof(Enums.TemplateType), "ForumTracking", true), SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this.ForumUser);
                 ctlForums.CurrentUserId = this.UID;
-                ctlForums.ForumIds = user.UserForums.ToHashSetFromDelimitedString<int>(";");
+                ctlForums.ForumIds = user.UserForums;
                 this.plhTracker.Controls.Add(ctlForums);
             }
 

@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Extensions.WebForms;
 
     public partial class profile_mysubscriptions : ForumBase
@@ -106,14 +107,11 @@ namespace DotNetNuke.Modules.ActiveForums
         private IEnumerable<Entities.SubscriptionInfo> GetSubscriptions()
         {
             var availableForums = new List<dynamic>();
-            var availableForumsString = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ForumModuleId, this.ForumUser);
-            availableForumsString.Split(separator: new[] { ';' }, options: StringSplitOptions.RemoveEmptyEntries).ForEach(forumId =>
+            var subscribableForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumModuleId, this.ForumUser, SecureActions.Subscribe);
+            subscribableForums.ForEach(forumId =>
             {
-                var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(int.Parse(forumId), this.ForumModuleId);
-                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security.SubscribeRoleIds, this.ForumUser.UserRoleIds))
-                {
-                    availableForums.Add(new { ForumId = int.Parse(forumId), Forum = forum });
-                }
+                var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, this.ForumModuleId);
+                availableForums.Add(new { ForumId = forumId, Forum = forum });
             });
 
             var forumSubscriptions = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedForums(this.PortalId, this.ForumModuleId, this.UID);

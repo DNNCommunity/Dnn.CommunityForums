@@ -24,6 +24,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Web;
 
+    using DotNetNuke.Modules.ActiveForums.Helpers;
+
     public abstract partial class Utilities
     {
 
@@ -222,5 +224,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return NavigateURL(tabId, controlKey, pageName, portalId, additionalParameters);
         }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Not Used. Use PortalSettingsHelper.GetPortalSettings()")]
+        public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings() => new PortalSettingsHelper().GetPortalSettings();
+
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Not Used. Use PortalSettingsHelper.GetPortalSettings()")]
+        public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings(int portalId) => new PortalSettingsHelper().GetPortalSettings(portalId);
+
     }
 }
