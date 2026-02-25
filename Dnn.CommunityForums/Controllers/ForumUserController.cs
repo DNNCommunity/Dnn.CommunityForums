@@ -643,7 +643,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 imgTag = $"<img class='af-avatar' src='https://{portalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={avatarWidth}&w={avatarHeight}' />";
             }
 
-            return Utilities.ResolveUrlInTag(portalSettings, imgTag);
+            return Utilities.ResolveUrlInTag(template: imgTag, defaultPortalAlias: portalSettings.DefaultPortalAlias, sslEnabled: portalSettings.SSLEnabled);
         }
 
         internal static void UpdateUserTopicCount(int portalId, int userId)

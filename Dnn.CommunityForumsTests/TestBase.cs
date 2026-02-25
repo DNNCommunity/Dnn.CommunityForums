@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
@@ -48,18 +49,19 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     {
         private Mock<CachingProvider> mockCacheProvider;
         private Mock<IPortalController> portalController;
+        private Mock<IPortalAliasController> portalAliasController;
+        private Mock<IPortalAliasService> portalAliasService;
         private Mock<RoleProvider> mockRoleProvider;
         private Mock<IModuleController> moduleController;
         private Mock<IUserController> userController;
         private Mock<IRoleController> roleController;
         private Mock<IHostController> mockHostController;
 
-        internal Mock<DotNetNuke.Entities.Modules.ModuleInfo> mockModule;
+        internal Mock<DotNetNuke.Entities.Modules.ModuleInfo> MockModule;
 
         internal Mock<DotNetNuke.Modules.ActiveForums.ModuleSettings> MainSettings;
 
         [SetUp]
-
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -68,6 +70,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IHostSettingsService, HostController>();
+
+            serviceCollection.AddSingleton<IPortalAliasService, PortalAliasController>();
+            serviceCollection.AddSingleton<IPortalAliasController, PortalAliasController>();
 
             ComponentFactory.Container = new SimpleContainer();
             this.mockRoleProvider = MockComponentProvider.CreateRoleProvider();
@@ -87,8 +92,11 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             this.mockHostController = new Mock<IHostController>();
             DotNetNuke.Entities.Controllers.HostController.RegisterInstance(this.mockHostController.Object);
 
+            this.portalAliasController = new Mock<IPortalAliasController>();
+            DotNetNuke.Entities.Portals.PortalAliasController.SetTestableInstance(this.portalAliasController.Object);
+            this.SetupPortalAliasSettings();
+
             this.portalController = new Mock<IPortalController>();
-            this.portalController.Setup(c => c.GetPortalSettings(It.IsAny<int>())).Returns(new Dictionary<string, string>());
             DotNetNuke.Entities.Portals.PortalController.SetTestableInstance(this.portalController.Object);
             this.SetupPortalSettings();
 
@@ -112,6 +120,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         [TearDown]
         public void TearDown()
         {
+            DotNetNuke.Entities.Portals.PortalAliasController.ClearInstance();
             DotNetNuke.Entities.Portals.PortalController.ClearInstance();
             DotNetNuke.Entities.Modules.ModuleController.ClearInstance();
             DotNetNuke.Entities.Users.UserController.ClearInstance();
@@ -323,6 +332,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
         private void SetupPortalSettings()
         {
+            var portalAliasInfo = new PortalAliasInfo
+            {
+                PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
+                HTTPAlias = "localhost",
+                IsPrimary = true,
+                CultureCode = "en-US",
+            };
+            var portalAliases = new List<PortalAliasInfo> { portalAliasInfo };
             var portalSettings = new PortalSettings
             {
                 PortalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
@@ -330,11 +347,26 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                 AdministratorRoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_Administrators,
                 RegisteredRoleId = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers,
                 RegisteredRoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers,
-                PortalAlias = new PortalAliasInfo { HTTPAlias = "localhost", CultureCode = "en-US", IsPrimary = true, },
+                PortalAlias = portalAliasInfo,
                 CultureCode = "en-US",
             };
 
+            this.portalController.Setup(c => c.GetPortalSettings(It.IsAny<int>())).Returns(new Dictionary<string, string>());
             this.portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
+        }
+
+        private void SetupPortalAliasSettings()
+        {
+            var portalAliasInfo = new PortalAliasInfo
+            {
+                PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
+                HTTPAlias = "localhost",
+                IsPrimary = true,
+                CultureCode = "en-US",
+            };
+            var portalAliases = new List<PortalAliasInfo> { portalAliasInfo };
+
+            this.portalAliasController.Setup(c => c.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(portalAliases);
         }
 
         private void SetupCachingProvider()
@@ -359,7 +391,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
         private void SetupModuleInfo()
         {
-            this.mockModule = new Mock<DotNetNuke.Entities.Modules.ModuleInfo>
+            this.MockModule = new Mock<DotNetNuke.Entities.Modules.ModuleInfo>
             {
                 Object =
                 {
@@ -371,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             };
 
-            this.moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(this.mockModule.Object);
+            this.moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(this.MockModule.Object);
         }
 
         private void SetupMainSettings()
