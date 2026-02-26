@@ -73,7 +73,7 @@
         </p>
 -->
         <h4>New Features &amp; Enhancements</h4>
-        <ul><
+        <ul>
             <li>None at this time.</li>
 <!--
             <li>NEW: Web API endpoints for forums search functionality (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1758">PR 1758</a>)</li>
