@@ -302,10 +302,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
                 }
-                else if (this.ForumId > 0)
-                {
-                    this.ForumIds = new System.Collections.Generic.HashSet<int> { this.ForumId };
-                }
                 else if (!this.ForumIds.Any())
                 {
                     this.ForumIds = this.UserForumsList;

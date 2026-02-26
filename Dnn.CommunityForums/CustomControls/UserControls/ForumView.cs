@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:ForumView runat=server></{0}:ForumView>")]
     public class ForumView : ForumBase
@@ -198,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (this.Forums == null)
                     {
-                        string cachekey = string.Format(CacheKeys.ForumViewForUser, this.ForumModuleId, this.ForumUser.UserId, this.ForumIds, HttpContext.Current?.Response?.Cookies["language"]?.Value);
+                        string cachekey = string.Format(CacheKeys.ForumViewForUser, this.ForumModuleId, this.ForumUser.UserId, this.ForumIds.FromHashSetToDelimitedString(";"), HttpContext.Current?.Response?.Cookies["language"]?.Value, this.ForumUser.RunningInViewer);
                         var obj = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.ForumModuleId, cachekey);
                         if (obj == null)
                         {
