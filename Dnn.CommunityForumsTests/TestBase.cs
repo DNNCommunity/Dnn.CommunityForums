@@ -57,6 +57,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         private Mock<IRoleController> roleController;
         private Mock<IHostController> mockHostController;
 
+        internal string DefaultPortalAlias = "localhost/en-us";
+
         internal Mock<DotNetNuke.Entities.Modules.ModuleInfo> MockModule;
 
         internal Mock<DotNetNuke.Modules.ActiveForums.ModuleSettings> MainSettings;
