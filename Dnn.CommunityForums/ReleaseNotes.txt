@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.06.02
+            09.06.03
         </h3>
 <!--       
         <p>
@@ -73,10 +73,9 @@
         </p>
 -->
         <h4>New Features &amp; Enhancements</h4>
-        <ul>
+        <ul><
             <li>None at this time.</li>
-<!-- 
-            <li>NEW: New template section tokens [DCF:USERISAUTHENTICATED]...[/DCF:USERISAUTHENTICATED] [DCF:USERISNOTAUTHENTICATED]...[/DCF:USERISNOTAUTHENTICATED] to show/hide content based on user being authenticated (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1750">PR 1750</a>)</li>
+<!--
             <li>NEW: Web API endpoints for forums search functionality (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1758">PR 1758</a>)</li>
             <li>NEW: Require URL prefix for forum/forum groups in Control Panel when friendly URLs are enabled (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1765">PR 1765</a>)</li>
             <li>NEW: During upgrade, ensure friendly URL/vanity names are properly populated when friendly URLs are enabled (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1767">PR 1767</a>)</li>
@@ -97,25 +96,25 @@
         <h4>Bug Fixes</h4>
 
         <ul>
-        <li>FIX: Hidden forums showing in forum view (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1789">Issue 1789</a>)</li>
+             <li>FIX: Control Panel Badges list doesn't load if no badges defined and no badge image folder (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1795">Issue 1795</a>)</li>
+             <li>FIX: Badges images have incorrect URL / Unable to create unit test that accesses PortalSettings.DefaultPortalAlias (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1797">Issue 1797</a>)</li>
 <!--
           <li>None at this time.</li> 
-              <li>FIX: Primary portal alias ignored when generating some links (was just using first available alias) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1651">Issue 1651</a>)</li>
-              <li>FIX: Users being awarded badges based on total counts rather than interval-based counts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1681">Issue 1681</a>)</li>
+             
+              <li>FIX: Issues with  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1681">Issue 1681</a>)</li>
             
 
 -->
         </ul>
 
-        <h4>Tasks / Development Updates (and Technical Debt)</h4>
+        <h4>Tasks / Development Updates (and Technical Debt Reduction)</h4>
         <ul>
-        <li>None at this time.</li>
-<!--
-            <li>Remove SQL Server full-text search from activeforums_Content table and remove activeforums_Catalog (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1712">Issue 1712</a>)</li>
-            <li>Remove now-unused legacy date picker control (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1723">Issue 1723</a>)</li>
-            <li>09.06.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1766">Issue 1766</a>)</li>
-                        
+        
+            <li>Forum Viewer should use DNN Resource Manager to load module.css not load it directly (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1792">Issue 1792</a>)</li>
+            <li>Remove legacy calendar.css associated with previously-removed date picker control (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1723">Issue 1723</a>)</li>
+            <li>09.06.03 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1800">Issue 1800</a>)</li>
 
+<!--
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
 -->
