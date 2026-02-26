@@ -500,7 +500,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ForumListXml = "AF-{0}-flx";
         public const string Tokens = "AF-{0}-tk-{1}";
         public const string ForumViewPrefix = "AF-{0}-FV-";
-        public const string ForumViewForUser = "AF-{0}-FV-{1}-{2}-{3}";
+        public const string ForumViewForUser = "AF-{0}-FV-{1}-{2}-{3}-{4}";
         public const string TopicViewPrefix = "AF-{0}-TV-";
         public const string TopicViewForUser = "AF-{0}-TV-{1}-{2}-{3}-{4}-{5}";
         public const string TopicsViewPrefix = "AF-{0}-TVS-";
