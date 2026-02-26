@@ -26,6 +26,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
+
     using Moq;
     using NUnit.Framework;
 
@@ -116,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                     },
                 },
             };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.mockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.MockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {
@@ -197,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                     UserID = isAnonymous ? -1 : DotNetNuke.Tests.Utilities.Constants.UserID_User12,
                     IsSuperUser = isSuperUser && !isAnonymous,
                 },
-            }; var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.mockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+            }; var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.MockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
             {
                 Object =
                 {
@@ -662,72 +664,79 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             // Assert
         }
-<<<<<<< Updated upstream
-=======
 
-        //[Test]
-        //public void ResolveUrl_DefaultPortalAliasExists()
-        //{
-        //    // Arrange
-        //    var expectedAlias = "localhost";
-        //    var expectedPortalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
-        //    var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+        [Test]
+        public void ResolveUrl_DefaultPortalAliasThrowsException()
+        {
+            // Arrange
+            var expectedPortalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
+            var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
 
-        //    // Act
+            // Act
 
-        //    // Assert
-        //    Assert.That(portalSettings.PortalId, Is.EqualTo(expectedPortalId));
-        //    Assert.That(portalSettings.DefaultPortalAlias, Is.EqualTo(expectedAlias));
-        //}
-        
-        //[Test] public void ResolveUrl_WithAliasContainingSubpath_PrependsDomain()
-        //{
-        //    // Arrange
-        //    var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
-        //    var originalAlias = "localhost";
-        //    var url = "/en-us/portals/0/images/logo.png";
+            // Assert
+            Assert.That(portalSettings.PortalId, Is.EqualTo(expectedPortalId));
+            Assert.Throws<ArgumentNullException>(() => { var x = portalSettings.DefaultPortalAlias; });
+        }
 
-        //    // Act
-        //    var result = Utilities.ResolveUrl(portalSettings, url);
+        [Test]
+        public void ResolveUrl_WithAliasWithoutSubpath_ReturnsOriginalUrl()
+        {
+            // Arrange
+            var url = "/portals/0/images/logo.png";
+            var expectedResult = $"https://{this.DefaultPortalAlias}{url}";
 
-        //    // Assert
-        //    var expected = DotNetNuke.Common.Globals.AddHTTP(originalAlias) + url;
-        //    Assert.That(result, Is.EqualTo(expected));
-        //}
+            // Act
+            var result = Utilities.ResolveUrl(url: url, defaultPortalAlias: this.DefaultPortalAlias, sslEnabled: true);
 
+            // Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
 
-        //[Test]
-        //public void ResolveUrl_WithAliasWithoutSubpath_ReturnsOriginalUrl()
-        //{
-        //    // Arrange
-        //    var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
-        //    var url = "/portals/0/images/logo.png";
+        [Test]
+        public void ResolveUrlInTag_ReplacesHrefAndSrcWithResolvedUrls()
+        {
+            // Arrange
+            var path = "/en-us/portals/0/images/logo.png";
+            var template = $"<a href=\"{path}\">link</a><img src=\"{path}\" />";
+            var expectedResult = $"<a href=\"https://{this.DefaultPortalAlias}{path}\">link</a><img src=\"https://{this.DefaultPortalAlias}{path}\" />".Replace("/en-us/en-us/", "/en-us/");
+            // Act
+            var result = DotNetNuke.Modules.ActiveForums.Utilities.ResolveUrlInTag(template: template, defaultPortalAlias: this.DefaultPortalAlias, sslEnabled: true);
 
-        //    // Act
-        //    var result = Utilities.ResolveUrl(portalSettings, url);
+            // Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
 
-        //    // Assert
-        //    Assert.That(result, Is.EqualTo(url));
-        //}
+        [Test]
+        public void ResolveUrl_WithAliasContainingSubpath_PrependsDomain()
+        {
+            // Arrange
+            var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+            var originalAlias = "localhost";
+            var url = "/en-us/portals/0/images/logo.png";
 
-        //[Test]
-        //public void ResolveUrlInTag_ReplacesHrefAndSrcWithResolvedUrls()
-        //{
-        //    // Arrange
-        //    var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
-        //    var originalAlias = portalSettings.DefaultPortalAlias;
-        //    var defaultAlias = "localhost/en-us";
-        //    var path = "/en-us/portals/0/images/logo.png";
-        //    var template = $"<a href=\"{path}\">link</a><img src=\"{path}\" />";
+            // Act
+            var result = Utilities.ResolveUrl(url: url, defaultPortalAlias: this.DefaultPortalAlias, sslEnabled: false);
 
-        //    // Act
-        //    var result = DotNetNuke.Modules.ActiveForums.Utilities.ResolveUrlInTag(portalSettings, template);
+            // Assert
+            var expectedResult = DotNetNuke.Common.Globals.AddHTTP(originalAlias) + url;
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
 
-        //    // Assert
-        //    var expectedResolved = DotNetNuke.Common.Globals.AddHTTP(defaultAlias) + path;
-        //    Assert.That(result.Contains($"href=\"{expectedResolved}\""), Is.True, "href was not replaced as expectedAlias");
-        //    Assert.That(result.Contains($"src=\"{expectedResolved}\""), Is.True, "src was not replaced as expectedAlias");
-        //}
->>>>>>> Stashed changes
+        [Test]
+        public void ResolveUrl_DefaultPortalAliasExists()
+        {
+            // Arrange
+            var expectedAlias = "localhost";
+            var expectedPortalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
+            var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+
+            // Act
+
+            // Assert
+            Assert.That(portalSettings.PortalId, Is.EqualTo(expectedPortalId));
+            Assert.That(portalSettings.DefaultPortalAlias, Is.EqualTo(expectedAlias));
+        }
+
     }
 }

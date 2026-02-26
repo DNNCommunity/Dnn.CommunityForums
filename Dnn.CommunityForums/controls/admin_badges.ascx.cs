@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             var imgUrl = $"https://{this.PortalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=securefile&fileId={fileId}&h=16&w=16";
-            return Utilities.ResolveUrlInTag(this.PortalSettings, $"<img src=\"{imgUrl}\" border=\"0\" alt=\"{badgeName}\" />");
+            return Utilities.ResolveUrlInTag(template: $"<img src=\"{imgUrl}\" border=\"0\" alt=\"{badgeName}\" />", defaultPortalAlias: this.PortalSettings.DefaultPortalAlias, sslEnabled: this.PortalSettings.SSLEnabled);
         }
 
         private string GetEnumName(DotNetNuke.Modules.ActiveForums.Enums.BadgeMetric badgeMetric)
@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindBadgeImages()
         {
-            var folderInfo = DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFolder(this.PortalId, Globals.DefaultBadgesFolderName);
+            var folderInfo = DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFolder(this.PortalId, Globals.DefaultBadgesFolderName) ?? DotNetNuke.Services.FileSystem.FolderManager.Instance.AddFolder(this.PortalId, Globals.DefaultBadgesFolderName);
             foreach (var fileInfo in DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFiles(folderInfo, recursive: true))
             {
                 if (fileInfo.ContentType.ToLowerInvariant().Contains("image/"))

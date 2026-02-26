@@ -435,7 +435,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             /* not testable without DI for permissions Controller */
-            Assert.Throws<NullReferenceException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(this.mockModule.Object.ModuleID, -1, string.Empty, string.Empty));
+            Assert.Throws<NullReferenceException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(this.MockModule.Object.ModuleID, -1, string.Empty, string.Empty));
         }
 
         [Test]
@@ -512,7 +512,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             {
                 Object =
                 {
-                    ModuleId = this.mockModule.Object.ModuleID,
+                    ModuleId = this.MockModule.Object.ModuleID,
                     View = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Read = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Create = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
@@ -540,7 +540,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                 {
                     Object =
                     {
-                         ModuleId = this.mockModule.Object.ModuleID,
+                         ModuleId = this.MockModule.Object.ModuleID,
                          View = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{emptyPermissions}",
                          Read = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{emptyPermissions}",
                          Create = $"{registeredUsersRoleId};{emptyPermissions}",
@@ -580,7 +580,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             {
                 Object =
                 {
-                    ModuleId = this.mockModule.Object.ModuleID,
+                    ModuleId = this.MockModule.Object.ModuleID,
                     View = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Read = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Create = $"{registeredUsersRoleId};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
@@ -603,7 +603,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             };
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetDefaultPermissions(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.mockModule.Object.ModuleID);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetDefaultPermissions(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.MockModule.Object.ModuleID);
 
             // Assert
             Assert.That(actualResult.EqualPermissions(expectedResult.Object), Is.True);
@@ -619,7 +619,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             {
                 Object =
                 {
-                    ModuleId = this.mockModule.Object.ModuleID,
+                    ModuleId = this.MockModule.Object.ModuleID,
                     View = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Read = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Create = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
@@ -642,7 +642,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             };
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdminPermissions(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.mockModule.Object.ModuleID);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdminPermissions(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.MockModule.Object.ModuleID);
 
             // Assert
             Assert.That(actualResult.ModuleId, Is.EqualTo(expectedResult.Object.ModuleId));
@@ -658,7 +658,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             {
                 Object =
                 {
-                    ModuleId = this.mockModule.Object.ModuleID,
+                    ModuleId = this.MockModule.Object.ModuleID,
                     View = $"{emptyPermissions}",
                     Read = $"{emptyPermissions}",
                     Create = $"{emptyPermissions}",
@@ -681,7 +681,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             };
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.mockModule.Object.ModuleID);
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.MockModule.Object.ModuleID);
 
             // Assert
             Assert.That(actualResult.EqualPermissions(expectedResult.Object), Is.True);
@@ -695,7 +695,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             /* not yet testable */
-            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess(this.mockModule.Object.ModuleID, -1, SecureActions.View));
+            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess(this.MockModule.Object.ModuleID, -1, SecureActions.View));
         }
 
         public void UpdateSecurityForSocialGroupForumTest()
@@ -713,7 +713,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             /* not yet testable */
-            Assert.Throws<NullReferenceException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveUnused(this.mockModule.Object.ModuleID));
+            Assert.Throws<NullReferenceException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveUnused(this.MockModule.Object.ModuleID));
         }
 
         [Test]
@@ -723,7 +723,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             /* not yet testable */
-            Assert.Throws<NullReferenceException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveIfUnused(-1, this.mockModule.Object.ModuleID));
+            Assert.Throws<NullReferenceException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveIfUnused(-1, this.MockModule.Object.ModuleID));
         }
 
         [Test]
@@ -733,7 +733,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             /* not yet testable */
-            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(this.mockModule.Object.ModuleID, -1, string.Empty));        }
+            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(this.MockModule.Object.ModuleID, -1, string.Empty));        }
 
         [Test]
         public void CheckForumIdsForViewForRSSTest()
@@ -742,8 +742,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             /* not yet testable */
-            Assert.That(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.mockModule.Object.ModuleID, string.Empty, new HashSet<int>()), Is.EqualTo(string.Empty));
-            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.mockModule.Object.ModuleID, "1",  new HashSet<int>() { 1, 2, 3 }));
+            Assert.That(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, string.Empty, new HashSet<int>()), Is.EqualTo(string.Empty));
+            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, "1",  new HashSet<int>() { 1, 2, 3 }));
         }
 
         [Test]
@@ -755,7 +755,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             {
                 Object =
                 {
-                    ModuleId = this.mockModule.Object.ModuleID,
+                    ModuleId = this.MockModule.Object.ModuleID,
                     View = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Read = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Create = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
@@ -795,7 +795,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             {
                 Object =
                 {
-                    ModuleId = this.mockModule.Object.ModuleID,
+                    ModuleId = this.MockModule.Object.ModuleID,
                     View = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Read = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                     Create = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",

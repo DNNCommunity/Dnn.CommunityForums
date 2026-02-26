@@ -44,6 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Security.Permissions;
 
     public abstract partial class Utilities
@@ -1834,32 +1835,52 @@ namespace DotNetNuke.Modules.ActiveForums
             return expression != null && (double.TryParse(expression.ToString(), out _) || bool.TryParse(expression.ToString(), out _));
         }
 
-        internal static string ResolveUrlInTag(PortalSettings portalSettings, string template)
+        internal static string ResolveUrlInTag(string template, string defaultPortalAlias, bool sslEnabled = true)
         {
             const string linkRegex = "(href|src)=\"(/[^\"]*?)\"";
             var matches = Regex.Matches(template, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
             foreach (Match match in matches)
             {
-                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{ResolveUrl(portalSettings, match.Groups[2].Value)}\"");
+                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{ResolveUrl(match.Groups[2].Value, defaultPortalAlias, sslEnabled)}\"");
             }
 
             return template;
         }
 
-        internal static string ResolveUrl(PortalSettings portalSettings, string url)
+        internal static string ResolveUrl(string url, string defaultPortalAlias, bool sslEnabled = true)
         {
-            var link = url;
-            var defaultAlias = portalSettings.DefaultPortalAlias;
+            var link = string.Empty;
+            if (url.StartsWith("/", StringComparison.InvariantCultureIgnoreCase))
+            {
+                link = url;
+            }
+            else
+            {
+                var uriBuilder = new UriBuilder(url);
+                var pathAndQuery = $"{uriBuilder.Path}{uriBuilder.Query}";
+                link = pathAndQuery;
+            }
+
+            var defaultAlias = defaultPortalAlias;
             var domain = DotNetNuke.Common.Globals.AddHTTP(defaultAlias);
             if (defaultAlias.Contains("/"))
             {
                 var subDomain = defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
-                if (url.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
+                if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    url = link.Substring(subDomain.Length);
+                    link = link.Substring(subDomain.Length);
                 }
 
                 url = url.Replace(url, $"{domain}{link}");
+            }
+
+            if (sslEnabled && url.StartsWith("http://"))
+            {
+                url = url.Replace("http://", "https://");
+            }
+            else if (!sslEnabled && url.StartsWith("https://"))
+            {
+                url = url.Replace("https://", "http://");
             }
 
             return url;

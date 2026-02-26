@@ -22,7 +22,11 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Linq;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
+
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public partial class ActiveForumViewer : ForumBase
     {
@@ -57,17 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (tmpForumTabId <= 0) { tmpForumTabId = this.TabId; }
                     this.ctlForumLoader.ForumTabId = tmpForumTabId;
                     this.ctlForumLoader.ModuleConfiguration = this.ModuleConfiguration;
-                    System.Web.UI.HtmlControls.HtmlGenericControl oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
-                    oLink.Attributes["rel"] = "stylesheet";
-                    oLink.Attributes["type"] = "text/css";
-                    oLink.Attributes["href"] = this.Page.ResolveUrl(Globals.ModulePath + "module.css");
-                    System.Web.UI.Control oCSS = this.Page.FindControl("CSS");
-                    if (oCSS != null)
-                    {
-                        int iControlIndex = 0;
-                        iControlIndex = oCSS.Controls.Count;
-                        oCSS.Controls.AddAt(0, oLink);
-                    }
+                    ClientResourceManager.RegisterStyleSheet(this.Page, this.Page.ResolveUrl(Globals.ModulePath + "module.css"), FileOrder.Css.ModuleCss);
                 }
                 else
                 {
