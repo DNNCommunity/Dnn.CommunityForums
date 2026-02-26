@@ -187,7 +187,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 // if page number is part of the url, remove it, it will be restored later
-                if (searchURL.ToCharArray().Where(c => c.Equals('/')).Count() > 5)
+                if (searchURL.ToCharArray().Where(c => c.Equals('/')).Count() > 2)
                 {
                     foreach (string up in searchURL.Split('/'))
                     {
