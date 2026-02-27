@@ -241,7 +241,10 @@
 .dnn-community-forums .dcf-forum-view .bs-collapse.collapsed .fa {
   transform: rotate(180deg);
 }
-.dnn-community-forums .dcf-topics-view .dcf-last-post .dcf-last-reply-link {
+.dnn-community-forums .dcf-topics-view .dcf-last-reply .dcf-last-reply-link {
+  white-space: nowrap;
+}
+.dnn-community-forums .dcf-topics-view .dcf-last-post .dcf-last-post-link {
   white-space: nowrap;
 }
 .dnn-community-forums .dcf-topic-view .dcf-title .fa {

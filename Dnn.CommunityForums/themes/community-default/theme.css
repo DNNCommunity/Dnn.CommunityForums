@@ -486,7 +486,10 @@
     display: block;
   }
 }
-.dnn-community-forums .dcf-topics-view .dcf-topics .dcf-last-post .dcf-last-reply-link {
+.dnn-community-forums .dcf-topics-view .dcf-topics .dcf-last-reply .dcf-last-reply-link {
+  white-space: nowrap;
+}
+.dnn-community-forums .dcf-topics-view .dcf-topics .dcf-last-post .dcf-last-post-link {
   white-space: nowrap;
 }
 .dnn-community-forums .dcf-topics-view .dcf-topics .dcf-actions-bottom {
