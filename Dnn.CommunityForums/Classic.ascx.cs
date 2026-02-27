@@ -277,6 +277,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.ForumTabId = this.ForumTabId;
                 ctl.ForumGroupId = this.ForumGroupId;
                 ctl.ParentForumId = this.ParentForumId;
+                ctl.SocialGroupId = this.SocialGroupId;
                 if (this.SocialGroupId > 0)
                 {
                     this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
@@ -302,17 +303,16 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
                 }
+                else if (this.ForumGroupId > 0)
+                {
+                    this.ForumIds = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId).Where(f => f.Active && !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden).Select(forum => forum.ForumID).ToHashSet();
+                }
                 else if (!this.ForumIds.Any())
                 {
                     this.ForumIds = this.UserForumsList;
                 }
 
-                ctl.SocialGroupId = this.SocialGroupId;
                 ctl.ForumIds = this.ForumIds;
-                if (this.ForumGroupId > 0)
-                {
-                    ctl.ForumIds.RemoveWhere(f => f != this.ForumGroupId);
-                }
 
                 ctl.ModuleConfiguration = this.ModuleConfiguration;
                 if (!(options == string.Empty))
