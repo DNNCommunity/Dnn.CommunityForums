@@ -218,11 +218,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (this.Request.QueryString[ParamKeys.GroupId] != null)
                     {
-                        this.Forums = this.Forums.Where(f => f.ForumGroupId == Convert.ToInt32(this.Request.QueryString[ParamKeys.GroupId])).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).ToList();
+                        this.Forums = this.Forums.Where(f => f.ForumGroupId == Convert.ToInt32(this.Request.QueryString[ParamKeys.GroupId]) && f.Active && !f.Hidden && f.ForumGroup != null && f.ForumGroup.Active && !f.ForumGroup.Hidden).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).ToList();
                     }
                     else
                     {
-                        this.Forums = this.Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).ToList();
+                        this.Forums = this.Forums.Where(f => f.Active && !f.Hidden && f.ForumGroup != null && f.ForumGroup.Active && !f.ForumGroup.Hidden).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).ToList();
                     }
 
                     string sGroupName = (this.ForumGroupId != -1 && this.Forums?.Count > 0) ? this.Forums?.FirstOrDefault().GroupName : string.Empty;

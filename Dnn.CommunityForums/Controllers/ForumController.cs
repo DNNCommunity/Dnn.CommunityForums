@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId);
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
             {
-                if (f.Active && !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden)
+                if (f.Active && !f.Hidden && f.ForumGroup != null && f.ForumGroup.Active && !f.ForumGroup.Hidden)
                 {
                     var roles = new HashSet<int>();
                     switch (action)
