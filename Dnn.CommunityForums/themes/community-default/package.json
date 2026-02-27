@@ -4,15 +4,15 @@
   "description": "dcf-theme",
   "main": "index.html",
   "dependencies": {
-    "glob-parent": "^5.1.2",
-    "gulp-rename": "^2.0.0",
+    "glob-parent": "^6.0.2",
+    "gulp-rename": "^2.1.0",
     "merge-stream": "^2.0.0"
   },
   "devDependencies": {
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
     "gulp-less": "^5.0.0",
-    "gulp-sourcemaps": "^3.0.0"
+    "gulp-sourcemaps": "^3.0.0"   
   },
   "author": "Timo Breumelhof",
   "license": "MIT"
