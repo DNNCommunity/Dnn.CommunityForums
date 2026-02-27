@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security.TagRoleIds, post.Author.ForumUser.UserRoleIds))
             {
                 // if the user does not have permission to add tags, remove any tags from the post content but leave tag text
-                post.Content.Body = RegexUtils.GetCachedRegex(tagsPattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(post.Content.Body, "${tag}");
+                post.Content.Body = RegexUtils.GetCachedRegex(tagsPattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(post.Content.Body, "$#{tag}");
             }
             else
             {
