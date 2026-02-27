@@ -74,8 +74,7 @@
 -->
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-            <li>NEW: New token [FORUMTOPIC:LASTPOSTURL] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1811">PR 1811</a>)</li>
-            <li>UPDATE: Tweaks to topics view: show status text not status ID, reply count should show if not logged in, show last post author/date from topic if no replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1811">PR 1811</a>)</li>
+            <li>UPDATE: Tweaks to topics view: show status text not status ID, reply count should show if not logged in, show last post author/date from topic if no replies, new token [FORUMTOPIC:LASTPOSTURL] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1811">PR 1811</a>)</li>
 <!--
             <li>None at this time.</li>
             <li>NEW: Web API endpoints for forums search functionality (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1758">PR 1758</a>)</li>
@@ -98,9 +97,8 @@
         <h4>Bug Fixes</h4>
 
         <ul>
-             <li>FIX: Topics View tweaks: Show status caption rather than status "ID" / Reply count not showing if not logged in / "Last Post" date/author not showing in topics view if no replies and last post is just topic itself (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1806">Issue 1806</a>)</li>
              <li>FIX: Friendly URL for forum group only not showing forums (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1807">Issue 1807</a>)</li>
-             <li>FIX: Hashtag character # inadvertantly removed if tagging is disabled by security (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1812">Issue 1812</a>)</li>
+             <li>FIX: Hashtag character # inadvertently removed if tagging is disabled by security (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1812">Issue 1812</a>)</li>
 <!--
           <li>None at this time.</li> 
              
