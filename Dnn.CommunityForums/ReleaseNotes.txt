@@ -96,6 +96,7 @@
         <h4>Bug Fixes</h4>
 
         <ul>
+             <li>FIX: Topics View tweaks: Show status caption rather than status "ID" / Reply count not showing if not logged in / "Last Post" date/author not showing in topics view if no replies and last post is just topic itself (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1806">Issue 1806</a>)</li>
              <li>FIX: Friendly URL for forum group only not showing forums (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1807">Issue 1807</a>)</li>
 <!--
           <li>None at this time.</li> 

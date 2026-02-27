@@ -1,11 +1,16 @@
 .dcf-topics-view {
 
-    
-    .dcf-last-post {
-        
-        .dcf-last-reply-link{
+    .dcf-last-reply {
+
+        .dcf-last-reply-link {
             white-space: nowrap;
         }
     }
 
+    .dcf-last-post {
+
+        .dcf-last-post-link {
+            white-space: nowrap;
+        }
+    }
 }

@@ -8,15 +8,11 @@
         @media screen and (min-width: @break-tablet) {
             width: auto;
         }
-
     }
 
     .dcf-forum-title {
-
         margin-top: 0;
         font-size: @title-2-size;
-
-
     }
 
     .dcf-forum-search-subscribe {
@@ -26,18 +22,15 @@
 
         .dcf-subscribe-forum {
             .amaf-chk-subs {
-                margin: 0 @dist-sm 0 @dist-xs ;
+                margin: 0 @dist-sm 0 @dist-xs;
             }
         }
     }
 
     .dcf-topic-title {
-
         margin: 0;
         font-size: @title-3-size;
     }
-
-
     // Table head
 
     .dcf-table-head-row {
@@ -48,21 +41,13 @@
                 margin: 0;
                 font-size: @title-3-size;
             }
-
         }
     }
-
-
-
-    // Topics 
+    // Topics
     .dcf-topics {
-
-
-
         padding-bottom: 3em;
 
         &:empty {
-
             padding-bottom: 0;
         }
 
@@ -71,14 +56,12 @@
         }
 
         .dcf-col-subject {
-
             width: 100%; // Push other TDs to the right
         }
 
         .dcf-actions-top {
             display: flex;
             justify-content: flex-end; // Align pager at the right
-
         }
 
         .dcf-subject {
@@ -113,23 +96,25 @@
                     margin-right: @dist-sm;
                 }
             }
-
             // Hide on mobile
             .dcf-topic-description,
             .afpagermini {
-
                 display: none;
 
                 @media screen and (min-width: @break-desktop) {
                     display: block;
                 }
-
             }
+        }
 
+        .dcf-last-reply {
+            .dcf-last-reply-link {
+                white-space: nowrap;
+            }
         }
 
         .dcf-last-post {
-            .dcf-last-reply-link{
+            .dcf-last-post-link {
                 white-space: nowrap;
             }
         }
@@ -144,8 +129,6 @@
 
                 flex-grow: 1;
             }
-
         }
     }
-
 }

@@ -87,14 +87,14 @@
                                     </div>
 									<div rowspan="2" class="dcf-status">[FORUMTOPIC:STATUS|<div><i class="fa fa-status{0} fa-red fa-2x"></i></div>]</div>
 								</td>
-								<td class="dcf-col dcf-col-replies">[FORUMTOPIC:LASTREADURL|<a href="{0}" rel="nofollow">[FORUMTOPIC:REPLYCOUNT]</a>]</td>
+								<td class="dcf-col dcf-col-replies">[FORUMTOPIC:LASTREPLYURL|<a href="{0}" rel="nofollow">[FORUMTOPIC:REPLYCOUNT|0;;' ']</a>]</td>
 								<td class="dcf-col dcf-col-views">[FORUMTOPIC:VIEWCOUNT]</td>
 								<td class="dcf-col dcf-col-views">[FORUMTOPIC:SUBSCRIBERCOUNT]</td>
 								<td class="dcf-col dcf-col-last-post">
 									<div class="dcf-_lastpost" style="white-space:nowrap;">
 										[LASTPOST]
 											<div class="dcf-last-reply">
-											[FORUMTOPIC:LASTREPLYURL|<a class="dcf-last-reply-link" href="{0}" rel="nofollow" title="[RESX:JumpToLastReply]">[FORUMTOPIC:LASTPOSTDATE]</a>]
+											[FORUMTOPIC:LASTPOSTURL|<a class="dcf-last-post-link" href="{0}" rel="nofollow" title="[RESX:JumpToLastReply]">[FORUMTOPIC:LASTPOSTDATE]</a>]
 											</div>
                                             <div class="dcf-last-profile">
 											[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAMELINK|[RESX:BY]<i class="fa fa-user fa-fw fa-blue"></i><a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]</a>|[RESX:BY]<i class="fa fa-user fa-fw fa-blue"></i>[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]]
@@ -188,7 +188,7 @@
 							</div>
 									</div>
 								</td>
-								<td class="dcf-col dcf-col-replies">[FORUMTOPIC:LASTREADURL|<a href="{0}" rel="nofollow">[FORUMTOPIC:REPLYCOUNT]</a>]</td>
+								<td class="dcf-col dcf-col-replies">[FORUMTOPIC:LASTREPLYURL|<a href="{0}" rel="nofollow">[FORUMTOPIC:REPLYCOUNT]</a>]</td>
 								<td class="dcf-col dcf-col-ratings">[FORUMTOPIC:RATING|<span class="fa-rater fa-rate{0}"><i class="fa fa-star1"></i><i class="fa fa-star2"></i><i class="fa fa-star3"></i><i class="fa fa-star4"></i><i class="fa fa-star5"></i></span>
                                     ]
                                 </td>
@@ -199,7 +199,7 @@
 									<div class="dcf-last-post">
                                         [LASTPOST]
 											<div class="dcf-last-reply">
-											[FORUMTOPIC:LASTREPLYURL|<a class="dcf-last-reply-link" href="{0}" rel="nofollow" title="[RESX:JumpToLastReply]">[FORUMTOPIC:LASTPOSTDATE]</a>]
+											[FORUMTOPIC:LASTPOSTURL|<a class="dcf-last-post-link" href="{0}" rel="nofollow" title="[RESX:JumpToLastReply]">[FORUMTOPIC:LASTPOSTDATE]</a>]
 											</div>
                                             <div class="dcf-last-profile">
 											[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAMELINK|[RESX:BY]<i class="fa fa-user fa-fw fa-blue"></i><a href="{0}" class="dcf-profile-link" rel="nofollow">[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]</a>|[RESX:BY]<i class="fa fa-user fa-fw fa-blue"></i>[FORUMTOPIC:LASTPOSTAUTHORDISPLAYNAME]]

@@ -599,9 +599,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     topicTemplate = TemplateUtils.ReplaceSubSection(topicTemplate, sProps, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
                 }
 
-                if (topicTemplate.Contains("[LASTPOST]") && topicInfo.LastReply?.ReplyId == 0)
+                if (topicTemplate.Contains("[LASTREPLY]") && topicInfo.LastReply?.ReplyId == 0)
                 {
-                    topicTemplate = TemplateUtils.ReplaceSubSection(topicTemplate, string.Empty, "[LASTPOST]", "[/LASTPOST]");
+                    topicTemplate = TemplateUtils.ReplaceSubSection(topicTemplate, string.Empty, "[LASTREPLY]", "[/LASTREPLY]");
                 }
 
                 StringBuilder stringBuilder = new StringBuilder(topicTemplate);
@@ -619,6 +619,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(stringBuilder, topicInfo, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl);
+                stringBuilder.Replace("[LASTREPLY]", string.Empty).Replace("[/LASTREPLY]", string.Empty);
                 stringBuilder.Replace("[LASTPOST]", string.Empty).Replace("[/LASTPOST]", string.Empty);
                 stringBuilder.Replace("[ROWCSS]", this.GetRowCSS(UserLastTopicRead, UserLastReplyRead, topicInfo.TopicId, topicInfo.LastReplyId, rowcount));
 
