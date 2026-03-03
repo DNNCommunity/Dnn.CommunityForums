@@ -371,7 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // An intersection of the forums allows vs forums requested.
             var parseId = 0;
 
-            var forumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
+            var forumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsForUser(this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
             var forumsRequested = forumsAllowed;
             if (!string.IsNullOrEmpty(this.Forums))
             {

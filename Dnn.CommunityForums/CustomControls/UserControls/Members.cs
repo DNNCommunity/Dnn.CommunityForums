@@ -231,7 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 while (dr.Read())
                 {
 
-                    upl.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, Convert.ToInt32(dr["UserId"].ToString())));
+                    upl.Add(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ForumModuleId, Convert.ToInt32(dr["UserId"].ToString())));
                 }
             }
             catch (Exception ex)

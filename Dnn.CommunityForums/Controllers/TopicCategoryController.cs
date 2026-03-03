@@ -20,48 +20,54 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using DotNetNuke.Collections;
     using DotNetNuke.Modules.ActiveForums.Entities;
 
-    internal partial class TopicCategoryController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo>
+    internal partial class TopicCategoryController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo, ITopicCategoryController, TopicCategoryController>, ITopicCategoryController
     {
-        internal void AddCategoryToTopic(int categoryId, int topicId)
+        protected override Func<ITopicCategoryController> GetFactory()
         {
-            this.Insert(new TopicCategoryInfo() { CategoryId = categoryId, TopicId = topicId });
-            new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().RecountItems(categoryId);
+            return () => new TopicCategoryController();
         }
 
-        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo> GetForTopic(int topicId)
+        public void AddCategoryToTopic(int categoryId, int topicId)
         {
-            return this.Find("WHERE TopicId = @0", topicId);
+            this._repositoryControllerBase.Insert(new TopicCategoryInfo { CategoryId = categoryId, TopicId = topicId });
+            CategoryController.Instance.RecountItems(categoryId);
         }
 
-        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo> GetForCategory(int categoryId)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo> GetForTopic(int topicId)
         {
-            return this.Find("WHERE CategoryId = @0", categoryId);
+            return this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId);
         }
 
-        internal void DeleteForCategory(int categoryId)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo> GetForCategory(int categoryId)
         {
-            this.Delete("WHERE CategoryId = @0", categoryId);
+            return this._repositoryControllerBase.Find("WHERE CategoryId = @0", categoryId);
         }
 
-        internal void DeleteForTopicCategory(int topicId, int categoryId)
+        public void DeleteForCategory(int categoryId)
         {
-            this.Delete("WHERE CategoryId = @0 AND TopicId = @1", categoryId, topicId);
-            new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().RecountItems(categoryId);
+            this._repositoryControllerBase.Delete("WHERE CategoryId = @0", categoryId);
         }
 
-        internal void DeleteForTopic(int topicId)
+        public void DeleteForTopicCategory(int topicId, int categoryId)
+        {
+            this._repositoryControllerBase.Delete("WHERE CategoryId = @0 AND TopicId = @1", categoryId, topicId);
+            CategoryController.Instance.RecountItems(categoryId);
+        }
+
+        public void DeleteForTopic(int topicId)
         {
             var categoriesToRecount = this.GetForTopic(topicId).Select(x => x.CategoryId).Distinct();
-            this.Delete("WHERE TopicId = @0", topicId);
+            this._repositoryControllerBase.Delete("WHERE TopicId = @0", topicId);
             categoriesToRecount.ForEach(categoryId =>
             {
-                new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().RecountItems(categoryId);
+                CategoryController.Instance.RecountItems(categoryId);
             });
         }
     }

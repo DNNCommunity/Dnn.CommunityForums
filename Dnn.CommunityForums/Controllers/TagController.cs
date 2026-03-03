@@ -18,47 +18,76 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
+    using System.Text.RegularExpressions;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Modules.ActiveForums.Entities;
 
-    internal partial class TagController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TagInfo>
+    internal class TagController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TagInfo, ITagController, TagController>, ITagController
     {
-        internal void RecountItems(int tagId)
+        private readonly ITopicTagController topicTagController;
+
+        protected override Func<ITagController> GetFactory()
         {
-            var tag = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(tagId);
-            tag.Items = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTag(tagId).Count();
-            new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Update(tag);
+            return () => new TagController();
         }
 
-        internal void Delete(string sqlCondition, params object[] args)
+        public TagController()
+            : this(DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController.Instance)
         {
-            this.Find(sqlCondition, args).ForEach(item =>
+        }
+
+        internal TagController(ITopicTagController topicTagController)
+        {
+            this.topicTagController = topicTagController ?? throw new ArgumentNullException(nameof(topicTagController));
+        }
+
+        public void RecountItems(int tagId)
+        {
+            var tag = this._repositoryControllerBase.GetById(tagId);
+            if (tag == null)
             {
-                this.Delete(item);
+                return;
+            }
+
+            tag.Items = this.topicTagController.GetForTag(tagId).Count();
+            this._repositoryControllerBase.Update(tag);
+        }
+
+        public new void Delete(TagInfo item)
+        {
+            if (item == null)
+            {
+                return;
+            }
+
+            this.topicTagController.DeleteForTag(item.TagId);
+            this._repositoryControllerBase.Delete(item);
+        }
+
+        public new void Delete(string sqlCondition, params object[] args)
+        {
+            this._repositoryControllerBase.Find(sqlCondition, args).ForEach(t =>
+            {
+                this.topicTagController.DeleteForTag(t.TagId);
+                this.DeleteById(t.TagId);
             });
         }
 
-        public void DeleteById(int tagId)
+        public new void DeleteById(int tagId)
         {
-            /* delete all topic tags for this tag */
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().Delete("WHERE TagId = @0", tagId);
-            /* now delete the tag itself */
-            base.DeleteById(tagId);
+            this.topicTagController.DeleteForTag(tagId);
+            this._repositoryControllerBase.DeleteById(tagId);
         }
 
-        internal static string GetBodyWithTagsProcessed(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum)
+        internal static string GetBodyWithTagsProcessed(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, INavigationManager navigationManager)
         {
             string tagReplacement;
             if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security.TagRoleIds, post.Author.ForumUser.UserRoleIds))
@@ -70,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 /* transform new tags directly entered in the post content to be links to the search view for tags */
                 /* e.g. #tag1 becomes <a href="https://localhost/forums/afv/search?aftg=tag1">#tag1</a> */
-                tagReplacement = "<a href=\"" + Utilities.NavigateURL(forum.GetTabId(), string.Empty, new[] { $"{ParamKeys.ViewType}={Views.Search}", $"{ParamKeys.Tags}=" + "${tag}" }) + "\" class=\"dcf-tag-link\">" + "#${tag}</a>";
+                tagReplacement = "<a href=\"" + navigationManager.NavigateURL(forum.GetTabId(), forum.PortalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.Search}", $"{ParamKeys.Tags}=" + "${tag}" }) + "\" class=\"dcf-tag-link\">" + "#${tag}</a>";
             }
 
             var body = post.Content.Body;
@@ -104,46 +133,51 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return body;
         }
 
-        internal static void UpdateTopicTags(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post)
+        public void UpdateTopicTags(IPostInfo post)
         {
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(post.Topic.Forum.Security.TagRoleIds, post.Author.ForumUser.UserRoleIds))
+            if (post == null || topicTagController == null)
             {
-                try
-                {
-                    var contentController = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController();
-                    var tagController = new DotNetNuke.Modules.ActiveForums.Controllers.TagController();
-                    var tags = ParseTagsFromBody(post.Content.Body);
+                return;
+            }
 
-                    if (tags.Count > 0)
+            if (!PermissionController.HasRequiredPerm(post.Topic.Forum.Security.TagRoleIds, post.Author.ForumUser.UserRoleIds))
+            {
+                return;
+            }
+
+            try
+            {
+                var tags = ParseTagsFromBody(post.Content.Body);
+                if (tags.Count <= 0)
+                {
+                    return;
+                }
+
+                var existingTags = this.topicTagController.GetForTopic(post.TopicId);
+                tags.Distinct().ToList().Where(t => !string.IsNullOrEmpty(t)).ForEach(t =>
+                {
+                    var tag = this._repositoryControllerBase.Find("WHERE TagName = @0", t).FirstOrDefault();
+                    if (tag == null)
                     {
-                        var topicTagController = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController();
-                        var existingTags = topicTagController.GetForTopic(post.TopicId);
-                        tags.Distinct().ToList().Where(t => !string.IsNullOrEmpty(t)).ForEach(t =>
+                        tag = new TagInfo
                         {
-                            var tag = tagController.Find("WHERE TagName = @0", t).FirstOrDefault();
-                            if (tag == null)
-                            {
-                                tag = new DotNetNuke.Modules.ActiveForums.Entities.TagInfo()
-                                {
-                                    TagName = t,
-                                    ModuleId = post.ModuleId,
-                                    PortalId = post.PortalId,
-                                };
-                                tagController.Insert(tag);
-                            }
+                            TagName = t,
+                            ModuleId = post.ModuleId,
+                            PortalId = post.PortalId,
+                        };
 
-                            // if the tag is not already associated with the topic, add it
-                            if (!existingTags.Any(et => et.TagId == tag.TagId))
-                            {
-                                topicTagController.AddTagToTopic(tag.TagId, post.TopicId);
-                            }
-                        });
+                        this._repositoryControllerBase.Insert(tag);
                     }
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                }
+
+                    if (!existingTags.Any(et => et.TagId == tag.TagId))
+                    {
+                        this.topicTagController.AddTagToTopic(tag.TagId, post.TopicId);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
             }
         }
 
@@ -166,21 +200,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return tags;
         }
 
-        internal void Delete(DotNetNuke.Modules.ActiveForums.Entities.TagInfo item)
+        public virtual TagInfo GetByName(int moduleId, string tagName)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTag(item.TagId);
-            base.Delete(item);
-        }
-
-        internal virtual DotNetNuke.Modules.ActiveForums.Entities.TagInfo GetByName(int moduleId, string tagName)
-        {
-            string cachekey = string.Format(CacheKeys.TagByName, moduleId, tagName);
-            DotNetNuke.Modules.ActiveForums.Entities.TagInfo tagInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TagInfo;
+            var cachekey = string.Format(CacheKeys.TagByName, moduleId, tagName);
+            var tagInfo = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as TagInfo;
             if (tagInfo == null)
             {
-                // this accommodates duplicates which may exist since currently no uniqueness applied in database
-                tagInfo = this.Find("WHERE ModuleId = @0 AND TagName = @1", moduleId, tagName.Trim()).OrderBy(t => t.TagId).FirstOrDefault();
-                DataCache.ContentCacheStore(moduleId, cachekey, tagInfo);
+                tagInfo = this._repositoryControllerBase.Find("WHERE ModuleId = @0 AND TagName = @1", moduleId, tagName.Trim()).OrderBy(t => t.TagId).FirstOrDefault();
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, tagInfo);
             }
 
             return tagInfo;

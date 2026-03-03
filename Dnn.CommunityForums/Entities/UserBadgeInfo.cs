@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// Gets or sets the PortalId.
         /// </summary>
         public int PortalId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the ModuleId.
         /// </summary>
@@ -107,8 +107,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.badgeInfo = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo GetBadge() => this.badgeInfo = new Controllers.BadgeController().GetById(this.BadgeId, this.ModuleId);
-        
+        internal DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo GetBadge() => this.badgeInfo = DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.GetById(this.ModuleId, this.BadgeId);
+
         [IgnoreColumn]
         public string BadgeName { get => this.badgeName ?? (this.badgeName = this.Badge.Name); set => this.badgeName = value; }
 
@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int GetAwardCount()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ModuleId).BadgeCount(this.UserId, this.BadgeId);
+            return DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.Instance.BadgeCount(this.PortalId, this.ModuleId, this.UserId, this.BadgeId);
         }
 
         [IgnoreColumn]
@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.forumUserInfo = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetForumUser() => this.forumUserInfo = new Controllers.ForumUserController((int)this.ModuleId).GetByUserId(this.PortalId, this.UserId);
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetForumUser() => this.forumUserInfo = Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ModuleId, this.UserId);
 
         [IgnoreColumn]
         public DotNetNuke.Services.Tokens.CacheLevel Cacheability

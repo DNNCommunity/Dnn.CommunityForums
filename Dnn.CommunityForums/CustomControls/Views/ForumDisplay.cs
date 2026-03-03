@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 groupTemplate = TemplateUtils.GetTemplateSection(this.DisplayTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
             }
 
-            var forumGroups = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(this.ControlConfig.ForumModuleId);
+            var forumGroups = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.Get(this.ControlConfig.ForumModuleId);
             foreach (var forumGroup in forumGroups)
             {
                 if (forumGroup.Active && (this.ForumGroupId == -1 || forumGroup.ForumGroupId == this.ForumGroupId))
@@ -125,7 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     var forums = new StringBuilder();
                     int i = 0;
-                    var forumsForGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(this.ControlConfig.ForumModuleId).Where(f => f.ForumGroupId == forumGroup.ForumGroupId).ToList();
+                    var forumsForGroup = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Get(this.ControlConfig.ForumModuleId).Where(f => f.ForumGroupId == forumGroup.ForumGroupId).ToList();
                     foreach (var forum in forumsForGroup)
                     {
                         i += 1;

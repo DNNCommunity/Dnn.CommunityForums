@@ -24,11 +24,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tests
     using System.Threading;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Modules.ActiveForums.Controllers;
     using DotNetNuke.Services.Localization;
 
     /// <summary>The default <see cref="INavigationManager"/> implementation.</summary>
@@ -211,19 +214,19 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tests
                 }
             }
 
-            if (Host.UseFriendlyUrls || Config.GetFriendlyUrlProvider() == "advanced")
-            {
-                if (string.IsNullOrEmpty(pageName))
-                {
-                    pageName = DotNetNuke.Common.Globals.glbDefaultPage;
-                }
+            //if (0 != 1 || Host.UseFriendlyUrls || Config.GetFriendlyUrlProvider() == "advanced")
+            //{
+            //    if (string.IsNullOrEmpty(pageName))
+            //    {
+            //        pageName = DotNetNuke.Common.Globals.glbDefaultPage;
+            //    }
 
-                url = (settings == null) ? DotNetNuke.Common.Globals.FriendlyUrl(tab, url, pageName) : DotNetNuke.Common.Globals.FriendlyUrl(tab, url, pageName, settings);
-            }
-            else
-            {
+            //    url = (settings == null) ? DotNetNuke.Common.Globals.FriendlyUrl(tab, url, pageName) : DotNetNuke.Common.Globals.FriendlyUrl(tab, url, pageName, settings);
+            //}
+            //else
+            //{
                 url = DotNetNuke.Common.Globals.ResolveUrl(url);
-            }
+            //}
 
             return url;
         }

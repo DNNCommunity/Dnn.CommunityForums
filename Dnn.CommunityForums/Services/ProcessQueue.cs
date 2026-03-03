@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
             var intQueueCount = 0;
             try
             {
-                new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().GetBatch().ForEach(item =>
+                DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.GetBatch().ForEach(item =>
                 {
                     intQueueCount += 1;
                     bool completed = false;
@@ -85,10 +85,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                             completed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.RecalculateTopicPointers(item.ForumId);
                             break;
                         case ProcessType.BadgeAssigned:
-                            completed = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(item.PortalId, item.ModuleId).AssignUserBadgeAfterAction(item.PortalId, item.UserId, item.BadgeId, item.DateCreated, item.RequestUrl);
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.Instance.AssignUserBadgeAfterAction(item.PortalId, item.ModuleId, item.UserId, item.BadgeId, item.DateCreated, item.RequestUrl);
                             break;
                         case ProcessType.UserMentioned:
-                            completed = new DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController().UserMentionAfterAction(item.PortalId, item.ModuleId, item.TabId, item.ForumGroupId, item.ForumId, item.TopicId, item.ReplyId, item.ContentId, item.AuthorId, item.UserId, item.RequestUrl);
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController.Instance.UserMentionAfterAction(item.PortalId, item.ModuleId, item.TabId, item.ForumGroupId, item.ForumId, item.TopicId, item.ReplyId, item.ContentId, item.AuthorId, item.UserId, item.RequestUrl);
                             break;
                         default:
                             DotNetNuke.Services.Exceptions.Exceptions.LogException(new NotImplementedException("invalid ProcessType"));
@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                     {
                         try
                         {
-                            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().DeleteById(item.Id);
+                            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.DeleteById(item.Id);
                         }
                         catch (Exception ex)
                         {
@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                             var message = string.Format(Utilities.GetSharedResource("[RESX:UnableToProcessItem]"), item.Id);
                             log.AddProperty("Message", message);
                             DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-                            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().DeleteById(item.Id);
+                            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.DeleteById(item.Id);
                         }
                         else
                         {

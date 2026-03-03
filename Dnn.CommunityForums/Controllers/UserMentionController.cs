@@ -26,16 +26,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Text;
     using System.Text.RegularExpressions;
 
-    using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
 
-    internal partial class UserMentionController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.UserMentionInfo>
+    internal class UserMentionController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.UserMentionInfo, IUserMentionController, UserMentionController>, IUserMentionController
     {
+        protected override Func<IUserMentionController> GetFactory()
+        {
+            return () => new UserMentionController();
+        }
+
         internal static void ProcessUserMentions(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post)
         {
             const string Pattern = @"(<a href=\"".*?\/Activity-Feed\?userId=(?<userid>\d+?)\"">)";
@@ -82,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static void UserMentioned(int portalId, int moduleId, int tabId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, string requestUrl)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(
+            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.Add(
                 processType: ProcessType.UserMentioned,
                 portalId: portalId,
                 tabId: tabId,
@@ -95,17 +96,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 authorId: authorId,
                 userId: userId,
                 badgeId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                dateCreated: DateTime.UtcNow,
                 requestUrl: requestUrl);
         }
 
-        public bool UserMentionAfterAction(int portalId, int moduleId, int tabId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, string requestUrl)
+        bool IUserMentionController.UserMentionAfterAction(int portalId, int moduleId, int tabId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, string requestUrl)
         {
             try
             {
-                DotNetNuke.Modules.ActiveForums.Entities.UserMentionInfo userMention = this.Find("WHERE ContentId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
+                DotNetNuke.Modules.ActiveForums.Entities.UserMentionInfo userMention = this._repositoryControllerBase.Find("WHERE ContentId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
                 if (userMention == null)
                 {
-                    var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId); // this will create user if not exists
+                    var user = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(portalId, moduleId, userId); // this will create user if not exists
                     if (user == null)
                     {
                         DotNetNuke.Modules.ActiveForums.Exceptions.LogException(new ArgumentException($"User mention for User: {userId} could not be processed because user doesn't exist; skipping user mention."));
@@ -122,7 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             DateMentioned = DateTime.UtcNow,
                             ForumUser = user,
                         };
-                        this.Insert(userMention);
+                        this._repositoryControllerBase.Insert(userMention);
                         if (userMention.ForumUser.UserMentionNotificationsEnabled)
                         {
                             var subject = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.UserMentionNotificationSubject, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix, userMention.ForumUser);

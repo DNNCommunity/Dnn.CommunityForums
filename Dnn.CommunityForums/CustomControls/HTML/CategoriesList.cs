@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string forumPrefix = string.Empty;
             if (this.ForumId > 0)
             {
-                forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId);
+                forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ModuleId, this.ForumId);
                 if (forumInfo != null)
                 {
                     groupPrefix = forumInfo.ForumGroup.PrefixURL;

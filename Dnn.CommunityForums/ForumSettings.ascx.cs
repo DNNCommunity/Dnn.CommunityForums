@@ -228,12 +228,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 else
                 {
                     DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, SettingKeys.SocialGroupModeForumConfig);
-                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, SettingKeys.SocialGroupModeForumGroupTemplate);
-                    var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-                    fc.Get(this.ModuleId).Where(f => f.SocialGroupId != 0).ForEach(forum =>
+                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, SettingKeys.SocialGroupModeForumGroupTemplate); 
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Get(this.ModuleId).Where(f => f.SocialGroupId != 0).ForEach(forum =>
                     {
                         forum.SocialGroupId = 0;
-                        fc.Update(forum);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Update(forum);
                     });
                 }
 
@@ -279,17 +278,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.drpMessagingTab.Items.Clear();
             this.drpMessagingTab.ClearSelection();
 
-            var mc = new DotNetNuke.Entities.Modules.ModuleController();
-            var tc = new TabController();
-
-            foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(this.PortalId))
+            foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(this.PortalId))
             {
                 if (!mi.DesktopModule.ModuleName.Contains("DnnForge - PrivateMessages") || mi.IsDeleted)
                 {
                     continue;
                 }
 
-                var ti = tc.GetTab(mi.TabID, this.PortalId, false);
+                var ti = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(mi.TabID, this.PortalId, false);
                 if (ti != null && !ti.IsDeleted)
                 {
                     this.drpMessagingTab.Items.Add(new ListItem
@@ -311,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void BindForumGroups()
         {
             int tmpGroupId = -1;
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+            var forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
             foreach (var forum in forums)
             {
                 if (tmpGroupId != forum.ForumGroupId)

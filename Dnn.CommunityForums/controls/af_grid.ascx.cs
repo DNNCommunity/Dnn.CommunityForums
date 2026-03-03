@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string url = string.Empty;
             if (this.Request.Params[ParamKeys.GridType].Equals(GridTypes.Tags))
             {
-                var tag = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(Utilities.SafeConvertInt(this.Request.QueryString[ParamKeys.Tags], -1));
+                var tag = DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.GetById(Utilities.SafeConvertInt(this.Request.QueryString[ParamKeys.Tags], -1));
                 if (tag != null)
                 {
                     url = new ControlUtils().BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: this.ForumGroupId, forumID: this.ForumId, topicId: this.TopicId, topicURL: string.Empty, tagId: Utilities.SafeConvertInt(this.Request.QueryString[ParamKeys.Tags], -1), categoryId: -1, otherPrefix: tag.TagName, pageId: 1, contentId: -1, socialGroupId: -1);
@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.posts = null;
             this.rowIndex = (this.PageId - 1) * this.pageSize;
 
-            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
+            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsForUser(this.ForumModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
 
             if (this.Request.Params[ParamKeys.GridType] != null)
             {
@@ -194,10 +194,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                             this.drpTimeFrame.Visible = true;
                             this.drpTimeFrame.SelectedIndex = this.drpTimeFrame.Items.IndexOf(this.drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
-                            this.rowCount = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetMyUnreadTopicsCount(forumIds, timeFrame, this.UserId);
+                            this.rowCount = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetMyUnreadTopicsCount(moduleId: this.ForumModuleId, forumIds: forumIds, timeFrameMinutes: timeFrame, authorId: this.UserId);
                             if (this.rowCount > 0)
                             {
-                                this.posts = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetMyUnreadTopics(forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize, authorId: this.UserId);
+                                this.posts = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetMyUnreadTopics(moduleId: this.ForumModuleId, forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize, authorId: this.UserId);
                                 this.btnMarkRead.Visible = true;
                                 this.btnMarkRead.InnerText = this.GetSharedResource("[RESX:MarkAllRead]");
                             }
@@ -213,10 +213,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     case GridTypes.Announcements:
 
                         this.lblHeader.Text = this.GetSharedResource("[RESX:Announcements]");
-                        this.rowCount = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetAnnouncementsCount(forumIds);
+                        this.rowCount = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetAnnouncementsCount(moduleId: this.ForumModuleId, forumIds: forumIds);
                         if (this.rowCount > 0)
                         {
-                            this.posts = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetAnnouncements(forumIds: forumIds, pageId: this.PageId, pageSize: this.pageSize);
+                            this.posts = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetAnnouncements(moduleId: this.ForumModuleId, forumIds: forumIds, pageId: this.PageId, pageSize: this.pageSize);
                         }
 
                         break;
@@ -231,10 +231,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         this.drpTimeFrame.Visible = true;
                         this.drpTimeFrame.SelectedIndex = this.drpTimeFrame.Items.IndexOf(this.drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
-                        this.rowCount = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetUnresolvedCount(forumIds, timeFrame);
+                        this.rowCount = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetUnresolvedCount(moduleId: this.ForumModuleId, forumIds: forumIds, timeFrameMinutes: timeFrame);
                         if (this.rowCount > 0)
                         {
-                            this.posts = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetUnresolved(forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize);
+                            this.posts = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetUnresolved(moduleId: this.ForumModuleId, forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize);
                         }
 
                         break;
@@ -249,10 +249,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         this.drpTimeFrame.Visible = true;
                         this.drpTimeFrame.SelectedIndex = this.drpTimeFrame.Items.IndexOf(this.drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
-                        this.rowCount = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetUnansweredCount(forumIds, timeFrame);
+                        this.rowCount = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetUnansweredCount(moduleId: this.ForumModuleId, forumIds, timeFrame);
                         if (this.rowCount > 0)
                         {
-                            this.posts = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetUnanswered(forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize);
+                            this.posts = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetUnanswered(moduleId: this.ForumModuleId, forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize);
                         }
 
                         break;
@@ -265,7 +265,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             tagId = int.Parse(this.Request.QueryString[ParamKeys.Tags]);
                             if (tagId > 0)
                             {
-                                var tag = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(tagId);
+                                var tag = DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.GetById(tagId);
                                 if (tag != null)
                                 {
                                     this.lblHeader.Text = $"{this.GetSharedResource("[RESX:Tags]")}: {tag.TagName.Trim()}";
@@ -276,10 +276,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                                     this.drpTimeFrame.Visible = true;
                                     this.drpTimeFrame.SelectedIndex = this.drpTimeFrame.Items.IndexOf(this.drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
-                                    this.rowCount = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetTaggedTopicsCount(forumIds: forumIds, tagId: tagId, timeFrameMinutes: timeFrame);
+                                    this.rowCount = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetTaggedTopicsCount(moduleId: this.ForumModuleId, forumIds: forumIds, tagId: tagId, timeFrameMinutes: timeFrame);
                                     if (this.rowCount > 0)
                                     {
-                                        this.posts = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetTaggedTopics(forumIds: forumIds, tagId: tagId, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize);
+                                        this.posts = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetTaggedTopics(moduleId: this.ForumModuleId, forumIds: forumIds, tagId: tagId, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize);
                                     }
                                 }
                             }
@@ -299,10 +299,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                             this.drpTimeFrame.Visible = true;
                             this.drpTimeFrame.SelectedIndex = this.drpTimeFrame.Items.IndexOf(this.drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
-                            this.rowCount = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetMyTopicsCount(forumIds, timeFrame, this.UserId);
+                            this.rowCount = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetMyTopicsCount(moduleId: this.ForumModuleId, forumIds, timeFrame, this.UserId);
                             if (this.rowCount > 0)
                             {
-                                this.posts = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetMyTopics(forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize, authorId: this.UserId);
+                                this.posts = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetMyTopics(moduleId: this.ForumModuleId, forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize, authorId: this.UserId);
                             }
                         }
                         else
@@ -323,10 +323,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         this.drpTimeFrame.Visible = true;
                         this.drpTimeFrame.SelectedIndex = this.drpTimeFrame.Items.IndexOf(this.drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
-                        this.rowCount = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetActiveTopicsCount(forumIds, timeFrame);
+                        this.rowCount = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetActiveTopicsCount(moduleId: this.ForumModuleId, forumIds, timeFrame);
                         if (this.rowCount > 0)
                         {
-                            this.posts = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetActiveTopics(forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize);
+                            this.posts = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetActiveTopics(moduleId: this.ForumModuleId, forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize);
                         }
 
                         break;
@@ -344,7 +344,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.rowCount = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.GetMostLikesCount(this.ForumModuleId, forumIds, timeFrame);
                         if (this.rowCount > 0)
                         {
-                            this.posts = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.GetMostLikes(this.ForumModuleId, forumIds, timeFrame, this.PageId, this.pageSize);
+                            this.posts = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.GetMostLikes(moduleId: this.ForumModuleId, forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize);
                         }
 
                         break;
@@ -359,10 +359,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         this.drpTimeFrame.Visible = true;
                         this.drpTimeFrame.SelectedIndex = this.drpTimeFrame.Items.IndexOf(this.drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
-                        this.rowCount = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetMostRepliesCount(forumIds, timeFrame);
+                        this.rowCount = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetMostRepliesCount(moduleId: this.ForumModuleId, forumIds, timeFrame);
                         if (this.rowCount > 0)
                         {
-                            this.posts = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetMostReplies(forumIds, timeFrame, this.PageId, this.pageSize);
+                            this.posts = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetMostReplies(moduleId: this.ForumModuleId, forumIds: forumIds, timeFrameMinutes: timeFrame, pageId: this.PageId, pageSize: this.pageSize);
                         }
 
                         break;
@@ -514,7 +514,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (this.Request.Params[ParamKeys.GridType].Equals(GridTypes.Tags) && !string.IsNullOrEmpty(this.ModuleSettings.PrefixURLTag))
                 {
-                    var tag = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(Utilities.SafeConvertInt(this.Request.QueryString[ParamKeys.Tags], -1));
+                    var tag = DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.GetById(Utilities.SafeConvertInt(this.Request.QueryString[ParamKeys.Tags], -1));
                     if (tag != null)
                     {
                         pager.BaseURL += $"/{this.ModuleSettings.PrefixURLTag}/{tag.TagName}/{ParamKeys.TimeSpan}/{this.Request.Params[ParamKeys.TimeSpan]}";

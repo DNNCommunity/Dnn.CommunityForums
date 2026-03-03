@@ -92,8 +92,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ActiveModule.ModuleID, this.ActiveModule.TabID, false).ModuleSettings["AFForumModuleID"]);
                 }
 
-                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
-                string sOnlineList = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetUsersOnline(this.PortalSettings, SettingsBase.GetModuleSettings(this.ForumModuleId), this.ForumModuleId, user);
+                var user = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ForumModuleId, this.UserInfo.UserID);
+                string sOnlineList = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetUsersOnline(this.PortalSettings, SettingsBase.GetModuleSettings(this.ForumModuleId), this.ForumModuleId, user);
                 IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalSettings.PortalId, 2);
                 int anonCount = 0;
                 int memCount = 0;
@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
 
-                var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: this.ForumModuleId);
+                var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: this.ForumModuleId, forumId: forumId);
                 if (forum == null || !forum.FeatureSettings.UserMentions)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.BadRequest);

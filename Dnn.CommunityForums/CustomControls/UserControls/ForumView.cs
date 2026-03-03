@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             this.Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
                             foreach (var forumId in this.ForumIds)
                             {
-                                this.Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(forumId), this.ForumModuleId));
+                                this.Forums.Add(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, Utilities.SafeConvertInt(forumId)));
                             }
 
                             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ForumModuleId, cachekey, this.Forums);
@@ -192,7 +192,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                     }
 
-                    if (this.Request.QueryString[ParamKeys.GroupId] != null)
+                    if (this.ForumUser.RunningInViewer)
+                    {
+                        if (this.ForumGroupId != DotNetNuke.Common.Utilities.Null.NullInteger)
+                        {
+                            this.Forums = this.Forums.Where(f => f.ForumGroupId == this.ForumGroupId && f.Active && !f.Hidden && f.ForumGroup != null && f.ForumGroup.Active && !f.ForumGroup.Hidden).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).ToList();
+                        }
+                        else
+                        {
+                            this.Forums = this.Forums.Where(f => f.ForumID == this.ForumId && f.Active && !f.Hidden && f.ForumGroup != null && f.ForumGroup.Active && !f.ForumGroup.Hidden).ToList();
+                        }
+                    }
+                    else if (this.Request.QueryString[ParamKeys.GroupId] != null)
                     {
                         this.Forums = this.Forums.Where(f => f.ForumGroupId == Convert.ToInt32(this.Request.QueryString[ParamKeys.GroupId]) && f.Active && !f.Hidden && f.ForumGroup != null && f.ForumGroup.Active && !f.ForumGroup.Hidden).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.ForumGroupId).ThenBy(f => f.SortOrder).ToList();
                     }

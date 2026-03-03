@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 #if DEBUG
             //ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
-            //new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveUnused(this.ForumModuleId);
+            //DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.RemoveUnused(this.ForumModuleId);
             //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
             //ForumsConfig.Install_LikeNotificationType_080200();
             //ForumsConfig.Install_PinNotificationType_080200();
@@ -85,11 +85,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (this.Request.QueryString[Literals.GroupId] != null && Utilities.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                     {
                         this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
-                        this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
+                        this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
                         if (this.ForumIds.Any())
                         {
                             this.ForumIds = new System.Collections.Generic.HashSet<int> { this.ForumIds.First() };
-                            this.ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumIds.First(), this.ForumModuleId);
+                            this.ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, this.ForumIds.First());
                             this.ForumId = this.ForumInfo.ForumID;
                         }
                     }
@@ -282,7 +282,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.SocialGroupId = this.SocialGroupId;
                 if (this.SocialGroupId > 0)
                 {
-                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
+                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
 
                     if (!this.ForumIds.Any())
                     {
@@ -301,13 +301,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         else
                         {
                             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(this.PortalId, this.ModuleId, this.SocialGroupId, Convert.ToInt32(htSettings[SettingKeys.SocialGroupModeForumGroupTemplate].ToString()), role.RoleName + " Discussions", role.Description, !role.IsPublic, htSettings[SettingKeys.SocialGroupModeForumConfig].ToString());
-                            this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
+                            this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
                         }
                     }
                 }
                 else if (this.ForumGroupId > 0)
                 {
-                    this.ForumIds = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId).Where(f => f.Active && !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden).Select(forum => forum.ForumID).ToHashSet();
+                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(this.ForumModuleId).Where(f => f.Active && !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden).Select(forum => forum.ForumID).ToHashSet();
                 }
                 else if (!this.ForumIds.Any())
                 {

@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     {
                         matchingTags = new List<TagMatchDto>();
                         matchingTags.AddRange(
-                        new DotNetNuke.Modules.ActiveForums.Controllers.TagController()
+                        DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance
                         .Find(
                             "WHERE PortalId = @0 AND ModuleId = @1 AND TagName <> '' AND TagName LIKE @2 ORDER By TagName",
                             this.ActiveModule.PortalID,

@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo LoadSecurity()
         {
-            var security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(this.PermissionsId, this.ModuleId);
+            var security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(this.PermissionsId, this.ModuleId);
             if (security == null)
             {
                 security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.ModuleId);
@@ -282,7 +282,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
-                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this, this.RequestUri, this.RawUrl)
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.PortalSettings, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID), this, this.RequestUri, this.RawUrl)
                 {
                     AccessingUser = accessingUser,
                 };

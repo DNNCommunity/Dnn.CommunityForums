@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var request = this.Request;
             var portalSettings = this.PortalSettings;
             var userInfo = portalSettings.UserInfo;
-            var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).GetByUserId(this.ActiveModule.PortalID, userInfo.UserID);
+            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ActiveModule.ModuleID, userInfo.UserID);
 
             if (!request.Content.IsMimeMultipartContent())
             {

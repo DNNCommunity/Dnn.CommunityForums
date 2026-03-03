@@ -340,7 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.ctlForumSubs = (ForumView)this.LoadControl(typeof(ForumView), null);
                 this.ctlForumSubs.ModuleConfiguration = this.ModuleConfiguration;
                 this.ctlForumSubs.ForumId = this.ForumId;
-                this.ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ForumModuleId).SubForums.Where(f => f.Active && !f.Hidden).ToList();
+                this.ctlForumSubs.Forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, this.ForumId).SubForums.Where(f => f.Active && !f.Hidden).ToList();
                 this.ctlForumSubs.ForumTabId = this.ForumTabId;
                 this.ctlForumSubs.ForumModuleId = this.ForumModuleId;
                 this.ctlForumSubs.SubsOnly = true;
@@ -471,7 +471,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     PortalId = this.PortalId,
                     ContentId = Convert.ToInt32(drTopic["TopicContentId"]),
                     ForumId = Convert.ToInt32(drTopic["ForumId"]),
-                    Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Convert.ToInt32(drTopic["ForumId"]), this.ForumModuleId),
+                    Forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, Convert.ToInt32(drTopic["ForumId"])),
                     TopicId = Convert.ToInt32(drTopic["TopicId"]),
                     TopicType = (TopicTypes)Enum.Parse(typeof(TopicTypes), Convert.ToInt32(drTopic["TopicType"]).ToString()),
                     Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo

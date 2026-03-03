@@ -54,8 +54,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (dto.ForumId > 0)
                 {
-                    string userPermSet = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID).UserPermSet;
-                    int subscribed = new SubscriptionController().Subscription_Update(this.ActiveModule.PortalID, this.ForumModuleId, dto.ForumId, -1, 1, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID));
+                    string userPermSet = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ForumModuleId, this.UserInfo.UserID).UserPermSet;
+                    int subscribed = new SubscriptionController().Subscription_Update(this.ActiveModule.PortalID, this.ForumModuleId, dto.ForumId, -1, 1, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ForumModuleId, this.UserInfo.UserID));
                     return this.Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
                 }
             }
@@ -131,8 +131,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             try
             {
-                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
-                return this.Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(this.ForumModuleId, user, includeHiddenForums: true));
+                var user = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ForumModuleId, this.UserInfo.UserID);
+                return this.Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsHtmlOption(this.ForumModuleId, user, includeHiddenForums: true));
             }
             catch (Exception ex)
             {
@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forumId > 0)
                 {
-                    var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: this.ForumModuleId);
+                    var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: this.ForumModuleId, forumId: forumId);
                     if (forum != null)
                     {
                         return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.ViewModels.Forum(forum));
@@ -188,12 +188,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forum != null)
                 {
-                    var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
+                    var fc = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance;
                     forum.ForumID = DotNetNuke.Common.Utilities.Null.NullInteger;
                     forum.ModuleId = this.ForumModuleId;
                     forum.ParentForumId = 0;
-                    var forumId = fc.Forums_Save(portalId: this.ActiveModule.PortalID, forumInfo: forum, isNew: true, useGroupFeatures: true, useGroupSecurity: true);
-                    var forumCreated = fc.GetById(forumId: forumId, moduleId: this.ForumModuleId);
+                    var forumId = fc.Forums_Save(portalId: this.ActiveModule.PortalID, fi: forum, isNew: true, useGroupFeatures: true, useGroupSecurity: true);
+                    var forumCreated = fc.GetById(moduleId: this.ForumModuleId, forumId: forumId);
                     return this.Request.CreateResponse(HttpStatusCode.Created, forumCreated);
                 }
             }
@@ -221,12 +221,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forum != null)
                 {
-                    var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
+                    var fc = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance;
                     forum.ForumID = DotNetNuke.Common.Utilities.Null.NullInteger;
                     forum.ModuleId = this.ForumModuleId;
                     forum.ParentForumId = 0;
-                    var forumId = fc.Forums_Save(portalId: this.ActiveModule.PortalID, forumInfo: forum, isNew: true, useGroupFeatures: useGroupFeatures, useGroupSecurity: useGroupSecurity);
-                    var forumCreated = fc.GetById(forumId: forumId, moduleId: this.ForumModuleId);
+                    var forumId = fc.Forums_Save(portalId: this.ActiveModule.PortalID, fi: forum, isNew: true, useGroupFeatures: useGroupFeatures, useGroupSecurity: useGroupSecurity);
+                    var forumCreated = fc.GetById(moduleId: this.ForumModuleId, forumId: forumId);
                     return this.Request.CreateResponse(HttpStatusCode.Created, forumCreated);
                 }
             }
@@ -252,9 +252,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forum != null && forum.ForumID > 0)
                 {
-                    var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-                    var forumId = fc.Forums_Save(portalId: this.ActiveModule.PortalID, forumInfo: forum, isNew: false, useGroupFeatures: forum.InheritSettings, useGroupSecurity: forum.InheritSecurity);
-                    var forumUpdated = fc.GetById(forumId: forum.ForumID, moduleId: this.ForumModuleId);
+                    var fc = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance;
+                    var forumId = fc.Forums_Save(portalId: this.ActiveModule.PortalID, fi: forum, isNew: false, useGroupFeatures: forum.InheritSettings, useGroupSecurity: forum.InheritSecurity);
+                    var forumUpdated = fc.GetById(moduleId: this.ForumModuleId, forumId: forum.ForumID);
                     return this.Request.CreateResponse(HttpStatusCode.Created, forumUpdated);
                 }
             }
@@ -282,9 +282,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forum != null && forum.ForumID > 0)
                 {
-                    var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-                    var forumId = fc.Forums_Save(portalId: this.ActiveModule.PortalID, forumInfo: forum, isNew: false, useGroupFeatures: useGroupFeatures, useGroupSecurity: useGroupSecurity);
-                    var forumUpdated = fc.GetById(forumId: forum.ForumID, moduleId: this.ForumModuleId);
+                    var forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Forums_Save(portalId: this.ActiveModule.PortalID, fi: forum, isNew: false, useGroupFeatures: useGroupFeatures, useGroupSecurity: useGroupSecurity);
+                    var forumUpdated = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: this.ForumModuleId, forumId: forum.ForumID);
                     return this.Request.CreateResponse(HttpStatusCode.Created, forumUpdated);
                 }
             }
@@ -310,11 +309,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forumId > 0)
                 {
-                    var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-                    var forum = fc.GetById(forumId: forumId, moduleId: this.ForumModuleId);
+                    var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: this.ForumModuleId, forumId: forumId);
                     if (forum != null)
                     {
-                        fc.Forums_Delete(forumId: forumId, moduleId: this.ForumModuleId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Forums_Delete(forumId: forumId, moduleId: this.ForumModuleId);
                         return this.Request.CreateResponse(HttpStatusCode.OK, true);
                     }
 
@@ -338,9 +336,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             try
             {
-                var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
+                var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ForumModuleId, this.UserInfo.UserID);
                 var forums = new List<DotNetNuke.Modules.ActiveForums.ViewModels.Forum>();
-                new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId: this.ForumModuleId).ForEach(f =>
+                DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(moduleId: this.ForumModuleId).ForEach(f =>
                 {
                     if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security.ViewRoleIds, forumUser.UserRoleIds))
                     {
@@ -412,7 +410,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forumId > 0)
                 {
-                    var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: this.ForumModuleId);
+                    var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: this.ForumModuleId, forumId: forumId);
                     if (forum != null)
                     {
                         return this.Request.CreateResponse(HttpStatusCode.OK, forum.FeatureSettings);
@@ -441,7 +439,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forumId > 0)
                 {
-                    var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: this.ForumModuleId);
+                    var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: this.ForumModuleId, forumId: forumId);
                     if (forum != null)
                     {
                         return this.Request.CreateResponse(HttpStatusCode.OK, forum.Security);

@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.contentInfo = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent() => this.contentInfo = new Controllers.ContentController().GetById(this.ContentId, this.ModuleId);
+        internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent() => this.contentInfo = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.GetById(this.ModuleId, this.ContentId);
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.forumUserInfo = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetForumUser() => this.forumUserInfo = new Controllers.ForumUserController((int)this.ModuleId).GetByUserId(this.PortalId, this.UserId);
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetForumUser() => this.forumUserInfo = Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ModuleId, this.UserId);
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this.Content?.Post?.Topic;
@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             // replace any embedded tokens in format string
             if (format.Contains("["))
             {
-                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.Forum.PortalSettings, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this, this.RequestUri, this.RawUrl)
+                var tokenReplacer = new DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer(this.Forum.PortalSettings, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID), this, this.RequestUri, this.RawUrl)
                 {
                     AccessingUser = accessingUser,
                 };
@@ -213,7 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "forumid":
                         return PropertyAccess.FormatString(this.ForumId.ToString(), format);
                     case "isliked":
-                        return !this.Forum.FeatureSettings.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.Content.Post.IsLikedByUser(new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID)) ? true.ToString() : string.Empty, format);
+                        return !this.Forum.FeatureSettings.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.Content.Post.IsLikedByUser(Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID)) ? true.ToString() : string.Empty, format);
                     case "likecount":
                         return !this.Forum.FeatureSettings.AllowLikes ? string.Empty : PropertyAccess.FormatString(this.Content.Post.LikeCount.ToString(), format);
                     case "authorid":
@@ -227,9 +227,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                     this.Forum.PortalSettings,
                                     this.Forum.MainSettings,
                                     this.ModuleId,
-                                    new Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                    Controllers.ForumUserController.Instance.GetByUserId(
                                         accessingUser.PortalID,
-                                        accessingUser.UserID),
+                                        this.ModuleId, accessingUser.UserID),
                                     this.Author.ForumUser)
                                     ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
                                         string.Empty,
@@ -243,8 +243,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
                                 this.Forum.PortalSettings,
                                 this.Forum.MainSettings,
-                                isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId),
-                                isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
+                                isMod: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).GetIsMod(this.ModuleId),
+                                isAdmin: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsAdmin || DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsSuperUser,
                                 this.Author.AuthorId,
                                 this.Author.Username,
                                 this.Author.FirstName,
@@ -267,9 +267,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                     this.Forum.PortalSettings,
                                     this.Forum.MainSettings,
                                     this.ModuleId,
-                                    new Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                    Controllers.ForumUserController.Instance.GetByUserId(
                                         accessingUser.PortalID,
-                                        accessingUser.UserID),
+                                        this.ModuleId, accessingUser.UserID),
                                     this.ForumUser)
                                     ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
                                         string.Empty,
@@ -283,8 +283,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
                                 this.Forum.PortalSettings,
                                 this.Forum.MainSettings,
-                                isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId),
-                                isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
+                                isMod: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).GetIsMod(this.ModuleId),
+                                isAdmin: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsAdmin || DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsSuperUser,
                                 this.ForumUser.UserId,
                                 this.ForumUser.Username,
                                 this.ForumUser.FirstName,

@@ -120,14 +120,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 string sUrl = this.SocialGroupId > 0
                     ? Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString[ParamKeys.TabId]), string.Empty, new string[] { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.AlertSent}&{Literals.GroupId}={this.SocialGroupId}" })
                     : Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString[ParamKeys.TabId]), string.Empty, new string[] { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.AlertSent}" });
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ForumModuleId, this.TopicId);
                 string sBody = string.Empty;
                 string authorName = string.Empty;
                 string sSubject = string.Empty;
                 string sTopicURL = topic.TopicUrl;
                 if (this.ReplyId > 0 & this.TopicId != this.ReplyId)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(this.ReplyId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(this.ForumModuleId, this.ReplyId);
                     sBody = reply.Content.Body;
                     sSubject = reply.Content.Subject;
                     authorName = reply.Author.DisplayName;

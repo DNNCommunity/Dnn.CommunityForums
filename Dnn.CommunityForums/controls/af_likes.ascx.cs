@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            this.post = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId, this.ForumModuleId).Post;
+            this.post = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.GetById(this.ForumModuleId, this.ContentId).Post;
             string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.Likes, this.post.Forum.FeatureSettings.TemplateFileNameSuffix ?? SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this.ForumUser);
 
             try
@@ -167,7 +167,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (repeaterItemEventArgs.Item.ItemType == ListItemType.Header || repeaterItemEventArgs.Item.ItemType == ListItemType.Footer)
             {
-                this.post = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId, this.ForumModuleId).Post;
+                this.post = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.GetById(this.ForumModuleId, this.ContentId).Post;
 
                 foreach (Control control in repeaterItemEventArgs.Item.Controls)
                 {
@@ -273,8 +273,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            this.rowCount = new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalId, this.ForumModuleId).Count(this.ContentId);
-            var likes = new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalId, this.ForumModuleId).GetForPost(this.ContentId).Skip(this.rowIndex).Take(this.pageSize).ToList();
+            this.rowCount = DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Instance.Count(this.ForumModuleId, this.ContentId);
+            var likes = DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Instance.GetForPost(this.PortalId, this.ForumModuleId, this.ContentId).Skip(this.rowIndex).Take(this.pageSize).ToList();
 
             this.parameters = null; // We reset this so we make sure to get an updated version
 

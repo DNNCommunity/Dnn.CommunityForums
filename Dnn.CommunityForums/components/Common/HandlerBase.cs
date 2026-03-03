@@ -205,7 +205,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetUserFromHttpContext(this.PortalId, this.ModuleId);
+                return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetUserFromHttpContext(this.PortalId, this.ModuleId);
             }
         }
 
@@ -245,9 +245,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
                 if (this.AdminRequired && context.Request.IsAuthenticated)
                 {
-                    DotNetNuke.Entities.Modules.ModuleController objMC =
-                        new DotNetNuke.Entities.Modules.ModuleController();
-                    DotNetNuke.Entities.Modules.ModuleInfo objM = objMC.GetModule(this.ModuleId, this.TabId);
+                    DotNetNuke.Entities.Modules.ModuleInfo objM = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, this.TabId, ignoreCache: false);
                     string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.PortalId, objM.ModulePermissions.ToString("EDIT").Split(';'));
                     this._isValid = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleString(roleIds), this.ForumUser.UserRoleIds);
                 }

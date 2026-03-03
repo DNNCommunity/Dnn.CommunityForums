@@ -114,8 +114,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public void LoadForums()
         {
             int i = 0;
-            var mc = new DotNetNuke.Entities.Modules.ModuleController();
-            var tc = new DotNetNuke.Entities.Tabs.TabController();
+            var mc = DotNetNuke.Entities.Modules.ModuleController.Instance;
+            var tc = DotNetNuke.Entities.Tabs.TabController.Instance;
             DotNetNuke.Entities.Tabs.TabInfo ti;
             foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(this.PortalId))
             {
@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public void LoadForumGroups(int forumModuleID)
         {
             this.drpForum.Items.Insert(0, new ListItem("-- Select a Group or Forum --", "-1"));
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(forumModuleID).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+            var forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(forumModuleID).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
 
             int i = 1;
             string groupName = string.Empty;

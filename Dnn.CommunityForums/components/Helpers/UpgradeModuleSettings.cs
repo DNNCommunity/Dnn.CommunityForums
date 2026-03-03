@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
         internal static void MoveSettingsForModuleInstanceToTabModuleInstance_070011(int forumModuleId, int tabModuleId)
         {
             var ht = new Hashtable();
-            new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().GetSettingsForModuleIdSettingsKey(forumModuleId, "GEN").ForEach(s => ht.Add(s.SettingName, s.SettingValue));
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.GetSettingsForModuleIdSettingsKey(forumModuleId, "GEN").ForEach(s => ht.Add(s.SettingName, s.SettingValue));
             var currSettings = new ModuleSettings { ModuleId = forumModuleId, MainSettings = ht };
 
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PageSize, currSettings.PageSize.ToString());
@@ -414,13 +414,11 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         }
                         else
                         {
-                            var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-
-                            // set  fix any forums that have SocialGroupId set to 0
-                            fc.GetForums(module.ModuleID).Where(f => !f.SocialGroupId.Equals(0)).ForEach(forum =>
+                            // fix any forums that have SocialGroupId set to 0
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(module.ModuleID).Where(f => !f.SocialGroupId.Equals(0)).ForEach(forum =>
                             {
                                 forum.SocialGroupId = 0;
-                                fc.Update(forum);
+                                DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Update(forum);
                             });
                             DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig);
                             DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumGroupTemplate);

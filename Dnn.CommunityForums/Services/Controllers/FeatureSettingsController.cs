@@ -168,7 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 var settings = new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(this.ForumModuleId, settingsKey);
                 foreach (DictionaryEntry entry in settings.featureSettings)
                 {
-                    new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKeySettingName(this.ForumModuleId, settingsKey, (string)entry.Key);
+                    DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.DeleteForModuleIdSettingsKeySettingName(this.ForumModuleId, settingsKey, (string)entry.Key);
                 }
 
                 return this.Ok();

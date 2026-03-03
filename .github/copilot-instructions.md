@@ -108,6 +108,21 @@
 - Use imperative mood.
 - Reference issue numbers with # prefix and link to the issue when applicable.
 
+## Commit Messages
+- Use subject line format "TYPE: description".
+- Use types: FIX, ENH, TASK, DOC, TEST.
+- Keep subject lines under 50 characters where possible.
+- Use imperative mood (for example, "Add feature" not "Added feature").
+- Reference issue numbers with # prefix and link to the issue when applicable.
+
+## Pull Requests
+- Use .github/PULL_REQUEST_TEMPLATE.md.
+- Use subject line format "TYPE: description".
+- Use types: FIX, ENH, TASK, DOC, TEST.
+- Keep subject lines under 50 characters where possible.
+- Use imperative mood.
+- Reference issue numbers with # prefix and link to the issue when applicable.
+
 ## Cross-repo references for `DotNetNuke`
 
 When code references the DotNetNuke namespace and required types/source files are not present in this workspace, consult:

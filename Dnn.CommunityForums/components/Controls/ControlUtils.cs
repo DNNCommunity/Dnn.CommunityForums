@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var moduleInfo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId, tabId, false);
 
             /* ONLY include prefix if main forum module, prefix isn't same as tab name, and prefix is filled, e.g. don't include running in viewer module */
-            if (moduleInfo.TabID.Equals(tabId) && !mainSettings.PrefixURLBase.Trim().Equals(tabInfo.TabName.Trim(), StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(mainSettings.PrefixURLBase))
+            if (moduleInfo != null && moduleInfo.TabID.Equals(tabId) && !mainSettings.PrefixURLBase.Trim().Equals(tabInfo.TabName.Trim(), StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(mainSettings.PrefixURLBase))
             {
                 sURL += "/" + mainSettings.PrefixURLBase;
             }

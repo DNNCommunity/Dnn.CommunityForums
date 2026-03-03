@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.contentInfo = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent() => this.contentInfo = new Controllers.ContentController().GetById(this.ContentId, this.ModuleId);
+        internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent() => this.contentInfo = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.GetById(this.ModuleId, this.ContentId);
 
         [IgnoreColumn]
         public string UserName { get => this.userName ?? (this.userName = this.ForumUser.DisplayName); set => this.userName = value; }
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.forumUserInfo = value;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetForumUser() => this.forumUserInfo = new Controllers.ForumUserController((int)this.ModuleId).GetByUserId(this.PortalId, this.UserId);
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetForumUser() => this.forumUserInfo = Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ModuleId, this.UserId);
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.UserMentionId);
 

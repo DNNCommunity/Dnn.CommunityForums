@@ -107,10 +107,10 @@ namespace DotNetNuke.Modules.ActiveForums
         private IEnumerable<Entities.SubscriptionInfo> GetSubscriptions()
         {
             var availableForums = new List<dynamic>();
-            var subscribableForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumModuleId, this.ForumUser, SecureActions.Subscribe);
+            var subscribableForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsForUser(this.ForumModuleId, this.ForumUser, SecureActions.Subscribe);
             subscribableForums.ForEach(forumId =>
             {
-                var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, this.ForumModuleId);
+                var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, forumId);
                 availableForums.Add(new { ForumId = forumId, Forum = forum });
             });
 

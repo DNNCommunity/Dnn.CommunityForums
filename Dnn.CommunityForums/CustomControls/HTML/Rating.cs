@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             StringBuilder sb = new StringBuilder();
             if (this.Rating == -1)
             {
-                this.Rating = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Average(topicId: this.TopicId);
+                this.Rating = DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController.Instance.Average(topicId: this.TopicId);
             }
 
             if (this.Enabled)

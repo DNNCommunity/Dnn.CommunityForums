@@ -50,7 +50,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     else
                     {
                         viewType = Views.ForumView;
-                        this.ctlForumLoader.ForumId = -1;
                         this.ctlForumLoader.ForumGroupId = tmpForumOrGroupId;
                     }
 

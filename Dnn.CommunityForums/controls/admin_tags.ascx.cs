@@ -54,7 +54,8 @@ namespace DotNetNuke.Modules.ActiveForums
                                 int tagId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
                                 if (Utilities.IsNumeric(tagId))
                                 {
-                                    new DotNetNuke.Modules.ActiveForums.Controllers.TagController().DeleteById(tagId);
+                                    var tag = DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.GetById(tagId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.Delete(tag);
                                 }
 
                                 break;
@@ -72,11 +73,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                                 if (!(tagName == string.Empty))
                                 {
-                                    var tagController = new DotNetNuke.Modules.ActiveForums.Controllers.TagController();
                                     DotNetNuke.Modules.ActiveForums.Entities.TagInfo tag = null;
                                     if (tagId > 0)
                                     {
-                                        tag = tagController.GetById(tagId);
+                                        tag = DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.GetById(tagId);
                                     }
 
                                     if (tag != null)
@@ -84,8 +84,8 @@ namespace DotNetNuke.Modules.ActiveForums
                                         tag.TagName = tagName;
                                         tag.PortalId = this.PortalId;
                                         tag.ModuleId = this.ModuleId;
-                                        tagController.Update(tag);
-                                        tagController.RecountItems(tag.TagId);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.Update(tag);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.RecountItems(tag.TagId);
                                     }
                                     else
                                     {
@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                             ModuleId = this.ModuleId,
                                             Items = 0,
                                         };
-                                        tagController.Insert(tag);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.Insert(tag);
                                     }
                                 }
 

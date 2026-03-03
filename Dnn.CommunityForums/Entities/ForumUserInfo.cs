@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public bool GetIsMod(int ModuleId)
         {
-            return !this.IsAnonymous && DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ModuleId, this, DotNetNuke.Modules.ActiveForums.SecureActions.Moderate).Any();
+            return !this.IsAnonymous && DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsForUser(ModuleId, this, DotNetNuke.Modules.ActiveForums.SecureActions.Moderate).Any();
         }
 
         [IgnoreColumn]
@@ -406,8 +406,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal int GetLastReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
-            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
-            var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.ModuleId, this.UserId, ti.ForumId);
+            var topicTrak = DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController.Instance.GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
+            var forumTrak = DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController.Instance.GetByUserIdForumId(this.ModuleId, this.UserId, ti.ForumId);
             if (forumTrak?.MaxReplyRead > topicTrak?.LastReplyId || topicTrak == null)
             {
                 if (forumTrak != null)
@@ -428,8 +428,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
-            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
-            var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.ModuleId, this.UserId, ti.ForumId);
+            var topicTrak = DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController.Instance.GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
+            var forumTrak = DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController.Instance.GetByUserIdForumId(this.ModuleId, this.UserId, ti.ForumId);
             if (forumTrak?.MaxTopicRead > topicTrak?.TopicId || topicTrak == null)
             {
                 if (forumTrak != null)
@@ -450,71 +450,51 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal bool GetIsTopicRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
-            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
-            if (topicTrak?.LastReplyId >= ti.LastReplyId)
-            {
-                return true;
-            }
-
-            return false;
+            var topicTrak = DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController.Instance.GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
+            return topicTrak?.LastReplyId >= ti.LastReplyId;
         }
 
         internal bool GetIsReplyRead(DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri)
         {
-            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.ModuleId, this.UserId, ri.TopicId);
-            if (topicTrak?.LastReplyId >= ri.ReplyId)
-            {
-                return true;
-            }
-
-            return false;
+            var topicTrak = DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController.Instance.GetByUserIdTopicId(this.ModuleId, this.UserId, ri.TopicId);
+            return topicTrak?.LastReplyId >= ri.ReplyId;
         }
 
         internal int GetLastTopicRead(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
         {
-            var forumTrak = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController().GetByUserIdForumId(this.ModuleId, this.UserId, fi.ForumID);
-            if (forumTrak != null)
-            {
-                return forumTrak.MaxTopicRead;
-            }
-
-            return 0;
-        }
-
-        internal int GetLikeCountForUser()
-        {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Count("WHERE UserId = @0 AND Checked = 1", this.UserId);
-        }
-
-        internal int GetLikeCountForUserSince(DateTime minDateTime)
-        {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Count("WHERE UserId = @0 AND Checked = 1 AND DateCreated >= @1", this.UserId, minDateTime);
+            var forumTrak = DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController.Instance.GetByUserIdForumId(this.ModuleId, this.UserId, fi.ForumID);
+            return forumTrak != null ? forumTrak.MaxTopicRead : 0;
         }
 
         internal int GetTopicReadCount(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountForUserForum(this.ModuleId, this.UserId, fi.ForumID);
+            return DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController.Instance.GetTopicsReadCountForUserForum(this.ModuleId, this.UserId, fi.ForumID);
+        }
+
+        internal int GetLikeCountForUser()
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Instance.Count("WHERE UserId = @0 AND Checked = 1", this.UserId);
+        }
+
+        internal int GetLikeCountForUserSince(DateTime minDateTime)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Instance.Count("WHERE UserId = @0 AND Checked = 1 AND DateCreated >= @1", this.UserId, minDateTime);
         }
 
         internal int GetTopicReadCount()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountByUser(this.ModuleId, this.UserId);
+            return DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController.Instance.GetTopicsReadCountByUser(this.ModuleId, this.UserId);
         }
 
         internal int GetTopicReadCountSince(DateTime minDateTimeRead)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetTopicsReadCountByUser(this.ModuleId, this.UserId, minDateTimeRead);
+            return DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController.Instance.GetTopicsReadCountByUser(this.ModuleId, this.UserId, minDateTimeRead);
         }
 
         internal int GetLastTopicReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
-            var topicTrak = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController().GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
-            if (topicTrak != null)
-            {
-                return topicTrak.LastReplyId;
-            }
-
-            return 0;
+            var topicTrak = DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController.Instance.GetByUserIdTopicId(this.ModuleId, this.UserId, ti.TopicId);
+            return topicTrak != null ? topicTrak.LastReplyId : 0;
         }
 
         [IgnoreColumn]
@@ -550,7 +530,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => this.userBadges = value;
         }
 
-        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetUserBadges() => this.userBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ModuleId).GetForUser(this.UserId);
+        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetUserBadges() => this.userBadges = DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.Instance.GetForUser(portalId: this.PortalId, moduleId: this.ModuleId, userId: this.UserId);
 
         [IgnoreColumn]
         public int ForumsOrViewerModuleId
@@ -633,7 +613,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "usercaption":
                         return PropertyAccess.FormatString(this.UserCaption, format);
                     case "displayname":
-                        return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ModuleSettings, isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).GetIsMod(this.ModuleId), isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).IsAdmin, this.UserId, this.Username, this.FirstName, this.LastName, this.DisplayName), format);
+                        return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(this.PortalSettings, this.ModuleSettings, isMod: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(portalId: accessingUser.PortalID, moduleId: this.ModuleId, userId: accessingUser.UserID).GetIsMod(this.ModuleId), isAdmin: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(portalId: accessingUser.PortalID, moduleId: this.ModuleId, userId: accessingUser.UserID).IsAdmin, this.UserId, this.Username, this.FirstName, this.LastName, this.DisplayName), format);
                     case "datecreated":
                         return Utilities.GetUserFormattedDateTime(this.DateCreated, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
                     case "dnnuserdatecreated":
@@ -670,7 +650,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.CanLinkToProfile(portalSettings: this.PortalSettings,
                                                                                                                                             moduleSettings: this.ModuleSettings,
                                                                                                                                             moduleId: this.ModuleId,
-                                                                                                                                            accessingUser: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID),
+                                                                                                                                            accessingUser: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID),
                                                                                                                                             forumUser: this) ? Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { $"userId={this.UserId}" }) : string.Empty, format);
                     case "signature":
                         var sSignature = string.Empty;
@@ -716,9 +696,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                     this.PortalSettings,
                                     this.ModuleSettings,
                                     this.ModuleId,
-                                    new Controllers.ForumUserController(this.ModuleId).GetByUserId(
+                                    new Controllers.ForumUserController().GetByUserId(
                                         accessingUser.PortalID,
-                                        accessingUser.UserID),
+                                        this.ModuleId, accessingUser.UserID),
                                     this)
                                     ? Utilities.NavigateURL(this.PortalSettings.UserTabId,
                                         string.Empty,
@@ -732,8 +712,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
                                 this.PortalSettings,
                                 this.ModuleSettings,
-                                isMod: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetIsMod(this.ModuleId),
-                                isAdmin: new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).IsSuperUser,
+                                isMod: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).GetIsMod(this.ModuleId),
+                                isAdmin: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsAdmin || DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsSuperUser,
                                 this.UserId,
                                 this.Username,
                                 this.FirstName,
@@ -767,7 +747,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         var badgeTemplate = new StringBuilder(DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ModuleId, Enums.TemplateType.UserBadge, SettingsBase.GetModuleSettings(this.ModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this));
                         foreach (var userBadge in userBadgesToDisplay)
                         {
-                            badgeString += DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(badgeTemplate, userBadge, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID), this.RequestUri, this.RawUrl);
+                            badgeString += DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceBadgeTokens(badgeTemplate, userBadge, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID), this.RequestUri, this.RawUrl);
                         }
 
                         return PropertyAccess.FormatString(badgeString, format);

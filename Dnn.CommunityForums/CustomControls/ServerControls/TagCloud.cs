@@ -51,10 +51,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser = null;
             if (string.IsNullOrEmpty(this.ForumIds))
             {
-                forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetUserFromHttpContext(this.PortalId, this.ModuleId);
+                forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetUserFromHttpContext(this.PortalId, this.ModuleId);
                 if (forumUser.UserForums.Count.Equals(0))
                 {
-                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, forumUser).FromHashSetToDelimitedString(";");
+                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsForUser(this.ModuleId, forumUser).FromHashSetToDelimitedString(";");
                 }
                 else
                 {
