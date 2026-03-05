@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     {
                         matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController()
                         .Find(
-                            "WHERE PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName",
+                            "WHERE PortalId = @0 AND ModuleId = @1 AND TagName <> '' AND TagName LIKE @2 ORDER By TagName",
                             this.ActiveModule.PortalID,
                             this.ForumModuleId,
                             $"{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(matchString, 20)}%")
