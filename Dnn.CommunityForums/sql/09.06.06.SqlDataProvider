@@ -7,7 +7,7 @@ DELETE FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Tags]
 WHERE TagId IN (SELECT TagId FROM {databaseOwner}[{objectQualifier}activeforums_Tags] WHERE TagName = '')
 GO
 
-DELETE FROM {databaseOwner}[{objectQualifier}activeforums_Tags] WHERE TagName = '')
+DELETE FROM {databaseOwner}[{objectQualifier}activeforums_Tags] WHERE TagName = ''
 GO
 
 /* issue 1825 - end - prevent & remove blank tags */
