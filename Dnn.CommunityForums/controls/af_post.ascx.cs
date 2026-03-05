@@ -808,12 +808,19 @@ namespace DotNetNuke.Modules.ActiveForums
                 var tagForm = string.Join(",", currentTopicTags);
                 if (this.Request.Form["txtTags"] != null)
                 {
-                    tagForm = tagForm + "," + this.Request.Form["txtTags"];
+                    if (string.IsNullOrEmpty(tagForm))
+                    {
+                        tagForm = this.Request.Form["txtTags"];
+                    }
+                    else
+                    {
+                        tagForm = tagForm + "," + this.Request.Form["txtTags"];
+                    }
                 }
 
                 if (tagForm != string.Empty)
                 {
-                    var tags = tagForm.Split(',').Distinct();
+                    var tags = tagForm.Split(',').Distinct().Where(tag => !string.IsNullOrEmpty(tag));
                     foreach (var tag in tags)
                     {
                         var sTag = Utilities.CleanString(this.PortalId, tag.Trim(), false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);
