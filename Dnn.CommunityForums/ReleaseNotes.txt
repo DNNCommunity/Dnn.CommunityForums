@@ -75,7 +75,7 @@
         <h4>New Features &amp; Enhancements</h4>
         <ul>
             
-            <li>None at this time.</li>
+            <li>UPDATE: When selecting users for mentions and visibility is "Registered Users", admins can also select other admins, and superusers can select anyone (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1819">Issue 1819</a>)</li>
 <!--
             <li>None at this time.</li>
             <li>NEW: Web API endpoints for forums search functionality (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1758">PR 1758</a>)</li>
@@ -99,6 +99,7 @@
 
         <ul>
              <li>FIX: Prevent blank tags from being created (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1825">Issue 1825</a>)</li>
+             <li>FIX: Correct location of Control Panel forums feature popup (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1820">Issue 1820</a>)</li>
 <!--
           <li>None at this time.</li> 
              
