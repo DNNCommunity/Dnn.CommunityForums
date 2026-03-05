@@ -111,7 +111,8 @@
 
         <h4>Tasks / Development Updates (and Technical Debt Reduction)</h4>
         <ul>
-            <li>Update build dependencies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1814">Issue 1814</a>)</li>
+            <li>09.06.06 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1828">Issue 1828</a>)</li>
+
 <!--
             <li>Forum Viewer should use DNN Resource Manager to load module.css not load it directly (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1792">Issue 1792</a>)</li>
             <li>Remove legacy calendar.css associated with previously-removed date picker control (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1723">Issue 1723</a>)</li>
