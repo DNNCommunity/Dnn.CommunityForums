@@ -273,17 +273,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public int ReplyPostCount => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ReplyPostCount]);
 
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
-        [JsonIgnore]
         public int AttachMaxHeight
         {
             get { return Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.AttachMaxHeight], 500); }
         }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
-        [JsonIgnore]
         public int AttachMaxWidth
         {
             get { return Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.AttachMaxWidth], 500); }
