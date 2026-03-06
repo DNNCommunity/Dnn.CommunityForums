@@ -362,29 +362,44 @@ function toggleMentions(obj){
 	};
 };
 
-	function showProp(obj,win){
+    function showProp(obj, win) {
         var propertyWindow = document.getElementById(win);
-        if (propertyWindow.style.display == '' || propertyWindow.style.display == 'block') {
+        var $propertyWindow = $(propertyWindow);
+
+        if (propertyWindow.style.display === 'block') {
             propertyWindow.style.display = 'none';
             hideSelectBoxes();
         } else {
-            propertyWindow.style.display = '';
-            var $propertyWindow = $(propertyWindow);
-            var elem = $(obj);
-            var position = elem.position();
-            //position.left += 15;
-            //position.top = (position.top - ($propertyWindow.height() / 2));
-            position.left += 650;
-            position.top = (position.top + ($propertyWindow.height() / 2));
-            position.width = $propertyWindow.innerWidth() + 20;
-            position.height = $propertyWindow.innerHeight();
-
-            $propertyWindow.css(position);
             closeAllProp();
             displaySelectBoxes();
-            propertyWindow.style.display = '';
+
+            $propertyWindow.css({
+                visibility: 'hidden',
+                display: 'block'
+            });
+
+            var $elem = $(obj);
+            var elemOffset = $elem.offset();
+            var parentOffset = $propertyWindow.offsetParent().offset();
+            var elemHeight = $elem.outerHeight();
+            var popupHeight = $propertyWindow.outerHeight();
+
+            // Subtract the popup's offset parent position
+            var left = elemOffset.left - parentOffset.left + $elem.outerWidth() + 8;
+            var top = (elemOffset.top - parentOffset.top) + (elemHeight / 2) - (popupHeight / 2);
+
+            console.log('elemOffset:', elemOffset);
+            console.log('parentOffset:', parentOffset);
+            console.log('computed left:', left);
+            console.log('computed top:', top);
+
+            $propertyWindow.css({
+                left: left,
+                top: top,
+                visibility: 'visible'
+            });
         }
-	};
+    }
 
 
 function addRole(){

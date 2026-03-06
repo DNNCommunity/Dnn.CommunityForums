@@ -185,9 +185,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
                         if (forum.FeatureSettings.UserMentionVisibility.Equals(DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.RegisteredUsers))
                         {
-                            users.RemoveAll(user => user.IsAdmin);
+                            if (!this.UserInfo.IsAdmin && !this.UserInfo.IsSuperUser)
+                            {
+                                users.RemoveAll(user => user.IsAdmin);
+                            }
                         }
-                        else if (forum.FeatureSettings.UserMentionVisibility.Equals(DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.Everyone))
+
+                        if (forum.FeatureSettings.UserMentionVisibility.Equals(DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.Everyone) || this.UserInfo.IsSuperUser)
                         {
                             users.AddRange(
                                 DotNetNuke.Entities.Users.UserController.GetUsersByDisplayName(

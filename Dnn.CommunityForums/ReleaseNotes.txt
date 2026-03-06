@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.06.05
+            09.06.06
         </h3>
 <!--       
         <p>
@@ -74,7 +74,8 @@
 -->
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-            <li>UPDATE: Tweaks to topics view: show status text not status ID, reply count should show if not logged in, show last post author/date from topic if no replies, new token [FORUMTOPIC:LASTPOSTURL] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1811">PR 1811</a>)</li>
+            
+            <li>UPDATE: When selecting users for mentions and visibility is "Registered Users", admins can also select other admins, and superusers can select anyone (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1819">Issue 1819</a>)</li>
 <!--
             <li>None at this time.</li>
             <li>NEW: Web API endpoints for forums search functionality (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1758">PR 1758</a>)</li>
@@ -97,8 +98,8 @@
         <h4>Bug Fixes</h4>
 
         <ul>
-             <li>FIX: Friendly URL for forum group only not showing forums (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1807">Issue 1807</a>)</li>
-             <li>FIX: Hashtag character # inadvertently removed if tagging is disabled by security (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1812">Issue 1812</a>)</li>
+             <li>FIX: Prevent blank tags from being created (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1825">Issue 1825</a>)</li>
+             <li>FIX: Correct location of Control Panel forums feature popup (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1820">Issue 1820</a>)</li>
 <!--
           <li>None at this time.</li> 
              
@@ -110,7 +111,8 @@
 
         <h4>Tasks / Development Updates (and Technical Debt Reduction)</h4>
         <ul>
-            <li>Update build dependencies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1814">Issue 1814</a>)</li>
+            <li>09.06.06 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1828">Issue 1828</a>)</li>
+
 <!--
             <li>Forum Viewer should use DNN Resource Manager to load module.css not load it directly (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1792">Issue 1792</a>)</li>
             <li>Remove legacy calendar.css associated with previously-removed date picker control (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1723">Issue 1723</a>)</li>

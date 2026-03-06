@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     {
                         var topicTagController = new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController();
                         var existingTags = topicTagController.GetForTopic(post.TopicId);
-                        tags.Distinct().ToList().ForEach(t =>
+                        tags.Distinct().ToList().Where(t => !string.IsNullOrEmpty(t)).ForEach(t =>
                         {
                             var tag = tagController.Find("WHERE TagName = @0", t).FirstOrDefault();
                             if (tag == null)
@@ -127,7 +127,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 };
                                 tagController.Insert(tag);
                             }
-                            ;
 
                             // if the tag is not already associated with the topic, add it
                             if (!existingTags.Any(et => et.TagId == tag.TagId))
@@ -167,6 +166,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTag(item.TagId);
             base.Delete(item);
-        } 
+        }
     }
 }
