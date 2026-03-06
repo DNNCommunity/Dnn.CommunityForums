@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Modules.ActiveForums.Enums;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
@@ -27,25 +25,42 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Web;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
 
     public class EmailController
     {
+        private readonly DotNetNuke.Abstractions.Application.IHostSettingsService hostSettingsService;
+
+        public EmailController()
+            : this(hostSettingsService: new DotNetNuke.Entities.Controllers.HostController())
+        {
+        }
+
+        public EmailController(IHostSettingsService hostSettingsService)
+        {
+            this.hostSettingsService = hostSettingsService;
+        }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Not Used.")]
         public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author) => throw new NotImplementedException();
 
         internal static void SendEmail(Enums.TemplateType templateType, int tabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author)
         {
-            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = Utilities.GetPortalSettings(fi.PortalId);
+            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = new PortalSettingsHelper().GetPortalSettings(fi.PortalId);
             var sFrom = fi.FeatureSettings.EmailAddress != string.Empty ? fi.FeatureSettings.EmailAddress : portalSettings.Email;
             var subjectTemplate = !string.IsNullOrEmpty(fi.FeatureSettings.EmailNotificationSubjectTemplate) ?
                 fi.FeatureSettings.EmailNotificationSubjectTemplate :
@@ -75,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static void SendTemplatedEmail(int topicId, int replyId, int moduleId, int tabId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs, Uri requestUrl, string rawUrl)
         {
             var navigationManager = (INavigationManager)new Services.URLNavigator().NavigationManager();
-            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = Utilities.GetPortalSettings(fi.PortalId);
+            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = new PortalSettingsHelper().GetPortalSettings(fi.PortalId);
             var lstSubscriptionInfo = subs;
             var bodyTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, TemplateType.SubscribedEmail, fi.FeatureSettings.TemplateFileNameSuffix, null);
             var subjectTemplate = !string.IsNullOrEmpty(fi.FeatureSettings.EmailNotificationSubjectTemplate) ?
@@ -133,30 +148,31 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 9.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body).")]
         public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => throw new NotImplementedException();
 
-        internal static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body)
+        internal void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body)
         {
             // USE DNN API for this to ensure proper delivery & adherence to portal settings
             // Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
 
             // Since this code is triggered from the DNN scheduler, the default/simple API (now commented out above) uses Host rather than Portal-specific SMTP configuration
             // updated here to retrieve portal-specific SMTP configuration and use more elaborate DNN API that allows passing of the SMTP information rather than rely on DNN API DotNetNuke.Host.SMTP property accessors to determine portal vs. host SMTP values
-            DotNetNuke.Services.Mail.Mail.SendMail(mailFrom: fromEmail,
-                                    mailSender: SMTPPortalEnabled(portalId) ? PortalController.Instance.GetPortal(portalId).Email : Host.HostEmail,
-                                    mailTo: toEmail,
-                                    cc: string.Empty,
-                                    bcc: string.Empty,
-                                    replyTo: string.Empty,
-                                    priority: DotNetNuke.Services.Mail.MailPriority.Normal,
-                                    subject: subject,
-                                    bodyFormat: DotNetNuke.Services.Mail.MailFormat.Html,
-                                    bodyEncoding: System.Text.Encoding.UTF8,
-                                    body: body,
-                                    attachments: new List<System.Net.Mail.Attachment>(),
-                                    smtpServer: SMTPServer(portalId),
-                                    smtpAuthentication: SMTPAuthentication(portalId),
-                                    smtpUsername: SMTPUsername(portalId),
-                                    smtpPassword: SMTPPassword(portalId),
-                                    smtpEnableSSL: EnableSMTPSSL(portalId));
+            DotNetNuke.Services.Mail.Mail.SendMail(
+                mailFrom: fromEmail,
+                mailSender: this.SMTPPortalEnabled(portalId) ? PortalController.Instance.GetPortal(portalId).Email : Host.HostEmail,
+                mailTo: toEmail,
+                cc: string.Empty,
+                bcc: string.Empty,
+                replyTo: string.Empty,
+                priority: DotNetNuke.Services.Mail.MailPriority.Normal,
+                subject: subject,
+                bodyFormat: DotNetNuke.Services.Mail.MailFormat.Html,
+                bodyEncoding: System.Text.Encoding.UTF8,
+                body: body,
+                attachments: new System.Collections.Generic.List<DotNetNuke.Services.Mail.MailAttachment>(),
+                smtpServer: this.SMTPServer(portalId),
+                smtpAuthentication: this.SMTPAuthentication(portalId),
+                smtpUsername: this.SMTPUsername(portalId),
+                smtpPassword: this.SMTPPassword(portalId),
+                smtpEnableSSL: this.EnableSMTPSSL(portalId));
         }
 
         internal static void Send(DotNetNuke.Modules.ActiveForums.Entities.EmailInfo message)
@@ -178,36 +194,31 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
 
         #region "code modeled on DotNetNuke.Services.Mail/DotNetNuke.Entities.Host APIs to support portal-specific SMTP configuration"
-        internal static string SMTPServer(int portalId)
+        internal string SMTPServer(int portalId)
         {
-            return GetSmtpSetting(portalId, "SMTPServer");
+            return this.GetSmtpSetting(portalId, "SMTPServer");
         }
 
-        internal static string SMTPAuthentication(int portalId)
+        internal string SMTPAuthentication(int portalId)
         {
-            return GetSmtpSetting(portalId, "SMTPAuthentication");
+            return this.GetSmtpSetting(portalId, "SMTPAuthentication");
         }
 
-        internal static bool EnableSMTPSSL(int portalId)
+        internal bool EnableSMTPSSL(int portalId)
         {
-            if (SMTPPortalEnabled(portalId))
-            {
-                return PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", portalId, false);
-            }
-            else
-            {
-                return HostController.Instance.GetBoolean("SMTPEnableSSL", false);
-            }
+            return this.SMTPPortalEnabled(portalId)
+                ? PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", portalId, false)
+                : this.hostSettingsService.GetBoolean("SMTPEnableSSL", false);
         }
 
-        internal static string SMTPUsername(int portalId)
+        internal string SMTPUsername(int portalId)
         {
-            return GetSmtpSetting(portalId, "SMTPUsername");
+            return this.GetSmtpSetting(portalId, "SMTPUsername");
         }
 
-        internal static string SMTPPassword(int portalId)
+        internal string SMTPPassword(int portalId)
         {
-            if (SMTPPortalEnabled(portalId))
+            if (this.SMTPPortalEnabled(portalId))
             {
                 return PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey());
             }
@@ -216,15 +227,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 string decryptedText;
                 try
                 {
-                    decryptedText = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
+                    decryptedText = this.hostSettingsService.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
                 }
                 catch (Exception)
                 {
                     // fixes case where smtppassword failed to encrypt due to failing upgrade
-                    var current = HostController.Instance.GetString("SMTPPassword");
+                    var current = this.hostSettingsService.GetString("SMTPPassword");
                     if (!string.IsNullOrEmpty(current))
                     {
-                        HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
+                        this.hostSettingsService.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
                         decryptedText = current;
                     }
                     else
@@ -237,42 +248,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal static bool SMTPPortalEnabled(int portalId)
+        internal bool SMTPPortalEnabled(int portalId)
         {
-            if (portalId != null && portalId != -1)
-            {
-                return PortalController.GetPortalSetting("SMTPmode", portalId, Null.NullString).Equals("P", StringComparison.OrdinalIgnoreCase);
-            }
-            else
-            {
-                return false;
-            }
+            return !portalId.Equals(DotNetNuke.Common.Utilities.Null.NullInteger) && PortalController.GetPortalSetting("SMTPmode", portalId, Null.NullString).Equals("P", StringComparison.OrdinalIgnoreCase);
         }
 
-        internal static string GetSmtpSetting(int portalId, string settingName)
+        internal string GetSmtpSetting(int portalId, string settingName)
         {
-            if (SMTPPortalEnabled(portalId))
-            {
-                return PortalController.GetPortalSetting(settingName, portalId, Null.NullString);
-            }
-            else
-            {
-                return HostController.Instance.GetString(settingName);
-            }
-        }
-
-        #endregion
-        #region Deprecated
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML).")]
-        public static void SendNotification(string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
-        {
-            SendNotification(-1, -1, fromEmail, toEmail, subject, bodyHTML);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML).")]
-        public static void SendNotification(int portalId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
-        {
-            SendNotification(portalId, -1, fromEmail, toEmail, subject, bodyHTML);
+            return this.SMTPPortalEnabled(portalId) ? PortalController.GetPortalSetting(settingName, portalId, Null.NullString) : this.hostSettingsService.GetString(settingName);
         }
 
         #endregion

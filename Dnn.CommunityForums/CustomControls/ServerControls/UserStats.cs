@@ -90,11 +90,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             try
             {
                 string output = string.Empty;
-                PortalSettings ps = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-
                 DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
                 string imagePath = string.Empty;
-                int portalId = ps.PortalId;
+                int portalId = cu.PortalID;
                 string tmp = string.Empty;
                 if (this.Template == null)
                 {

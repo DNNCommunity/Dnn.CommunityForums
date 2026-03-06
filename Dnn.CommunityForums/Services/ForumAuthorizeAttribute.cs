@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     using System.Security.Principal;
     using System.Threading;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
@@ -37,14 +38,23 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     /// </summary>
     public sealed class ForumsAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
+        private readonly DotNetNuke.Entities.Portals.IPortalController portalController;
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         /// <param name="permissionNeeded"></param>
         public ForumsAuthorizeAttribute(SecureActions permissionNeeded)
+            : this(permissionNeeded, new DotNetNuke.Entities.Portals.PortalController())
+        {
+        }
+
+        public ForumsAuthorizeAttribute(SecureActions permissionNeeded, IPortalController portalController)
         {
             this.PermissionNeeded = permissionNeeded;
+            this.portalController = portalController;
         }
+
 
         /// <summary>
         /// <inheritdoc/>
@@ -66,8 +76,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 if (identity.IsAuthenticated)
                 {
                     var moduleInfo = context.ActionContext.Request.FindModuleInfo();
-                    var portalSettings = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings();
-                    var userInfo = portalSettings.UserInfo;
+                    var portalSettings = this.portalController.GetCurrentSettings();
+                    var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
                     int moduleId = DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(moduleInfo.ModuleID, moduleInfo.TabID);
                     if (this.PermissionNeeded is SecureActions.ManageUsers)
                     {

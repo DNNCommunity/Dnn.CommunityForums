@@ -39,6 +39,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
+
     using Microsoft.ApplicationBlocks.Data;
 
     public class TemplateUtils
@@ -98,7 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 navigationManager = (INavigationManager)new Services.URLNavigator();
             }
 
-            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalID);
+            PortalSettings portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portalID);
             var moduleSettings = SettingsBase.GetModuleSettings(moduleID);
             if (author == null)
             {
@@ -337,7 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                var portalSettings = Utilities.GetPortalSettings(author.ForumUser.PortalId);
+                var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(author.ForumUser.PortalId);
                 var mainSettings = SettingsBase.GetModuleSettings(moduleId);
                 var accessingUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(author.ForumUser.PortalId, currentUserId);
                 var templateStringbuilder = new StringBuilder(profileTemplate);

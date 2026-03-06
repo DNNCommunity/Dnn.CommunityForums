@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Data;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
 
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
     {
@@ -168,11 +169,62 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         case DotNetNuke.Modules.ActiveForums.SecureActions.Read:
                             roles = f.Security?.ReadRoleIds;
                             break;
-                        case DotNetNuke.Modules.ActiveForums.SecureActions.Moderate:
-                            roles = f.Security?.ModerateRoleIds;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Create:
+                            roles = f.Security?.CreateRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Reply:
+                            roles = f.Security?.ReplyRoleIds;
                             break;
                         case DotNetNuke.Modules.ActiveForums.SecureActions.Edit:
                             roles = f.Security?.EditRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Delete:
+                            roles = f.Security?.DeleteRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Move:
+                            roles = f.Security?.MoveRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Lock:
+                            roles = f.Security?.LockRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Pin:
+                            roles = f.Security?.PinRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Split:
+                            roles = f.Security?.SplitRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Attach:
+                            roles = f.Security?.AttachRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Poll:
+                            roles = f.Security?.PollRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Trust:
+                            roles = f.Security?.TrustRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Subscribe:
+                            roles = f.Security?.SubscribeRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Announce:
+                            roles = f.Security?.AnnounceRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Tag:
+                            roles = f.Security?.TagRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Mention:
+                            roles = f.Security?.MentionRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Categorize:
+                            roles = f.Security?.CategorizeRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Prioritize:
+                            roles = f.Security?.PrioritizeRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.Moderate:
+                            roles = f.Security?.ModerateRoleIds;
+                            break;
+                        case DotNetNuke.Modules.ActiveForums.SecureActions.ManageUsers:
+                            roles = f.Security?.ManageUsersRoleIds;
                             break;
                         default:
                             roles = f.Security?.ViewRoleIds;
@@ -366,7 +418,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var socialGroup = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: portalId, roleId: socialGroupId);
                 var groupAdmin = string.Concat(socialGroupId.ToString(), ":0");
                 var groupMember = socialGroupId.ToString();
-                var portalSettings = Utilities.GetPortalSettings(portalId);
+                var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portalId);
                 int permissionsId = pc.CreateAdminPermissions(portalSettings, moduleId).PermissionsId;
 
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(portalSettings)

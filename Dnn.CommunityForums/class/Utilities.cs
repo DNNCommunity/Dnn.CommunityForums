@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Security.Permissions;
 
     public abstract partial class Utilities
@@ -135,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string ParseToolBar(string template, int portalId, int forumTabId, int forumModuleId, int tabId, int moduleId, ForumUserInfo forumUser, Uri requestUri, string rawUrl, int forumId = 0)
         {
-            var portalSettings = Utilities.GetPortalSettings(portalId);
+            var portalSettings = new PortalSettingsHelper().GetPortalSettings(portalId);
             var language = forumUser?.UserInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
             StringBuilder templateStringBuilder = new StringBuilder(template);
             templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyToolbarTokenSynonyms(templateStringBuilder, portalSettings, language);
@@ -143,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (forumId > 0)
             {
                 var forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, forumModuleId);
-                templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, forumInfo, GetPortalSettings(portalId), SettingsBase.GetModuleSettings(forumModuleId), new Services.URLNavigator().NavigationManager(), forumUser, tabId, forumUser.CurrentUserType, requestUri, rawUrl);
+                templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, forumInfo, new PortalSettingsHelper().GetPortalSettings(portalId), SettingsBase.GetModuleSettings(forumModuleId), new Services.URLNavigator().NavigationManager(), forumUser, tabId, forumUser.CurrentUserType, requestUri, rawUrl);
                 templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemovePrefixedToken(templateStringBuilder, "DCF:TOOLBAR-SEARCHTEXT");
             }
             else
@@ -151,7 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemovePrefixedToken(templateStringBuilder, "FORUM:TOOLBAR-SEARCHTEXT");
             }
 
-            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId, requestUri, rawUrl);
+            templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumControlTokens(templateStringBuilder, new PortalSettingsHelper().GetPortalSettings(portalId), forumUser, forumTabId, forumModuleId, tabId, moduleId, requestUri, rawUrl);
             return Utilities.LocalizeControl(templateStringBuilder.ToString());
         }
 
@@ -237,57 +238,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static DateTime NullDate() => new DateTime(1900, 1, 1).ToUniversalTime();
 
-        public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings()
-        {
-            try
-            {
-                if (HttpContext.Current?.Items["PortalSettings"] != null)
-                {
-                    return (DotNetNuke.Entities.Portals.PortalSettings)HttpContext.Current.Items["PortalSettings"];
-                }
-                else
-                {
-                    return ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings();
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-                return null;
-            }
-        }
-
-        public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings(int portalId)
-        {
-            try
-            {
-                PortalSettings portalSettings = null;
-                if (HttpContext.Current?.Items["PortalSettings"] != null)
-                {
-                    portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)HttpContext.Current.Items["PortalSettings"];
-                    if (portalSettings.PortalId != portalId)
-                    {
-                        portalSettings = null;
-                    }
-                }
-
-                if (portalSettings == null)
-                {
-                    portalSettings = new PortalSettings(portalId);
-                    PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
-                    psc.LoadPortalSettings(portalSettings);
-                }
-
-                var portalAliases = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
-                portalSettings.PortalAlias = portalAliases.FirstOrDefault(pa => pa.IsPrimary) ?? portalAliases.FirstOrDefault();
-                return portalSettings;
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-                return null;
-            }
-        }
 
         public static string GetHost()
         {
@@ -318,7 +268,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(ti.PortalID);
+                DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = new PortalSettingsHelper().GetPortalSettings(ti.PortalID);
                 return Utilities.NavigateURL(tabId, portalSettings, controlKey, additionalParameters);
             }
         }
@@ -339,7 +289,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var sURL = additionalParameters.ToList().Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + "&" + p);
 
             pageName = CleanStringForUrl(pageName);
-            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
+            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = new PortalSettingsHelper().GetPortalSettings(portalId);
             return Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
         }
 
@@ -1173,12 +1123,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (cultureInfo == null && userInfo?.PortalID >= 0)
                     {
-                        cultureInfo = CultureInfo.GetCultureInfo(Utilities.GetPortalSettings(userInfo.PortalID)?.CultureCode);
+                        cultureInfo = CultureInfo.GetCultureInfo(new PortalSettingsHelper().GetPortalSettings(userInfo.PortalID)?.CultureCode);
                     }
 
-                    if (cultureInfo == null && ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings() != null)
+                    if (cultureInfo == null && ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentSettings() != null)
                     {
-                        cultureInfo = CultureInfo.GetCultureInfo(ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings()?.CultureCode);
+                        cultureInfo = CultureInfo.GetCultureInfo(ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentSettings()?.CultureCode);
                     }
 
                     if (cultureInfo == null)
@@ -1224,12 +1174,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (timeZoneInfo == null && userInfo?.PortalID >= 0)
                     {
-                        timeZoneInfo = Utilities.GetPortalSettings(userInfo.PortalID)?.TimeZone;
+                        timeZoneInfo = new PortalSettingsHelper().GetPortalSettings(userInfo.PortalID)?.TimeZone;
                     }
 
-                    if (timeZoneInfo == null && ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings() != null)
+                    if (timeZoneInfo == null && ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentSettings() != null)
                     {
-                        timeZoneInfo = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings()?.TimeZone;
+                        timeZoneInfo = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentSettings()?.TimeZone;
                     }
 
                     if (timeZoneInfo == null)

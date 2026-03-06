@@ -26,11 +26,14 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Text.RegularExpressions;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
 
     public class ForumsReWriter : IHttpModule
     {
+        private readonly IPortalAliasService portalAliasService;
+        private ModuleSettings mainSettings = null;
         private int forumgroupId = -1;
         private int forumId = -1;
         private int tabId = -1;
@@ -40,11 +43,20 @@ namespace DotNetNuke.Modules.ActiveForums
         private int contentId = -1;
         private int userId = -1;
         private int archived = 0;
-        private ModuleSettings mainSettings = null;
         private int urlType = 0; // 0=default, 1= views, 2 = category, 3 = tag
         private int otherId = -1;
         private int categoryId = -1;
         private int tagId = -1;
+
+        public ForumsReWriter()
+            : this(new DotNetNuke.Entities.Portals.PortalAliasController())
+        {
+        }
+
+        public ForumsReWriter(IPortalAliasService portalAliasService)
+        {
+            this.portalAliasService = portalAliasService;
+        }
 
         public void Dispose()
         {
@@ -115,18 +127,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
-            if (objPortalAliasInfo == null && !HttpContext.Current.Request.Url.IsDefaultPort)
+            var portalAliasInfo = this.portalAliasService.GetPortalAlias(HttpContext.Current.Request.Url.Host);
+            if (portalAliasInfo == null && !HttpContext.Current.Request.Url.IsDefaultPort)
             {
-                objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host + ":" + HttpContext.Current.Request.Url.Port.ToString());
+                portalAliasInfo = this.portalAliasService.GetPortalAlias(HttpContext.Current.Request.Url.Host + ":" + HttpContext.Current.Request.Url.Port.ToString());
             }
 
-            if (objPortalAliasInfo == null)
+            if (portalAliasInfo == null)
             {
                 return;
             }
 
-            int portalId = objPortalAliasInfo.PortalID;
+            int portalId = portalAliasInfo.PortalId;
 
             string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
 
@@ -150,7 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             string searchURL = sUrl;
-            searchURL = searchURL.Replace(objPortalAliasInfo.HTTPAlias, string.Empty);
+            searchURL = searchURL.Replace(portalAliasInfo.HttpAlias, string.Empty);
             if (searchURL.Length < 2)
             {
                 return;
@@ -288,7 +300,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sUrl = db.GetUrl(this.moduleId, this.forumgroupId, this.forumId, this.topicId, this.userId, -1);
                 if (!string.IsNullOrEmpty(sUrl))
                 {
-                    string sHost = objPortalAliasInfo.HTTPAlias;
+                    string sHost = portalAliasInfo.HttpAlias;
                     if (sUrl.StartsWith("/"))
                     {
                         sUrl = sUrl.Substring(1);
@@ -341,7 +353,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (!canContinue && (request.RawUrl.Contains(ParamKeys.TopicId) || request.RawUrl.Contains(ParamKeys.ForumId) || request.RawUrl.Contains(ParamKeys.GroupId)))
             {
-                sUrl = this.HandleOldUrls(request.RawUrl, objPortalAliasInfo.HTTPAlias);
+                sUrl = this.HandleOldUrls(request.RawUrl, portalAliasInfo.HttpAlias);
                 if (!string.IsNullOrEmpty(sUrl))
                 {
                     if (!sUrl.StartsWith("http"))
@@ -392,7 +404,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!string.IsNullOrEmpty(sUrl))
                     {
-                        string sHost = objPortalAliasInfo.HTTPAlias;
+                        string sHost = portalAliasInfo.HttpAlias;
                         if (sHost.EndsWith("/") && sUrl.StartsWith("/"))
                         {
                             sUrl = sHost.Substring(0, sHost.Length - 1) + sUrl;

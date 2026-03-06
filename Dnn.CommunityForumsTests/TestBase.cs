@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Drawing.Text;
     using System.Linq;
 
     using DotNetNuke.Abstractions;
@@ -96,6 +97,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             this.portalAliasController = new Mock<IPortalAliasController>();
             DotNetNuke.Entities.Portals.PortalAliasController.SetTestableInstance(this.portalAliasController.Object);
+            this.portalAliasService = new Mock<IPortalAliasService>();
             this.SetupPortalAliasSettings();
 
             this.portalController = new Mock<IPortalController>();
@@ -359,16 +361,15 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
         private void SetupPortalAliasSettings()
         {
-            var portalAliasInfo = new PortalAliasInfo
-            {
-                PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
-                HTTPAlias = "localhost",
-                IsPrimary = true,
-                CultureCode = "en-US",
-            };
-            var portalAliases = new List<PortalAliasInfo> { portalAliasInfo };
+            IPortalAliasInfo portalAlias = new PortalAliasInfo();
+            portalAlias.PortalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
+            portalAlias.HttpAlias = "localhost";
+            portalAlias.IsPrimary = true;
+            portalAlias.CultureCode = "en-US";
 
-            this.portalAliasController.Setup(c => c.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(portalAliases);
+            IEnumerable<IPortalAliasInfo> portalAliases = new List<IPortalAliasInfo> { portalAlias };
+
+            this.portalAliasService.Setup(c => c.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(portalAliases);
         }
 
         private void SetupCachingProvider()

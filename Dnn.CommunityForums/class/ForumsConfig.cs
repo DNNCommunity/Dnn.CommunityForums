@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
@@ -175,7 +176,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
 
                     Install_Upgrade_ForumDefaultSettingsAndSecurity(portalId: portalId, moduleId: moduleId);
-                    var portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId: portalId);
+                    var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portalId: portalId);
                     for (int i = 0; i < xNodeList.Count; i++)
                     {
                         var gi = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
@@ -576,7 +577,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         var portalSettings = PortalSettings.Current;
                                         if (portalSettings == null)
                                         {
-                                            portalSettings = Utilities.GetPortalSettings(portal.PortalId);
+                                            portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portal.PortalId);
                                         }
 
                                         templateInfo.Subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(templateInfo.Subject), portalSettings, portalSettings.DefaultLanguage).ToString();
@@ -673,7 +674,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                var portalSettings = Utilities.GetPortalSettings(portalId);
+                var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portalId);
                 var permissions = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateDefaultPermissions(portalSettings, moduleId);
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.DefaultPermissionId, permissions.PermissionsId.ToString());
 

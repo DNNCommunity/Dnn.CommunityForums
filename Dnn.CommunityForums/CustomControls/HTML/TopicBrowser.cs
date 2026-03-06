@@ -23,6 +23,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System;
     using System.Data;
 
+    using DotNetNuke.Modules.ActiveForums.Extensions;
+
     public class TopicBrowser
     {
         public int PortalId { get; set; } = -1;
@@ -72,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string Render()
         {
-            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Edit);
+            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Edit).FromHashSetToDelimitedString(";");
             if (!string.IsNullOrEmpty(fs))
             {
                 this._canEdit = true;

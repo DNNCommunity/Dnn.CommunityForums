@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Security.Policy;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Tokens;
 
     [TableName("activeforums_Replies")]
@@ -298,7 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                var portalSettings = Utilities.GetPortalSettings();
+                var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings();
                 if (portalSettings == null)
                 {
                     portalSettings = this.Forum.PortalSettings;

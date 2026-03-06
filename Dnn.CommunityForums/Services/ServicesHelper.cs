@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
 
     internal static class ServicesHelper
     {
-        internal static bool IsAuthorized(PortalSettings portalSettings, int moduleId, int forumId, SecureActions permissionRequired, UserInfo userInfo)
+        internal static bool IsAuthorized(DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, int moduleId, int forumId, SecureActions permissionRequired, UserInfo userInfo)
         {
             try
             {
