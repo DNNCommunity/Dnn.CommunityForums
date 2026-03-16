@@ -1,0 +1,2 @@
+DesktopModules\ActiveForums\Legacy\afattach.js
+DesktopModules\ActiveForums\Legacy\uploader.aspx
