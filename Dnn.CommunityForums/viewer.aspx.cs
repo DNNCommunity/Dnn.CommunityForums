@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             // Get the filename with the unique identifier prefix removed.
-            var filename = Regex.Replace(attachment.FileName.TextOrEmpty(), @"__\d+__\d+__", string.Empty);
+            var filename = Regex.Replace(attachment.FileName.EmptyIfNull(), @"__\d+__\d+__", string.Empty);
 
             // Handle legacy inline attachments a bit differently
             string contentDispositionType = (attachmentId > 0) ? "attachment" : "inline";

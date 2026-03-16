@@ -1178,9 +1178,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 // AttachId, ContentId, UserID, FileName, ContentType, FileSize, FileID
                 var attachId = dr.GetInt("AttachId");
-                var filename = dr.GetString("Filename").TextOrEmpty();
+                var filename = dr.GetString("Filename").EmptyIfNull();
 
-                var fileExtension = System.IO.Path.GetExtension(filename).TextOrEmpty().Replace(".", string.Empty);
+                var fileExtension = System.IO.Path.GetExtension(filename).EmptyIfNull().Replace(".", string.Empty);
 
                 filename = System.Net.WebUtility.HtmlEncode(DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^__\d+__\d+__", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(filename, string.Empty));
                 sb.AppendFormat(itemTemplate, portalId, moduleId, attachId, fileExtension, filename);
