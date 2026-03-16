@@ -22,9 +22,19 @@ namespace DotNetNuke.Modules.ActiveForums.Extensions
 {
     public static class StringExtensions
     {
-        public static string TextOrEmpty(this string text)
+        public static string EmptyIfNull(this string text)
         {
             return text ?? string.Empty;
+        }
+
+        public static string TruncateWithEllipsis(this string text, int maxLength)
+        {
+            if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
+            {
+                return text;
+            }
+
+            return text.Substring(0, maxLength) + "...";
         }
     }
 }

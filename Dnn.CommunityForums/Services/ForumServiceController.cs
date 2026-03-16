@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // Get the file name without the full path
-                var localFileName = Path.GetFileName(file.LocalFileName).TextOrEmpty();
+                var localFileName = Path.GetFileName(file.LocalFileName).EmptyIfNull();
 
                 // Check to make sure that a forum was specified and that the the user has upload permissions
                 // This is only an initial check, it will be done again when the file is saved to a post.
@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Make sure we have an acceptable extension type.
                 // Check against both the forum configuration and the host configuration
-                var extension = Path.GetExtension(fileName).TextOrEmpty().Replace(".", string.Empty).ToLower();
+                var extension = Path.GetExtension(fileName).EmptyIfNull().Replace(".", string.Empty).ToLower();
                 var isForumAllowedExtension = string.IsNullOrWhiteSpace(forum.FeatureSettings.AttachTypeAllowed) || forum.FeatureSettings.AttachTypeAllowed.Replace(".", string.Empty).Split(',').Any(val => val == extension);
                 if (string.IsNullOrEmpty(extension) || !isForumAllowedExtension || !Host.AllowedExtensionWhitelist.IsAllowedExtension(extension))
                 {

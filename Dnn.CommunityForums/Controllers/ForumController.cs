@@ -610,14 +610,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static string GetLastPostSubjectLinkTag(int length, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int tabId)
         {
             string subject = Utilities.StripHTMLTag(System.Net.WebUtility.HtmlDecode(fi.LastPostSubject)).Replace("[", "&#91").Replace("]", "&#93");
-            if (subject.Length > length & length > 0)
-            {
-                subject = subject.Substring(0, length) + "...";
-            }
-
             string link = fi.LastPost.GetLink();
-
-            return $"<a href=\"{link}\">{System.Net.WebUtility.HtmlEncode(subject)}</a>";
+            return $"<a href=\"{link}\">{System.Net.WebUtility.HtmlEncode(subject.TruncateWithEllipsis(length))}</a>";
         }
     }
 }

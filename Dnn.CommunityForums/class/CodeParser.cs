@@ -90,5 +90,18 @@ namespace DotNetNuke.Modules.ActiveForums
             text = Regex.Replace(text, "\\[\\/CODE\\]", "</code></pre>", RegexOptions.IgnoreCase);
             return text;
         }
+
+        internal static string ReplaceBreakTagsWithNewLines(string input)
+        {
+            if (DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex("<CODE([^>]*)>", RegexOptions.IgnoreCase).IsMatch(input))
+            {
+                foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex("<CODE([^>]*)>(.*?)</CODE>", RegexOptions.IgnoreCase).Matches(input))
+                {
+                    input.Replace(m.Value, Utilities.ReplaceHtmlBreakTagWithNewLine(m.Value));
+                }
+            }
+
+            return input;
+        }
     }
 }
