@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
@@ -600,7 +601,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                 {
                                     if (body.ToUpperInvariant().Contains("<CODE") || body.ToUpperInvariant().Contains("[CODE]"))
                                     {
-                                        //body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
                                         body = Utilities.EncodeCodeBlocks(body);
                                     }
                                 }
@@ -732,12 +732,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti.Content.IPAddress = this.Request.UserHostAddress;
             }
 
-            if (Regex.IsMatch(body, "<CODE([^>]*)>", RegexOptions.IgnoreCase))
+            if (DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex("<CODE([^>]*)>", RegexOptions.IgnoreCase).IsMatch(body))
             {
-                foreach (Match m in Regex.Matches(body, "<CODE([^>]*)>(.*?)</CODE>", RegexOptions.IgnoreCase))
-                {
-                    body = body.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
-                }
+                body = CodeParser.ReplaceBreakTagsWithNewLines(body);
             }
 
             ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrlSegment(portalId: this.PortalId, moduleId: this.ForumModuleId, topicId: this.TopicId, subject: subject, forumInfo: this.ForumInfo);
@@ -993,12 +990,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 ri.Content.IPAddress = this.Request.UserHostAddress;
             }
 
-            if (Regex.IsMatch(body, "<CODE([^>]*)>", RegexOptions.IgnoreCase))
+            if (DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex("<CODE([^>]*)>", RegexOptions.IgnoreCase).IsMatch(body))
             {
-                foreach (Match m in Regex.Matches(body, "<CODE([^>]*)>(.*?)</CODE>", RegexOptions.IgnoreCase))
-                {
-                    body = body.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
-                }
+                body = CodeParser.ReplaceBreakTagsWithNewLines(body);
             }
 
             ri.Content.Body = body;
@@ -1024,7 +1018,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var tmpReplyId = rc.Reply_Save(this.PortalId, this.ForumModuleId, ri);
             ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(tmpReplyId);
-            
+
             ri.Content.ExtractEmbeddedImages();
             this.SaveAttachments(ri.ContentId);
             try
@@ -1131,7 +1125,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else if (!string.IsNullOrWhiteSpace(attachment.UploadId) && !string.IsNullOrWhiteSpace(attachment.FileName))
                 {
-                    if (!Regex.IsMatch(attachment.UploadId, @"^[\w\-. ]+$")) // Check for shenanigans.
+                    if (!DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^[\w\-. ]+$").IsMatch(attachment.UploadId )) // Check for shenanigans.
                     {
                         continue;
                     }
@@ -1145,11 +1139,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     // Store the files with a filename format that prevents overwrites.
                     var index = 0;
-                    var fileName = string.Format(fileNameTemplate, contentId, index, Regex.Replace(attachment.FileName, @"[^\w\-. ]+", string.Empty));
+                    var fileName = string.Format(fileNameTemplate, contentId, index, DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"[^\w\-. ]+").Replace(attachment.FileName, string.Empty));
                     while (fileManager.FileExists(attachmentFolder, fileName))
                     {
                         index++;
-                        fileName = string.Format(fileNameTemplate, contentId, index, Regex.Replace(attachment.FileName, @"[^\w\-. ]+", string.Empty));
+                        fileName = string.Format(fileNameTemplate, contentId, index, DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"[^\w\-. ]+").Replace(attachment.FileName, string.Empty));
                     }
 
                     // Copy the file into the attachment folder with the correct name.
@@ -1202,7 +1196,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 AttachmentId = attachment.AttachmentId,
                 ContentType = attachment.ContentType,
                 FileId = attachment.FileId,
-                FileName = Regex.Replace(attachment.FileName.TextOrEmpty(), @"^__\d+__\d+__", string.Empty), // Remove our unique file prefix before sending to the client.
+                FileName = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^__\d+__\d+__").Replace(attachment.FileName.EmptyIfNull(), string.Empty), // Remove our unique file prefix before sending to the client.
                 FileSize = attachment.FileSize,
             }).ToList();
 

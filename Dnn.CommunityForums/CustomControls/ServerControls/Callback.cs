@@ -368,7 +368,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             sText = System.Net.WebUtility.UrlDecode(sText);
             string pattern = "<script.*/*>|</script>|<[a-zA-Z][^>]*=['\"]+javascript:\\w+.*['\"]+>|<\\w+[^>]*\\son\\w+=.*[ /]*>";
-            return RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(sText, string.Empty).Replace("-->", string.Empty).Replace("<!--", string.Empty);
+            return DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(sText, string.Empty).Replace("-->", string.Empty).Replace("<!--", string.Empty);
         }
 
         protected override void CreateChildControls()
