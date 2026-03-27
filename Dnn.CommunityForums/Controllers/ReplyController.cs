@@ -109,18 +109,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public void Reply_Delete(int portalId, int forumId, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior delBehavior)
         {
             var reply = this.GetById(replyId);
-            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Delete(forumId, topicId, replyId, (int)delBehavior);
-            new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(reply.ModuleId).Update(forumId: forumId, topicId: topicId);
-
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(forumId);
-
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(reply.ModuleId, reply.ForumId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(reply.ModuleId, reply.ReplyId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(reply.ModuleId, reply.TopicId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(reply.ModuleId, reply.ContentId);
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.ForumViewPrefix, reply.ModuleId));
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicViewPrefix, reply.ModuleId));
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, reply.ModuleId));
 
             Social.DeleteJournalItemForPost(reply);
 
@@ -136,30 +124,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searchDoc);
             }
 
-            Utilities.UpdateModuleLastContentModifiedOnDate(reply.ModuleId);
-            if (delBehavior.Equals(DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Recycle))
-            {
-                return;
-            }
-
             // If it's a hard delete, delete associated attachments
-            var attachmentController = new Data.AttachController();
-            var fileManager = FileManager.Instance;
-            var folderManager = FolderManager.Instance;
-            var attachmentFolder = folderManager.GetFolder(portalId, "activeforums_Attach");
-
-            foreach (var attachment in attachmentController.ListForPost(topicId, replyId))
+            if (delBehavior.Equals(DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Remove))
             {
-                attachmentController.Delete(attachment.AttachmentId);
-
-                var file = attachment.FileId.HasValue ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
-
-                // Only delete the file if it exists in the attachment folder
-                if (file != null && file.FolderId == attachmentFolder.FolderID)
-                {
-                    fileManager.DeleteFile(file);
-                }
+                reply.Content.RemoveAttachments();
             }
+
+            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Delete(forumId, topicId, replyId, (int)delBehavior);
+            new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(reply.ModuleId).Update(forumId: forumId, topicId: topicId);
+
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(forumId);
+
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(reply.ModuleId, reply.ForumId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(reply.ModuleId, reply.ReplyId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(reply.ModuleId, reply.TopicId);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(reply.ModuleId, reply.ContentId);
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.ForumViewPrefix, reply.ModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicViewPrefix, reply.ModuleId));
+            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, reply.ModuleId));
+
+            Utilities.UpdateModuleLastContentModifiedOnDate(reply.ModuleId);
         }
 
         public void Restore(int portalId, int forumId, int topicId, int replyId)
@@ -302,13 +286,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
 
                 Subscriptions.SendSubscriptions(-1, portalId, moduleId, tabId, reply.Forum, topicId, replyId, authorId, new Uri(requestUrl));
-
                 Social.AddPostToJournal(reply);
 
-                DataCache.ContentCacheClear(reply.ModuleId, string.Format(CacheKeys.ForumInfo, reply.ModuleId, reply.ForumId));
-                DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.ForumViewPrefix, reply.ModuleId));
-                DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicViewPrefix, reply.ModuleId));
-                DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, reply.ModuleId));
                 var pqc = new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController();
                 pqc.Add(ProcessType.UpdateForumTopicPointers, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, requestUrl: requestUrl);
                 pqc.Add(ProcessType.UpdateForumLastUpdated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, requestUrl: requestUrl);
@@ -320,8 +299,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UpdateUserReplyCount(portalId, reply.Content.AuthorId);
                 }
 
+                reply.Content.ExtractEmbeddedImages();
                 DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(reply);
                 DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController.ProcessUserMentions(reply);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(reply.ModuleId, string.Format(CacheKeys.ForumInfo, reply.ModuleId, reply.ForumId));
+                DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.ForumViewPrefix, reply.ModuleId));
+                DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicViewPrefix, reply.ModuleId));
+                DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, reply.ModuleId));
 
                 return true;
             }

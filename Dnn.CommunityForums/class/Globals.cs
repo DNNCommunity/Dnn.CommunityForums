@@ -140,6 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ModuleOwnerName = "DNN Community";
         public const string ModuleFriendlyName = "DNN Community Forums";
         public const string ModulePath = "~/DesktopModules/ActiveForums/";
+        public const string ModuleAbsolutePath = "/DesktopModules/ActiveForums/";
         public const string ModuleConfigPath = Globals.ModulePath + "config/";
         public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
         public const string ModuleImagesPath = Globals.ModulePath + "images/";
@@ -149,7 +150,12 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AvatarRefreshGravatar = "GRAVATAR";
 
         public const string DefaultBadgesFolderName = "DNNCommunityForums/Badges";
-        public const string EmbeddedImagesFolderName = "DNNCommunityForums/EmbeddedImages";
+        public const string ContentFolderNameFormatString = "DNNCommunityForums/content/{0}/{1}";
+        public const string EmbeddedImagesFolderNameFormatString = "DNNCommunityForums/content/{0}/{1}/images/";
+        public const string AttachmentsFolderNameFormatString = "DNNCommunityForums/content/{0}/{1}/attachments/";
+        public const string AttachmentFileNameFormatString = "__{0}__{1}__{2}";
+        public const string LegacyAttachmentsFolderName = "activeforums_Attach";
+        public const string LegacyUploadsFolderName = "activeforums_Upload";
 
         public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
@@ -283,11 +289,14 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AttachMaxSize = "ATTACHMAXSIZE";
         public const string AttachTypeAllowed = "ATTACHTYPEALLOWED";
         public const string AttachAllowBrowseSite = "ATTACHALLOWBROWSESITE";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string AttachMaxHeight = "ATTACHMAXHEIGHT";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string AttachMaxWidth = "ATTACHMAXWIDTH";
-        public const string MaxAttachWidth = "MAXATTACHWIDTH";
-        public const string MaxAttachHeight = "MAXATTACHHEIGHT";
+        public const string MaxImageWidth = "MAXIMAGEWIDTH";
+        public const string MaxImageHeight = "MAXIMAGEHEIGHT";
         public const string AttachInsertAllowed = "ATTACHINSERTALLOWED";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string ConvertingToJpegAllowed = "CONVERTINGTOJPEGALLOWED";
         public const string IndexContent = "INDEXCONTENT";
         public const string AllowRSS = "ALLOWRSS";

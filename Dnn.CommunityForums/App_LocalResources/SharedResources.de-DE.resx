@@ -1898,4 +1898,7 @@ Von
   <data name="[RESX:DNNCKEDITOR4PLUSFORUMSPLUGINS].Text" xml:space="preserve">
     <value>DNN CKEditor4 plus Foren-Plugins</value>
   </data>
+  <data name="[RESX:Attachment].Text" xml:space="preserve">
+    <value>Anhang</value>
+  </data>
 </root>

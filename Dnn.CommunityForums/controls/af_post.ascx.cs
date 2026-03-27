@@ -36,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Controls;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;
@@ -796,7 +797,6 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, this.ForumId, this.TopicId);
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
 
-            ti.Content.ExtractEmbeddedImages();
             this.SaveAttachments(ti.ContentId);
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TagRoleIds, this.ForumUser.UserRoleIds))
             {
@@ -1019,7 +1019,6 @@ namespace DotNetNuke.Modules.ActiveForums
             var tmpReplyId = rc.Reply_Save(this.PortalId, this.ForumModuleId, ri);
             ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(tmpReplyId);
 
-            ri.Content.ExtractEmbeddedImages();
             this.SaveAttachments(ri.ContentId);
             try
             {
@@ -1079,28 +1078,26 @@ namespace DotNetNuke.Modules.ActiveForums
         // Note attachments are currently saved into the authors file directory
         private void SaveAttachments(int contentId)
         {
-            var fileManager = FileManager.Instance;
-            var folderManager = FolderManager.Instance;
-            var adb = new Data.AttachController();
-
+            var fileManager = DotNetNuke.Services.FileSystem.FileManager.Instance;
+            var folderManager = DotNetNuke.Services.FileSystem.FolderManager.Instance;
             var userFolder = folderManager.GetUserFolder(this.UserInfo);
 
-            const string uploadFolderName = "activeforums_Upload";
-            const string attachmentFolderName = "activeforums_Attach";
-            const string fileNameTemplate = "__{0}__{1}__{2}";
+            const string uploadFolderName = Globals.LegacyUploadsFolderName;
+            const string attachmentFolderName = Globals.LegacyAttachmentsFolderName;
+            const string fileNameTemplate = Globals.AttachmentFileNameFormatString;
 
             var attachmentFolder = folderManager.GetFolder(this.PortalId, attachmentFolderName) ?? folderManager.AddFolder(this.PortalId, attachmentFolderName);
 
             // Read the attachment list sent in the hidden field as json
             var attachmentsJson = this.hidAttachments.Value;
-            var serializer = new DataContractJsonSerializer(typeof(List<ClientAttachment>));
+            var serializer = new DataContractJsonSerializer(typeof(List<DotNetNuke.Modules.ActiveForums.Entities.ClientAttachment>));
             var ms = new MemoryStream(Encoding.UTF8.GetBytes(attachmentsJson));
-            var attachmentsNew = (List<ClientAttachment>)serializer.ReadObject(ms);
+            var attachmentsNew = (List<DotNetNuke.Modules.ActiveForums.Entities.ClientAttachment>)serializer.ReadObject(ms);
             ms.Close();
 
             // Read the list of existing attachments for the content.  Must do this before saving any of the new attachments!
-            // Ignore any legacy inline attachments
-            var attachmentsOld = adb.ListForContent(contentId).Where(o => !o.AllowDownload.HasValue || o.AllowDownload.Value);
+            // Ignore any inline attachments
+            var attachmentsOld = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetByContentId(contentId).Where(attachment => !attachment.DisplayInline);
 
             // Save all of the new attachments
             foreach (var attachment in attachmentsNew)
@@ -1125,7 +1122,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else if (!string.IsNullOrWhiteSpace(attachment.UploadId) && !string.IsNullOrWhiteSpace(attachment.FileName))
                 {
-                    if (!DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^[\w\-. ]+$").IsMatch(attachment.UploadId )) // Check for shenanigans.
+                    if (!DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^[\w\-. ]+$").IsMatch(attachment.UploadId)) // Check for shenanigans.
                     {
                         continue;
                     }
@@ -1160,20 +1157,30 @@ namespace DotNetNuke.Modules.ActiveForums
                     continue;
                 }
 
-                adb.Save(contentId, this.UserId, file.FileName, file.ContentType, file.Size, file.FileId);
+                var attachInfo = new DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo
+                {
+                    ContentId = contentId,
+                    UserId = this.AuthorId,
+                    FileId = file.FileId,
+                    FileName = file.FileName,
+                    ContentType = file.ContentType,
+                    FileSize = file.Size,
+                    DateAdded = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow,
+                };
+                new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().Save(attachInfo);
             }
 
             // Remove any attachments that are no longer in the list of attachments
-            var attachmentsToRemove = attachmentsOld.Where(a1 => attachmentsNew.All(a2 => a2.AttachmentId != a1.AttachmentId));
+            var attachmentsToRemove = attachmentsOld.Where(attachment => !attachment.DisplayInline).Where(a1 => attachmentsNew.All(a2 => a2.AttachmentId != a1.AttachmentId));
             foreach (var attachment in attachmentsToRemove)
             {
-                adb.Delete(attachment.AttachmentId);
-
                 var file = attachment.FileId.HasValue ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
 
                 // Only delete the file if it exists in the attachment folder
                 if (file != null && file.FolderId == attachmentFolder.FolderID)
                 {
+                    new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().DeleteById(attachment.AttachmentId);
                     fileManager.DeleteFile(file);
                 }
             }
@@ -1188,10 +1195,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            var adb = new Data.AttachController();
-            var attachments = adb.ListForContent(contentId.Value);
-
-            var clientAttachments = attachments.Select(attachment => new ClientAttachment
+            var attachments = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetByContentId((int)contentId);
+            var clientAttachments = attachments.Where(attachment => !attachment.DisplayInline).Select(attachment => new DotNetNuke.Modules.ActiveForums.Entities.ClientAttachment
             {
                 AttachmentId = attachment.AttachmentId,
                 ContentType = attachment.ContentType,
@@ -1200,7 +1205,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 FileSize = attachment.FileSize,
             }).ToList();
 
-            var serializer = new DataContractJsonSerializer(typeof(List<ClientAttachment>));
+            var serializer = new DataContractJsonSerializer(typeof(List<DotNetNuke.Modules.ActiveForums.Entities.ClientAttachment>));
 
             using (var ms = new MemoryStream())
             {
