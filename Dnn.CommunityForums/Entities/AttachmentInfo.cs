@@ -18,21 +18,42 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
+    using System.Web.Caching;
 
-    [Obsolete("Deprecated in Community Forums 11.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo.")]
-    public class Attachment : DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo { }
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Services.Tokens;
 
-    [Obsolete("Deprecated in Community Forums 11.0.0. No longer used.")]
-    public class PermissionAttachment : Attachment
+    [TableName("activeforums_Attachments")]
+    [PrimaryKey("AttachID", AutoIncrement = true)]
+    public class AttachmentInfo
     {
-        public string CanRead { get; set; }
+        [ColumnName("AttachID")]
+        public int AttachmentId { get; set; }
 
-        public bool AllowDownload { get; set; } = true;
+        public int ContentId { get; set; }
+
+        [ColumnName("UserID")]
+        public int UserId { get; set; }
+
+        [ColumnName("Filename")]
+        public string FileName { get; set; }
+
+        [ColumnName("FileID")]
+        public int? FileId { get; set; }
+
+        public string ContentType { get; set; }
+
+        public DateTime? DateAdded { get; set; }
+
+        public DateTime? DateUpdated { get; set; }
+
+        public byte[] FileData { get; set; }
+
+        public long FileSize { get; set; }
+
+        public bool DisplayInline { get; set; } = false;
     }
-
-    [Obsolete("Deprecated in Community Forums 11.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo.")]
-    public class ClientAttachment : DotNetNuke.Modules.ActiveForums.Entities.ClientAttachment { }
 }

@@ -1271,9 +1271,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sb.Append("editorConfigeditortxtBody.toolbar = [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline' ] },{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste' ] },{ name: 'undo', items: [ 'Undo', 'Redo' ] }, { name: 'insert', items: [ 'Code' ] } ];");
                     sb.Append("editorConfigeditortxtBody.toolbarCanCollapse = false;");
                     sb.Append("editorConfigeditortxtBody.toolbarStartupExpanded = true;");
-                    sb.Append("editorConfigeditortxtBody.removePlugins = 'elementspath,wordcount';");
+                    sb.Append("editorConfigeditortxtBody.removePlugins = 'elementspath,wordcount,image,easyimage,imageupload,uploadwidget,uploadimage';");
                     sb.Append("editorConfigeditortxtBody.resize_enabled = true;");
-                    sb.Append("editorConfigeditortxtBody.removeButtons = 'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,PasteFromWord,Print,Preview,ExportPdf,NewPage,Save,Replace,Find,BGColor,TextColor,HorizontalRule,Anchor,Unlink,BidiLtr,BidiRtl,Language,CreateDiv,CopyFormatting,RemoveFormat,Subscript,Superscript,Strike,Format,Source,Templates,SelectAll,Scayt,PasteText,Styles,Font,FontSize,About,Maximize,Table,SpecialChar,PageBreak,Iframe,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Indent,Outdent,NumberedList,BulletedList';");
+                    sb.Append("editorConfigeditortxtBody.removeButtons = 'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,PasteFromWord,Print,Preview,ExportPdf,NewPage,Save,Replace,Find,BGColor,TextColor,HorizontalRule,Anchor,Unlink,BidiLtr,BidiRtl,Language,CreateDiv,CopyFormatting,RemoveFormat,Subscript,Superscript,Strike,Format,Source,Templates,SelectAll,Scayt,PasteText,Styles,Font,FontSize,About,Maximize,Table,SpecialChar,PageBreak,Iframe,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Indent,Outdent,NumberedList,BulletedList,ImageButton,EasyImageUpload';");
+                }
+                else
+                {
+                    sb.Append("editorConfigeditortxtBody.removePlugins = 'image,easyimage,imageupload,uploadwidget,uploadimage';");
+                    sb.Append("editorConfigeditortxtBody.removeButtons = 'ImageButton,EasyImageUpload';");
                 }
 
                 sb.Append("$(document).ready(function() {$(\"#txtBody\").hide();$(\"#" + this.EditorClientId + "_txtBody_ckoptions\").hide();});");

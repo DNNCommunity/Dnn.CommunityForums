@@ -18,21 +18,30 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    using System;
+    using System.Runtime.Serialization;
 
-    [Obsolete("Deprecated in Community Forums 11.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo.")]
-    public class Attachment : DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo { }
-
-    [Obsolete("Deprecated in Community Forums 11.0.0. No longer used.")]
-    public class PermissionAttachment : Attachment
+    // Used to exchange data with the client via JSON
+    [DataContract]
+    public class ClientAttachment
     {
-        public string CanRead { get; set; }
+        [DataMember(Name = "id", IsRequired = false, EmitDefaultValue = false)]
+        public int? AttachmentId { get; set; }
 
-        public bool AllowDownload { get; set; } = true;
+        [DataMember(Name = "fileName", IsRequired = true)]
+        public string FileName { get; set; }
+
+        [DataMember(Name = "contentType", IsRequired = true)]
+        public string ContentType { get; set; }
+
+        [DataMember(Name = "fileSize")]
+        public long FileSize { get; set; }
+
+        [DataMember(Name = "fileId", IsRequired = false, EmitDefaultValue = false)]
+        public int? FileId { get; set; }
+
+        [DataMember(Name = "uploadId", IsRequired = false, EmitDefaultValue = false)]
+        public string UploadId { get; set; }
     }
-
-    [Obsolete("Deprecated in Community Forums 11.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo.")]
-    public class ClientAttachment : DotNetNuke.Modules.ActiveForums.Entities.ClientAttachment { }
 }

@@ -219,7 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         var fc = new ForumsConfig();
-                        fc.ArchiveOrphanedAttachments();
+                        fc.ArchiveOrphanedAttachments_070007();
                     }
                     catch (Exception ex)
                     {

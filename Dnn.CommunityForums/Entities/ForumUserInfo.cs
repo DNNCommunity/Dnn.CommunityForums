@@ -214,7 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public bool GetIsMod(int ModuleId)
         {
-            return !this.IsAnonymous && !DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ModuleId, this, DotNetNuke.Modules.ActiveForums.SecureActions.Moderate).Any();
+            return !this.IsAnonymous && DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ModuleId, this, DotNetNuke.Modules.ActiveForums.SecureActions.Moderate).Any();
         }
 
         [IgnoreColumn]
