@@ -26,91 +26,23 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
     using Microsoft.ApplicationBlocks.Data;
 
+    [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Not Used.")]
     public class AttachController : Connection
     {
-        public int Save(int contentId, int userId, string fileName, string contentType, long fileSize, int? fileId)
-        {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Attachments_Save", contentId, userId, fileName, contentType, fileSize, fileId));
-        }
-
-        public void Delete(int attachId)
-        {
-            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "Attachments_Delete", attachId);
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Not Used.")]
+        public int Save(int contentId, int userId, string fileName, string contentType, long fileSize, int? fileId) => throw new NotImplementedException();
 
         // FileId is used for legacy attachments
-        public PermissionAttachment Get(int attachmentId, int fileId, bool withSecurity)
-        {
-            PermissionAttachment result = null;
-            using (IDataReader dr = SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Attachments_Get", attachmentId, fileId, withSecurity))
-            {
-                if (dr.Read())
-                {
-                    result = FillAttachment(dr);
-                }
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Not Used.")]
+        public PermissionAttachment Get(int attachmentId, int fileId, bool withSecurity) => throw new NotImplementedException();
 
-                dr.Close();
-            }
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Not Used.")]
+        public List<Attachment> ListForContent(int contentId) => throw new NotImplementedException();
 
-            return result;
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Not Used.")]
+        public List<Attachment> ListForPost(int topicId, int? replyId) => throw new NotImplementedException();
 
-        public List<Attachment> ListForContent(int contentId)
-        {
-            var al = new List<Attachment>();
-            using (IDataReader dr = SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Attachments_ListForContent", contentId))
-            {
-                while (dr.Read())
-                {
-                    al.Add(FillAttachment(dr));
-                }
-
-                dr.Close();
-            }
-
-            return al;
-        }
-
-        public List<Attachment> ListForPost(int topicId, int? replyId)
-        {
-            var al = new List<Attachment>();
-            using (IDataReader dr = SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Attachments_ListForPost", topicId, replyId))
-            {
-                while (dr.Read())
-                {
-                    al.Add(FillAttachment(dr));
-                }
-
-                dr.Close();
-            }
-
-            return al;
-        }
-
-        private static PermissionAttachment FillAttachment(IDataRecord dr)
-        {
-            var result = new PermissionAttachment
-            {
-                AttachmentId = Utilities.SafeConvertInt(dr["AttachId"]),
-                UserId = Utilities.SafeConvertInt(dr["UserId"], -1),
-                FileName = Utilities.SafeConvertString(dr["FileName"]),
-                ContentType = Utilities.SafeConvertString(dr["ContentType"]),
-                FileSize = Utilities.SafeConvertLong(dr["FileSize"]),
-                FileId = dr["FileId"] as int?,
-                AllowDownload = Utilities.SafeConvertBool(dr["AllowDownload"], true),
-            };
-
-            if (dr.HasColumn("FileData"))
-            {
-                result.FileData = dr["FileData"] as byte[];
-            }
-
-            if (dr.HasColumn("CanRead"))
-            {
-                result.CanRead = Utilities.SafeConvertString(dr["CanRead"], Globals.DefaultAnonRoles); // Default to public read permissions
-            }
-
-            return result;
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Not Used.")]
+        private static PermissionAttachment FillAttachment(IDataRecord dr) => throw new NotImplementedException();
     }
 }

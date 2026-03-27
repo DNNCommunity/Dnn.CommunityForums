@@ -22,14 +22,18 @@ namespace DotNetNuke.Modules.ActiveForums.Services
 {
     using System;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Security.Principal;
     using System.Threading;
+    using System.Web.Http;
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -109,8 +113,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                                 var postData = context.ActionContext.Request.Content.ReadAsStringAsync().Result;
                                 forumId = Utilities.SafeConvertInt(System.Web.Helpers.Json.Decode(postData).ForumId);
                             }
-                            catch
+                            catch (Exception ex)
                             {
+                                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                             }
                         }
 

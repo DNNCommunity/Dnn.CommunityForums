@@ -42,8 +42,8 @@
 		        <tr>
                     <td><i data-bind="attr: { 'class' : $root.getIconClass($data) }"></i> <span data-bind="text:fileName"></span></td>
                     <td data-bind="text:(fileSize || fileSizeText)"></td>
-                    <td><span class="ui-icon ui-icon-plus" data-bind="click:$root.insertImage" /></td>
-                    <td><span class="ui-icon ui-icon-trash" data-bind="click:$root.removeAttachment" /></td>
+                    <td><span class="fa fa-plus fa-fw fa-blue" data-bind="click:$root.insertImage" /></td>
+                    <td><span class="fa fa-trash fa-fw fa-blue" data-bind="click:$root.removeAttachment" /></td>
 		        </tr>
 		    </tbody>
 	    </table>
@@ -78,7 +78,7 @@
             allowedFileTypes: "<%= ForumInfo.FeatureSettings.AttachTypeAllowed %>",
             allowBrowseSite: <%= ForumInfo.FeatureSettings.AttachAllowBrowseSite ? 1 : 0 %>,
             attachInsertAllowed: <%= ForumInfo.FeatureSettings.AttachInsertAllowed ? 1 : 0 %>,
-            maxFileSizeExceededMsg: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(string.Format(LocalizeString("[RESX:Error:FileTooLarge]").TextOrEmpty(), ForumInfo.FeatureSettings.AttachMaxSize))%>",
+            maxFileSizeExceededMsg: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(string.Format(LocalizeString("[RESX:Error:FileTooLarge]").EmptyIfNull(), ForumInfo.FeatureSettings.AttachMaxSize))%>",
             maxAttachmentCount: <%= ForumInfo.FeatureSettings.AttachCount %>,
             uploadButtonText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:UploadButton]"))%>"
         };

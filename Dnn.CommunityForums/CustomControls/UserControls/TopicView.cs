@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
+    using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -44,7 +45,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private DataRow drForum;
         private DataRow drSecurity;
         private DataTable dtTopic;
-        private DataTable dtAttach;
         private bool bRead;
         private bool bTrust;
         private bool bEdit;
@@ -54,7 +54,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int rowIndex;
         private int pageSize = 20;
         private int rowCount;
-        private bool isTrusted;
         private bool isSubscribedTopic;
         private string defaultSort;
         private string tags = string.Empty;
@@ -214,7 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Test for a proper dataset
-            if (ds.Tables?.Count < 4 || ds.Tables[0]?.Rows?.Count == 0 || ds.Tables[1]?.Rows?.Count == 0)
+            if (ds.Tables?.Count < 3 || ds.Tables[0]?.Rows?.Count == 0 || ds.Tables[1]?.Rows?.Count == 0)
             {
                 this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
                 this.Context.ApplicationInstance.CompleteRequest();
@@ -224,7 +223,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.drForum = ds.Tables[0].Rows[0];
             this.drSecurity = ds.Tables[1].Rows[0];
             this.dtTopic = ds.Tables[2];
-            this.dtAttach = ds.Tables[3];
 
             // If we don't have any rows to display, redirect
             if (this.dtTopic.Rows.Count == 0)
@@ -1152,38 +1150,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         // Renders the [ATTACHMENTS] block
         private string GetAttachments(int contentId, bool allowAttach, int portalId, int moduleId)
         {
-            if (!allowAttach || this.dtAttach.Rows.Count == 0)
+            if (!allowAttach)
             {
                 return string.Empty;
             }
 
-            const string itemTemplate = "<li><a href='/DesktopModules/ActiveForums/viewer.aspx?portalid={0}&moduleid={1}&attachmentid={2}' target='_blank'><i class='af-fileicon af-fileicon-{3}'></i><span>{4}</span></a></li>";
-
-            this.dtAttach.DefaultView.RowFilter = "ContentId = " + contentId;
-
-            var attachmentRows = this.dtAttach.DefaultView.ToTable().Rows;
-
-            if (attachmentRows.Count == 0)
+            var attachments = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetByContentId(contentId).Where(attachment => !attachment.DisplayInline);
+            if (!attachments.Any())
             {
                 return string.Empty;
             }
 
             var sb = new StringBuilder(1024);
-
             sb.Append("<div class='af-attach-post-list'><span>");
             sb.Append(Utilities.GetSharedResource("[RESX:Attachments]"));
             sb.Append("</span><ul>");
 
-            foreach (DataRow dr in this.dtAttach.DefaultView.ToTable().Rows)
+            const string itemTemplate = "<li><a href='/DesktopModules/ActiveForums/viewer.aspx?portalid={0}&moduleid={1}&attachmentid={2}' target='_blank'><i class='af-fileicon af-fileicon-{3}'></i><span>{4}</span></a></li>";
+            foreach (var attachment in attachments)
             {
-                // AttachId, ContentId, UserID, FileName, ContentType, FileSize, FileID
-                var attachId = dr.GetInt("AttachId");
-                var filename = dr.GetString("Filename").EmptyIfNull();
-
+                var filename = attachment.FileName.EmptyIfNull();
                 var fileExtension = System.IO.Path.GetExtension(filename).EmptyIfNull().Replace(".", string.Empty);
 
                 filename = System.Net.WebUtility.HtmlEncode(DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^__\d+__\d+__", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(filename, string.Empty));
-                sb.AppendFormat(itemTemplate, portalId, moduleId, attachId, fileExtension, filename);
+                sb.AppendFormat(itemTemplate, portalId, moduleId, attachment.AttachmentId, fileExtension, filename);
             }
 
             sb.Append("</ul></div>");

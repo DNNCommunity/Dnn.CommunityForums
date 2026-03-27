@@ -688,20 +688,8 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:MaxAttach].Text" xml:space="preserve">
     <value># der Dateien</value>
   </data>
-  <data name="[RESX:MaxAttachHeight].Text" xml:space="preserve">
-    <value>Max. Höhe</value>
-  </data>
-  <data name="[RESX:MaxAttachWidth].Text" xml:space="preserve">
-    <value>Max. Breite</value>
-  </data>
   <data name="[RESX:MaxFileSize].Text" xml:space="preserve">
     <value>Max. Dateigröße (KB)</value>
-  </data>
-  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve">
-    <value>Max. Höhe</value>
-  </data>
-  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve">
-    <value>Max. Breite</value>
   </data>
   <data name="[RESX:MaxPoints].Text" xml:space="preserve">
     <value>Maximale Punktezahl</value>
@@ -1644,5 +1632,11 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   </data>
   <data name="[RESX:NotActive].Text" xml:space="preserve">
     <value>Nicht aktiv</value>
+  </data>
+  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve">
+    <value>Max. Bildhöhe</value>
+  </data>
+  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve">
+    <value>Max. Bildbreite</value>
   </data>
 </root>

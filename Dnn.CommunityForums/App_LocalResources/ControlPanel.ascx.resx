@@ -235,10 +235,10 @@
     <value>Max. File Size (KB)</value>
   </data>
   <data name="[RESX:MaxImageHeight].Text" xml:space="preserve">
-    <value>Max. Height</value>
+    <value>Max. Image Height</value>
   </data>
   <data name="[RESX:MaxImageWidth].Text" xml:space="preserve">
-    <value>Max. Width</value>
+    <value>Max. Image Width</value>
   </data>
   <data name="[RESX:SecureObjects].Text" xml:space="preserve">
     <value>Roles/Users</value>
@@ -1362,12 +1362,6 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   </data>
   <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve">
     <value>Insert files as tokens</value>
-  </data>
-  <data name="[RESX:MaxAttachWidth].Text" xml:space="preserve">
-    <value>Max. width</value>
-  </data>
-  <data name="[RESX:MaxAttachHeight].Text" xml:space="preserve">
-    <value>Max. height</value>
   </data>
   <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve">
     <value>Convert *.png to *.jpg</value>

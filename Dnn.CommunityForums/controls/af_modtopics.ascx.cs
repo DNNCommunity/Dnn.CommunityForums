@@ -18,13 +18,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Modules.ActiveForums.Enums;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
+
+    using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
 
     public partial class af_modtopics_new : ForumBase
     {
@@ -359,41 +360,32 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private string GetAttachments(int contentId, int portalID, int moduleID, DataTable dtAttach)
         {
-            string strHost = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(this.Request)) + "/";
-            if (this.Request.IsSecureConnection)
-            {
-                strHost = strHost.Replace("http://", "https://");
-            }
+            var portalSettings = new PortalSettingsHelper().GetPortalSettings(portalID);
+            var strHost = Utilities.ResolveUrl($"https://{portalSettings.DefaultPortalAlias}/", portalSettings.DefaultPortalAlias, portalSettings.SSLEnabled);
 
-            // TODO: Add option for folder storage
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            string vpath = null;
-            vpath = this.PortalSettings.HomeDirectory + "activeforums_Attach/";
-            string fpath = null;
-            fpath = Utilities.MapPath(this.PortalSettings.HomeDirectory + "activeforums_Attach/");
-            dtAttach.DefaultView.RowFilter = "ContentId = " + contentId;
-            foreach (DataRow dr in dtAttach.DefaultView.ToTable().Rows)
+            foreach (var attachment in new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetByContentId(contentId))
             {
                 sb.Append("<br />");
-                int attachId = Convert.ToInt32(dr["AttachId"]);
-                string filename = dr["Filename"].ToString();
-                string contentType = dr["ContentType"].ToString();
-                if (dr.IsNull("FileData"))
+                int attachId = attachment.AttachmentId;
+                string filename = attachment.FileName;
+                string contentType = attachment.ContentType;
+                if (attachment.FileData.Length.Equals(0))
                 {
-                    sb.Append($"<a href=\"/DesktopModules/ActiveForums/viewer.aspx?portalid={this.PortalId}&moduleid={this.ModuleId}&attachmentid={attachId}\" target=\"_blank\"><img src=\"/DesktopModules/ActiveForums/images/attach.gif\" border=\"0\" align=\"absmiddle\">Attachment: " + filename + "</a><br>");
+                    sb.Append($"<a href=\"{strHost}{Globals.ModuleAbsolutePath}viewer.aspx?portalid={this.PortalId}&moduleid={this.ModuleId}&attachmentid={attachId}\" target=\"_blank\"><img src=\"{Globals.ModuleAbsolutePath}images/attach.gif\" border=\"0\" align=\"absmiddle\">{Utilities.GetSharedResource("[RESX:Attachment]")}: {filename}</a><br>");
                 }
                 else
                 {
-                    switch (contentType.ToLower())
+                    switch (contentType.ToLowerInvariant())
                     {
                         case "image/jpeg":
                         case "image/pjpeg":
                         case "image/gif":
                         case "image/png":
-                            sb.Append("<br /><span class=\"afimage\"><img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + portalID + "&moduleid=" + moduleID + "&attachmentid=" + attachId + "\" border=0 align=center></span><br><br>");
+                            sb.Append($"<br /><span class=\"afimage\"><img src=\"{strHost}{Globals.ModuleAbsolutePath}viewer.aspx?portalid={portalID}&moduleid={moduleID}&attachmentid={attachId}\" border=0 align=center></span><br><br>");
                             break;
                         default:
-                            sb.Append("<span class=\"afattachlink\"><a href=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + portalID + "&moduleid=" + moduleID + "&attachmentid=" + attachId + "\" target=\"_blank\"><img src=\"" + strHost + "DesktopModules/ActiveForums/images/attach.gif\" border=\"0\" align=\"absmiddle\">Attachment: " + filename + "</a></span><br />");
+                            sb.Append($"<span class=\"afattachlink\"><a src=\"{strHost}{Globals.ModuleAbsolutePath}viewer.aspx?portalid={portalID}&moduleid={moduleID}&attachmentid={attachId}\" target=\"_blank\"><img src=\"{strHost}{Globals.ModuleAbsolutePath}images/attach.gif\" border=\"0\" align=\"absmiddle\">{Utilities.GetSharedResource("[RESX:Attachment]")}: {filename}</a></span><br />");
                             break;
                     }
                 }

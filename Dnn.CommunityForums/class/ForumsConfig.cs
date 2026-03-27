@@ -327,10 +327,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal void ArchiveOrphanedAttachments()
+        internal void ArchiveOrphanedAttachments_070007()
         {
             var di = new System.IO.DirectoryInfo(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/portals"));
-            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach", System.IO.SearchOption.AllDirectories);
+            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories(Globals.LegacyAttachmentsFolderName, System.IO.SearchOption.AllDirectories);
 
             foreach (System.IO.DirectoryInfo attachmentFolder in attachmentFolders)
             {
@@ -694,15 +694,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.IndexContent, "true");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowRSS, "true");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowAttach, "true");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachCount, "3");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxSize, "1000");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachTypeAllowed, "txt,tiff,pdf,xls,xlsx,doc,docx,ppt,pptx");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachCount, "4");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxSize, "2048");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachTypeAllowed, "txt,tiff,pdf,xls,xlsx,doc,docx,ppt,pptx,png,jpg,gif");
 
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxHeight, "450");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxWidth, "450");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachAllowBrowseSite, "true");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxAttachHeight, "800");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxAttachWidth, "800");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxImageHeight, "800");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxImageWidth, "800");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowHTML, "true");
@@ -807,7 +807,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             if (SettingsBase.GetModuleSettings(module.ModuleID).ModeIsStandard)
                             {
-                                if (new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Get(module.ModuleID).Count().Equals(0))
+                                if (!new Controllers.BadgeController().Get(module.ModuleID).Any())
                                 {
                                     var defaultBadgesFolder = DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFolder(portal.PortalId, Globals.DefaultBadgesFolderName) ?? DotNetNuke.Services.FileSystem.FolderManager.Instance.AddFolder(portal.PortalId, Globals.DefaultBadgesFolderName);
                                     var xDoc = new System.Xml.XmlDocument();
