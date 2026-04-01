@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Services.FileSystem;
 
     public partial class af_modtopics_new : ForumBase
     {
@@ -244,7 +245,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             DataSet ds = DataProvider.Instance().Mod_Pending(this.PortalId, this.ModuleId, this.ForumId, this.UserId);
             DataTable dtContent = ds.Tables[0];
-            DataTable dtAttach = ds.Tables[1];
             string tmpForum = string.Empty;
             sb.Append("<div id=\"afgrid\" style=\"position:relative;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">");
             if (dtContent.Rows.Count < 1)
@@ -326,7 +326,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sb.Append("<div class=\"afrowbod\"><a href=\"" + viewLink + "\" class=\"dcf-link-text\" rel=\"nofollow\" target=\"_blank\">" + "[RESX:TopicReview]" + "</a></div>");
                         }
 
-                        sb.Append(this.GetAttachments(Convert.ToInt32(dr["ContentId"]), this.PortalId, this.ModuleId, dtAttach) + "</td></tr>");
+                        sb.Append(this.GetAttachments(Convert.ToInt32(dr["ContentId"]), this.PortalId, this.ModuleId) + "</td></tr>");
                         sb.Append("</table></div>");
                     }
                 }
@@ -358,7 +358,7 @@ namespace DotNetNuke.Modules.ActiveForums
             bModBan = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.ManageUsersRoleIds, ForumUser?.UserRoleIds));
         }
 
-        private string GetAttachments(int contentId, int portalID, int moduleID, DataTable dtAttach)
+        private string GetAttachments(int contentId, int portalID, int moduleID)
         {
             var portalSettings = new PortalSettingsHelper().GetPortalSettings(portalID);
             var strHost = Utilities.ResolveUrl($"https://{portalSettings.DefaultPortalAlias}/", portalSettings.DefaultPortalAlias, portalSettings.SSLEnabled);
@@ -366,32 +366,32 @@ namespace DotNetNuke.Modules.ActiveForums
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             foreach (var attachment in new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetByContentId(contentId))
             {
-                sb.Append("<br />");
-                int attachId = attachment.AttachmentId;
-                string filename = attachment.FileName;
-                string contentType = attachment.ContentType;
-                if (attachment.FileData.Length.Equals(0))
+                if (attachment.FileId.HasValue && attachment.FileId.Value > 0)
                 {
-                    sb.Append($"<a href=\"{strHost}{Globals.ModuleAbsolutePath}viewer.aspx?portalid={this.PortalId}&moduleid={this.ModuleId}&attachmentid={attachId}\" target=\"_blank\"><img src=\"{Globals.ModuleAbsolutePath}images/attach.gif\" border=\"0\" align=\"absmiddle\">{Utilities.GetSharedResource("[RESX:Attachment]")}: {filename}</a><br>");
-                }
-                else
-                {
-                    switch (contentType.ToLowerInvariant())
+                    var file = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile(attachment.FileId.Value);
+                    if (file != null)
                     {
-                        case "image/jpeg":
-                        case "image/pjpeg":
-                        case "image/gif":
-                        case "image/png":
-                            sb.Append($"<br /><span class=\"afimage\"><img src=\"{strHost}{Globals.ModuleAbsolutePath}viewer.aspx?portalid={portalID}&moduleid={moduleID}&attachmentid={attachId}\" border=0 align=center></span><br><br>");
-                            break;
-                        default:
-                            sb.Append($"<span class=\"afattachlink\"><a src=\"{strHost}{Globals.ModuleAbsolutePath}viewer.aspx?portalid={portalID}&moduleid={moduleID}&attachmentid={attachId}\" target=\"_blank\"><img src=\"{strHost}{Globals.ModuleAbsolutePath}images/attach.gif\" border=\"0\" align=\"absmiddle\">{Utilities.GetSharedResource("[RESX:Attachment]")}: {filename}</a></span><br />");
-                            break;
+                        sb.Append("<br />");
+                        int attachId = attachment.AttachmentId;
+                        var url = Utilities.ResolveUrl($"https://{portalSettings.DefaultPortalAlias}{DotNetNuke.Services.FileSystem.FileManager.Instance.GetUrl(file)}", portalSettings.DefaultPortalAlias, portalSettings.SSLEnabled);
+
+                        switch (attachment.ContentType.ToLowerInvariant())
+                        {
+                            case "image/jpeg":
+                            case "image/pjpeg":
+                            case "image/gif":
+                            case "image/png":
+                                sb.Append($"<br /><span class=\"afimage\"><img src=\"{url}\" border=0 align=center></span><br><br>");
+                                break;
+                            default:
+                                sb.Append($"<span class=\"afattachlink\"><a src=\"{url}\" target=\"_blank\"><img src=\"{strHost}{Globals.ModuleAbsolutePath}images/attach.gif\" border=\"0\" align=\"absmiddle\">{Utilities.GetSharedResource("[RESX:Attachment]")}: {attachment.FileName}</a></span><br />");
+                                break;
+                        }
                     }
                 }
-            }
 
-            sb.Append("<br />");
+                sb.Append("<br />");
+            }
 
             return sb.ToString();
         }

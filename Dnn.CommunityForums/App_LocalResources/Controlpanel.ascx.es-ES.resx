@@ -129,9 +129,6 @@
   <data name="[RESX:Approved].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Aprobado</value>
   </data>
-  <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Insertar archivos como tokens</value>
-  </data>
   <data name="[RESX:AuditLog].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Registro y seguimiento</value>
   </data>
@@ -203,9 +200,6 @@
   </data>
   <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve" lastModified="2024-05-27 10:32:33">
     <value>Atención: la instalación o desinstalación del controlador de URL de los foros requerirá un cambio en el archivos web.config.  \n\n¿Está seguro de que quiere hacer este cambio ahora?</value>
-  </data>
-  <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Convertir *.png a *.jpg</value>
   </data>
   <data name="[RESX:CreatePostCount].Text" xml:space="preserve" lastModified="2024-05-27 10:32:33">
     <value>Crear contador de publicaciones</value>

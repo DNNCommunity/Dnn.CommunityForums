@@ -131,6 +131,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                     image.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
                                     break;
                                 case "image/png":
+                                case "image/x-png":
                                     fileType = System.Drawing.Imaging.ImageFormat.Png.ToString();
                                     image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                                     break;
@@ -175,8 +176,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 }
                             }
 
-                            //var url = Utilities.ResolveUrl($"https://{this.Post.Forum.PortalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=securefile&fileId={file.FileId}&h={height}&w={width}", this.Post.Forum.PortalSettings.DefaultPortalAlias, this.Post.Forum.PortalSettings.SSLEnabled);
-                            var tag = Utilities.ResolveUrlInTag($"<img src=\"https://{this.Post.Forum.PortalSettings.DefaultPortalAlias}{this.Post.Forum.PortalSettings.HomeDirectory}{string.Format(Globals.EmbeddedImagesFolderNameFormatString, this.ModuleId, this.ContentId)}{file.FileName}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />", this.Post.Forum.PortalSettings.DefaultPortalAlias, this.Post.Forum.PortalSettings.SSLEnabled);
+                            var tag = Utilities.ResolveUrlInTag($"<img src=\"https://{this.Post.Forum.PortalSettings.DefaultPortalAlias}{DotNetNuke.Services.FileSystem.FileManager.Instance.GetUrl(file)}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />", this.Post.Forum.PortalSettings.DefaultPortalAlias, this.Post.Forum.PortalSettings.SSLEnabled);
                             this.Body = this.Body.Replace(match.Groups["tag"].Value, tag);
                             new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().Save(this, this.ContentId);
                         }
@@ -195,14 +195,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             var fileManager = DotNetNuke.Services.FileSystem.FileManager.Instance;
             var folderManager = DotNetNuke.Services.FileSystem.FolderManager.Instance;
             var attachmentFolder = folderManager.GetFolder(this.Post.PortalId, string.Format(DotNetNuke.Modules.ActiveForums.Globals.AttachmentsFolderNameFormatString, this.ModuleId, this.ContentId));
-            var legacyAttachmentFolder = folderManager.GetFolder(this.Post.PortalId, DotNetNuke.Modules.ActiveForums.Globals.LegacyAttachmentsFolderName);
             var embeddedImagesFolder = folderManager.GetFolder(this.Post.PortalId, string.Format(Globals.EmbeddedImagesFolderNameFormatString, this.ModuleId, this.ContentId));
+            var legacyAttachmentFolder = folderManager.GetFolder(this.Post.PortalId, DotNetNuke.Modules.ActiveForums.Globals.LegacyAttachmentsFolderName);
 
             foreach (var attachment in attachmentController.GetByContentId(this.ContentId))
             {
                 attachmentController.DeleteById(attachment.AttachmentId);
 
-                var file = attachment.FileId.HasValue ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
+                var file = attachment.FileId.HasValue && attachment.FileId.Value > 0 ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
                 if (file != null && (
                             (attachmentFolder != null && file.FolderId == attachmentFolder?.FolderID) ||
                             (legacyAttachmentFolder != null && file.FolderId == legacyAttachmentFolder.FolderID) ||

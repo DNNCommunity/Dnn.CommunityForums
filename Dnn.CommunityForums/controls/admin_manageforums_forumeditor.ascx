@@ -249,7 +249,6 @@ function saveSettings(){
 	var AttachAllowBrowseSite = document.getElementById("<%=ckAllowBrowseSite.ClientID%>").checked;
 	var MaxImageWidth = document.getElementById("<%=txtMaxImageWidth.ClientID%>").value;
 	var MaxImageHeight = document.getElementById("<%=txtMaxImageHeight.ClientID%>").value;
-	var AttachInsertAllowed = document.getElementById("<%=ckAttachInsertAllowed.ClientID%>").checked;
 
 	var AllowHtml = document.getElementById("<%=rdHTMLOn.ClientID%>").checked;
 	var ed1 = document.getElementById("<%=drpEditorTypes.ClientID%>");
@@ -306,7 +305,7 @@ function saveSettings(){
 
     var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
 	<%=cbEditorAction.ClientID%>.Callback(settingsAction, forumid, EmailAddress, UseFilter, AllowPostIcon, AllowEmoticons, AllowScripts,
-		IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, AttachInsertAllowed, MaxImageWidth,
+		IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, MaxImageWidth,
 		MaxImageHeight, AllowHtml, EditorType, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles,
 		AutoSubscribeRoles, IsModerated, DefaultTrustLevel, AutoTrustLevel, modNotifyApprove, modNotifyReject, modNotifyMove, modNotifyDelete,
         modNotifyAlert, AutoSubscribeEnabled, EmailNotificationSubjectTemplate, TemplateFileNameSuffix, UserMentions, UserMentionVisibility);
@@ -1565,14 +1564,6 @@ function afadmin_getProperties() {
                 <td class="amcpbold">[RESX:AllowBrowseSite]:</td>
                 <td>
                     <asp:checkbox runat="server" id="ckAllowBrowseSite" checked="True" />
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td class="amcpbold">[RESX:AttachInsertAllowed]:</td>
-                <td>
-                    <asp:checkbox runat="server" id="ckAttachInsertAllowed" checked="True" />
                 </td>
                 <td></td>
             </tr>

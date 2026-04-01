@@ -797,7 +797,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, this.ForumId, this.TopicId);
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
 
-            this.SaveAttachments(ti.ContentId);
+            this.SaveAttachments(ti.Content);
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TagRoleIds, this.ForumUser.UserRoleIds))
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopic(this.TopicId);
@@ -900,270 +900,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     ControlUtils ctlUtils = new ControlUtils();
                     string sUrl = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
-                    if (sUrl.Contains("~/"))
-                    {
-                        sUrl = Utilities.NavigateURL(this.ForumTabId, string.Empty, ParamKeys.TopicId + "=" + this.TopicId);
-                    }
-
-                    this.Response.Redirect(sUrl, false);
-                    this.Context.ApplicationInstance.CompleteRequest();
-                }
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-
-        private void Save()
-        {
-            var subject = this.ctlForm.Subject;
-            var body = this.ctlForm.Body;
-            subject = Utilities.CleanString(this.PortalId, Utilities.XSSFilter(subject, true), false, EditorType.TEXTBOX, this.ForumInfo.FeatureSettings.UseFilter, false, this.ForumModuleId, this.themePath, false);
-            body = Utilities.CleanString(this.PortalId, body, this.allowHTML, this.editorType, this.ForumInfo.FeatureSettings.UseFilter, this.ForumInfo.FeatureSettings.AllowScript, this.ForumModuleId, this.themePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
-            var summary = this.ctlForm.Summary;
-            int authorId;
-            string authorName;
-            if (this.Request.IsAuthenticated)
-            {
-                authorId = this.UserInfo.UserID;
-                switch (this.ModuleSettings.UserNameDisplay.ToUpperInvariant())
-                {
-                    case "USERNAME":
-                        authorName = this.UserInfo.Username.Trim(' ');
-                        break;
-                    case "FULLNAME":
-                        authorName = Convert.ToString(this.UserInfo.FirstName + " " + this.UserInfo.LastName).Trim(' ');
-                        break;
-                    case "FIRSTNAME":
-                        authorName = this.UserInfo.FirstName.Trim(' ');
-                        break;
-                    case "LASTNAME":
-                        authorName = this.UserInfo.LastName.Trim(' ');
-                        break;
-                    case "DISPLAYNAME":
-                        authorName = this.UserInfo.DisplayName.Trim(' ');
-                        break;
-                    default:
-                        authorName = this.UserInfo.DisplayName;
-                        break;
-                }
-            }
-            else
-            {
-                authorId = -1;
-                authorName = Utilities.CleanString(this.PortalId, this.ctlForm.AuthorName, false, EditorType.TEXTBOX, true, false, this.ForumModuleId, this.themePath, false);
-                if (authorName.Trim() == string.Empty)
-                {
-                    return;
-                }
-            }
-
-            DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post;
-
-            if (this.TopicId > 0)
-            {
-                post = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
-                authorId = post.Author.AuthorId;
-            }
-            else
-            {
-                post = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
-                post.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-                post.ForumId = this.ForumInfo.ForumID;
-                post.PortalId = this.PortalId;
-                post.ModuleId = this.ForumModuleId;
-                post.Forum = this.ForumInfo;
-            }
-
-            post.Priority = this.ctlForm.TopicPriority;
-
-            post.AnnounceEnd = this.ctlForm.AnnounceEnd;
-            if (post.AnnounceEnd.Value.Equals(Utilities.NullDate()))
-            {
-                post.AnnounceEnd = null;
-            }
-
-            post.AnnounceStart = this.ctlForm.AnnounceStart;
-            if (post.AnnounceStart.Value.Equals(Utilities.NullDate()))
-            {
-                post.AnnounceStart = null;
-            }
-
-            if (!this.isEdit)
-            {
-                post.Content.AuthorId = authorId;
-                post.Content.AuthorName = authorName;
-                post.Content.IPAddress = this.Request.UserHostAddress;
-            }
-
-            if (DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex("<CODE([^>]*)>", RegexOptions.IgnoreCase).IsMatch(body))
-            {
-                body = CodeParser.ReplaceBreakTagsWithNewLines(body);
-            }
-
-            post.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrlSegment(portalId: this.PortalId, moduleId: this.ForumModuleId, topicId: this.TopicId, subject: subject, forumInfo: this.ForumInfo);
-
-            post.Content.Body = body;
-            post.Content.Subject = subject;
-            post.Content.Summary = summary;
-            post.IsAnnounce = post.AnnounceEnd.HasValue && post.AnnounceEnd != Utilities.NullDate() && post.AnnounceStart.HasValue && post.AnnounceStart != Utilities.NullDate();
-
-            if (this.canModApprove && this.ForumInfo.FeatureSettings.IsModerated)
-            {
-                post.IsApproved = this.ctlForm.IsApproved;
-            }
-            else
-            {
-                post.IsApproved = this.isApproved;
-            }
-
-            post.IsArchived = false;
-            post.IsDeleted = false;
-            post.IsLocked = this.canLock && this.ctlForm.Locked;
-            post.IsPinned = this.canPin && this.ctlForm.Pinned;
-            post.StatusId = this.ctlForm.StatusId;
-            post.TopicIcon = this.ctlForm.TopicIcon;
-            post.TopicType = 0;
-            if (this.ForumInfo.Properties != null && this.ForumInfo.Properties.Count > 0)
-            {
-                var tData = new StringBuilder();
-                tData.Append("<topicdata>");
-                tData.Append("<properties>");
-                foreach (var p in this.ForumInfo.Properties)
-                {
-                    var pkey = "afprop-" + p.PropertyId.ToString();
-
-                    tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
-                    tData.Append("<name><![CDATA[");
-                    tData.Append(p.Name);
-                    tData.Append("]]></name>");
-                    if (this.Request.Form[pkey] != null)
-                    {
-                        tData.Append("<value><![CDATA[");
-                        tData.Append(Utilities.XSSFilter(this.Request.Form[pkey]));
-                        tData.Append("]]></value>");
-                    }
-                    else
-                    {
-                        tData.Append("<value></value>");
-                    }
-
-                    tData.Append("</property>");
-                }
-
-                tData.Append("</properties>");
-                tData.Append("</topicdata>");
-                post.TopicData = tData.ToString();
-            }
-
-            this.TopicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(post);
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, this.ForumId, this.TopicId);
-            post = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
-
-            this.SaveAttachments(post.ContentId);
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TagRoleIds, this.ForumUser.UserRoleIds))
-            {
-                new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopic(this.TopicId);
-
-                var currentTopicTags = DotNetNuke.Modules.ActiveForums.Controllers.TagController.ParseTagsFromBody(post.Content.Body);
-                var tagForm = string.Join(",", currentTopicTags);
-                if (this.Request.Form["txtTags"] != null)
-                {
-                    if (string.IsNullOrEmpty(tagForm))
-                    {
-                        tagForm = this.Request.Form["txtTags"];
-                    }
-                    else
-                    {
-                        tagForm = tagForm + "," + this.Request.Form["txtTags"];
-                    }
-                }
-
-                if (tagForm != string.Empty)
-                {
-                    var tags = tagForm.Split(',').Distinct().Where(tag => !string.IsNullOrEmpty(tag));
-                    foreach (var tag in tags)
-                    {
-                        var sTag = Utilities.CleanString(this.PortalId, tag.Trim(), false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);
-                        DataProvider.Instance().Tags_Save(this.PortalId, this.ForumModuleId, -1, sTag, 0, this.TopicId);
-                    }
-                }
-            }
-
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.CategorizeRoleIds, this.ForumUser.UserRoleIds))
-            {
-                if (this.Request.Form["amaf-catselect"] != null)
-                {
-                    var cats = this.Request.Form["amaf-catselect"].Split(';');
-                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().DeleteForTopic(this.TopicId);
-                    foreach (var c in cats)
-                    {
-                        if (string.IsNullOrEmpty(c) || !Utilities.IsNumeric(c))
-                        {
-                            continue;
-                        }
-
-                        var cid = Convert.ToInt32(c);
-                        if (cid > 0)
-                        {
-                            new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().AddCategoryToTopic(cid, this.TopicId);
-
-                        }
-                    }
-                }
-            }
-
-            if (!String.IsNullOrEmpty(this.ctlForm.PollQuestion) && !String.IsNullOrEmpty(this.ctlForm.PollOptions))
-            {
-                // var sPollQ = ctlForm.PollQuestion.Trim();
-                // sPollQ = Utilities.CleanString(PortalId, sPollQ, false, EditorTypes.TEXTBOX, true, false, ForumModuleId, string.Empty, false);
-                var pollId = DataProvider.Instance().Poll_Save(-1, this.TopicId, this.UserId, this.ctlForm.PollQuestion.Trim(), this.ctlForm.PollType);
-                if (pollId > 0)
-                {
-                    var options = this.ctlForm.PollOptions.Split(new[] { System.Environment.NewLine }, StringSplitOptions.None);
-
-                    foreach (string opt in options)
-                    {
-                        if (opt.Trim() != string.Empty)
-                        {
-                            var value = Utilities.CleanString(this.PortalId, opt, false, EditorType.TEXTBOX, true, false, this.ForumModuleId, string.Empty, false);
-                            DataProvider.Instance().Poll_Option_Save(-1, pollId, value.Trim(), this.TopicId);
-                        }
-                    }
-
-                    post.TopicType = TopicTypes.Poll;
-                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(post);
-                }
-            }
-
-            if ((this.UserPrefTopicSubscribe && authorId == this.UserId) || this.ctlForm.Subscribe)
-            {
-                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId, post.TopicId);
-            }
-
-            try
-            {
-                DataCache.ContentCacheClearForForum(this.ModuleId, this.ForumId);
-                DataCache.ContentCacheClearForTopic(this.ModuleId, post.TopicId);
-
-
-                if (!post.IsApproved)
-                {
-                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: 0, contentId: post.ContentId, authorId: post.Content.AuthorId, userId: this.ForumUser.UserId);
-                    string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
-                    this.Response.Redirect(this.NavigateUrl(this.ForumTabId, string.Empty, @params), false);
-                    this.Context.ApplicationInstance.CompleteRequest();
-                }
-                else
-                {
-                    if (!this.isEdit)
-                    {
-                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: 0, contentId: post.ContentId, authorId: post.Content.AuthorId, userId: this.ForumUser.UserId);
-                    }
-
-                    ControlUtils ctlUtils = new ControlUtils();
-                    string sUrl = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, post.TopicUrl, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
                     if (sUrl.Contains("~/"))
                     {
                         sUrl = Utilities.NavigateURL(this.ForumTabId, string.Empty, ParamKeys.TopicId + "=" + this.TopicId);
@@ -1283,7 +1019,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var tmpReplyId = rc.Reply_Save(this.PortalId, this.ForumModuleId, ri);
             ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(tmpReplyId);
 
-            this.SaveAttachments(ri.ContentId);
+            this.SaveAttachments(ri.Content);
             try
             {
                 if (this.ctlForm.Subscribe && authorId == this.UserId)
@@ -1340,17 +1076,16 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         // Note attachments are currently saved into the authors file directory
-        private void SaveAttachments(int contentId)
+        private void SaveAttachments(ContentInfo content)
         {
+            var attachmentController = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController();
             var fileManager = DotNetNuke.Services.FileSystem.FileManager.Instance;
             var folderManager = DotNetNuke.Services.FileSystem.FolderManager.Instance;
             var userFolder = folderManager.GetUserFolder(this.UserInfo);
 
-            const string uploadFolderName = Globals.LegacyUploadsFolderName;
-            const string attachmentFolderName = Globals.LegacyAttachmentsFolderName;
-            const string fileNameTemplate = Globals.AttachmentFileNameFormatString;
-
-            var attachmentFolder = folderManager.GetFolder(this.PortalId, attachmentFolderName) ?? folderManager.AddFolder(this.PortalId, attachmentFolderName);
+            var attachmentFolder =
+                    folderManager.GetFolder(content.Post.PortalId, string.Format(Globals.AttachmentsFolderNameFormatString, content.ModuleId, content.ContentId)) ??
+                    folderManager.AddFolder(content.Post.PortalId, string.Format(Globals.AttachmentsFolderNameFormatString, content.ModuleId, content.ContentId));
 
             // Read the attachment list sent in the hidden field as json
             var attachmentsJson = this.hidAttachments.Value;
@@ -1361,7 +1096,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Read the list of existing attachments for the content.  Must do this before saving any of the new attachments!
             // Ignore any inline attachments
-            var attachmentsOld = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetByContentId(contentId).Where(attachment => !attachment.DisplayInline);
+            var attachmentsOld = attachmentController.GetByContentId(content.ContentId).Where(attachment => !attachment.DisplayInline);
 
             // Save all of the new attachments
             foreach (var attachment in attachmentsNew)
@@ -1374,46 +1109,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 IFileInfo file = null;
 
-                var fileId = attachment.FileId.GetValueOrDefault();
-                if (fileId > 0 && userFolder != null)
+                if (attachment.FileId.HasValue && attachment.FileId.Value > 0 && userFolder != null)
                 {
                     // Make sure that the file exists and it actually belongs to the user who is trying to attach it
-                    file = fileManager.GetFile(fileId);
+                    file = fileManager.GetFile(attachment.FileId.Value);
                     if (file == null || file.FolderId != userFolder.FolderID)
                     {
                         continue;
                     }
-                }
-                else if (!string.IsNullOrWhiteSpace(attachment.UploadId) && !string.IsNullOrWhiteSpace(attachment.FileName))
-                {
-                    if (!DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^[\w\-. ]+$").IsMatch(attachment.UploadId)) // Check for shenanigans.
-                    {
-                        continue;
-                    }
-
-                    var uploadFilePath = PathUtils.Instance.GetPhysicalPath(this.PortalId, uploadFolderName + "/" + attachment.UploadId);
-
-                    if (!File.Exists(uploadFilePath))
-                    {
-                        continue;
-                    }
-
-                    // Store the files with a filename format that prevents overwrites.
-                    var index = 0;
-                    var fileName = string.Format(fileNameTemplate, contentId, index, DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"[^\w\-. ]+").Replace(attachment.FileName, string.Empty));
-                    while (fileManager.FileExists(attachmentFolder, fileName))
-                    {
-                        index++;
-                        fileName = string.Format(fileNameTemplate, contentId, index, DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"[^\w\-. ]+").Replace(attachment.FileName, string.Empty));
-                    }
-
-                    // Copy the file into the attachment folder with the correct name.
-                    using (var fileStream = new FileStream(uploadFilePath, FileMode.Open, FileAccess.Read))
-                    {
-                        file = fileManager.AddFile(attachmentFolder, fileName, fileStream);
-                    }
-
-                    File.Delete(uploadFilePath);
                 }
 
                 if (file == null)
@@ -1423,8 +1126,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 var attachInfo = new DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo
                 {
-                    ContentId = contentId,
-                    UserId = this.AuthorId,
+                    ContentId = content.ContentId,
+                    UserId = content.AuthorId,
                     FileId = file.FileId,
                     FileName = file.FileName,
                     ContentType = file.ContentType,
@@ -1432,7 +1135,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     DateAdded = DateTime.UtcNow,
                     DateUpdated = DateTime.UtcNow,
                 };
-                new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().Save(attachInfo);
+                attachmentController.Save(attachInfo);
+                attachmentController.RelocateAttachment(attachInfo);
             }
 
             // Remove any attachments that are no longer in the list of attachments
@@ -1444,7 +1148,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Only delete the file if it exists in the attachment folder
                 if (file != null && file.FolderId == attachmentFolder.FolderID)
                 {
-                    new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().DeleteById(attachment.AttachmentId);
+                    attachmentController.DeleteById(attachment.AttachmentId);
                     fileManager.DeleteFile(file);
                 }
             }

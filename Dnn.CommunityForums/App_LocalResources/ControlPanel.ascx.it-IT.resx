@@ -129,9 +129,6 @@
   <data name="[RESX:Approved].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Approvato</value>
   </data>
-  <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Inserire file come token</value>
-  </data>
   <data name="[RESX:AuditLog].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Registrazione e monitoraggio</value>
   </data>
@@ -203,9 +200,6 @@
   </data>
   <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Attenzione: l'installazione o la disinstallazione del gestore URL dei forum della community DNN richiederà una modifica al file web.config.  \n\nSei sicuro di voler apportare questa modifica in questo momento?</value>
-  </data>
-  <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Converti *.png in *.jpg</value>
   </data>
   <data name="[RESX:CreatePostCount].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Crea conteggio post</value>
