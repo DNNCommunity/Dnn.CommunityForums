@@ -283,7 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         var modTemplateToggles = new string[] { "MODAPPROVENOTIFY", "MODREJECTNOTIFY", "MODMOVENOTIFY", "MODDELETENOTIFY", "MODNOTIFYNOTIFY", };
                         for (int i = 0; i < modTemplateIds.Length -1; i++)
                         {
-                            DataContext.Instance().Execute(System.Data.CommandType.Text, "INSERT INTO {databaseOwner}{objectQualifier}activeforums_Settings SELECT [ModuleId],[GroupKey],'@2', CASE WHEN [SettingValue] <> '0' THEN 1 ELSE 0 END FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND [SettingName] = '@1'", module.ModuleID, modTemplateIds[i], modTemplateToggles[i]);
+                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "INSERT INTO {databaseOwner}{objectQualifier}activeforums_Settings SELECT [ModuleId],[GroupKey],'@2', CASE WHEN [SettingValue] <> '0' THEN 1 ELSE 0 END FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND [SettingName] = '@1'", module.ModuleID, modTemplateIds[i], modTemplateToggles[i]);
                         }
 
                         foreach (var settingName in new string[]
@@ -301,7 +301,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                             "PROFILETEMPLATEID",
                         })
                         {
-                            DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
+                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
                         }
 
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "FORUMTEMPLATEID");

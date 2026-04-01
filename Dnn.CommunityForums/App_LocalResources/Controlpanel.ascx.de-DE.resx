@@ -234,9 +234,6 @@
   <data name="[RESX:Approved].Text" xml:space="preserve">
     <value>Genehmigt</value>
   </data>
-  <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve">
-    <value>Einfügen von Dateien als Token</value>
-  </data>
   <data name="[RESX:AuditLog].Text" xml:space="preserve">
     <value>Protokollierung und Nachverfolgung</value>
   </data>
@@ -308,9 +305,6 @@
   </data>
   <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve">
     <value>Vorsicht: Die Installation oder Deinstallation des URL-Handlers für DNN-Communityforen erfordert eine Änderung an Ihrer web.config.  \n\nSind Sie sicher, dass Sie diese Änderung jetzt vornehmen möchten?</value>
-  </data>
-  <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve">
-    <value>Konvertieren Sie *.png in *.jpg</value>
   </data>
   <data name="[RESX:CreatePostCount].Text" xml:space="preserve">
     <value>Beitragsanzahl erstellen</value>

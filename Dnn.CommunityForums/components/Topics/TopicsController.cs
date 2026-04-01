@@ -44,13 +44,18 @@ namespace DotNetNuke.Modules.ActiveForums
         private readonly IPortalController portalController;
 
         public TopicsController()
-            : this(new DotNetNuke.Entities.Portals.PortalAliasController(), ServiceLocator<IPortalController, PortalController>.Instance, ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentSettings())
+            : this(
+                  new DotNetNuke.Entities.Portals.PortalAliasController(),
+                  ServiceLocator<IPortalController, PortalController>.Instance,
+                  ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentSettings())
         {
         }
 
         public TopicsController(IPortalAliasService portalAliasService, IPortalController portalController, IPortalSettings portalSettings)
         {
             this.portalAliasService = portalAliasService;
+            this.portalController = portalController;
+            this.portalSettings = portalSettings;
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate()")]
@@ -394,6 +399,21 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090600();
                         ForumsConfig.Upgrade_EnsureVanityNames_090600();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                case "09.07.00":
+                    try
+                    {
+                        var fc = new ForumsConfig();
+                        fc.RemoveLegacyAvatarsFolder_090700();
+                        fc.RelocateAttachments_090700();
                     }
                     catch (Exception ex)
                     {

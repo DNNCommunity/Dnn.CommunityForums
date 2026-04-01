@@ -68,6 +68,8 @@ namespace DotNetNuke.Modules.ActiveForums
             //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
 
 
+            //new ForumsConfig().RemoveLegacyAvatarsFolder_090700();
+            new ForumsConfig().RelocateAttachments_090700();
 #endif
 
             try

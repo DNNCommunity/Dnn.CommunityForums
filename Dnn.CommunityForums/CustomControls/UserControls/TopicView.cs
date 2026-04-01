@@ -33,6 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Xml;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Constants;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.UI.Skins;
@@ -1171,9 +1172,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 var filename = attachment.FileName.EmptyIfNull();
                 var fileExtension = System.IO.Path.GetExtension(filename).EmptyIfNull().Replace(".", string.Empty);
-
-                filename = System.Net.WebUtility.HtmlEncode(DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^__\d+__\d+__", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(filename, string.Empty));
-                sb.AppendFormat(itemTemplate, portalId, moduleId, attachment.AttachmentId, fileExtension, filename);
+                sb.AppendFormat(itemTemplate, portalId, moduleId, attachment.AttachmentId, fileExtension, attachment.FileName);
             }
 
             sb.Append("</ul></div>");

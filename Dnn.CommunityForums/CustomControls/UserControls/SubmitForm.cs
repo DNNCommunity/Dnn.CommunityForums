@@ -1288,7 +1288,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string GetAvatarTagForUserMentions()
         {
-            return Utilities.ResolveUrlInTag(template: "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" />", defaultPortalAlias: this.PortalSettings.DefaultPortalAlias, sslEnabled: this.PortalSettings.SSLEnabled);
+            return Utilities.ResolveUrlInTag(template: "<img class=\"af-avatar\" src=\"https://" + this.PortalSettings.DefaultPortalAlias + "/DnnImageHandler.ashx?mode=profilepic&userId={id}&h=20&w=20\" loading=\"lazy\" />", defaultPortalAlias: this.PortalSettings.DefaultPortalAlias, sslEnabled: this.PortalSettings.SSLEnabled);
         }
 
         private string GetTagForUserMentions()

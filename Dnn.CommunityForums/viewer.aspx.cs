@@ -93,25 +93,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            // Get the filename with the unique identifier prefix removed.
-            var filename = Regex.Replace(attachment.FileName.EmptyIfNull(), @"__\d+__\d+__", string.Empty);
-
-            // Handle legacy inline attachments a bit differently
-            string contentDispositionType = (attachmentId > 0) ? "attachment" : "inline";
-            var contentDispositionValue = new ContentDispositionHeaderValue(contentDispositionType);
-            contentDispositionValue.FileName = filename;
+            string contentDispositionType = attachment.DisplayInline ? "inline" : "attachment";
+            var contentDispositionValue = new ContentDispositionHeaderValue(contentDispositionType)
+            {
+                FileName = attachment.FileName,
+            };
             string contentDisposition = contentDispositionValue.ToString();
 
-            // Some legacy attachment data may still be stored in the DB.
-            if (attachment.FileData != null)
-            {
-                this.Response.ContentType = attachment.ContentType;
-                this.Response.AddHeader("Content-Disposition", contentDisposition);
-                this.Response.BinaryWrite(attachment.FileData);
-                this.Response.End();
-                return;
-            }
-            string filePath = null;
+            string filePath;
 
             // If there is a file id, access the file using the file manager
             if (attachment.FileId.HasValue && attachment.FileId.Value > 0)
@@ -120,49 +109,32 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (file != null)
                 {
                     filePath = file.PhysicalPath;
-                }
-            }
-
-            // Otherwise check the attachments directory (current and legacy)
-            else
-            {
-                filePath = Utilities.MapPath(this.PortalSettings.HomeDirectory + string.Format(Globals.AttachmentsFolderNameFormatString, moduleId, attachment.ContentId)) + attachment.FileName;
-                if (!File.Exists(filePath))
-                {
-                    filePath = Utilities.MapPath(this.PortalSettings.HomeDirectory + $"{Globals.LegacyAttachmentsFolderName}/") + attachment.FileName;
-
-                    // This is another check to support legacy attachments.
-                    if (!File.Exists(filePath))
+                    if (!string.IsNullOrEmpty(filePath))
                     {
-                        filePath = Utilities.MapPath(this.PortalSettings.HomeDirectory + "NTForums_Attach/") + attachment.FileName;
+                        var length = attachment.FileSize;
+                        if (length <= 0)
+                        {
+                            length = new System.IO.FileInfo(filePath).Length;
+                        }
+
+                        this.Response.Clear();
+                        this.Response.ContentType = attachment.ContentType;
+
+                        this.Response.AddHeader("Content-Disposition", contentDisposition);
+                        this.Response.AddHeader("Content-Length", length.ToString());
+                        this.Response.WriteFile(filePath);
+                        this.Response.Flush();
+                        this.Response.Close();
+                        this.Response.End();
+                        return;
                     }
                 }
             }
 
-            // At this point, we should have a valid file path
-            if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
-            {
-                this.Response.StatusCode = 404;
-                this.Response.Write("Not Found");
-                this.Response.End();
-                return;
-            }
-
-            var length = attachment.FileSize;
-            if (length <= 0)
-            {
-                length = new System.IO.FileInfo(filePath).Length;
-            }
-
-            this.Response.Clear();
-            this.Response.ContentType = attachment.ContentType;
-
-            this.Response.AddHeader("Content-Disposition", contentDisposition);
-            this.Response.AddHeader("Content-Length", length.ToString());
-            this.Response.WriteFile(filePath);
-            this.Response.Flush();
-            this.Response.Close();
+            this.Response.StatusCode = 404;
+            this.Response.Write("Not Found");
             this.Response.End();
+            return;
         }
     }
 }

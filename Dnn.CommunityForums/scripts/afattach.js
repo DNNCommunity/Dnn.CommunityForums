@@ -107,13 +107,13 @@ function AFAttachmentManager($, ko, options) {
 
         this.getFileUrl = function (url) {
             var isTE = window.isTextEditor;
-            if ((!isTE) && (options.attachInsertAllowed < 1)) amaf_insertHTML('<a href="' + url + '" target="_blank" >' + url.substr(url.lastIndexOf("/") + 1) + '</a>');
+            if (!isTE) amaf_insertHTML('<a href="' + url + '" target="_blank" >' + url.substr(url.lastIndexOf("/") + 1) + '</a>');
             //else amaf_insertHTML(url);
         }
 
         this.getImageUrl = function (url) {
             var isTE = window.isTextEditor;
-            if ((!isTE) && (options.attachInsertAllowed < 1)) amaf_insertHTML('<img src="' + url + '" border="0" class="afpostimg" />');
+            if (!isTE) amaf_insertHTML('<img src="' + url + '" border="0" class="afpostimg" />');
             else amaf_insertHTML('[img]' + url + '[/img]');
         }
 
