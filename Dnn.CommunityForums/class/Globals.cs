@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Modules;
 
     #region Enumerations
-    
+
     [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
     public enum AttachStores
     {
@@ -415,6 +415,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TimeSpan = "ts";
         public const string Mode = "mode";
         public const string BadgeId = "badgeid";
+        public const string Message = "afmsg";
     }
 
     public class ModuleModes
@@ -426,6 +427,16 @@ namespace DotNetNuke.Modules.ActiveForums
     public class Modes
     {
         public const string Edit = "edit";
+        public const string DnnPrintMode = "dnnprintmode";
+    }
+
+    public class MessageTypes
+    {
+        public const string Move = "Move";
+        public const string ModAlert = "ModAlert";
+        public const string PendingModeration = "PendingModeration";
+        public const string EmailSent = "EmailSent";
+        public const string PostSubmit = "PostSubmit";
     }
 
     public class Literals
@@ -468,6 +479,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string RecycleBin = "recyclebin";
         public const string BadgeUsers = "badgeusers";
         public const string UserBadges = "userbadges";
+        public const string SendTo = "sendto";
+        public const string ConfirmAction = "confirmaction";
     }
 
     internal static class GridTypes

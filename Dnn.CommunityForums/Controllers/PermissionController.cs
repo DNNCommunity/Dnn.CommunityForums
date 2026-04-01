@@ -152,7 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 case "moderate":
                                     permissions.Moderate = AddPermToSet(roleId.ToString(), permissions.Moderate);
                                     break;
-                                case "move":
+                                case "Move":
                                     permissions.Move = AddPermToSet(roleId.ToString(), permissions.Move);
                                     break;
                                 case "manageusers":

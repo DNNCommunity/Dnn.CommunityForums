@@ -21,7 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
-    using System.Collections.Generic;
     using System.Data;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -29,11 +28,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
 
-    public class ForumsReWriter : IHttpModule
+    public class LegacyForumsReWriter : IHttpModule
     {
         private readonly IPortalAliasService portalAliasService;
         private ModuleSettings mainSettings = null;
@@ -51,13 +48,12 @@ namespace DotNetNuke.Modules.ActiveForums
         private int categoryId = -1;
         private int tagId = -1;
 
-
-        public ForumsReWriter()
+        public LegacyForumsReWriter()
             : this(new DotNetNuke.Entities.Portals.PortalAliasController())
         {
         }
 
-        public ForumsReWriter(IPortalAliasService portalAliasService)
+        public LegacyForumsReWriter(IPortalAliasService portalAliasService)
         {
             this.portalAliasService = portalAliasService;
         }
@@ -73,11 +69,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public void OnBeginRequest(object s, EventArgs e)
         {
-            this.ProcessBeginRequest((System.Web.HttpApplication)s);
-        }
-
-        internal void ProcessBeginRequest(System.Web.HttpApplication app)
-        {
             this.forumId = -1;
             this.tabId = -1;
             this.moduleId = -1;
@@ -90,96 +81,88 @@ namespace DotNetNuke.Modules.ActiveForums
             this.categoryId = -1;
             this.tagId = -1;
 
+            HttpApplication app = (HttpApplication)s;
             HttpServerUtility server = app.Server;
             HttpRequest request = app.Request;
             HttpResponse response = app.Response;
             string requestedPath = app.Request.Url.AbsoluteUri;
-            HttpContext context = app.Context;
+            HttpContext context = ((HttpApplication)s).Context;
 
-            var exclusions = new[]
-            {
-                "/api/", "/portals/", "/desktopmodules/",
-                ".gif", ".jpg", ".css", ".png", ".svg", ".webp", ".swf", ".cur", ".ico",
-                ".axd", ".js", ".aspx", ".htm", ".html", ".ashx", ".asmx",
-                ".txt", ".pdf", ".xml", ".csv", ".xls", ".xlsx", ".doc", ".docx", ".ppt", ".pptx", ".zip", ".zipx",
-                ".eot", ".ttf", ".otf", ".woff", ".woff2",
-            };
-            if (exclusions.Any(ex => request.Url.LocalPath.ToLowerInvariant().Contains(ex)))
+            if (request.Url.LocalPath.ToLowerInvariant().Contains(".axd")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".js")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".aspx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".gif")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".jpg")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".css")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".png")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".swf")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".htm")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".html")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".ashx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".cur")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".ico")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".txt")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".pdf")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".xml")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".csv")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".xls")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".xlsx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".doc")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".docx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".ppt")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".pptx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".zip")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".zipx")
+                || request.Url.LocalPath.ToLowerInvariant().Contains("/api/")
+                || request.Url.LocalPath.ToLowerInvariant().Contains("/portals/")
+                || request.Url.LocalPath.ToLowerInvariant().Contains("/desktopmodules/")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".eot")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".ttf")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".otf")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".svg")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".webp")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".woff")
+                || request.Url.LocalPath.ToLowerInvariant().Contains(".woff2"))
             {
                 return;
             }
 
-            if (request.RawUrl.ToLowerInvariant().Contains(Modes.DnnPrintMode) ||
-                (request.RawUrl.ToLowerInvariant().Contains(ParamKeys.ViewType.ToLowerInvariant()) &&
-                    new[] { Views.Post, Views.ConfirmAction, Views.SendTo, Views.ModerateReport, Views.Search, Views.ModerateTopics }
-                    .Any(x => request.RawUrl.ToLowerInvariant().Contains(x.ToLowerInvariant()))))
+            var portalAliasInfo = this.portalAliasService.GetPortalAlias(HttpContext.Current.Request.Url.Host);
+            if (portalAliasInfo == null && !HttpContext.Current.Request.Url.IsDefaultPort)
             {
-                return;
+                portalAliasInfo = this.portalAliasService.GetPortalAlias(HttpContext.Current.Request.Url.Host + ":" + HttpContext.Current.Request.Url.Port.ToString());
             }
 
-            var uri = request.Url;
-            var scheme = uri.Scheme;
-            var host = uri.Host;
-            var port = uri.Port;
-            var path = uri.GetLeftPart(UriPartial.Path);
-            var hostAndPath = host + path;
-
-            var portalAliases = this.portalAliasService.GetPortalAliases();
-
-            var portalAliasInfo = portalAliases.Values.FirstOrDefault(alias => alias.HttpAlias.StartsWith(hostAndPath));
             if (portalAliasInfo == null)
             {
-                portalAliasInfo = this.portalAliasService.GetPortalAlias(host);
-                if (portalAliasInfo == null && !uri.IsDefaultPort)
-                {
-                    portalAliasInfo = this.portalAliasService.GetPortalAlias($"{host}:{port}");
-                }
-
-                if (portalAliasInfo == null)
-                {
-                    return;
-                }
+                return;
             }
-
-            var pathRemaining = hostAndPath.Replace(portalAliasInfo.HttpAlias, string.Empty);
 
             int portalId = portalAliasInfo.PortalId;
 
-            //TODO: Cache this?
-            var ourModules = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portalId)
-                .Cast<DotNetNuke.Entities.Modules.ModuleInfo>()
-                .Where(module => module.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName, StringComparison.OrdinalIgnoreCase) ||
-                module.ModuleDefinition.DefinitionName.Equals($"{Globals.ModuleFriendlyName} Viewer", StringComparison.OrdinalIgnoreCase));
+            string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
 
-            var tabs = new List<ModuleInfo>();
-            foreach (var module in ourModules)
+            // TODO: this is all probably now handled by moving the exclusion logic earlier and may be redundant?
+            if (request.RawUrl.ToLowerInvariant().Contains("404.aspx"))
             {
-                tabs.AddRange(DotNetNuke.Entities.Modules.ModuleController.Instance.GetAllTabsModulesByModuleID(module.ModuleID).Cast<DotNetNuke.Entities.Modules.ModuleInfo>());
+                string sEx = ".jpg,.gif,.png,.swf,.js,.css,.html,.htm,desktopmodules,portals,.ashx,.ico,.txt,.doc,.docx,.pdf,.xml,.xls,.xlsx,.ppt,.pptx,.csv,.zip,.asmx,.aspx";
+                foreach (string sn in sEx.Split(','))
+                {
+                    if (sUrl.Contains(sn))
+                    {
+                        // IO.File.AppendAllText(sPath, Request.RawUrl & "165<br />")
+                        return;
+                    }
+                }
             }
 
-            // base path for each tab
-            var tabpaths = new List<(int ModuleId, int TabId,  string Path)>();
-            tabpaths.AddRange(tabs.Select(module => (module.ModuleID, module.TabID, module.ParentTab.TabPath)));
-
-            // add any alternate urls for each tab
-            foreach (var tabpath in tabpaths)
+            if ((sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("post")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("confirmaction")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("sendto")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("modreport")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("search")) | sUrl.Contains("dnnprintmode") || (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains(Views.ModerateTopics)))
             {
-                tabpaths.AddRange(DotNetNuke.Entities.Tabs.TabController.Instance.GetTabUrls(tabpath.TabId, portalId).Select(url => (tabpath.ModuleId, tabpath.TabId, url.Url)));
+                return;
             }
 
-            var theTabPath = tabpaths.FirstOrDefault(tp => pathRemaining.StartsWith(tp.Path, StringComparison.OrdinalIgnoreCase));
-
-            this.moduleId = theTabPath.ModuleId;
-            this.tabId = theTabPath.TabId;
-            var moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.moduleId, tabId: this.tabId, ignoreCache: false).ModuleSettings;
-
-            var likePrefix = SettingsBase.GetModuleSettings(this.moduleId).PrefixURLLikes ?? "likes";
-            var categoryPrefix = SettingsBase.GetModuleSettings(this.moduleId).PrefixURLCategory ?? "category";
-            var tagPrefix = SettingsBase.GetModuleSettings(this.moduleId).PrefixURLTag ?? "tag";
-            var otherPrefix = SettingsBase.GetModuleSettings(this.moduleId).PrefixURLOther ?? "other";
-            var basePrefix = SettingsBase.GetModuleSettings(this.moduleId).PrefixURLBase ?? string.Empty;
-
-            string searchURL = request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty).Replace(portalAliasInfo.HttpAlias, string.Empty);
+            string searchURL = sUrl;
+            searchURL = searchURL.Replace(portalAliasInfo.HttpAlias, string.Empty);
             if (searchURL.Length < 2)
             {
                 return;
@@ -190,9 +173,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 searchURL = searchURL.Replace(HttpContext.Current.Request.UserLanguages[0].ToLowerInvariant() + "/", string.Empty);
             }
 
-            // if there is a query string, we don't need it for the search so remove it
+            string query = string.Empty;
             if (searchURL.Contains("?"))
             {
+                query = searchURL.Substring(searchURL.IndexOf("?"));
                 searchURL = searchURL.Substring(0, searchURL.IndexOf("?") - 1);
             }
 
@@ -206,90 +190,39 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 /* but do remove (optional) page number; it will be restored later */
-                var likeMatches = RegexUtils.GetCachedRegex(@"(?<likewithoutpage>.*/likes/(?<contentId>[\d]+))(?<page>/[\d]+).*|(?<likewithoutpage>.*/likes/(?<contentId>[\d]+))", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace).Match(newSearchURL);
-                if (likeMatches.Success)
+                var pageSegment = RegexUtils.GetCachedRegex(".*/likes/(?<contentId>[\\d]+)(?<page>/[\\d]+).*", RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace).Match(newSearchURL).Groups["page"];
+                if (!string.IsNullOrEmpty(pageSegment?.Value))
                 {
-                    if (likeMatches.Groups["page"].Success)
-                    {
-                        var pageGroup = likeMatches.Groups["page"];
-                        if (pageGroup != null && !string.IsNullOrEmpty(pageGroup.Value))
-                        {
-                            this.page = Utilities.SafeConvertInt(pageGroup.Value, DotNetNuke.Common.Utilities.Null.NullInteger);
-                        }
-                    }
-
-                    if (likeMatches.Groups["contentId"].Success)
-                    {
-                        var contentIdGroup = likeMatches.Groups["contentId"];
-                        if (contentIdGroup != null && !string.IsNullOrEmpty(contentIdGroup.Value))
-                        {
-                            this.contentId = Utilities.SafeConvertInt(contentIdGroup.Value, DotNetNuke.Common.Utilities.Null.NullInteger);
-                        }
-                    }
-
-                    if (likeMatches.Groups["likewithoutpage"].Success)
-                    {
-                        var likeWithoutPage = likeMatches.Groups["likewithoutpage"];
-                        if (likeWithoutPage != null && !string.IsNullOrEmpty(likeWithoutPage.Value))
-                        {
-                            newSearchURL = likeWithoutPage.Value;
-                        }
-                    }
+                    newSearchURL = newSearchURL.Replace(pageSegment.Value, string.Empty);
                 }
             }
             else
             {
-                var groupPrefix = string.Empty;
-                var forumPrefix = string.Empty;
-                var topicPrefix = string.Empty;
-                //@"(?<withoutpage>(?<group>.+?)/(?<forum>.+?)/(?<topic>.+?)/)(?<page>[\d]+?)/|(?<withoutpage>(?<group>.+?)/(?<forum>.+?)/(?<topic>.+?)/)"
-
-                var urlGroups = RegexUtils.GetCachedRegex(@"(?<withoutpage>(?<group>.+?)/(?<forum>.+?)/(?<topic>.+?)/)(?<page>[\d]+?)/|(?<withoutpage>(?<group>.+?)/(?<forum>.+?)/(?<topic>.+?)/)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace).Match(newSearchURL);
-                if (urlGroups.Success)
+                // if page number is part of the url, remove it, it will be restored later
+                if (searchURL.ToCharArray().Where(c => c.Equals('/')).Count() > 2)
                 {
-                    if (urlGroups.Groups["page"].Success)
+                    foreach (string up in searchURL.Split('/'))
                     {
-                        var pageGroup = urlGroups.Groups["page"];
-                        if (pageGroup != null && !string.IsNullOrEmpty(pageGroup.Value))
+                        if (!string.IsNullOrEmpty(up))
                         {
-                            this.page = Utilities.SafeConvertInt(pageGroup.Value, DotNetNuke.Common.Utilities.Null.NullInteger);
+                            if (!Utilities.IsNumeric(up))
+                            {
+                                newSearchURL += up + "/";
+                            }
                         }
                     }
-
-                    if (urlGroups.Groups["group"].Success)
+                }
+                else
+                {
+                    newSearchURL = searchURL;
+                    if (newSearchURL.StartsWith("/"))
                     {
-                        var groupPrefixGroup = urlGroups.Groups["group"];
-                        if (groupPrefixGroup != null && !string.IsNullOrEmpty(groupPrefixGroup.Value))
-                        {
-                            groupPrefix = groupPrefixGroup.Value;
-                        }
+                        newSearchURL = newSearchURL.Substring(1);
                     }
 
-                    if (urlGroups.Groups["forum"].Success)
+                    if (!newSearchURL.EndsWith("/"))
                     {
-                        var topicGroup = urlGroups.Groups["forum"];
-                        if (topicGroup != null && !string.IsNullOrEmpty(topicGroup.Value))
-                        {
-                            groupPrefix = topicGroup.Value;
-                        }
-                    }
-
-                    if (urlGroups.Groups["topic"].Success)
-                    {
-                        var topicGroup = urlGroups.Groups["topic"];
-                        if (topicGroup != null && !string.IsNullOrEmpty(topicGroup.Value))
-                        {
-                            groupPrefix = topicGroup.Value;
-                        }
-                    }
-
-                    if (urlGroups.Groups["withoutpage"].Success)
-                    {
-                        var withoutPage = urlGroups.Groups["withoutpage"];
-                        if (withoutPage != null && !string.IsNullOrEmpty(withoutPage.Value))
-                        {
-                            newSearchURL = withoutPage.Value;
-                        }
+                        newSearchURL = newSearchURL + "/";
                     }
                 }
             }
@@ -362,7 +295,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.urlType = 3;
             }
 
-            var sUrl = string.Empty;
             if (this.archived == 1)
             {
                 sUrl = db.GetUrl(this.moduleId, this.forumgroupId, this.forumId, this.topicId, this.userId, -1);
