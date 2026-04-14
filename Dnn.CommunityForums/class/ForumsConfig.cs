@@ -1634,7 +1634,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     const string imgSrcPattern = @"(?<tag><img.*?src=\""(?<src>[^>\""].*?)\"".*?>)";
-                    var matches = RegexUtils.GetCachedRegex(imgSrcPattern, RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(content.Body);
+                    var matches = RegexUtils.GetCachedRegex(imgSrcPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase).Matches(content.Body);
                     foreach (Match match in matches)
                     {
                         if (match.Groups["src"].Success && (match.Groups["src"].Value.EndsWith(originalAttachmentFileName, StringComparison.InvariantCultureIgnoreCase) || (!string.IsNullOrEmpty(originalUrl) && match.Groups["src"].Value.ToLowerInvariant().Contains(originalUrl.ToLowerInvariant()))))
