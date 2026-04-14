@@ -243,8 +243,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         return;
                     }
 
-                    System.Drawing.Image imageFile = System.Drawing.Image.FromFile(attachmentsPath + attachment.FileName);
-                    if (imageFile != null)
+                    using (var imageFile = System.Drawing.Image.FromFile(attachmentsPath + attachment.FileName))
                     {
                         using (var ms = new MemoryStream())
                         {
