@@ -34,7 +34,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
-    using DotNetNuke.Services.FileSystem;
 
     /// <summary>
     /// Controller for managing Attachments in the DNN Community Forums module.
