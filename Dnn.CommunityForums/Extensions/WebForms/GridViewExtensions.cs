@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Extensions.WebForms
     {
         public static void WrapGridViewInDataTableNet(this GridView gridView, Abstractions.Portals.IPortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo userInfo)
         {
-            if (gridView.Rows.Count > 0)
+            if (gridView?.Rows?.Count > 0)
             {
                 ClientResourceManager.RegisterScript(gridView.Page, Globals.ModulePath + "Resources/datatables.net-2.3.3/Scripts/dataTables.min.js", FileOrder.Js.DefaultPriority + 2, "DnnPageHeaderProvider");
                 ClientResourceManager.RegisterScript(gridView.Page, Globals.ModulePath + "Resources/datatables.net-dt-2.3.3/Scripts/dataTables.dataTables.min.js", FileOrder.Js.DefaultPriority + 3, "DnnPageHeaderProvider");
