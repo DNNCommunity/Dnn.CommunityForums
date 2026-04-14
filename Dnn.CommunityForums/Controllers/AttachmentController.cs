@@ -289,10 +289,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
 
                 const string ImgSrcPattern = @"(?<tag><img.*?src=""(?<src>[^>""].*?)"".*?>)";
-                var matches = RegexUtils.GetCachedRegex(ImgSrcPattern, RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(content.Body);
+                var matches = RegexUtils.GetCachedRegex(ImgSrcPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase).Matches(content.Body);
                 foreach (Match match in matches)
                 {
-                    if (match.Groups["tag"].Success && (match.Groups["tag"].Value.EndsWith(file.FileName, StringComparison.InvariantCultureIgnoreCase) || (!string.IsNullOrEmpty(originalUrl) && match.Groups["tag"].Value.ToLowerInvariant().Contains(originalUrl.ToLowerInvariant()))))
+                    if (match.Groups["tag"].Success &&
+                        match.Groups["src"].Success &&
+                        (match.Groups["src"].Value.EndsWith(file.FileName, StringComparison.InvariantCultureIgnoreCase) ||
+                        (!string.IsNullOrEmpty(originalUrl) && match.Groups["src"].Value.ToLowerInvariant().Contains(originalUrl.ToLowerInvariant()))))
                     {
                         var tag = Utilities.ResolveUrlInTag($"<img src=\"https://{content.Post.Forum.PortalSettings.DefaultPortalAlias}{this.fileManager.GetUrl(file)}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />", content.Post.Forum.PortalSettings.DefaultPortalAlias, content.Post.Forum.PortalSettings.SSLEnabled);
                         content.Body = content.Body.Replace(match.Groups["tag"].Value, tag);
