@@ -54,7 +54,7 @@ IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'AttachID' AND [object_id] =
 exec sp_rename '{databaseOwner}{objectQualifier}activeforums_Attachments.AttachID', 'AttachmentId', 'COLUMN'
 GO
 
-IF (OBJECT_ID(N'{databaseOwner}[PK_{objectQualifier}activeforums_Attachments]', 'PK') IS NOT NULL)
+IF (OBJECT_ID(N'{databaseOwner}[PK_{objectQualifier}activeforums_Attachments]', 'PK') IS NULL)
 BEGIN
 ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Attachments] 
 	ADD CONSTRAINT [PK_{objectQualifier}activeforums_Attachments] PRIMARY KEY CLUSTERED ( AttachmentId ) 
