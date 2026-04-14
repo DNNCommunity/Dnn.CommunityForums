@@ -116,6 +116,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     file = this.fileManager.GetFile((int)attachment.FileId);
 
+                    if (file == null)
+                    {
+                        return;
+                    }
+
                     /* if the file is not set as an inline attachment, check if the content contains the original URL for the file.
                      * If it does, set the attachment to be an inline attachment and move it to the embedded images folder.
                      * This is necessary to ensure that existing content with inline attachments continues to work after we start storing inline attachments in a separate folder.

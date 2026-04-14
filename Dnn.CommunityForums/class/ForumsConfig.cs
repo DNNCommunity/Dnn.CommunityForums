@@ -1096,7 +1096,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             var message = $"Removing legacy folder: {legacyAttachFolder.PhysicalPath}";
                             log.AddProperty("Message", message);
                             DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-                            folderManager.DeleteFolder(legacyUploadFolder);
+                            folderManager.DeleteFolder(legacyAttachFolder);
                         }
                         catch (Exception ex)
                         {
