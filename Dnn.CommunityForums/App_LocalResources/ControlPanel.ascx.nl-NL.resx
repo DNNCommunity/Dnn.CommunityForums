@@ -234,9 +234,6 @@
   <data name="[RESX:Approved].Text" xml:space="preserve">
     <value>Goedgekeurd</value>
   </data>
-  <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve">
-    <value>Bestanden invoegen als tokens</value>
-  </data>
   <data name="[RESX:AuditLog].Text" xml:space="preserve">
     <value>Loggen &amp; Tracking</value>
   </data>
@@ -308,9 +305,6 @@
   </data>
   <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve">
     <value>Waarschuwing: Installeren, fog het ongedaan maken hiervan, van de DNN-Community-Forum URL Handler vereist een wijziging in uw web.config.  \n\nWeet u zeker dat u deze wijzing nu wilt aanbrengen?</value>
-  </data>
-  <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve">
-    <value>Converteer *.png naar *.jpg</value>
   </data>
   <data name="[RESX:CreatePostCount].Text" xml:space="preserve">
     <value>Aantal berichten maken</value>

@@ -42,7 +42,10 @@
 		        <tr>
                     <td><i data-bind="attr: { 'class' : $root.getIconClass($data) }"></i> <span data-bind="text:fileName"></span></td>
                     <td data-bind="text:(fileSize || fileSizeText)"></td>
-                    <td><span class="fa fa-plus fa-fw fa-blue" data-bind="click:$root.insertImage" /></td>
+                    <td>
+                    
+                        <span class="fa fa-plus fa-fw fa-blue" data-bind="click: $root.insertImage, visible: (contentType && contentType.match(/^image\/(jpeg|png|gif)$/i)) || (fileName && fileName.match(/\.(jpe?g|png|gif)$/i))"></span>
+                    </td>
                     <td><span class="fa fa-trash fa-fw fa-blue" data-bind="click:$root.removeAttachment" /></td>
 		        </tr>
 		    </tbody>

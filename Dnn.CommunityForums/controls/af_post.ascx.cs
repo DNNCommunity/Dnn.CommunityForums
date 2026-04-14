@@ -797,7 +797,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, this.ForumId, this.TopicId);
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
 
-            this.SaveAttachments(ti.ContentId);
+            this.SaveAttachments(ti.Content);
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TagRoleIds, this.ForumUser.UserRoleIds))
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopic(this.TopicId);
@@ -1019,7 +1019,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var tmpReplyId = rc.Reply_Save(this.PortalId, this.ForumModuleId, ri);
             ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(tmpReplyId);
 
-            this.SaveAttachments(ri.ContentId);
+            this.SaveAttachments(ri.Content);
             try
             {
                 if (this.ctlForm.Subscribe && authorId == this.UserId)
@@ -1076,17 +1076,16 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         // Note attachments are currently saved into the authors file directory
-        private void SaveAttachments(int contentId)
+        private void SaveAttachments(ContentInfo content)
         {
+            var attachmentController = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController();
             var fileManager = DotNetNuke.Services.FileSystem.FileManager.Instance;
             var folderManager = DotNetNuke.Services.FileSystem.FolderManager.Instance;
             var userFolder = folderManager.GetUserFolder(this.UserInfo);
 
-            const string uploadFolderName = Globals.LegacyUploadsFolderName;
-            const string attachmentFolderName = Globals.LegacyAttachmentsFolderName;
-            const string fileNameTemplate = Globals.AttachmentFileNameFormatString;
-
-            var attachmentFolder = folderManager.GetFolder(this.PortalId, attachmentFolderName) ?? folderManager.AddFolder(this.PortalId, attachmentFolderName);
+            var attachmentFolder =
+                    folderManager.GetFolder(content.Post.PortalId, string.Format(Globals.AttachmentsFolderNameFormatString, content.ModuleId, content.ContentId)) ??
+                    folderManager.AddFolder(content.Post.PortalId, string.Format(Globals.AttachmentsFolderNameFormatString, content.ModuleId, content.ContentId));
 
             // Read the attachment list sent in the hidden field as json
             var attachmentsJson = this.hidAttachments.Value;
@@ -1097,7 +1096,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Read the list of existing attachments for the content.  Must do this before saving any of the new attachments!
             // Ignore any inline attachments
-            var attachmentsOld = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetByContentId(contentId).Where(attachment => !attachment.DisplayInline);
+            var attachmentsOld = attachmentController.GetByContentId(content.ContentId).Where(attachment => !attachment.DisplayInline);
 
             // Save all of the new attachments
             foreach (var attachment in attachmentsNew)
@@ -1110,46 +1109,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 IFileInfo file = null;
 
-                var fileId = attachment.FileId.GetValueOrDefault();
-                if (fileId > 0 && userFolder != null)
+                if (attachment.FileId.HasValue && attachment.FileId.Value > 0 && userFolder != null)
                 {
                     // Make sure that the file exists and it actually belongs to the user who is trying to attach it
-                    file = fileManager.GetFile(fileId);
+                    file = fileManager.GetFile(attachment.FileId.Value);
                     if (file == null || file.FolderId != userFolder.FolderID)
                     {
                         continue;
                     }
-                }
-                else if (!string.IsNullOrWhiteSpace(attachment.UploadId) && !string.IsNullOrWhiteSpace(attachment.FileName))
-                {
-                    if (!DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^[\w\-. ]+$").IsMatch(attachment.UploadId)) // Check for shenanigans.
-                    {
-                        continue;
-                    }
-
-                    var uploadFilePath = PathUtils.Instance.GetPhysicalPath(this.PortalId, uploadFolderName + "/" + attachment.UploadId);
-
-                    if (!File.Exists(uploadFilePath))
-                    {
-                        continue;
-                    }
-
-                    // Store the files with a filename format that prevents overwrites.
-                    var index = 0;
-                    var fileName = string.Format(fileNameTemplate, contentId, index, DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"[^\w\-. ]+").Replace(attachment.FileName, string.Empty));
-                    while (fileManager.FileExists(attachmentFolder, fileName))
-                    {
-                        index++;
-                        fileName = string.Format(fileNameTemplate, contentId, index, DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"[^\w\-. ]+").Replace(attachment.FileName, string.Empty));
-                    }
-
-                    // Copy the file into the attachment folder with the correct name.
-                    using (var fileStream = new FileStream(uploadFilePath, FileMode.Open, FileAccess.Read))
-                    {
-                        file = fileManager.AddFile(attachmentFolder, fileName, fileStream);
-                    }
-
-                    File.Delete(uploadFilePath);
                 }
 
                 if (file == null)
@@ -1159,8 +1126,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 var attachInfo = new DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo
                 {
-                    ContentId = contentId,
-                    UserId = this.AuthorId,
+                    ContentId = content.ContentId,
+                    UserId = content.AuthorId,
                     FileId = file.FileId,
                     FileName = file.FileName,
                     ContentType = file.ContentType,
@@ -1168,7 +1135,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     DateAdded = DateTime.UtcNow,
                     DateUpdated = DateTime.UtcNow,
                 };
-                new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().Save(attachInfo);
+                attachmentController.Save(attachInfo);
+                attachmentController.RelocateAttachment(attachInfo);
             }
 
             // Remove any attachments that are no longer in the list of attachments
@@ -1180,7 +1148,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Only delete the file if it exists in the attachment folder
                 if (file != null && file.FolderId == attachmentFolder.FolderID)
                 {
-                    new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().DeleteById(attachment.AttachmentId);
+                    attachmentController.DeleteById(attachment.AttachmentId);
                     fileManager.DeleteFile(file);
                 }
             }

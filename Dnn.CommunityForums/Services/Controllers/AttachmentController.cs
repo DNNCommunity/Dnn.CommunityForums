@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Modules.ActiveForums.Services;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Api;
@@ -68,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             var folderManager = DotNetNuke.Services.FileSystem.FolderManager.Instance;
-            const string uploadPath = Globals.LegacyUploadsFolderName;
+            const string uploadPath = Globals.AttachmentUploadsFolderName;
             var uploadFolder = folderManager.GetFolder(this.ActiveModule.PortalID, uploadPath) ?? folderManager.AddFolder(this.ActiveModule.PortalID, uploadPath);
 
             var provider = new MultipartFormDataStreamProvider(uploadFolder.PhysicalPath);
@@ -147,10 +148,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     return request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "File Type Not Allowed");
                 }
 
-                const string newFileName = "{0}_{1}{2}";
                 var fileNameOnly = Path.GetFileNameWithoutExtension(fileName);
-                var userFolder = folderManager.GetUserFolder(userInfo);
-                var attachmentFolder = folderManager.GetFolder(userFolder.FolderID);
+                var attachmentFolder = folderManager.GetUserFolder(userInfo);
                 var fileManager = FileManager.Instance;
                 IFileInfo ufile = null;
                 string sExt = Path.GetExtension(fileName);
@@ -228,15 +227,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     res.Save(mst, imf);
                     res.Dispose();
 
-                    var index = 0;
-                    fileName = fileNameOnly + sExt.ToLower();
-
-                    while (fileManager.FileExists(attachmentFolder, fileName))
-                    {
-                        index++;
-                        fileName = string.Format(newFileName, fileNameOnly, index, sExt.ToLower());
-                    }
-
+                    fileName = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.CreateUniqueFileName(attachmentFolder.PhysicalPath, fileName);
                     ufile = fileManager.AddFile(attachmentFolder, fileName, (Stream)mst);
                     mst.Close();
                 }
@@ -244,13 +235,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     using (var fileStream = new FileStream(file.LocalFileName, FileMode.Open, FileAccess.Read))
                     {
-                        var index = 0;
-                        while (fileManager.FileExists(attachmentFolder, fileName))
-                        {
-                            index++;
-                            fileName = string.Format(newFileName, fileNameOnly, index, sExt);
-                        }
-
+                        fileName = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.CreateUniqueFileName(attachmentFolder.PhysicalPath, fileName);
                         ufile = fileManager.AddFile(attachmentFolder, fileName, fileStream);
                     }
                 }
@@ -299,20 +284,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return this.Request.CreateResponse(HttpStatusCode.Accepted, "File not found");
             }
 
-            const string fullpath = "/Portals/{0}/{1}{2}";
-            var userInfo = this.PortalSettings.UserInfo;
-            string portalid;
-
-            if (userInfo.IsSuperUser)
-            {
-                portalid = "_default";
-            }
-            else
-            {
-                portalid = userInfo.PortalID.ToString();
-            }
-
-            return this.Request.CreateResponse(HttpStatusCode.OK, string.Format(fullpath, portalid, file.Folder, file.FileName));
+            return this.Request.CreateResponse(HttpStatusCode.OK, Utilities.ResolveUrl($"https://{this.PortalSettings.DefaultPortalAlias}{fileManager.GetUrl(file)}", this.PortalSettings.DefaultPortalAlias, this.PortalSettings.SSLEnabled));
         }
     }
 }

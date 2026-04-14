@@ -1266,7 +1266,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string ParseSpacer(string template)
         {
-            var spacerTemplate = string.Format("<img src=\"{0}\" alt=\"--\" width=\"$2\" height=\"$1\" />", System.Web.VirtualPathUtility.ToAbsolute(string.Concat(Globals.ModuleImagesPath, "spacer.gif")));
+            var spacerTemplate = string.Format("<img src=\"{0}\" alt=\"--\" width=\"$2\" height=\"$1\" loading=\"lazy\" />", System.Web.VirtualPathUtility.ToAbsolute(string.Concat(Globals.ModuleImagesPath, "spacer.gif")));
 
             const string expression = @"\[SPACER\:(\d+)\:(\d+)\]";
 

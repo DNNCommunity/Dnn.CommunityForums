@@ -3,7 +3,7 @@ GO
 
 /* issue 1851/1852 - begin - attachment settings */ 
 
-DELETE FROM {databaseOwner}[{objectQualifier}activeforums_Settings] WHERE SettingName IN ('ATTACHMAXWIDTH', 'ATTACHMAXHEIGHT', 'CONVERTINGTOJPEGALLOWED')
+DELETE FROM {databaseOwner}[{objectQualifier}activeforums_Settings] WHERE SettingName IN ('ATTACHMAXWIDTH', 'ATTACHMAXHEIGHT', 'ATTACHINSERTALLOWED', 'CONVERTINGTOJPEGALLOWED')
 GO
 UPDATE {databaseOwner}[{objectQualifier}activeforums_Settings]
 SET SettingName = 'MAXIMAGEHEIGHT'
@@ -19,6 +19,8 @@ GO
 /* issue 1839 - begin - changes to attachments table */
 
 /* Drop unused columns */
+
+/* NOTE: FileData column is not dropped as part here because it is needed during upgrade task; it is removed after the upgrade task is complete */
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'DF_{objectQualifier}activeforums_Attachments_DownloadCount') AND type = 'D')
     ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Attachments] DROP CONSTRAINT DF_{objectQualifier}activeforums_Attachments_DownloadCount;
@@ -41,11 +43,30 @@ IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'ParentAttachId' AND [object
     ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Attachments] DROP COLUMN ParentAttachId
 GO 
 
+/* rename AttachID to AttachmentId */
+IF (OBJECT_ID(N'{databaseOwner}[PK_{objectQualifier}activeforums_Attachments]', 'PK') IS NOT NULL)
+BEGIN
+    ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Attachments] DROP CONSTRAINT [PK_{objectQualifier}activeforums_Attachments]
+END
+GO
+
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'AttachID' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments]'))
+exec sp_rename '{databaseOwner}{objectQualifier}activeforums_Attachments.AttachID', 'AttachmentId', 'COLUMN'
+GO
+
+IF (OBJECT_ID(N'{databaseOwner}[PK_{objectQualifier}activeforums_Attachments]', 'PK') IS NULL)
+BEGIN
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Attachments] 
+	ADD CONSTRAINT [PK_{objectQualifier}activeforums_Attachments] PRIMARY KEY CLUSTERED ( AttachmentId ) 
+		WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) 
+END
+GO
+
 /* add index to attachments for contentid */
 IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Attachments') AND name = N'IX_{objectQualifier}activeforums_Attachments_ContentId')
 CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Attachments_ContentId ON {databaseOwner}[{objectQualifier}activeforums_Attachments]
 	(
-    AttachID,
+    AttachmentId,
 	ContentId
 	) 
 GO
@@ -74,6 +95,41 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments_Delete]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Attachments_Delete]
 GO
+
+
+/* begin: activeforums_Mod_Pending - no longer return attachments */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Mod_Pending]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Mod_Pending]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Mod_Pending]
+@PortalId int,
+@ModuleId int,
+@ForumId int,
+@UserId int
+AS
+	DECLARE @tmpForumId int
+	Set @tmpForumId = -1
+	If @ForumId = -1
+		SET @tmpForumId = 0
+	SET NOCOUNT ON;
+	BEGIN	
+SELECT     PortalId, T.ModuleId, ForumId, ForumName, TopicId, 0 as ReplyId, Subject, Summary, Body, AuthorId, AuthorName, Username, FirstName, LastName, DisplayName, DateCreated, 
+                      DateUpdated, ContentId, TopicIcon, StatusId, TopicType, IsPinned, IsLocked, ViewCount, ReplyCount, T.SortOrder as ForumSort, G.GroupName, G.SortOrder as GroupSort 
+                      FROM {databaseOwner}{objectQualifier}vw_activeforums_ForumTopics as T
+				INNER JOIN {databaseOwner}{objectQualifier}activeforums_Groups as G on T.ForumGroupId = G.ForumGroupId
+	WHERE PortalId = @PortalId AND T.ModuleId = @ModuleId AND IsApproved = 0 AND T.IsRejected = 0 AND (ForumId = @ForumId AND @tmpForumId = -1 OR ForumId > @tmpForumId AND @tmpForumId = 0)
+	UNION
+	SELECT     PortalId, R.ModuleId, ForumId, ForumName, TopicId, ReplyId, Subject, Summary, Body, AuthorId, AuthorName, Username, FirstName, LastName, DisplayName, DateCreated, 
+                      DateUpdated, ContentId, TopicIcon, StatusId, TopicType, IsPinned, IsLocked, ViewCount, ReplyCount, R.SortOrder as ForumSort, G.GroupName, G.SortOrder as GroupSort
+                       FROM {databaseOwner}{objectQualifier}vw_activeforums_ForumReplies as R
+				INNER JOIN {databaseOwner}{objectQualifier}activeforums_Groups as G on R.ForumGroupId = G.ForumGroupId
+	WHERE PortalId = @PortalId AND R.ModuleId = @ModuleId AND IsApproved = 0 AND R.IsRejected = 0 AND (ForumId = @ForumId AND @tmpForumId = -1 OR ForumId > @tmpForumId AND @tmpForumId = 0)
+	ORDER BY GroupSort, ForumSort, DateCreated
+	END
+GO
+
+/* end: activeforums_Mod_Pending - no longer return attachments */
 
 /* activeforums_UI_TopicView -- no longer return attachments */
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicView]') AND type in (N'P', N'PC'))
@@ -219,6 +275,53 @@ exec {databaseOwner}{objectQualifier}activeforums_Topics_Tracking_UpdateUser @Fo
 exec {databaseOwner}{objectQualifier}activeforums_UserProfiles_UpdateActivity @PortalId, @UserId
 END
 
+GO
+
+/* activeforums_Groups_Delete -- no longer need _Content_Attachments and now use cascading deletes so simplify the items to be deleted 
+NOTE: this procedure is not even actually used anymore, and will be removed in v10, but we need to update it so that we don't have an orphaned reference to _Content_Attachments 
+*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups_Delete]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_Delete]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_Delete]
+@ModuleId int,
+@ForumGroupId int
+AS
+
+/* delete subscriptions for forums in the group being deleted */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Subscriptions
+	WHERE ForumId IN (
+		SELECT ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumGroupId = @ForumGroupId) 
+        
+/* delete forum settings */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings 
+    WHERE ModuleId = @ModuleId 
+    AND SettingsKey IN (
+        SELECT ForumSettingsKey FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumGroupId = @ForumGroupId) 
+
+/* delete forums */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumGroupId = @ForumGroupId
+
+/* delete forum group settings */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings 
+    WHERE ModuleId = @ModuleId 
+    AND SettingsKey = (
+        SELECT GroupSettingsKey FROM {databaseOwner}{objectQualifier}activeforums_Groups WHERE ForumGroupId = @ForumGroupId AND ModuleId = @ModuleId) 
+
+/* delete the group */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Groups 
+    WHERE ModuleId = @ModuleId AND ForumGroupId = @ForumGroupId
+
+GO
+
+/* drop old legacy _Content_Attachments table if it exists */
+
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Content_Attachments_Content]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Content_Attachments]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Content_Attachments]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Content_Attachments_Content]
+GO
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Content_Attachments]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Content_Attachments]
 GO
 
 /* issue 1839 - end - changes to attachments table */

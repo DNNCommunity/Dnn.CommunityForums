@@ -148,14 +148,18 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ThemesPath = Globals.ModulePath + "themes/";
 
         public const string AvatarRefreshGravatar = "GRAVATAR";
+        public const string LegacyAvatarsFolderName = "activeforums_Avatars";
 
         public const string DefaultBadgesFolderName = "DNNCommunityForums/Badges";
+        public const string ContentFolderNameBase = "DNNCommunityForums/content/";
         public const string ContentFolderNameFormatString = "DNNCommunityForums/content/{0}/{1}";
         public const string EmbeddedImagesFolderNameFormatString = "DNNCommunityForums/content/{0}/{1}/images/";
         public const string AttachmentsFolderNameFormatString = "DNNCommunityForums/content/{0}/{1}/attachments/";
-        public const string AttachmentFileNameFormatString = "__{0}__{1}__{2}";
+        public const string LegacyAttachmentFileNameFormatString = "__{0}__{1}__{2}";
         public const string LegacyAttachmentsFolderName = "activeforums_Attach";
-        public const string LegacyUploadsFolderName = "activeforums_Upload";
+        public const string LegacyAttachmentUploadsFolderName = "activeforums_Upload";
+        public const string AttachmentUploadsFolderName = "DNNCommunityForums/upload";
+        public const string AttachmentFileNameFormatString = "{0}_{1}{2}";
 
         public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
@@ -295,6 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AttachMaxWidth = "ATTACHMAXWIDTH";
         public const string MaxImageWidth = "MAXIMAGEWIDTH";
         public const string MaxImageHeight = "MAXIMAGEHEIGHT";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string AttachInsertAllowed = "ATTACHINSERTALLOWED";
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string ConvertingToJpegAllowed = "CONVERTINGTOJPEGALLOWED";

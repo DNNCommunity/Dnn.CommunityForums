@@ -21,16 +21,18 @@
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
+    using System.IO;
+    using System.Text.RegularExpressions;
     using System.Web.Caching;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Services.Tokens;
 
     [TableName("activeforums_Attachments")]
-    [PrimaryKey("AttachID", AutoIncrement = true)]
+    [PrimaryKey("AttachmentId", AutoIncrement = true)]
     public class AttachmentInfo
     {
-        [ColumnName("AttachID")]
         public int AttachmentId { get; set; }
 
         public int ContentId { get; set; }
@@ -49,8 +51,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public DateTime? DateAdded { get; set; }
 
         public DateTime? DateUpdated { get; set; }
-
-        public byte[] FileData { get; set; }
 
         public long FileSize { get; set; }
 
