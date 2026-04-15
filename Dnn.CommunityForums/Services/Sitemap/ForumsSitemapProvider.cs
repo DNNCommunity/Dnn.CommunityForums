@@ -1,4 +1,4 @@
-// Copyright (c) by DNN Community
+﻿// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlTypes;
+    using System.Drawing;
     using System.Linq;
 
     using DotNetNuke.Common.Utilities;
@@ -54,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
         public override List<SitemapUrl> GetUrls(int portalId, PortalSettings ps, string version)
         {
             var sitemapUrlsByUrl = new Dictionary<string, SitemapUrl>(StringComparer.OrdinalIgnoreCase);
-            var portalAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault(a => a.IsPrimary)?.HTTPAlias;
+            var portalAlias = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portalId).DefaultPortalAlias;
             if (string.IsNullOrWhiteSpace(portalAlias))
             {
                 Logger.Warn($"Unable to generate sitemap URLs for portal {portalId} because no primary portal alias could be resolved.");
@@ -86,15 +87,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
         {
             var tab = TabController.Instance.GetTab(module.TabID, module.PortalID);
             bool isSecureTab = tab != null && tab.IsSecure;
-            var forumsByForumId = new Dictionary<int, ForumInfo>();
             var controlUtils = new ControlUtils();
 
-            // Search_DotNetNuke expects a SQL datetime-compatible minimum date.
             var results = DataContext.Instance().ExecuteQuery<SearchSitemapResult>(
                 CommandType.StoredProcedure,
                 "{databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate",
                 module.ModuleID,
                 SqlDateTime.MinValue.Value);
+
             foreach (SearchSitemapResult result in results)
             {
                 if (!result.IsApproved || result.IsDeleted)
@@ -102,15 +102,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     continue;
                 }
 
-                int forumId = result.ForumId;
-                ForumInfo forum;
-                if (!forumsByForumId.TryGetValue(forumId, out forum))
-                {
-                    forum = this.forumController.GetById(forumId, module.ModuleID);
-                    forumsByForumId[forumId] = forum;
-                }
-
-                if (forum == null || forum.Security == null || !ForumInfo.IsPublicForum(forum.Security.ReadRoleIds))
+                var forum = this.forumController.GetById(result.ForumId, module.ModuleID);
+                if (forum == null || forum.Security == null || !forum.IsPublicForum)
                 {
                     continue;
                 }
@@ -122,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     groupPrefix: result.ForumGroupUrlPrefix,
                     forumPrefix: result.ForumUrlPrefix,
                     forumGroupId: result.ForumGroupId,
-                    forumID: forumId,
+                    forumID:  result.ForumId,
                     topicId: result.TopicId,
                     topicURL: result.TopicUrl,
                     tagId: Null.NullInteger,
@@ -135,12 +128,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                 if (string.IsNullOrWhiteSpace(link))
                 {
                     continue;
-                }
-
-                // BuildUrl may return a relative segment without a leading slash; normalize for ResolveUrl.
-                if (!link.StartsWith("/", StringComparison.Ordinal) && !link.StartsWith("http", StringComparison.OrdinalIgnoreCase))
-                {
-                    link = "/" + link;
                 }
 
                 link = Utilities.ResolveUrl(link, portalAlias, isSecureTab);

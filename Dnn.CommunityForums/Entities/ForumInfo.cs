@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions.Portals;
@@ -48,9 +49,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     // TODO [Cacheable("activeforums_Forums", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
     public class ForumInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
-        private static readonly int AllUsersRoleId = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
-        private static readonly int UnauthenticatedUsersRoleId = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
-
         private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
         private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
@@ -88,16 +86,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.UpdateCache();
         }
 
-        internal static bool IsPublicForum(ICollection<int> readRoleIds)
-        {
-            if (readRoleIds == null)
-            {
-                return false;
-            }
-
-            return readRoleIds.Contains(AllUsersRoleId) ||
-                   readRoleIds.Contains(UnauthenticatedUsersRoleId);
-        }
+        internal bool IsPublicForum =>
+            this.Security?.ReadRoleIds?.Contains(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers, CultureInfo.InvariantCulture)) == true ||
+            this.Security?.ReadRoleIds?.Contains(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture)) == true;
 
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
