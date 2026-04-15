@@ -1312,7 +1312,8 @@ namespace DotNetNuke.Modules.ActiveForums
         private static string LocalizeControl(string controlText, string resourceFile, bool isAdmin, bool scriptSafe)
         {
             controlText = controlText.Replace(" class=afquote", " class=\"afquote\"");
-            var matches = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"(\[RESX:.+?\])", RegexOptions.Compiled).Matches(controlText);
+            var sourceText = controlText;
+            var matches = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"(\[RESX:.+?\])", RegexOptions.Compiled).Matches(sourceText);
             foreach (Match match in matches)
             {
                 var sKey = match.Value;
@@ -1343,11 +1344,117 @@ namespace DotNetNuke.Modules.ActiveForums
                     newValue = newValue.Replace("[", @"\[").Replace("]", @"\]");
                     newValue = JSON.EscapeJsonString(newValue);
                 }
+                else if (IsInsideJavaScriptSingleQuotedString(sourceText, match.Index))
+                {
+                    newValue = EscapeJavaScriptSingleQuotedString(newValue);
+                }
 
                 controlText = controlText.Replace(sKey, newValue);
             }
 
             return controlText;
+        }
+
+        internal static string EscapeJavaScriptSingleQuotedString(string value)
+        {
+            return value.Replace(@"\", @"\\")
+                .Replace("'", @"\'")
+                .Replace("\r", "\\r")
+                .Replace("\n", "\\n")
+                .Replace("\t", "\\t")
+                .Replace("\b", "\\b")
+                .Replace("\f", "\\f")
+                .Replace("\u2028", "\\u2028")
+                .Replace("\u2029", "\\u2029")
+                .Replace("</", "<\\/");
+        }
+
+        internal static bool IsInsideScriptBlock(string input, int index)
+        {
+            if (string.IsNullOrEmpty(input) || index < 0 || index >= input.Length)
+            {
+                return false;
+            }
+
+            int scriptStart = input.LastIndexOf("<script", index, StringComparison.OrdinalIgnoreCase);
+            if (scriptStart < 0)
+            {
+                return false;
+            }
+
+            int scriptTagEnd = input.IndexOf('>', scriptStart);
+            if (scriptTagEnd < 0 || scriptTagEnd >= index)
+            {
+                return false;
+            }
+
+            int scriptEnd = input.IndexOf("</script>", scriptTagEnd, StringComparison.OrdinalIgnoreCase);
+            return scriptEnd < 0 || index < scriptEnd;
+        }
+
+        internal static bool IsInsideJavaScriptSingleQuotedString(string input, int index)
+        {
+            if (!IsInsideScriptBlock(input, index))
+            {
+                return false;
+            }
+
+            int scriptStart = input.LastIndexOf("<script", index, StringComparison.OrdinalIgnoreCase);
+            int scriptTagEnd = input.IndexOf('>', scriptStart);
+            if (scriptTagEnd < 0 || scriptTagEnd >= index)
+            {
+                return false;
+            }
+
+            bool inSingleQuote = false;
+            bool inDoubleQuote = false;
+            bool escaped = false;
+            for (int i = scriptTagEnd + 1; i < index; i++)
+            {
+                char c = input[i];
+                if (escaped)
+                {
+                    escaped = false;
+                    continue;
+                }
+
+                if (c == '\\')
+                {
+                    escaped = true;
+                    continue;
+                }
+
+                if (inSingleQuote)
+                {
+                    if (c == '\'')
+                    {
+                        inSingleQuote = false;
+                    }
+
+                    continue;
+                }
+
+                if (inDoubleQuote)
+                {
+                    if (c == '"')
+                    {
+                        inDoubleQuote = false;
+                    }
+
+                    continue;
+                }
+
+                if (c == '\'')
+                {
+                    inSingleQuote = true;
+                }
+                else if (c == '"')
+                {
+                    inDoubleQuote = true;
+                }
+            }
+
+            return inSingleQuote;
         }
 
         public static string GetSharedResource(string key, string resourceFile)
