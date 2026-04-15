@@ -680,6 +680,33 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test]
+        public void ResolveUrl_WithRelativePathAndSecure_ReturnsHttpsUrl()
+        {
+            // Arrange
+            string link = "/forums/topic/abc";
+            string portalAlias = "dnncommunity.org";
+
+            // Act
+            string result = Utilities.ResolveUrl(url: link, defaultPortalAlias: portalAlias, sslEnabled: true);
+
+            // Assert
+            Assert.That(result, Is.EqualTo("https://dnncommunity.org/forums/topic/abc"));
+        }
+
+        [Test]
+        public void ResolveUrl_WithAbsoluteHttpsUrlAndSecure_ReturnsUnchanged()
+        {
+            // Arrange
+            string link = "https://dnncommunity.org/forums/topic/abc";
+
+            // Act
+            string result = Utilities.ResolveUrl(url: link, defaultPortalAlias: this.DefaultPortalAlias, sslEnabled: true);
+
+            // Assert
+            Assert.That(result, Is.EqualTo("https://localhost/en-us/forums/topic/abc"));
+        }
+
+        [Test]
         public void ResolveUrl_WithAliasWithoutSubpath_ReturnsOriginalUrl()
         {
             // Arrange
