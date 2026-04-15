@@ -384,7 +384,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 sb.Append($"<br /><span class=\"afimage\"><img src=\"{url}\" border=0 align=center></span><br><br>");
                                 break;
                             default:
-                                sb.Append($"<span class=\"afattachlink\"><a src=\"{url}\" target=\"_blank\"><img src=\"{strHost}{Globals.ModuleAbsolutePath}images/attach.gif\" border=\"0\" align=\"absmiddle\">{Utilities.GetSharedResource("[RESX:Attachment]")}: {attachment.FileName}</a></span><br />");
+                                sb.Append($"<span class=\"afattachlink\"><a href=\"{url}\" target=\"_blank\"><img src=\"{strHost}{Globals.ModuleAbsolutePath}images/attach.gif\" border=\"0\" align=\"absmiddle\">{Utilities.GetSharedResource("[RESX:Attachment]")}: {attachment.FileName}</a></span><br />");
                                 break;
                         }
                     }
