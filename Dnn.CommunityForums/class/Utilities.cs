@@ -1312,7 +1312,8 @@ namespace DotNetNuke.Modules.ActiveForums
         private static string LocalizeControl(string controlText, string resourceFile, bool isAdmin, bool scriptSafe)
         {
             controlText = controlText.Replace(" class=afquote", " class=\"afquote\"");
-            var matches = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"(\[RESX:.+?\])", RegexOptions.Compiled).Matches(controlText);
+            var sourceText = controlText;
+            var matches = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"(\[RESX:.+?\])", RegexOptions.Compiled).Matches(sourceText);
             foreach (Match match in matches)
             {
                 var sKey = match.Value;
@@ -1343,11 +1344,23 @@ namespace DotNetNuke.Modules.ActiveForums
                     newValue = newValue.Replace("[", @"\[").Replace("]", @"\]");
                     newValue = JSON.EscapeJsonString(newValue);
                 }
+                else if (match.Index > 0
+                    && match.Index + match.Length < sourceText.Length
+                    && sourceText[match.Index - 1] == '\''
+                    && sourceText[match.Index + match.Length] == '\'')
+                {
+                    newValue = EscapeJavaScriptSingleQuotedString(newValue);
+                }
 
                 controlText = controlText.Replace(sKey, newValue);
             }
 
             return controlText;
+        }
+
+        internal static string EscapeJavaScriptSingleQuotedString(string value)
+        {
+            return value.Replace(@"\", @"\\").Replace("'", @"\'").Replace("\r", "\\r").Replace("\n", "\\n");
         }
 
         public static string GetSharedResource(string key, string resourceFile)

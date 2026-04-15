@@ -722,5 +722,19 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var expectedResult = DotNetNuke.Common.Globals.AddHTTP(originalAlias) + url;
             Assert.That(result, Is.EqualTo(expectedResult));
         }
+
+        [Test]
+        public void EscapeJavaScriptSingleQuotedString_EscapesSingleQuotesBackslashesAndNewLines()
+        {
+            // Arrange
+            const string input = "L'utilisateur\\test\r\nnext";
+            const string expected = "L\\'utilisateur\\\\test\\r\\nnext";
+
+            // Act
+            var result = Utilities.EscapeJavaScriptSingleQuotedString(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
     }
 }
