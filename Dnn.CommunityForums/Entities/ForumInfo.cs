@@ -84,6 +84,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.UpdateCache();
         }
 
+        internal static bool IsPublicForum(ICollection<int> readRoleIds)
+        {
+            if (readRoleIds == null)
+            {
+                return false;
+            }
+
+            return readRoleIds.Contains(DotNetNuke.Modules.ActiveForums.Utilities.SafeConvertInt(DotNetNuke.Common.Globals.glbRoleAllUsers)) ||
+                   readRoleIds.Contains(DotNetNuke.Modules.ActiveForums.Utilities.SafeConvertInt(DotNetNuke.Common.Globals.glbRoleUnauthUser));
+        }
+
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
 

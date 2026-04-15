@@ -18,28 +18,28 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums.Sitemap
+namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Globalization;
+    using System.Data.SqlTypes;
     using System.Linq;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.ActiveForums.Controllers;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Search;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Sitemap;
 
     public class ForumsSitemapProvider : SitemapProvider
     {
-        private const int AllContentBeginYear = 1753;
-        private const int MissingTagId = -1;
-        private const int MissingCategoryId = -1;
         private const int FirstPage = 1;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ForumsSitemapProvider));
@@ -82,47 +82,11 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
             return sitemapUrlsByUrl.Values.ToList();
         }
 
-        internal static bool IsPublicForum(ICollection<int> readRoleIds)
-        {
-            if (readRoleIds == null)
-            {
-                return false;
-            }
-
-            return readRoleIds.Contains(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers, CultureInfo.InvariantCulture)) ||
-                   readRoleIds.Contains(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture));
-        }
-
-        internal static string EnsureAbsoluteUrl(string link, string portalAlias, bool isSecure)
-        {
-            if (string.IsNullOrWhiteSpace(link))
-            {
-                return string.Empty;
-            }
-
-            if (link.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || link.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-            {
-                return link;
-            }
-
-            if (string.IsNullOrWhiteSpace(portalAlias))
-            {
-                return string.Empty;
-            }
-
-            if (!link.StartsWith("/", StringComparison.Ordinal))
-            {
-                link = "/" + link;
-            }
-
-            return string.Format(CultureInfo.InvariantCulture, "{0}://{1}{2}", isSecure ? "https" : "http", portalAlias, link);
-        }
-
         private void AppendModuleUrls(ModuleInfo module, string portalAlias, IDictionary<string, SitemapUrl> sitemapUrlsByUrl)
         {
             var tab = TabController.Instance.GetTab(module.TabID, module.PortalID);
             bool isSecureTab = tab != null && tab.IsSecure;
-            var forumsByForumId = new Dictionary<int, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
+            var forumsByForumId = new Dictionary<int, ForumInfo>();
             var controlUtils = new ControlUtils();
 
             // Search_DotNetNuke expects a SQL datetime-compatible minimum date.
@@ -130,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
                 CommandType.StoredProcedure,
                 "{databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate",
                 module.ModuleID,
-                new DateTime(AllContentBeginYear, 1, 1));
+                SqlDateTime.MinValue.Value);
             foreach (SearchSitemapResult result in results)
             {
                 if (!result.IsApproved || result.IsDeleted)
@@ -139,14 +103,14 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
                 }
 
                 int forumId = result.ForumId;
-                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum;
+                ForumInfo forum;
                 if (!forumsByForumId.TryGetValue(forumId, out forum))
                 {
                     forum = this.forumController.GetById(forumId, module.ModuleID);
                     forumsByForumId[forumId] = forum;
                 }
 
-                if (forum == null || forum.Security == null || !IsPublicForum(forum.Security.ReadRoleIds))
+                if (forum == null || forum.Security == null || !ForumInfo.IsPublicForum(forum.Security.ReadRoleIds))
                 {
                     continue;
                 }
@@ -161,14 +125,24 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
                     forumID: forumId,
                     topicId: result.TopicId,
                     topicURL: result.TopicUrl,
-                    tagId: MissingTagId,
-                    categoryId: MissingCategoryId,
+                    tagId: Null.NullInteger,
+                    categoryId: Null.NullInteger,
                     otherPrefix: string.Empty,
                     pageId: FirstPage,
                     contentId: result.ContentId,
                     socialGroupId: forum.SocialGroupId);
 
-                link = EnsureAbsoluteUrl(link: link, portalAlias: portalAlias, isSecure: isSecureTab);
+                if (string.IsNullOrWhiteSpace(link))
+                {
+                    continue;
+                }
+
+                if (!link.StartsWith("/", StringComparison.Ordinal) && !link.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                {
+                    link = "/" + link;
+                }
+
+                link = Utilities.ResolveUrl(link, portalAlias, isSecureTab);
                 if (string.IsNullOrWhiteSpace(link))
                 {
                     continue;
@@ -192,29 +166,6 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
                     sitemapUrl.LastModified = lastModified;
                 }
             }
-        }
-
-        internal class SearchSitemapResult
-        {
-            public int ContentId { get; set; }
-
-            public DateTime DateUpdated { get; set; }
-
-            public int ForumGroupId { get; set; }
-
-            public string ForumGroupUrlPrefix { get; set; }
-
-            public int ForumId { get; set; }
-
-            public string ForumUrlPrefix { get; set; }
-
-            public bool IsApproved { get; set; }
-
-            public bool IsDeleted { get; set; }
-
-            public int TopicId { get; set; }
-
-            public string TopicUrl { get; set; }
         }
     }
 }

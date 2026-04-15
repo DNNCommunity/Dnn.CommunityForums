@@ -22,7 +22,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Components.Sitemap
 {
     using System.Collections.Generic;
 
-    using DotNetNuke.Modules.ActiveForums.Sitemap;
+    using DotNetNuke.Modules.ActiveForums;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using NUnit.Framework;
 
     [TestFixture]
@@ -37,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Components.Sitemap
             var readRoleIds = new List<int> { AllUsersRoleId };
 
             // Act
-            bool result = ForumsSitemapProvider.IsPublicForum(readRoleIds);
+            bool result = ForumInfo.IsPublicForum(readRoleIds);
 
             // Assert
             Assert.That(result, Is.True);
@@ -50,34 +51,34 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Components.Sitemap
             var readRoleIds = new List<int> { 2, 3, 4 };
 
             // Act
-            bool result = ForumsSitemapProvider.IsPublicForum(readRoleIds);
+            bool result = ForumInfo.IsPublicForum(readRoleIds);
 
             // Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        public void EnsureAbsoluteUrl_WithRelativePathAndSecure_ReturnsHttpsUrl()
+        public void ResolveUrl_WithRelativePathAndSecure_ReturnsHttpsUrl()
         {
             // Arrange
             string link = "/forums/topic/abc";
             string portalAlias = "dnncommunity.org";
 
             // Act
-            string result = ForumsSitemapProvider.EnsureAbsoluteUrl(link, portalAlias, true);
+            string result = Utilities.ResolveUrl(link, portalAlias, true);
 
             // Assert
             Assert.That(result, Is.EqualTo("https://dnncommunity.org/forums/topic/abc"));
         }
 
         [Test]
-        public void EnsureAbsoluteUrl_WithAbsoluteUrl_ReturnsUnchanged()
+        public void ResolveUrl_WithAbsoluteUrl_ReturnsUnchanged()
         {
             // Arrange
             string link = "https://dnncommunity.org/forums/topic/abc";
 
             // Act
-            string result = ForumsSitemapProvider.EnsureAbsoluteUrl(link, "ignored", false);
+            string result = Utilities.ResolveUrl(link, "ignored", true);
 
             // Assert
             Assert.That(result, Is.EqualTo(link));
