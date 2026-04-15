@@ -137,6 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     continue;
                 }
 
+                // BuildUrl may return a relative segment without a leading slash; normalize for ResolveUrl.
                 if (!link.StartsWith("/", StringComparison.Ordinal) && !link.StartsWith("http", StringComparison.OrdinalIgnoreCase))
                 {
                     link = "/" + link;

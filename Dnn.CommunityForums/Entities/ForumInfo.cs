@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI.WebControls;
 
@@ -47,8 +48,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     // TODO [Cacheable("activeforums_Forums", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
     public class ForumInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
-        private static readonly int AllUsersRoleId = DotNetNuke.Modules.ActiveForums.Utilities.SafeConvertInt(DotNetNuke.Common.Globals.glbRoleAllUsers);
-        private static readonly int UnauthenticatedUsersRoleId = DotNetNuke.Modules.ActiveForums.Utilities.SafeConvertInt(DotNetNuke.Common.Globals.glbRoleUnauthUser);
+        private static readonly int AllUsersRoleId = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
+        private static readonly int UnauthenticatedUsersRoleId = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
 
         private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
         private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
