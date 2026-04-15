@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
             }
         }
 
-        private class SearchSitemapResult
+        internal class SearchSitemapResult
         {
             public int ContentId { get; set; }
 
