@@ -727,14 +727,51 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         public void EscapeJavaScriptSingleQuotedString_EscapesSingleQuotesBackslashesAndNewLines()
         {
             // Arrange
-            const string input = "L'utilisateur\\test\r\nnext";
-            const string expected = "L\\'utilisateur\\\\test\\r\\nnext";
+            const string input = "L'utilisateur\\test\r\nnext\tvalue</script>\u2028\u2029";
+            const string expected = "L\\'utilisateur\\\\test\\r\\nnext\\tvalue<\\/script>\\u2028\\u2029";
 
             // Act
             var result = Utilities.EscapeJavaScriptSingleQuotedString(input);
 
             // Assert
             Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void IsInsideScriptBlock_ReturnsTrueOnlyForScriptContent()
+        {
+            // Arrange
+            const string content = "<div>'[RESX:Label]'</div><script>var msg='[RESX:Label]';</script>";
+            int htmlIndex = content.IndexOf("[RESX:Label]", StringComparison.Ordinal);
+            int scriptIndex = content.LastIndexOf("[RESX:Label]", StringComparison.Ordinal);
+
+            // Act
+            bool isHtmlScriptContent = Utilities.IsInsideScriptBlock(content, htmlIndex);
+            bool isScriptScriptContent = Utilities.IsInsideScriptBlock(content, scriptIndex);
+
+            // Assert
+            Assert.That(isHtmlScriptContent, Is.False);
+            Assert.That(isScriptScriptContent, Is.True);
+        }
+
+        [Test]
+        public void IsInsideJavaScriptSingleQuotedString_ReturnsTrueOnlyForSingleQuotedScriptString()
+        {
+            // Arrange
+            const string content = "<div title='[RESX:Label]'></div><script>var a='[RESX:Label]';var b=\"[RESX:Label]\";</script>";
+            int htmlIndex = content.IndexOf("[RESX:Label]", StringComparison.Ordinal);
+            int singleQuoteScriptIndex = content.IndexOf("[RESX:Label]", htmlIndex + 1, StringComparison.Ordinal);
+            int doubleQuoteScriptIndex = content.LastIndexOf("[RESX:Label]", StringComparison.Ordinal);
+
+            // Act
+            bool isHtmlSingleQuoted = Utilities.IsInsideJavaScriptSingleQuotedString(content, htmlIndex);
+            bool isSingleQuotedScript = Utilities.IsInsideJavaScriptSingleQuotedString(content, singleQuoteScriptIndex);
+            bool isDoubleQuotedScript = Utilities.IsInsideJavaScriptSingleQuotedString(content, doubleQuoteScriptIndex);
+
+            // Assert
+            Assert.That(isHtmlSingleQuoted, Is.False);
+            Assert.That(isSingleQuotedScript, Is.True);
+            Assert.That(isDoubleQuotedScript, Is.False);
         }
     }
 }
