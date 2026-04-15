@@ -23,7 +23,6 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Data.SqlTypes;
     using System.Globalization;
     using System.Linq;
 
@@ -37,6 +36,11 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
 
     public class ForumsSitemapProvider : SitemapProvider
     {
+        private const int AllContentBeginYear = 1753;
+        private const int MissingTagId = -1;
+        private const int MissingCategoryId = -1;
+        private const int FirstPage = 1;
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ForumsSitemapProvider));
 
         private readonly ForumController forumController;
@@ -50,6 +54,11 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
         {
             var sitemapUrlsByUrl = new Dictionary<string, SitemapUrl>(StringComparer.OrdinalIgnoreCase);
             var portalAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault(a => a.IsPrimary)?.HTTPAlias;
+            if (string.IsNullOrWhiteSpace(portalAlias))
+            {
+                Logger.Warn($"Unable to generate sitemap URLs for portal {portalId} because no primary portal alias could be resolved.");
+                return sitemapUrlsByUrl.Values.ToList();
+            }
 
             foreach (ModuleInfo module in ModuleController.Instance.GetModules(portalId))
             {
@@ -113,8 +122,10 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
             var tab = TabController.Instance.GetTab(module.TabID, module.PortalID);
             bool isSecureTab = tab != null && tab.IsSecure;
             var forumsByForumId = new Dictionary<int, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
+            var controlUtils = new ControlUtils();
 
-            using (IDataReader dataReader = DataProvider.Instance().Search_DotNetNuke(module.ModuleID, SqlDateTime.MinValue.Value))
+            // Search_DotNetNuke expects a SQL datetime-compatible minimum date.
+            using (IDataReader dataReader = DataProvider.Instance().Search_DotNetNuke(module.ModuleID, new DateTime(AllContentBeginYear, 1, 1)))
             {
                 while (dataReader.Read())
                 {
@@ -136,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
                         continue;
                     }
 
-                    string link = new ControlUtils().BuildUrl(
+                    string link = controlUtils.BuildUrl(
                         module.PortalID,
                         module.TabID,
                         module.ModuleID,
@@ -146,10 +157,10 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
                         forumId,
                         Convert.ToInt32(dataReader["TopicId"], CultureInfo.InvariantCulture),
                         Convert.ToString(dataReader["TopicUrl"], CultureInfo.InvariantCulture),
-                        -1,
-                        -1,
+                        MissingTagId,
+                        MissingCategoryId,
                         string.Empty,
-                        1,
+                        FirstPage,
                         Convert.ToInt32(dataReader["ContentId"], CultureInfo.InvariantCulture),
                         forum.SocialGroupId);
 

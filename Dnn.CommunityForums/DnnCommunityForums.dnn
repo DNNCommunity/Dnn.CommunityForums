@@ -509,7 +509,7 @@
               <configuration>
                 <nodes>
                   <node path="/configuration/dotnetnuke/sitemap/providers" action="update" key="name" collision="overwrite">
-                    <add name="forumsSitemapProvider" type="DotNetNuke.Modules.ActiveForums.Sitemap.ForumsSitemapProvider, DotNetNuke.Modules.ActiveForums" />
+                    <add name="ForumsSitemapProvider" type="DotNetNuke.Modules.ActiveForums.Sitemap.ForumsSitemapProvider, DotNetNuke.Modules.ActiveForums" />
                   </node>
                 </nodes>
               </configuration>
@@ -517,7 +517,7 @@
             <uninstall>
               <configuration>
                 <nodes>
-                  <node path="/configuration/dotnetnuke/sitemap/providers/add[@name='forumsSitemapProvider']" action="remove" />
+                  <node path="/configuration/dotnetnuke/sitemap/providers/add[@name='ForumsSitemapProvider']" action="remove" />
                   <node path="/configuration/system.webServer/modules/add[@name = 'ForumsReWriter']" action="remove" />
                   <node path="/configuration/system.web/httpModules/add[@name = 'ForumsReWriter']" action="remove" />
                 </nodes>

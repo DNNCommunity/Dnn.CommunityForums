@@ -28,11 +28,13 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Components.Sitemap
     [TestFixture]
     public class ForumsSitemapProviderTests
     {
+        private static readonly int AllUsersRoleId = int.Parse(DotNetNuke.Common.Globals.glbRoleAllUsers);
+
         [Test]
         public void IsPublicForum_WithAllUsersRole_ReturnsTrue()
         {
             // Arrange
-            var readRoleIds = new List<int> { int.Parse(DotNetNuke.Common.Globals.glbRoleAllUsers) };
+            var readRoleIds = new List<int> { AllUsersRoleId };
 
             // Act
             bool result = ForumsSitemapProvider.IsPublicForum(readRoleIds);
