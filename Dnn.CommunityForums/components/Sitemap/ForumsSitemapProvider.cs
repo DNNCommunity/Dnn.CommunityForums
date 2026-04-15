@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -125,70 +126,95 @@ namespace DotNetNuke.Modules.ActiveForums.Sitemap
             var controlUtils = new ControlUtils();
 
             // Search_DotNetNuke expects a SQL datetime-compatible minimum date.
-            using (IDataReader dataReader = DataProvider.Instance().Search_DotNetNuke(module.ModuleID, new DateTime(AllContentBeginYear, 1, 1)))
+            var results = DataContext.Instance().ExecuteQuery<SearchSitemapResult>(
+                CommandType.StoredProcedure,
+                "{databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate",
+                module.ModuleID,
+                new DateTime(AllContentBeginYear, 1, 1));
+            foreach (SearchSitemapResult result in results)
             {
-                while (dataReader.Read())
+                if (!result.IsApproved || result.IsDeleted)
                 {
-                    if (!Convert.ToBoolean(dataReader["isApproved"], CultureInfo.InvariantCulture) || Convert.ToBoolean(dataReader["isDeleted"], CultureInfo.InvariantCulture))
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    int forumId = Convert.ToInt32(dataReader["ForumId"], CultureInfo.InvariantCulture);
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum;
-                    if (!forumsByForumId.TryGetValue(forumId, out forum))
-                    {
-                        forum = this.forumController.GetById(forumId, module.ModuleID);
-                        forumsByForumId[forumId] = forum;
-                    }
+                int forumId = result.ForumId;
+                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum;
+                if (!forumsByForumId.TryGetValue(forumId, out forum))
+                {
+                    forum = this.forumController.GetById(forumId, module.ModuleID);
+                    forumsByForumId[forumId] = forum;
+                }
 
-                    if (forum == null || forum.Security == null || !IsPublicForum(forum.Security.ReadRoleIds))
-                    {
-                        continue;
-                    }
+                if (forum == null || forum.Security == null || !IsPublicForum(forum.Security.ReadRoleIds))
+                {
+                    continue;
+                }
 
-                    string link = controlUtils.BuildUrl(
-                        module.PortalID,
-                        module.TabID,
-                        module.ModuleID,
-                        Convert.ToString(dataReader["ForumGroupUrlPrefix"], CultureInfo.InvariantCulture),
-                        Convert.ToString(dataReader["ForumUrlPrefix"], CultureInfo.InvariantCulture),
-                        Convert.ToInt32(dataReader["ForumGroupId"], CultureInfo.InvariantCulture),
-                        forumId,
-                        Convert.ToInt32(dataReader["TopicId"], CultureInfo.InvariantCulture),
-                        Convert.ToString(dataReader["TopicUrl"], CultureInfo.InvariantCulture),
-                        MissingTagId,
-                        MissingCategoryId,
-                        string.Empty,
-                        FirstPage,
-                        Convert.ToInt32(dataReader["ContentId"], CultureInfo.InvariantCulture),
-                        forum.SocialGroupId);
+                string link = controlUtils.BuildUrl(
+                    portalId: module.PortalID,
+                    tabId: module.TabID,
+                    moduleId: module.ModuleID,
+                    groupPrefix: result.ForumGroupUrlPrefix,
+                    forumPrefix: result.ForumUrlPrefix,
+                    forumGroupId: result.ForumGroupId,
+                    forumID: forumId,
+                    topicId: result.TopicId,
+                    topicURL: result.TopicUrl,
+                    tagId: MissingTagId,
+                    categoryId: MissingCategoryId,
+                    otherPrefix: string.Empty,
+                    pageId: FirstPage,
+                    contentId: result.ContentId,
+                    socialGroupId: forum.SocialGroupId);
 
-                    link = EnsureAbsoluteUrl(link, portalAlias, isSecureTab);
-                    if (string.IsNullOrWhiteSpace(link))
-                    {
-                        continue;
-                    }
+                link = EnsureAbsoluteUrl(link: link, portalAlias: portalAlias, isSecure: isSecureTab);
+                if (string.IsNullOrWhiteSpace(link))
+                {
+                    continue;
+                }
 
-                    DateTime lastModified = Convert.ToDateTime(dataReader["DateUpdated"], CultureInfo.InvariantCulture);
+                DateTime lastModified = result.DateUpdated;
 
-                    SitemapUrl sitemapUrl;
-                    if (!sitemapUrlsByUrl.TryGetValue(link, out sitemapUrl))
+                SitemapUrl sitemapUrl;
+                if (!sitemapUrlsByUrl.TryGetValue(link, out sitemapUrl))
+                {
+                    sitemapUrlsByUrl[link] = new SitemapUrl
                     {
-                        sitemapUrlsByUrl[link] = new SitemapUrl
-                        {
-                            Url = link,
-                            LastModified = lastModified,
-                            ChangeFrequency = SitemapChangeFrequency.Daily,
-                            Priority = 0.5F,
-                        };
-                    }
-                    else if (lastModified > sitemapUrl.LastModified)
-                    {
-                        sitemapUrl.LastModified = lastModified;
-                    }
+                        Url = link,
+                        LastModified = lastModified,
+                        ChangeFrequency = SitemapChangeFrequency.Daily,
+                        Priority = 0.5F,
+                    };
+                }
+                else if (lastModified > sitemapUrl.LastModified)
+                {
+                    sitemapUrl.LastModified = lastModified;
                 }
             }
+        }
+
+        private class SearchSitemapResult
+        {
+            public int ContentId { get; set; }
+
+            public DateTime DateUpdated { get; set; }
+
+            public int ForumGroupId { get; set; }
+
+            public string ForumGroupUrlPrefix { get; set; }
+
+            public int ForumId { get; set; }
+
+            public string ForumUrlPrefix { get; set; }
+
+            public bool IsApproved { get; set; }
+
+            public bool IsDeleted { get; set; }
+
+            public int TopicId { get; set; }
+
+            public string TopicUrl { get; set; }
         }
     }
 }
