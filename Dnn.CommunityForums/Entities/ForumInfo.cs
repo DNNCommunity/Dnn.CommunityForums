@@ -86,6 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.UpdateCache();
         }
 
+        [IgnoreColumn]
         internal bool IsPublicForum =>
             this.Security?.ReadRoleIds?.Contains(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers, CultureInfo.InvariantCulture)) == true ||
             this.Security?.ReadRoleIds?.Contains(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture)) == true;
