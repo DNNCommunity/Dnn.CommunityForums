@@ -47,6 +47,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     // TODO [Cacheable("activeforums_Forums", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
     public class ForumInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
+        private static readonly int AllUsersRoleId = DotNetNuke.Modules.ActiveForums.Utilities.SafeConvertInt(DotNetNuke.Common.Globals.glbRoleAllUsers);
+        private static readonly int UnauthenticatedUsersRoleId = DotNetNuke.Modules.ActiveForums.Utilities.SafeConvertInt(DotNetNuke.Common.Globals.glbRoleUnauthUser);
+
         private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
         private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
@@ -91,8 +94,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return false;
             }
 
-            return readRoleIds.Contains(DotNetNuke.Modules.ActiveForums.Utilities.SafeConvertInt(DotNetNuke.Common.Globals.glbRoleAllUsers)) ||
-                   readRoleIds.Contains(DotNetNuke.Modules.ActiveForums.Utilities.SafeConvertInt(DotNetNuke.Common.Globals.glbRoleUnauthUser));
+            return readRoleIds.Contains(AllUsersRoleId) ||
+                   readRoleIds.Contains(UnauthenticatedUsersRoleId);
         }
 
         [ColumnName("ForumId")]

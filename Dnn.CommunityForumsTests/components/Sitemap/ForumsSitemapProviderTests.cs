@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Components.Sitemap
         }
 
         [Test]
-        public void ResolveUrl_WithAbsoluteUrl_ReturnsUnchanged()
+        public void ResolveUrl_WithAbsoluteHttpsUrlAndSecure_ReturnsUnchanged()
         {
             // Arrange
             string link = "https://dnncommunity.org/forums/topic/abc";
