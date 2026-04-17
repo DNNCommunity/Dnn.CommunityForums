@@ -42,6 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
     public class ForumsSitemapProvider : SitemapProvider
     {
         private const int FirstPage = 1;
+        private const int TopicReplyId = -1;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ForumsSitemapProvider));
 
@@ -88,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
             var tab = TabController.Instance.GetTab(module.TabID, module.PortalID);
             bool isSecureTab = tab != null && tab.IsSecure;
             var controlUtils = new ControlUtils();
+            var sitemapMetricsByUrl = new Dictionary<string, SitemapUrlMetrics>(StringComparer.OrdinalIgnoreCase);
 
             var results = DataContext.Instance().ExecuteQuery<SearchSitemapResult>(
                 CommandType.StoredProcedure,
@@ -136,22 +138,146 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     continue;
                 }
 
-                DateTime lastModified = result.DateUpdated;
-
-                SitemapUrl sitemapUrl;
-                if (!sitemapUrlsByUrl.TryGetValue(link, out sitemapUrl))
+                if (!sitemapMetricsByUrl.TryGetValue(link, out SitemapUrlMetrics metrics))
                 {
-                    sitemapUrlsByUrl[link] = new SitemapUrl
-                    {
-                        Url = link,
-                        LastModified = lastModified,
-                        ChangeFrequency = SitemapChangeFrequency.Daily,
-                        Priority = 0.5F,
-                    };
+                    metrics = new SitemapUrlMetrics();
+                    sitemapMetricsByUrl[link] = metrics;
                 }
-                else if (lastModified > sitemapUrl.LastModified)
+
+                metrics.Update(result);
+            }
+
+            DateTime nowUtc = DateTime.UtcNow;
+            foreach (var item in sitemapMetricsByUrl)
+            {
+                var metrics = item.Value;
+                SitemapUrl sitemapUrl;
+                if (!sitemapUrlsByUrl.TryGetValue(item.Key, out sitemapUrl))
                 {
-                    sitemapUrl.LastModified = lastModified;
+                    sitemapUrlsByUrl[item.Key] = new SitemapUrl
+                    {
+                        Url = item.Key,
+                        LastModified = metrics.LastModifiedUtc,
+                        ChangeFrequency = DetermineChangeFrequency(metrics, nowUtc),
+                        Priority = DeterminePriority(metrics, nowUtc),
+                    };
+                    continue;
+                }
+
+                if (metrics.LastModifiedUtc > sitemapUrl.LastModified)
+                {
+                    sitemapUrl.LastModified = metrics.LastModifiedUtc;
+                }
+            }
+        }
+
+        internal static SitemapChangeFrequency DetermineChangeFrequency(SitemapUrlMetrics metrics, DateTime nowUtc)
+        {
+            DateTime latestReplyDateUtc = metrics.LatestReplyDateUtc ?? metrics.LastModifiedUtc;
+            DateTime firstReplyDateUtc = metrics.FirstReplyDateUtc ?? metrics.TopicCreatedUtc;
+
+            double topicAgeInDays = (nowUtc - metrics.TopicCreatedUtc).TotalDays;
+            double replyWindowInDays = (latestReplyDateUtc - firstReplyDateUtc).TotalDays;
+
+            if (topicAgeInDays <= 7 && metrics.ReplyCount >= 5 && replyWindowInDays <= 3)
+            {
+                return SitemapChangeFrequency.Hourly;
+            }
+
+            if (topicAgeInDays <= 30 && (metrics.ReplyCount >= 2 || replyWindowInDays <= 7))
+            {
+                return SitemapChangeFrequency.Daily;
+            }
+
+            if (topicAgeInDays <= 120 || replyWindowInDays <= 30)
+            {
+                return SitemapChangeFrequency.Weekly;
+            }
+
+            if (topicAgeInDays <= 365)
+            {
+                return SitemapChangeFrequency.Monthly;
+            }
+
+            return SitemapChangeFrequency.Yearly;
+        }
+
+        internal static float DeterminePriority(SitemapUrlMetrics metrics, DateTime nowUtc)
+        {
+            float priority = 0.5F;
+
+            priority += Math.Min(metrics.ReplyCount, 20) * 0.015F;
+
+            if (metrics.FirstReplyDateUtc.HasValue && metrics.LatestReplyDateUtc.HasValue)
+            {
+                double discussionWindowInDays = (metrics.LatestReplyDateUtc.Value - metrics.FirstReplyDateUtc.Value).TotalDays;
+                if (discussionWindowInDays >= 30)
+                {
+                    priority += 0.10F;
+                }
+                else if (discussionWindowInDays >= 7)
+                {
+                    priority += 0.05F;
+                }
+            }
+
+            double updatedRecentlyInDays = (nowUtc - metrics.LastModifiedUtc).TotalDays;
+            if (updatedRecentlyInDays <= 7)
+            {
+                priority += 0.10F;
+            }
+            else if (updatedRecentlyInDays <= 30)
+            {
+                priority += 0.05F;
+            }
+
+            return Math.Max(0.1F, Math.Min(1F, priority));
+        }
+
+        internal class SitemapUrlMetrics
+        {
+            public DateTime TopicCreatedUtc { get; private set; } = DateTime.MaxValue;
+
+            public DateTime LastModifiedUtc { get; private set; } = DateTime.MinValue;
+
+            public DateTime? FirstReplyDateUtc { get; private set; }
+
+            public DateTime? LatestReplyDateUtc { get; private set; }
+
+            public int ReplyCount { get; private set; }
+
+            public void Update(SearchSitemapResult result)
+            {
+                if (result.DateCreated < this.TopicCreatedUtc)
+                {
+                    this.TopicCreatedUtc = result.DateCreated;
+                }
+
+                if (result.DateUpdated > this.LastModifiedUtc)
+                {
+                    this.LastModifiedUtc = result.DateUpdated;
+                }
+
+                if (result.ReplyId == TopicReplyId)
+                {
+                    if (result.DateCreated < this.TopicCreatedUtc)
+                    {
+                        this.TopicCreatedUtc = result.DateCreated;
+                    }
+
+                    return;
+                }
+
+                this.ReplyCount++;
+
+                if (!this.FirstReplyDateUtc.HasValue || result.DateCreated < this.FirstReplyDateUtc.Value)
+                {
+                    this.FirstReplyDateUtc = result.DateCreated;
+                }
+
+                if (!this.LatestReplyDateUtc.HasValue || result.DateUpdated > this.LatestReplyDateUtc.Value)
+                {
+                    this.LatestReplyDateUtc = result.DateUpdated;
                 }
             }
         }
