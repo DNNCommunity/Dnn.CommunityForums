@@ -549,7 +549,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string NormalizeHtmlForStorage(string text)
         {
-            return string.IsNullOrEmpty(text) ? text ?? string.Empty : WebUtility.HtmlDecode(text);
+            return string.IsNullOrEmpty(text) ? string.Empty : WebUtility.HtmlDecode(text);
         }
 
         private static string CleanEditor(int portalId, string text, bool useFilter, int moduleId, string themePath, bool processEmoticons)

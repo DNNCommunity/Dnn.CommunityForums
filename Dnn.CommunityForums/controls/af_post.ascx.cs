@@ -659,8 +659,7 @@ namespace DotNetNuke.Modules.ActiveForums
             body = Utilities.CleanString(this.PortalId, body, this.allowHTML, this.editorType, this.ForumInfo.FeatureSettings.UseFilter, this.ForumInfo.FeatureSettings.AllowScript, this.ForumModuleId, this.themePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
             subject = Utilities.NormalizeHtmlForStorage(subject);
             body = Utilities.NormalizeHtmlForStorage(body);
-            var summary = this.ctlForm.Summary;
-            summary = Utilities.NormalizeHtmlForStorage(summary);
+            var summary = Utilities.NormalizeHtmlForStorage(this.ctlForm.Summary);
             int authorId;
             string authorName;
             if (this.Request.IsAuthenticated)

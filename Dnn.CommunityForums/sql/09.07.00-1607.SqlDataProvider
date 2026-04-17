@@ -10,6 +10,8 @@ Most recent procedure versions that persist topic/reply content:
 - activeforums_Topics_SaveToForum: 08.02.00.SqlDataProvider
 */
 
+/* decode order matters: double-encoded entities first, then single-encoded entities, and '&amp;' last */
+/* this is a one-time module-upgrade data fix for legacy content */
 UPDATE {databaseOwner}[{objectQualifier}activeforums_Content]
 SET Subject = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(Subject, '&amp;lt;', '&lt;'), '&amp;gt;', '&gt;'), '&amp;quot;', '&quot;'), '&amp;#39;', '&#39;'), '&amp;#91;', '&#91;'), '&amp;#93;', '&#93;'), '&amp;amp;', '&amp;'), '&lt;', '<'), '&gt;', '>'), '&quot;', '"'), '&#39;', ''''), '&amp;', '&'),
     Body = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(Body, '&amp;lt;', '&lt;'), '&amp;gt;', '&gt;'), '&amp;quot;', '&quot;'), '&amp;#39;', '&#39;'), '&amp;#91;', '&#91;'), '&amp;#93;', '&#93;'), '&amp;amp;', '&amp;'), '&lt;', '<'), '&gt;', '>'), '&quot;', '"'), '&#39;', ''''), '&amp;', '&'),
