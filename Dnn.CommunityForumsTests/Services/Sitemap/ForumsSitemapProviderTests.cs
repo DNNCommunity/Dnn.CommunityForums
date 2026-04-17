@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Sitemap
             // Arrange
             DateTime nowUtc = DateTime.UtcNow;
             DateTime topicDateUtc = nowUtc.AddDays(-90);
-            var metrics = CreateMetrics(topicDateUtc, topicDateUtc.AddDays(-10), 0, 0);
+            var metrics = CreateMetrics(topicDateUtc, topicDateUtc, 0, 0);
 
             // Act
             float priority = ForumsSitemapProvider.DeterminePriority(metrics, nowUtc);
