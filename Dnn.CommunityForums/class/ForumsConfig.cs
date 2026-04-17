@@ -1023,6 +1023,39 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal void RelocateAttachments_090700()
         {
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+            {
+                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                {
+                    if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName.Trim(), StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        try
+                        {
+                            if (!DotNetNuke.Services.FileSystem.FolderManager.Instance.FolderExists(portal.PortalId, Globals.ContentFolderNameBase))
+                            {
+                                DotNetNuke.Services.FileSystem.FolderManager.Instance.AddFolder(portal.PortalId, Globals.ContentFolderNameBase);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                        }
+
+                        try
+                        {
+                            if (!DotNetNuke.Services.FileSystem.FolderManager.Instance.FolderExists(portal.PortalId, Globals.AttachmentUploadsFolderName))
+                            {
+                                DotNetNuke.Services.FileSystem.FolderManager.Instance.AddFolder(portal.PortalId, Globals.AttachmentUploadsFolderName);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                        }
+                    }
+                }
+            }
+
             var attachmentController = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController();
             foreach (var attach in attachmentController.Get().ToList())
             {
