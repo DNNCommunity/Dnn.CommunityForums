@@ -466,7 +466,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             if (!string.IsNullOrEmpty(body))
             {
-                body = Utilities.ManageImagePath(System.Net.WebUtility.HtmlDecode(body), uri);
+                body = Utilities.ManageImagePath(body, uri);
                 body = body.Replace("[", "&#91;").Replace("]", "&#93;");
                 if (body.ToUpper().Contains("&#91;CODE&#93;"))
                 {
@@ -476,7 +476,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
                 if (RegexUtils.GetCachedRegex("\\[CODE([^>]*)\\]", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).IsMatch(body))
                 {
-                    body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
+                    body = CodeParser.ParseCode(body);
                 }
 
                 body = Utilities.StripExecCode(body);
