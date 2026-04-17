@@ -260,11 +260,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
 
                 if (result.ReplyId == TopicReplyId)
                 {
-                    if (result.DateCreated < this.TopicCreatedUtc)
-                    {
-                        this.TopicCreatedUtc = result.DateCreated;
-                    }
-
                     return;
                 }
 
@@ -275,9 +270,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     this.FirstReplyDateUtc = result.DateCreated;
                 }
 
-                if (!this.LatestReplyDateUtc.HasValue || result.DateUpdated > this.LatestReplyDateUtc.Value)
+                if (!this.LatestReplyDateUtc.HasValue || result.DateCreated > this.LatestReplyDateUtc.Value)
                 {
-                    this.LatestReplyDateUtc = result.DateUpdated;
+                    this.LatestReplyDateUtc = result.DateCreated;
                 }
             }
         }
