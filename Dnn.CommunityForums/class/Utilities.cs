@@ -1925,9 +1925,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     link = link.Substring(subDomain.Length);
                 }
-
-                url = url.Replace(url, $"{domain}{link}");
             }
+
+            url = url.Replace(url, $"{domain}{link}");
 
             if (sslEnabled && url.StartsWith("http://"))
             {
