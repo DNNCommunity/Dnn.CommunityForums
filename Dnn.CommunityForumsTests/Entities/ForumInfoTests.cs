@@ -182,8 +182,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
                     TotalTopics = 0,
                     Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo()
                     {
-                        Read = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString(),
                         View = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString(),
+                        Read = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString(),
                     },
                     ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
                     {

@@ -23,17 +23,23 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     using System;
     using System.Collections;
     using System.Globalization;
+    using System.Security.Policy;
+    using System.Text.RegularExpressions;
 
     using DotNetNuke.Modules.ActiveForums;
-    using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Modules.ActiveForums.Extensions;
+
+    using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 
     using Moq;
+
     using NUnit.Framework;
+
 
     [TestFixture]
     public partial class UtilitiesTests : DotNetNuke.Modules.ActiveForumsTests.TestBase
     {
+        private const string UrlPattern = @"http[s]?://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?";
+
         [Test]
         [TestCase(-1, 0)]
         [TestCase(5, 4)]
@@ -739,7 +745,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         {
             // Arrange
             var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
-            var originalAlias = "localhost";
+            var originalAlias = "example.com";
             var url = "/en-us/portals/0/images/logo.png";
 
             // Act
@@ -748,6 +754,28 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             // Assert
             var expectedResult = DotNetNuke.Common.Globals.AddHTTP(originalAlias) + url;
             Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        [TestCase("/forums/topic/abc", "https://example.com/en-us/forums/topic/abc", ExpectedResult = true)]
+        public bool ResolveUrl_WithRelativePathAndSecure_ReturnsHttpsUrl(string link, string expected)
+        {
+            // Arrange & Act
+            string result = Utilities.ResolveUrl(url: link, defaultPortalAlias: this.DefaultPortalAlias, sslEnabled: true);
+
+            // Assert
+            return result == expected;
+        }
+
+        [Test]
+        [TestCase("https://dnncommunity.org/forums/topic/abc", "https://example.com/en-us/forums/topic/abc", ExpectedResult = true)]
+        public bool ResolveUrl_WithAbsoluteHttpsUrlAndSecure_ReturnsUnchanged(string link, string expected)
+        {
+            // Arrange & Act
+            string result = Utilities.ResolveUrl(url: link, defaultPortalAlias: this.DefaultPortalAlias, sslEnabled: true);
+
+            // Assert
+            return result == expected;
         }
 
         [Test]
@@ -799,6 +827,365 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             Assert.That(isHtmlSingleQuoted, Is.False);
             Assert.That(isSingleQuotedScript, Is.True);
             Assert.That(isDoubleQuotedScript, Is.False);
+        }
+
+        [Test]
+        [TestCase("Check out this image: http://example.com/image.jpg", ExpectedResult = true)]
+        public bool AutoLinks_WithImageUrl_ShouldNotCreateLink(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return !result.Contains("<a href=") && result.Contains("http://example.com/image.jpg");
+        }
+
+        [Test]
+        [TestCase("jpg", ExpectedResult = false)]
+        [TestCase("gif", ExpectedResult = false)]
+        [TestCase("png", ExpectedResult = false)]
+        [TestCase("jpeg", ExpectedResult = false)]
+        [TestCase("pdf", ExpectedResult = true)]
+        [TestCase("docx", ExpectedResult = true)]
+        public bool AutoLinks_ShouldCreateLinkBasedOnExtension(string extension)
+        {
+            // Arrange
+            var text = $"URL: https://example.com/en-us/file.{extension}";
+
+            // Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result.Contains("<a href=");
+        }
+
+        [Test]
+        [TestCase("Visit http://external.com for more info", ExpectedResult = true)]
+        public bool AutoLinks_WithExternalUrl_ShouldCreateExternalLink(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result.Contains("target=\"_blank\"") && result.Contains("rel=\"nofollow\"") && result.Contains("<a href=\"http://external.com/\"");
+        }
+
+        [Test]
+        [TestCase("Visit https://example.com/en-us/page for more info", ExpectedResult = true)]
+        public bool AutoLinks_WithInternalUrl_ShouldCreateInternalLink(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return !result.Contains("target=\"_blank\"") && !result.Contains("rel=\"nofollow\"") && result.Contains("<a href=\"https://example.com/en-us/page\"");
+        }
+
+        [Test]
+        [TestCase("http://external.com/this-is-a-very-long-url-that-exceeds-the-maximum-length-allowed-for-display", ExpectedResult = true)]
+        public bool AutoLinks_WithLongUrl_ShouldTruncateLinkText(string longUrl)
+        {
+            // Arrange
+            var text = $"Check this out: {longUrl}";
+
+            // Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result.Contains("...") && result.Contains($"href=\"{longUrl}\"");
+        }
+
+        [Test]
+        [TestCase("<a href=\"http://example.com\">Link</a>", ExpectedResult = true)]
+        public bool AutoLinks_WithExistingHrefAttribute_ShouldNotModify(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result == text;
+        }
+
+        [Test]
+        [TestCase("<img src=\"http://example.com/image.png\" />", ExpectedResult = true)]
+        public bool AutoLinks_WithExistingSrcAttribute_ShouldNotModify(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result.Contains("src=\"http://example.com/image.png\"") && !result.Contains("<a href=");
+        }
+
+        [Test]
+        [TestCase("value=http://example.com/test", ExpectedResult = true)]
+        public bool AutoLinks_WithEqualsSignBeforeUrl_ShouldNotCreateLink(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return !result.Contains("<a href=");
+        }
+
+        [Test]
+        [TestCase("Visit https://secure.external.com", ExpectedResult = true)]
+        public bool AutoLinks_WithHttpsUrl_ShouldCreateLink(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result.Contains("target=\"_blank\"") && result.Contains("rel=\"nofollow\"") && result.Contains("<a href=\"https://secure.external.com/\"");
+        }
+
+        [Test]
+        [TestCase("Visit http://external1.com and http://external2.com", ExpectedResult = true)]
+        public bool AutoLinks_WithMultipleUrls_ShouldCreateMultipleLinks(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result.Contains("<a href=\"http://external1.com/\"") && result.Contains("<a href=\"http://external2.com/\"");
+        }
+
+        [Test]
+        [TestCase("Visit https://example.com/en-us/internal and https://external.com", ExpectedResult = true)]
+        public bool AutoLinks_WithMixedInternalAndExternalUrls_ShouldHandleBothCorrectly(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result.Contains("<a href=\"https://example.com/en-us/internal\">https://example.com/en-us/internal</a>")
+                && result.Contains("<a href=\"https://external.com/\" target=\"_blank\" rel=\"nofollow\">https://external.com</a>");
+        }
+
+        [Test]
+        [TestCase("&lt;a href=\"https://example.com\"&gt;Link&lt;/a&gt;", ExpectedResult = true)]
+        public bool AutoLinks_WithEncodedHref_ShouldDecodeAndProcess(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result.Contains("https://example.com");
+        }
+
+        [Test]
+        [TestCase(null, ExpectedResult = true)]
+        public bool AutoLinks_WithNullText_ShouldReturnEmptyString(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return string.IsNullOrEmpty(result);
+        }
+
+        [Test]
+        [TestCase("", ExpectedResult = true)]
+        public bool AutoLinks_WithEmptyText_ShouldReturnEmptyString(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result == string.Empty;
+        }
+
+        [Test]
+        [TestCase("Visit https://external.com/page?id=123&name=test", ExpectedResult = true)]
+        public bool AutoLinks_WithUrlContainingQueryParameters_ShouldCreateLink(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result.Contains("<a href=\"https://external.com/page?id=123&name=test\"");
+        }
+
+        [Test]
+        [TestCase("Visit https://external.com/page#section", ExpectedResult = true)]
+        public bool AutoLinks_WithUrlContainingHash_ShouldCreateLink(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result.Contains("<a href=\"https://external.com/page#section\"");
+        }
+
+        [Test]
+        [TestCase("Visit https://EXAMPLE.COM/en-us/page", ExpectedResult = true)]
+        public bool AutoLinks_WithCaseInsensitiveSiteMatch_ShouldTreatAsInternal(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return !result.Contains("target=\"_blank\"") && !result.Contains("rel=\"nofollow\"");
+        }
+
+        [Test]
+        [TestCase(
+            "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\"> @Timo Breumelhof Host (SU)</a>",
+            "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\"> @Timo Breumelhof Host (SU)</a>",
+            ExpectedResult = true)]
+        [TestCase(
+            "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\"><img class=\"af-avatar\" loading=\"lazy\" src=\"https://example.com/en-us/DnnImageHandler.ashx?mode=profilepic&userId=19&h=20&w=20\" /> @Timo Breumelhof Host (SU)</a>",
+            "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\"><img class=\"af-avatar\" loading=\"lazy\" src=\"https://example.com/en-us/DnnImageHandler.ashx?mode=profilepic&userId=19&h=20&w=20\" /> @Timo Breumelhof Host (SU)</a>",
+            ExpectedResult = true)]
+        [TestCase(
+            "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\">@Timo Breumelhof Host (SU)</a> is the best! just check out https://dnncommunity.org.",
+            "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\">@Timo Breumelhof Host (SU)</a> is the best! just check out <a href=\"https://dnncommunity.org/\" target=\"_blank\" rel=\"nofollow\">https://dnncommunity.org</a>.",
+            ExpectedResult = true)]
+        [TestCase(
+            "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\">@Timo Breumelhof Host (SU)</a> is the best! just check out <a href=\"https://dnncommunity.org/\" target=\"_blank\" rel=\"nofollow\">https://dnncommunity.org/</a>",
+            "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\">@Timo Breumelhof Host (SU)</a> is the best! just check out <a href=\"https://dnncommunity.org/\" target=\"_blank\" rel=\"nofollow\">https://dnncommunity.org/</a>",
+            ExpectedResult = true)]
+        [TestCase(
+            "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\"><img class=\"af-avatar\" loading=\"lazy\" src=\"https://example.com/en-us/DnnImageHandler.ashx?mode=profilepic&userId=19&h=20&w=20\" /> @Timo Breumelhof Host (SU)</a> is the best! just check out https://dnncommunity.org.",
+            "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\"><img class=\"af-avatar\" loading=\"lazy\" src=\"https://example.com/en-us/DnnImageHandler.ashx?mode=profilepic&userId=19&h=20&w=20\" /> @Timo Breumelhof Host (SU)</a> is the best! just check out <a href=\"https://dnncommunity.org/\" target=\"_blank\" rel=\"nofollow\">https://dnncommunity.org</a>.",
+            ExpectedResult = true)]
+        [TestCase(
+            "<p><a href=\"https://example.com/en-us/Activity-Feed?userId=19\"><img class=\"af-avatar\" loading=\"lazy\" src=\"https://example.com/en-us/DnnImageHandler.ashx?mode=profilepic&userId=19&h=20&w=20\" /> @Timo Breumelhof Host (SU)</a> is the best! just check out <a href=\"https://dnncommunity.org/\" target=\"_blank\" rel=\"nofollow\">https://dnncommunity.org</a></p>",
+            "<p><a href=\"https://example.com/en-us/Activity-Feed?userId=19\"><img class=\"af-avatar\" loading=\"lazy\" src=\"https://example.com/en-us/DnnImageHandler.ashx?mode=profilepic&userId=19&h=20&w=20\" /> @Timo Breumelhof Host (SU)</a> is the best! just check out <a href=\"https://dnncommunity.org/\" target=\"_blank\" rel=\"nofollow\">https://dnncommunity.org/</a></p>",
+            ExpectedResult = true)]
+        public bool AutoLinks_ProcessesCorrectly_WhenEmbeddedUrlsInsideAnchorTag(string text, string expected)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result == expected;
+        }
+
+        [Test]
+        public void AutoLinks_ProcessesCorrectly_WhenEmbeddedUrlsInsideAnchorTag2()
+        {
+            // Arrange
+            var text = "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\">@Timo Breumelhof Host (SU)</a> is the best! just check out https://dnncommunity.org.";
+            var expected = "<a href=\"https://example.com/en-us/Activity-Feed?userId=19\">@Timo Breumelhof Host (SU)</a> is the best! just check out <a href=\"https://dnncommunity.org/\" target=\"_blank\" rel=\"nofollow\">https://dnncommunity.org</a>.";
+
+            // Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        [TestCase("http://example.com/image.jpg", "http://example.com/image.jpg", ExpectedResult = true)]
+        public bool ReplaceLink_ReturnsImageUrl_Unchanged(string text, string expected)
+        {
+            // Arrange & Act
+            var match = System.Text.RegularExpressions.Regex.Match(text, UrlPattern, RegexOptions.IgnoreCase);
+            var result = Utilities.ReplaceLink(match, this.DefaultSite, text);
+
+            // Assert
+            return result == expected;
+        }
+
+        [Test]
+        [TestCase("jpg", ExpectedResult = true)]
+        [TestCase("gif", ExpectedResult = true)]
+        [TestCase("png", ExpectedResult = true)]
+        [TestCase("jpeg", ExpectedResult = true)]
+        public bool ReplaceLink_ReturnsImageExtensionUrl_Unchanged(string extension)
+        {
+            // Arrange
+            string text = $"http://example.com/photo.{extension}";
+
+            // Act
+            var match = System.Text.RegularExpressions.Regex.Match(text, UrlPattern, RegexOptions.IgnoreCase);
+            var result = Utilities.ReplaceLink(match, this.DefaultSite, text);
+
+            // Assert
+            return result == text;
+        }
+
+        [Test]
+        [TestCase("href=\"http://example.com/page\"", "http://example.com/page", ExpectedResult = true)]
+        public bool ReplaceLink_ReturnsUrl_Unchanged_WhenPrecededByHref(string text, string expected)
+        {
+            // Arrange & Act
+            var match = System.Text.RegularExpressions.Regex.Match(text, UrlPattern, RegexOptions.IgnoreCase);
+            var result = Utilities.ReplaceLink(match, this.DefaultSite, text);
+
+            // Assert
+            return result == expected;
+        }
+
+        [Test]
+        [TestCase("src=\"http://example.com/page\"", "http://example.com/page", ExpectedResult = true)]
+        public bool ReplaceLink_ReturnsUrl_Unchanged_WhenPrecededBySrc(string text, string expected)
+        {
+            // Arrange & Act
+            var match = System.Text.RegularExpressions.Regex.Match(text, UrlPattern, RegexOptions.IgnoreCase);
+            var result = Utilities.ReplaceLink(match, this.DefaultSite, text);
+
+            // Assert
+            return result == expected;
+        }
+
+        [Test]
+        [TestCase("value=http://example.com/page", "http://example.com/page", ExpectedResult = true)]
+        public bool ReplaceLink_ReturnsUrl_Unchanged_WhenPrecededByEquals(string text, string expected)
+        {
+            // Arrange & Act
+            var match = System.Text.RegularExpressions.Regex.Match(text, UrlPattern, RegexOptions.IgnoreCase);
+            var result = Utilities.ReplaceLink(match, this.DefaultSite, text);
+
+            // Assert
+            return result == expected;
+        }
+
+        [Test]
+        [TestCase("https://example.com/en-us/page", "<a href=\"https://example.com/en-us/page\">https://example.com/en-us/page</a>", ExpectedResult = true)]
+        public bool ReplaceLink_ReturnsInSiteAnchor_WhenUrlContainsDefaultSite(string text, string expected)
+        {
+            // Arrange & Act
+            var match = System.Text.RegularExpressions.Regex.Match(text, UrlPattern, RegexOptions.IgnoreCase);
+            var result = Utilities.ReplaceLink(match, this.DefaultSite, text);
+
+            // Assert
+            return result == expected;
+        }
+
+        [Test]
+        [TestCase("http://contoso.com/page", "<a href=\"http://contoso.com/page\" target=\"_blank\" rel=\"nofollow\">http://contoso.com/page</a>", ExpectedResult = true)]
+        public bool ReplaceLink_ReturnsOutSiteAnchor_WhenUrlIsExternal(string text, string expected)
+        {
+            // Arrange & Act
+            var match = System.Text.RegularExpressions.Regex.Match(text, UrlPattern, RegexOptions.IgnoreCase);
+            var result = Utilities.ReplaceLink(match, this.DefaultSite, text);
+
+            // Assert
+            return result == expected;
+        }
+
+        [Test]
+        [TestCase(60, ExpectedResult = true)]
+        public bool ReplaceLink_TruncatesLongUrlLabel(int urlLength)
+        {
+            // Arrange
+            string url = "http://contoso.com/" + new string('a', urlLength);
+            string expectedLabel = string.Concat(url.Substring(0, 25), "...", url.Substring(url.Length - 20));
+            string expected = $"<a href=\"{url}\" target=\"_blank\" rel=\"nofollow\">{expectedLabel}</a>";
+
+            // Act
+            var match = System.Text.RegularExpressions.Regex.Match(url, UrlPattern, RegexOptions.IgnoreCase);
+            if (!match.Success)
+            {
+                return false;
+            }
+
+            string result = Utilities.ReplaceLink(match, this.DefaultSite, url);
+
+            // Assert
+            return result == expected;
         }
     }
 }
