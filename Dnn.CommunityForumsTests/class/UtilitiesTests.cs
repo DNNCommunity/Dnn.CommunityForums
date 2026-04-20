@@ -709,7 +709,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             string result = Utilities.ResolveUrl(url: link, defaultPortalAlias: this.DefaultPortalAlias, sslEnabled: true);
 
             // Assert
-            Assert.That(result, Is.EqualTo("https://localhost/en-us/forums/topic/abc"));
+            Assert.That(result, Is.EqualTo("https://example.com/en-us/forums/topic/abc"));
         }
 
         [Test]
