@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
             //new ForumsConfig().RemoveLegacyAvatarsFolder_090700();
-            new ForumsConfig().RelocateAttachments_090700();
+            //new ForumsConfig().RelocateAttachments_090700();
 #endif
 
             try
