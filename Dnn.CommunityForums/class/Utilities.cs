@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Reflection;
     using System.Security.Cryptography;
+    using System.Security.Policy;
     using System.Security.Principal;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -47,6 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Web.UI.WebControls;
 
     public abstract partial class Utilities
     {
@@ -339,12 +341,13 @@ namespace DotNetNuke.Modules.ActiveForums
             return text;
         }
 
-        private static string ReplaceLink(Match match, string currentSite, string text)
+        internal static string ReplaceLink(Match match, string currentSite, string text)
         {
             const int maxLengthAutoLinkLabel = 47;
             const string outSite = "<a href=\"{0}\" target=\"_blank\" rel=\"nofollow\">{1}</a>";
             const string inSite = "<a href=\"{0}\">{1}</a>";
             var url = match.Value;
+
             if (url.ToLowerInvariant().Contains("jpg") || url.ToLowerInvariant().Contains("gif") || url.ToLowerInvariant().Contains("png") || url.ToLowerInvariant().Contains("jpeg"))
             {
                 return url;
@@ -372,34 +375,48 @@ namespace DotNetNuke.Modules.ActiveForums
                 return url;
             }
 
-            var urlText = match.Value;
+            var urlText = url;
             if (urlText.Length > maxLengthAutoLinkLabel)
             {
-                urlText = string.Concat(match.Value.Substring(0, maxLengthAutoLinkLabel - 22), "...", match.Value.Substring(match.Value.Length - 20));
+                urlText = string.Concat(url.Substring(0, maxLengthAutoLinkLabel - 22), "...", url.Substring(url.Length - 20));
             }
 
-            return url.ToLowerInvariant().Contains(currentSite.ToLowerInvariant()) ? string.Format(inSite, url, urlText) : string.Format(outSite, url, urlText);
+            return url.ToLowerInvariant().Contains(currentSite.ToLowerInvariant()) ? string.Format(inSite, new Uri(url).AbsoluteUri, urlText) : string.Format(outSite, new Uri(url).AbsoluteUri, urlText);
         }
 
         public static string AutoLinks(string text, string currentSite)
         {
-            var original = text;
             if (!string.IsNullOrEmpty(text))
             {
-                const string encodedHref = "&lt;a.*?href=[\"'](?<url>.*?)[\"'].*?&gt;(http[s]?.*?)&lt;/a&gt;"; // Encoded href regex
+                var original = text;
 
                 // Replace encoded url with decoded url
-                foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(encodedHref, RegexOptions.IgnoreCase).Matches(text))
+                const string EncodedHrefPattern = "&lt;a.*?href=[\"'](?<url>.*?)[\"'].*?&gt;(http[s]?.*?)&lt;/a&gt;";
+                foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(EncodedHrefPattern, RegexOptions.IgnoreCase).Matches(text))
                 {
                     text = text.Replace(m.Value, System.Net.WebUtility.HtmlDecode(m.Value));
                 }
 
-                const string regHref = "<a.*?href=[\"'](?<url>.*?)[\"'].*?>(?<http>http[s]?.*?)</a>";
+                const string HRefPattern = @"<a.*?href=[\""'](?<url>.*?)[\""'].*?>(?<inner>[http[s]?.*?.*?|.*?])</a>";
 
                 // Remove all exiting <A> anchors, so they will be treated by the ReplaceLink function. (adding target=_blank & nofollow)
-                foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(regHref, RegexOptions.IgnoreCase).Matches(text))
+                foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(HRefPattern, RegexOptions.IgnoreCase).Matches(text))
                 {
-                    text = text.Replace(m.Value, m.Groups["http"].Value.Contains("...") ? m.Groups["url"].Value : m.Groups["http"].Value);
+                    //-- if content between the tags contains href or src or =
+                    if (m.Groups["inner"]?.Success == true)
+                    {
+                        var innerValue = m.Groups["inner"].Value.ToLowerInvariant();
+                        if (innerValue.Contains("href") || innerValue.Contains("src") || innerValue.Contains("="))
+                        {
+                            continue;
+                        }
+
+                        var innerGroupValue = m.Groups["inner"].Value;
+                        if (innerGroupValue.Contains("...") || innerGroupValue.ToLowerInvariant().StartsWith("http"))
+                        {
+                            text = text.Replace(m.Value, m.Groups["url"].Value);
+                        }
+                    }
                 }
 
                 // Handle Empty string
@@ -408,12 +425,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     return original;
                 }
 
-                // Look for http(s) URLs  that are not perceded by a quote or <a>.
-                String strRegexUrl = @"(?<!['""]+|<a.*?>\s*)http[s]?://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?";
+                // Look for http(s) URLs that are not perceded by a quote or <a>.
+                const string UrlPattern = @"(?<!['""]+|<a.*?>\s*)\bhttps?://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$]";
 
                 // Create auto link
-                text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(strRegexUrl, RegexOptions.IgnoreCase).Replace(text, m => ReplaceLink(m, currentSite, text));
-
+                text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(UrlPattern, RegexOptions.IgnoreCase).Replace(text, m => ReplaceLink(m, currentSite, text));
                 if (string.IsNullOrEmpty(text))
                 {
                     return original;
@@ -1212,6 +1228,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return GetTimeZoneOffsetForUser(new DotNetNuke.Entities.Users.UserController().GetUser(portalId, userId));
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
         public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
         {
             return displayDate.AddMinutes(offset.TotalMinutes);
@@ -1273,6 +1290,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(expression, RegexOptions.IgnoreCase).Replace(template, spacerTemplate);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
         internal static string GetSqlString(string sqlFile)
         {
             var resourceLocation = sqlFile;
@@ -1468,6 +1486,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return string.IsNullOrEmpty(sValue) ? key : sValue;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
         public static string FormatFileSize(int fileSize)
         {
             try
@@ -1925,9 +1944,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     link = link.Substring(subDomain.Length);
                 }
-
-                url = url.Replace(url, $"{domain}{link}");
             }
+
+            url = url.Replace(url, $"{domain}{link}");
 
             if (sslEnabled && url.StartsWith("http://"))
             {

@@ -54,5 +54,4 @@
         <HintPath>ReferencedAssemblies\DotNetNuke.Tests.Utilities.dll</HintPath>
       </Reference>
     </ItemGroup>
-
 </Project>
