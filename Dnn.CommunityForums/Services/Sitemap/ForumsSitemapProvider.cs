@@ -42,7 +42,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
     public class ForumsSitemapProvider : SitemapProvider
     {
         private const int FirstPage = 1;
-        private const int TopicReplyId = -1;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ForumsSitemapProvider));
 
@@ -144,7 +143,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     sitemapMetricsByUrl[link] = metrics;
                 }
 
-                metrics.Update(result);
+                metrics.Update(result, forum.AverageLikeScore);
             }
 
             DateTime nowUtc = DateTime.UtcNow;
@@ -207,6 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
             float priority = 0.5F;
 
             priority += Math.Min(metrics.ReplyCount, 20) * 0.015F;
+            priority += GetLikesPriorityAdjustment(metrics);
 
             if (metrics.FirstReplyDateUtc.HasValue && metrics.LatestReplyDateUtc.HasValue)
             {
@@ -234,6 +234,42 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
             return Math.Max(0.1F, Math.Min(1F, priority));
         }
 
+        private static float GetLikesPriorityAdjustment(SitemapUrlMetrics metrics)
+        {
+            if (metrics.TotalLikeCount <= 0)
+            {
+                return 0F;
+            }
+
+            if (metrics.ForumAverageLikeScore <= 0)
+            {
+                return 0.1F;
+            }
+
+            float ratio = (float)(metrics.TotalLikeCount / metrics.ForumAverageLikeScore);
+            if (ratio >= 2F)
+            {
+                return 0.2F;
+            }
+
+            if (ratio >= 1.25F)
+            {
+                return 0.1F;
+            }
+
+            if (ratio < 0.5F)
+            {
+                return -0.1F;
+            }
+
+            if (ratio < 1F)
+            {
+                return -0.05F;
+            }
+
+            return 0.05F;
+        }
+
         internal class SitemapUrlMetrics
         {
             public DateTime TopicCreatedUtc { get; private set; } = DateTime.MaxValue;
@@ -246,7 +282,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
 
             public int ReplyCount { get; private set; }
 
-            public void Update(SearchSitemapResult result)
+            public int TotalLikeCount { get; private set; }
+
+            public double ForumAverageLikeScore { get; private set; }
+
+            public void Update(SearchSitemapResult result, double forumAverageLikeScore)
             {
                 if (result.DateCreated < this.TopicCreatedUtc)
                 {
@@ -258,7 +298,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     this.LastModifiedUtc = result.DateUpdated;
                 }
 
-                if (result.ReplyId == TopicReplyId)
+                if (result.LikeCount > 0)
+                {
+                    this.TotalLikeCount += result.LikeCount;
+                }
+
+                this.ForumAverageLikeScore = forumAverageLikeScore;
+
+                if (!result.IsReply)
                 {
                     return;
                 }

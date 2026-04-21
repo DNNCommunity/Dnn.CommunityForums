@@ -1,0 +1,90 @@
+SET NOCOUNT ON
+GO
+
+/* issue 1864 - begin - include likes in sitemap search results */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate(@ModuleId int, @beginDateUtc datetime)
+AS
+SELECT
+    F.ForumGroupId,
+    FT.ForumId,
+    X.TopicId,
+    X.ReplyId,
+    X.ContentId,
+    X.DateCreated,
+    X.DateUpdated,
+    X.Summary,
+    X.Subject,
+    X.AuthorId,
+    X.Body,
+    X.IsDeleted,
+    X.IsApproved,
+    X.LikeCount,
+    RTRIM(IsNull([dbo].activeforums_Topics_GetTags(X.TopicId),'')) AS Tags,
+    X.TopicURL,
+    F.PrefixURL AS ForumUrlPrefix,
+    G.PrefixURL AS ForumGroupUrlPrefix
+FROM
+(
+    SELECT
+        T.TopicId,
+        -1 AS ReplyId,
+        C.ContentId,
+        C.DateCreated,
+        C.DateUpdated,
+        C.Summary,
+        C.Subject,
+        C.AuthorId,
+        C.Body,
+        T.IsDeleted,
+        T.IsApproved,
+        T.URL AS TopicUrl,
+        COALESCE(L.LikeCount, 0) AS LikeCount
+    FROM {databaseOwner}{objectQualifier}activeforums_Topics T
+    INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content C ON C.ContentId = T.ContentId
+    LEFT OUTER JOIN (
+        SELECT PostId, COUNT(*) AS LikeCount
+        FROM {databaseOwner}{objectQualifier}activeforums_Likes
+        WHERE Checked = 1
+        GROUP BY PostId
+    ) L ON L.PostId = C.ContentId
+    WHERE C.DateUpdated BETWEEN @beginDateUtc AND GETUTCDATE()
+    UNION
+    SELECT
+        R.TopicId,
+        R.ReplyId,
+        C.ContentId,
+        C.DateCreated,
+        C.DateUpdated,
+        C.Summary,
+        C.Subject,
+        C.AuthorId,
+        C.Body,
+        R.IsDeleted,
+        R.IsApproved,
+        T.URL AS TopicUrl,
+        COALESCE(L.LikeCount, 0) AS LikeCount
+    FROM {databaseOwner}{objectQualifier}activeforums_Replies R
+    INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content C ON C.ContentId = R.ContentId
+    LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = R.TopicId
+    LEFT OUTER JOIN (
+        SELECT PostId, COUNT(*) AS LikeCount
+        FROM {databaseOwner}{objectQualifier}activeforums_Likes
+        WHERE Checked = 1
+        GROUP BY PostId
+    ) L ON L.PostId = C.ContentId
+    WHERE C.DateUpdated BETWEEN @beginDateUtc AND GETUTCDATE()
+) X
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = X.TopicId
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics FT ON FT.TopicId = T.TopicId
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums F ON F.ForumId = FT.ForumId
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Groups G ON G.ForumGroupId = F.ForumGroupId
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_settings S ON S.SettingsKey = F.ForumSettingsKey AND S.SettingName = 'INDEXCONTENT'
+WHERE F.Active = 1 AND S.SettingValue = 'true' AND F.ModuleId = @ModuleId
+GO
+
+/* issue 1864 - end - include likes in sitemap search results */
