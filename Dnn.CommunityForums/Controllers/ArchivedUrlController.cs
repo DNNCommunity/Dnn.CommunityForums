@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             var normalizedUrl = url.ToLowerInvariant();
 
-            return this.Find("WHERE PortalId = @0 AND URL_Hash = CONVERT(binary(16), HASHBYTES('MD5', @1))", portalId, normalizedUrl)
+            return this.Find("WHERE PortalId = @0 AND URL_Hash = CONVERT(binary(16), HASHBYTES('MD5', CONVERT(varbinary(8000), @1)))", portalId, normalizedUrl)
                 .FirstOrDefault(a => IsUrlMatch(a?.Url, normalizedUrl));
         }
 
