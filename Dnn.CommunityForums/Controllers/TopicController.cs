@@ -105,6 +105,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return ti;
         }
 
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo FindByURL(string topicUrl)
+        {
+            if (string.IsNullOrWhiteSpace(topicUrl))
+            {
+                return null;
+            }
+
+            var trimmedTopicUrl = topicUrl.Trim();
+            var topicInfo = this.Find("WHERE ModuleId = @0 AND URL_Hash = HASHBYTES('MD5', CONVERT(varbinary(8000), @1)) AND URL = @1", this.moduleId, trimmedTopicUrl).FirstOrDefault();
+            return topicInfo == null ? null : this.GetById(topicInfo.TopicId);
+        }
+
         public static int QuickCreate(int portalId, int moduleId, int forumId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress)
         {
             var forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
