@@ -89,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
             bool isSecureTab = tab != null && tab.IsSecure;
             var controlUtils = new ControlUtils();
             var sitemapMetricsByUrl = new Dictionary<string, SitemapUrlMetrics>(StringComparer.OrdinalIgnoreCase);
+            var forumAverageLikeScoreByForumId = new Dictionary<int, double>();
 
             var results = DataContext.Instance().ExecuteQuery<SearchSitemapResult>(
                 CommandType.StoredProcedure,
@@ -107,6 +108,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                 if (forum == null || forum.Security == null || !forum.IsPublicForum)
                 {
                     continue;
+                }
+
+                if (!forumAverageLikeScoreByForumId.TryGetValue(forum.ForumID, out double forumAverageLikeScore))
+                {
+                    forumAverageLikeScore = forum.AverageLikeScore;
+                    forumAverageLikeScoreByForumId[forum.ForumID] = forumAverageLikeScore;
                 }
 
                 string link = controlUtils.BuildUrl(
@@ -143,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     sitemapMetricsByUrl[link] = metrics;
                 }
 
-                metrics.Update(result, forum.AverageLikeScore);
+                metrics.Update(result, forumAverageLikeScore);
             }
 
             DateTime nowUtc = DateTime.UtcNow;
@@ -285,6 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
             public int TotalLikeCount { get; private set; }
 
             public double ForumAverageLikeScore { get; private set; }
+            private bool hasForumAverageLikeScore;
 
             public void Update(SearchSitemapResult result, double forumAverageLikeScore)
             {
@@ -303,7 +311,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     this.TotalLikeCount += result.LikeCount;
                 }
 
-                this.ForumAverageLikeScore = forumAverageLikeScore;
+                if (!this.hasForumAverageLikeScore)
+                {
+                    this.ForumAverageLikeScore = forumAverageLikeScore;
+                    this.hasForumAverageLikeScore = true;
+                }
 
                 if (!result.IsReply)
                 {
