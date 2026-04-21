@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using ForumInfoEntity = DotNetNuke.Modules.ActiveForums.Entities.ForumInfo;
 
     using Moq;
 
@@ -203,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
         public void TotalLikeCount_WithCachedValue_ReturnsCachedValue()
         {
             // Arrange
-            var forum = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
+            var forum = CreateForumInfo();
             SetTotalLikeCountCache(forum, 12);
 
             // Act
@@ -217,10 +218,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
         public void AverageLikeScore_WithNoTopics_ReturnsZero()
         {
             // Arrange
-            var forum = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
-            {
-                TotalTopics = 0,
-            };
+            var forum = CreateForumInfo();
+            forum.TotalTopics = 0;
 
             SetTotalLikeCountCache(forum, 12);
 
@@ -235,10 +234,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
         public void AverageLikeScore_WithTopicsAndCachedLikes_ReturnsExpectedAverage()
         {
             // Arrange
-            var forum = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
-            {
-                TotalTopics = 4,
-            };
+            var forum = CreateForumInfo();
+            forum.TotalTopics = 4;
 
             SetTotalLikeCountCache(forum, 10);
 
@@ -249,10 +246,15 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
             Assert.That(averageLikeScore, Is.EqualTo(2.5D));
         }
 
-        private static void SetTotalLikeCountCache(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, int totalLikeCount)
+        private static ForumInfoEntity CreateForumInfo()
         {
-            var totalLikeCountField = typeof(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo).GetField("totalLikeCount", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            totalLikeCountField?.SetValue(forum, totalLikeCount);
+            return new ForumInfoEntity(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
+        }
+
+        private static void SetTotalLikeCountCache(ForumInfoEntity forum, int totalLikeCount)
+        {
+            var likeCountField = typeof(ForumInfoEntity).GetField("totalLikeCount", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            likeCountField?.SetValue(forum, totalLikeCount);
         }
     }
 }
