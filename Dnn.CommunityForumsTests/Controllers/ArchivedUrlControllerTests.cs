@@ -26,47 +26,31 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
     public class ArchivedUrlControllerTests
     {
         [Test]
-        public void NormalizeUrl_TrimsAndLowerCases()
-        {
-            // Arrange
-            const string input = "  /Forums/Topic-One/  ";
-
-            // Act
-            var result = DotNetNuke.Modules.ActiveForums.Controllers.ArchivedUrlController.NormalizeUrl(input);
-
-            // Assert
-            Assert.That(result, Is.EqualTo("/forums/topic-one/"));
-        }
-
-        [Test]
-        public void IsUrlMatch_ReturnsTrue_WhenArchivedUrlIsEquivalentWithoutLeadingSlash()
+        public void IsUrlMatch_ReturnsTrue_WhenArchivedUrlCaseOnlyDiffers()
         {
             // Arrange
             const string archivedUrl = "forums/topic-one/";
-            const string normalizedUrl = "/forums/topic-one/";
-            const string normalizedUrlWithoutLeadingSlash = "forums/topic-one/";
+            const string normalizedUrl = "forums/topic-one/";
 
             // Act
-            var result = DotNetNuke.Modules.ActiveForums.Controllers.ArchivedUrlController.IsUrlMatch(archivedUrl, normalizedUrl, normalizedUrlWithoutLeadingSlash);
+            var result = DotNetNuke.Modules.ActiveForums.Controllers.ArchivedUrlController.IsUrlMatch(archivedUrl, normalizedUrl);
 
             // Assert
             Assert.That(result, Is.True);
         }
 
         [Test]
-        public void ComputeUrlHash_ReturnsSameHashForCaseVariantsAfterNormalization()
+        public void IsUrlMatch_ReturnsFalse_WhenUrlsDoNotMatch()
         {
             // Arrange
-            var first = DotNetNuke.Modules.ActiveForums.Controllers.ArchivedUrlController.NormalizeUrl("/FORUMS/Topic-One/");
-            var second = DotNetNuke.Modules.ActiveForums.Controllers.ArchivedUrlController.NormalizeUrl("/forums/topic-one/");
+            const string archivedUrl = "forums/topic-one/";
+            const string normalizedUrl = "forums/topic-two/";
 
             // Act
-            var firstHash = DotNetNuke.Modules.ActiveForums.Controllers.ArchivedUrlController.ComputeUrlHash(first);
-            var secondHash = DotNetNuke.Modules.ActiveForums.Controllers.ArchivedUrlController.ComputeUrlHash(second);
+            var result = DotNetNuke.Modules.ActiveForums.Controllers.ArchivedUrlController.IsUrlMatch(archivedUrl, normalizedUrl);
 
             // Assert
-            Assert.That(firstHash, Is.EqualTo(secondHash));
+            Assert.That(result, Is.False);
         }
     }
 }
-

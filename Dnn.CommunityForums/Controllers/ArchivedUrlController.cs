@@ -21,8 +21,6 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System.Linq;
-    using System.Security.Cryptography;
-    using System.Text;
 
     internal class ArchivedUrlController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo>
     {
@@ -33,33 +31,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return null;
             }
 
-            var normalizedUrl = NormalizeUrl(url);
-            var normalizedUrlWithoutLeadingSlash = normalizedUrl.TrimStart('/');
-            var normalizedUrlHash = ComputeUrlHash(normalizedUrl);
-            var normalizedUrlWithoutLeadingSlashHash = ComputeUrlHash(normalizedUrlWithoutLeadingSlash);
+            var normalizedUrl = url.ToLowerInvariant();
 
-            return this.Find("WHERE PortalId = @0 AND (URL_Hash = @1 OR URL_Hash = @2)", portalId, normalizedUrlHash, normalizedUrlWithoutLeadingSlashHash)
-                .FirstOrDefault(a => IsUrlMatch(a?.Url, normalizedUrl, normalizedUrlWithoutLeadingSlash));
+            return this.Find("WHERE PortalId = @0 AND URL_Hash = CONVERT(binary(16), HASHBYTES('MD5', @1))", portalId, normalizedUrl)
+                .FirstOrDefault(a => IsUrlMatch(a?.Url, normalizedUrl));
         }
 
-        internal static byte[] ComputeUrlHash(string normalizedUrl)
+        internal static bool IsUrlMatch(string archivedUrl, string normalizedUrl)
         {
-            using (var md5 = MD5.Create())
-            {
-                return md5.ComputeHash(Encoding.Unicode.GetBytes(normalizedUrl));
-            }
-        }
-
-        internal static bool IsUrlMatch(string archivedUrl, string normalizedUrl, string normalizedUrlWithoutLeadingSlash)
-        {
-            var normalizedArchivedUrl = NormalizeUrl(archivedUrl);
-            return normalizedArchivedUrl == normalizedUrl || normalizedArchivedUrl == normalizedUrlWithoutLeadingSlash;
-        }
-
-        internal static string NormalizeUrl(string url)
-        {
-            return string.IsNullOrWhiteSpace(url) ? string.Empty : url.Trim().ToLowerInvariant();
+            return !string.IsNullOrWhiteSpace(archivedUrl) && archivedUrl.ToLowerInvariant() == normalizedUrl;
         }
     }
 }
-
