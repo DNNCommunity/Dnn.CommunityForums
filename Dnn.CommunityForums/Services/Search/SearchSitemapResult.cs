@@ -42,7 +42,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
 
         public bool IsDeleted { get; set; }
 
+        public int LikeCount { get; set; }
+
         public int ReplyId { get; set; }
+
+        public bool IsTopic => this.ReplyId == -1;
+
+        public bool IsReply => this.ReplyId != -1;
 
         public int TopicId { get; set; }
 

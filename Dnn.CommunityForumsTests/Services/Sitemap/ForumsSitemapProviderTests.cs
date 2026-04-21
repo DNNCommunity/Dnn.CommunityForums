@@ -106,7 +106,36 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Sitemap
             Assert.That(priority, Is.EqualTo(0.5F));
         }
 
-        private static ForumsSitemapProvider.SitemapUrlMetrics CreateMetrics(DateTime topicDateUtc, DateTime firstReplyDateUtc, int replyCount, double replySpacingInDays)
+        [Test]
+        public void DeterminePriority_ShouldBoost_WhenLikesAreAboveForumAverage()
+        {
+            // Arrange
+            DateTime nowUtc = DateTime.UtcNow;
+            DateTime topicDateUtc = nowUtc.AddDays(-45);
+            var metrics = CreateMetrics(topicDateUtc, topicDateUtc.AddDays(1), 1, 1, topicLikeCount: 8, replyLikeCount: 4, forumAverageLikeScore: 3D);
+
+            // Act
+            float priority = ForumsSitemapProvider.DeterminePriority(metrics, nowUtc);
+
+            // Assert
+            Assert.That(priority, Is.GreaterThan(0.7F));
+        }
+
+        [Test]
+        public void SearchSitemapResult_ShouldFlagTopicAndReplyStates()
+        {
+            // Arrange
+            var topicResult = new SearchSitemapResult { ReplyId = -1 };
+            var replyResult = new SearchSitemapResult { ReplyId = 7 };
+
+            // Assert
+            Assert.That(topicResult.IsTopic, Is.True);
+            Assert.That(topicResult.IsReply, Is.False);
+            Assert.That(replyResult.IsTopic, Is.False);
+            Assert.That(replyResult.IsReply, Is.True);
+        }
+
+        private static ForumsSitemapProvider.SitemapUrlMetrics CreateMetrics(DateTime topicDateUtc, DateTime firstReplyDateUtc, int replyCount, double replySpacingInDays, int topicLikeCount = 0, int replyLikeCount = 0, double forumAverageLikeScore = 0D)
         {
             var metrics = new ForumsSitemapProvider.SitemapUrlMetrics();
             metrics.Update(new SearchSitemapResult
@@ -114,7 +143,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Sitemap
                 ReplyId = -1,
                 DateCreated = topicDateUtc,
                 DateUpdated = topicDateUtc,
-            });
+                LikeCount = topicLikeCount,
+            },
+            forumAverageLikeScore);
 
             for (int index = 0; index < replyCount; index++)
             {
@@ -124,7 +155,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Sitemap
                     ReplyId = index + 1,
                     DateCreated = replyDateUtc,
                     DateUpdated = replyDateUtc,
-                });
+                    LikeCount = replyLikeCount,
+                },
+                forumAverageLikeScore);
             }
 
             return metrics;
