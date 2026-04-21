@@ -1,0 +1,109 @@
+SET NOCOUNT ON
+GO
+
+/* issue 1877 - begin - modernize archived URLs */
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL]') AND type in (N'U'))
+    AND NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ArchivedURLs]') AND type in (N'U'))
+BEGIN
+    EXEC sp_rename '{databaseOwner}{objectQualifier}activeforums_URL', 'activeforums_ArchivedURLs'
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ArchivedURLs]') AND type in (N'U'))
+    AND NOT EXISTS (SELECT * FROM sys.columns WHERE [name] = N'URL_Hash' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ArchivedURLs]'))
+BEGIN
+    ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ArchivedURLs]
+        ADD URL_Hash AS CONVERT(binary(16), HASHBYTES('MD5', LOWER(LTRIM(RTRIM([URL]))))) PERSISTED
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ArchivedURLs]') AND type in (N'U'))
+    AND NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ArchivedURLs]') AND name = N'IX_{objectQualifier}activeforums_ArchivedURLs_URL_Hash')
+BEGIN
+    CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_ArchivedURLs_URL_Hash
+        ON {databaseOwner}[{objectQualifier}activeforums_ArchivedURLs] (URL_Hash)
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL_Archive]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_URL_Archive]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_URL_Archive]
+    @PortalId int,
+    @ForumGroupId int,
+    @ForumId int,
+    @TopicId int,
+    @URL nvarchar(1000)
+AS
+DECLARE @NormalizedUrl nvarchar(1000)
+DECLARE @UrlHash binary(16)
+
+SET @NormalizedUrl = LOWER(LTRIM(RTRIM(@URL)))
+SET @UrlHash = CONVERT(binary(16), HASHBYTES('MD5', @NormalizedUrl))
+
+IF NOT EXISTS
+(
+    SELECT 1
+    FROM {databaseOwner}[{objectQualifier}activeforums_ArchivedURLs]
+    WHERE PortalID = @PortalId
+        AND URL_Hash = @UrlHash
+        AND LTRIM(RTRIM(LOWER([URL]))) = @NormalizedUrl
+)
+BEGIN
+    INSERT INTO {databaseOwner}[{objectQualifier}activeforums_ArchivedURLs] (PortalId, ForumGroupId, ForumId, TopicId, URL)
+    VALUES (@PortalId, @ForumGroupId, @ForumId, @TopicId, @URL)
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_FindByURL]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_FindByURL]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_FindByURL]
+    @PortalId int,
+    @URL nvarchar(1000)
+AS
+DECLARE @NormalizedUrl nvarchar(1000)
+DECLARE @NormalizedUrlNoSlash nvarchar(1000)
+DECLARE @UrlHash binary(16)
+DECLARE @UrlHashNoSlash binary(16)
+
+SET @NormalizedUrl = LOWER(LTRIM(RTRIM(@URL)))
+SET @NormalizedUrlNoSlash = CASE WHEN LEFT(@NormalizedUrl, 1) = '/' THEN STUFF(@NormalizedUrl, 1, 1, '') ELSE @NormalizedUrl END
+SET @UrlHash = CONVERT(binary(16), HASHBYTES('MD5', @NormalizedUrl))
+SET @UrlHashNoSlash = CONVERT(binary(16), HASHBYTES('MD5', @NormalizedUrlNoSlash))
+
+SELECT ForumId, TopicId
+FROM {databaseOwner}[{objectQualifier}activeforums_ArchivedURLs]
+WHERE PortalId = @PortalId
+    AND (URL_Hash = @UrlHash OR URL_Hash = @UrlHashNoSlash)
+    AND
+    (
+        LTRIM(RTRIM(LOWER([URL]))) = @NormalizedUrl
+        OR '/' + LTRIM(RTRIM(LOWER([URL]))) = @NormalizedUrl
+        OR LTRIM(RTRIM(LOWER([URL]))) = @NormalizedUrlNoSlash
+        OR '/' + LTRIM(RTRIM(LOWER([URL]))) = @NormalizedUrlNoSlash
+    )
+GO
+
+DECLARE @urlSearchDefinition nvarchar(max)
+SELECT @urlSearchDefinition = [definition]
+FROM sys.sql_modules
+WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL_Search]')
+
+IF @urlSearchDefinition IS NOT NULL
+    AND @urlSearchDefinition LIKE '%activeforums_URL%'
+BEGIN
+    SET @urlSearchDefinition = REPLACE(@urlSearchDefinition, 'CREATE PROCEDURE', 'ALTER PROCEDURE')
+    SET @urlSearchDefinition = REPLACE(@urlSearchDefinition, 'create procedure', 'alter procedure')
+    SET @urlSearchDefinition = REPLACE(@urlSearchDefinition, '{objectQualifier}activeforums_URL', '{objectQualifier}activeforums_ArchivedURLs')
+    EXEC sp_executesql @urlSearchDefinition
+END
+GO
+
+/* issue 1877 - end - modernize archived URLs */
+
+/* --------------------- */
+
