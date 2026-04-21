@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void IsUrlMatch_ReturnsTrue_WhenArchivedUrlCaseOnlyDiffers()
         {
             // Arrange
-            const string archivedUrl = "forums/topic-one/";
+            const string archivedUrl = "Forums/Topic-One/";
             const string normalizedUrl = "forums/topic-one/";
 
             // Act
