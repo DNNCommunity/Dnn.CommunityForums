@@ -118,8 +118,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 string comments = this.drpReasons.SelectedItem.Value + "<br>";
                 comments += Utilities.CleanString(this.PortalId, this.txtComments.Text, false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ForumModuleId, string.Empty, false);
                 string sUrl = this.SocialGroupId > 0
-                    ? Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.AlertSent}&{Literals.GroupId}={this.SocialGroupId}" })
-                    : Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.AlertSent}" });
+                    ? Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString[ParamKeys.TabId]), string.Empty, new string[] { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.AlertSent}&{Literals.GroupId}={this.SocialGroupId}" })
+                    : Utilities.NavigateURL(Convert.ToInt32(this.Request.QueryString[ParamKeys.TabId]), string.Empty, new string[] { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.AlertSent}" });
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
                 string sBody = string.Empty;
                 string authorName = string.Empty;

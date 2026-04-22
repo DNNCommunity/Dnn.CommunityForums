@@ -1,0 +1,57 @@
+SET NOCOUNT ON 
+GO
+
+/* update archived URLs to remove URLBASE from the start of the URL if it exists, URL rewriter no longer uses URLBASE */
+UPDATE a 
+SET URL = REPLACE(a.URL, LOWER(s.SettingValue)+'/', '')
+FROM {databaseOwner}{objectQualifier}activeforums_ArchivedURLs a
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums f
+ON f.forumid = a.ForumId
+INNER JOIN (SELECT ms.ModuleID, ms.SettingValue FROM {databaseOwner}{objectQualifier}ModuleSettings ms 
+WHERE SettingName = 'URLBASE' AND ModuleID IN 
+(
+SELECT m.ModuleId 
+FROM {databaseOwner}{objectQualifier}Modules m 
+INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID = m.ModuleDefID 
+WHERE md.DefinitionName = 'DNN Community Forums')
+) s
+ON s.ModuleID = f.ModuleId
+WHERE LEFT(LOWER(a.URL), LEN(RTRIM(LOWER(s.SettingValue)))+1) = LOWER(s.SettingValue)+'/'
+
+
+    /* remove URLBASE from the start of the URL if it exists, URL rewriter no longer uses URLBASE */
+    /* not ready for this yet 
+    DELETE FROM {databaseOwner}{objectQualifier}ModuleSettings 
+    WHERE SettingName = 'URLBASE' AND ModuleID IN 
+    (
+    SELECT m.ModuleId 
+    FROM {databaseOwner}{objectQualifier}Modules m 
+    INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID = m.ModuleDefID 
+    WHERE md.DefinitionName = 'DNN Community Forums')
+    */
+
+/* add new indexes to support lookups for URL rewriter on Category and Tag names */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Categories') AND name = N'IX_{objectQualifier}activeforums_Categories_Alt1')
+DROP INDEX [IX_{objectQualifier}activeforums_Categories_Alt1] ON {databaseOwner}{objectQualifier}activeforums_Categories 
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Categories') AND name = N'IX_{objectQualifier}activeforums_Categories_Alt1')
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Categories_Alt1 ON {databaseOwner}[{objectQualifier}activeforums_Categories]
+	(
+    ModuleId,
+	CategoryName,
+    CategoryId
+	) 
+GO
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Tags') AND name = N'IX_{objectQualifier}activeforums_Tags_Alt1')
+DROP INDEX [IX_{objectQualifier}activeforums_Tags_Alt1] ON {databaseOwner}{objectQualifier}activeforums_Tags 
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Tags') AND name = N'IX_{objectQualifier}activeforums_Tags_Alt1')
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Tags_Alt1 ON {databaseOwner}[{objectQualifier}activeforums_Tags]
+	(
+    ModuleId,
+	TagName,
+    TagId
+	) 
+GO
+

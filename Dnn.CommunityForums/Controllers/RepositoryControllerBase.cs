@@ -20,6 +20,7 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -34,26 +35,33 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal RepositoryControllerBase()
         {
-            var ctx = DataContext.Instance();
-            this.repo = ctx.GetRepository<T>();
+            try
+            {
+                var ctx = DataContext.Instance();
+                this.repo = ctx?.GetRepository<T>();
+            }
+            catch (Exception)
+            {
+                // DataContext may not be available in test environments; repo will remain null.
+            }
         }
 
-        internal IEnumerable<T> Get()
+        internal virtual IEnumerable<T> Get()
         {
             return this.repo.Get();
         }
 
-        internal IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
+        internal virtual IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
         {
             return this.repo.Get(scopeValue);
         }
 
-        internal T GetById<TProperty>(TProperty id)
+        internal virtual T GetById<TProperty>(TProperty id)
         {
             return this.repo.GetById(id);
         }
 
-        internal T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
+        internal virtual T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
         {
             return this.repo.GetById(id, scopeValue);
         }

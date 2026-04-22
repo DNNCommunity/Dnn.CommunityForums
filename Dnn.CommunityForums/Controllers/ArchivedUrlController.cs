@@ -21,20 +21,27 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System.Linq;
+    using System.Runtime.Remoting.Messaging;
 
     internal class ArchivedUrlController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo>
     {
         internal DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo FindByURL(int portalId, string url)
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (!string.IsNullOrWhiteSpace(url))
             {
-                return null;
-            }
+                var normalizedUrl = url.ToLowerInvariant();
 
-            var normalizedUrl = url.ToLowerInvariant();
+                // archived URLs are stored without trailing sl Remove trailing slash if present for consistent matching
+                if (normalizedUrl.EndsWith("/"))
+                {
+                    normalizedUrl = normalizedUrl.TrimEnd('/');
+                }
 
-            return this.Find("WHERE PortalId = @0 AND URL_Hash = CONVERT(binary(16), HASHBYTES('MD5', CONVERT(varbinary(8000), @1)))", portalId, normalizedUrl)
-                .FirstOrDefault(a => IsUrlMatch(a?.Url, normalizedUrl));
+                return this.Find("WHERE PortalId = @0 AND URL_Hash = CONVERT(binary(16), HASHBYTES('MD5', CONVERT(varbinary(8000), @1)))", portalId, normalizedUrl)
+                    .FirstOrDefault(a => IsUrlMatch(a?.Url, normalizedUrl));
+                }
+
+            return null;
         }
 
         internal static bool IsUrlMatch(string archivedUrl, string normalizedUrl)

@@ -390,7 +390,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Forums = "f";
     }
 
-    public class ParamKeys
+    public static class ParamKeys
     {
         public const string ForumId = "aff";
         public const string GroupId = "afg";
@@ -416,6 +416,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Mode = "mode";
         public const string BadgeId = "badgeid";
         public const string Message = "afmsg";
+        public const string PortalId = "PortalId";
+        public const string ModuleId = "ModuleId";
+        public const string TabId = "TabId";
     }
 
     public class ModuleModes
@@ -441,7 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class Literals
     {
-        public const string Page = "page";
+        public const string Page = "Page";
         public const string View = "view";
         public const string ForumId = "ForumId";
         public const string GroupId = "GroupId";
@@ -591,6 +594,13 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string UserMentionInfo = "AF-{0}-usermentioninfo-{1}";
         public const string TagMatches = "AF-{0}-tagmatches-{1}";
         public const string SearchQuery = "AF-{0}-searchquery-{1}";
+        public const string TagByName = "AF-{0}-tagname-{1}";
+        public const string CategoryByName = "AF-{0}-categoryname-{1}";
+        public const string ForumGroupByUrlPrefix = "AF-{0}-fgurl-{1}";
+        public const string ForumByUrlPrefix = "AF-{0}-furl-{1}";
+        public const string TopicByUrl = "AF-{0}-turl-{1}-{2}";
+        public const string PortalAliases = "AF-pa";
+        public const string TabPaths = "AF-tabpaths-{0}";
     }
 
     public class SortColumns

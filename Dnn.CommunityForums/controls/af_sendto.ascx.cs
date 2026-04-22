@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void btnCancel_Click(object sender, System.EventArgs e)
         {
-            this.Response.Redirect(this.NavigateUrl(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.ViewType}={Views.Topic}", $"{ParamKeys.TopicId}={this.TopicId}" }), false);
+            this.Response.Redirect(this.NavigateUrl(Convert.ToInt32(this.Request.QueryString[ParamKeys.TabId]), string.Empty, new string[] { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.ViewType}={Views.Topic}", $"{ParamKeys.TopicId}={this.TopicId}" }), false);
             this.Context.ApplicationInstance.CompleteRequest();
         }
 
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string sMessage = this.txtMessage.Text;
                 sSubject = Utilities.CleanString(this.PortalId, sSubject.Trim(), false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
                 sMessage = Utilities.CleanString(this.PortalId, sMessage.Trim(), false, DotNetNuke.Modules.ActiveForums.Enums.EditorType.TEXTBOX, false, false, this.ModuleId, string.Empty, false);
-                string sUrl = this.NavigateUrl(Convert.ToInt32(this.Request.QueryString["TabId"]), string.Empty, new string[] { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.SendToComplete}" });
+                string sUrl = this.NavigateUrl(Convert.ToInt32(this.Request.QueryString[ParamKeys.TabId]), string.Empty, new string[] { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.SendToComplete}" });
                 try
                 {
                     if (!(sMessage == string.Empty) && !(sSubject == string.Empty))

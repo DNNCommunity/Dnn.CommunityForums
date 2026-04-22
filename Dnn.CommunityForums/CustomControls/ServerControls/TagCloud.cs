@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 writer.Write("<span class=\"" + css + "\">");
                 writer.Write("<a href=\"");
-                sURL = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, int.Parse(dr["TagID"].ToString()), -1, Utilities.CleanName(tagName), 1, -1, -1);
+                sURL = ctlUtils.BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: int.Parse(dr["TagID"].ToString()), categoryId: -1, otherPrefix: Utilities.CleanName(tagName), pageId: 1, contentId: -1, socialGroupId: -1);
                 writer.Write(sURL);
                 writer.Write("\" title=\"" + System.Net.WebUtility.HtmlEncode(tagName) + "\">" + tagName + "</a></span> ");
             }
