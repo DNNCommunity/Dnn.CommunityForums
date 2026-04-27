@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using ForumInfoEntity = DotNetNuke.Modules.ActiveForums.Entities.ForumInfo;
 
     using Moq;
 
@@ -197,6 +198,63 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 
             // Assert
             Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void TotalLikeCount_WithCachedValue_ReturnsCachedValue()
+        {
+            // Arrange
+            var forum = CreateForumInfo();
+            SetTotalLikeCountCache(forum, 12);
+
+            // Act
+            int totalLikeCount = forum.TotalLikeCount;
+
+            // Assert
+            Assert.That(totalLikeCount, Is.EqualTo(12));
+        }
+
+        [Test]
+        public void AverageLikeScore_WithNoTopics_ReturnsZero()
+        {
+            // Arrange
+            var forum = CreateForumInfo();
+            forum.TotalTopics = 0;
+
+            SetTotalLikeCountCache(forum, 12);
+
+            // Act
+            double averageLikeScore = forum.AverageLikeScore;
+
+            // Assert
+            Assert.That(averageLikeScore, Is.EqualTo(0D));
+        }
+
+        [Test]
+        public void AverageLikeScore_WithTopicsAndCachedLikes_ReturnsExpectedAverage()
+        {
+            // Arrange
+            var forum = CreateForumInfo();
+            forum.TotalTopics = 4;
+
+            SetTotalLikeCountCache(forum, 10);
+
+            // Act
+            double averageLikeScore = forum.AverageLikeScore;
+
+            // Assert
+            Assert.That(averageLikeScore, Is.EqualTo(2.5D));
+        }
+
+        private static ForumInfoEntity CreateForumInfo()
+        {
+            return new ForumInfoEntity(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
+        }
+
+        private static void SetTotalLikeCountCache(ForumInfoEntity forum, int totalLikeCount)
+        {
+            var likeCountField = typeof(ForumInfoEntity).GetField("totalLikeCount", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            likeCountField?.SetValue(forum, totalLikeCount);
         }
     }
 }
