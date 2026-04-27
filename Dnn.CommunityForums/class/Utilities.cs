@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Reflection;
     using System.Security.Cryptography;
     using System.Security.Policy;
@@ -560,6 +561,11 @@ namespace DotNetNuke.Modules.ActiveForums
         internal static string DecodeBrackets(string text)
         {
             return text.Replace("&#91;", "[").Replace("&#93;", "]").Replace("&#123;", "{").Replace("&#125;", "}");
+        }
+
+        internal static string NormalizeHtmlForStorage(string text)
+        {
+            return string.IsNullOrEmpty(text) ? string.Empty : WebUtility.HtmlDecode(text);
         }
 
         private static string CleanEditor(int portalId, string text, bool useFilter, int moduleId, string themePath, bool processEmoticons)

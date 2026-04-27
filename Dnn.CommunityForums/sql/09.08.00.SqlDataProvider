@@ -1197,3 +1197,17 @@ CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Topics_URL_Hash ON {d
 GO
 
 /* issue 1878 - end - topic URL hash */
+
+/* issue 1607 - begin - html normalization for activeforums_Content */
+
+/* decode order matters: double-encoded entities first, then single-encoded entities, and '&amp;' last */
+/* this is a one-time module-upgrade data fix for legacy content */
+UPDATE {databaseOwner}[{objectQualifier}activeforums_Content]
+SET Subject = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(Subject, '&amp;lt;', '&lt;'), '&amp;gt;', '&gt;'), '&amp;quot;', '&quot;'), '&amp;#39;', '&#39;'), '&amp;#91;', '&#91;'), '&amp;#93;', '&#93;'), '&amp;amp;', '&amp;'), '&lt;', '<'), '&gt;', '>'), '&quot;', '"'), '&#39;', ''''), '&amp;', '&'),
+    Body = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(Body, '&amp;lt;', '&lt;'), '&amp;gt;', '&gt;'), '&amp;quot;', '&quot;'), '&amp;#39;', '&#39;'), '&amp;#91;', '&#91;'), '&amp;#93;', '&#93;'), '&amp;amp;', '&amp;'), '&lt;', '<'), '&gt;', '>'), '&quot;', '"'), '&#39;', ''''), '&amp;', '&'),
+    DateUpdated = GETUTCDATE()
+WHERE Subject LIKE '%&amp;%' OR Subject LIKE '%&lt;%' OR Subject LIKE '%&gt;%' OR Subject LIKE '%&#39;%' OR Subject LIKE '%&quot;%'
+   OR Body LIKE '%&amp;%' OR Body LIKE '%&lt;%' OR Body LIKE '%&gt;%' OR Body LIKE '%&#39;%' OR Body LIKE '%&quot;%';
+GO
+
+/* issue 1607 - end - html entity normalization for activeforums_Content */

@@ -37,10 +37,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     var normalizedUrl = url.ToLowerInvariant();
 
-                    // archived URLs are stored without trailing slash; remove if present for consistent matching
-                    if (normalizedUrl.EndsWith("/"))
+                    // archived URLs are stored with trailing slash; add for consistent matching
+                    if (!normalizedUrl.EndsWith("/"))
                     {
-                        normalizedUrl = normalizedUrl.TrimEnd('/');
+                        normalizedUrl = normalizedUrl + '/';
                     }
 
                     archivedURLInfo = this.Find("WHERE PortalId = @0 AND URL_Hash = CONVERT(binary(16), HASHBYTES('MD5', CONVERT(varbinary(8000), @1))) AND URL = @1", portalId, normalizedUrl).FirstOrDefault();
