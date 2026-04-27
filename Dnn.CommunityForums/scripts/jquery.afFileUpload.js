@@ -126,7 +126,7 @@
 
     $.fn.afFileUpload.defaultOptions = {
         fileUploadWrapperSelector: '.af-fileupload', // wrapper element for the main file upload content area
-        uploadServiceUrl: '/DesktopModules/ActiveForums/API/ForumService/UploadFile', // post files here
+        uploadServiceUrl: '/DesktopModules/ActiveForums/API/Attachment/UploadFile', // post files here
         pickerContextSelector: '.fileupload-picker',
         progressContextSelector: '.fileupload-progress', // wrapper element for the progress area
         progressFileNameSelector: '.fileupload-filename', // element to update file name text w/ during upload

@@ -36,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.UserControls;
 
@@ -213,7 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public bool GetIsMod(int ModuleId)
         {
-            return !this.IsAnonymous && !string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, ModuleId, this, DotNetNuke.Modules.ActiveForums.SecureActions.Moderate));
+            return !this.IsAnonymous && DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ModuleId, this, DotNetNuke.Modules.ActiveForums.SecureActions.Moderate).Any();
         }
 
         [IgnoreColumn]
@@ -269,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string ForumsAllowed { get; set; }
 
         [IgnoreColumn]
-        public string UserForums { get; set; }
+        public HashSet<int> UserForums { get; set; }
 
         [IgnoreColumn]
         public int PostCount => this.TopicCount + this.ReplyCount;
@@ -335,7 +336,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 this.PortalId = this.UserInfo.PortalID;
             }
 
-            return this.portalSettings = Utilities.GetPortalSettings(this.PortalId);
+            return this.portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(this.PortalId);
         }
 
         [IgnoreColumn]
@@ -557,7 +558,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                var portalSettings = Utilities.GetPortalSettings();
+                var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings();
                 if (portalSettings == null)
                 {
                     portalSettings = this.PortalSettings;

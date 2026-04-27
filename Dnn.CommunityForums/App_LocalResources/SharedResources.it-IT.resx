@@ -1897,4 +1897,7 @@ Da
   <data name="[RESX:DNNCKEDITOR4PLUSFORUMSPLUGINS].Text" xml:space="preserve">
     <value>Plugin DNN CKEditor4 plus Forums</value>
   </data>
+  <data name="[RESX:Attachment].Text" xml:space="preserve">
+    <value>Allegamento</value>
+  </data>
 </root>

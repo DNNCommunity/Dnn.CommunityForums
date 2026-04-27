@@ -90,7 +90,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 topicController.DeleteById(content.TopicId, DeleteBehavior.Remove);
             });
-            this.BindRecycleData();
+
+            this.Response.Redirect(this.Request.RawUrl, true);
         }
 
         protected void btnRestoreAll_Click(object sender, System.EventArgs e)

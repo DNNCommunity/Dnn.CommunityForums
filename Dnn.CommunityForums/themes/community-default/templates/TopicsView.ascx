@@ -188,7 +188,7 @@
 
 		<div class="dcf-actions dcf-actions-bottom">
 			<div class="dcf-buttons">[ADDTOPIC] [MARKFORUMREAD]</div>
-			<div class="dcf-topics-pager">[PAGER2]<br />[JUMPTO]<br />[FORUM:RSSLINK|<a href="{0}" target="_blank"><img src="[FORUM:THEMELOCATION]images/rss.png" border="0" alt="[RESX:RSS]" /></a>]</div>
+			<div class="dcf-topics-pager">[PAGER2]<br />[JUMPTO]<br />[FORUM:RSSLINK|<a href="{0}" target="_blank"><img src="[FORUM:THEMELOCATION]images/rss.png" border="0" alt="[RESX:RSS]" loading="lazy" /></a>]</div>
 		</div>
 	</div>
 

@@ -129,9 +129,6 @@
   <data name="[RESX:Approved].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Approvato</value>
   </data>
-  <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Inserire file come token</value>
-  </data>
   <data name="[RESX:AuditLog].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Registrazione e monitoraggio</value>
   </data>
@@ -203,9 +200,6 @@
   </data>
   <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Attenzione: l'installazione o la disinstallazione del gestore URL dei forum della community DNN richiederà una modifica al file web.config.  \n\nSei sicuro di voler apportare questa modifica in questo momento?</value>
-  </data>
-  <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Converti *.png in *.jpg</value>
   </data>
   <data name="[RESX:CreatePostCount].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Crea conteggio post</value>
@@ -583,20 +577,8 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:MaxAttach].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value># di file</value>
   </data>
-  <data name="[RESX:MaxAttachHeight].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Altezza max.</value>
-  </data>
-  <data name="[RESX:MaxAttachWidth].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Larghezza max.</value>
-  </data>
   <data name="[RESX:MaxFileSize].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Dimensione massima del file (KB)</value>
-  </data>
-  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Max. Altezza</value>
-  </data>
-  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Max. Larghezza</value>
   </data>
   <data name="[RESX:MaxPoints].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Numero massimo di punti</value>
@@ -1539,5 +1521,11 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   </data>
   <data name="[RESX:NotActive].Text" xml:space="preserve">
     <value>Non attivo</value>
+  </data>
+  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve">
+    <value>Altezza massima dell'immagine</value>
+  </data>
+  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve">
+    <value>Massima larghezza dell'immagine</value>
   </data>
 </root>

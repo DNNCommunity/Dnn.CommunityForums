@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Sitemap;
@@ -41,28 +42,24 @@ namespace DotNetNuke.Modules.ActiveForums
                     return;
                 }
 
-                var sUrl = post.GetLink();
-                var summary = post.Content.Summary;
-                if (string.IsNullOrEmpty(summary))
-                {
-                    summary = Utilities.StripQuoteTag(post.Content.Body);
-                    summary = Utilities.StripHTMLTag(summary);
-                    if (summary.Length > 150)
-                    {
-                        summary = summary.Substring(0, 150) + "...";
-                    }
-                }
-
                 DeleteJournalItemForPost(post);
+
+                var summary = !string.IsNullOrEmpty(post.Content.Summary) ? post.Content.Summary : post.Content.Body;
+                summary = Utilities.StripQuoteTag(summary);
+                summary = Utilities.StripHTMLTag(summary);
+
                 var ji = new JournalItem
                 {
                     PortalId = post.PortalId,
                     ProfileId = post.Author.AuthorId,
                     UserId = post.Author.AuthorId,
                     Title = post.Content.Subject,
-                    Summary = summary,
-                    Body = Utilities.StripHTMLTag(Utilities.StripQuoteTag(post.Content.Summary)),
-                    ItemData = new ItemData { Url = sUrl },
+                    Summary = summary.TruncateWithEllipsis(150),
+                    Body = Utilities.StripHTMLTag(Utilities.StripQuoteTag(summary)),
+                    ItemData = new ItemData
+                    {
+                        Url = post.GetLink(),
+                    },
                     JournalTypeId = post.IsTopic ? 5 : 6,
                     ObjectKey = post.IsTopic ? $"{post.ForumId}:{post.TopicId}" : $"{post.ForumId}:{post.TopicId}:{post.ReplyId}",
                     SecuritySet = string.Empty,
@@ -93,26 +90,21 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                var sUrl = post.GetLink();
                 var objectKey = post.IsTopic ? $"{post.ForumId}:{post.TopicId}" : $"{post.ForumId}:{post.TopicId}:{post.ReplyId}";
                 var ji = JournalController.Instance.GetJournalItemByKey(post.PortalId, objectKey);
                 if (ji != null)
                 {
-                    var summary = post.Content.Summary;
-                    if (string.IsNullOrEmpty(summary))
-                    {
-                        summary = Utilities.StripQuoteTag(post.Content.Body);
-                        summary = Utilities.StripHTMLTag(summary);
-                        if (summary.Length > 150)
-                        {
-                            summary = summary.Substring(0, 150) + "...";
-                        }
-                    }
+                    var summary = !string.IsNullOrEmpty(post.Content.Summary) ? post.Content.Summary : post.Content.Body;
+                    summary = Utilities.StripQuoteTag(summary);
+                    summary = Utilities.StripHTMLTag(summary);
 
                     ji.Title = post.Content.Subject;
-                    ji.Summary = summary;
-                    ji.ItemData = new ItemData { Url = sUrl };
-                    ji.Body = Utilities.StripHTMLTag(Utilities.StripQuoteTag(post.Content.Summary));
+                    ji.Summary = summary.TruncateWithEllipsis(150);
+                    ji.Body = Utilities.StripHTMLTag(Utilities.StripQuoteTag(summary));
+                    ji.ItemData = new ItemData
+                    {
+                        Url = post.GetLink(),
+                    };
                     ji.DateUpdated = DateTime.UtcNow;
                     JournalController.Instance.UpdateJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(post.ModuleId, post.Forum.GetTabId(), true));
                 }

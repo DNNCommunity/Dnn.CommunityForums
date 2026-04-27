@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
     using System.Collections;
+    using System.Runtime.Remoting.Messaging;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Modules.ActiveForums.Enums;
@@ -93,15 +94,25 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool AttachAllowBrowseSite => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.AttachAllowBrowseSite]);
 
         [IgnoreColumn]
-        public int MaxAttachWidth => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.MaxAttachWidth], 800);
+        public int MaxImageWidth => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.MaxImageWidth], 800);
 
         [IgnoreColumn]
-        public int MaxAttachHeight => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.MaxAttachHeight], 800);
+        public int MaxImageHeight => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.MaxImageHeight], 800);
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use MaxImageWidth.")]
+        public int MaxAttachWidth => this.MaxImageWidth;
+
+        [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use MaxImageHeight.")]
+        public int MaxAttachHeight => this.MaxImageHeight;
+
+        [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public bool AttachInsertAllowed => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.AttachInsertAllowed]);
 
         [IgnoreColumn]
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public bool ConvertingToJpegAllowed => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.ConvertingToJpegAllowed]);
 
         [IgnoreColumn]
@@ -273,21 +284,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public int ReplyPostCount => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ReplyPostCount]);
 
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use MaxImageHeight.")]
         [IgnoreColumn]
-        [JsonIgnore]
-        public int AttachMaxHeight
-        {
-            get { return Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.AttachMaxHeight], 500); }
-        }
+        public int AttachMaxHeight => this.MaxImageHeight;
 
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use MaxImageWidth.")]
         [IgnoreColumn]
-        [JsonIgnore]
-        public int AttachMaxWidth
-        {
-            get { return Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.AttachMaxWidth], 500); }
-        }
+        public int AttachMaxWidth => this.MaxImageWidth;
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn]
@@ -316,7 +319,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool EqualSettings(FeatureSettings other)
         {
-            return !(other is null) && this.AllowAttach == other.AllowAttach && this.AllowEmoticons == other.AllowEmoticons && this.AllowHTML == other.AllowHTML && this.AllowLikes == other.AllowLikes && this.AllowPostIcon == other.AllowPostIcon && this.AllowRSS == other.AllowRSS && this.AllowScript == other.AllowScript && this.AllowSubscribe == other.AllowSubscribe && this.AttachCount == other.AttachCount && this.AttachMaxSize == other.AttachMaxSize && this.AttachTypeAllowed == other.AttachTypeAllowed && this.AttachAllowBrowseSite == other.AttachAllowBrowseSite && this.MaxAttachWidth == other.MaxAttachWidth && this.MaxAttachHeight == other.MaxAttachHeight && this.AttachInsertAllowed == other.AttachInsertAllowed && this.ConvertingToJpegAllowed == other.ConvertingToJpegAllowed && this.EditorType == other.EditorType && this.EditorPermittedUsers == other.EditorPermittedUsers && this.EmailAddress == other.EmailAddress && this.IndexContent == other.IndexContent && this.IsModerated == other.IsModerated && this.UseFilter == other.UseFilter && this.AutoTrustLevel == other.AutoTrustLevel && this.DefaultTrustValue == other.DefaultTrustValue && this.ModApproveNotify == other.ModApproveNotify && this.ModRejectNotify == other.ModRejectNotify && this.ModMoveNotify == other.ModMoveNotify && this.ModDeleteNotify == other.ModDeleteNotify && this.ModAlertNotify == other.ModAlertNotify && this.AllowTags == other.AllowTags && this.AutoSubscribeEnabled == other.AutoSubscribeEnabled && this.AutoSubscribeRoles == other.AutoSubscribeRoles && this.AutoSubscribeNewTopicsOnly == other.AutoSubscribeNewTopicsOnly && this.CreatePostCount == other.CreatePostCount && this.ReplyPostCount == other.ReplyPostCount && this.UserMentionVisibility == other.UserMentionVisibility;
+            return !(other is null) && this.AllowAttach == other.AllowAttach && this.AllowEmoticons == other.AllowEmoticons && this.AllowHTML == other.AllowHTML && this.AllowLikes == other.AllowLikes && this.AllowPostIcon == other.AllowPostIcon && this.AllowRSS == other.AllowRSS && this.AllowScript == other.AllowScript && this.AllowSubscribe == other.AllowSubscribe && this.AttachCount == other.AttachCount && this.AttachMaxSize == other.AttachMaxSize && this.AttachTypeAllowed == other.AttachTypeAllowed && this.AttachAllowBrowseSite == other.AttachAllowBrowseSite && this.MaxImageWidth == other.MaxImageWidth && this.MaxImageHeight == other.MaxImageHeight && this.EditorType == other.EditorType && this.EditorPermittedUsers == other.EditorPermittedUsers && this.EmailAddress == other.EmailAddress && this.IndexContent == other.IndexContent && this.IsModerated == other.IsModerated && this.UseFilter == other.UseFilter && this.AutoTrustLevel == other.AutoTrustLevel && this.DefaultTrustValue == other.DefaultTrustValue && this.ModApproveNotify == other.ModApproveNotify && this.ModRejectNotify == other.ModRejectNotify && this.ModMoveNotify == other.ModMoveNotify && this.ModDeleteNotify == other.ModDeleteNotify && this.ModAlertNotify == other.ModAlertNotify && this.AllowTags == other.AllowTags && this.AutoSubscribeEnabled == other.AutoSubscribeEnabled && this.AutoSubscribeRoles == other.AutoSubscribeRoles && this.AutoSubscribeNewTopicsOnly == other.AutoSubscribeNewTopicsOnly && this.CreatePostCount == other.CreatePostCount && this.ReplyPostCount == other.ReplyPostCount && this.UserMentionVisibility == other.UserMentionVisibility;
         }
     }
 }

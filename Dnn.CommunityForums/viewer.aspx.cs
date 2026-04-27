@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;
+    using System.Linq;
 
     public class af_viewer : Framework.PageBase
     {
@@ -67,10 +68,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            // Get the attachment including the "Can Read" permission for the associated content id.
-            var attachment = new Data.AttachController().Get(attachmentId, attachFileId, true);
-
-            // Make sure the attachment exists
+            // Get the attachment using either the attachment id or the legacy file id.  If the attachment doesn't exist, return a 404.
+            var attachment = attachmentId > 0 ?
+                new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetById(attachmentId) :
+                new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().Find("WHERE FileID = @0", attachFileId).FirstOrDefault();
             if (attachment == null)
             {
                 this.Response.StatusCode = 404;
@@ -78,86 +79,62 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Response.End();
                 return;
             }
-
-            // Make sure the user has read access
-            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId);
-            if (u == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(attachment.CanRead, u.UserPermSet))
+            else
             {
-                this.Response.StatusCode = 401;
-                this.Response.Write("Unauthorized");
-                this.Response.End();
-                return;
+                // Make sure the user has read access
+                var content = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(attachment.ContentId, moduleId);
+                var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId);
+                if (forumUser == null || content == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(content.Post.Forum.Security.ReadRoleIds, forumUser.UserRoleIds))
+                {
+                    this.Response.StatusCode = 401;
+                    this.Response.Write("Unauthorized");
+                    this.Response.End();
+                    return;
+                }
             }
 
-            // Get the filename with the unique identifier prefix removed.
-            var filename = Regex.Replace(attachment.FileName.TextOrEmpty(), @"__\d+__\d+__", string.Empty);
-
-            // Handle legacy inline attachments a bit differently
-            string contentDispositionType = (attachmentId > 0) ? "attachment" : "inline";
-            var contentDispositionValue = new ContentDispositionHeaderValue(contentDispositionType);
-            contentDispositionValue.FileName = filename;
+            string contentDispositionType = attachment.DisplayInline ? "inline" : "attachment";
+            var contentDispositionValue = new ContentDispositionHeaderValue(contentDispositionType)
+            {
+                FileName = attachment.FileName,
+            };
             string contentDisposition = contentDispositionValue.ToString();
 
-            // Some legacy attachments may still be stored in the DB.
-            if (attachment.FileData != null)
-            {
-                this.Response.ContentType = attachment.ContentType;
-                this.Response.AddHeader("Content-Disposition", contentDisposition);
-                this.Response.BinaryWrite(attachment.FileData);
-                this.Response.End();
-                return;
-            }
-
-            var fileManager = FileManager.Instance;
-
-            string filePath = null;
+            string filePath;
 
             // If there is a file id, access the file using the file manager
             if (attachment.FileId.HasValue && attachment.FileId.Value > 0)
             {
-                var file = fileManager.GetFile(attachment.FileId.Value);
+                var file = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile(attachment.FileId.Value);
                 if (file != null)
                 {
                     filePath = file.PhysicalPath;
+                    if (!string.IsNullOrEmpty(filePath))
+                    {
+                        var length = attachment.FileSize;
+                        if (length <= 0)
+                        {
+                            length = new System.IO.FileInfo(filePath).Length;
+                        }
+
+                        this.Response.Clear();
+                        this.Response.ContentType = attachment.ContentType;
+
+                        this.Response.AddHeader("Content-Disposition", contentDisposition);
+                        this.Response.AddHeader("Content-Length", length.ToString());
+                        this.Response.WriteFile(filePath);
+                        this.Response.Flush();
+                        this.Response.Close();
+                        this.Response.End();
+                        return;
+                    }
                 }
             }
 
-            // Otherwise check the attachments directory (current and legacy)
-            else
-            {
-                filePath = Utilities.MapPath(this.PortalSettings.HomeDirectory + "activeforums_Attach/") + attachment.FileName;
-
-                // This is another check to support legacy attachments.
-                if (!File.Exists(filePath))
-                {
-                    filePath = Utilities.MapPath(this.PortalSettings.HomeDirectory + "NTForums_Attach/") + attachment.FileName;
-                }
-            }
-
-            // At this point, we should have a valid file path
-            if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
-            {
-                this.Response.StatusCode = 404;
-                this.Response.Write("Not Found");
-                this.Response.End();
-                return;
-            }
-
-            var length = attachment.FileSize;
-            if (length <= 0)
-            {
-                length = new System.IO.FileInfo(filePath).Length;
-            }
-
-            this.Response.Clear();
-            this.Response.ContentType = attachment.ContentType;
-
-            this.Response.AddHeader("Content-Disposition", contentDisposition);
-            this.Response.AddHeader("Content-Length", length.ToString());
-            this.Response.WriteFile(filePath);
-            this.Response.Flush();
-            this.Response.Close();
+            this.Response.StatusCode = 404;
+            this.Response.Write("Not Found");
             this.Response.End();
+            return;
         }
     }
 }

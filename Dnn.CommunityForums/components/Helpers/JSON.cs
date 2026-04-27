@@ -263,7 +263,7 @@ namespace DotNetNuke.Modules.ActiveForums
             /// <returns>string</returns>
             internal static string EscapeJsonString(string originalString)
             {
-                originalString = RegexUtils.GetCachedRegex("\\s+", RegexOptions.Multiline).Replace(originalString, " ");
+                originalString = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex("\\s+", RegexOptions.Multiline).Replace(originalString, " ");
                 return IsJSONArray(originalString) ? originalString : originalString.Replace("\\/", "/").Replace("/", "\\/").Replace("\\\"", "\"").Replace("\"", "\\\"").Replace(System.Environment.NewLine, string.Empty);
             }
         }

@@ -26,8 +26,14 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
     using System.Text;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Entities.Portals;
+
     public class HandlerBase : System.Web.IHttpHandler
     {
+        private readonly DotNetNuke.Abstractions.Portals.IPortalAliasService portalAliasService;
+        private readonly DotNetNuke.Entities.Portals.IPortalController portalController;
+
         internal enum OutputCodes : int
         {
             Success,
@@ -43,9 +49,20 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         private int _gid = -1;
         private int _groupid = -1;
         private int _upid = -1;
-        private DotNetNuke.Entities.Portals.PortalSettings _ps;
+        private DotNetNuke.Abstractions.Portals.IPortalSettings _ps;
         private ModuleSettings _mainSettings;
         private bool _AdminRequired = false;
+
+        public HandlerBase()
+            : this(new DotNetNuke.Entities.Portals.PortalAliasController(), new DotNetNuke.Entities.Portals.PortalController())
+        {
+        }
+
+        public HandlerBase(IPortalAliasService portalAliasService, IPortalController portalController)
+        {
+            this.portalAliasService = portalAliasService;
+            this.portalController = portalController;
+        }
 
         public bool AdminRequired
         {
@@ -153,7 +170,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
         }
 
-        public DotNetNuke.Entities.Portals.PortalSettings PS
+        public DotNetNuke.Abstractions.Portals.IPortalSettings PS
         {
             get
             {
@@ -229,14 +246,10 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 }
                 else
                 {
-                    DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = null;
-                    string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty)
-                        .Replace("https://", string.Empty);
-                    objPortalAliasInfo =
-                        DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAlias(HttpContext.Current
-                            .Request.Url.Host);
-                    this._pid = objPortalAliasInfo.PortalID;
-                    this._ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+                    string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
+                    var portalAliasInfo = this.portalAliasService.GetPortalAlias(HttpContext.Current.Request.Url.Host);
+                    this._pid = portalAliasInfo.PortalId;
+                    this._ps = this.portalController.GetCurrentSettings();
                 }
 
                 this._mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);

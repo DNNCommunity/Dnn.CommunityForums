@@ -26,6 +26,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Security.Policy;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Tokens;
 
     [TableName("activeforums_Replies")]
@@ -298,7 +300,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                var portalSettings = Utilities.GetPortalSettings();
+                var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings();
                 if (portalSettings == null)
                 {
                     portalSettings = this.Forum.PortalSettings;
@@ -702,7 +704,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 body = System.Net.WebUtility.HtmlDecode(body);
                 body = body.Replace("<br>", System.Environment.NewLine);
                 body = Utilities.StripHTMLTag(body);
-                body = body.Length > 500 ? body.Substring(0, 500) + "..." : body;
+                body = body.TruncateWithEllipsis(500);
                 body = body.Replace("\"", "'");
                 body = body.Replace("?", string.Empty);
                 body = body.Replace("+", string.Empty);

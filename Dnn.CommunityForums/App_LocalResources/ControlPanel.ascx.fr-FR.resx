@@ -129,9 +129,6 @@
   <data name="[RESX:Approved].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Approuvé</value>
   </data>
-  <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Insérer des fichiers en tant que jetons</value>
-  </data>
   <data name="[RESX:AuditLog].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Journalisation et suivi</value>
   </data>
@@ -203,9 +200,6 @@
   </data>
   <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Attention : L’installation ou la désinstallation du gestionnaire d’URL des forums de la communauté DNN nécessitera une modification de votre fichier web.config.  \n\nÊtes-vous sûr de vouloir faire ce changement maintenant ?</value>
-  </data>
-  <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Convertir *.png en *.jpg</value>
   </data>
   <data name="[RESX:CreatePostCount].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Créer un nombre de publications</value>
@@ -586,20 +580,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:MaxAttach].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value># de fichiers</value>
   </data>
-  <data name="[RESX:MaxAttachHeight].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Hauteur max.</value>
-  </data>
-  <data name="[RESX:MaxAttachWidth].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Largeur max.</value>
-  </data>
   <data name="[RESX:MaxFileSize].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Taille max. du fichier (Ko)</value>
-  </data>
-  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Hauteur max.</value>
-  </data>
-  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Max. Largeur</value>
   </data>
   <data name="[RESX:MaxPoints].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Points maximum</value>
@@ -1542,5 +1524,11 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   </data>
   <data name="[RESX:NotActive].Text" xml:space="preserve">
     <value>Non actif</value>
+  </data>
+  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve">
+    <value>Max. Hauteur de l’image</value>
+  </data>
+  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve">
+    <value>Largeur maximale de l’image</value>
   </data>
 </root>

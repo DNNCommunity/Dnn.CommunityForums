@@ -39,6 +39,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
+
     using Microsoft.ApplicationBlocks.Data;
 
     public class TemplateUtils
@@ -98,7 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 navigationManager = (INavigationManager)new Services.URLNavigator();
             }
 
-            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalID);
+            PortalSettings portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portalID);
             var moduleSettings = SettingsBase.GetModuleSettings(moduleID);
             if (author == null)
             {
@@ -337,7 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                var portalSettings = Utilities.GetPortalSettings(author.ForumUser.PortalId);
+                var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(author.ForumUser.PortalId);
                 var mainSettings = SettingsBase.GetModuleSettings(moduleId);
                 var accessingUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(author.ForumUser.PortalId, currentUserId);
                 var templateStringbuilder = new StringBuilder(profileTemplate);
@@ -391,7 +393,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             const string pattern = @"\[ROLES:(.+?)\]";
 
-            template = Regex.Replace(template, pattern, delegate (Match match)
+            template = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern).Replace(template, match =>
             {
                 if (userRoleArray == null || userRoleArray.Count == 0)
                 {
@@ -462,7 +464,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var s = template ?? string.Empty;
             const string pattern = "(\\[DNN:PROFILE:(.+?)\\])";
 
-            foreach (Match match in Regex.Matches(s, pattern))
+            foreach (Match match in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern).Matches(s))
             {
                 var sReplace = string.Empty;
                 var sResource = string.Empty;
@@ -563,7 +565,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
                 const string pattern = "(&#91;IMAGE:(.+?)&#93;)";
-                foreach (Match match in Regex.Matches(message, pattern))
+                foreach (Match match in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern).Matches(message))
                 {
                     var sImage = string.Format("<img src=\"{0}DesktopModules/ActiveForums/viewer.aspx?portalid={1}&moduleid={2}&attachid={3}\" border=\"0\" />", strHost, portalId, moduleId, match.Groups[2].Value);
                     message = message.Replace(match.Value, sImage);
@@ -575,7 +577,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var strHost = string.Concat(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)), "/");
                 const string pattern = "(&#91;THUMBNAIL:(.+?)&#93;)";
-                foreach (Match match in Regex.Matches(message, pattern))
+                foreach (Match match in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern).Matches(message))
                 {
                     var thumbId = match.Groups[2].Value.Split(':')[0];
                     var parentId = match.Groups[2].Value.Split(':')[1];
@@ -585,16 +587,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             template = template.Replace("[BODY]", message);
-            if (Regex.IsMatch(template, "<CODE([^>]*)>", RegexOptions.IgnoreCase))
+            if (DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex("<CODE([^>]*)>", RegexOptions.IgnoreCase).IsMatch(template))
             {
-                if (Regex.IsMatch(message, "<CODE([^>]*)>", RegexOptions.IgnoreCase))
-                {
-                    foreach (Match m in Regex.Matches(message, "<CODE([^>]*)>(.*?)</CODE>", RegexOptions.IgnoreCase))
-                    {
-                        message = message.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
-                    }
-                }
-
+                template = CodeParser.ReplaceBreakTagsWithNewLines(template);
                 template = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(template));
             }
 

@@ -20,9 +20,13 @@
 
 namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 {
+    using System.Collections.Generic;
+
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Entities;
+
     using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -131,6 +135,68 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void IsPublicForum_WithAllUsersRole_ReturnsTrue()
+        {
+            // Arrange
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
+            {
+                Object =
+                {
+                    PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
+                    ForumID = 1,
+                    ForumName = "Test Forum",
+                    TotalTopics = 0,
+                    Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo()
+                    {
+                        Read = Globals.DefaultAnonRoles + DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString(),
+                        View = Globals.DefaultAnonRoles + DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString(),
+                    },
+                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
+                    {
+                        GroupName = "Test Forum Group",
+                    },
+                },
+            };
+
+            // Act
+            bool result = mockForum.Object.IsPublicForum;
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsPublicForum_WithNoPublicRoles_ReturnsFalse()
+        {
+            // Arrange
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
+            {
+                Object =
+                {
+                    PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
+                    ForumID = 1,
+                    ForumName = "Test Forum",
+                    TotalTopics = 0,
+                    Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo()
+                    {
+                        View = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString(),
+                        Read = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString(),
+                    },
+                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
+                    {
+                        GroupName = "Test Forum Group",
+                    },
+                },
+            };
+
+            // Act
+            bool result = mockForum.Object.IsPublicForum;
+
+            // Assert
+            Assert.That(result, Is.False);
         }
     }
 }

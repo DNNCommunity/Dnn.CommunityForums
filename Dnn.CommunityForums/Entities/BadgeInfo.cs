@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.UserControls;
 
@@ -119,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public string GetBadgeImageUrl(int portalId, int size = 32)
         {
-            var portalSettings = Utilities.GetPortalSettings(portalId);
+            var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portalId);
             return this.FileId <= 0 ? string.Empty : Utilities.ResolveUrl(url: $"https://{portalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=securefile&fileId={this.FileId}&h={size}&w={size}", defaultPortalAlias: portalSettings.DefaultPortalAlias, sslEnabled: portalSettings.SSLEnabled);
         }
     }

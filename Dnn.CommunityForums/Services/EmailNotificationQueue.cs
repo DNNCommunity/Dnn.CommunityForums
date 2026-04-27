@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
                     intQueueCount += 1;
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(m.PortalId, m.ModuleId, m.EmailFrom, m.EmailTo, m.EmailSubject, m.EmailBody);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.EmailController().SendNotification(m.PortalId, m.ModuleId, m.EmailFrom, m.EmailTo, m.EmailSubject, m.EmailBody);
                         new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().DeleteById(m.Id);
                     }
                     catch (Exception ex)

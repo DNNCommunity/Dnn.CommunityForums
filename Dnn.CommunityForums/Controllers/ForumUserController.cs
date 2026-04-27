@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Log.EventLog;
 
@@ -426,7 +427,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             if (portalSettings == null)
             {
-                portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+                portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings();
             }
 
             if (portalSettings == null)
@@ -472,7 +473,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             if (portalSettings == null)
             {
-                portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+                portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings();
             }
 
             if (portalSettings == null)
@@ -635,12 +636,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     imgUrl = imgUrl.ToLowerInvariant().Replace($"/{portalSettings.PortalAlias.CultureCode.ToLowerInvariant()}/", "/");
                 }
 
-                imgTag = string.Format("<img class='af-avatar' alt='' src='{0}' height='{1}px' width='{2}px' />", imgUrl, avatarHeight, avatarWidth);
+                imgTag = string.Format("<img class='af-avatar' alt='' src='{0}' height='{1}px' width='{2}px' loading='lazy' />", imgUrl, avatarHeight, avatarWidth);
             }
             else
             {
                 /* NOTE: This purposely does not use DNN API GetUserProfilePictureUrl because it inadvertantly requires HttpContext */
-                imgTag = $"<img class='af-avatar' src='https://{portalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={avatarWidth}&w={avatarHeight}' />";
+                imgTag = $"<img class='af-avatar' src='https://{portalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={avatarWidth}&w={avatarHeight}' loading='lazy' />";
             }
 
             return Utilities.ResolveUrlInTag(template: imgTag, defaultPortalAlias: portalSettings.DefaultPortalAlias, sslEnabled: portalSettings.SSLEnabled);

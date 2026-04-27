@@ -22,13 +22,18 @@ namespace DotNetNuke.Modules.ActiveForums.Services
 {
     using System;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Security.Principal;
     using System.Threading;
+    using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -37,14 +42,23 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     /// </summary>
     public sealed class ForumsAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
+        private readonly DotNetNuke.Entities.Portals.IPortalController portalController;
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         /// <param name="permissionNeeded"></param>
         public ForumsAuthorizeAttribute(SecureActions permissionNeeded)
+            : this(permissionNeeded, new DotNetNuke.Entities.Portals.PortalController())
+        {
+        }
+
+        public ForumsAuthorizeAttribute(SecureActions permissionNeeded, IPortalController portalController)
         {
             this.PermissionNeeded = permissionNeeded;
+            this.portalController = portalController;
         }
+
 
         /// <summary>
         /// <inheritdoc/>
@@ -66,8 +80,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 if (identity.IsAuthenticated)
                 {
                     var moduleInfo = context.ActionContext.Request.FindModuleInfo();
-                    var portalSettings = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings();
-                    var userInfo = portalSettings.UserInfo;
+                    var portalSettings = this.portalController.GetCurrentSettings();
+                    var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
                     int moduleId = DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(moduleInfo.ModuleID, moduleInfo.TabID);
                     if (this.PermissionNeeded is SecureActions.ManageUsers)
                     {
@@ -99,8 +113,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                                 var postData = context.ActionContext.Request.Content.ReadAsStringAsync().Result;
                                 forumId = Utilities.SafeConvertInt(System.Web.Helpers.Json.Decode(postData).ForumId);
                             }
-                            catch
+                            catch (Exception ex)
                             {
+                                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                             }
                         }
 

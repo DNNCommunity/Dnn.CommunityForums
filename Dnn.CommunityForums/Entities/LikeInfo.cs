@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Web.Caching;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Tokens;
 
     [TableName("activeforums_Likes")]
@@ -127,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                var portalSettings = Utilities.GetPortalSettings();
+                var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings();
                 if (portalSettings == null)
                 {
                     portalSettings = this.Topic.Forum.PortalSettings;

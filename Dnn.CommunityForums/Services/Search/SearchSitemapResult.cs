@@ -1,4 +1,4 @@
-﻿// Copyright (c) by DNN Community
+// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -18,23 +18,30 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums.Extensions
+namespace DotNetNuke.Modules.ActiveForums.Services.Search
 {
-    public static class StringExtensions
+    using System;
+
+    internal class SearchSitemapResult
     {
-        public static string EmptyIfNull(this string text)
-        {
-            return text ?? string.Empty;
-        }
+        public int ContentId { get; set; }
 
-        public static string TruncateWithEllipsis(this string text, int maxLength)
-        {
-            if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
-            {
-                return text;
-            }
+        public DateTime DateUpdated { get; set; }
 
-            return text.Substring(0, maxLength) + "...";
-        }
+        public int ForumGroupId { get; set; }
+
+        public string ForumGroupUrlPrefix { get; set; }
+
+        public int ForumId { get; set; }
+
+        public string ForumUrlPrefix { get; set; }
+
+        public bool IsApproved { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public int TopicId { get; set; }
+
+        public string TopicUrl { get; set; }
     }
 }

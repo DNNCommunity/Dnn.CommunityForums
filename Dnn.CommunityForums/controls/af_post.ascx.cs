@@ -29,12 +29,14 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Controls;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;
@@ -600,7 +602,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                 {
                                     if (body.ToUpperInvariant().Contains("<CODE") || body.ToUpperInvariant().Contains("[CODE]"))
                                     {
-                                        //body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
                                         body = Utilities.EncodeCodeBlocks(body);
                                     }
                                 }
@@ -732,12 +733,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti.Content.IPAddress = this.Request.UserHostAddress;
             }
 
-            if (Regex.IsMatch(body, "<CODE([^>]*)>", RegexOptions.IgnoreCase))
+            if (DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex("<CODE([^>]*)>", RegexOptions.IgnoreCase).IsMatch(body))
             {
-                foreach (Match m in Regex.Matches(body, "<CODE([^>]*)>(.*?)</CODE>", RegexOptions.IgnoreCase))
-                {
-                    body = body.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
-                }
+                body = CodeParser.ReplaceBreakTagsWithNewLines(body);
             }
 
             ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrlSegment(portalId: this.PortalId, moduleId: this.ForumModuleId, topicId: this.TopicId, subject: subject, forumInfo: this.ForumInfo);
@@ -799,7 +797,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, this.ForumId, this.TopicId);
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
 
-            this.SaveAttachments(ti.ContentId);
+            this.SaveAttachments(ti.Content);
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.TagRoleIds, this.ForumUser.UserRoleIds))
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopic(this.TopicId);
@@ -992,12 +990,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 ri.Content.IPAddress = this.Request.UserHostAddress;
             }
 
-            if (Regex.IsMatch(body, "<CODE([^>]*)>", RegexOptions.IgnoreCase))
+            if (DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex("<CODE([^>]*)>", RegexOptions.IgnoreCase).IsMatch(body))
             {
-                foreach (Match m in Regex.Matches(body, "<CODE([^>]*)>(.*?)</CODE>", RegexOptions.IgnoreCase))
-                {
-                    body = body.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
-                }
+                body = CodeParser.ReplaceBreakTagsWithNewLines(body);
             }
 
             ri.Content.Body = body;
@@ -1023,7 +1018,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var tmpReplyId = rc.Reply_Save(this.PortalId, this.ForumModuleId, ri);
             ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(tmpReplyId);
-            this.SaveAttachments(ri.ContentId);
+
+            this.SaveAttachments(ri.Content);
             try
             {
                 if (this.ctlForm.Subscribe && authorId == this.UserId)
@@ -1080,30 +1076,27 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         // Note attachments are currently saved into the authors file directory
-        private void SaveAttachments(int contentId)
+        private void SaveAttachments(ContentInfo content)
         {
-            var fileManager = FileManager.Instance;
-            var folderManager = FolderManager.Instance;
-            var adb = new Data.AttachController();
-
+            var attachmentController = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController();
+            var fileManager = DotNetNuke.Services.FileSystem.FileManager.Instance;
+            var folderManager = DotNetNuke.Services.FileSystem.FolderManager.Instance;
             var userFolder = folderManager.GetUserFolder(this.UserInfo);
 
-            const string uploadFolderName = "activeforums_Upload";
-            const string attachmentFolderName = "activeforums_Attach";
-            const string fileNameTemplate = "__{0}__{1}__{2}";
-
-            var attachmentFolder = folderManager.GetFolder(this.PortalId, attachmentFolderName) ?? folderManager.AddFolder(this.PortalId, attachmentFolderName);
+            var attachmentFolder =
+                    folderManager.GetFolder(content.Post.PortalId, string.Format(Globals.AttachmentsFolderNameFormatString, content.ModuleId, content.ContentId)) ??
+                    folderManager.AddFolder(content.Post.PortalId, string.Format(Globals.AttachmentsFolderNameFormatString, content.ModuleId, content.ContentId));
 
             // Read the attachment list sent in the hidden field as json
             var attachmentsJson = this.hidAttachments.Value;
-            var serializer = new DataContractJsonSerializer(typeof(List<ClientAttachment>));
+            var serializer = new DataContractJsonSerializer(typeof(List<DotNetNuke.Modules.ActiveForums.Entities.ClientAttachment>));
             var ms = new MemoryStream(Encoding.UTF8.GetBytes(attachmentsJson));
-            var attachmentsNew = (List<ClientAttachment>)serializer.ReadObject(ms);
+            var attachmentsNew = (List<DotNetNuke.Modules.ActiveForums.Entities.ClientAttachment>)serializer.ReadObject(ms);
             ms.Close();
 
             // Read the list of existing attachments for the content.  Must do this before saving any of the new attachments!
-            // Ignore any legacy inline attachments
-            var attachmentsOld = adb.ListForContent(contentId).Where(o => !o.AllowDownload.HasValue || o.AllowDownload.Value);
+            // Ignore any inline attachments
+            var attachmentsOld = attachmentController.GetByContentId(content.ContentId).Where(attachment => !attachment.DisplayInline);
 
             // Save all of the new attachments
             foreach (var attachment in attachmentsNew)
@@ -1116,46 +1109,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 IFileInfo file = null;
 
-                var fileId = attachment.FileId.GetValueOrDefault();
-                if (fileId > 0 && userFolder != null)
+                if (attachment.FileId.HasValue && attachment.FileId.Value > 0 && userFolder != null)
                 {
                     // Make sure that the file exists and it actually belongs to the user who is trying to attach it
-                    file = fileManager.GetFile(fileId);
+                    file = fileManager.GetFile(attachment.FileId.Value);
                     if (file == null || file.FolderId != userFolder.FolderID)
                     {
                         continue;
                     }
-                }
-                else if (!string.IsNullOrWhiteSpace(attachment.UploadId) && !string.IsNullOrWhiteSpace(attachment.FileName))
-                {
-                    if (!Regex.IsMatch(attachment.UploadId, @"^[\w\-. ]+$")) // Check for shenanigans.
-                    {
-                        continue;
-                    }
-
-                    var uploadFilePath = PathUtils.Instance.GetPhysicalPath(this.PortalId, uploadFolderName + "/" + attachment.UploadId);
-
-                    if (!File.Exists(uploadFilePath))
-                    {
-                        continue;
-                    }
-
-                    // Store the files with a filename format that prevents overwrites.
-                    var index = 0;
-                    var fileName = string.Format(fileNameTemplate, contentId, index, Regex.Replace(attachment.FileName, @"[^\w\-. ]+", string.Empty));
-                    while (fileManager.FileExists(attachmentFolder, fileName))
-                    {
-                        index++;
-                        fileName = string.Format(fileNameTemplate, contentId, index, Regex.Replace(attachment.FileName, @"[^\w\-. ]+", string.Empty));
-                    }
-
-                    // Copy the file into the attachment folder with the correct name.
-                    using (var fileStream = new FileStream(uploadFilePath, FileMode.Open, FileAccess.Read))
-                    {
-                        file = fileManager.AddFile(attachmentFolder, fileName, fileStream);
-                    }
-
-                    File.Delete(uploadFilePath);
                 }
 
                 if (file == null)
@@ -1163,20 +1124,31 @@ namespace DotNetNuke.Modules.ActiveForums
                     continue;
                 }
 
-                adb.Save(contentId, this.UserId, file.FileName, file.ContentType, file.Size, file.FileId);
+                var attachInfo = new DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo
+                {
+                    ContentId = content.ContentId,
+                    UserId = content.AuthorId,
+                    FileId = file.FileId,
+                    FileName = file.FileName,
+                    ContentType = file.ContentType,
+                    FileSize = file.Size,
+                    DateAdded = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow,
+                };
+                attachmentController.Save(attachInfo);
+                attachmentController.RelocateAttachment(attachInfo);
             }
 
             // Remove any attachments that are no longer in the list of attachments
-            var attachmentsToRemove = attachmentsOld.Where(a1 => attachmentsNew.All(a2 => a2.AttachmentId != a1.AttachmentId));
+            var attachmentsToRemove = attachmentsOld.Where(attachment => !attachment.DisplayInline).Where(a1 => attachmentsNew.All(a2 => a2.AttachmentId != a1.AttachmentId));
             foreach (var attachment in attachmentsToRemove)
             {
-                adb.Delete(attachment.AttachmentId);
-
                 var file = attachment.FileId.HasValue ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
 
                 // Only delete the file if it exists in the attachment folder
                 if (file != null && file.FolderId == attachmentFolder.FolderID)
                 {
+                    attachmentController.DeleteById(attachment.AttachmentId);
                     fileManager.DeleteFile(file);
                 }
             }
@@ -1191,19 +1163,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            var adb = new Data.AttachController();
-            var attachments = adb.ListForContent(contentId.Value);
-
-            var clientAttachments = attachments.Select(attachment => new ClientAttachment
+            var attachments = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetByContentId((int)contentId);
+            var clientAttachments = attachments.Where(attachment => !attachment.DisplayInline).Select(attachment => new DotNetNuke.Modules.ActiveForums.Entities.ClientAttachment
             {
                 AttachmentId = attachment.AttachmentId,
                 ContentType = attachment.ContentType,
                 FileId = attachment.FileId,
-                FileName = Regex.Replace(attachment.FileName.TextOrEmpty(), @"^__\d+__\d+__", string.Empty), // Remove our unique file prefix before sending to the client.
+                FileName = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"^__\d+__\d+__").Replace(attachment.FileName.EmptyIfNull(), string.Empty), // Remove our unique file prefix before sending to the client.
                 FileSize = attachment.FileSize,
             }).ToList();
 
-            var serializer = new DataContractJsonSerializer(typeof(List<ClientAttachment>));
+            var serializer = new DataContractJsonSerializer(typeof(List<DotNetNuke.Modules.ActiveForums.Entities.ClientAttachment>));
 
             using (var ms = new MemoryStream())
             {

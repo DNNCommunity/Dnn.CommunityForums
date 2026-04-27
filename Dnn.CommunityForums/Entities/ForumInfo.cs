@@ -26,13 +26,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
 
@@ -45,9 +49,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     // TODO [Cacheable("activeforums_Forums", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
     public class ForumInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
-        [IgnoreColumn]
-        private string cacheKeyTemplate => CacheKeys.ForumInfo;
-
         private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
         private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
         private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
@@ -61,16 +62,20 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private string rssLink;
         private List<PropertyInfo> properties;
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Entities.Portals.PortalSettings)")]
+        [IgnoreColumn]
+        private string cacheKeyTemplate => CacheKeys.ForumInfo;
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Abstractions.Portals.IPortalSettings)")]
         public ForumInfo()
+            : this(new PortalSettingsHelper().GetPortalSettings())
         {
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Entities.Portals.PortalSettings)")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Abstractions.Portals.IPortalSettings)")]
         public ForumInfo(int portalId)
         {
             this.PortalId = portalId;
-            this.PortalSettings = Utilities.GetPortalSettings(portalId);
+            this.PortalSettings = new PortalSettingsHelper().GetPortalSettings(portalId);
             this.UpdateCache();
         }
 
@@ -80,6 +85,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.PortalId = this.PortalSettings.PortalId;
             this.UpdateCache();
         }
+
+        [IgnoreColumn]
+        internal bool IsPublicForum =>
+            this.Security?.ReadRoleIds?.Contains(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers, CultureInfo.InvariantCulture)) == true ||
+            this.Security?.ReadRoleIds?.Contains(Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture)) == true;
 
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
@@ -419,7 +429,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public bool GetIsMod(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
-            return !string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ModuleId, forumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Moderate));
+            return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, forumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Moderate).Contains(this.ForumID);
         }
 
         [IgnoreColumn]
@@ -547,7 +557,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal PortalSettings LoadPortalSettings()
         {
-            return this.portalSettings = Utilities.GetPortalSettings(this.PortalId);
+            return this.portalSettings = new PortalSettingsHelper().GetPortalSettings(this.PortalId);
         }
 
         [IgnoreColumn]
@@ -742,7 +752,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                var portalSettings = Utilities.GetPortalSettings();
+                var portalSettings = new PortalSettingsHelper().GetPortalSettings();
                 if (portalSettings == null)
                 {
                     portalSettings = this.PortalSettings;
@@ -957,7 +967,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal int GetTabId()
         {
-            var portalSettings = Utilities.GetPortalSettings();
+            var portalSettings = new PortalSettingsHelper().GetPortalSettings();
             if (portalSettings?.ActiveTab != null)
             {
                 if (portalSettings?.ActiveTab?.TabID == -1 || portalSettings?.ActiveTab?.TabID == portalSettings?.HomeTabId)

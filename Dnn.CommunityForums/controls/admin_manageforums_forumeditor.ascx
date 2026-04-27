@@ -247,10 +247,8 @@ function saveSettings(){
 	var AttachMaxSize = document.getElementById("<%=txtMaxAttachSize.ClientID%>").value;
 	var AttachTypeAllowed = document.getElementById("<%=txtAllowedTypes.ClientID%>").value; 
 	var AttachAllowBrowseSite = document.getElementById("<%=ckAllowBrowseSite.ClientID%>").checked;
-	var MaxAttachWidth = document.getElementById("<%=txtMaxAttachWidth.ClientID%>").value;
-	var MaxAttachHeight = document.getElementById("<%=txtMaxAttachHeight.ClientID%>").value;
-	var AttachInsertAllowed = document.getElementById("<%=ckAttachInsertAllowed.ClientID%>").checked;
-	var AttachConvertToJGPAllowed = document.getElementById("<%=ckConvertingToJpegAllowed.ClientID%>").checked;
+	var MaxImageWidth = document.getElementById("<%=txtMaxImageWidth.ClientID%>").value;
+	var MaxImageHeight = document.getElementById("<%=txtMaxImageHeight.ClientID%>").value;
 
 	var AllowHtml = document.getElementById("<%=rdHTMLOn.ClientID%>").checked;
 	var ed1 = document.getElementById("<%=drpEditorTypes.ClientID%>");
@@ -307,8 +305,8 @@ function saveSettings(){
 
     var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
 	<%=cbEditorAction.ClientID%>.Callback(settingsAction, forumid, EmailAddress, UseFilter, AllowPostIcon, AllowEmoticons, AllowScripts,
-		IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, AttachInsertAllowed, MaxAttachWidth,
-		MaxAttachHeight, AttachConvertToJGPAllowed, AllowHtml, EditorType, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles,
+		IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, MaxImageWidth,
+		MaxImageHeight, AllowHtml, EditorType, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles,
 		AutoSubscribeRoles, IsModerated, DefaultTrustLevel, AutoTrustLevel, modNotifyApprove, modNotifyReject, modNotifyMove, modNotifyDelete,
         modNotifyAlert, AutoSubscribeEnabled, EmailNotificationSubjectTemplate, TemplateFileNameSuffix, UserMentions, UserMentionVisibility);
 
@@ -1424,6 +1422,22 @@ function afadmin_getProperties() {
 				</td>
 				<td></td>
 			</tr>
+            <tr>
+                <td></td>
+                <td class="amcpbold">[RESX:MaxImageWidth]:</td>
+                <td>
+                    <asp:textbox id="txtMaxImageWidth" runat="server" cssclass="amcptxtbx" text="" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="amcpbold">[RESX:MaxImageHeight]:</td>
+                <td>
+                    <asp:textbox id="txtMaxImageHeight" runat="server" cssclass="amcptxtbx" text="" />
+                </td>
+                <td></td>
+            </tr>
 		</table>
 	</div>
 </div>
@@ -1550,38 +1564,6 @@ function afadmin_getProperties() {
                 <td class="amcpbold">[RESX:AllowBrowseSite]:</td>
                 <td>
                     <asp:checkbox runat="server" id="ckAllowBrowseSite" checked="True" />
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td class="amcpbold">[RESX:ConvertingToJpegAllowed]:</td>
-                <td>
-                    <asp:checkbox runat="server" id="ckConvertingToJpegAllowed" checked="True" />
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td class="amcpbold">[RESX:AttachInsertAllowed]:</td>
-                <td>
-                    <asp:checkbox runat="server" id="ckAttachInsertAllowed" checked="True" />
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td class="amcpbold">[RESX:MaxAttachWidth]:</td>
-                <td>
-                    <asp:textbox id="txtMaxAttachWidth" runat="server" cssclass="amcptxtbx" text="" />
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td class="amcpbold">[RESX:MaxAttachHeight]:</td>
-                <td>
-                    <asp:textbox id="txtMaxAttachHeight" runat="server" cssclass="amcptxtbx" text="" />
                 </td>
                 <td></td>
             </tr>

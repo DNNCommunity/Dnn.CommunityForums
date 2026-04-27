@@ -18,23 +18,42 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums.Extensions
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    public static class StringExtensions
+    using System;
+    using System.IO;
+    using System.Text.RegularExpressions;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Services.Tokens;
+
+    [TableName("activeforums_Attachments")]
+    [PrimaryKey("AttachmentId", AutoIncrement = true)]
+    public class AttachmentInfo
     {
-        public static string EmptyIfNull(this string text)
-        {
-            return text ?? string.Empty;
-        }
+        public int AttachmentId { get; set; }
 
-        public static string TruncateWithEllipsis(this string text, int maxLength)
-        {
-            if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
-            {
-                return text;
-            }
+        public int ContentId { get; set; }
 
-            return text.Substring(0, maxLength) + "...";
-        }
+        [ColumnName("UserID")]
+        public int UserId { get; set; }
+
+        [ColumnName("Filename")]
+        public string FileName { get; set; }
+
+        [ColumnName("FileID")]
+        public int? FileId { get; set; }
+
+        public string ContentType { get; set; }
+
+        public DateTime? DateAdded { get; set; }
+
+        public DateTime? DateUpdated { get; set; }
+
+        public long FileSize { get; set; }
+
+        public bool DisplayInline { get; set; } = false;
     }
 }

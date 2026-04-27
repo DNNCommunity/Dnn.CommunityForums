@@ -330,9 +330,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
                             const string pattern = "(&#91;IMAGE:(.+?)&#93;)";
-                            var regExp = new Regex(pattern);
-                            var matches = regExp.Matches(bodyHtml);
-                            foreach (Match match in matches)
+                            foreach (Match match in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern).Matches(bodyHtml))
                             {
                                 var sImage = "<img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + this.PortalId + "&moduleid=" + this.ModuleId + "&attachid=" + match.Groups[2].Value + "\" border=\"0\" />";
                                 bodyHtml = bodyHtml.Replace(match.Value, sImage);
@@ -344,9 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
                             const string pattern = "(&#91;THUMBNAIL:(.+?)&#93;)";
-                            var regExp = new Regex(pattern);
-                            var matches = regExp.Matches(bodyHtml);
-                            foreach (Match match in matches)
+                            foreach (Match match in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern).Matches(bodyHtml))
                             {
                                 var thumbId = match.Groups[2].Value.Split(':')[0];
                                 var parentId = match.Groups[2].Value.Split(':')[1];

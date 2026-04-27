@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
 
@@ -196,7 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal PortalSettings LoadPortalSettings()
         {
-            return this.portalSettings = Utilities.GetPortalSettings(this.ModuleInfo.PortalID);
+            return this.portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(this.ModuleInfo.PortalID);
         }
 
         [IgnoreColumn]
@@ -230,7 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                var portalSettings = Utilities.GetPortalSettings();
+                var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings();
                 if (portalSettings == null)
                 {
                     portalSettings = this.PortalSettings;
@@ -336,7 +337,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal int GetTabId()
         {
-            var portalSettings = Utilities.GetPortalSettings();
+            var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings();
             if (portalSettings?.ActiveTab != null)
             {
                 if (portalSettings?.ActiveTab?.TabID == -1 || portalSettings?.ActiveTab?.TabID == portalSettings?.HomeTabId)

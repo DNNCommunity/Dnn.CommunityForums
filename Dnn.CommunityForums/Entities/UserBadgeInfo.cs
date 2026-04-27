@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "imagemarkup":
                         return PropertyAccess.FormatString(System.Web.HttpUtility.HtmlDecode(this.Badge.ImageMarkup), format);
                     case "imageurl":
-                        return PropertyAccess.FormatString(length > 0 ? this.Badge.GetBadgeImageUrl(this.PortalId, length) : this.Badge.GetBadgeImageUrl(this.PortalId), format);
+                        return PropertyAccess.FormatString(length > 0 ? this.Badge.GetBadgeImageUrl(portalId: this.PortalId, size: length) : this.Badge.GetBadgeImageUrl(this.PortalId), format);
                     case "dateassigned":
                         return Utilities.GetUserFormattedDateTime((DateTime?)this.DateAssigned, formatProvider, accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow));
                     case "intervaldays":

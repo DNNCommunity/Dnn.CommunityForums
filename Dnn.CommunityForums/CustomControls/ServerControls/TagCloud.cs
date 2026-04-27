@@ -25,6 +25,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Modules.ActiveForums.Extensions;
+
     [ToolboxData("<{0}:TagCloud runat=server></{0}:TagCloud>")]
     public class TagCloud : WebControl
     {
@@ -50,13 +52,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (string.IsNullOrEmpty(this.ForumIds))
             {
                 forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetUserFromHttpContext(this.PortalId, this.ModuleId);
-                if (string.IsNullOrEmpty(forumUser.UserForums))
+                if (forumUser.UserForums.Count.Equals(0))
                 {
-                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.PortalId, this.ModuleId, forumUser);
+                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, forumUser).FromHashSetToDelimitedString(";");
                 }
                 else
                 {
-                    this.ForumIds = forumUser.UserForums;
+                    this.ForumIds = forumUser.UserForums.FromHashSetToDelimitedString(";");
                 }
             }
 

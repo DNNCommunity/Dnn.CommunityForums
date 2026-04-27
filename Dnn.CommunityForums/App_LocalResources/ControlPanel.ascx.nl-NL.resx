@@ -234,9 +234,6 @@
   <data name="[RESX:Approved].Text" xml:space="preserve">
     <value>Goedgekeurd</value>
   </data>
-  <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve">
-    <value>Bestanden invoegen als tokens</value>
-  </data>
   <data name="[RESX:AuditLog].Text" xml:space="preserve">
     <value>Loggen &amp; Tracking</value>
   </data>
@@ -308,9 +305,6 @@
   </data>
   <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve">
     <value>Waarschuwing: Installeren, fog het ongedaan maken hiervan, van de DNN-Community-Forum URL Handler vereist een wijziging in uw web.config.  \n\nWeet u zeker dat u deze wijzing nu wilt aanbrengen?</value>
-  </data>
-  <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve">
-    <value>Converteer *.png naar *.jpg</value>
   </data>
   <data name="[RESX:CreatePostCount].Text" xml:space="preserve">
     <value>Aantal berichten maken</value>
@@ -700,20 +694,8 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:MaxAttach].Text" xml:space="preserve">
     <value># Bijlagen</value>
   </data>
-  <data name="[RESX:MaxAttachHeight].Text" xml:space="preserve">
-    <value>Max. hoogte</value>
-  </data>
-  <data name="[RESX:MaxAttachWidth].Text" xml:space="preserve">
-    <value>Max. breedte</value>
-  </data>
   <data name="[RESX:MaxFileSize].Text" xml:space="preserve">
     <value>Maximum Grootte</value>
-  </data>
-  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve">
-    <value>Maximum Hoogte Afbeelding</value>
-  </data>
-  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve">
-    <value>Maximum Breedte Afbeelding</value>
   </data>
   <data name="[RESX:MaxPoints].Text" xml:space="preserve">
     <value>Max Punten</value>
@@ -1689,5 +1671,11 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:NotActive].Text" xml:space="preserve">
     <value>Niet actief</value>
+  </data>
+  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve">
+    <value>Max. Beeldhoogte</value>
+  </data>
+  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve">
+    <value>Max. Beeldbreedte</value>
   </data>
 </root>

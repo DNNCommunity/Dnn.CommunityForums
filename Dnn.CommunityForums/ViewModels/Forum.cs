@@ -89,9 +89,9 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
         /// Maps the current Forum view model to a ForumInfo entity.
         /// </summary>
         /// <returns>A new instance of ForumInfo with properties set from this view model.</returns>
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ToForumInfo()
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ToForumInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
-            var forumInfo = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
+            var forumInfo = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(portalSettings);
             forumInfo.ForumID = this.Id;
             forumInfo.ForumName = this.Name;
             forumInfo.ForumDesc = this.Description;

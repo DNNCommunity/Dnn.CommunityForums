@@ -94,7 +94,7 @@ function AFAttachmentManager($, ko, options) {
                 if ($.inArray(filetype, imageTypes.split(',')) > -1) {
                     $.ajax({
                         type: "GET",
-                        url: '/DesktopModules/ActiveForums/API/ForumService/GetUserFileUrl?FileId=' + fileid,
+                        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Attachment/GetUserFileUrl?ForumId=' + options.forumId + '&FileId=' + fileid,
                         beforeSend: sf.setModuleHeaders
                     })
                     .done(function (data) { self.getImageUrl(data); })
@@ -103,24 +103,17 @@ function AFAttachmentManager($, ko, options) {
                     return;
                 }
             }
-            $.ajax({
-                type: "GET",
-                url: '/DesktopModules/ActiveForums/API/ForumService/GetUserFileUrl?FileId=' + fileid,
-                beforeSend: sf.setModuleHeaders,
-            })
-            .done(function (data) { self.getImageUrl(data); })
-            .fail(function (xhr, status) {alert('Topics Not Found')});
         };
 
         this.getFileUrl = function (url) {
             var isTE = window.isTextEditor;
-            if ((!isTE) && (options.attachInsertAllowed < 1)) amaf_insertHTML('<a href="' + url + '" target="_blank" >' + url.substr(url.lastIndexOf("/") + 1) + '</a>');
+            if (!isTE) amaf_insertHTML('<a href="' + url + '" target="_blank" >' + url.substr(url.lastIndexOf("/") + 1) + '</a>');
             //else amaf_insertHTML(url);
         }
 
         this.getImageUrl = function (url) {
             var isTE = window.isTextEditor;
-            if ((!isTE) && (options.attachInsertAllowed < 1)) amaf_insertHTML('<img src="' + url + '" border="0" class="afpostimg" />');
+            if (!isTE) amaf_insertHTML('<img src="' + url + '" border="0" class="afpostimg" />');
             else amaf_insertHTML('[img]' + url + '[/img]');
         }
 

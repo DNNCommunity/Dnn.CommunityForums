@@ -18,23 +18,30 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums.Extensions
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    public static class StringExtensions
+    using System.Runtime.Serialization;
+
+    // Used to exchange data with the client via JSON
+    [DataContract]
+    public class ClientAttachment
     {
-        public static string EmptyIfNull(this string text)
-        {
-            return text ?? string.Empty;
-        }
+        [DataMember(Name = "id", IsRequired = false, EmitDefaultValue = false)]
+        public int? AttachmentId { get; set; }
 
-        public static string TruncateWithEllipsis(this string text, int maxLength)
-        {
-            if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
-            {
-                return text;
-            }
+        [DataMember(Name = "fileName", IsRequired = true)]
+        public string FileName { get; set; }
 
-            return text.Substring(0, maxLength) + "...";
-        }
+        [DataMember(Name = "contentType", IsRequired = true)]
+        public string ContentType { get; set; }
+
+        [DataMember(Name = "fileSize")]
+        public long FileSize { get; set; }
+
+        [DataMember(Name = "fileId", IsRequired = false, EmitDefaultValue = false)]
+        public int? FileId { get; set; }
+
+        [DataMember(Name = "uploadId", IsRequired = false, EmitDefaultValue = false)]
+        public string UploadId { get; set; }
     }
 }

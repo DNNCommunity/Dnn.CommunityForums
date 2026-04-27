@@ -18,8 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Abstractions.Portals;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -31,7 +29,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Search.Entities;
 
     #region Topics Controller
@@ -39,15 +40,22 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
         private readonly IPortalAliasService portalAliasService;
+        private readonly IPortalSettings portalSettings;
+        private readonly IPortalController portalController;
 
         public TopicsController()
-            : this(new DotNetNuke.Entities.Portals.PortalAliasController())
+            : this(
+                  new DotNetNuke.Entities.Portals.PortalAliasController(),
+                  ServiceLocator<IPortalController, PortalController>.Instance,
+                  ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentSettings())
         {
         }
 
-        public TopicsController(IPortalAliasService portalAliasService)
+        public TopicsController(IPortalAliasService portalAliasService, IPortalController portalController, IPortalSettings portalSettings)
         {
             this.portalAliasService = portalAliasService;
+            this.portalController = portalController;
+            this.portalSettings = portalSettings;
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate()")]
@@ -112,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 roles.Add(r.RoleName);
             }
 
-            var portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(moduleInfo.PortalID);
+            var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(moduleInfo.PortalID);
             string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(moduleInfo.PortalID, roles.ToArray());
             string queryString = string.Empty;
             System.Text.StringBuilder qsb = new System.Text.StringBuilder();
@@ -216,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         var fc = new ForumsConfig();
-                        fc.ArchiveOrphanedAttachments();
+                        fc.ArchiveOrphanedAttachments_070007();
                     }
                     catch (Exception ex)
                     {
@@ -326,7 +334,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        LogError(ex.Message, ex);
+                        this.LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }
@@ -391,6 +399,21 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090600();
                         ForumsConfig.Upgrade_EnsureVanityNames_090600();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                case "09.07.00":
+                    try
+                    {
+                        var fc = new ForumsConfig();
+                        fc.RemoveLegacyAvatarsFolder_090700();
+                        fc.RelocateAttachments_090700();
                     }
                     catch (Exception ex)
                     {
