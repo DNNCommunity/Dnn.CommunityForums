@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Globalization;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -33,6 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Enums;
@@ -61,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private int? tabId;
         private string rssLink;
         private List<PropertyInfo> properties;
+        private int? totalLikeCount;
 
         [IgnoreColumn]
         private string cacheKeyTemplate => CacheKeys.ForumInfo;
@@ -115,6 +118,23 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int TotalTopics { get; set; }
 
         public int TotalReplies { get; set; }
+
+        [IgnoreColumn]
+        public int TotalLikeCount => this.totalLikeCount ?? (this.totalLikeCount = DataContext.Instance().ExecuteQuery<int>(
+            CommandType.Text,
+            @"SELECT COUNT(1)
+                FROM {databaseOwner}{objectQualifier}activeforums_Likes l
+                INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content c ON c.ContentId = l.PostId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics t ON t.ContentId = c.ContentId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Replies r ON r.ContentId = c.ContentId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics ftTopic ON ftTopic.TopicId = t.TopicId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics ftReply ON ftReply.TopicId = r.TopicId
+                WHERE l.Checked = 1
+                  AND COALESCE(ftTopic.ForumId, ftReply.ForumId) = @0",
+            this.ForumID).FirstOrDefault()).Value;
+
+        [IgnoreColumn]
+        public double AverageLikeScore => this.TotalTopics > 0 ? (double)this.TotalLikeCount / this.TotalTopics : 0D;
 
         [IgnoreColumn]
         public Uri RequestUri { get; set; }
