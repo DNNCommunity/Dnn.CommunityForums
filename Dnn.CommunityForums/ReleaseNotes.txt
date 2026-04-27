@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.06.06
+            09.07.00
         </h3>
 <!--       
         <p>
@@ -75,7 +75,10 @@
         <h4>New Features &amp; Enhancements</h4>
         <ul>
             
-            <li>UPDATE: When selecting users for mentions and visibility is "Registered Users", admins can also select other admins, and superusers can select anyone (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1819">Issue 1819</a>)</li>
+            <li>NEW: Community Forums posts (from publicly-readable forums) are now included in DNN Portal site maps (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1558">Issue 1558</a>)</li>
+            <li>ENHANCED: Images can now be dropped/pasted into post editor and are stored in forum content folders in DNN file manager (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1833">Issue 1833</a>)</li>
+            <li>ENHANCED: Attachments handling has been refactored to use DAL2 and files are stored in forum content folders in DNN file manager (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1855">PR 1855</a>)</li>
+            <li>ENHANCED: Relocated image size options from "attachments" to "HTML" forum feature option in Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1852">Issue 1852</a>)</li>
 <!--
             <li>None at this time.</li>
             <li>NEW: Web API endpoints for forums search functionality (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1758">PR 1758</a>)</li>
@@ -98,8 +101,9 @@
         <h4>Bug Fixes</h4>
 
         <ul>
-             <li>FIX: Prevent blank tags from being created (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1825">Issue 1825</a>)</li>
-             <li>FIX: Correct location of Control Panel forums feature popup (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1820">Issue 1820</a>)</li>
+             <li>FIX: "Automatic Links" feature now works correctly when content contains multiple &lt;a&gt; tags  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1871">Issue 1871</a>)</li>
+             <li>FIX: Localization now longer causes features from working when a translation resource contains a single quote character (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/84">Issue 84</a>)</li>
+             <li>FIX: No longer get a popup error when emptying the Recycle Bin (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1858">Issue 1858</a>)</li>
 <!--
           <li>None at this time.</li> 
              
@@ -111,7 +115,10 @@
 
         <h4>Tasks / Development Updates (and Technical Debt Reduction)</h4>
         <ul>
-            <li>09.06.06 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1828">Issue 1828</a>)</li>
+            <li>09.07.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1870">Issue 1870</a>)</li>
+            <li>Update Regex objects to use DNN cached regex API (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1849">Issue 1849</a>)</li>
+            <li>Removed unused legacy attachment manager inherited from Active Forums (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1844">Issue 1844</a>)</li>
+            <li>Address DNN Platform APIs being deprecated in (future) DNN 11 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1799">Issue 1799</a>)</li>
 
 <!--
             <li>Forum Viewer should use DNN Resource Manager to load module.css not load it directly (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1792">Issue 1792</a>)</li>

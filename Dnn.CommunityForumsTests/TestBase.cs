@@ -27,6 +27,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     using System.Collections.Generic;
     using System.Drawing.Text;
     using System.Linq;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.Hosting;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
@@ -37,32 +40,58 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums;
+    using DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.Tests.Utilities.Mocks;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     public class TestBase
     {
-        private Mock<CachingProvider> mockCacheProvider;
-        private Mock<IPortalController> portalController;
-        private Mock<IPortalAliasController> portalAliasController;
-        private Mock<IPortalAliasService> portalAliasService;
-        private Mock<RoleProvider> mockRoleProvider;
-        private Mock<IModuleController> moduleController;
-        private Mock<IUserController> userController;
-        private Mock<IRoleController> roleController;
-        private Mock<IHostController> mockHostController;
+        internal Mock<CachingProvider> mockCacheProvider;
+        internal Mock<IPortalController> portalController;
+        internal Mock<IPortalAliasController> portalAliasController;
+        internal Mock<IPortalAliasService> portalAliasService;
+        internal Mock<RoleProvider> mockRoleProvider;
+        internal Mock<IModuleController> moduleController;
+        internal Mock<IUserController> userController;
+        internal Mock<IRoleController> roleController;
+        internal Mock<IHostController> mockHostController;
 
-        internal string DefaultPortalAlias = "localhost/en-us";
+        internal string DefaultPortalAlias = "example.com/en-us";
+        internal string DefaultSite = "https://example.com";
 
         internal Mock<DotNetNuke.Entities.Modules.ModuleInfo> MockModule;
 
+        internal Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> MockForum;
+        internal Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo> MockForumGroup;
+        internal Mock<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> MockTopic;
+        internal Mock<DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController> MockForumGroupController;
+        internal Mock<DotNetNuke.Modules.ActiveForums.Controllers.ForumController> MockForumController;
+        internal Mock<DotNetNuke.Modules.ActiveForums.Controllers.TopicController> MockTopicController;
+        internal Mock<DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController> MockForumUserController;
+
+        internal Mock<System.Web.HttpApplication> MockHttpApplication;
+
         internal Mock<DotNetNuke.Modules.ActiveForums.ModuleSettings> MainSettings;
+
+        // DNN UserInfo instances — shared between userController mock and ForumUserGraph
+        internal UserInfo AdminUserInfo;
+        internal UserInfo User10Info;
+        internal UserInfo User12Info;
+        internal UserInfo AnonUserInfo;
+        internal UserInfo ModeratorUserInfo;
+
+        internal List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> ForumsGraph;
+        internal List<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo> ForumUserGraph;
+        internal List<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> TopicReplyGraph;
 
         [SetUp]
         public void SetUp()
@@ -88,6 +117,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             MockComponentProvider.CreateNew<LoggingProvider>();
             MockComponentProvider.CreateEventLogController();
+
+            this.SetupMockHttpApplication();
 
             this.MainSettings = new Mock<DotNetNuke.Modules.ActiveForums.ModuleSettings>();
             this.SetupMainSettings();
@@ -119,6 +150,11 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             this.SetupUserRoleInfo();
 
             this.SetupRoleProvider();
+
+            this.SetupForumInfo();
+
+            this.SetupForumUserInfo();
+            this.SetupTopicReplyInfo();
         }
 
         [TearDown]
@@ -146,7 +182,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.USER_TenId), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user10RoleInfoforRegisteredUsers, user10RoleInfoforAllUsers, user10RoleInfoforAnonymousUsers });
 
             var user12RoleInfoforRegisteredUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers, RoleID = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers, UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12 };
-            var user12RoleInfoforAllUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers), UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12 };
+            var user12RoleInfoforAllUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers), UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12 };
             var user12RoleInfoforAnonymousUsers = new UserRoleInfo { PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero, RoleName = DotNetNuke.Common.Globals.glbRoleUnauthUserName, RoleID = Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleUnauthUser), UserID = DotNetNuke.Tests.Utilities.Constants.USER_TenId };
             this.mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == DotNetNuke.Tests.Utilities.Constants.UserID_User12), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user12RoleInfoforRegisteredUsers, user12RoleInfoforAllUsers, user12RoleInfoforAnonymousUsers });
 
@@ -158,27 +194,28 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
         private void SetupUserInfo()
         {
-            var adminUserInfo = new UserInfo
+            // Assign to fields so SetupForumUserInfo() can reuse the same instances
+            this.AdminUserInfo = new UserInfo
             {
                 PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
                 UserID = DotNetNuke.Tests.Utilities.Constants.UserID_Admin,
                 Username = DotNetNuke.Tests.Utilities.Constants.UserName_Admin,
                 DisplayName = DotNetNuke.Tests.Utilities.Constants.UserDisplayName_Admin,
             };
-            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_Admin), It.IsAny<int>())).Returns(adminUserInfo);
-            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_Admin))).Returns(adminUserInfo);
+            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_Admin), It.IsAny<int>())).Returns(this.AdminUserInfo);
+            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_Admin))).Returns(this.AdminUserInfo);
 
-            var user10Info = new UserInfo
+            this.User10Info = new UserInfo
             {
                 PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
                 UserID = DotNetNuke.Tests.Utilities.Constants.USER_TenId,
                 Username = DotNetNuke.Tests.Utilities.Constants.USER_TenName,
                 DisplayName = DotNetNuke.Tests.Utilities.Constants.USER_TenName,
             };
-            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_TenId), It.IsAny<int>())).Returns(user10Info);
-            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_TenId))).Returns(user10Info);
+            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_TenId), It.IsAny<int>())).Returns(this.User10Info);
+            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_TenId))).Returns(this.User10Info);
 
-            var user12Info = new UserInfo
+            this.User12Info = new UserInfo
             {
                 PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
                 UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12,
@@ -189,10 +226,10 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                     PreferredLocale = "en-US",
                 },
             };
-            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_User12), It.IsAny<int>())).Returns(user12Info);
-            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_User12))).Returns(user12Info);
+            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_User12), It.IsAny<int>())).Returns(this.User12Info);
+            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_User12))).Returns(this.User12Info);
 
-            var anonUserInfo = new UserInfo
+            this.AnonUserInfo = new UserInfo
             {
                 PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
                 UserID = DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId,
@@ -203,8 +240,18 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                     PreferredLocale = "en-US",
                 },
             };
-            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId), It.IsAny<int>())).Returns(anonUserInfo);
-            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId))).Returns(anonUserInfo);
+            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId), It.IsAny<int>())).Returns(this.AnonUserInfo);
+            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId))).Returns(this.AnonUserInfo);
+
+            this.ModeratorUserInfo = new UserInfo
+            {
+                PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
+                UserID = DotNetNuke.Tests.Utilities.Constants.UserID_FirstSocialGroupOwner,
+                Username = DotNetNuke.Tests.Utilities.Constants.RoleName_FirstSocialGroup,
+                DisplayName = "Forum Moderator",
+            };
+            this.userController.Setup(uc => uc.GetUser(It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_FirstSocialGroupOwner), It.IsAny<int>())).Returns(this.ModeratorUserInfo);
+            this.userController.Setup(uc => uc.GetUserById(It.IsAny<int>(), It.Is<int>(u => u == DotNetNuke.Tests.Utilities.Constants.UserID_FirstSocialGroupOwner))).Returns(this.ModeratorUserInfo);
         }
 
         private void SetupRoleInfo()
@@ -339,7 +386,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var portalAliasInfo = new PortalAliasInfo
             {
                 PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
-                HTTPAlias = "localhost",
+                HTTPAlias = "example.com",
                 IsPrimary = true,
                 CultureCode = "en-US",
             };
@@ -363,13 +410,20 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         {
             IPortalAliasInfo portalAlias = new PortalAliasInfo();
             portalAlias.PortalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
-            portalAlias.HttpAlias = "localhost";
+            portalAlias.HttpAlias = "example.com";
             portalAlias.IsPrimary = true;
             portalAlias.CultureCode = "en-US";
 
-            IEnumerable<IPortalAliasInfo> portalAliases = new List<IPortalAliasInfo> { portalAlias };
+            IDictionary<string, IPortalAliasInfo> portalAliases = new Dictionary<string, IPortalAliasInfo>
+            {
+                { portalAlias.HttpAlias, portalAlias },
+            };
 
-            this.portalAliasService.Setup(c => c.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(portalAliases);
+            this.portalAliasService.Setup(c => c.GetPortalAliases()).Returns(portalAliases);
+            this.portalAliasService.Setup(c => c.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(portalAliases.Values.AsEnumerable());
+
+            var portalAliasInfoList = new List<PortalAliasInfo> { (PortalAliasInfo)portalAlias };
+            this.portalAliasController.Setup(pac => pac.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(portalAliasInfoList);
         }
 
         private void SetupCachingProvider()
@@ -401,9 +455,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                     ModuleID = 1,
                     PortalID = this.portalController.Object.GetCurrentPortalSettings().PortalId,
                     ModuleTitle = "Test Module",
-
                 },
-
             };
 
             this.moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(this.MockModule.Object);
@@ -434,6 +486,153 @@ namespace DotNetNuke.Modules.ActiveForumsTests
                 { SettingKeys.UseShortUrls, true },
                 { SettingKeys.UseSkinBreadCrumb, true },
             };
+        }
+
+        private void SetupForumInfo()
+        {
+            var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+
+            this.ForumsGraph = ForumsObjectGraph.BuildForumsGraph(portalSettings);
+
+            this.MockForumGroupController = new Mock<DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController>();
+
+            foreach (var forum in this.ForumsGraph)
+            {
+                var capturedForum = forum;
+                this.MockForumGroupController
+                    .Setup(c => c.GetById(capturedForum.ForumGroupId, It.IsAny<int>()))
+                    .Returns(capturedForum.ForumGroup);
+                this.MockForumGroupController
+                    .Setup(c => c.GetByUrlPrefix(It.IsAny<int>(), capturedForum.ForumGroup.PrefixURL))
+                    .Returns(capturedForum.ForumGroup);
+            }
+
+            this.MockForumGroupController
+                .Setup(c => c.Get(It.IsAny<int>()))
+                .Returns(this.ForumsGraph.Select(f => f.ForumGroup));
+
+            this.MockForumController = new Mock<DotNetNuke.Modules.ActiveForums.Controllers.ForumController>();
+
+            foreach (var forum in this.ForumsGraph)
+            {
+                var capturedForum = forum;
+                this.MockForumController
+                    .Setup(fc => fc.GetById(capturedForum.ForumID, It.IsAny<int>()))
+                    .Returns(capturedForum);
+                this.MockForumController
+                    .Setup(c => c.GetByUrlPrefix(It.IsAny<int>(), capturedForum.PrefixURL))
+                    .Returns(capturedForum);
+            }
+
+            this.MockForumGroup = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>(this.ForumsGraph.First().ForumGroup);
+            this.MockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
+            {
+                Object =
+                {
+                    ForumID = this.ForumsGraph.First().ForumID,
+                    ForumGroupId = this.ForumsGraph.First().ForumGroupId,
+                    ForumGroup = this.ForumsGraph.First().ForumGroup,
+                    PortalSettings = portalSettings,
+                    ForumName = this.ForumsGraph.First().ForumName,
+                    PrefixURL = this.ForumsGraph.First().PrefixURL,
+                    TotalTopics = 5,
+                    Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo
+                    {
+                        View = DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs.ForumsObjectGraph.PublicForumPermission,
+                    },
+                },
+            };
+
+            this.MockTopic = new Mock<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
+            {
+                Object =
+                {
+                    ForumId = this.MockForum.Object.ForumID,
+                    TopicId = 1,
+                    Forum = this.MockForum.Object,
+                    Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
+                    {
+                        ContentId = 1,
+                        ModuleId = 1,
+                        Subject = "Test Topic",
+                        Body = "Test Topic",
+                    },
+                    TopicUrl = "test-topic",
+                },
+            };
+
+            this.MockTopicController = new Mock<DotNetNuke.Modules.ActiveForums.Controllers.TopicController>(-1);
+            this.MockTopicController
+                .Setup(tc => tc.GetById(It.IsAny<int>()))
+                .Returns(this.MockTopic.Object);
+        }
+
+        private void SetupForumUserInfo()
+        {
+            var portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+
+            // Build the graph using the same UserInfo instances registered with userController
+            this.ForumUserGraph = ForumUserObjectGraph.BuildFullGraph(
+                ForumsObjectGraph.ModuleId,
+                portalSettings,
+                adminUserInfo: this.AdminUserInfo,
+                user10Info: this.User10Info,
+                user12Info: this.User12Info,
+                anonUserInfo: this.AnonUserInfo,
+                moderatorUserInfo: this.ModeratorUserInfo);
+
+            this.MockForumUserController = new Mock<DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController>(ForumsObjectGraph.ModuleId);
+
+            foreach (var forumUser in this.ForumUserGraph)
+            {
+                var capturedUser = forumUser;
+                this.MockForumUserController
+                    .Setup(c => c.GetByUserId(It.IsAny<int>(), capturedUser.UserId))
+                    .Returns(capturedUser);
+            }
+        }
+
+        private void SetupTopicReplyInfo()
+        {
+            this.TopicReplyGraph = TopicReplyObjectGraph.BuildFullGraph(
+                moduleId: ForumsObjectGraph.ModuleId,
+                portalId: ForumsObjectGraph.PortalId,
+                forumsGraph: this.ForumsGraph,
+                forumUserGraph: this.ForumUserGraph);
+
+            foreach (var topic in this.TopicReplyGraph)
+            {
+                var capturedTopic = topic;
+                this.MockTopicController
+                    .Setup(tc => tc.GetById(capturedTopic.TopicId))
+                    .Returns(capturedTopic);
+            }
+        }
+
+        internal void SetupMockHttpApplication()
+        {
+            this.MockHttpApplication = this.CreateMockHttpApplication(this.DefaultSite);
+        }
+        
+        internal Mock<System.Web.HttpApplication> CreateMockHttpApplication(string url)
+        {
+            var uri = new Uri(url);
+
+            // Use the 5-argument SimpleWorkerRequest to ensure appVirtualDir and appPhysicalDir
+            // are set, which is required for RuntimeConfig to resolve encoding during RewritePath.
+            var workerRequest = new SimpleWorkerRequest(
+                "/",
+                System.IO.Path.GetTempPath(),
+                uri.AbsolutePath,
+                uri.Query.TrimStart('?'),
+                new System.IO.StringWriter());
+            var context = new HttpContext(workerRequest);
+
+            var app = new Mock<System.Web.HttpApplication>();
+            var contextField = typeof(HttpApplication).GetField("_context", BindingFlags.NonPublic | BindingFlags.Instance);
+            contextField?.SetValue(app.Object, context);
+
+            return app;
         }
     }
 }

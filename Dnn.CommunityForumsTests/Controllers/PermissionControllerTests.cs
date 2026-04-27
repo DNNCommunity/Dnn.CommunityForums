@@ -43,7 +43,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         {
             // Arrange
             var roles = $"{Common.Globals.glbRoleAllUsers};{Common.Globals.glbRoleUnauthUser}";
-            var portalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
             var expectedResult = $"{Common.Globals.glbRoleAllUsersName};{Common.Globals.glbRoleUnauthUserName};";
 
             // Act
@@ -58,7 +57,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         {
             // Arrange
             var role = DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers;
-            var portalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
             var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers}";
 
             // Act
@@ -73,7 +71,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         {
             // Arrange
             var roleName = DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers;
-            var portalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
             var expectedResult = Convert.ToInt32(DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers);
 
             // Act
@@ -88,7 +85,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         {
             // Arrange
             var role = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}";
-            var portalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
             var expectedResult = Convert.ToInt32($"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}");
 
             // Act
@@ -103,7 +99,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         {
             // Arrange
             var role = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}";
-            var portalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
             var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleName_Administrators}";
 
             // Act
@@ -118,7 +113,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         {
             // Arrange
             var role = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}";
-            var portalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
             var expectedResult = Convert.ToInt32($"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}");
 
             // Act
@@ -133,7 +127,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         {
             // Arrange
             var role = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}";
-            var portalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero;
             var expectedResult = $"{DotNetNuke.Tests.Utilities.Constants.RoleName_RegisteredUsers}";
 
             // Act
@@ -435,7 +428,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             /* not testable without DI for permissions Controller */
-            Assert.Throws<NullReferenceException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(this.MockModule.Object.ModuleID, -1, string.Empty, string.Empty));
+            Assert.Throws<ArgumentException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(this.MockModule.Object.ModuleID, -1, string.Empty, string.Empty));
         }
 
         [Test]

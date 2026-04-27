@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         public DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo GetForCategoryName(string categoryName)
         {
-            return this.Find("WHERE UPPER(RTRIM(LTRIM(CategoryName))) = UPPER(RTRIM(LTRIM(@0)))", categoryName).FirstOrDefault();
+            return this.Find("WHERE UPPER(RTRIM(LTRIM(categoryName))) = UPPER(RTRIM(LTRIM(@0)))", categoryName).FirstOrDefault();
         }
 
         internal void RecountItems(int categoryId)
@@ -62,6 +62,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().DeleteForCategory(item.CategoryId);
             base.Delete(item);
+        }
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo GetByName(int moduleId, string categoryName)
+        {
+            string cachekey = string.Format(CacheKeys.CategoryByName, moduleId, categoryName);
+            DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo categoryInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo;
+            if (categoryInfo == null)
+            {
+                // this accommodates duplicates which may exist since currently no uniqueness applied in database
+                categoryInfo = this.Find("WHERE ModuleId = @0 AND CategoryName = @1", moduleId, categoryName.Trim()).OrderBy(t => t.CategoryId).FirstOrDefault();
+                DataCache.ContentCacheStore(moduleId, cachekey, categoryInfo);
+            }
+
+            return categoryInfo;
         }
     }
 }

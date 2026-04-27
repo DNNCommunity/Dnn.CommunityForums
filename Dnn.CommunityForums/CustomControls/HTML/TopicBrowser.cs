@@ -139,11 +139,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append(this.FooterTemplate);
             int pageCount = Convert.ToInt32(System.Math.Ceiling((double)recordCount / this.PageSize));
             ControlUtils cUtils = new ControlUtils();
-            int id = this.TagId > 0 ? this.TagId : this.CategoryId;
-            string otherPrefix = id > 0
-                ? Utilities.CleanName(new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(id).TagName)
-                : string.Empty;
-            sb.Append(cUtils.BuildPager(this.PortalId, this.TabId, this.ModuleId, groupPrefix, forumPrefix, this.ForumGroupId, this.ForumId, this.TagId, this.CategoryId, otherPrefix, this.PageIndex, pageCount));
+            string otherPrefix = this.TagId > 0 ?
+                     Utilities.CleanName(new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(this.TagId).TagName) :
+                        (this.CategoryId > 0 ?
+                             Utilities.CleanName(new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().GetById(this.CategoryId).CategoryName) : string.Empty);
+            sb.Append(cUtils.BuildPager(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: groupPrefix, forumPrefix: forumPrefix, forumGroupId: this.ForumGroupId, forumID: this.ForumId, tagId: this.TagId, categoryId: this.CategoryId, otherPrefix: otherPrefix, pageId: this.PageIndex, pageCount: pageCount));
             return sb.ToString();
         }
 

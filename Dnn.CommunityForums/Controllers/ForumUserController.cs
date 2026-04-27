@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ).Where(forumUser => forumUser.IsAdmin || forumUser.IsSuperUser || forumUser.UserInfo.Membership.Approved);
         }
 
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetByUserId(int portalId, int userId)
+        public virtual DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetByUserId(int portalId, int userId)
         {
             var cachekey = this.GetCacheKey(portalId: portalId, id: userId);
             var user = DataCache.UserCacheRetrieve(cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo;

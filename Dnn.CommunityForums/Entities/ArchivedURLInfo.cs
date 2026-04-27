@@ -1,4 +1,4 @@
-// Copyright (c) by DNN Community
+﻿// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -18,40 +18,52 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums.Services.Search
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    using System;
+    using DotNetNuke.ComponentModel.DataAnnotations;
 
-    internal class SearchSitemapResult
+    /// <summary>
+    /// Represents an archived forum URL entry.
+    /// </summary>
+    [TableName("activeforums_ArchivedURLs")]
+    [PrimaryKey("Id", AutoIncrement = true)]
+    public class ArchivedURLInfo
     {
-        public int ContentId { get; set; }
+        /// <summary>
+        /// Gets or sets the archived URL identifier.
+        /// </summary>
+        public int Id { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        /// <summary>
+        /// Gets or sets the archived URL value.
+        /// </summary>
+        [ColumnName("URL")]
+        public string Url { get; set; }
 
-        public DateTime DateUpdated { get; set; }
+        /// <summary>
+        /// Gets or sets the portal identifier.
+        /// </summary>
+        public int PortalId { get; set; }
 
-        public int ForumGroupId { get; set; }
-
-        public string ForumGroupUrlPrefix { get; set; }
-
+        /// <summary>
+        /// Gets or sets the forum identifier.
+        /// </summary>
         public int ForumId { get; set; }
 
-        public string ForumUrlPrefix { get; set; }
-
-        public bool IsApproved { get; set; }
-
-        public bool IsDeleted { get; set; }
-
-        public int LikeCount { get; set; }
-
-        public int ReplyId { get; set; }
-
-        public bool IsTopic => this.ReplyId == -1;
-
-        public bool IsReply => this.ReplyId != -1;
-
+        /// <summary>
+        /// Gets or sets the topic identifier.
+        /// </summary>
         public int TopicId { get; set; }
 
-        public string TopicUrl { get; set; }
+        /// <summary>
+        /// Gets or sets the forum group identifier.
+        /// </summary>
+        public int ForumGroupId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the MD5 hash for normalized URL lookups.
+        /// </summary>
+        [ColumnName("URL_Hash")]
+        public byte[] UrlHash { get; set; }
     }
 }

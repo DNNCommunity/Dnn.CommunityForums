@@ -889,7 +889,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!ti.IsApproved)
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: 0, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: this.ForumUser.UserId);
-                    string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
+                    string[] @params = { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.MessagePending}" };
                     this.Response.Redirect(this.NavigateUrl(this.ForumTabId, string.Empty, @params), false);
                     this.Context.ApplicationInstance.CompleteRequest();
                 }
@@ -904,7 +904,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string sUrl = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
                     if (sUrl.Contains("~/"))
                     {
-                        sUrl = Utilities.NavigateURL(this.ForumTabId, string.Empty, ParamKeys.TopicId + "=" + this.TopicId);
+                        sUrl = Utilities.NavigateURL(this.ForumTabId, string.Empty, $"{ParamKeys.TopicId}={this.TopicId}");
                     }
 
                     this.Response.Redirect(sUrl, false);
@@ -1048,7 +1048,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: tmpReplyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
 
-                    string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
+                    string[] @params = { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.MessagePending}" };
                     this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, @params), false);
                     this.Context.ApplicationInstance.CompleteRequest();
                 }
@@ -1062,12 +1062,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     var fullURL = new ControlUtils().BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, this.SocialGroupId);
                     if (fullURL.Contains("~/"))
                     {
-                        fullURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
+                        fullURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ContentJumpId}={tmpReplyId}" });
                     }
 
                     if (fullURL.EndsWith("/"))
                     {
-                        fullURL += Utilities.UseFriendlyURLs(this.ForumModuleId) ? String.Concat("#", tmpReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", tmpReplyId);
+                        fullURL += Utilities.UseFriendlyURLs(this.ForumModuleId) ? $"#{tmpReplyId}" : $"?{ParamKeys.ContentJumpId}={tmpReplyId}";
                     }
 
                     this.Response.Redirect(fullURL, false);

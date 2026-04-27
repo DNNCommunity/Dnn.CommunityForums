@@ -25,13 +25,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Web;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
@@ -40,6 +43,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.Social.Notifications;
+
+    using static System.ComponentModel.Design.ObjectSelectorEditor;
 
     internal class TopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
     {
@@ -52,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this.moduleId = moduleId;
         }
 
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int topicId)
+        public virtual DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int topicId)
         {
             var cachekey = this.GetCacheKey(moduleId: this.moduleId, id: topicId);
             var ti = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
@@ -103,6 +108,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, ti);
             return ti;
+        }
+
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo FindByURL(int forumId, string topicUrl)
+        {
+            string cachekey = string.Format(CacheKeys.TopicByUrl, this.moduleId, forumId, topicUrl);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
+            if (topicInfo == null)
+            {
+                if (!string.IsNullOrWhiteSpace(topicUrl))
+                {
+                    var topicId = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(System.Data.CommandType.Text, "SELECT t.TopicId FROM activeforums_Topics t INNER JOIN activeforums_ForumTopics ft ON ft.TopicId = t.TopicId WHERE ft.ForumId = @0 AND t.URL_Hash = HASHBYTES('MD5', CONVERT(varbinary(8000), @1)) AND t.URL = @1", forumId, topicUrl.Trim()).FirstOrDefault();
+                    if (topicId.HasValue)
+                    {
+                        topicInfo = this.GetById(topicId.Value);
+                    }
+                }
+
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topicInfo);
+            }
+
+            return topicInfo;
         }
 
         public static int QuickCreate(int portalId, int moduleId, int forumId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress)

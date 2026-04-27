@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs;
 
     using Moq;
 
@@ -32,51 +33,18 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
     [TestFixture]
     public class ForumInfoTests : DotNetNuke.Modules.ActiveForumsTests.TestBase
     {
-
         [Test]
         public void GetForumStatusForUserTest1()
         {
             // Arrange
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
-            {
-                Object =
-                {
-                    PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
-                    ForumID = 1,
-                    ForumName = "Test Forum",
-                    TotalTopics = 0,
-                    Security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.MockModule.Object.ModuleID),
-                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo { GroupName = "Test Forum Group" },
-                },
-            };
+            // Use the private (members-only) forum — no View permission for anonymous users.
+            var forum = this.ForumsGraph.Find(f => f.ForumID == ForumsObjectGraph.AdministratorsOnlyForumId);
+            var forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.UserID_User12);
 
-            var mockUserInfo = new Mock<DotNetNuke.Entities.Users.UserInfo>
-            {
-                Object =
-                {
-                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12,
-                    IsSuperUser = false,
-                    Profile = new DotNetNuke.Entities.Users.UserProfile()
-                    {
-                        PreferredLocale = "en-US",
-                    },
-                },
-            };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.MockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
-            {
-                Object =
-                {
-                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserId = mockUserInfo.Object.UserID,
-                    UserInfo = mockUserInfo.Object,
-                },
-            };
-
-            var expectedResult = DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.Forbidden;
+            var expectedResult = Modules.ActiveForums.Enums.ForumStatus.Forbidden;
 
             // Act
-            var actualResult = mockForum.Object.GetForumStatusForUser(mockUser.Object);
+            var actualResult = forum.GetForumStatusForUser(forumUser);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -86,52 +54,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
         public void GetForumStatusForUserTest2()
         {
             // Arrange
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
-            {
-                Object =
-                {
-                    PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
-                    ForumID = 1,
-                    ForumName = "Test Forum",
-                    TotalTopics = 0,
-                    Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo()
-                    {
-                        View = Globals.DefaultAnonRoles + "|-1;||",
-                    },
-                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
-                    {
-                        GroupName = "Test Forum Group",
-                    },
-                },
-            };
+            // Use a public forum — anonymous users can view it so the result is Empty (no new posts).
+            var forum = this.ForumsGraph.Find(f => f.ForumID == ForumsObjectGraph.AnnouncementsForumId);
+            var forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.UserID_User12);
 
-            var mockUserInfo = new Mock<DotNetNuke.Entities.Users.UserInfo>
-            {
-                Object =
-                {
-                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12,
-                    IsSuperUser = false,
-                    Profile = new DotNetNuke.Entities.Users.UserProfile()
-                    {
-                        PreferredLocale = "en-US",
-                    },
-                },
-            };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.MockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
-            {
-                Object =
-                {
-                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserId = mockUserInfo.Object.UserID,
-                    UserInfo = mockUserInfo.Object,
-                },
-            };
-
-            var expectedResult = DotNetNuke.Modules.ActiveForums.Enums.ForumStatus.Empty;
+            var expectedResult = Modules.ActiveForums.Enums.ForumStatus.Empty;
 
             // Act
-            var actualResult = mockForum.Object.GetForumStatusForUser(mockUser.Object);
+            var actualResult = forum.GetForumStatusForUser(forumUser);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -140,29 +70,11 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
         [Test]
         public void IsPublicForum_WithAllUsersRole_ReturnsTrue()
         {
-            // Arrange
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
-            {
-                Object =
-                {
-                    PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
-                    ForumID = 1,
-                    ForumName = "Test Forum",
-                    TotalTopics = 0,
-                    Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo()
-                    {
-                        Read = Globals.DefaultAnonRoles + DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString(),
-                        View = Globals.DefaultAnonRoles + DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString(),
-                    },
-                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
-                    {
-                        GroupName = "Test Forum Group",
-                    },
-                },
-            };
+            // Arrange — any forum in the General group has PublicViewPermission.
+            var forum = this.ForumsGraph.Find(f => f.ForumID == ForumsObjectGraph.AnnouncementsForumId);
 
             // Act
-            bool result = mockForum.Object.IsPublicForum;
+            bool result = forum.IsPublicForum;
 
             // Assert
             Assert.That(result, Is.True);
@@ -171,32 +83,66 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
         [Test]
         public void IsPublicForum_WithNoPublicRoles_ReturnsFalse()
         {
-            // Arrange
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
-            {
-                Object =
-                {
-                    PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
-                    ForumID = 1,
-                    ForumName = "Test Forum",
-                    TotalTopics = 0,
-                    Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo()
-                    {
-                        Read = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString(),
-                        View = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators.ToString(),
-                    },
-                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
-                    {
-                        GroupName = "Test Forum Group",
-                    },
-                },
-            };
+            // Arrange — Admin forums use AdministratorsPermission only.
+            var forum = this.ForumsGraph.Find(f => f.ForumID == ForumsObjectGraph.AdministratorsOnlyForumId);
 
             // Act
-            bool result = mockForum.Object.IsPublicForum;
+            bool result = forum.IsPublicForum;
 
             // Assert
             Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void TotalLikeCount_WithCachedValue_ReturnsCachedValue()
+        {
+            // Arrange
+            var forum = this.ForumsGraph.Find(f => f.ForumID == ForumsObjectGraph.HelpAndSupportForumId);
+            SetTotalLikeCountCache(forum, 12);
+
+            // Act
+            int totalLikeCount = forum.TotalLikeCount;
+
+            // Assert
+            Assert.That(totalLikeCount, Is.EqualTo(12));
+        }
+
+        [Test]
+        public void AverageLikeScore_WithNoTopics_ReturnsZero()
+        {
+            // Arrange
+            var forum = this.ForumsGraph.Find(f => f.ForumID == ForumsObjectGraph.HelpAndSupportForumId);
+            forum.TotalTopics = 0;
+
+            SetTotalLikeCountCache(forum, 12);
+
+            // Act
+            double averageLikeScore = forum.AverageLikeScore;
+
+            // Assert
+            Assert.That(averageLikeScore, Is.EqualTo(0D));
+        }
+
+        [Test]
+        public void AverageLikeScore_WithTopicsAndCachedLikes_ReturnsExpectedAverage()
+        {
+            // Arrange
+            var forum = this.ForumsGraph.Find(f => f.ForumID == ForumsObjectGraph.HelpAndSupportForumId);
+            forum.TotalTopics = 4;
+
+            SetTotalLikeCountCache(forum, 10);
+
+            // Act
+            double averageLikeScore = forum.AverageLikeScore;
+
+            // Assert
+            Assert.That(averageLikeScore, Is.EqualTo(2.5D));
+        }
+
+        private static void SetTotalLikeCountCache(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, int totalLikeCount)
+        {
+            var likeCountField = typeof(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo).GetField("totalLikeCount", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            likeCountField?.SetValue(forum, totalLikeCount);
         }
     }
 }

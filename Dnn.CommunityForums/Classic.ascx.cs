@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
             //new ForumsConfig().RemoveLegacyAvatarsFolder_090700();
-            new ForumsConfig().RelocateAttachments_090700();
+            //new ForumsConfig().RelocateAttachments_090700();
 #endif
 
             try
@@ -489,7 +489,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ShowToolbar = false;
             }
 
-            if (this.Request.QueryString["dnnprintmode"] == null)
+            if (this.Request.QueryString[Modes.DnnPrintMode] == null)
             {
                 if (HttpContext.Current.Items["ShowToolbar"] != null)
                 {

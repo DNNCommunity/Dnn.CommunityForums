@@ -301,20 +301,21 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return PropertyAccess.FormatString(this.ForumGroupId.ToString(), format);
                     case "grouplink":
                     case "forumgrouplink":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(
-                                this.PortalSettings.PortalId,
-                                this.GetTabId(),
-                                this.ModuleId,
-                                this.PrefixURL,
-                                string.Empty,
-                                this.ForumGroupId,
-                                -1,
-                                -1,
-                                -1,
-                                string.Empty,
-                                1,
-                                -1,
-                                -1),
+                        return PropertyAccess.FormatString(
+                            new ControlUtils().BuildUrl(
+                                portalId: this.PortalSettings.PortalId,
+                                tabId: this.GetTabId(),
+                                moduleId: this.ModuleId,
+                                groupPrefix: this.PrefixURL,
+                                forumPrefix: string.Empty,
+                                forumGroupId: this.ForumGroupId,
+                                forumID: -1,
+                                tagId: -1,
+                                categoryId: -1,
+                                otherPrefix: string.Empty,
+                                pageId: 1,
+                                contentId: -1,
+                                socialGroupId: -1),
                             format);
                     case "forumgroupname":
                     case "groupname":

@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Globalization;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -33,6 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Enums;
@@ -61,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private int? tabId;
         private string rssLink;
         private List<PropertyInfo> properties;
+        private int? totalLikeCount;
 
         [IgnoreColumn]
         private string cacheKeyTemplate => CacheKeys.ForumInfo;
@@ -115,6 +118,23 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int TotalTopics { get; set; }
 
         public int TotalReplies { get; set; }
+
+        [IgnoreColumn]
+        public int TotalLikeCount => this.totalLikeCount ?? (this.totalLikeCount = DataContext.Instance().ExecuteQuery<int>(
+            CommandType.Text,
+            @"SELECT COUNT(1)
+                FROM {databaseOwner}{objectQualifier}activeforums_Likes l
+                INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content c ON c.ContentId = l.PostId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics t ON t.ContentId = c.ContentId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Replies r ON r.ContentId = c.ContentId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics ftTopic ON ftTopic.TopicId = t.TopicId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics ftReply ON ftReply.TopicId = r.TopicId
+                WHERE l.Checked = 1
+                  AND COALESCE(ftTopic.ForumId, ftReply.ForumId) = @0",
+            this.ForumID).FirstOrDefault()).Value;
+
+        [IgnoreColumn]
+        public double AverageLikeScore => this.TotalTopics > 0 ? (double)this.TotalLikeCount / this.TotalTopics : 0D;
 
         [IgnoreColumn]
         public Uri RequestUri { get; set; }
@@ -836,12 +856,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return PropertyAccess.FormatString(Utilities.NavigateURL(this.GetTabId()), format);
                     case "grouplink":
                     case "forumgrouplink":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.GetTabId(), this.ModuleId, this.ForumGroup.PrefixURL, string.Empty, this.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, -1), format);
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.GetTabId(), moduleId: this.ModuleId, groupPrefix: this.ForumGroup.PrefixURL, forumPrefix: string.Empty, forumGroupId: this.ForumGroupId, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: -1), format);
                     case "forumlink":
                     case "forumurl":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.GetTabId(), this.ModuleId, this.ForumGroup.PrefixURL, this.PrefixURL, this.ForumGroupId, this.ForumID, -1, -1, string.Empty, 1, -1, this.SocialGroupId), format);
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.GetTabId(), moduleId: this.ModuleId, groupPrefix: this.ForumGroup.PrefixURL, forumPrefix: this.PrefixURL, forumGroupId: this.ForumGroupId, forumID: this.ForumID, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: this.SocialGroupId), format);
                     case "parentforumlink":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.GetTabId(), this.ModuleId, this.ForumGroup.PrefixURL, this.ParentForumUrlPrefix, this.ForumGroupId, this.ParentForumId, -1, -1, string.Empty, 1, -1, this.SocialGroupId), format);
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.GetTabId(), moduleId: this.ModuleId, groupPrefix: this.ForumGroup.PrefixURL, forumPrefix: this.ParentForumUrlPrefix, forumGroupId: this.ForumGroupId, forumID: this.ParentForumId, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: this.SocialGroupId), format);
                     case "parentforumname":
                         return this.ParentForumId < 1 ? string.Empty : PropertyAccess.FormatString(this.ParentForumName, format);
                     case "parentforumid":
