@@ -195,7 +195,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                 return SitemapChangeFrequency.Daily;
             }
 
-            if (topicAgeInDays <= 120 || replyWindowInDays <= 30)
+            if (topicAgeInDays <= 120 || (metrics.ReplyCount > 0 && replyWindowInDays <= 30))
             {
                 return SitemapChangeFrequency.Weekly;
             }

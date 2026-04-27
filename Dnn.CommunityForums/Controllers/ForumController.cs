@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         internal override string cacheKeyTemplate => CacheKeys.ForumInfo;
 
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetById(int forumId, int moduleId)
+        public virtual DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetById(int forumId, int moduleId)
         {
             var cachekey = this.GetCacheKey(moduleId: moduleId, id: forumId);
             var forum = LoadFromSettingsCache(moduleId, cachekey);
@@ -70,6 +70,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             return forum;
+        }
+
+        internal virtual DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetByUrlPrefix(int moduleId, string forumPrefix)
+        {
+            string cachekey = string.Format(CacheKeys.ForumByUrlPrefix, moduleId, forumPrefix);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumInfo;
+            if (forumInfo == null)
+            {
+                // this accommodates duplicates which may exist since currently no uniqueness applied in database
+                var forumId = this.Find("WHERE ModuleId = @0 AND PrefixURL = @1", moduleId, forumPrefix.Trim()).OrderBy(t => t.ForumID).FirstOrDefault()?.ForumID;
+                if (forumId.HasValue)
+                {
+                    forumInfo = this.GetById(forumId.Value, moduleId);
+                }
+
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, forumInfo);
+            }
+
+            return forumInfo;
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetForums(int moduleId)

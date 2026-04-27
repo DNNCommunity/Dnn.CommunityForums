@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void drpSort_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             string sort = this.drpSort.SelectedItem.Value;
-            int tabId = int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
+            int tabId = int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.TabId]);
 
             HttpContext.Current.Response.Redirect(Utilities.NavigateURL(tabId, string.Empty, new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.Sort + "=" + sort }), false);
             this.Context.ApplicationInstance.CompleteRequest();

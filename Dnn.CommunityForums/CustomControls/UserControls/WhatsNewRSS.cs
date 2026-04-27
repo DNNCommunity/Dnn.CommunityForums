@@ -35,10 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
         #region Constants
 
-        private const string ModuleIDRequestKey = "moduleid";
-        private const string PortalIDRequestKey = "portalid";
-        private const string TabIDRequestKey = "tabid";
-
         private const int DefaultModuleID = -1;
         private const int DefaultPortalID = 0;
         private const int DefaultTabID = -1;
@@ -69,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (!this.tabId.HasValue)
                 {
                     int parsedTabId;
-                    this.tabId = int.TryParse(HttpContext.Current.Request.QueryString[TabIDRequestKey], out parsedTabId) ? parsedTabId : DefaultTabID;
+                    this.tabId = int.TryParse(HttpContext.Current.Request.QueryString[ParamKeys.TabId.ToLowerInvariant()], out parsedTabId) ? parsedTabId : DefaultTabID;
                 }
 
                 return this.tabId.Value;
@@ -83,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (!this.moduleId.HasValue)
                 {
                     int parsedModuleID;
-                    this.moduleId = int.TryParse(HttpContext.Current.Request.QueryString[ModuleIDRequestKey], out parsedModuleID) ? parsedModuleID : DefaultModuleID;
+                    this.moduleId = int.TryParse(HttpContext.Current.Request.QueryString[ParamKeys.ModuleId.ToLowerInvariant()], out parsedModuleID) ? parsedModuleID : DefaultModuleID;
                 }
 
                 return this.moduleId.Value;
@@ -97,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (!this.portalId.HasValue)
                 {
                     int parsedPortalID;
-                    this.portalId = int.TryParse(HttpContext.Current.Request.QueryString[PortalIDRequestKey], out parsedPortalID) ? parsedPortalID : DefaultPortalID;
+                    this.portalId = int.TryParse(HttpContext.Current.Request.QueryString[ParamKeys.PortalId.ToLowerInvariant()], out parsedPortalID) ? parsedPortalID : DefaultPortalID;
                 }
 
                 return this.portalId.Value;

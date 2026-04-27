@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 else
                 {
                     Label lblMessage = new Label();
-                    lblMessage.Text = "Please access the Module Settings page to configure this module.";
+                    lblMessage.Text = "Please access the Module Settings Page to configure this module.";
                     lblMessage.CssClass = "NormalRed";
                     this.Controls.Add(lblMessage);
                 }

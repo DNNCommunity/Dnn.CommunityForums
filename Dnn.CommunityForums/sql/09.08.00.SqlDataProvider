@@ -1,7 +1,143 @@
-﻿SET NOCOUNT ON
+SET NOCOUNT ON 
 GO
 
+
+/* issue 1864 - begin - include likes in sitemap search results */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate(@ModuleId int, @beginDateUtc datetime)
+AS
+SELECT
+    F.ForumGroupId,
+    FT.ForumId,
+    X.TopicId,
+    X.ReplyId,
+    X.ContentId,
+    X.DateCreated,
+    X.DateUpdated,
+    X.Summary,
+    X.Subject,
+    X.AuthorId,
+    X.Body,
+    X.IsDeleted,
+    X.IsApproved,
+    X.LikeCount,
+    RTRIM(IsNull([dbo].activeforums_Topics_GetTags(X.TopicId),'')) AS Tags,
+    X.TopicURL,
+    F.PrefixURL AS ForumUrlPrefix,
+    G.PrefixURL AS ForumGroupUrlPrefix
+FROM
+(
+    SELECT
+        T.TopicId,
+        -1 AS ReplyId,
+        C.ContentId,
+        C.DateCreated,
+        C.DateUpdated,
+        C.Summary,
+        C.Subject,
+        C.AuthorId,
+        C.Body,
+        T.IsDeleted,
+        T.IsApproved,
+        T.URL AS TopicURL,
+        COALESCE(L.LikeCount, 0) AS LikeCount
+    FROM {databaseOwner}{objectQualifier}activeforums_Topics T
+    INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content C ON C.ContentId = T.ContentId
+    LEFT OUTER JOIN (
+        SELECT PostId, COUNT(*) AS LikeCount
+        FROM {databaseOwner}{objectQualifier}activeforums_Likes
+        WHERE Checked = 1
+        GROUP BY PostId
+    ) L ON L.PostId = C.ContentId
+    WHERE C.DateUpdated BETWEEN @beginDateUtc AND GETUTCDATE()
+    UNION
+    SELECT
+        R.TopicId,
+        R.ReplyId,
+        C.ContentId,
+        C.DateCreated,
+        C.DateUpdated,
+        C.Summary,
+        C.Subject,
+        C.AuthorId,
+        C.Body,
+        R.IsDeleted,
+        R.IsApproved,
+        T.URL AS TopicURL,
+        COALESCE(L.LikeCount, 0) AS LikeCount
+    FROM {databaseOwner}{objectQualifier}activeforums_Replies R
+    INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content C ON C.ContentId = R.ContentId
+    LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = R.TopicId
+    LEFT OUTER JOIN (
+        SELECT PostId, COUNT(*) AS LikeCount
+        FROM {databaseOwner}{objectQualifier}activeforums_Likes
+        WHERE Checked = 1
+        GROUP BY PostId
+    ) L ON L.PostId = C.ContentId
+    WHERE C.DateUpdated BETWEEN @beginDateUtc AND GETUTCDATE()
+) X
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = X.TopicId
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics FT ON FT.TopicId = T.TopicId
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums F ON F.ForumId = FT.ForumId
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Groups G ON G.ForumGroupId = F.ForumGroupId
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_settings S ON S.SettingsKey = F.ForumSettingsKey AND S.SettingName = 'INDEXCONTENT'
+WHERE F.Active = 1 AND S.SettingValue = 'true' AND F.ModuleId = @ModuleId
+GO
+
+/* issue 1864 - end - include likes in sitemap search results */
+
 /* issue 1877 - begin - modernize archived URLs */
+
+/* update archived URLs to remove URLBASE from the start of the URL if it exists, URL rewriter no longer uses URLBASE */
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ArchivedURLs]') AND type in (N'U'))
+BEGIN
+    UPDATE a 
+    SET URL = REPLACE(a.URL, LOWER(s.SettingValue)+'/', '')
+    FROM {databaseOwner}{objectQualifier}activeforums_ArchivedURLs a
+    INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums f
+    ON f.forumid = a.ForumId
+    INNER JOIN (SELECT ms.ModuleID, ms.SettingValue FROM {databaseOwner}{objectQualifier}ModuleSettings ms 
+    WHERE SettingName = 'URLBASE' AND ModuleID IN 
+    (
+    SELECT m.ModuleId 
+    FROM {databaseOwner}{objectQualifier}Modules m 
+    INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID = m.ModuleDefID 
+    WHERE md.DefinitionName = 'DNN Community Forums')
+    ) s
+    ON s.ModuleID = f.ModuleId
+    WHERE LEFT(LOWER(a.URL), LEN(RTRIM(LOWER(s.SettingValue)))+1) = LOWER(s.SettingValue)+'/'
+END
+
+/* add new indexes to support lookups for URL rewriter on Category */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Categories') AND name = N'IX_{objectQualifier}activeforums_Categories_Alt1')
+DROP INDEX [IX_{objectQualifier}activeforums_Categories_Alt1] ON {databaseOwner}{objectQualifier}activeforums_Categories 
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Categories') AND name = N'IX_{objectQualifier}activeforums_Categories_Alt1')
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Categories_Alt1 ON {databaseOwner}[{objectQualifier}activeforums_Categories]
+	(
+    ModuleId,
+	CategoryName,
+    CategoryId
+	) 
+GO
+
+/* add new indexes to support lookups for URL rewriter on tag names */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Tags') AND name = N'IX_{objectQualifier}activeforums_Tags_Alt1')
+DROP INDEX [IX_{objectQualifier}activeforums_Tags_Alt1] ON {databaseOwner}{objectQualifier}activeforums_Tags 
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Tags') AND name = N'IX_{objectQualifier}activeforums_Tags_Alt1')
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Tags_Alt1 ON {databaseOwner}[{objectQualifier}activeforums_Tags]
+	(
+    ModuleId,
+	TagName,
+    TagId
+	) 
+GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL]') AND type in (N'U'))
     AND NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ArchivedURLs]') AND type in (N'U'))
@@ -1046,3 +1182,18 @@ GO
 
 /* --------------------- */
 
+
+/* issue 1878 - begin - topic URL hash */
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE [name] = N'URL_Hash' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics] ADD URL_Hash AS CONVERT(binary(16), HASHBYTES('MD5', CONVERT(varbinary(8000), [URL]))) PERSISTED
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics') AND name = N'IX_{objectQualifier}activeforums_Topics_URL_Hash')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Topics_URL_Hash ON {databaseOwner}[{objectQualifier}activeforums_Topics]
+(
+    URL_Hash
+)
+GO
+
+/* issue 1878 - end - topic URL hash */

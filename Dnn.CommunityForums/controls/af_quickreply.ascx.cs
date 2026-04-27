@@ -435,12 +435,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (fullURL.Contains("~/"))
             {
-                fullURL = Utilities.NavigateURL(this.TabId, string.Empty, new string[] { ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
+                fullURL = Utilities.NavigateURL(this.TabId, string.Empty, new string[] { $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ContentJumpId}={replyId}" });
             }
 
             if (fullURL.EndsWith("/"))
             {
-                fullURL += Utilities.UseFriendlyURLs(this.ForumModuleId) ? String.Concat("#", replyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", replyId);
+                fullURL += Utilities.UseFriendlyURLs(this.ForumModuleId) ? $"#{replyId}" : $"?{ParamKeys.ContentJumpId}={replyId}";
             }
 
             if (isApproved)
@@ -455,7 +455,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, forumGroupId: ri.Forum.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: replyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
 
-                var @params = new List<string> { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
+                var @params = new List<string> { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.Message}={MessageTypes.PendingModeration}", $"{ParamKeys.TopicId}={this.TopicId}" };
                 if (this.SocialGroupId > 0)
                 {
                     @params.Add("GroupId=" + this.SocialGroupId);

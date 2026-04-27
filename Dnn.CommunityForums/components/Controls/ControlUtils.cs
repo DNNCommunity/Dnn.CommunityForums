@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    sb.AppendFormat("<td class=\"afpg-page\"><a href=\"{0}\"><span>{1}</span></a></td>", this.BuildUrl(portalId, tabId, moduleId, groupPrefix, forumPrefix, forumGroupId, forumID, tagId, categoryId, otherPrefix, i, -1, -1), i);
+                    sb.AppendFormat("<td class=\"afpg-Page\"><a href=\"{0}\"><span>{1}</span></a></td>", this.BuildUrl(portalId: portalId, tabId: tabId, moduleId: moduleId, groupPrefix: groupPrefix, forumPrefix: forumPrefix, forumGroupId: forumGroupId, forumID: forumID, tagId: tagId, categoryId: categoryId, otherPrefix: otherPrefix, pageId: i, contentId: -1, socialGroupId: -1), i);
                 }
 
                 if (i == pageCount)
@@ -165,10 +165,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var sURL = Utilities.NavigateURL(tabId, portalSettings, string.Empty, @params.ToArray());
             var tabInfo = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(tabId, portalId);
-            var moduleInfo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId, DotNetNuke.Common.Utilities.Null.NullInteger, true);
+            var moduleInfo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId, tabId, false);
 
             /* ONLY include prefix if main forum module, prefix isn't same as tab name, and prefix is filled, e.g. don't include running in viewer module */
-            if (moduleInfo.TabID.Equals(tabId) && !mainSettings.PrefixURLBase.Trim().Equals(tabInfo.TabName.Trim(), StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(mainSettings.PrefixURLBase) )
+            if (moduleInfo.TabID.Equals(tabId) && !mainSettings.PrefixURLBase.Trim().Equals(tabInfo.TabName.Trim(), StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(mainSettings.PrefixURLBase))
             {
                 sURL += "/" + mainSettings.PrefixURLBase;
             }

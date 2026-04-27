@@ -98,9 +98,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                if (HttpContext.Current.Request.QueryString["PortalId"] != null && Utilities.IsNumeric(HttpContext.Current.Request.QueryString["PortalId"]))
+                if (HttpContext.Current.Request.QueryString[ParamKeys.PortalId] != null && Utilities.IsNumeric(HttpContext.Current.Request.QueryString[ParamKeys.PortalId]))
                 {
-                    return int.Parse(HttpContext.Current.Request.QueryString["PortalId"]);
+                    return int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.PortalId]);
                 }
                 else
                 {
@@ -113,9 +113,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                if (HttpContext.Current.Request.QueryString["ModuleId"] != null && Utilities.IsNumeric(HttpContext.Current.Request.QueryString["ModuleId"]))
+                if (HttpContext.Current.Request.QueryString[ParamKeys.ModuleId] != null && Utilities.IsNumeric(HttpContext.Current.Request.QueryString[ParamKeys.ModuleId]))
                 {
-                    return int.Parse(HttpContext.Current.Request.QueryString["ModuleId"]);
+                    return int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.ModuleId]);
                 }
                 else
                 {
@@ -128,9 +128,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                if (HttpContext.Current.Request.QueryString["TabId"] != null && Utilities.IsNumeric(HttpContext.Current.Request.QueryString["TabId"]))
+                if (HttpContext.Current.Request.QueryString[ParamKeys.TabId] != null && Utilities.IsNumeric(HttpContext.Current.Request.QueryString[ParamKeys.TabId]))
                 {
-                    return int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
+                    return int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.TabId]);
                 }
                 else
                 {
