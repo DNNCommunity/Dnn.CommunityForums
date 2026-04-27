@@ -167,5 +167,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTag(item.TagId);
             base.Delete(item);
         }
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.TagInfo GetByName(int moduleId, string tagName)
+        {
+            string cachekey = string.Format(CacheKeys.TagByName, moduleId, tagName);
+            DotNetNuke.Modules.ActiveForums.Entities.TagInfo tagInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TagInfo;
+            if (tagInfo == null)
+            {
+                // this accommodates duplicates which may exist since currently no uniqueness applied in database
+                tagInfo = this.Find("WHERE ModuleId = @0 AND TagName = @1", moduleId, tagName.Trim()).OrderBy(t => t.TagId).FirstOrDefault();
+                DataCache.ContentCacheStore(moduleId, cachekey, tagInfo);
+            }
+
+            return tagInfo;
+        }
     }
 }

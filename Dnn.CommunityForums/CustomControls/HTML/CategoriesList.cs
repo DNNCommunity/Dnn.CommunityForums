@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     string tmp = this.Template;
                     string categoryName = dr["CategoryName"].ToString();
-                    tmp = tmp.Replace("[CATEGORYURL]", cUtils.BuildUrl(this.PortalId, this.TabId, this.ModuleId, groupPrefix, forumPrefix, this.ForumGroupId, this.ForumId, -1, int.Parse(dr["CategoryId"].ToString()), Utilities.CleanName(categoryName), 1, -1, -1));
+                    tmp = tmp.Replace("[CATEGORYURL]", cUtils.BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: groupPrefix, forumPrefix: forumPrefix, forumGroupId: this.ForumGroupId, forumID: this.ForumId, tagId: -1, categoryId: int.Parse(dr["CategoryId"].ToString()), otherPrefix: Utilities.CleanName(categoryName), pageId: 1, contentId: -1, socialGroupId: -1));
                     tmp = tmp.Replace("[CATEGORYNAME]", categoryName);
                     if (int.Parse(dr["CategoryId"].ToString()) == this.SelectedCategory)
                     {

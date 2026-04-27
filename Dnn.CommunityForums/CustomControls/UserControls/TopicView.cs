@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // If we are in print mode, set the page size to maxValue
-            if (!string.IsNullOrWhiteSpace(this.Request.QueryString["dnnprintmode"]))
+            if (!string.IsNullOrWhiteSpace(this.Request.QueryString[Modes.DnnPrintMode]))
             {
                 this.pageSize = int.MaxValue;
             }
@@ -534,9 +534,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 var ctlUtils = new ControlUtils();
 
-                var groupUrl = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, string.Empty, this.ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
-                var forumUrl = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
-                var topicUrl = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, this.topic.TopicUrl, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
+                var groupUrl = ctlUtils.BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, groupPrefix: this.ForumInfo.ForumGroup.PrefixURL, forumPrefix: string.Empty, forumGroupId: this.ForumInfo.ForumGroupId, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: this.SocialGroupId);
+                var forumUrl = ctlUtils.BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, groupPrefix: this.ForumInfo.ForumGroup.PrefixURL, forumPrefix: this.ForumInfo.PrefixURL, forumGroupId: this.ForumInfo.ForumGroupId, forumID: this.ForumInfo.ForumID, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: this.SocialGroupId);
+                var topicUrl = ctlUtils.BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, groupPrefix: this.ForumInfo.ForumGroup.PrefixURL, forumPrefix: this.ForumInfo.PrefixURL, forumGroupId: this.ForumInfo.ForumGroupId, forumID: this.ForumInfo.ForumID, topicId: this.TopicId, topicURL: this.topic.TopicUrl, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: this.SocialGroupId);
 
                 var sCrumb = "<a href=\"" + groupUrl + "\">" + this.ForumInfo.GroupName + "</a>|";
                 sCrumb += "<a href=\"" + forumUrl + "\">" + this.ForumInfo.ForumName + "</a>";
@@ -742,7 +742,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var sbOutput = new StringBuilder(sOutput);
 
-            if (this.Request.QueryString["dnnprintmode"] != null)
+            if (this.Request.QueryString[Modes.DnnPrintMode] != null)
             {
                 sbOutput = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveControlTokensForDnnPrintMode(sbOutput);
                 sbOutput.Append("<img src=\"" + this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "spacer.gif") + "\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
@@ -844,7 +844,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Printer Friendly Link
-            var sURL = "<a rel=\"nofollow\" href=\"" + Utilities.NavigateURL(this.TabId, string.Empty, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, "mid=" + this.ModuleId, "dnnprintmode=true") + "?skinsrc=" + System.Net.WebUtility.UrlEncode("[G]" + SkinController.RootSkin + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Skin") + "&amp;containersrc=" + System.Net.WebUtility.UrlEncode("[G]" + SkinController.RootContainer + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Container") + "\" target=\"_blank\">";
+            var sURL = $"<a rel=\"nofollow\" href=\"{Utilities.NavigateURL(this.TabId, string.Empty, $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.ViewType}={Views.Topic}", $"{ParamKeys.TopicId}={this.TopicId}", "mid=" + this.ModuleId, "dnnprintmode=true")}?skinsrc={System.Net.WebUtility.UrlEncode("[G]" + SkinController.RootSkin + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Skin")}&amp;containersrc={System.Net.WebUtility.UrlEncode("[G]" + SkinController.RootContainer + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Container")}\" target=\"_blank\">";
 
             sURL += "<i class=\"fa fa-print fa-fw fa-blue\"></i></a>";
             sbOutput.Replace("[AF:CONTROL:PRINTER]", sURL);
@@ -852,7 +852,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Email Link
             if (this.Request.IsAuthenticated)
             {
-                sURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + "=sendto", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
+                sURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.SendTo}", $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}" });
                 sbOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + sURL + "\" rel=\"nofollow\"><i class=\"fa fa-envelope-o fa-fw fa-blue\"></i></a>");
             }
             else
@@ -1202,7 +1202,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 pager1.PageCount = intPages;
                 pager1.CurrentPage = this.PageId;
-                pager1.TabID = Utilities.SafeConvertInt(this.Request.Params["TabId"], -1);
+                pager1.TabID = Utilities.SafeConvertInt(this.Request.Params[ParamKeys.TabId], -1);
                 pager1.ForumID = this.ForumId;
                 pager1.UseShortUrls = this.ModuleSettings.UseShortUrls;
                 pager1.PageText = Utilities.GetSharedResource("[RESX:Page]");
@@ -1222,7 +1222,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 pager2.PageCount = intPages;
                 pager2.CurrentPage = this.PageId;
-                pager2.TabID = Utilities.SafeConvertInt(this.Request.Params["TabId"], -1);
+                pager2.TabID = Utilities.SafeConvertInt(this.Request.Params[ParamKeys.TabId], -1);
                 pager2.ForumID = this.ForumId;
                 pager2.UseShortUrls = this.ModuleSettings.UseShortUrls;
                 pager2.PageText = Utilities.GetSharedResource("[RESX:Page]");

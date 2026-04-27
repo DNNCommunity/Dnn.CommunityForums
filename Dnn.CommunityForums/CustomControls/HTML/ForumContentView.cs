@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 // ParentForum Section
                 while (dr.Read())
                 {
-                    string sURL = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ModuleId, dr["GroupPrefixURL"].ToString(), dr["PrefixURL"].ToString(), int.Parse(dr["ForumGroupId"].ToString()), int.Parse(dr["ForumId"].ToString()), -1, -1, string.Empty, 1, -1, -1);
+                    string sURL = ctlUtils.BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: dr["GroupPrefixURL"].ToString(), forumPrefix: dr["PrefixURL"].ToString(), forumGroupId: int.Parse(dr["ForumGroupId"].ToString()), forumID: int.Parse(dr["ForumId"].ToString()), tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: -1);
                     if (this.IncludeClasses)
                     {
                         sb.Append("<div class=\"fcv-header\"><a href=\"" + sURL + "\"><span>" + dr["ForumName"].ToString() + "</span></a></div>");
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(dr["CanRead"].ToString()), this.ForumUser.UserRoleIds))
                     {
-                        string sURL = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ModuleId, dr["GroupPrefixURL"].ToString(), dr["PrefixURL"].ToString(), int.Parse(dr["ForumGroupId"].ToString()), int.Parse(dr["ForumId"].ToString()), -1, -1, string.Empty, 1, -1, -1);
+                        string sURL = ctlUtils.BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: dr["GroupPrefixURL"].ToString(), forumPrefix: dr["PrefixURL"].ToString(), forumGroupId: int.Parse(dr["ForumGroupId"].ToString()), forumID: int.Parse(dr["ForumId"].ToString()), tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: -1);
                         if (this.ForumId == int.Parse(dr["ForumId"].ToString()))
                         {
                             sSubforums += "<li class=\"fcv-selected\">";

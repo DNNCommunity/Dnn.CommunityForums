@@ -1617,7 +1617,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static bool SafeConvertBool(object value, bool defaultValue = false)
         {
-            if (value == null)
+            if (value == null || value is DBNull || Convert.IsDBNull(value))
             {
                 return defaultValue;
             }
@@ -1654,7 +1654,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static int SafeConvertInt(object value, int defaultValue = 0)
         {
-            if (value == null)
+            if (value == null || value is DBNull || Convert.IsDBNull(value))
             {
                 return defaultValue;
             }
@@ -1683,7 +1683,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static long SafeConvertLong(object value, long defaultValue = 0)
         {
-            if (value == null)
+            if (value == null || value is DBNull || Convert.IsDBNull(value))
             {
                 return defaultValue;
             }
@@ -1712,7 +1712,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static double SafeConvertDouble(object value, double defaultValue = 0.0)
         {
-            if (value == null)
+            if (value == null || value is DBNull || Convert.IsDBNull(value))
             {
                 return defaultValue;
             }
@@ -1741,7 +1741,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static DateTime SafeConvertDateTime(object value, DateTime? defaultValue = null)
         {
-            if (value == null)
+            if (value == null || value is DBNull || Convert.IsDBNull(value))
             {
                 return defaultValue.HasValue ? defaultValue.Value : NullDate();
             }
@@ -1774,7 +1774,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string SafeConvertString(object value, string defaultValue = null)
         {
-            return value == null ? defaultValue : value.ToString();
+            return (value == null || value is DBNull || Convert.IsDBNull(value)) ? defaultValue : value.ToString();
         }
 
         public static string SafeTrim(string input)

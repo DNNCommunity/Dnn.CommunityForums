@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Data;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -30,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
 
-    public class ForumsReWriter : IHttpModule
+    public class LegacyForumsReWriter : IHttpModule
     {
         private readonly IPortalAliasService portalAliasService;
         private ModuleSettings mainSettings = null;
@@ -48,12 +49,12 @@ namespace DotNetNuke.Modules.ActiveForums
         private int categoryId = -1;
         private int tagId = -1;
 
-        public ForumsReWriter()
+        public LegacyForumsReWriter()
             : this(new DotNetNuke.Entities.Portals.PortalAliasController())
         {
         }
 
-        public ForumsReWriter(IPortalAliasService portalAliasService)
+        public LegacyForumsReWriter(IPortalAliasService portalAliasService)
         {
             this.portalAliasService = portalAliasService;
         }
@@ -69,6 +70,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public void OnBeginRequest(object s, EventArgs e)
         {
+            var st = new Stopwatch();
+            st.Start();
             this.forumId = -1;
             this.tabId = -1;
             this.moduleId = -1;
@@ -270,7 +273,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.topicId = int.Parse(dr["TopicId"].ToString());
                         this.archived = int.Parse(dr["Archived"].ToString());
                         this.otherId = int.Parse(dr["OtherId"].ToString());
-                        this.urlType = int.Parse(dr["UrlType"].ToString());
+                        this.urlType = int.Parse(dr["ViewUrlType"].ToString());
                         canContinue = true;
                     }
 
@@ -594,7 +597,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.tabId + sPage + qs);
                 }
-
+                
+                st.Stop();
+                Debug.WriteLine($"url rewriter processing time: {st.ElapsedMilliseconds} ms; from: {app.Request.RawUrl} to: {sendTo}");
                 RewriteUrl(app.Context, sendTo);
             }
         }

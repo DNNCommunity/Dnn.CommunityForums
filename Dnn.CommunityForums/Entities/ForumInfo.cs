@@ -856,12 +856,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return PropertyAccess.FormatString(Utilities.NavigateURL(this.GetTabId()), format);
                     case "grouplink":
                     case "forumgrouplink":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.GetTabId(), this.ModuleId, this.ForumGroup.PrefixURL, string.Empty, this.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, -1), format);
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.GetTabId(), moduleId: this.ModuleId, groupPrefix: this.ForumGroup.PrefixURL, forumPrefix: string.Empty, forumGroupId: this.ForumGroupId, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: -1), format);
                     case "forumlink":
                     case "forumurl":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.GetTabId(), this.ModuleId, this.ForumGroup.PrefixURL, this.PrefixURL, this.ForumGroupId, this.ForumID, -1, -1, string.Empty, 1, -1, this.SocialGroupId), format);
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.GetTabId(), moduleId: this.ModuleId, groupPrefix: this.ForumGroup.PrefixURL, forumPrefix: this.PrefixURL, forumGroupId: this.ForumGroupId, forumID: this.ForumID, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: this.SocialGroupId), format);
                     case "parentforumlink":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.GetTabId(), this.ModuleId, this.ForumGroup.PrefixURL, this.ParentForumUrlPrefix, this.ForumGroupId, this.ParentForumId, -1, -1, string.Empty, 1, -1, this.SocialGroupId), format);
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.GetTabId(), moduleId: this.ModuleId, groupPrefix: this.ForumGroup.PrefixURL, forumPrefix: this.ParentForumUrlPrefix, forumGroupId: this.ForumGroupId, forumID: this.ParentForumId, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: this.SocialGroupId), format);
                     case "parentforumname":
                         return this.ParentForumId < 1 ? string.Empty : PropertyAccess.FormatString(this.ParentForumName, format);
                     case "parentforumid":

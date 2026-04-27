@@ -515,7 +515,7 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
 
             // If printmode, simply exit.
-            if (this.Request.QueryString["dnnprintmode"] != null)
+            if (this.Request.QueryString[Modes.DnnPrintMode] != null)
             {
                 return;
             }

@@ -405,7 +405,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             if (template.ToString().Contains("[AF:CONTROL:ADDFAVORITE]"))
             {
-                var forumUrl = new ControlUtils().BuildUrl(forum.PortalId, tabId, forum.ModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, -1, -1, string.Empty, 1, -1, forum.SocialGroupId);
+                var forumUrl = new ControlUtils().BuildUrl(portalId: forum.PortalId, tabId: tabId, moduleId: forum.ModuleId, groupPrefix: forum.ForumGroup.PrefixURL, forumPrefix: forum.PrefixURL, forumGroupId: forum.ForumGroupId, forumID: forum.ForumID, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: forum.SocialGroupId);
                 template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + forum.ForumName + "','" + forumUrl + "');\"><img src=\"" + moduleSettings.ThemeLocation + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>");
             }
 
