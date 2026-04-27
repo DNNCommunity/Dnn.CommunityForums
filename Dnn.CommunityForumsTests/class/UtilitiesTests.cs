@@ -409,6 +409,29 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test]
+        [TestCase("A &amp; B", "A & B")]
+        [TestCase("&amp;lt;div&amp;gt;test&amp;lt;/div&amp;gt;", "&lt;div&gt;test&lt;/div&gt;")]
+        [TestCase("", "")]
+        public void NormalizeHtmlForStorage_DecodesHtmlOnce(string input, string expected)
+        {
+            // Act
+            var result = Utilities.NormalizeHtmlForStorage(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void NormalizeHtmlForStorage_WithNull_ReturnsEmptyString()
+        {
+            // Act
+            var result = Utilities.NormalizeHtmlForStorage(null);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(string.Empty));
+        }
+
+        [Test]
         public void GetSha256HashTest()
         {
             // Arrange

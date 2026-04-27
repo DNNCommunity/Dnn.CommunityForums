@@ -371,12 +371,12 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 // User has acccess
-                var sBody = System.Net.WebUtility.HtmlDecode(ti.Content.Body);
-                var sSubject = System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
+                var sBody = ti.Content.Body;
+                var sSubject = ti.Content.Subject;
                 sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this.allowHTML, this.editorType);
                 sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorType.TEXTBOX);
                 this.ctlForm.Subject = sSubject;
-                this.ctlForm.Summary = System.Net.WebUtility.HtmlDecode(ti.Content.Summary);
+                this.ctlForm.Summary = ti.Content.Summary;
                 this.ctlForm.Body = sBody;
                 this.ctlForm.AnnounceEnd = ti.AnnounceEnd ?? Utilities.NullDate();
                 this.ctlForm.AnnounceStart = ti.AnnounceStart ?? Utilities.NullDate();
@@ -456,8 +456,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var sBody = System.Net.WebUtility.HtmlDecode(ri.Content.Body);
-                var sSubject = System.Net.WebUtility.HtmlDecode(ri.Content.Subject);
+                var sBody = ri.Content.Body;
+                var sSubject = ri.Content.Subject;
                 sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this.allowHTML, this.editorType);
                 sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorType.TEXTBOX);
                 this.ctlForm.Subject = sSubject;
@@ -554,8 +554,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    this.ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
-                    this.ctlForm.TopicSubject = System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
+                    this.ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + ti.Content.Subject;
+                    this.ctlForm.TopicSubject = ti.Content.Subject;
                     if (ti.IsLocked && (this.ForumUser.CurrentUserType == CurrentUserTypes.Anon || this.ForumUser.CurrentUserType == CurrentUserTypes.Auth))
                     {
                         this.Response.Redirect(this.NavigateUrl(this.TabId), false);
@@ -657,7 +657,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var body = this.ctlForm.Body;
             subject = Utilities.CleanString(this.PortalId, Utilities.XSSFilter(subject, true), false, EditorType.TEXTBOX, this.ForumInfo.FeatureSettings.UseFilter, false, this.ForumModuleId, this.themePath, false);
             body = Utilities.CleanString(this.PortalId, body, this.allowHTML, this.editorType, this.ForumInfo.FeatureSettings.UseFilter, this.ForumInfo.FeatureSettings.AllowScript, this.ForumModuleId, this.themePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
-            var summary = this.ctlForm.Summary;
+            subject = Utilities.NormalizeHtmlForStorage(subject);
+            body = Utilities.NormalizeHtmlForStorage(body);
+            var summary = Utilities.NormalizeHtmlForStorage(this.ctlForm.Summary);
             int authorId;
             string authorName;
             if (this.Request.IsAuthenticated)
@@ -921,6 +923,8 @@ namespace DotNetNuke.Modules.ActiveForums
             var body = this.ctlForm.Body;
             subject = Utilities.CleanString(this.PortalId, subject, false, EditorType.TEXTBOX, this.ForumInfo.FeatureSettings.UseFilter, false, this.ForumModuleId, this.themePath, false);
             body = Utilities.CleanString(this.PortalId, body, this.allowHTML, this.editorType, this.ForumInfo.FeatureSettings.UseFilter, this.ForumInfo.FeatureSettings.AllowScript, this.ForumModuleId, this.themePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
+            subject = Utilities.NormalizeHtmlForStorage(subject);
+            body = Utilities.NormalizeHtmlForStorage(body);
 
             // This HTML decode is used to make Quote functionality work properly even when it appears in Text Box instead of Editor
             if (this.Request.Params[ParamKeys.QuoteId] != null)
