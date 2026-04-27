@@ -601,6 +601,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TopicByUrl = "AF-{0}-turl-{1}-{2}";
         public const string PortalAliases = "AF-pa";
         public const string TabPaths = "AF-tabpaths-{0}";
+        public const string UrlRewrites = "AF-urlrw-{0}";
+        public const string ArchivedUrl = "AF-{0}-archurl-{1}";
     }
 
     public class SortColumns
