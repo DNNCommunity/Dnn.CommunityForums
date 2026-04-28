@@ -540,6 +540,7 @@
 	    <component type="Cleanup" version="09.00.00" fileName="09.00.00.txt" />
         <component type="Cleanup" version="09.06.00" fileName="09.06.00.txt" />
         <component type="Cleanup" version="09.07.00" fileName="09.07.00.txt" />
+        <component type="Cleanup" version="09.08.00" fileName="09.08.00.txt" />
       </components>
     </package>
     <package name="Active Forums What's New" type="Module" version="09.08.00">
