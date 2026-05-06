@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             base.Delete(item);
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo GetByName(int moduleId, string categoryName)
+        internal virtual DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo GetByName(int moduleId, string categoryName)
         {
             string cachekey = string.Format(CacheKeys.CategoryByName, moduleId, categoryName);
             DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo categoryInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo;

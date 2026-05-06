@@ -345,6 +345,7 @@ namespace DotNetNuke.Modules.ActiveForums
             pager.PageCount = intPages;
             pager.CurrentPage = this.PageId;
             pager.TabID = this.TabId;
+            pager.ModuleID = this.ForumModuleId;
             pager.ForumID = this.ForumId;
             pager.UseShortUrls = this.ModuleSettings.UseShortUrls;
             pager.ContentId = this.ContentId;

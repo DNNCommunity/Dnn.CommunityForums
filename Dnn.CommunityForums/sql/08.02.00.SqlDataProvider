@@ -1984,7 +1984,7 @@ BEGIN
 			LAG(T.TopicId,1,NULL) OVER (ORDER BY tc.DateCreated, rc.DateCreated) PrevTopic,
 			LEAD(T.TopicId,1,NULL) OVER (ORDER BY tc.DateCreated, rc.DateCreated) NextTopic
 		FROM 
-			dbo.activeforums_ForumTopics as ft 
+			{databaseOwner}[{objectQualifier}activeforums_ForumTopics] as ft 
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] as t ON t.TopicId = ft.TopicId 
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] as tc on tc.ContentId = t.ContentId 
 			LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] as r on r.ReplyId = ft.LastReplyId 

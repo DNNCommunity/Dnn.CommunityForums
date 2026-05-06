@@ -22,7 +22,6 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
-    using System.Data;
 
     public partial class DataCache
     {
@@ -241,6 +240,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.ForumViewPrefix, moduleId));
                     DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicViewPrefix, moduleId));
                     DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicsViewPrefix, moduleId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.FilteredTopicsPrefix, moduleId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.ToolbarPrefix, moduleId));
                 }
                 catch (Exception ex)
                 {

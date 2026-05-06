@@ -1,4 +1,4 @@
-﻿/* begin - issue #59 - typo in activeforums_Attachments_Get */ 
+/* begin - issue #59 - typo in activeforums_Attachments_Get */ 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments_Get]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Attachments_Get];
 GO
@@ -389,10 +389,10 @@ BEGIN
 			CASE WHEN @IsSuperUser = 1 THEN '1' ELSE IsNULL(MAX(Convert(int,[ModEdit])),0) END as [ModEdit],
 			CASE WHEN @IsSuperUser = 1 THEN '1' ELSE IsNULL(MAX(Convert(int,[ModLock])),0) END as [ModLock],
 			CASE WHEN @IsSuperUser = 1 THEN '1' ELSE IsNULL(MAX(Convert(int,[ModPin])),0) END as [ModPin],
-			[UserTrustLevel] = IsNull((SELECT TrustLevel from dbo.activeforums_UserProfiles WHERE PortalId = @PortalId AND UserId = @UserId),0)
-			FROM         dbo.activeforums_Security AS S WITH (NOLOCK) INNER JOIN
-				dbo.activeforums_Forums as F on S.SecurityKey = F.ForumSecurityKey  LEFT OUTER JOIN
-				dbo.UserRoles AS UR WITH (NOLOCK) ON UR.UserId = @UserId AND S.ObjectId = UR.RoleID AND S.ObjectType = 0
+			[UserTrustLevel] = IsNull((SELECT TrustLevel from {databaseOwner}[{objectQualifier}activeforums_UserProfiles] WHERE PortalId = @PortalId AND UserId = @UserId),0)
+			FROM         {databaseOwner}[{objectQualifier}activeforums_Security] AS S WITH (NOLOCK) INNER JOIN
+				{databaseOwner}[{objectQualifier}activeforums_Forums] as F on S.SecurityKey = F.ForumSecurityKey  LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}UserRoles] AS UR WITH (NOLOCK) ON UR.UserId = @UserId AND S.ObjectId = UR.RoleID AND S.ObjectType = 0
 			WHERE
 				(@IsSuperUser = 0 AND (
 					(

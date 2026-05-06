@@ -94,6 +94,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 if (this.topicInfo == null)
                 {
                     this.topicInfo = this.GetTopic();
+                    if (this.topicInfo != null)
+                    {
+                        // Break circular reference: inject this reply into the topic
+                        // so TopicInfo.LastReply does not trigger another ReplyController.GetById call
+                        this.topicInfo.LastReply = this;
+                    }
+
                     this.UpdateCache();
                 }
 

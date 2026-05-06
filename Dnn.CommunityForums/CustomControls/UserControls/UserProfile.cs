@@ -127,7 +127,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Literal lit = new Literal();
 
             var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
-            user.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
             var author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, this.UID);
             sTemplate = TemplateUtils.ParseProfileTemplate(this.ForumModuleId, sTemplate, author, this.ImagePath, this.ForumUser.CurrentUserType, false, false, string.Empty, this.UserInfo.UserID, this.TimeZoneOffset);
             sTemplate = this.RenderModals(sTemplate);

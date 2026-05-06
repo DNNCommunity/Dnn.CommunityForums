@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string ForumsAllowed { get; set; }
 
         [IgnoreColumn]
-        public HashSet<int> UserForums { get; set; }
+        public HashSet<int> UserForums => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, this, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
 
         [IgnoreColumn]
         public int PostCount => this.TopicCount + this.ReplyCount;

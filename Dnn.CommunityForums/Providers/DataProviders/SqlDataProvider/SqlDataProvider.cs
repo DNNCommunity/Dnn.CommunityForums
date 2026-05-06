@@ -650,41 +650,49 @@ namespace DotNetNuke.Modules.ActiveForums
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_TopicView", PortalId, ModuleId, ForumId, TopicId, UserId, PageIndex, PageSize, IsSuper, Sort);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMyUnreadTopics().")]
         public override DataSet UI_NotReadView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_NotRead", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetUnanswered().")]
         public override DataSet UI_UnansweredView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_UnansweredView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMyTopics().")]
         public override DataSet UI_MyTopicsView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_MyTopicsView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetActiveTopics().")]
         public override DataSet UI_ActiveView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_ActiveView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMostLikes().")]
         public override DataSet UI_MostLiked(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_MostLiked", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMostReplies().")]
         public override DataSet UI_MostReplies(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_MostReplies", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetAnnouncements().")]
         public override DataSet UI_Announcements(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_Announcements", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetUnresolved().")]
         public override DataSet UI_Unresolved(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_Unresolved", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);

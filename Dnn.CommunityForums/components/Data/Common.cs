@@ -47,46 +47,55 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         #region Views
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetActiveTopics().")]
         public DataSet UI_ActiveView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
         {
             return SqlHelper.ExecuteDataset(this.connectionString, this.dbPrefix + "UI_ActiveView", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMyUnreadTopics().")]
         public DataSet UI_NotReadView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
             return SqlHelper.ExecuteDataset(this.connectionString, this.dbPrefix + "UI_NotRead", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetUnanswered().")]
         public DataSet UI_UnansweredView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
             return SqlHelper.ExecuteDataset(this.connectionString, this.dbPrefix + "UI_UnansweredView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTaggedTopics().")]
         public DataSet UI_TagsView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds, int tagId)
         {
             return SqlHelper.ExecuteDataset(this.connectionString, this.dbPrefix + "UI_TagsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds, tagId);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMyTopics().")]
         public DataSet UI_MyTopicsView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
             return SqlHelper.ExecuteDataset(this.connectionString, this.dbPrefix + "UI_MyTopicsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMostLikes().")]
         public DataSet UI_MostLiked(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
         {
             return SqlHelper.ExecuteDataset(this.connectionString, this.dbPrefix + "UI_MostLiked", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMostReplies().")]
         public DataSet UI_MostReplies(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
         {
             return SqlHelper.ExecuteDataset(this.connectionString, this.dbPrefix + "UI_MostReplies", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetAnnouncements().")]
         public DataSet UI_Announcements(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
             return SqlHelper.ExecuteDataset(this.connectionString, this.dbPrefix + "UI_Announcements", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetUnresolved().")]
         public DataSet UI_Unresolved(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
             return SqlHelper.ExecuteDataset(this.connectionString, this.dbPrefix + "UI_Unresolved", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
@@ -101,6 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         #endregion
         #region Tags
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public int Tag_GetIdByName(int portalId, int moduleId, string tagName, bool isCategory)
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Tags_GetByName", portalId, moduleId, tagName.Replace("-", " ").ToLowerInvariant(), isCategory));
@@ -114,6 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         #endregion
         #region CustomURLS
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public Dictionary<string, string> GetPrefixes(int portalId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -154,11 +165,13 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             }
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public IDataReader FindByURL(int portalId, string uRL)
         {
             return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "FindByURL", portalId, uRL);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public IDataReader URLSearch(int portalId, string uRL)
         {
             return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "URL_Search", portalId, uRL);

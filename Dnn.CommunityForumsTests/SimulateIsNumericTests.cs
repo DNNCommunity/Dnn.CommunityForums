@@ -39,11 +39,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         [TestCase("0", ExpectedResult = true)]
         public bool IsNumericTest(object obj)
         {
-            // Arrange
-
-            var expectedResult = true;
-
-            // Act
+            // Arrange & Act
             var actualResult = SimulateIsNumeric.IsNumeric(obj);
 
             // Assert

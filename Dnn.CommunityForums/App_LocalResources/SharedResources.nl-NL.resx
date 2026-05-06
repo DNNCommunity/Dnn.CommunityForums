@@ -1936,4 +1936,22 @@ Van,
   <data name="[RESX:Attachment].Text" xml:space="preserve">
     <value>Aanhechting</value>
   </data>
+  <data name="ActiveTopics.241920min" xml:space="preserve">
+    <value>Laatste 6 maanden</value>
+  </data>
+  <data name="ActiveTopics.483840min" xml:space="preserve">
+    <value>Laatste 12 maanden</value>
+  </data>
+  <data name="ActiveTopics-241920min.Text" xml:space="preserve">
+    <value>Laatste 6 maanden</value>
+  </data>
+  <data name="ActiveTopics-483840min.Text" xml:space="preserve">
+    <value>Afgelopen 12 maanden</value>
+  </data>
+  <data name="ActiveTopics.2147483647min" xml:space="preserve">
+    <value>Voor altijd</value>
+  </data>
+  <data name="ActiveTopics-2147483647min.Text" xml:space="preserve">
+    <value>Voor altijd</value>
+  </data>
 </root>

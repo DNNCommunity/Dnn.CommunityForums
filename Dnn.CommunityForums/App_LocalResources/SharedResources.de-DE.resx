@@ -1901,4 +1901,22 @@ Von
   <data name="[RESX:Attachment].Text" xml:space="preserve">
     <value>Anhang</value>
   </data>
+  <data name="ActiveTopics.241920min" xml:space="preserve">
+    <value>Letzte 6 Monate</value>
+  </data>
+  <data name="ActiveTopics.483840min" xml:space="preserve">
+    <value>Letzte 12 Monate</value>
+  </data>
+  <data name="ActiveTopics-241920min.Text" xml:space="preserve">
+    <value>Letzte 6 Monate</value>
+  </data>
+  <data name="ActiveTopics-483840min.Text" xml:space="preserve">
+    <value>Letzte 12 Monate</value>
+  </data>
+  <data name="ActiveTopics.2147483647min" xml:space="preserve">
+    <value>Ewig</value>
+  </data>
+  <data name="ActiveTopics-2147483647min.Text" xml:space="preserve">
+    <value>Ewig</value>
+  </data>
 </root>

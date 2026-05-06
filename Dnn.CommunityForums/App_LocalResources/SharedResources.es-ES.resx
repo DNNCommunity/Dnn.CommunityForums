@@ -1900,4 +1900,22 @@ De
   <data name="[RESX:Attachment].Text" xml:space="preserve">
     <value>Anexo</value>
   </data>
+  <data name="ActiveTopics.241920min" xml:space="preserve">
+    <value>Últimos 6 meses</value>
+  </data>
+  <data name="ActiveTopics.483840min" xml:space="preserve">
+    <value>Últimos 12 meses</value>
+  </data>
+  <data name="ActiveTopics-241920min.Text" xml:space="preserve">
+    <value>Últimos 6 meses</value>
+  </data>
+  <data name="ActiveTopics-483840min.Text" xml:space="preserve">
+    <value>Últimos 12 meses</value>
+  </data>
+  <data name="ActiveTopics.2147483647min" xml:space="preserve">
+    <value>Para siempre</value>
+  </data>
+  <data name="ActiveTopics-2147483647min.Text" xml:space="preserve">
+    <value>Para siempre</value>
+  </data>
 </root>

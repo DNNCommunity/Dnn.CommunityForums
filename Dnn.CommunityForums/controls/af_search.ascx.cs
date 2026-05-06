@@ -509,6 +509,7 @@ namespace DotNetNuke.Modules.ActiveForums
             pager.PageCount = intPages;
             pager.CurrentPage = this.PageId;
             pager.TabID = this.TabId;
+            pager.ModuleID = this.ForumModuleId;
             pager.ForumID = this.ForumId;
             pager.PageText = Utilities.GetSharedResource("[RESX:Page]");
             pager.OfText = Utilities.GetSharedResource("[RESX:PageOf]");

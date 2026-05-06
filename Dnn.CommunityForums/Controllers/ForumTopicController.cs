@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this.moduleId = moduleId;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetForumForTopic(int topicId)
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetByTopicId(int topicId)
         {
             var cachekey = this.GetCacheKey(moduleId: this.moduleId, id: topicId);
             var forumTopic = DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo;

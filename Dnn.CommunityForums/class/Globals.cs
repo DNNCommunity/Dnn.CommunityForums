@@ -538,6 +538,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TopicsViewForUser = "AF-{0}-TVS-{1}-{2}-{3}-{4}-{5}";
         public const string ForumViewTemplate = "AF-{0}-fvt-{1}";
         public const string Toolbar = "AF-{0}-tb-{1}-{2}";
+        public const string ToolbarPrefix = "AF-{0}-tb-";
         public const string TemplatePrefix = "AF-{0}-tmpl-";
         public const string Template = "AF-{0}-tmpl-{1}-{2}-{3}";
         public const string QuickReply = "AF-{0}-qr";
@@ -603,6 +604,26 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TabPaths = "AF-tabpaths-{0}";
         public const string UrlRewrites = "AF-urlrw-{0}";
         public const string ArchivedUrl = "AF-{0}-archurl-{1}";
+
+        public const string FilteredTopicsPrefix = "AF-{0}-ft-";
+        public const string TopicAnnouncements = "AF-{0}-ft-ann-{1}-{2}-{3}";
+        public const string TopicAnnouncementsCount = "AF-{0}-ft-ann-count-{1}";
+        public const string MostLikes = "AF-{0}-ft-most-likes-{1}-{2}-{3}-{4}";
+        public const string MostLikesCount = "AF-{0}-ft-most-likes-count-{1}-{2}";
+        public const string TopicMostReplies = "AF-{0}-ft-most-replies-{1}-{2}-{3}-{4}";
+        public const string TopicMostRepliesCount = "AF-{0}-ft-most-replies-count-{1}-{2}";
+        public const string TopicUnresolved = "AF-{0}-ft-unresolved-{1}-{2}-{3}-{4}";
+        public const string TopicUnresolvedCount = "AF-{0}-ft-unresolved-count-{1}-{2}";
+        public const string TopicUnanswered = "AF-{0}-ft-unanswered-{1}-{2}-{3}-{4}";
+        public const string TopicUnansweredCount = "AF-{0}-ft-unanswered-count-{1}-{2}";
+        public const string TaggedTopics = "AF-{0}-ft-tagged-{1}-{2}-{3}-{4}-{5}";
+        public const string TaggedTopicsCount = "AF-{0}-ft-tagged-count-{1}-{2}-{3}";
+        public const string TopicUnread = "AF-{0}-ft-unread-{1}-{2}-{3}-{4}-{5}";
+        public const string TopicUnreadCount = "AF-{0}-ft-unread-count-{1}-{2}-{3}";
+        public const string ActiveTopics = "AF-{0}-ft-active-{1}-{2}-{3}-{4}";
+        public const string ActiveTopicsCount = "AF-{0}-ft-active-count-{1}-{2}";
+        public const string MyTopics = "AF-{0}-ft-mytopics-{1}-{2}-{3}-{4}-{5}";
+        public const string MyTopicsCount = "AF-{0}-ft-mytopics-count-{1}-{2}-{3}";
     }
 
     public class SortColumns

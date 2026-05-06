@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (tagId > 0)
             {
-                sURL += "/" + mainSettings.PrefixURLTag + "/" + otherPrefix;
+                sURL += $"/{ParamKeys.ViewType}/{Views.Grid}/{ParamKeys.GridType}/{Views.Tags}/{mainSettings.PrefixURLTag}/{otherPrefix}";
             }
             else if (categoryId > 0)
             {

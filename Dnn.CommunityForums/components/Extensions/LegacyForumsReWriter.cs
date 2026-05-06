@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
 
+    [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
     public class LegacyForumsReWriter : IHttpModule
     {
         private readonly IPortalAliasService portalAliasService;
@@ -49,25 +50,30 @@ namespace DotNetNuke.Modules.ActiveForums
         private int categoryId = -1;
         private int tagId = -1;
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public LegacyForumsReWriter()
             : this(new DotNetNuke.Entities.Portals.PortalAliasController())
         {
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public LegacyForumsReWriter(IPortalAliasService portalAliasService)
         {
             this.portalAliasService = portalAliasService;
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public void Dispose()
         {
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public void Init(System.Web.HttpApplication context)
         {
             context.BeginRequest += this.OnBeginRequest;
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         public void OnBeginRequest(object s, EventArgs e)
         {
             var st = new Stopwatch();

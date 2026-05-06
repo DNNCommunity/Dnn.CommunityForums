@@ -54,6 +54,34 @@ namespace DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs
         internal const int AdministratorsOnlyForumId = 5;
 
         // -----------------------------------------------------------------------
+        // Tag IDs
+        // -----------------------------------------------------------------------
+        internal const int Tag1Id = 1;
+        internal const int Tag2Id = 2;
+        internal const int Tag3Id = 3;
+        internal const int Tag4Id = 4;
+        internal const int Tag5Id = 5;
+        internal const int Tag6Id = 6;
+        internal const int Tag7Id = 7;
+        internal const int Tag8Id = 8;
+        internal const int Tag9Id = 9;
+        internal const int Tag10Id = 10;
+
+        // -----------------------------------------------------------------------
+        // Category IDs
+        // -----------------------------------------------------------------------
+        internal const int Category1Id = 1;
+        internal const int Category2Id = 2;
+        internal const int Category3Id = 3;
+        internal const int Category4Id = 4;
+        internal const int Category5Id = 5;
+        internal const int Category6Id = 6;
+        internal const int Category7Id = 7;
+        internal const int Category8Id = 8;
+        internal const int Category9Id = 9;
+        internal const int Category10Id = 10;
+
+        // -----------------------------------------------------------------------
         // Permission strings
         // -----------------------------------------------------------------------
 
@@ -174,6 +202,94 @@ namespace DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs
             };
 
         // -----------------------------------------------------------------------
+        // Tag builders
+        // -----------------------------------------------------------------------
+
+        /// <summary>
+        /// Builds a <see cref="TagInfo"/> with the supplied values.
+        /// </summary>
+        internal static TagInfo BuildTag(int tagId, string tagName, int items = 0) =>
+            new TagInfo
+            {
+                TagId = tagId,
+                PortalId = PortalId,
+                ModuleId = ModuleId,
+                TagName = tagName,
+                Items = items,
+            };
+
+        /// <summary>
+        /// Builds 10 tags for tests.
+        /// </summary>
+        internal static List<TagInfo> BuildTagsGraph() =>
+            new List<TagInfo>
+            {
+                BuildTag(Tag1Id, "announcements", 3),
+                BuildTag(Tag2Id, "support", 7),
+                BuildTag(Tag3Id, "howto", 5),
+                BuildTag(Tag4Id, "tips", 2),
+                BuildTag(Tag5Id, "release-notes", 4),
+                BuildTag(Tag6Id, "migration", 1),
+                BuildTag(Tag7Id, "performance", 6),
+                BuildTag(Tag8Id, "glanton", 1),
+                BuildTag(Tag9Id, "security", 3),
+                BuildTag(Tag10Id, "feedback", 2),
+            };
+
+        // -----------------------------------------------------------------------
+        // Category builders
+        // -----------------------------------------------------------------------
+
+        /// <summary>
+        /// Builds a <see cref="CategoryInfo"/> with the supplied values.
+        /// </summary>
+        /// <param name="categoryId">Primary key of the category.</param>
+        /// <param name="categoryName">Display name of the category.</param>
+        /// <param name="forumId">Forum this category belongs to.</param>
+        /// <param name="forumGroupId">Forum group this category belongs to.</param>
+        /// <param name="clicks">Seed click count.</param>
+        /// <param name="items">Seed item count.</param>
+        /// <param name="priority">Sort priority.</param>
+        internal static CategoryInfo BuildCategory(
+            int categoryId,
+            string categoryName,
+            int forumId,
+            int forumGroupId,
+            int clicks = 0,
+            int items = 0,
+            int priority = 0) =>
+            new CategoryInfo
+            {
+                CategoryId = categoryId,
+                PortalId = PortalId,
+                ModuleId = ModuleId,
+                CategoryName = categoryName,
+                ForumId = forumId,
+                ForumGroupId = forumGroupId,
+                Clicks = clicks,
+                Items = items,
+                Priority = priority,
+            };
+
+        /// <summary>
+        /// Builds 10 categories for tests, spread across existing forums and groups.
+        /// </summary>
+        internal static List<CategoryInfo> BuildCategoriesGraph() =>
+            new List<CategoryInfo>
+            {
+                BuildCategory(Category1Id,  "Bug Reports",        AnnouncementsForumId,     GeneralGroupId,  clicks: 10, items: 3,  priority: 1),
+                BuildCategory(Category2Id,  "Feature Requests",   AnnouncementsForumId,     GeneralGroupId,  clicks: 25, items: 7,  priority: 2),
+                BuildCategory(Category3Id,  "How-To",             GeneralDiscussionForumId, GeneralGroupId,  clicks: 5,  items: 5,  priority: 1),
+                BuildCategory(Category4Id,  "Tips & Tricks",      GeneralDiscussionForumId, GeneralGroupId,  clicks: 8,  items: 2,  priority: 2),
+                BuildCategory(Category5Id,  "Release Notes",      HelpAndSupportForumId,    GeneralGroupId,  clicks: 15, items: 4,  priority: 1),
+                BuildCategory(Category6Id,  "Installation",       HelpAndSupportForumId,    GeneralGroupId,  clicks: 12, items: 6,  priority: 2),
+                BuildCategory(Category7Id,  "Performance",        HelpAndSupportForumId,    GeneralGroupId,  clicks: 3,  items: 1,  priority: 3),
+                BuildCategory(Category8Id,  "Members News",       MembersOnlyForumId,       PrivateGroupId,  clicks: 4,  items: 2,  priority: 1),
+                BuildCategory(Category9Id,  "Admin Policies",     AdministratorsOnlyForumId, PrivateGroupId, clicks: 2,  items: 1,  priority: 1),
+                BuildCategory(Category10Id, "Feedback",           GeneralDiscussionForumId, GeneralGroupId,  clicks: 9,  items: 3,  priority: 3),
+            };
+
+        // -----------------------------------------------------------------------
         // Named convenience wrappers
         // -----------------------------------------------------------------------
 
@@ -201,21 +317,19 @@ namespace DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs
         internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo BuildMembersOnlyForum(PortalSettings portalSettings) =>
             BuildForum(portalSettings, MembersOnlyForumId, BuildPrivateGroup(), "Members Only", "members-only-forum", "For registered members.", sortOrder: 1, viewPermission: RegisteredPermission, readPermission: RegisteredPermission, totalTopics: 8, totalReplies: 24);
 
-        /// <summary>Builds the Administrators Only Forum <see cref="ForumInfo"/>.</summary>
-        internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo BuildPrivateForum(PortalSettings portalSettings) =>
-            BuildForum(portalSettings, AdministratorsOnlyForumId, BuildPrivateGroup(), "Admin", "admin-forum", "Restricted access forum.", sortOrder: 2, viewPermission: AdministratorsPermission, readPermission: AdministratorsPermission, totalTopics: 3, totalReplies: 7);
-
-        // -----------------------------------------------------------------------
-        // Full graph
-        // -----------------------------------------------------------------------
+        /// <summary>Builds the Administrators-Only <see cref="ForumInfo"/>.</summary>
+        internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo BuildAdministratorsOnlyForum(PortalSettings portalSettings) =>
+            BuildForum(portalSettings, AdministratorsOnlyForumId, BuildPrivateGroup(), "Admin", "admin-forum", "Administrators only forum.", sortOrder: 2, viewPermission: AdministratorsPermission, readPermission: AdministratorsPermission, totalTopics: 3, totalReplies: 7);
 
         /// <summary>
-        /// Builds the complete object graph: two forum groups each with their forums populated.
+        /// Builds the full forums graph used in tests.
         /// </summary>
+        /// <param name="portalSettings">Portal settings used to construct <see cref="ForumInfo"/> instances.</param>
         internal static List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> BuildForumsGraph(PortalSettings portalSettings)
         {
             var generalGroup = BuildGeneralGroup();
             var privateGroup = BuildPrivateGroup();
+
             return new List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
             {
                 BuildForum(portalSettings, AnnouncementsForumId,     generalGroup, "Announcements",      "announcements",      "Site-wide announcements.",      sortOrder: 1, totalTopics: 5,  totalReplies: 12),
@@ -225,5 +339,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs
                 BuildForum(portalSettings, AdministratorsOnlyForumId,     privateGroup, "Admin",      "admin-forum",      "Administrators only forum.",  sortOrder: 2, viewPermission: AdministratorsPermission, readPermission: AdministratorsPermission, totalTopics: 3, totalReplies: 7),
             };
         }
+
     }
 }
