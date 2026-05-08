@@ -402,7 +402,10 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Top Posts
         public abstract IDataReader PortalForums(int portalId);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract IDataReader GetPosts(int portalId, string forums, bool topicsOnly, bool randomOrder, int rows, string tags, int filterByUserId = -1);
+
+        public abstract IDataReader GetPosts(string forums, bool topicsOnly, bool randomOrder, int rows, string tags, int filterByUserId = -1);
 
         public abstract IDataReader GetPostsByUser(int portalId, int rows, bool isSuperUser, int currentUserId, int filteredUserid, bool topicsOnly, string forumIds);
         #endregion

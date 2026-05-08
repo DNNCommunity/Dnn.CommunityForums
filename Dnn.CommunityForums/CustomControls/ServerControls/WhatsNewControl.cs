@@ -202,7 +202,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                dr = DataProvider.Instance().GetPosts(this.PortalId, this.ForumIds, this.TopicsOnly, this.RandomOrder, this.Rows, this.Tags, this.FilterByUserId);
+                dr = DataProvider.Instance().GetPosts(this.ForumIds, this.TopicsOnly, this.RandomOrder, this.Rows, this.Tags, this.FilterByUserId);
             }
 
             try

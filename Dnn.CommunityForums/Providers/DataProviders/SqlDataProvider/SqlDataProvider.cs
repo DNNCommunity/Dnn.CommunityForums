@@ -813,10 +813,12 @@ namespace DotNetNuke.Modules.ActiveForums
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_TP_PortalForums", PortalId);
         }
 
-        public override IDataReader GetPosts(int PortalId, string Forums, bool TopicsOnly, bool RandomOrder, int Rows, string Tags, int FilterByUserId = -1)
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public override IDataReader GetPosts(int PortalId, string Forums, bool TopicsOnly, bool RandomOrder, int Rows, string Tags, int FilterByUserId = -1) => throw new NotImplementedException();
+
+        public override IDataReader GetPosts(string Forums, bool TopicsOnly, bool RandomOrder, int Rows, string Tags, int FilterByUserId = -1)
         {
-            const bool IgnoreSecurity = false; // Required by proc but not currently used
-            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_TP_GetPosts", PortalId, Forums, TopicsOnly, RandomOrder, Rows, IgnoreSecurity, Tags, FilterByUserId);
+            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_TP_GetPosts", Forums, TopicsOnly, RandomOrder, Rows, Tags, FilterByUserId);
         }
 
         public override IDataReader GetPostsByUser(int PortalId, int Rows, bool IsSuperUser, int currentUserId, int FilteredUserid, bool TopicsOnly, string ForumIds)
