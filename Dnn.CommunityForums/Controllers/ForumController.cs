@@ -556,7 +556,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                var forumTopic = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(moduleId).GetForumForTopic(topicId);
+                var forumTopic = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(moduleId).GetByTopicId(topicId);
                 if (forumTopic != null)
                 {
                     return forumTopic.ForumId;

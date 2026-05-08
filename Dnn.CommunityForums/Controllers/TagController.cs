@@ -168,7 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             base.Delete(item);
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.TagInfo GetByName(int moduleId, string tagName)
+        internal virtual DotNetNuke.Modules.ActiveForums.Entities.TagInfo GetByName(int moduleId, string tagName)
         {
             string cachekey = string.Format(CacheKeys.TagByName, moduleId, tagName);
             DotNetNuke.Modules.ActiveForums.Entities.TagInfo tagInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TagInfo;

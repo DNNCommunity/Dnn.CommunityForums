@@ -20,14 +20,6 @@
 
 namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Runtime.Remoting.Messaging;
-    using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.Hosting;
-
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Modules.ActiveForums;
@@ -35,8 +27,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
     using Moq;
 
     using NUnit.Framework;
-
-    using static DotNetNuke.Modules.ActiveForums.ForumsReWriter;
 
     /// <summary>
     /// Tests for ForumsReWriter
@@ -47,9 +37,15 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
         private ForumsReWriter rewriter;
 
         [SetUp]
-        public void SetUp()
+        public new void SetUp()
         {
-            this.rewriter = new ForumsReWriter(this.portalAliasService.Object);
+            base.SetUp();
+            this.rewriter = new ForumsReWriter(
+                this.portalAliasService.Object,
+                this.MockTagController.Object,
+                this.MockCategoryController.Object,
+                this.MockForumGroupController.Object,
+                this.MockForumController.Object);
         }
 
         [Test]
@@ -76,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
                 Assert.That(this.rewriter.MainSettings, Is.Null);
                 Assert.That(this.rewriter.CategoryId, Is.EqualTo(Null.NullInteger));
                 Assert.That(this.rewriter.TagId, Is.EqualTo(Null.NullInteger));
+                Assert.That(this.rewriter.OtherPrefix, Is.Empty);
                 Assert.That(this.rewriter.GroupSegment, Is.Null);
                 Assert.That(this.rewriter.ForumSegment, Is.Null);
                 Assert.That(this.rewriter.TopicSegment, Is.Null);
@@ -177,6 +174,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
             Assert.That(this.rewriter.GridType, Is.EqualTo(expected));
         }
 
+        [Test]
         [TestCase("/forums/some-topic/", TestName = "GetGridTypeFromUrl_UnknownSegment_ReturnsNull")]
         [TestCase("", TestName = "GetGridTypeFromUrl_EmptyUrl_ReturnsNull")]
         [TestCase(null, TestName = "GetGridTypeFromUrl_NullUrl_ReturnsNull")]
@@ -198,19 +196,22 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
         }
 
         [Test]
-        [TestCase("/forums/activetopics/", GridTypes.ActiveTopics, 0, 0, TestName = "GetViewTypeFromUrl_GridTypeOnly_NoTimespanNoPage")]
-        [TestCase("/forums/activetopics/2", GridTypes.ActiveTopics, 0, 2, TestName = "GetViewTypeFromUrl_PageOnly_NoTimespan")]
-        [TestCase("/forums/activetopics/2/", GridTypes.ActiveTopics, 0, 2, TestName = "GetViewTypeFromUrl_PageOnly_WithTrailingSlash_NoTimespan")]
-        [TestCase("/forums/activetopics/ts/30", GridTypes.ActiveTopics, 30, 0, TestName = "GetViewTypeFromUrl_TimespanOnly_NoPage")]
-        [TestCase("/forums/activetopics/ts/30/", GridTypes.ActiveTopics, 30, 0, TestName = "GetViewTypeFromUrl_TimespanOnly_WithTrailingSlash_NoPage")]
-        [TestCase("/forums/activetopics/ts/30/2", GridTypes.ActiveTopics, 30, 2, TestName = "GetViewTypeFromUrl_TimespanAndPage")]
-        [TestCase("/forums/activetopics/ts/30/2/", GridTypes.ActiveTopics, 30, 2, TestName = "GetViewTypeFromUrl_TimespanAndPage_WithTrailingSlash")]
-        [TestCase("/forums/unanswered/ts/7/3", GridTypes.Unanswered, 7, 3, TestName = "GetViewTypeFromUrl_Unanswered_TimespanAndPage")]
-        [TestCase("/forums/unanswered/ts/7", GridTypes.Unanswered, 7, 0, TestName = "GetViewTypeFromUrl_Unanswered_TimespanOnly")]
-        [TestCase("/forums/unanswered/5", GridTypes.Unanswered, 0, 5, TestName = "GetViewTypeFromUrl_Unanswered_PageOnly")]
-        [TestCase("/FORUMS/ACTIVETOPICS/TS/30/2", GridTypes.ActiveTopics, 30, 2, TestName = "GetViewTypeFromUrl_TimespanAndPage_IsCaseInsensitive")]
-        [TestCase("/forums/some-topic/", null, 0, 0, TestName = "GetViewTypeFromUrl_UnknownGridType_NoTimespanNoPage")]
-        public void GetViewTypeFromUrl_ExtractsGridTypeTimespanAndPage(string url, string expectedGridType, int expectedTimespan, int expectedPage)
+        [TestCase("/forums/activetopics/", GridTypes.ActiveTopics, 0, 0, -1, TestName = "GetViewTypeFromUrl_GridTypeOnly_NoTimespanNoPage")]
+        [TestCase("/forums/activetopics/2", GridTypes.ActiveTopics, 0, 2, -1, TestName = "GetViewTypeFromUrl_PageOnly_NoTimespan")]
+        [TestCase("/forums/activetopics/2/", GridTypes.ActiveTopics, 0, 2, -1, TestName = "GetViewTypeFromUrl_PageOnly_WithTrailingSlash_NoTimespan")]
+        [TestCase("/forums/activetopics/ts/30", GridTypes.ActiveTopics, 30, 0, -1, TestName = "GetViewTypeFromUrl_TimespanOnly_NoPage")]
+        [TestCase("/forums/activetopics/ts/30/", GridTypes.ActiveTopics, 30, 0, -1, TestName = "GetViewTypeFromUrl_TimespanOnly_WithTrailingSlash_NoPage")]
+        [TestCase("/forums/activetopics/ts/30/2", GridTypes.ActiveTopics, 30, 2, -1, TestName = "GetViewTypeFromUrl_TimespanAndPage")]
+        [TestCase("/forums/activetopics/ts/30/2/", GridTypes.ActiveTopics, 30, 2, -1, TestName = "GetViewTypeFromUrl_TimespanAndPage_WithTrailingSlash")]
+        [TestCase("/forums/unanswered/ts/7/3", GridTypes.Unanswered, 7, 3, -1, TestName = "GetViewTypeFromUrl_Unanswered_TimespanAndPage")]
+        [TestCase("/forums/unanswered/ts/7", GridTypes.Unanswered, 7, 0, -1, TestName = "GetViewTypeFromUrl_Unanswered_TimespanOnly")]
+        [TestCase("/forums/unanswered/5", GridTypes.Unanswered, 0, 5, -1, TestName = "GetViewTypeFromUrl_Unanswered_PageOnly")]
+        [TestCase("/FORUMS/ACTIVETOPICS/TS/30/2", GridTypes.ActiveTopics, 30, 2, -1, TestName = "GetViewTypeFromUrl_TimespanAndPage_IsCaseInsensitive")]
+        [TestCase("/forums/some-topic/", null, 0, 0, -1, TestName = "GetViewTypeFromUrl_UnknownGridType_NoTimespanNoPage")]
+        [TestCase("/forums/afv/grid/afgt/tags/tag/glanton/ts/2147483647", GridTypes.Tags, 2147483647, 0, 8, TestName = "GetViewTypeFromUrl_TagsGrid_TimespanNoPage")]
+        [TestCase("/forums/afv/grid/afgt/tags/tag/glanton/ts/2147483647/3", GridTypes.Tags, 2147483647, 3, 8, TestName = "GetViewTypeFromUrl_TagsGrid_TimespanWithPage")]
+        [TestCase("/forums/afv/grid/afgt/tags/tag/glanton//ts/2147483647/3", GridTypes.Tags, 2147483647, 3, 8, TestName = "GetViewTypeFromUrl_TagsGrid_Doubleslash")]
+        public void GetViewTypeFromUrl_ExtractsGridTypeTimespanAndPage(string url, string expectedGridType, int expectedTimespan, int expectedPage, int expectedTagId)
         {
             this.rewriter.GetViewTypeFromUrl(url);
 
@@ -219,6 +220,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
                 Assert.That(this.rewriter.GridType, Is.EqualTo(expectedGridType));
                 Assert.That(this.rewriter.Timespan, Is.EqualTo(expectedTimespan));
                 Assert.That(this.rewriter.Page, Is.EqualTo(expectedPage));
+                Assert.That(this.rewriter.TagId, Is.EqualTo(expectedTagId));
             }
         }
 
@@ -268,6 +270,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
             {
                 Assert.That(result, Is.EqualTo(expectedResult));
                 Assert.That(name, Is.EqualTo(expectedName));
+                Assert.That(this.rewriter.OtherPrefix, Is.EqualTo(expectedName));
             }
 
             if (expectedUrl == null)
@@ -304,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
             string expectedLikeUrlWithoutPage)
         {
             // Arrange & Act
-            var result = this.rewriter.HandleLikesPages(searchURL);
+            var result = this.rewriter.HandleLikesPages(searchURL, "likes");
 
             using (Assert.EnterMultipleScope())
             {
@@ -324,7 +327,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
             string expectedResult)
         {
             // Arrange & Act
-            var result = this.rewriter.HandleLikesPages(searchURL);
+            var result = this.rewriter.HandleLikesPages(searchURL, "likes");
 
             // Assert
             Assert.That(result, Is.EqualTo(expectedResult));
@@ -335,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
         public void HandleLikesPages_StripsLeadingSlashFromReturnedUrl()
         {
             // Arrange & Act
-            var result = this.rewriter.HandleLikesPages("/forum/likes/10/");
+            var result = this.rewriter.HandleLikesPages("/forum/likes/10/", "likes");
 
             // Assert
             Assert.That(result, Does.Not.StartWith("/"), "Returned URL should not start with a slash after stripping");
@@ -397,7 +400,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
             // Act
             DotNetNuke.Modules.ActiveForums.ForumsReWriter.RewriteUrl(mockApp.Object.Context, sendTo);
 
-            // Assert            
+            // Assert
             Assert.That(mockApp.Object.Context.Request.Path.ToString(), Is.EqualTo(expectedPath));
         }
 
@@ -543,7 +546,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
         public void HandleNonLikesPages_EmptyOrNull_LeavesSegmentsNull(string input)
         {
             // Act & Assert — should not throw
-            Assert.DoesNotThrow(() => this.rewriter.HandleNonLikesPages(input));
+            Assert.That(() => this.rewriter.HandleNonLikesPages(input), Throws.Nothing);
 
             using (Assert.EnterMultipleScope())
             {

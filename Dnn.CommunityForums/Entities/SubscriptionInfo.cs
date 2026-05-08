@@ -80,10 +80,47 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo User => this.user ?? (this.user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(this.PortalId, this.UserId));
 
         [IgnoreColumn]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum => this.forumInfo ?? (this.forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId));
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
+        {
+            get
+            {
+                if (this.forumInfo == null)
+                {
+                    this.forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId);
+
+                    // Break indirect cycle: if Topic is already loaded, inject this forum into it
+                    // so TopicInfo.Forum does not trigger another ForumController.GetById call
+                    if (this.forumInfo != null && this.topicInfo != null)
+                    {
+                        this.topicInfo.Forum = this.forumInfo;
+                    }
+                }
+
+                return this.forumInfo;
+            }
+        }
 
         [IgnoreColumn]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this.topicInfo ?? (this.topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.TopicId));
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
+        {
+            get
+            {
+                if (this.topicInfo == null)
+                {
+                    this.topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.TopicId);
+
+                    // Break indirect cycle: inject already-loaded forum (if available) into the topic
+                    // so TopicInfo.Forum does not trigger another ForumController.GetById call,
+                    // which would then load ForumInfo.LastPost, loading another TopicInfo, etc.
+                    if (this.topicInfo != null && this.forumInfo != null)
+                    {
+                        this.topicInfo.Forum = this.forumInfo;
+                    }
+                }
+
+                return this.topicInfo;
+            }
+        }
 
         [IgnoreColumn]
         public string Email { get => this.email ?? (this.email = this.User?.Email); set => this.email = value; }

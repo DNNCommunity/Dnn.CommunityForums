@@ -40,6 +40,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Cache;
@@ -77,6 +78,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         internal Mock<DotNetNuke.Modules.ActiveForums.Controllers.ForumController> MockForumController;
         internal Mock<DotNetNuke.Modules.ActiveForums.Controllers.TopicController> MockTopicController;
         internal Mock<DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController> MockForumUserController;
+        internal Mock<DotNetNuke.Modules.ActiveForums.Controllers.TagController> MockTagController;
+        internal Mock<DotNetNuke.Modules.ActiveForums.Controllers.CategoryController> MockCategoryController;
 
         internal Mock<System.Web.HttpApplication> MockHttpApplication;
 
@@ -92,6 +95,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         internal List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> ForumsGraph;
         internal List<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo> ForumUserGraph;
         internal List<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> TopicReplyGraph;
+        internal List<DotNetNuke.Modules.ActiveForums.Entities.TagInfo> TagsGraph;
+        internal List<DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo> CategoriesGraph;
 
         [SetUp]
         public void SetUp()
@@ -155,6 +160,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             this.SetupForumUserInfo();
             this.SetupTopicReplyInfo();
+            this.SetupTagInfo();
+            this.SetupCategoryInfo();
         }
 
         [TearDown]
@@ -609,11 +616,53 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             }
         }
 
+        private void SetupTagInfo()
+        {
+            this.TagsGraph = DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs.ForumsObjectGraph.BuildTagsGraph();
+
+            this.MockTagController = new Mock<DotNetNuke.Modules.ActiveForums.Controllers.TagController>();
+
+            foreach (var tag in this.TagsGraph)
+            {
+                var capturedTag = tag;
+                this.MockTagController
+                    .Setup(tc => tc.GetById(capturedTag.TagId))
+                    .Returns(capturedTag);
+                this.MockTagController
+                    .Setup(tc => tc.GetByName(ForumsObjectGraph.ModuleId, capturedTag.TagName))
+                    .Returns(capturedTag);
+                this.MockTagController
+                    .Setup(tc => tc.GetByName(It.IsAny<int>(), capturedTag.TagName))
+                    .Returns(capturedTag);
+            }
+        }
+
+        private void SetupCategoryInfo()
+        {
+            this.CategoriesGraph = DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs.ForumsObjectGraph.BuildCategoriesGraph();
+
+            this.MockCategoryController = new Mock<DotNetNuke.Modules.ActiveForums.Controllers.CategoryController>();
+
+            foreach (var category in this.CategoriesGraph)
+            {
+                var capturedCategory = category;
+                this.MockCategoryController
+                    .Setup(cc => cc.GetById(capturedCategory.CategoryId))
+                    .Returns(capturedCategory);
+                this.MockCategoryController
+                    .Setup(cc => cc.GetByName(ForumsObjectGraph.ModuleId, capturedCategory.CategoryName))
+                    .Returns(capturedCategory);
+                this.MockCategoryController
+                    .Setup(cc => cc.GetByName(It.IsAny<int>(), capturedCategory.CategoryName))
+                    .Returns(capturedCategory);
+            }
+        }
+
         internal void SetupMockHttpApplication()
         {
             this.MockHttpApplication = this.CreateMockHttpApplication(this.DefaultSite);
         }
-        
+
         internal Mock<System.Web.HttpApplication> CreateMockHttpApplication(string url)
         {
             var uri = new Uri(url);

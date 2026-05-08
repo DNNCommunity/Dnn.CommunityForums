@@ -368,20 +368,28 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public abstract DataSet UI_TopicView(int portalId, int moduleId, int forumId, int topicId, int userId, int pageIndex, int pageSize, bool isSuper, string sort);
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMyUnreadTopics().")]
         public abstract DataSet UI_NotReadView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, bool isSuper);
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetUnanswered().")]
         public abstract DataSet UI_UnansweredView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, bool isSuper);
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMyTopics().")]
         public abstract DataSet UI_MyTopicsView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, bool isSuper);
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetActiveTopics().")]
         public abstract DataSet UI_ActiveView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, bool isSuper, int timeFrame);
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMostLikes().")]
         public abstract DataSet UI_MostLiked(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, bool isSuper, int timeFrame);
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMostReplies().")]
         public abstract DataSet UI_MostReplies(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, bool isSuper, int timeFrame);
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetAnnouncements().")]
         public abstract DataSet UI_Announcements(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, bool isSuper);
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetUnresolved().")]
         public abstract DataSet UI_Unresolved(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, bool isSuper);
         #endregion
 

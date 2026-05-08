@@ -1,4 +1,4 @@
-﻿IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumContent_List]') AND type in (N'P', N'PC'))
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumContent_List]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_ForumContent_List]
 GO
 
@@ -35,7 +35,7 @@ END
 BEGIN
 DECLARE @topics table (categoryid int, topicid int, catpriority int, categoryname nvarchar(255), topicpriority int, topicsort int)
 INSERT INTO @topics
-SELECT tg.TagId, t.TopicId, tg.Priority, tg.TagName, t.Priority, ft.LastReplyDate from dbo.activeforums_ForumTopics as ft INNER JOIN
+SELECT tg.TagId, t.TopicId, tg.Priority, tg.TagName, t.Priority, ft.LastReplyDate from {databaseOwner}[{objectQualifier}activeforums_ForumTopics] as ft INNER JOIN
 {databaseOwner}{objectQualifier}activeforums_Topics as t ON t.TopicId = ft.TopicId INNER JOIN
 {databaseOwner}{objectQualifier}activeforums_Topics_Tags as tt ON t.TopicId = tt.TopicId INNER JOIN
 {databaseOwner}{objectQualifier}activeforums_Tags as tg ON tg.TagId = tt.TagId AND tg.IsCategory = 1

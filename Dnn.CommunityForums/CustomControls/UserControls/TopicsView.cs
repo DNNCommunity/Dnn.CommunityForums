@@ -621,7 +621,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(stringBuilder, topicInfo, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl);
                 stringBuilder.Replace("[LASTREPLY]", string.Empty).Replace("[/LASTREPLY]", string.Empty);
                 stringBuilder.Replace("[LASTPOST]", string.Empty).Replace("[/LASTPOST]", string.Empty);
-                stringBuilder.Replace("[ROWCSS]", this.GetRowCSS(UserLastTopicRead, UserLastReplyRead, topicInfo.TopicId, topicInfo.LastReplyId, rowcount));
+                stringBuilder.Replace("[ROWCSS]", this.GetRowCSS(UserLastTopicRead, UserLastReplyRead, topicInfo.TopicId, (int)topicInfo.LastReplyId, rowcount));
 
                 if (topicInfo.LastReplyId < 1)
                 {

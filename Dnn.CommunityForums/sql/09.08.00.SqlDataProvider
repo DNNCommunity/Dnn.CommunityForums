@@ -1211,3 +1211,21 @@ WHERE Subject LIKE '%&amp;%' OR Subject LIKE '%&lt;%' OR Subject LIKE '%&gt;%' O
 GO
 
 /* issue 1607 - end - html entity normalization for activeforums_Content */
+
+/* issue 1883 - begin - improve performance on "filtered topics" pages */
+
+/* add index on announcement topics */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics') AND name = N'IX_{objectQualifier}activeforums_Topics_Opt4')
+DROP INDEX [IX_{objectQualifier}activeforums_Topics_Opt4] ON {databaseOwner}{objectQualifier}activeforums_Topics 
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Topics_Opt4] ON {databaseOwner}[{objectQualifier}activeforums_Topics] 
+(
+	[IsAnnounce] ASC,
+	[TopicId] ASC	
+) 
+INCLUDE (AnnounceStart)
+WHERE IsAnnounce = 1 
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+/* issue 1880 - end - improve performance on "top posts" pages */
