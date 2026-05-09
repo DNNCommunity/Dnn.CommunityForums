@@ -242,6 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.TopicsViewPrefix, moduleId));
                     DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.FilteredTopicsPrefix, moduleId));
                     DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.ToolbarPrefix, moduleId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(moduleId, string.Format(CacheKeys.WhatsNewData, moduleId));
                 }
                 catch (Exception ex)
                 {

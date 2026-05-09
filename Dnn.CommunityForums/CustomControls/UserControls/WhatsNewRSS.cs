@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -29,6 +30,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI;
 
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Modules.ActiveForums.Data;
+
+    using Newtonsoft.Json.Bson;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:WhatsNewRSS runat=server></{0}:WhatsNewRSS>")]
     public class WhatsNewRSS : Control
@@ -250,8 +254,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // build items
             var forumids = this.Settings.RSSIgnoreSecurity ? this.Settings.Forums : this.AuthorizedForums;
 
-            var dr = DataProvider.Instance().GetPosts(this.PortalId, forumids, true, false, this.Settings.Rows, this.Settings.Tags);
             var sHost = Utilities.GetHost();
+            var dr = DataProvider.Instance().GetPosts(forums: forumids, topicsOnly: true, randomOrder: false, rows: this.Settings.Rows, tags: this.Settings.Tags);
 
             try
             {
@@ -287,8 +291,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         lastBuildDate = dateCreated;
                     }
 
-                    var ts = SettingsBase.GetModuleSettings(topicModuleId);
-
                     string url;
                     if (string.IsNullOrEmpty(sTopicUrl) || !Utilities.UseFriendlyURLs(topicModuleId))
                     {
@@ -296,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         url = Utilities.NavigateURL(topicTabId, string.Empty, @params);
                         if (url.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.CurrentCulture) == -1)
                         {
-                            url = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
+                            url = DotNetNuke.Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
                         }
                     }
                     else
@@ -324,7 +326,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         // Legacy Attachment functionality uses "attachid"
                         if (bodyHtml.Contains("&#91;IMAGE:"))
                         {
-                            var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
+                            var strHost = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
                             const string pattern = "(&#91;IMAGE:(.+?)&#93;)";
                             foreach (Match match in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern).Matches(bodyHtml))
                             {
@@ -336,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         // Legacy Attachment functionality uses "attachid"
                         if (bodyHtml.Contains("&#91;THUMBNAIL:"))
                         {
-                            var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
+                            var strHost = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
                             const string pattern = "(&#91;THUMBNAIL:(.+?)&#93;)";
                             foreach (Match match in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern).Matches(bodyHtml))
                             {
@@ -347,8 +349,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
                         }
 
-                        bodyHtml = bodyHtml.Replace("src=\"/Portals", "src=\"" + Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + "/Portals");
-                        bodyHtml = Utilities.ManageImagePath(bodyHtml, new Uri(Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host)));
+                        bodyHtml = bodyHtml.Replace("src=\"/Portals", "src=\"" + DotNetNuke.Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + "/Portals");
+                        bodyHtml = Utilities.ManageImagePath(bodyHtml, new Uri(DotNetNuke.Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host)));
 
                         sb.Append(WriteElement("description", bodyHtml, indent + 1));
                     }

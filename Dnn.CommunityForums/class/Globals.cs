@@ -546,7 +546,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string CachingTime = "AF-{0}-ct";
         public const string CacheUpdate = "AF-{0}-cu";
         public const string WhatsNew = "AF-{0}-tp";
-        public const string RssTemplate = "AF-{0}-tprss-_{1}";
+        public const string WhatsNewData = "AF-{0}-tprssdata-{1}-{2}-{3}-{4}-{5}";
+        public const string RssTemplate = "AF-{0}-tprss-{1}";
         public const string ViewRolesForForum = "AF-{0}-CanView-{1}";
         public const string ViewRolesForForumList = "AF-{0}-Perm-{1}";
         public const string Subscriber = "AF-{0}-Subs-{1}-{2}-{3}-{4}";

@@ -1228,4 +1228,107 @@ WHERE IsAnnounce = 1
 WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
 GO
 
-/* issue 1880 - end - improve performance on "top posts" pages */
+/* issue 1880 - end - improve performance on "filtered topics" pages */
+
+/* issue 1889 - begin - performance improvements for activeforums_TP_GetPosts */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_TP_GetPosts]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_TP_GetPosts]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_TP_GetPosts]
+@Forums nvarchar(1000),
+@TopicsOnly bit,
+@RandomOrder bit,
+@Rows int,
+@Tags nvarchar(400),
+@FilterByUserId int = -1
+AS
+
+-- Parse forum list
+DECLARE @ForumList TABLE (ForumId INT);
+INSERT INTO @ForumList (ForumId)
+SELECT CAST(value AS INT)
+FROM STRING_SPLIT(@Forums, ':')
+WHERE value <> '';
+
+IF @TopicsOnly = 1
+BEGIN
+    -- Topics only
+    SELECT 
+        g.GroupName, 
+        g.ForumGroupId, 
+        M.TabId, 
+        M.ModuleId, 
+        T.ForumName, 
+        T.ForumId, 
+        T.[Subject],
+        T.AuthorId, 
+        T.AuthorUserName, 
+        T.AuthorFirstName, 
+        T.AuthorLastName, 
+        T.AuthorDisplayName, 
+        T.DateCreated,
+        T.Body, 
+        T.ReplyCount, 
+        T.TopicId, 
+        ReplyId = 0,
+        ISNULL(T.URL, '') AS TopicURL,
+        ISNULL(f.PrefixURL, '') AS PrefixURL,
+        ISNULL(g.PrefixURL, '') AS GroupPrefixURL
+    FROM {databaseOwner}[{objectQualifier}vw_activeforums_TopicsView] AS T 
+        INNER JOIN @ForumList AS fl ON fl.ForumId = T.ForumId
+        INNER JOIN {databaseOwner}[{objectQualifier}TabModules] AS M ON M.ModuleId = T.ModuleId
+        INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] AS f ON f.ForumId = T.ForumId
+        INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Groups] AS g ON g.ForumGroupId = f.ForumGroupId
+        LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics_Tags] AS tt ON tt.TopicId = T.TopicId
+        LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Tags] AS tag ON tag.TagId = tt.TagId AND tag.ModuleId = T.ModuleId
+    WHERE (@FilterByUserId = -1 OR T.AuthorId = @FilterByUserId)
+        AND (@Tags = '' OR tag.TagName = @Tags)
+    ORDER BY 
+        CASE WHEN @RandomOrder = 1 THEN NEWID() END,
+        CASE WHEN @RandomOrder = 0 THEN T.LastReplyDate END DESC
+    OFFSET 0 ROWS FETCH NEXT @Rows ROWS ONLY;
+END
+ELSE
+BEGIN
+    -- Topics and replies
+    SELECT 
+        g.GroupName, 
+        g.ForumGroupId, 
+        M.TabId, 
+        M.ModuleId, 
+        f.ForumName, 
+        T.ForumId,
+        T.Subject AS [Subject], 
+        T.AuthorId,
+        T.Username AS AuthorUserName, 
+        T.FirstName AS AuthorFirstName,
+        T.LastName AS AuthorLastName, 
+        T.DisplayName AS AuthorDisplayName,
+        T.DateUpdated AS DateCreated,
+        ReplyCount = 0, 
+        T.TopicId, 
+        T.ReplyId,
+        c.Body,
+        ISNULL(T.URL, '') AS TopicURL,
+        ISNULL(f.PrefixURL, '') AS PrefixURL,
+        ISNULL(g.PrefixURL, '') AS GroupPrefixURL
+    FROM {databaseOwner}[{objectQualifier}vw_activeforums_TopicView] AS T
+        INNER JOIN @ForumList AS fl ON fl.ForumId = T.ForumId
+        INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] AS c ON c.ContentId = T.ContentId
+        INNER JOIN {databaseOwner}[{objectQualifier}TabModules] AS M ON M.ModuleId = T.ModuleId
+        INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] AS f ON f.ForumId = T.ForumId
+        INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Groups] AS g ON g.ForumGroupId = f.ForumGroupId
+        LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics_Tags] AS tt ON tt.TopicId = T.TopicId
+        LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Tags] AS tag ON tag.TagId = tt.TagId AND tag.ModuleId = T.ModuleId
+    WHERE (@FilterByUserId = -1 OR T.AuthorId = @FilterByUserId)
+        AND (@Tags = '' OR tag.TagName = @Tags)
+    ORDER BY 
+        CASE WHEN @RandomOrder = 1 THEN NEWID() END,
+        CASE WHEN @RandomOrder = 0 THEN T.DateUpdated END DESC
+    OFFSET 0 ROWS FETCH NEXT @Rows ROWS ONLY;
+END
+GO
+/* issue 1889 - end - performance improvements for activeforums_TP_GetPosts */
+
+
