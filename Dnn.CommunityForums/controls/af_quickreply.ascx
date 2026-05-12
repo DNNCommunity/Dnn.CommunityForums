@@ -29,29 +29,75 @@ function insertQuote() {
         insertCode('[quote] [/quote]');
     };
 };
-function afQuickSubmit() {
-	if (isSubmitted == false) {
-		isSubmitted = true;
-		var hid = document.getElementById('hidReply1');
-		hid.value = 'true';
-		document.forms[0].submit();
-	}
-};
+function hasEditorContent(value) {
+    if (!value) {
+        return false;
+    }
 
-function afQuickSubmitCkEditor4() {
-	if (isSubmitted == false) {
-		isSubmitted = true;
-        var hid = document.getElementById('hidReply1');
-        hid.value = 'true';
-        var txtBody = document.getElementById('txtBody');
-        txtBody.value = amaf_getBody();
+    // Handle rich-text "empty" HTML like <p><br></p>, &nbsp;, etc.
+    var textOnly = value
+        .replace(/<[^>]*>/g, "")     // strip HTML tags
+        .replace(/&nbsp;/gi, " ")    // normalize non-breaking spaces
+        .trim();
+
+    return textOnly.length > 0;
+}
+
+function afQuickSubmit() {
+    var txtBody = document.getElementById("txtBody");
+    if (!txtBody || !hasEditorContent(txtBody.value)) {
+        return;
+    }
+
+    if (isSubmitted == false) {
+        isSubmitted = true;
+        var hid = document.getElementById("hidReply1");
+        hid.value = "true";
         document.forms[0].submit();
     }
-};
+}
+
+function afQuickSubmitCkEditor4() {
+    var txtBody = document.getElementById("txtBody");
+    txtBody.value = amaf_getBody();
+
+    if (!hasEditorContent(txtBody.value)) {
+        return;
+    }
+
+    if (isSubmitted == false) {
+        isSubmitted = true;
+        var hid = document.getElementById("hidReply1");
+        hid.value = "true";
+        document.forms[0].submit();
+    }
+}
+
+function afQuickSubmitTipTap() {
+    var txtBody = document.getElementById("txtBody");
+    txtBody.value = amaf_getBody();
+
+    if (!hasEditorContent(txtBody.value)) {
+        return;
+    }
+
+    if (isSubmitted == false) {
+        isSubmitted = true;
+        var hid = document.getElementById("hidReply1");
+        hid.value = "true";
+        document.forms[0].submit();
+    }
+}
 $(document).on("keydown", "#txtBody", function (e) {
     if ((e.ctrlKey || e.metaKey) && (e.keyCode == 13)) {
         // Ctrl + Enter pressed
         afQuickSubmit();
+    }
+});
+$(document).on("keydown", ".tiptap", function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.keyCode == 13) {
+        e.preventDefault();
+        afQuickSubmitTipTap();
     }
 });
 //-->

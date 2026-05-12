@@ -611,12 +611,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return "<span class=\"af-user-status\"><i class=\"fa fa-circle fa-red\"></i></span>";
         }
 
-        internal static string GetAvatar(PortalSettings portalSettings, int userId, int avatarWidth, int avatarHeight)
+        internal static string GetAvatarImgTag(PortalSettings portalSettings, int userId, int avatarWidth, int avatarHeight)
+        {
+            return string.Format("<img class='af-avatar' alt='' src='{0}' height='{1}px' width='{2}px' loading='lazy' />", GetAvatarImgSrc(portalSettings: portalSettings, userId: userId, avatarWidth: avatarWidth, avatarHeight: avatarHeight), avatarHeight, avatarWidth);
+        }
+
+        internal static string GetAvatarImgSrc(PortalSettings portalSettings, int userId, int avatarWidth, int avatarHeight)
         {
             // GIF files when reduced using DNN class losses its animation, so for gifs send them as is
             var user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
             string imgUrl = string.Empty;
-            string imgTag = string.Empty;
 
             if (user != null)
             {
@@ -631,20 +635,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
 
                 imgUrl = $"https://{portalSettings.DefaultPortalAlias}{imgUrl}";
-                if (!string.IsNullOrEmpty(portalSettings.PortalAlias.CultureCode) && imgUrl.ToLowerInvariant().Contains($"/{portalSettings.PortalAlias.CultureCode.ToLowerInvariant()}/"))
-                {
-                    imgUrl = imgUrl.ToLowerInvariant().Replace($"/{portalSettings.PortalAlias.CultureCode.ToLowerInvariant()}/", "/");
-                }
-
-                imgTag = string.Format("<img class='af-avatar' alt='' src='{0}' height='{1}px' width='{2}px' loading='lazy' />", imgUrl, avatarHeight, avatarWidth);
             }
             else
             {
                 /* NOTE: This purposely does not use DNN API GetUserProfilePictureUrl because it inadvertantly requires HttpContext */
-                imgTag = $"<img class='af-avatar' src='https://{portalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={avatarWidth}&w={avatarHeight}' loading='lazy' />";
+                imgUrl = $"https://{portalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={avatarWidth}&w={avatarHeight}";
             }
 
-            return Utilities.ResolveUrlInTag(template: imgTag, defaultPortalAlias: portalSettings.DefaultPortalAlias, sslEnabled: portalSettings.SSLEnabled);
+            return Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl(imgUrl, portalSettings), portalSettings);
         }
 
         internal static void UpdateUserTopicCount(int portalId, int userId)

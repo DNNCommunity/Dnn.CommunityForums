@@ -420,11 +420,26 @@
   <data name="[RESX:BoldDesc].Text" xml:space="preserve">
     <value>Make Text Bold</value>
   </data>
+  <data name="[RESX:StrikeDesc].Text" xml:space="preserve">
+    <value>Strikethru Text</value>
+  </data>
+  <data name="[RESX:UndoDesc].Text" xml:space="preserve">
+    <value>Undo Text Edit</value>
+  </data>
+  <data name="[RESX:RedoDesc].Text" xml:space="preserve">
+    <value>Redo Text Edit</value>
+  </data>
   <data name="[RESX:ItalicsDesc].Text" xml:space="preserve">
     <value>Make Text Italics</value>
   </data>
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve">
     <value>Underline Text</value>
+  </data>
+  <data name="[RESX:OrderedListDesc].Text" xml:space="preserve">
+    <value>Ordered/Numbered List</value>
+  </data>
+  <data name="[RESX:BulletedListDesc].Text" xml:space="preserve">
+    <value>Bulleted List</value>
   </data>
   <data name="SendEmail.Body.Text" xml:space="preserve">
     <value>Body:</value>
@@ -965,6 +980,9 @@
   </data>
   <data name="[RESX:Quote].Text" xml:space="preserve">
     <value>Quote</value>
+  </data>
+  <data name="[RESX:QuoteDesc].Text" xml:space="preserve">
+    <value>Quoted Text</value>
   </data>
   <data name="[RESX:Reply].Text" xml:space="preserve">
     <value>Reply</value>
@@ -1917,5 +1935,11 @@ From,
   </data>
   <data name="[RESX:Attachment].Text" xml:space="preserve">
     <value>Attachment</value>
+  </data>
+  <data name="[RESX:FORUMSTIPTAPEDITOR].Text" xml:space="preserve">
+    <value>Forums-delivered TipTap Editor</value>
+  </data>
+  <data name="[RESX:ShowBoxesDesc].Text" xml:space="preserve">
+    <value>Show Blocks</value>
   </data>
 </root>

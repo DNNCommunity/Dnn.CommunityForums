@@ -1954,4 +1954,28 @@ Van,
   <data name="ActiveTopics-2147483647min.Text" xml:space="preserve">
     <value>Voor altijd</value>
   </data>
+  <data name="[RESX:FORUMSTIPTAPEDITOR].Text" xml:space="preserve">
+    <value>Forum-geleverd TipTap Editor</value>
+  </data>
+  <data name="[RESX:StrikeDesc].Text" xml:space="preserve">
+    <value>Strikethru-tekst</value>
+  </data>
+  <data name="[RESX:UndoDesc].Text" xml:space="preserve">
+    <value>Tekst ongedaan maken Bewerken</value>
+  </data>
+  <data name="[RESX:RedoDesc].Text" xml:space="preserve">
+    <value>Tekst opnieuw bewerken</value>
+  </data>
+  <data name="[RESX:OrderedListDesc].Text" xml:space="preserve">
+    <value>Bestelde/Genummerde Lijst</value>
+  </data>
+  <data name="[RESX:BulletedListDesc].Text" xml:space="preserve">
+    <value>Opsommingslijst</value>
+  </data>
+  <data name="[RESX:QuoteDesc].Text" xml:space="preserve">
+    <value>Geciteerde tekst</value>
+  </data>
+  <data name="[RESX:ShowBoxesDesc].Text" xml:space="preserve">
+    <value>Showblokken</value>
+  </data>
 </root>

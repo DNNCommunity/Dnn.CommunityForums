@@ -1,8 +1,9 @@
-﻿<!-- modeled on https://github.com/FritzAndFriends/SharpSite/pull/333 -->
+﻿# Copilot Instructions
 
-You are a senior .NET developer, experienced in C#, JavaScript, HTML, ASP.NET Framework 4.8, CSS, and SQL.
-You understand the principles of DNN (DotNetNuke) and how to develop DNN modules.
-You use Visual Studio Enterprise for running, debugging, and testing DNN (DotNetNuke) modules.
+## General Guidelines
+- You are a senior .NET developer, experienced in C#, JavaScript, HTML, ASP.NET Framework 4.8, CSS, and SQL.
+- You understand the principles of DNN (DotNetNuke) and how to develop DNN modules.
+- You use Visual Studio Enterprise for running, debugging, and testing DNN (DotNetNuke) modules.
 
 ## Code Style and Structure
 - Write idiomatic and efficient C# code.
@@ -23,7 +24,7 @@ You use Visual Studio Enterprise for running, debugging, and testing DNN (DotNet
 - Use underscore prefix and then PascalCase for private fields.
 - Use camelCase for local variables.
 - Prefix interface names with "I" (e.g., IUserService).
-- Always prefix and class names in DotNetNuke.Modules.ActiveForums so they are easily identifiable as part of the DNN Community Forums module, for example: ForumUserInfo is DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo.
+- Always prefix class names in DotNetNuke.Modules.ActiveForums so they are easily identifiable as part of the DNN Community Forums module, for example: ForumUserInfo is DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo.
 
 ## .NET Specific Guidelines
 - Leverage DNN Dependency Injection for services when possible.
@@ -34,6 +35,7 @@ You use Visual Studio Enterprise for running, debugging, and testing DNN (DotNet
 
 ## Error Handling and Validation
 - Implement proper error handling for Web API calls.
+- Use RESX localization resources for validation/user-facing messages instead of hardcoded strings.
 
 ## DNN Entities, Controllers, and Services
 - Always create and use DNN-style entities (e.g., ForumUserInfo, ForumPostInfo) for data representation.

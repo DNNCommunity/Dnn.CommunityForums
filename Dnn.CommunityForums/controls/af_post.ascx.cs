@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Runtime.Serialization.Json;
@@ -33,6 +34,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Controls;
@@ -1157,6 +1160,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
 
         private void PrepareAttachments(int? contentId = null)
         {

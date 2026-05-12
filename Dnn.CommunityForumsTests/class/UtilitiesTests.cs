@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     using System.Globalization;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs;
@@ -644,7 +645,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             // Arrange
 
             // Act
-            return Utilities.RemoveCultureFromUrl(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), url);
+            return Utilities.RemoveCultureFromUrl(url, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
 
             // Assert
         }
@@ -712,7 +713,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var template = $"<a href=\"{path}\">link</a><img src=\"{path}\" />";
             var expectedResult = $"<a href=\"https://{this.DefaultPortalAlias}{path}\">link</a><img src=\"https://{this.DefaultPortalAlias}{path}\" />".Replace("/en-us/en-us/", "/en-us/");
             // Act
-            var result = DotNetNuke.Modules.ActiveForums.Utilities.ResolveUrlInTag(template: template, defaultPortalAlias: this.DefaultPortalAlias, sslEnabled: true);
+            var result = DotNetNuke.Modules.ActiveForums.Utilities.ResolveUrlInTag(tag: template, defaultPortalAlias: this.DefaultPortalAlias, sslEnabled: true);
 
             // Assert
             Assert.That(result, Is.EqualTo(expectedResult));

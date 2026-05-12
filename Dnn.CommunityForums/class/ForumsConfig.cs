@@ -31,16 +31,19 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Net.Mail;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Web.Razor.Generator;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Controls;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Log.EventLog;
@@ -698,7 +701,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxImageHeight, "800");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxImageWidth, "800");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowHTML, "true");
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS).ToString());
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorType.FORUMSTIPTAPEDITOR).ToString());
 
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.UserMentions, "true");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, sKey, ForumSettingKeys.UserMentionVisibility, ((int)DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.RegisteredUsers).ToString());
@@ -1677,7 +1680,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (match.Groups["src"].Success && (match.Groups["src"].Value.EndsWith(originalAttachmentFileName, StringComparison.InvariantCultureIgnoreCase) || (!string.IsNullOrEmpty(originalUrl) && match.Groups["src"].Value.ToLowerInvariant().Contains(originalUrl.ToLowerInvariant()))))
                         {
-                            var tag = Utilities.ResolveUrlInTag($"<img src=\"https://{content.Post.Forum.PortalSettings.DefaultPortalAlias}{fileManager.GetUrl(file)}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />", content.Post.Forum.PortalSettings.DefaultPortalAlias, content.Post.Forum.PortalSettings.SSLEnabled);
+                            var url = Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl($"https://{content.Post.Forum.PortalSettings.DefaultPortalAlias}{fileManager.GetUrl(file)}", content.Post.Forum.PortalSettings), content.Post.Forum.PortalSettings);
+                            var tag = $"<img src=\"{url}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />";
                             content.Body = content.Body.Replace(match.Groups["tag"].Value, tag);
                             new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().Save(content, content.ContentId);
                         }

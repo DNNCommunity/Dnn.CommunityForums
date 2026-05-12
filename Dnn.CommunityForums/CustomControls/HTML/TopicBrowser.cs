@@ -215,7 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 tmp = tmp.Replace("[TOPICSTATE]", cUtils.TopicState(row));
-                var sAvatar = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(portalSettings, auth.AuthorId, this._mainSettings.AvatarWidth, this._mainSettings.AvatarHeight);
+                var sAvatar = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatarImgTag(portalSettings, auth.AuthorId, this._mainSettings.AvatarWidth, this._mainSettings.AvatarHeight);
 
                 tmp = tmp.Replace("[AF:AVATAR]", sAvatar);
                 return tmp;

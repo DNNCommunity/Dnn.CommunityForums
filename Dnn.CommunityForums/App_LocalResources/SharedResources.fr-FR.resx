@@ -1915,4 +1915,28 @@ De,
   <data name="ActiveTopics-2147483647min.Text" xml:space="preserve">
     <value>Pour toujours</value>
   </data>
+  <data name="[RESX:FORUMSTIPTAPEDITOR].Text" xml:space="preserve">
+    <value>Éditeur TipTap fourni par les forums</value>
+  </data>
+  <data name="[RESX:StrikeDesc].Text" xml:space="preserve">
+    <value>Texte rayé</value>
+  </data>
+  <data name="[RESX:UndoDesc].Text" xml:space="preserve">
+    <value>Annuler la modification du texte</value>
+  </data>
+  <data name="[RESX:RedoDesc].Text" xml:space="preserve">
+    <value>Refaire la modification du texte</value>
+  </data>
+  <data name="[RESX:OrderedListDesc].Text" xml:space="preserve">
+    <value>Liste ordonnée/numérotée</value>
+  </data>
+  <data name="[RESX:BulletedListDesc].Text" xml:space="preserve">
+    <value>Liste à puces</value>
+  </data>
+  <data name="[RESX:QuoteDesc].Text" xml:space="preserve">
+    <value>Texte cité</value>
+  </data>
+  <data name="[RESX:ShowBoxesDesc].Text" xml:space="preserve">
+    <value>Blocs d’exposition</value>
+  </data>
 </root>
