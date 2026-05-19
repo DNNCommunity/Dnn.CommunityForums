@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Text.RegularExpressions;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Services.Social.Notifications;
 
@@ -149,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             NotificationsController.Instance.SendNotification(notification, portalId, null, users);
                         }
 
-                        DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.UserMentionInfo, moduleId, userMention.UserMentionId));
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.UserMentionInfo, moduleId, userMention.UserMentionId));
                     }
                 }
 

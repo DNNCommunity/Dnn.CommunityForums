@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo Save(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachmentInfo);
 
-        IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo> GetByContentId(int contentId);
+        IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo> GetByContentId(int moduleId, int contentId);
 
         void RelocateAttachment(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachment);
 

@@ -37,6 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.UserControls;
 
@@ -766,6 +767,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.PortalId, this.UserId);
 
-        internal void UpdateCache() => DataCache.UserCacheStore(this.GetCacheKey(), this);
+        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.Services.Cache.UserCache.Store(this.GetCacheKey(), this);
     }
 }

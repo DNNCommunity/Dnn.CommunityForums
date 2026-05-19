@@ -37,6 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using DotNetNuke.Modules.ActiveForums.Constants;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Extensions.WebForms;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.UI.Skins;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicView runat=server></{0}:TopicView>")]
@@ -207,11 +208,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Get our Row Index
             this.rowIndex = (pageId - 1) * this.pageSize;
             string cacheKey = string.Format(CacheKeys.TopicViewForUser, this.ModuleId, this.TopicId, this.UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, this.rowIndex, this.pageSize);
-            DataSet ds = (DataSet)DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.ForumModuleId, cacheKey);
+            DataSet ds = (DataSet)DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(this.ForumModuleId, cacheKey);
             if (ds == null)
             {
                 ds = DotNetNuke.Modules.ActiveForums.DataProvider.Instance().UI_TopicView(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, this.UserId, this.rowIndex, this.pageSize, this.UserInfo.IsSuperUser, this.defaultSort);
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, cacheKey, ds);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(this.ModuleId, cacheKey, ds);
             }
 
             // Test for a proper dataset
@@ -1156,7 +1157,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return string.Empty;
             }
 
-            var attachments = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(contentId).Where(attachment => !attachment.DisplayInline);
+            var attachments = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(moduleId, contentId).Where(attachment => !attachment.DisplayInline);
             if (!attachments.Any())
             {
                 return string.Empty;

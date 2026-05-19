@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -31,8 +32,10 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
+    using DotNetNuke.UI.UserControls;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -269,8 +272,24 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.ID = view;
                 ctl.ForumId = this.ForumId;
                 ctl.ForumModuleId = this.ForumModuleId;
-                int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(this.ForumModuleId).FirstOrDefault().TabID;
-                this.ForumTabId = tmpForumTabId;
+
+                // this lookup involves a call to the database, so we will cache the result for future use.
+                //int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(this.ForumModuleId).FirstOrDefault().TabID;
+                int? tmpForumTabId = null;
+                var cachekey = string.Format(CacheKeys.FirstTabIdForModule, this.ForumModuleId);
+                var cached = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(this.ForumModuleId, cachekey) as DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<int?>;
+
+                if (cached == null)
+                {
+                    tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(this.ForumModuleId).FirstOrDefault().TabID;
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.ForumModuleId, cachekey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<int?>(tmpForumTabId, tmpForumTabId != null));
+                }
+                else
+                {
+                    tmpForumTabId = cached.HasValue ? cached.Value : DotNetNuke.Common.Utilities.Null.NullInteger;
+                }
+
+                this.ForumTabId = (int)tmpForumTabId;
                 if (this.ForumTabId <= 0)
                 {
                     this.ForumTabId = this.TabId;

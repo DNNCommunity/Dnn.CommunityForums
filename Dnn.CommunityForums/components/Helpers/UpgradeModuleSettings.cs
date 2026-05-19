@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     internal static class UpgradeModuleSettings
     {
@@ -124,7 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
             DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(tabModuleId, "NeedsConvert");
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, "AFINSTALLED", "True");
-            DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(forumModuleId, string.Format(CacheKeys.MainSettings, forumModuleId));
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(forumModuleId, string.Format(CacheKeys.MainSettings, forumModuleId));
         }
 
         internal static void DeleteObsoleteModuleSettings_080100()
@@ -158,8 +159,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, SettingKeys.SocialGroupModeForumGroupTemplate);
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "MODE");
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "AllowIndex");
-                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
-                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCacheForTabId(module.TabID);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(module.ModuleID);
                         var forumConfig = module.ModuleSettings.GetString(SettingKeys.SocialGroupModeForumConfig, string.Empty);
                         if (!string.IsNullOrEmpty(forumConfig))
                         {
@@ -182,10 +183,10 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 forumConfig = xDoc.OuterXml;
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig);
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig, forumConfig);
-                                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
-                                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
-                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
-                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(module.ModuleID, string.Format(DotNetNuke.Common.Utilities.DataCache.ModuleSettingsCacheKey, module.TabID));
+                                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(module.ModuleID, string.Format(DotNetNuke.Common.Utilities.DataCache.TabModuleSettingsCacheKey, module.TabID));
+                                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCacheForTabId(module.TabID);
+                                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(module.ModuleID);
                             }
                         }
                     }
@@ -247,10 +248,10 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 ForumConfig = xDoc.OuterXml;
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig);
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumConfig, ForumConfig);
-                                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
-                                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
-                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
-                                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(module.ModuleID, string.Format(DotNetNuke.Common.Utilities.DataCache.ModuleSettingsCacheKey, module.TabID));
+                                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(module.ModuleID, string.Format(DotNetNuke.Common.Utilities.DataCache.TabModuleSettingsCacheKey, module.TabID));
+                                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCacheForTabId(module.TabID);
+                                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(module.ModuleID);
                             }
                         }
                     }
@@ -346,10 +347,10 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant().Equals(Globals.ModuleName.ToLowerInvariant()))
                     {
                         DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.AvatarRefresh, Globals.AvatarRefreshGravatar);
-                        DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
-                        DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
-                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
-                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(module.ModuleID, string.Format(DotNetNuke.Common.Utilities.DataCache.ModuleSettingsCacheKey, module.TabID));
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(module.ModuleID, string.Format(DotNetNuke.Common.Utilities.DataCache.TabModuleSettingsCacheKey, module.TabID));
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCacheForTabId(module.TabID);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(module.ModuleID);
                     }
                 }
             }
@@ -424,10 +425,10 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                             DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, SettingKeys.SocialGroupModeForumGroupTemplate);
                         }
 
-                        DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
-                        DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
-                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
-                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(module.ModuleID, string.Format(DotNetNuke.Common.Utilities.DataCache.ModuleSettingsCacheKey, module.TabID));
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(module.ModuleID, string.Format(DotNetNuke.Common.Utilities.DataCache.TabModuleSettingsCacheKey, module.TabID));
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCacheForTabId(module.TabID);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(module.ModuleID);
                     }
                 }
             }
@@ -477,10 +478,10 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                             }
                         }
 
-                        DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.ModuleSettingsCacheKey, module.TabID));
-                        DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(module.ModuleID, string.Format(DataCache.TabModuleSettingsCacheKey, module.TabID));
-                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCacheForTabId(module.TabID);
-                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(module.ModuleID, string.Format(DotNetNuke.Common.Utilities.DataCache.ModuleSettingsCacheKey, module.TabID));
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(module.ModuleID, string.Format(DotNetNuke.Common.Utilities.DataCache.TabModuleSettingsCacheKey, module.TabID));
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCacheForTabId(module.TabID);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(module.ModuleID);
                     }
                 }
             }

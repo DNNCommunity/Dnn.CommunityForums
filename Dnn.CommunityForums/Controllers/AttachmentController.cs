@@ -34,6 +34,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+    using DotNetNuke.UI.UserControls;
 
     /// <summary>
     /// Controller for managing Attachments in the DNN Community Forums module.
@@ -67,9 +70,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this.contentController = contentController;
         }
 
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo> GetByContentId(int contentId)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo> GetByContentId(int moduleId, int contentId)
         {
-            return this._repositoryControllerBase.Find("WHERE ContentId = @0", contentId);
+            var cacheKey = string.Format(CacheKeys.AttachmentInfoByContentId, moduleId, contentId);
+            var cached = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cacheKey) as DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo>>;
+
+            if (cached == null)
+            {
+                var attachments = this._repositoryControllerBase.Find("WHERE ContentId = @0", contentId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cacheKey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo>>(attachments, attachments != null));
+                return attachments;
+            }
+
+            return cached.HasValue ? cached.Value : null;
         }
 
         internal new void Delete(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachmentInfo)

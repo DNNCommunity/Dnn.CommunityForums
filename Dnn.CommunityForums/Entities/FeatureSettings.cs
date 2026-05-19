@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     using Newtonsoft.Json;
 
@@ -35,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public FeatureSettings(int moduleId, string settingsKey)
         {
-            this.featureSettings = DataCache.GetSettings(moduleId, settingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, settingsKey), true);
+            this.featureSettings = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.GetSettings(moduleId, settingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, settingsKey), true);
         }
 
         public FeatureSettings(Hashtable featureSettings)

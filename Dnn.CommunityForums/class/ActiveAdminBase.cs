@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     public class ActiveAdminBase : DotNetNuke.Entities.Modules.PortalModuleBase
     {
@@ -47,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId));
+                object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId));
                 if (obj == null)
                 {
                     string sURL;
@@ -60,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sURL = string.Concat("http://", Common.Globals.GetDomainName(this.Request), "/");
                     }
 
-                    DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
                     return sURL;
                 }
 
@@ -77,7 +78,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return new ModuleSettings { ModuleId = this.ModuleId, MainSettings = new ModuleController().GetModule(moduleID: this.ModuleId).ModuleSettings };
+                return SettingsBase.GetModuleSettings(this.ModuleId);
+                // return new ModuleSettings { ModuleId = this.ModuleId, MainSettings = new ModuleController().GetModule(moduleID: this.ModuleId).ModuleSettings };
             }
         }
 

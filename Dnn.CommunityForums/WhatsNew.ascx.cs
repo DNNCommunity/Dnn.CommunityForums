@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     public partial class WhatsNew : PortalModuleBase, IActionable
     {
@@ -53,11 +54,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var settingsCacheKey = string.Format(CacheKeys.WhatsNew, this.ModuleId);
 
-                    var moduleSettings = DataCache.SettingsCacheRetrieve(this.ModuleId, settingsCacheKey) as Hashtable;
+                    var moduleSettings = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(this.ModuleId, settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
                         moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
-                        DataCache.SettingsCacheStore(this.ModuleId, settingsCacheKey, moduleSettings);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.ModuleId, settingsCacheKey, moduleSettings);
                     }
 
                     this.settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
@@ -109,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
             string cachekey = string.Format(CacheKeys.WhatsNewData, this.ModuleId, this.AuthorizedForums, this.Settings.TopicsOnly, this.Settings.RandomOrder, this.Settings.Rows, this.Settings.Tags);
-            var content = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.ModuleId, cachekey) as string;
+            var content = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(this.ModuleId, cachekey) as string;
             if (content == null)
             {
                 var sHost = Utilities.GetHost();
@@ -270,7 +271,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sb.Append(footer);
 
                 content = sb.ToString();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, cachekey, content);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(this.ModuleId, cachekey, content);
             }
 
             this.Controls.Add(new LiteralControl(content));

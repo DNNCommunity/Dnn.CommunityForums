@@ -40,6 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     using Microsoft.ApplicationBlocks.Data;
 
@@ -161,13 +162,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 
             var cacheKey = string.Format(CacheKeys.ProfileInfo, moduleId);
-            var myTemplate = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey));
+            var myTemplate = Convert.ToString(DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cacheKey));
             if (string.IsNullOrEmpty(myTemplate))
             {
                 myTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(moduleId, Enums.TemplateType.ProfileInfo, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix, user);
                 if (cacheKey != string.Empty)
                 {
-                    DataCache.SettingsCacheStore(moduleId, cacheKey, myTemplate);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cacheKey, myTemplate);
                 }
             }
 

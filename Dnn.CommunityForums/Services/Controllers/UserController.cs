@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.UI.UserControls;
     using DotNetNuke.Web.Api;
 
@@ -146,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 }
 
                 var cachekey = string.Format(CacheKeys.UserMentionQuery, forumId, query, forum.FeatureSettings.UserMentionVisibility.Equals(DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.FriendsOnly) ? this.UserInfo.UserID : DotNetNuke.Common.Utilities.Null.NullInteger);
-                var userList = DataCache.UserCacheRetrieve(cachekey) as List<UserIdDisplayNamePair>;
+                var userList = DotNetNuke.Modules.ActiveForums.Services.Cache.UserCache.Retrieve(cachekey) as List<UserIdDisplayNamePair>;
                 if (userList == null)
                 {
                     List<UserInfo> users = null;
@@ -216,7 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         }
                     }
 
-                    DataCache.UserCacheStore(cachekey, userList);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.UserCache.Store(cachekey, userList);
                 }
 
                 if (userList != null && userList.Count > 0)

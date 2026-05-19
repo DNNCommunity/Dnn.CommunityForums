@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
     using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     public class SettingsBase : PortalModuleBase
     {
@@ -96,11 +97,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static DotNetNuke.Modules.ActiveForums.ModuleSettings GetModuleSettings(int moduleId)
         {
-            DotNetNuke.Modules.ActiveForums.ModuleSettings objSettings = (ModuleSettings)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.MainSettings, moduleId));
+            DotNetNuke.Modules.ActiveForums.ModuleSettings objSettings = (ModuleSettings)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, string.Format(CacheKeys.MainSettings, moduleId));
             if (objSettings == null && moduleId > 0)
             {
                 objSettings = new DotNetNuke.Modules.ActiveForums.ModuleSettings { ModuleId = moduleId, MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleId).ModuleSettings };
-                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.MainSettings, moduleId), objSettings);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, string.Format(CacheKeys.MainSettings, moduleId), objSettings);
             }
 
             return objSettings;

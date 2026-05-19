@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Linq;
 
     using DotNetNuke.Data;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     internal class TopicTrackingController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo, ITopicTrackingController, TopicTrackingController>, ITopicTrackingController
     {
@@ -35,12 +36,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo GetByUserIdTopicId(int moduleId, int userId, int topicId)
         {
             string cachekey = string.Format(CacheKeys.TopicTrackingInfo, moduleId, topicId, userId);
-            DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo topicTrackingInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo;
+            DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo topicTrackingInfo = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo;
             if (topicTrackingInfo == null)
             {
                 // this accommodates duplicates which may exist since currently no uniqueness applied in database
                 topicTrackingInfo = this._repositoryControllerBase.Find("WHERE UserId = @0 AND TopicId = @1", userId, topicId).OrderBy(t => t.DateAdded).FirstOrDefault();
-                DataCache.ContentCacheStore(moduleId, cachekey, topicTrackingInfo);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicTrackingInfo);
             }
 
             return topicTrackingInfo;
@@ -49,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public int GetTopicsReadCountForUserForum(int moduleId, int userId, int forumId)
         {
             string cachekey = string.Format(CacheKeys.TopicReadCount, moduleId, forumId, userId);
-            var topicReadCount = DataCache.ContentCacheRetrieve(moduleId, cachekey);
+            var topicReadCount = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey);
             if (topicReadCount == null)
             {
                 topicReadCount = DataContext.Instance().ExecuteQuery<int>(
@@ -58,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     userId,
                     forumId).FirstOrDefault();
 
-                DataCache.ContentCacheStore(moduleId, cachekey, topicReadCount);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicReadCount);
             }
 
             return (int)topicReadCount;

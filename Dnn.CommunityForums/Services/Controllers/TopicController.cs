@@ -24,11 +24,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Reflection;
     using System.Text;
     using System.Web;
     using System.Web.Http;
 
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Web.Api;
 
@@ -281,7 +283,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             )
                         {
                             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(moduleId: this.ForumModuleId, userId: this.UserInfo.UserID, topicId: topicId, newForumId: forumId);
-                            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.CacheModulePrefix, this.ForumModuleId));
+
+                            DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(string.Format(CacheKeys.CacheModulePrefix, this.ForumModuleId));
                             return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                         }
 

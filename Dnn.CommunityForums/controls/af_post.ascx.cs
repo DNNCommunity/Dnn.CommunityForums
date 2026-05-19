@@ -42,6 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -238,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.Context.ApplicationInstance.CompleteRequest();
             }
 
-            this.PrepareAttachments(this.contentId);
+            this.PrepareAttachments(this.ForumModuleId, this.contentId);
 
             this.ctlForm.ContentId = this.contentId;
             this.ctlForm.AuthorId = this.authorId;
@@ -884,9 +885,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                DataCache.ContentCacheClearForForum(this.ModuleId, this.ForumId);
-                DataCache.ContentCacheClearForTopic(this.ModuleId, ti.TopicId);
-
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForForum(this.ModuleId, this.ForumId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForTopic(this.ModuleId, ti.TopicId);
 
                 if (!ti.IsApproved)
                 {
@@ -1100,7 +1100,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Read the list of existing attachments for the content.  Must do this before saving any of the new attachments!
             // Ignore any inline attachments
-            var attachmentsOld = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(content.ContentId).Where(attachment => !attachment.DisplayInline);
+            var attachmentsOld = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(content.ModuleId, content.ContentId).Where(attachment => !attachment.DisplayInline);
 
             // Save all of the new attachments
             foreach (var attachment in attachmentsNew)
@@ -1159,7 +1159,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
 
-        private void PrepareAttachments(int? contentId = null)
+        private void PrepareAttachments(int moduleId, int? contentId = null)
         {
             // Handle the case where we don't yet have a topic id (new posts)
             if (!contentId.HasValue || contentId.Value <= 0)
@@ -1168,7 +1168,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            var attachments = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId((int)contentId);
+            var attachments = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(moduleId, (int)contentId);
             var clientAttachments = attachments.Where(attachment => !attachment.DisplayInline).Select(attachment => new DotNetNuke.Modules.ActiveForums.Entities.ClientAttachment
             {
                 AttachmentId = attachment.AttachmentId,

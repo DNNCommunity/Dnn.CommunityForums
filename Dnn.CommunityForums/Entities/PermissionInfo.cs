@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     [TableName("activeforums_Permissions")]
     [PrimaryKey("PermissionsId", AutoIncrement = true)]

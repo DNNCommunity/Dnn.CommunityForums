@@ -35,6 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     internal class PermissionController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo, IPermissionController, PermissionController>, IPermissionController
     {
@@ -48,14 +49,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public new void DeleteById<TProperty>(TProperty permissionsId, int moduleId)
         {
             var cachekey = string.Format(CacheKeys.PermissionsInfo, moduleId, permissionsId);
-            DataCache.SettingsCacheClear(moduleId, cachekey);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(moduleId, cachekey);
             this._repositoryControllerBase.DeleteById(permissionsId);
         }
 
         public void Delete(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
         {
             var cachekey = string.Format(CacheKeys.PermissionsInfo, permissionInfo.ModuleId, permissionInfo.PermissionsId);
-            DataCache.SettingsCacheClear(permissionInfo.ModuleId, cachekey);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(permissionInfo.ModuleId, cachekey);
             this._repositoryControllerBase.Delete(permissionInfo);
         }
 
@@ -68,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Update(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
         {
             var cachekey = string.Format(CacheKeys.PermissionsInfo, permissionInfo.ModuleId, permissionInfo.PermissionsId);
-            DataCache.SettingsCacheClear(permissionInfo.ModuleId, cachekey);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(permissionInfo.ModuleId, cachekey);
             this._repositoryControllerBase.Update(permissionInfo);
             return this.GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
         }
@@ -174,11 +175,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetById(int permissionsId, int moduleId)
         {
             var cachekey = string.Format(CacheKeys.PermissionsInfo, moduleId, permissionsId);
-            DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissions = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo;
+            DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissions = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo;
             if (permissions == null)
             {
                 permissions = this._repositoryControllerBase.GetById(permissionsId, moduleId);
-                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, permissions);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cachekey, permissions);
             }
 
             return permissions;
@@ -378,7 +379,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> GetRoles(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
-            object obj = DataCache.SettingsCacheRetrieve(moduleId: -1, cacheKey: string.Format(CacheKeys.Roles, portalSettings.PortalId));
+            object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId: -1, cacheKey: string.Format(CacheKeys.Roles, portalSettings.PortalId));
             System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> roles;
             if (obj == null)
             {
@@ -395,7 +396,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     roles.Add(new DotNetNuke.Security.Roles.RoleInfo { RoleID = int.Parse(DotNetNuke.Common.Globals.glbRoleAllUsers), RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName });
                 }
 
-                DataCache.SettingsCacheStore(moduleId: -1, cacheKey: string.Format(CacheKeys.Roles, portalSettings.PortalId), cacheObj: roles);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId: -1, cacheKey: string.Format(CacheKeys.Roles, portalSettings.PortalId), cacheObj: roles);
             }
             else
             {
@@ -456,7 +457,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static string GetPortalRoleIds(int portalId, string[] roles)
         {
-            string roleIds = (string)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.RoleIDs, portalId));
+            string roleIds = (string)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(-1, string.Format(CacheKeys.RoleIDs, portalId));
             if (string.IsNullOrEmpty(roleIds))
             {
                 var rolesIdHashSet = new HashSet<int>
@@ -476,7 +477,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
 
                 roleIds = GetRoleIds(rolesIdHashSet);
-                DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.RoleIDs, portalId), roleIds);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(-1, string.Format(CacheKeys.RoleIDs, portalId), roleIds);
             }
 
             return roleIds;
@@ -838,7 +839,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public static string WhichRolesCanViewForum(int moduleId, int forumId, string userRoles)
         {
             string cacheKey = string.Format(CacheKeys.ViewRolesForForum, moduleId, forumId);
-            string sRoles = (string)DataCache.SettingsCacheRetrieve(moduleId, cacheKey);
+            string sRoles = (string)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cacheKey);
 
             if (string.IsNullOrEmpty(sRoles))
             {
@@ -853,7 +854,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
 
-                DataCache.SettingsCacheStore(moduleId, cacheKey, sRoles);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cacheKey, sRoles);
             }
 
             return sRoles;
@@ -862,7 +863,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public static string CheckForumIdsForViewForRSS(int moduleId, string forumIds, HashSet<int> userRoleIds)
         {
             string cacheKey = string.Format(CacheKeys.ViewRolesForForumList, moduleId, forumIds);
-            string sForums = (string)DataCache.SettingsCacheRetrieve(moduleId, cacheKey);
+            string sForums = (string)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cacheKey);
             if (string.IsNullOrEmpty(sForums))
             {
                 sForums = string.Empty;
@@ -878,7 +879,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
 
-                DataCache.SettingsCacheStore(moduleId, cacheKey, sForums);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cacheKey, sForums);
             }
 
             return sForums;

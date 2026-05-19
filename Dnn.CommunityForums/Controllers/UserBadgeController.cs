@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Text;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
@@ -43,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo GetById(int portalId, int moduleId, int badgeId)
         {
             var cachekey = string.Format(CacheKeys.UserBadgeInfo, moduleId, badgeId);
-            DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo UserBadge = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo;
+            DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo UserBadge = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo;
             if (UserBadge == null)
             {
                 UserBadge = this._repositoryControllerBase.GetById(badgeId, moduleId);
@@ -55,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     UserBadge.GetForumUser();
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, UserBadge);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, UserBadge);
             }
 
             return UserBadge;
@@ -64,32 +65,34 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForUser(int portalId, int moduleId, int userId)
         {
             var cachekey = string.Format(CacheKeys.UserBadges, moduleId, userId);
-            var UserBadges = (IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo>)DataCache.ContentCacheRetrieve(moduleId, cachekey);
+            var cached = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo>>;
 
-            if (UserBadges == null)
+            if (cached == null)
             {
-                UserBadges = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", portalId, moduleId, userId);
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, UserBadges);
+                var userBadges = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", portalId, moduleId, userId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo>>(userBadges, userBadges != null));
+                return userBadges;
             }
 
-            return UserBadges;
+            return cached.HasValue ? cached.Value : null;
         }
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetDistinctForUser(int portalId, int moduleId, int userId)
         {
-            var cachekey = string.Format(CacheKeys.UserBadges, moduleId, userId);
-            var distinctUserBadges = (IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo>)DataCache.ContentCacheRetrieve(moduleId, cachekey);
+            var cachekey = string.Format(CacheKeys.UserBadgesDistinct, moduleId, userId);
+            var cached = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo>>;
 
-            if (distinctUserBadges == null)
+            if (cached == null)
             {
-                distinctUserBadges = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", portalId, moduleId, userId)
+                var distinctUserBadges = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", portalId, moduleId, userId)
                     .GroupBy(b => b.BadgeId)
                     .Select(g => g.OrderByDescending(b => b.DateAssigned).First())
                     .ToList();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, distinctUserBadges);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo>>(distinctUserBadges, distinctUserBadges != null));
+                return distinctUserBadges;
             }
 
-            return distinctUserBadges;
+            return cached.HasValue ? cached.Value : null;
         }
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForUserAndBadge(int portalId, int moduleId, int userId, int badgeId)
@@ -110,12 +113,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForBadge(int moduleId, int badgeId)
         {
             var cachekey = string.Format(CacheKeys.BadgeUsers, moduleId, badgeId);
-            var UserBadges = (IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo>)DataCache.ContentCacheRetrieve(moduleId, cachekey);
+            var UserBadges = (IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo>)DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey);
 
             if (UserBadges == null)
             {
                 UserBadges = this._repositoryControllerBase.Find("WHERE BadgeId = @0", badgeId);
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, UserBadges);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, UserBadges);
             }
 
             return UserBadges;
@@ -124,11 +127,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public int BadgeCount(int portalId, int moduleId, int userId, int badgeId)
         {
             var cachekey = string.Format(CacheKeys.BadgeUserCount, moduleId, badgeId, userId);
-            var count = (int?)DataCache.ContentCacheRetrieve(moduleId, cachekey);
+            var count = (int?)DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey);
             if (count == null)
             {
                 count = this._repositoryControllerBase.Count("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND BadgeId = @3", portalId, moduleId, userId, badgeId);
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, count);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, count);
             }
 
             return (int)count;
@@ -197,10 +200,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         private static void ClearBadgeCache(DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo userBadge)
         {
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(userBadge.ModuleId, string.Format(CacheKeys.UserBadgeInfo, userBadge.ModuleId, userBadge.UserBadgeId));
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(userBadge.ModuleId, string.Format(CacheKeys.UserBadges, userBadge.ModuleId, userBadge.UserId));
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(userBadge.ModuleId, string.Format(CacheKeys.BadgeUsers, userBadge.ModuleId, userBadge.BadgeId));
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(userBadge.ModuleId, string.Format(CacheKeys.BadgeUserCount, userBadge.ModuleId, userBadge.BadgeId, userBadge.UserId));
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(userBadge.ModuleId, string.Format(CacheKeys.UserBadgeInfo, userBadge.ModuleId, userBadge.UserBadgeId));
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(userBadge.ModuleId, string.Format(CacheKeys.UserBadges, userBadge.ModuleId, userBadge.UserId));
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(userBadge.ModuleId, string.Format(CacheKeys.BadgeUsers, userBadge.ModuleId, userBadge.BadgeId));
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(userBadge.ModuleId, string.Format(CacheKeys.BadgeUserCount, userBadge.ModuleId, userBadge.BadgeId, userBadge.UserId));
         }
 
         public void UnassignUserBadge(int portalId, int moduleId, int userId, int badgeId, DateTime dateAssigned)

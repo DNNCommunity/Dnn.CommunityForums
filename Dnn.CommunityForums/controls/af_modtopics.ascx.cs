@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.FileSystem;
 
     public partial class af_modtopics_new : ForumBase
@@ -229,7 +230,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                 }
 
-                DataCache.CacheClearPrefix(this.ModuleId, string.Format(CacheKeys.ForumViewPrefix, this.ModuleId));
+                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(string.Format(CacheKeys.ForumViewPrefix, this.ModuleId));
             }
 
             this.BuildModList();
@@ -326,7 +327,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sb.Append("<div class=\"afrowbod\"><a href=\"" + viewLink + "\" class=\"dcf-link-text\" rel=\"nofollow\" target=\"_blank\">" + "[RESX:TopicReview]" + "</a></div>");
                         }
 
-                        sb.Append(this.GetAttachments(Convert.ToInt32(dr["ContentId"]), this.PortalId, this.ModuleId) + "</td></tr>");
+                        sb.Append(this.GetAttachments(Convert.ToInt32(dr["ContentId"]), this.PortalId, this.ForumModuleId) + "</td></tr>");
                         sb.Append("</table></div>");
                     }
                 }
@@ -364,7 +365,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var strHost = Utilities.ResolveUrl($"https://{portalSettings.DefaultPortalAlias}/", portalSettings: portalSettings);
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            foreach (var attachment in DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(contentId))
+            foreach (var attachment in DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(moduleID, contentId))
             {
                 if (attachment.FileId.HasValue && attachment.FileId.Value > 0)
                 {

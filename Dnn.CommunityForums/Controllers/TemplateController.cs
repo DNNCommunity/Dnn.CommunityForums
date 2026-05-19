@@ -24,8 +24,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web.UI;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     public class TemplateController
     {
@@ -114,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             object obj = null;
             if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
             {
-                obj = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, cacheKey);
+                obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cacheKey);
             }
 
             if (obj != null)
@@ -211,7 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
             {
-                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cacheKey, sTemplate);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cacheKey, sTemplate);
             }
 
             return sTemplate;

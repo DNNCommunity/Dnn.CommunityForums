@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
 
@@ -374,6 +375,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ForumGroupId);
 
-        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(this.ModuleId, this.GetCacheKey(), this);
+        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.ModuleId, this.GetCacheKey(), this);
     }
 }

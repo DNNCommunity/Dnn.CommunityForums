@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Constants;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicsView runat=server></{0}:TopicsView>")]
     public class TopicsView : ForumBase
@@ -169,11 +170,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (topicsTemplate.Contains("[TOPICS]"))
                 {
                     string cacheKey = string.Format(CacheKeys.TopicsViewForUser, this.ModuleId, this.ForumId, this.UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, this.rowIndex, this.pageSize);
-                    DataSet ds = (DataSet)DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.ForumModuleId, cacheKey);
+                    var ds = (DataSet)DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(this.ForumModuleId, cacheKey);
                     if (ds == null)
                     {
                         ds = DotNetNuke.Modules.ActiveForums.DataProvider.Instance().UI_TopicsView(this.PortalId, this.ForumModuleId, this.ForumId, this.UserId, this.rowIndex, this.pageSize, this.UserInfo.IsSuperUser, sort);
-                        DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, cacheKey, ds);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(this.ModuleId, cacheKey, ds);
                     }
 
                     if (ds.Tables.Count > 0)

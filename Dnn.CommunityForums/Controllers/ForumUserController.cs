@@ -33,6 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Log.EventLog;
 
@@ -76,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public virtual DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetByUserId(int portalId, int moduleId, int userId)
         {
             var cachekey = string.Format(CacheKeys.ForumUser, portalId, userId);
-            var user = DataCache.UserCacheRetrieve(cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo;
+            var user = DotNetNuke.Modules.ActiveForums.Services.Cache.UserCache.Retrieve(cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo;
             if (user == null)
             {
                 if (userId > 0)
@@ -137,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
 
                 user.ModuleId = moduleId;
-                DataCache.UserCacheStore(cachekey, user);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.UserCache.Store(cachekey, user);
             }
 
             return user;
@@ -206,7 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 HttpContext.Current?.Items.Add("DCFForumUserInfo", u);
             }
 
-            DataCache.UserCacheStore(string.Format(CacheKeys.ForumUser, portalId, u.UserId), u);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.UserCache.Store(string.Format(CacheKeys.ForumUser, portalId, u.UserId), u);
             return u;
         }
 
@@ -310,7 +311,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     DotNetNuke.Entities.Users.UserController.UpdateUser(portalId: portalId, user: bannedUser, loggedAction: true);
                 }
 
-                DataCache.ClearAllCache(moduleId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(moduleId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(moduleId);
             }
         }
 
@@ -660,7 +662,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static void ClearCache(int portalId, int userId)
         {
-            DataCache.UserCacheClear(string.Format(CacheKeys.ForumUser, portalId, userId));
+             DotNetNuke.Modules.ActiveForums.Services.Cache.UserCache.Clear(string.Format(CacheKeys.ForumUser, portalId, userId));
         }
     }
 }
