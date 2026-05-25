@@ -36,7 +36,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
-    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Services.FileSystem;

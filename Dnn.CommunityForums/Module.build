@@ -17,6 +17,7 @@
     <Exec Command="$(MSBuildProjectDirectory)/node_modules/.bin/gulp --series buildScss source" WorkingDirectory="$(MSBuildProjectDirectory)/themes/community-bootstrap" />
     <Exec Command="npm install" WorkingDirectory="$(MSBuildProjectDirectory)/themes/community-default" />
     <Exec Command="$(MSBuildProjectDirectory)/node_modules/.bin/gulp --series buildLess source" WorkingDirectory="$(MSBuildProjectDirectory)/themes/community-default" />
+    <Exec Command="$(MSBuildProjectDirectory)/node_modules/.bin/rollup $(MSBuildProjectDirectory)\Resources\tiptap-editor3\tiptap-editor.js -f es -o $(MSBuildProjectDirectory)\scripts\tiptap-editor.bundle.js -p @rollup/plugin-node-resolve" />
   </Target>
   <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;PackageModule">
   </Target>

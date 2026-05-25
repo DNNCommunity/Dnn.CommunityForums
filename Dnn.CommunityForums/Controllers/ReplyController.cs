@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     using DotNetNuke.Collections;
     using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
@@ -46,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this.moduleId = moduleId;
         }
 
-        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetById(int replyId)
+        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetById(int replyId, TopicInfo topic = null)
         {
             var cachekey = this.GetCacheKey(moduleId: this.moduleId, id: replyId);
             var ri = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo;
@@ -58,8 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (ri != null)
             {
                 ri.ModuleId = this.moduleId;
-                ri.GetTopic();
-                ri.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ri.Topic.ForumId, this.moduleId);
+                ri.Topic = topic ?? ri.GetTopic();
                 if (ri.Forum != null)
                 {
                     ri.PortalId = ri.Forum.PortalId;
@@ -139,9 +139,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(reply.ModuleId, reply.ReplyId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(reply.ModuleId, reply.TopicId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(reply.ModuleId, reply.ContentId);
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.ForumViewPrefix, reply.ModuleId));
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicViewPrefix, reply.ModuleId));
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, reply.ModuleId));
 
             Utilities.UpdateModuleLastContentModifiedOnDate(reply.ModuleId);
         }
@@ -168,9 +165,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(reply.ModuleId, reply.ReplyId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(reply.ModuleId, reply.TopicId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(reply.ModuleId, reply.ContentId);
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.ForumViewPrefix, reply.ModuleId));
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicViewPrefix, reply.ModuleId));
-            DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(reply.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, reply.ModuleId));
 
             Utilities.UpdateModuleLastContentModifiedOnDate(reply.ModuleId);
         }
@@ -223,8 +217,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: reply.ForumId, moduleId: moduleId);
-            DotNetNuke.Modules.ActiveForums.Controllers.TagController.CleanUpTags(reply, forum);
-            int replyId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Save(portalId, reply.TopicId, reply.ReplyId, reply.ReplyToId, reply.StatusId, reply.IsApproved, reply.IsDeleted, reply.Content.Subject.Trim(), reply.Content.Body.Trim(), reply.Content.DateCreated, reply.Content.DateUpdated, reply.Content.AuthorId, reply.Content.AuthorName, reply.Content.IPAddress));
+            reply.Content.Body = DotNetNuke.Modules.ActiveForums.Controllers.TagController.GetBodyWithTagsProcessed(reply, forum);
+            var replyId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Save(portalId, reply.TopicId, reply.ReplyId, reply.ReplyToId, reply.StatusId, reply.IsApproved, reply.IsDeleted, reply.Content.Subject.Trim(), reply.Content.Body.Trim(), reply.Content.DateCreated, reply.Content.DateUpdated, reply.Content.AuthorId, reply.Content.AuthorName, reply.Content.IPAddress));
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, reply.ForumId, reply.TopicId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(reply.ForumId);
 

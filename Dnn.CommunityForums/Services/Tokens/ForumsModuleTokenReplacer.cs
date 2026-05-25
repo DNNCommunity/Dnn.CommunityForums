@@ -122,16 +122,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                     case "portallogourl":
                         {
                             var logoUrl = FileManager.Instance.GetUrl(FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.LogoFile));
-                            logoUrl = $"https://{this.PortalSettings.DefaultPortalAlias}{logoUrl}";
-                            logoUrl = Utilities.RemoveCultureFromUrl(this.PortalSettings, logoUrl);
-                            return PropertyAccess.FormatString(Utilities.ResolveUrl(url: logoUrl, defaultPortalAlias: this.PortalSettings.DefaultPortalAlias, sslEnabled: this.PortalSettings.SSLEnabled), format);
+                            return PropertyAccess.FormatString(Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl(url: $"https://{this.PortalSettings.DefaultPortalAlias}{logoUrl}", portalSettings: this.PortalSettings), portalSettings: this.PortalSettings), format);
                         }
 
                     case "portalurlwithoutculture":
                         {
                             var portalUrl = $"https://{this.PortalSettings.DefaultPortalAlias}";
-                            portalUrl = Utilities.RemoveCultureFromUrl(this.PortalSettings, portalUrl);
-                            return PropertyAccess.FormatString(Utilities.ResolveUrl(url: portalUrl, defaultPortalAlias: this.PortalSettings.DefaultPortalAlias, sslEnabled: this.PortalSettings.SSLEnabled), format);
+                            return PropertyAccess.FormatString(Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl(url: portalUrl, portalSettings: this.PortalSettings), portalSettings: this.PortalSettings), format);
                         }
 
                     case "loginlink":
@@ -167,41 +164,63 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                             PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId, string.Empty, $"{ParamKeys.ViewType}={Views.ModerateTopics}"), format) :
                             string.Empty;
                     case "toolbar-notread-onclick":
-                        return accessingUser.UserID >= 0 ?
-                            PropertyAccess.FormatString(
-                            new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.NotRead, 1, -1, -1),
-                            format) :
-                            string.Empty;
+                        if (accessingUser.UserID >= 0 && new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetMyUnreadTopicsCount(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).UserForums, int.MaxValue, accessingUser.UserID) > 0)
+                        {
+                            return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: GridTypes.NotRead, pageId: 1, contentId: -1, socialGroupId: -1), format);
+                        }
+
+                        return string.Empty;
                     case "toolbar-mytopics-onclick":
-                        return accessingUser.UserID >= 0 ?
-                            PropertyAccess.FormatString(
-                                new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MyTopics, 1, -1, -1),
-                                format) :
-                            string.Empty;
+                        if (accessingUser.UserID >= 0 && new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetMyTopicsCount(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).UserForums, int.MaxValue, accessingUser.UserID) > 0)
+                        {
+                            return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: GridTypes.MyTopics, pageId: 1, contentId: -1, socialGroupId: -1), format);
+                        }
+
+                        return string.Empty;
                     case "toolbar-mysettings-onclick":
                         return accessingUser.UserID >= 0 ?
                             PropertyAccess.FormatString(
-                            new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MySettings, 1, -1, -1),
+                            new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: GridTypes.MySettings, pageId: 1, contentId: -1, socialGroupId: -1),
                             format) :
                             string.Empty;
                     case "toolbar-mysubscriptions-onclick":
                         return accessingUser.UserID >= 0 ?
                             PropertyAccess.FormatString(
-                            new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MySubscriptions, 1, -1, -1),
+                            new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: GridTypes.MySubscriptions, pageId: 1, contentId: -1, socialGroupId: -1),
                             format) :
                             string.Empty;
                     case "toolbar-unanswered-onclick":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Unanswered, 1, -1, -1), format);
+                        if (new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetUnansweredCount(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).UserForums, int.MaxValue) > 0)
+                        {
+                            return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: GridTypes.Unanswered, pageId: 1, contentId: -1, socialGroupId: -1), format);
+                        }
+
+                        return string.Empty;
                     case "toolbar-unresolved-onclick":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Unresolved, 1, -1, -1), format);
+                        if (new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetUnresolvedCount(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).UserForums, int.MaxValue) > 0)
+                        {
+                            return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: GridTypes.Unresolved, pageId: 1, contentId: -1, socialGroupId: -1), format);
+                        }
+
+                        return string.Empty;
                     case "toolbar-announcements-onclick":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Announcements, 1, -1, -1), format);
+                        if (new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetAnnouncementsCount(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).UserForums) > 0)
+                        {
+                            return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: GridTypes.Announcements, pageId: 1, contentId: -1, socialGroupId: -1), format);
+                        }
+
+                        return string.Empty;
                     case "toolbar-activetopics-onclick":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.ActiveTopics, 1, -1, -1), format);
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: GridTypes.ActiveTopics, pageId: 1, contentId: -1, socialGroupId: -1), format);
                     case "toolbar-mostliked-onclick":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostLiked, 1, -1, -1), format);
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.ContentController.GetMostLikesCount(this.ModuleId, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).UserForums, int.MaxValue) > 0)
+                        {
+                            return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: GridTypes.MostLiked, pageId: 1, contentId: -1, socialGroupId: -1), format);
+                        }
+
+                        return string.Empty;
                     case "toolbar-mostreplies-onclick":
-                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(this.PortalSettings.PortalId, this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostReplies, 1, -1, -1), format);
+                        return PropertyAccess.FormatString(new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: GridTypes.MostReplies, pageId: 1, contentId: -1, socialGroupId: -1), format);
                     case "toolbar-recyclebin-onclick":
                         return SettingsBase.GetModuleSettings(this.ForumModuleId).DeleteBehavior.Equals(DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior.Recycle) && (accessingUser.IsSuperUser || accessingUser.IsAdmin || new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(portalId: accessingUser.PortalID, userId: accessingUser.UserID).GetIsMod(this.ModuleId)) ?
                             PropertyAccess.FormatString(Utilities.NavigateURL(this.TabId, string.Empty, $"{ParamKeys.ViewType}={Views.RecycleBin}"), format) :

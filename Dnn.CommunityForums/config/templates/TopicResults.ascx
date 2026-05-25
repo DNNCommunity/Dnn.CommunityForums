@@ -5,7 +5,7 @@
             <asp:Label ID="lblHeader" runat="server" /></h2>
         <button type="submit" runat="server" id="btnMarkRead" class="af-markread" visible="false" onclick="if(!af_confirmMarkAllRead()) return false;" />
         <asp:DropDownList ID="drpTimeFrame" runat="server" AutoPostBack="true" Visible="false">
-            <asp:ListItem Value="15"></asp:ListItem>
+            <asp:listitem value="15"></asp:listitem>
             <asp:ListItem Value="30"></asp:ListItem>
             <asp:ListItem Value="45"></asp:ListItem>
             <asp:ListItem Value="60"></asp:ListItem>
@@ -17,7 +17,10 @@
             <asp:ListItem Value="10080"></asp:ListItem>
             <asp:ListItem Value="20160"></asp:ListItem>
             <asp:ListItem Value="40320"></asp:ListItem>
-            <asp:ListItem Value="80640"></asp:ListItem>
+            <asp:listitem value="80640"></asp:listitem>
+            <asp:listitem value="241920"></asp:listitem>
+            <asp:listitem value="483840"></asp:listitem>
+            <asp:listitem value="2147483647"></asp:listitem>
         </asp:DropDownList>
     </div>
     <asp:panel id="pnlMessage" runat="server" visible="true" cssclass="af-search-noresults">
@@ -40,12 +43,12 @@
                 <div class="aftopicrow af-content">
                     <div class="aftopicrow afsubject">
                         <span class="aftopictitle">
-                            [FORUMTOPIC:SUBJECTLINK|<a href="{0}" title="[FORUMTOPIC:BODYTITLE]" class="dcf-topic-link">[FORUMTOPIC:SUBJECT]</a>]
+                            [FORUMPOST:SUBJECTLINK|<a href="{0}" title="[FORUMPOST:BODYTITLE]" class="dcf-topic-link">[FORUMPOST:SUBJECT]</a>]
                         </span> 
-                        <span class="aftopicsubtitle">[FORUMTOPIC:DATECREATED|[RESX:Started] {0}] [FORUMTOPIC:AUTHORDISPLAYNAMELINK|[RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>]</span>
+                        <span class="aftopicsubtitle">[FORUMPOST:DATECREATED|[RESX:Started] {0}] [FORUMPOST:AUTHORDISPLAYNAMELINK|[RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMPOST:AUTHORDISPLAYNAME]</a>]</span>
                     </div>
-                    <div class="aftopicrow af-colstats af-colstats-replies">[FORUMTOPIC:REPLYCOUNT]</div>
-                    <div class="aftopicrow af-colstats af-colstats-views">[FORUMTOPIC:VIEWCOUNT]</div>
+                    <div class="aftopicrow af-colstats af-colstats-replies">[FORUMPOST:REPLYCOUNT]</div>
+                    <div class="aftopicrow af-colstats af-colstats-views">[FORUMPOST:VIEWCOUNT]</div>
                     <div class="aftopicrow af-lastpost">
                         <div class="af_lastpost" style="white-space: nowrap;">
                             [FORUM:FORUMLINK|In: <a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]

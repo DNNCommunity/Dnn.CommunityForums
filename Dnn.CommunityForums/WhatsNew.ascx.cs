@@ -22,13 +22,16 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
+    using System.Drawing.Printing;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web.UI;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.ActiveForums.Data;
 
     public partial class WhatsNew : PortalModuleBase, IActionable
     {
@@ -104,168 +107,173 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            var dr = DataProvider.Instance().GetPosts(this.PortalId, this.AuthorizedForums, this.Settings.TopicsOnly, this.Settings.RandomOrder, this.Settings.Rows, this.Settings.Tags);
 
-            var sb = new StringBuilder(this.Settings.Header);
-
-            var sHost = Utilities.GetHost();
-
-            try
+            string cachekey = string.Format(CacheKeys.WhatsNewData, this.ModuleId, this.AuthorizedForums, this.Settings.TopicsOnly, this.Settings.RandomOrder, this.Settings.Rows, this.Settings.Tags);
+            var content = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.ModuleId, cachekey) as string;
+            if (content == null)
             {
-                while (dr.Read())
+                var sHost = Utilities.GetHost();
+                var sb = new StringBuilder(this.Settings.Header);
+                var dr = DataProvider.Instance().GetPosts(forums: this.AuthorizedForums, topicsOnly: this.Settings.TopicsOnly, randomOrder: this.Settings.RandomOrder, rows: this.Settings.Rows, tags: this.Settings.Tags);
+
+                try
                 {
-                    var groupName = Convert.ToString(dr["GroupName"]);
-                    var groupId = Convert.ToInt32(dr["ForumGroupId"]);
-                    var topicTabId = Convert.ToInt32(dr["TabId"]);
-                    var topicModuleId = Convert.ToInt32(dr["ModuleId"]);
-                    var forumName = Convert.ToString(dr["ForumName"]);
-                    var forumId = Convert.ToInt32(dr["ForumId"]);
-                    var subject = Convert.ToString(dr["Subject"]);
-                    var userName = Convert.ToString(dr["AuthorUserName"]);
-                    var firstName = Convert.ToString(dr["AuthorFirstName"]);
-                    var lastName = Convert.ToString(dr["AuthorLastName"]);
-                    var authorId = Convert.ToInt32(dr["AuthorId"]);
-                    var displayName = Convert.ToString(dr["AuthorDisplayName"]);
-                    var postDate = Convert.ToDateTime(dr["DateCreated"]);
-                    var body = Utilities.StripHTMLTag(Convert.ToString(dr["Body"]));
-                    var topicId = Convert.ToInt32(dr["TopicId"]);
-                    var replyId = Convert.ToInt32(dr["ReplyId"]);
-                    var bodyHtml = Convert.ToString(dr["Body"]);
-                    var replyCount = Convert.ToInt32(dr["ReplyCount"]);
-
-                    var sForumUrl = dr["PrefixURL"].ToString();
-                    var sTopicUrl = dr["TopicURL"].ToString();
-                    var sGroupPrefixUrl = dr["GroupPrefixURL"].ToString();
-
-                    var ts = SettingsBase.GetModuleSettings(topicModuleId);
-
-                    var sbTemplate = new StringBuilder(this.Settings.Format ?? string.Empty);
-
-                    sbTemplate = sbTemplate.Replace("[FORUMGROUPNAME]", groupName);
-                    sbTemplate = sbTemplate.Replace("[FORUMGROUPID]", groupId.ToString());
-                    sbTemplate = sbTemplate.Replace("[TOPICTABID]", topicTabId.ToString());
-                    sbTemplate = sbTemplate.Replace("[TOPICMODULEID]", topicModuleId.ToString());
-                    sbTemplate = sbTemplate.Replace("[FORUMNAME]", forumName);
-                    sbTemplate = sbTemplate.Replace("[FORUMID]", forumId.ToString());
-                    sbTemplate = sbTemplate.Replace("[SUBJECT]", subject);
-                    sbTemplate = sbTemplate.Replace("[AUTHORUSERNAME]", userName);
-                    sbTemplate = sbTemplate.Replace("[AUTHORFIRSTNAME]", firstName);
-                    sbTemplate = sbTemplate.Replace("[AUTHORLASTNAME]", lastName);
-                    sbTemplate = sbTemplate.Replace("[AUTHORID]", authorId.ToString());
-                    sbTemplate = sbTemplate.Replace("[AUTHORDISPLAYNAME]", displayName);
-                    sbTemplate = sbTemplate.Replace("[DATE]", Utilities.GetUserFormattedDateTime(postDate, this.CurrentUser));
-                    sbTemplate = sbTemplate.Replace("[TOPICID]", topicId.ToString());
-                    sbTemplate = sbTemplate.Replace("[REPLYID]", replyId.ToString());
-                    sbTemplate = sbTemplate.Replace("[REPLYCOUNT]", replyCount.ToString());
-
-                    if (Utilities.UseFriendlyURLs(topicModuleId) && !(string.IsNullOrEmpty(sForumUrl) && string.IsNullOrEmpty(sTopicUrl)))
+                    while (dr.Read())
                     {
-                        var ctlUtils = new ControlUtils();
+                        var groupName = Convert.ToString(dr["GroupName"]);
+                        var groupId = Convert.ToInt32(dr["ForumGroupId"]);
+                        var topicTabId = Convert.ToInt32(dr["TabId"]);
+                        var topicModuleId = Convert.ToInt32(dr["ModuleId"]);
+                        var forumName = Convert.ToString(dr["ForumName"]);
+                        var forumId = Convert.ToInt32(dr["ForumId"]);
+                        var subject = Convert.ToString(dr["Subject"]);
+                        var userName = Convert.ToString(dr["AuthorUserName"]);
+                        var firstName = Convert.ToString(dr["AuthorFirstName"]);
+                        var lastName = Convert.ToString(dr["AuthorLastName"]);
+                        var authorId = Convert.ToInt32(dr["AuthorId"]);
+                        var displayName = Convert.ToString(dr["AuthorDisplayName"]);
+                        var postDate = Convert.ToDateTime(dr["DateCreated"]);
+                        var body = Utilities.StripHTMLTag(Convert.ToString(dr["Body"]));
+                        var topicId = Convert.ToInt32(dr["TopicId"]);
+                        var replyId = Convert.ToInt32(dr["ReplyId"]);
+                        var bodyHtml = Convert.ToString(dr["Body"]);
+                        var replyCount = Convert.ToInt32(dr["ReplyCount"]);
 
-                        sTopicUrl = ctlUtils.BuildUrl(this.PortalId, topicTabId, topicModuleId, sGroupPrefixUrl, sForumUrl, groupId, forumId, topicId, sTopicUrl, -1, -1, string.Empty, 1, replyId, -1);
-                        sForumUrl = ctlUtils.BuildUrl(this.PortalId, topicTabId, topicModuleId, sGroupPrefixUrl, sForumUrl, groupId, forumId, -1, string.Empty, -1, -1, string.Empty, 1, replyId, -1);
+                        var sForumUrl = dr["PrefixURL"].ToString();
+                        var sTopicUrl = dr["TopicURL"].ToString();
+                        var sGroupPrefixUrl = dr["GroupPrefixURL"].ToString();
 
-                        if (sHost.EndsWith("/") && sForumUrl.StartsWith("/"))
-                        {
-                            sForumUrl = sForumUrl.Substring(1);
-                        }
+                        var sbTemplate = new StringBuilder(this.Settings.Format ?? string.Empty);
 
-                        if (!sForumUrl.StartsWith(sHost))
-                        {
-                            sForumUrl = sHost + sForumUrl;
-                        }
+                        sbTemplate = sbTemplate.Replace("[FORUMGROUPNAME]", groupName);
+                        sbTemplate = sbTemplate.Replace("[FORUMGROUPID]", groupId.ToString());
+                        sbTemplate = sbTemplate.Replace("[TOPICTABID]", topicTabId.ToString());
+                        sbTemplate = sbTemplate.Replace("[TOPICMODULEID]", topicModuleId.ToString());
+                        sbTemplate = sbTemplate.Replace("[FORUMNAME]", forumName);
+                        sbTemplate = sbTemplate.Replace("[FORUMID]", forumId.ToString());
+                        sbTemplate = sbTemplate.Replace("[SUBJECT]", subject);
+                        sbTemplate = sbTemplate.Replace("[AUTHORUSERNAME]", userName);
+                        sbTemplate = sbTemplate.Replace("[AUTHORFIRSTNAME]", firstName);
+                        sbTemplate = sbTemplate.Replace("[AUTHORLASTNAME]", lastName);
+                        sbTemplate = sbTemplate.Replace("[AUTHORID]", authorId.ToString());
+                        sbTemplate = sbTemplate.Replace("[AUTHORDISPLAYNAME]", displayName);
+                        sbTemplate = sbTemplate.Replace("[DATE]", Utilities.GetUserFormattedDateTime(postDate, this.CurrentUser));
+                        sbTemplate = sbTemplate.Replace("[TOPICID]", topicId.ToString());
+                        sbTemplate = sbTemplate.Replace("[REPLYID]", replyId.ToString());
+                        sbTemplate = sbTemplate.Replace("[REPLYCOUNT]", replyCount.ToString());
 
-                        if (sHost.EndsWith("/") && sTopicUrl.StartsWith("/"))
+                        if (Utilities.UseFriendlyURLs(topicModuleId) && !(string.IsNullOrEmpty(sForumUrl) && string.IsNullOrEmpty(sTopicUrl)))
                         {
-                            sTopicUrl = sTopicUrl.Substring(1);
-                        }
+                            var ctlUtils = new ControlUtils();
 
-                        if (!sTopicUrl.StartsWith(sHost))
-                        {
-                            sTopicUrl = sHost + sTopicUrl;
-                        }
+                            sTopicUrl = ctlUtils.BuildUrl(this.PortalId, topicTabId, topicModuleId, sGroupPrefixUrl, sForumUrl, groupId, forumId, topicId, sTopicUrl, -1, -1, string.Empty, 1, replyId, -1);
+                            sForumUrl = ctlUtils.BuildUrl(this.PortalId, topicTabId, topicModuleId, sGroupPrefixUrl, sForumUrl, groupId, forumId, -1, string.Empty, -1, -1, string.Empty, 1, replyId, -1);
 
-                        if (Convert.ToInt32(replyId) == 0)
-                        {
-                            sbTemplate = sbTemplate.Replace("[POSTURL]", sTopicUrl);
-                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + sTopicUrl + "\">" + subject + "</a>");
-                        }
-                        else
-                        {
-                            if (!sTopicUrl.EndsWith("/") && !sTopicUrl.EndsWith("aspx"))
+                            if (sHost.EndsWith("/") && sForumUrl.StartsWith("/"))
                             {
-                                sTopicUrl += "/";
+                                sForumUrl = sForumUrl.Substring(1);
                             }
 
-                            sTopicUrl += "?afc=" + replyId;
-                            sbTemplate = sbTemplate.Replace("[POSTURL]", sTopicUrl);
-                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + sTopicUrl + "\">" + subject + "</a>");
-                        }
+                            if (!sForumUrl.StartsWith(sHost))
+                            {
+                                sForumUrl = sHost + sForumUrl;
+                            }
 
-                        sbTemplate = sbTemplate.Replace("[TOPICSURL]", sForumUrl);
-                    }
-                    else
-                    {
-                        if (replyId == 0)
-                        {
-                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }));
-                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }) + "\">" + subject + "</a>");
+                            if (sHost.EndsWith("/") && sTopicUrl.StartsWith("/"))
+                            {
+                                sTopicUrl = sTopicUrl.Substring(1);
+                            }
+
+                            if (!sTopicUrl.StartsWith(sHost))
+                            {
+                                sTopicUrl = sHost + sTopicUrl;
+                            }
+
+                            if (Convert.ToInt32(replyId) == 0)
+                            {
+                                sbTemplate = sbTemplate.Replace("[POSTURL]", sTopicUrl);
+                                sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + sTopicUrl + "\">" + subject + "</a>");
+                            }
+                            else
+                            {
+                                if (!sTopicUrl.EndsWith("/") && !sTopicUrl.EndsWith("aspx"))
+                                {
+                                    sTopicUrl += "/";
+                                }
+
+                                sTopicUrl += "?afc=" + replyId;
+                                sbTemplate = sbTemplate.Replace("[POSTURL]", sTopicUrl);
+                                sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + sTopicUrl + "\">" + subject + "</a>");
+                            }
+
+                            sbTemplate = sbTemplate.Replace("[TOPICSURL]", sForumUrl);
                         }
                         else
                         {
-                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }));
-                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }) + "\">" + subject + "</a>");
+                            if (replyId == 0)
+                            {
+                                sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }));
+                                sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }) + "\">" + subject + "</a>");
+                            }
+                            else
+                            {
+                                sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }));
+                                sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }) + "\">" + subject + "</a>");
+                            }
+
+                            sbTemplate = sbTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }));
                         }
 
-                        sbTemplate = sbTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(topicTabId, string.Empty, new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }));
+                        sbTemplate = sbTemplate.Replace("[FORUMURL]", Utilities.NavigateURL(topicTabId));
+
+                        // Do the body replacements last as they are the most likely to contain conflicts.
+                        sbTemplate = sbTemplate.Replace("[BODY]", body);
+                        sbTemplate = sbTemplate.Replace("[BODYHTML]", bodyHtml);
+                        sbTemplate = sbTemplate.Replace("[BODYTEXT]", Utilities.StripHTMLTag(bodyHtml));
+
+                        var template = sbTemplate.ToString();
+
+                        // Do this regex replace first before moving on to the simpler ones.
+                        template = RegexUtils.GetCachedRegex(@"\[BODY\:\s*(\d+)\s*\]", RegexOptions.IgnoreCase).Replace(template, m => SafeSubstring(body, int.Parse(m.Groups[1].Value)));
+
+                        sb.Append(template);
                     }
 
-                    sbTemplate = sbTemplate.Replace("[FORUMURL]", Utilities.NavigateURL(topicTabId));
-
-                    // Do the body replacements last as they are the most likely to contain conflicts.
-                    sbTemplate = sbTemplate.Replace("[BODY]", body);
-                    sbTemplate = sbTemplate.Replace("[BODYHTML]", bodyHtml);
-                    sbTemplate = sbTemplate.Replace("[BODYTEXT]", Utilities.StripHTMLTag(bodyHtml));
-
-                    var template = sbTemplate.ToString();
-
-                    // Do this regex replace first before moving on to the simpler ones.
-                    template = RegexUtils.GetCachedRegex(@"\[BODY\:\s*(\d+)\s*\]", RegexOptions.IgnoreCase).Replace(template, m => SafeSubstring(body, int.Parse(m.Groups[1].Value)));
-
-                    sb.Append(template);
-                }
-
-                dr.Close();
-            }
-            catch (Exception ex)
-            {
-                if (!dr.IsClosed)
-                {
                     dr.Close();
                 }
+                catch (Exception ex)
+                {
+                    if (!dr.IsClosed)
+                    {
+                        dr.Close();
+                    }
 
-                sb.Append(ex.StackTrace);
+                    sb.Append(ex.StackTrace);
+                }
+
+                var sRSSImage = string.Empty;
+                var sRSSUrl = string.Empty;
+                var sRSSIconLink = string.Empty;
+                if (this.Settings.RSSEnabled)
+                {
+                    sRSSImage = "<img src=\"" + this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "feedicon.gif") + "\" border=\"0\" />";
+                    sRSSUrl = this.Page.ResolveUrl("~/desktopmodules/activeforumswhatsnew/feeds.aspx") + "?portalId=" + this.PortalId + "&tabid=" + this.TabId.ToString() + "&moduleid=" + this.ModuleId.ToString();
+                    sRSSIconLink = "<a href=\"" + sRSSUrl + "\">" + sRSSImage + "</a>";
+                }
+
+                var footer = this.Settings.Footer;
+
+                footer = footer.Replace("[RSSICON]", sRSSImage);
+                footer = footer.Replace("[RSSURL]", sRSSUrl);
+                footer = footer.Replace("[RSSICONLINK]", sRSSIconLink);
+
+                sb.Append(footer);
+
+                content = sb.ToString();
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, cachekey, content);
             }
 
-            var sRSSImage = string.Empty;
-            var sRSSUrl = string.Empty;
-            var sRSSIconLink = string.Empty;
-            if (this.Settings.RSSEnabled)
-            {
-                sRSSImage = "<img src=\"" + this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "feedicon.gif") + "\" border=\"0\" />";
-                sRSSUrl = this.Page.ResolveUrl("~/desktopmodules/activeforumswhatsnew/feeds.aspx") + "?portalId=" + this.PortalId + "&tabid=" + this.TabId.ToString() + "&moduleid=" + this.ModuleId.ToString();
-                sRSSIconLink = "<a href=\"" + sRSSUrl + "\">" + sRSSImage + "</a>";
-            }
-
-            var footer = this.Settings.Footer;
-
-            footer = footer.Replace("[RSSICON]", sRSSImage);
-            footer = footer.Replace("[RSSURL]", sRSSUrl);
-            footer = footer.Replace("[RSSICONLINK]", sRSSIconLink);
-
-            sb.Append(footer);
-
-            this.Controls.Add(new LiteralControl(sb.ToString()));
+            this.Controls.Add(new LiteralControl(content));
         }
 
         protected override void Render(HtmlTextWriter writer)

@@ -28,7 +28,9 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System.Linq;
+    using System.Web;
 
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Collections;
 
     internal partial class TagController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TagInfo>
@@ -56,48 +58,50 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             base.DeleteById(tagId);
         }
 
-        internal static void CleanUpTags(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum)
+        internal static string GetBodyWithTagsProcessed(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum)
         {
-            const string tagsPattern = @"(?<=^|\s|<p>)#(?<tag>\w*[A-Za-z_]+\w*)";
+            string tagReplacement;
             if (!DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security.TagRoleIds, post.Author.ForumUser.UserRoleIds))
             {
-                // if the user does not have permission to add tags, remove any tags from the post content but leave tag text
-                post.Content.Body = RegexUtils.GetCachedRegex(tagsPattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(post.Content.Body, "#${tag}");
+                // if the user does not have permission to add tags, this removes any tags from the post content but leaves tag text
+                tagReplacement = "#${tag}";
             }
             else
             {
                 /* transform new tags directly entered in the post content to be links to the search view for tags */
                 /* e.g. #tag1 becomes <a href="https://localhost/forums/afv/search?aftg=tag1">#tag1</a> */
-                var tagtag = "<a href=\"" + Utilities.NavigateURL(forum.GetTabId(), string.Empty, new[] { $"{ParamKeys.ViewType}={Views.Search}", $"{ParamKeys.Tags}=" + "${tag}" }) + "\" class=\"dcf-tag-link\">" + "#${tag}</a>";
-                try
-                {
-                    post.Content.Body = RegexUtils.GetCachedRegex(tagsPattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(post.Content.Body, tagtag);
-                }
-                catch (RegexMatchTimeoutException ex)
-                {
-                    Exceptions.LogException(ex);
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                    throw;
-                }
-
-                try
-                {
-                    /* tags inserted via the editor plugin have # in the URL (aftg=#), which needs to be removed */
-                    /* e.g. <a href="https://localhost/forums/afv/search?aftg=#tag1">#tag1</a> becomes <a href="https://localhost/forums/afv/search?aftg=tag1">#tag1</a> */
-                    post.Content.Body = post.Content.Body.Replace("/afv/search?aftg=#", "/afv/search?aftg=");
-                }
-                catch (RegexMatchTimeoutException ex)
-                {
-                    Exceptions.LogException(ex);
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                }
+                tagReplacement = "<a href=\"" + Utilities.NavigateURL(forum.GetTabId(), string.Empty, new[] { $"{ParamKeys.ViewType}={Views.Search}", $"{ParamKeys.Tags}=" + "${tag}" }) + "\" class=\"dcf-tag-link\">" + "#${tag}</a>";
             }
+
+            var body = post.Content.Body;
+            const string TagsPattern = @"(?is)(<code\b[^>]*>.*?</code>)|(?<=^|\s|<p>)#(?<tag>\w*[A-Za-z_]+\w*)";
+            try
+            {
+                var tagRegex = RegexUtils.GetCachedRegex(TagsPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase, 2);
+                body = tagRegex.Replace(body, match => match.Groups["tag"].Success ? match.Result(tagReplacement) : match.Value);
+            }
+            catch (RegexMatchTimeoutException ex)
+            {
+                Exceptions.LogException(ex);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                throw;
+            }
+
+            try
+            {
+                /* tags inserted via the editor plugin have # in the URL (aftg=#), which needs to be removed */
+                /* e.g. <a href="https://localhost/forums/afv/search?aftg=#tag1">#tag1</a> becomes <a href="https://localhost/forums/afv/search?aftg=tag1">#tag1</a> */
+                body = body.Replace($"/{ParamKeys.ViewType}/{Views.Search}?{ParamKeys.Tags}=#", $"/{ParamKeys.ViewType}/{Views.Search}?{ParamKeys.Tags}=");
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+
+            return body;
         }
 
         internal static void UpdateTopicTags(DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post)
@@ -166,6 +170,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTag(item.TagId);
             base.Delete(item);
+        }
+
+        internal virtual DotNetNuke.Modules.ActiveForums.Entities.TagInfo GetByName(int moduleId, string tagName)
+        {
+            string cachekey = string.Format(CacheKeys.TagByName, moduleId, tagName);
+            DotNetNuke.Modules.ActiveForums.Entities.TagInfo tagInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TagInfo;
+            if (tagInfo == null)
+            {
+                // this accommodates duplicates which may exist since currently no uniqueness applied in database
+                tagInfo = this.Find("WHERE ModuleId = @0 AND TagName = @1", moduleId, tagName.Trim()).OrderBy(t => t.TagId).FirstOrDefault();
+                DataCache.ContentCacheStore(moduleId, cachekey, tagInfo);
+            }
+
+            return tagInfo;
         }
     }
 }

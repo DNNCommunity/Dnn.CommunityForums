@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Reflection;
     using System.Security.Cryptography;
     using System.Security.Policy;
@@ -33,6 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions.Portals;
@@ -560,6 +562,11 @@ namespace DotNetNuke.Modules.ActiveForums
         internal static string DecodeBrackets(string text)
         {
             return text.Replace("&#91;", "[").Replace("&#93;", "]").Replace("&#123;", "{").Replace("&#125;", "}");
+        }
+
+        internal static string NormalizeHtmlForStorage(string text)
+        {
+            return string.IsNullOrEmpty(text) ? string.Empty : WebUtility.HtmlDecode(text);
         }
 
         private static string CleanEditor(int portalId, string text, bool useFilter, int moduleId, string themePath, bool processEmoticons)
@@ -1617,7 +1624,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static bool SafeConvertBool(object value, bool defaultValue = false)
         {
-            if (value == null)
+            if (value == null || value is DBNull || Convert.IsDBNull(value))
             {
                 return defaultValue;
             }
@@ -1654,7 +1661,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static int SafeConvertInt(object value, int defaultValue = 0)
         {
-            if (value == null)
+            if (value == null || value is DBNull || Convert.IsDBNull(value))
             {
                 return defaultValue;
             }
@@ -1683,7 +1690,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static long SafeConvertLong(object value, long defaultValue = 0)
         {
-            if (value == null)
+            if (value == null || value is DBNull || Convert.IsDBNull(value))
             {
                 return defaultValue;
             }
@@ -1712,7 +1719,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static double SafeConvertDouble(object value, double defaultValue = 0.0)
         {
-            if (value == null)
+            if (value == null || value is DBNull || Convert.IsDBNull(value))
             {
                 return defaultValue;
             }
@@ -1741,7 +1748,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static DateTime SafeConvertDateTime(object value, DateTime? defaultValue = null)
         {
-            if (value == null)
+            if (value == null || value is DBNull || Convert.IsDBNull(value))
             {
                 return defaultValue.HasValue ? defaultValue.Value : NullDate();
             }
@@ -1774,7 +1781,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string SafeConvertString(object value, string defaultValue = null)
         {
-            return value == null ? defaultValue : value.ToString();
+            return (value == null || value is DBNull || Convert.IsDBNull(value)) ? defaultValue : value.ToString();
         }
 
         public static string SafeTrim(string input)
@@ -1909,16 +1916,26 @@ namespace DotNetNuke.Modules.ActiveForums
             return expression != null && (double.TryParse(expression.ToString(), out _) || bool.TryParse(expression.ToString(), out _));
         }
 
-        internal static string ResolveUrlInTag(string template, string defaultPortalAlias, bool sslEnabled = true)
+        internal static string ResolveUrlInTag(string tag, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        {
+            return ResolveUrlInTag(tag: tag, defaultPortalAlias: portalSettings?.DefaultPortalAlias, sslEnabled: portalSettings?.SSLEnabled ?? true);
+        }
+
+        internal static string ResolveUrlInTag(string tag, string defaultPortalAlias, bool sslEnabled = true)
         {
             const string linkRegex = "(href|src)=\"(/[^\"]*?)\"";
-            var matches = Regex.Matches(template, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            var matches = Regex.Matches(tag, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
             foreach (Match match in matches)
             {
-                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{ResolveUrl(match.Groups[2].Value, defaultPortalAlias, sslEnabled)}\"");
+                tag = tag.Replace(match.Value, $"{match.Groups[1].Value}=\"{ResolveUrl(url: match.Groups[2].Value, defaultPortalAlias: defaultPortalAlias, sslEnabled: sslEnabled)}\"");
             }
 
-            return template;
+            return tag;
+        }
+
+        internal static string ResolveUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        {
+            return ResolveUrl(url: url, defaultPortalAlias: portalSettings?.DefaultPortalAlias, sslEnabled: portalSettings?.SSLEnabled ?? true);
         }
 
         internal static string ResolveUrl(string url, string defaultPortalAlias, bool sslEnabled = true)
@@ -2034,7 +2051,20 @@ namespace DotNetNuke.Modules.ActiveForums
             return false;
         }
 
-        internal static string RemoveCultureFromUrl(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string url)
+        internal static bool UseTipTapEditor(Entities.ForumInfo forumInfo, ForumUserInfo forumUserInfo, bool allowHTML)
+        {
+            if (allowHTML)
+            {
+                if (forumInfo.FeatureSettings.EditorType.Equals(EditorType.FORUMSTIPTAPEDITOR))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        internal static string RemoveCultureFromUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             if (!string.IsNullOrEmpty(portalSettings.PortalAlias?.CultureCode) && url.ToLowerInvariant().Contains($"/{portalSettings.PortalAlias?.CultureCode?.ToLowerInvariant()}/"))
             {

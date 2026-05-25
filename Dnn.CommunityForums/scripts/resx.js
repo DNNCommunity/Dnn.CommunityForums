@@ -21,7 +21,18 @@ amaf.resx = {
     UnLockConfirm: '[RESX:Confirm:UnLock]',
     TopicLocked: '[RESX:TopicLocked]',
     Subscribe: '[RESX:Subscribe]',
-    Unsubscribe: '[RESX:Unsubscribe]'
+    Unsubscribe: '[RESX:Unsubscribe]',
+    BoldDesc: '[RESX:BoldDesc]',
+    ItalicDesc: '[RESX:ItalicDesc]',
+    UnderlineDesc: '[RESX:UnderlineDesc]',
+    StrikeDesc: '[RESX:StrikeDesc]',
+    UndoDesc: '[RESX:UndoDesc]',
+    RedoDesc: '[RESX:RedoDesc]',
+    CodeDesc: '[RESX:CodeDesc]',
+    OrderedListDesc: '[RESX:OrderedListDesc]',
+    BulletedListDesc: '[RESX:BulletedListDesc]',
+    QuoteDesc: '[RESX:QuoteDesc]',
+    ShowBoxesDesc: '[RESX:ShowBoxesDesc]'
 };
 
 

@@ -201,7 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                             if (this.ModuleSettings.UseSkinBreadCrumb)
                             {
-                                string groupURL = new ControlUtils().BuildUrl(this.PortalId, this.TabId, this.ModuleId, this.ForumInfo.ForumGroup.PrefixURL, string.Empty, this.ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
+                                string groupURL = new ControlUtils().BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: this.ForumInfo.ForumGroup.PrefixURL, forumPrefix: string.Empty, forumGroupId: this.ForumInfo.ForumGroupId, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: this.SocialGroupId);
                                 DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + groupURL + "\">" + this.ForumInfo.ForumGroup.GroupName + "</a>");
                                 topicsTemplate = topicsTemplate.Replace("<div class=\"afcrumb\">[FORUM:FORUMMAINLINK] > [FORUMGROUP:FORUMGROUPLINK]</div>", string.Empty);
                             }
@@ -434,7 +434,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.Request.IsAuthenticated)
             {
-                string Url = this.NavigateUrl(this.TabId, string.Empty, new string[] { ParamKeys.ViewType + "=sendto", ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
+                string Url = this.NavigateUrl(this.TabId, string.Empty, new string[] { $"{ParamKeys.ViewType}={Views.SendTo}", $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}" });
                 sOutput = sOutput.Replace("[AF:CONTROL:EMAIL]", "<a href=\"" + Url + "\" rel=\"nofollow\"><img src=\"" + Utilities.ResolveRelativePath(this.ModuleSettings.ThemeLocation + "/images/email16.png") + "\" border=\"0\" alt=\"[RESX:EmailThis]\" /></a>");
             }
             else
@@ -478,10 +478,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         ContentId = Convert.ToInt32(drTopic["TopicContentId"]),
                         ModuleId = this.ForumModuleId,
-                        Subject = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Subject"])),
-                        Summary = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Summary"])),
+                        Subject = Convert.ToString(drTopic["Subject"]),
+                        Summary = Convert.ToString(drTopic["Summary"]),
                         DateCreated = Convert.ToDateTime(drTopic["DateCreated"]),
-                        Body = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["Body"])),
+                        Body = Convert.ToString(drTopic["Body"]),
                         AuthorId = Convert.ToInt32(drTopic["AuthorId"]),
                         AuthorName = Convert.ToString(drTopic["AuthorName"]).ToString().Replace("&amp;#", "&#"),
                     },
@@ -515,8 +515,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             ContentId = Convert.ToInt32(drTopic["LastReplyContentId"]),
                             ModuleId = this.ForumModuleId,
-                            Subject = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySubject"])),
-                            Summary = System.Net.WebUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySummary"])),
+                            Subject = Convert.ToString(drTopic["LastReplySubject"]),
+                            Summary = Convert.ToString(drTopic["LastReplySummary"]),
                             DateCreated = Convert.ToDateTime(drTopic["LastReplyDate"]),
                             AuthorId = Convert.ToInt32(drTopic["LastReplyAuthorId"]),
                             AuthorName = Convert.ToString(drTopic["LastReplyAuthorName"]).ToString().Replace("&amp;#", "&#"),
@@ -621,7 +621,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(stringBuilder, topicInfo, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.Request.Url, this.Request.RawUrl);
                 stringBuilder.Replace("[LASTREPLY]", string.Empty).Replace("[/LASTREPLY]", string.Empty);
                 stringBuilder.Replace("[LASTPOST]", string.Empty).Replace("[/LASTPOST]", string.Empty);
-                stringBuilder.Replace("[ROWCSS]", this.GetRowCSS(UserLastTopicRead, UserLastReplyRead, topicInfo.TopicId, topicInfo.LastReplyId, rowcount));
+                stringBuilder.Replace("[ROWCSS]", this.GetRowCSS(UserLastTopicRead, UserLastReplyRead, topicInfo.TopicId, (int)topicInfo.LastReplyId, rowcount));
 
                 if (topicInfo.LastReplyId < 1)
                 {
@@ -665,7 +665,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     pager1.CurrentPage = this.PageId;
-                    pager1.TabID = Convert.ToInt32(this.Request.Params["TabId"]);
+                    pager1.TabID = Convert.ToInt32(this.Request.Params[ParamKeys.TabId]);
                     pager1.ForumID = this.ForumId;
                     pager1.UseShortUrls = this.ModuleSettings.UseShortUrls;
                     pager1.PageText = Utilities.GetSharedResource("[RESX:Page]");
@@ -692,7 +692,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     pager2.UseShortUrls = this.ModuleSettings.UseShortUrls;
                     pager2.PageCount = intPages;
                     pager2.CurrentPage = this.PageId;
-                    pager2.TabID = Convert.ToInt32(this.Request.Params["TabId"]);
+                    pager2.TabID = Convert.ToInt32(this.Request.Params[ParamKeys.TabId]);
                     pager2.ForumID = this.ForumId;
                     pager2.PageText = Utilities.GetSharedResource("[RESX:Page]");
                     pager2.OfText = Utilities.GetSharedResource("[RESX:PageOf]");

@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             else
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(this.portalId, this.TabId, this.moduleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, replyId, ri.Content.AuthorId, this.Request.Url, this.Request.RawUrl);
-                string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
+                string[] @params = { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.Message}={MessageTypes.PendingModeration}", $"{ParamKeys.TopicId}={this.TopicId}" };
                 HttpContext.Current.Response.Redirect(Utilities.NavigateURL(this.PageId, string.Empty, @params), false);
                 this.Context.ApplicationInstance.CompleteRequest();
             }

@@ -35,6 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
     using DotNetNuke.Collections;
     using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
@@ -220,7 +221,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
                 if (userList != null && userList.Count > 0)
                 {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, userList.Select(u => new { id = u.id, name = u.name, avatarImgTag = u.avatarImgTag }).ToList());
+                    return this.Request.CreateResponse(HttpStatusCode.OK, userList.Select(u => new { id = u.id, name = u.name, avatarImgTag = u.avatarImgTag, avatarImgSrc = u.avatarImgSrc, userProfileUrl = u.userProfileUrl, }).ToList());
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.NoContent);
@@ -241,7 +242,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
             public DotNetNuke.Entities.Portals.PortalSettings portalSettings { get; set; }
 
-            public string avatarImgTag => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(this.portalSettings, this.id, 22, 22); 
+            public string avatarImgTag => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatarImgTag(this.portalSettings, this.id, 22, 22);
+
+            public string avatarImgSrc => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatarImgSrc(this.portalSettings, this.id, 22, 22);
+
+            public string userProfileUrl => Utilities.NavigateURL(this.portalSettings.UserTabId, string.Empty, new[] { $"userId={this.id}" });
         }
     }
 }

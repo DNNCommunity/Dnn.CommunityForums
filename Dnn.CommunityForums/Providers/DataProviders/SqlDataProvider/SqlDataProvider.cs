@@ -327,6 +327,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override int Reply_Save(int PortalId, int TopicId, int ReplyId, int ReplyToId, int StatusId, bool IsApproved, bool IsDeleted, string Subject, string Body, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress)
         {
+            Subject = Utilities.NormalizeHtmlForStorage(Subject);
+            Body = Utilities.NormalizeHtmlForStorage(Body);
             return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Reply_Save", PortalId, TopicId, ReplyId, ReplyToId, StatusId, IsApproved, IsDeleted, Subject, Body, DateCreated, DateUpdated, AuthorId, AuthorName, IPAddress));
         }
 
@@ -602,6 +604,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override int Topics_Save(int PortalId, int ModuleId, int TopicId, int ViewCount, int ReplyCount, bool IsLocked, bool IsPinned, string TopicIcon, int StatusId, bool IsApproved, bool IsDeleted, bool IsAnnounce, bool IsArchived, DateTime AnnounceStart, DateTime AnnounceEnd, string Subject, string Body, string Summary, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress, int TopicType, int priority, string URL, string TopicData)
         {
+            Subject = Utilities.NormalizeHtmlForStorage(Subject);
+            Body = Utilities.NormalizeHtmlForStorage(Body);
+            Summary = Utilities.NormalizeHtmlForStorage(Summary);
             return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Topics_Save", PortalId, ModuleId, TopicId, ViewCount, ReplyCount, IsLocked, IsPinned, TopicIcon, StatusId, IsApproved, IsDeleted, IsAnnounce, IsArchived, this.GetNull(AnnounceStart), this.GetNull(AnnounceEnd), Subject, Body, Summary, DateCreated, DateUpdated, AuthorId, AuthorName, IPAddress, TopicType, priority, URL, TopicData));
         }
 
@@ -645,41 +650,49 @@ namespace DotNetNuke.Modules.ActiveForums
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_TopicView", PortalId, ModuleId, ForumId, TopicId, UserId, PageIndex, PageSize, IsSuper, Sort);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMyUnreadTopics().")]
         public override DataSet UI_NotReadView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_NotRead", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetUnanswered().")]
         public override DataSet UI_UnansweredView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_UnansweredView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMyTopics().")]
         public override DataSet UI_MyTopicsView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_MyTopicsView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetActiveTopics().")]
         public override DataSet UI_ActiveView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_ActiveView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMostLikes().")]
         public override DataSet UI_MostLiked(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_MostLiked", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetMostReplies().")]
         public override DataSet UI_MostReplies(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_MostReplies", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetAnnouncements().")]
         public override DataSet UI_Announcements(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_Announcements", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetUnresolved().")]
         public override DataSet UI_Unresolved(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
             return (DataSet)SqlHelper.ExecuteDataset(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UI_Unresolved", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
@@ -800,10 +813,12 @@ namespace DotNetNuke.Modules.ActiveForums
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_TP_PortalForums", PortalId);
         }
 
-        public override IDataReader GetPosts(int PortalId, string Forums, bool TopicsOnly, bool RandomOrder, int Rows, string Tags, int FilterByUserId = -1)
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public override IDataReader GetPosts(int PortalId, string Forums, bool TopicsOnly, bool RandomOrder, int Rows, string Tags, int FilterByUserId = -1) => throw new NotImplementedException();
+
+        public override IDataReader GetPosts(string Forums, bool TopicsOnly, bool RandomOrder, int Rows, string Tags, int FilterByUserId = -1)
         {
-            const bool IgnoreSecurity = false; // Required by proc but not currently used
-            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_TP_GetPosts", PortalId, Forums, TopicsOnly, RandomOrder, Rows, IgnoreSecurity, Tags, FilterByUserId);
+            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_TP_GetPosts", Forums, TopicsOnly, RandomOrder, Rows, Tags, FilterByUserId);
         }
 
         public override IDataReader GetPostsByUser(int PortalId, int Rows, bool IsSuperUser, int currentUserId, int FilteredUserid, bool TopicsOnly, string ForumIds)

@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Runtime.Serialization.Json;
@@ -33,6 +34,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Controls;
@@ -371,12 +374,12 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 // User has acccess
-                var sBody = System.Net.WebUtility.HtmlDecode(ti.Content.Body);
-                var sSubject = System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
+                var sBody = ti.Content.Body;
+                var sSubject = ti.Content.Subject;
                 sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this.allowHTML, this.editorType);
                 sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorType.TEXTBOX);
                 this.ctlForm.Subject = sSubject;
-                this.ctlForm.Summary = System.Net.WebUtility.HtmlDecode(ti.Content.Summary);
+                this.ctlForm.Summary = ti.Content.Summary;
                 this.ctlForm.Body = sBody;
                 this.ctlForm.AnnounceEnd = ti.AnnounceEnd ?? Utilities.NullDate();
                 this.ctlForm.AnnounceStart = ti.AnnounceStart ?? Utilities.NullDate();
@@ -456,8 +459,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var sBody = System.Net.WebUtility.HtmlDecode(ri.Content.Body);
-                var sSubject = System.Net.WebUtility.HtmlDecode(ri.Content.Subject);
+                var sBody = ri.Content.Body;
+                var sSubject = ri.Content.Subject;
                 sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this.allowHTML, this.editorType);
                 sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorType.TEXTBOX);
                 this.ctlForm.Subject = sSubject;
@@ -554,8 +557,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    this.ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
-                    this.ctlForm.TopicSubject = System.Net.WebUtility.HtmlDecode(ti.Content.Subject);
+                    this.ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + ti.Content.Subject;
+                    this.ctlForm.TopicSubject = ti.Content.Subject;
                     if (ti.IsLocked && (this.ForumUser.CurrentUserType == CurrentUserTypes.Anon || this.ForumUser.CurrentUserType == CurrentUserTypes.Auth))
                     {
                         this.Response.Redirect(this.NavigateUrl(this.TabId), false);
@@ -657,7 +660,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var body = this.ctlForm.Body;
             subject = Utilities.CleanString(this.PortalId, Utilities.XSSFilter(subject, true), false, EditorType.TEXTBOX, this.ForumInfo.FeatureSettings.UseFilter, false, this.ForumModuleId, this.themePath, false);
             body = Utilities.CleanString(this.PortalId, body, this.allowHTML, this.editorType, this.ForumInfo.FeatureSettings.UseFilter, this.ForumInfo.FeatureSettings.AllowScript, this.ForumModuleId, this.themePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
-            var summary = this.ctlForm.Summary;
+            subject = Utilities.NormalizeHtmlForStorage(subject);
+            body = Utilities.NormalizeHtmlForStorage(body);
+            var summary = Utilities.NormalizeHtmlForStorage(this.ctlForm.Summary);
             int authorId;
             string authorName;
             if (this.Request.IsAuthenticated)
@@ -887,7 +892,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!ti.IsApproved)
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: 0, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: this.ForumUser.UserId);
-                    string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
+                    string[] @params = { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.MessagePending}" };
                     this.Response.Redirect(this.NavigateUrl(this.ForumTabId, string.Empty, @params), false);
                     this.Context.ApplicationInstance.CompleteRequest();
                 }
@@ -902,7 +907,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string sUrl = ctlUtils.BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
                     if (sUrl.Contains("~/"))
                     {
-                        sUrl = Utilities.NavigateURL(this.ForumTabId, string.Empty, ParamKeys.TopicId + "=" + this.TopicId);
+                        sUrl = Utilities.NavigateURL(this.ForumTabId, string.Empty, $"{ParamKeys.TopicId}={this.TopicId}");
                     }
 
                     this.Response.Redirect(sUrl, false);
@@ -921,6 +926,8 @@ namespace DotNetNuke.Modules.ActiveForums
             var body = this.ctlForm.Body;
             subject = Utilities.CleanString(this.PortalId, subject, false, EditorType.TEXTBOX, this.ForumInfo.FeatureSettings.UseFilter, false, this.ForumModuleId, this.themePath, false);
             body = Utilities.CleanString(this.PortalId, body, this.allowHTML, this.editorType, this.ForumInfo.FeatureSettings.UseFilter, this.ForumInfo.FeatureSettings.AllowScript, this.ForumModuleId, this.themePath, this.ForumInfo.FeatureSettings.AllowEmoticons);
+            subject = Utilities.NormalizeHtmlForStorage(subject);
+            body = Utilities.NormalizeHtmlForStorage(body);
 
             // This HTML decode is used to make Quote functionality work properly even when it appears in Text Box instead of Editor
             if (this.Request.Params[ParamKeys.QuoteId] != null)
@@ -1044,7 +1051,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, forumGroupId: this.ForumInfo.ForumGroupId, forumId: this.ForumId, topicId: this.TopicId, replyId: tmpReplyId, contentId: ri.ContentId, authorId: ri.Content.AuthorId, userId: this.ForumUser.UserId);
 
-                    string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
+                    string[] @params = { $"{ParamKeys.ForumId}={this.ForumId}", $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ViewType}={Views.ConfirmAction}", $"{ParamKeys.ConfirmActionId}={ConfirmActions.MessagePending}" };
                     this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, @params), false);
                     this.Context.ApplicationInstance.CompleteRequest();
                 }
@@ -1058,12 +1065,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     var fullURL = new ControlUtils().BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, this.SocialGroupId);
                     if (fullURL.Contains("~/"))
                     {
-                        fullURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
+                        fullURL = Utilities.NavigateURL(this.TabId, string.Empty, new[] { $"{ParamKeys.TopicId}={this.TopicId}", $"{ParamKeys.ContentJumpId}={tmpReplyId}" });
                     }
 
                     if (fullURL.EndsWith("/"))
                     {
-                        fullURL += Utilities.UseFriendlyURLs(this.ForumModuleId) ? String.Concat("#", tmpReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", tmpReplyId);
+                        fullURL += Utilities.UseFriendlyURLs(this.ForumModuleId) ? $"#{tmpReplyId}" : $"?{ParamKeys.ContentJumpId}={tmpReplyId}";
                     }
 
                     this.Response.Redirect(fullURL, false);
@@ -1153,6 +1160,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
 
         private void PrepareAttachments(int? contentId = null)
         {

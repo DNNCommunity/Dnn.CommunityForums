@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var moduleController = new ModuleController();
 
                 // Load the current settings
-                var settings = WhatsNewModuleSettings.CreateFromModuleSettings(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: true).ModuleSettings);
+                var settings = WhatsNewModuleSettings.CreateFromModuleSettings(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings);
 
                 // Update Settings Values
                 settings.Forums = forums;

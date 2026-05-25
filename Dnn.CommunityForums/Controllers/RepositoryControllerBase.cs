@@ -20,6 +20,7 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -28,34 +29,53 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class RepositoryControllerBase<T> where T : class
     {
-        private readonly IRepository<T> repo;
+        private IRepository<T> _repo;
+
+        private IRepository<T> Repo
+        {
+            get
+            {
+                if (this._repo == null)
+                {
+                    try
+                    {
+                        var ctx = DataContext.Instance();
+                        this._repo = ctx?.GetRepository<T>();
+                    }
+                    catch (Exception)
+                    {
+                        // DataContext may not be available in test environments.
+                    }
+                }
+
+                return this._repo;
+            }
+        }
 
         internal virtual string cacheKeyTemplate => string.Empty;
 
         internal RepositoryControllerBase()
         {
-            var ctx = DataContext.Instance();
-            this.repo = ctx.GetRepository<T>();
         }
 
-        internal IEnumerable<T> Get()
+        internal virtual IEnumerable<T> Get()
         {
-            return this.repo.Get();
+            return this.Repo.Get();
         }
 
-        internal IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
+        internal virtual IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
         {
-            return this.repo.Get(scopeValue);
+            return this.Repo.Get(scopeValue);
         }
 
-        internal T GetById<TProperty>(TProperty id)
+        internal virtual T GetById<TProperty>(TProperty id)
         {
-            return this.repo.GetById(id);
+            return this.Repo.GetById(id);
         }
 
-        internal T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
+        internal virtual T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
         {
-            return this.repo.GetById(id, scopeValue);
+            return this.Repo.GetById(id, scopeValue);
         }
 
         internal T Save<TProperty>(T item, TProperty id)
@@ -74,12 +94,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal IEnumerable<T> Find(string sqlCondition, params object[] args)
         {
-            return string.IsNullOrEmpty(sqlCondition) ? this.Get() : this.repo.Find(sqlCondition, args);
+            return string.IsNullOrEmpty(sqlCondition) ? this.Get() : this.Repo.Find(sqlCondition, args);
         }
 
         internal IPagedList<T> Find(int pageIndex, int pageSize, string sqlCondition, params object[] args)
         {
-            return this.repo.Find(pageIndex, pageSize, sqlCondition, args);
+            return this.Repo.Find(pageIndex, pageSize, sqlCondition, args);
         }
 
         internal void Update(T item)
@@ -89,47 +109,47 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 property.SetValue(item, System.DateTime.UtcNow, null);
             }
-            this.repo.Update(item);
+            this.Repo.Update(item);
         }
 
         internal void Insert(T item)
         {
-            this.repo.Insert(item);
+            this.Repo.Insert(item);
         }
 
         internal void Delete(string sqlCondition, params object[] args)
         {
-            this.repo.Delete(sqlCondition, args);
+            this.Repo.Delete(sqlCondition, args);
         }
 
         internal void DeleteById<TProperty>(TProperty id)
         {
-            this.repo.Delete(this.repo.GetById(id));
+            this.Repo.Delete(this.Repo.GetById(id));
         }
 
         internal void Delete(T item)
         {
-            this.repo.Delete(item);
+            this.Repo.Delete(item);
         }
 
         internal void DeleteByModuleId(int moduleId)
         {
-            this.repo.Delete("WHERE (ModuleId = @0)", moduleId);
+            this.Repo.Delete("WHERE (ModuleId = @0)", moduleId);
         }
 
         internal int Count(string sqlCondition, params object[] args)
         {
-            return string.IsNullOrEmpty(sqlCondition) ? this.repo.Get().Count() : this.repo.Find(sqlCondition, args).Count();
+            return string.IsNullOrEmpty(sqlCondition) ? this.Repo.Get().Count() : this.Repo.Find(sqlCondition, args).Count();
         }
 
         internal IPagedList<T> GetPage(int pageIndex, int pageSize)
         {
-            return this.repo.GetPage(pageIndex, pageSize);
+            return this.Repo.GetPage(pageIndex, pageSize);
         }
 
         internal IPagedList<T> GetPage<TScopeType>(TScopeType scopeValue, int pageIndex, int pageSize)
         {
-            return this.repo.GetPage(scopeValue, pageIndex, pageSize);
+            return this.Repo.GetPage(scopeValue, pageIndex, pageSize);
         }
 
         internal static T LoadFromSettingsCache(int moduleId, string cachekey)

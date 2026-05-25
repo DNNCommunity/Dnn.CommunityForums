@@ -66,6 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private string selectedcategories;
         private int? subscriberCount;
         private int? likeCount;
+        private int? lastReplyId;
 
         public int TopicId { get; set; }
 
@@ -190,7 +191,30 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string TopicData { get; set; } = string.Empty;
 
         [IgnoreColumn]
-        public int LastReplyId { get; set; }
+        public int? LastReplyId
+        {
+            get
+            {
+                if (this.lastReplyId.HasValue)
+                {
+                    return this.lastReplyId;
+                }
+
+                var forumTopic = new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(this.ModuleId).GetByTopicId(this.TopicId);
+                if (forumTopic != null && forumTopic.LastReplyId.HasValue)
+                {
+                    this.lastReplyId = forumTopic.LastReplyId;
+                }
+                else
+                {
+                    this.lastReplyId = 0;
+                }
+
+                this.UpdateCache();
+                return this.lastReplyId;
+            }
+            set => this.lastReplyId = value;
+        }
 
         [IgnoreColumn]
         public int Rating { get; set; }
@@ -305,9 +329,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (this.lastReply == null)
                 {
-                    if (this.LastReplyId > 0)
+                    if (this.LastReplyId.HasValue && this.LastReplyId > 0)
                     {
-                        this.lastReply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetById(this.LastReplyId);
+                        this.lastReply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetById(replyId: (int)this.LastReplyId, topic: this);
+                        if (this.lastReply != null)
+                        {
+                            // Break circular reference: inject this topic into the reply
+                            // so ReplyInfo.Topic does not trigger another TopicController.GetById call
+                            this.lastReply.Topic = this;
+                        }
+
                         this.UpdateCache();
                     }
                 }
@@ -677,7 +708,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             int? userLastReplyRead = new Controllers.ForumUserController(this.ModuleId).GetByUserId(accessingUser.PortalID, accessingUser.UserID).GetLastReplyRead(this);
                             if (userLastReplyRead.HasValue && userLastReplyRead > 0)
                             {
-                                var lastReplyRead = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId: this.ModuleId).GetById((int)userLastReplyRead);
+                                var lastReplyRead = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId: this.ModuleId).GetById(replyId: (int)userLastReplyRead, topic: this);
                                 return PropertyAccess.FormatString(lastReplyRead.GetLink(), format);
                             }
 
@@ -685,20 +716,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                     case "lastreplyurl":
-                        if (this.LastReplyId > 0)
+                        if (this.LastReply != null)
                         {
-                            var lastReply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId: this.ModuleId).GetById(this.LastReplyId);
-                            return PropertyAccess.FormatString(lastReply.GetLink(), format);
+                            return PropertyAccess.FormatString(this.LastReply?.GetLink(), format);
                         }
 
                         return string.Empty;
 
 
                     case "lastposturl":
-                        if (this.LastReplyId > 0)
+                        if (this.LastReply != null)
                         {
-                            var lastReply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId: this.ModuleId).GetById(this.LastReplyId);
-                            return PropertyAccess.FormatString(lastReply.GetLink(), format);
+                            return PropertyAccess.FormatString(this.LastReply.GetLink(), format);
                         }
                         else
                         {
@@ -832,7 +861,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                     case "lastreplydisplayname":
-                        return PropertyAccess.FormatString(this.lastReplyAuthor.DisplayName, format);
+                        return PropertyAccess.FormatString(this.LastReplyAuthor.DisplayName, format);
                     case "datecreated":
                         return PropertyAccess.FormatString(
                             Utilities.GetUserFormattedDateTime(
@@ -873,7 +902,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return this.LastReply?.Content != null
                             ? PropertyAccess.FormatString(
                                 Utilities.GetUserFormattedDateTime(
-                                    (DateTime?)this.Content.DateCreated,
+                                    (DateTime?)this.LastReply.Content.DateCreated,
                                     formatProvider,
                                     accessingUser.Profile.PreferredTimeZone.GetUtcOffset(DateTime.UtcNow)),
                                 format)

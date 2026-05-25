@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Modules;
 
     #region Enumerations
-    
+
     [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
     public enum AttachStores
     {
@@ -390,7 +390,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Forums = "f";
     }
 
-    public class ParamKeys
+    public static class ParamKeys
     {
         public const string ForumId = "aff";
         public const string GroupId = "afg";
@@ -415,6 +415,10 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TimeSpan = "ts";
         public const string Mode = "mode";
         public const string BadgeId = "badgeid";
+        public const string Message = "afmsg";
+        public const string PortalId = "PortalId";
+        public const string ModuleId = "ModuleId";
+        public const string TabId = "TabId";
     }
 
     public class ModuleModes
@@ -426,11 +430,21 @@ namespace DotNetNuke.Modules.ActiveForums
     public class Modes
     {
         public const string Edit = "edit";
+        public const string DnnPrintMode = "dnnprintmode";
+    }
+
+    public class MessageTypes
+    {
+        public const string Move = "Move";
+        public const string ModAlert = "ModAlert";
+        public const string PendingModeration = "PendingModeration";
+        public const string EmailSent = "EmailSent";
+        public const string PostSubmit = "PostSubmit";
     }
 
     public class Literals
     {
-        public const string Page = "page";
+        public const string Page = "Page";
         public const string View = "view";
         public const string ForumId = "ForumId";
         public const string GroupId = "GroupId";
@@ -468,6 +482,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string RecycleBin = "recyclebin";
         public const string BadgeUsers = "badgeusers";
         public const string UserBadges = "userbadges";
+        public const string SendTo = "sendto";
+        public const string ConfirmAction = "confirmaction";
     }
 
     internal static class GridTypes
@@ -522,6 +538,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TopicsViewForUser = "AF-{0}-TVS-{1}-{2}-{3}-{4}-{5}";
         public const string ForumViewTemplate = "AF-{0}-fvt-{1}";
         public const string Toolbar = "AF-{0}-tb-{1}-{2}";
+        public const string ToolbarPrefix = "AF-{0}-tb-";
         public const string TemplatePrefix = "AF-{0}-tmpl-";
         public const string Template = "AF-{0}-tmpl-{1}-{2}-{3}";
         public const string QuickReply = "AF-{0}-qr";
@@ -529,7 +546,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string CachingTime = "AF-{0}-ct";
         public const string CacheUpdate = "AF-{0}-cu";
         public const string WhatsNew = "AF-{0}-tp";
-        public const string RssTemplate = "AF-{0}-tprss-_{1}";
+        public const string WhatsNewData = "AF-{0}-tprssdata-{1}-{2}-{3}-{4}-{5}";
+        public const string RssTemplate = "AF-{0}-tprss-{1}";
         public const string ViewRolesForForum = "AF-{0}-CanView-{1}";
         public const string ViewRolesForForumList = "AF-{0}-Perm-{1}";
         public const string Subscriber = "AF-{0}-Subs-{1}-{2}-{3}-{4}";
@@ -578,6 +596,35 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string UserMentionInfo = "AF-{0}-usermentioninfo-{1}";
         public const string TagMatches = "AF-{0}-tagmatches-{1}";
         public const string SearchQuery = "AF-{0}-searchquery-{1}";
+        public const string TagByName = "AF-{0}-tagname-{1}";
+        public const string CategoryByName = "AF-{0}-categoryname-{1}";
+        public const string ForumGroupByUrlPrefix = "AF-{0}-fgurl-{1}";
+        public const string ForumByUrlPrefix = "AF-{0}-furl-{1}";
+        public const string TopicByUrl = "AF-{0}-turl-{1}-{2}";
+        public const string PortalAliases = "AF-pa";
+        public const string TabPaths = "AF-tabpaths-{0}";
+        public const string UrlRewrites = "AF-urlrw-{0}";
+        public const string ArchivedUrl = "AF-{0}-archurl-{1}";
+
+        public const string FilteredTopicsPrefix = "AF-{0}-ft-";
+        public const string TopicAnnouncements = "AF-{0}-ft-ann-{1}-{2}-{3}";
+        public const string TopicAnnouncementsCount = "AF-{0}-ft-ann-count-{1}";
+        public const string MostLikes = "AF-{0}-ft-most-likes-{1}-{2}-{3}-{4}";
+        public const string MostLikesCount = "AF-{0}-ft-most-likes-count-{1}-{2}";
+        public const string TopicMostReplies = "AF-{0}-ft-most-replies-{1}-{2}-{3}-{4}";
+        public const string TopicMostRepliesCount = "AF-{0}-ft-most-replies-count-{1}-{2}";
+        public const string TopicUnresolved = "AF-{0}-ft-unresolved-{1}-{2}-{3}-{4}";
+        public const string TopicUnresolvedCount = "AF-{0}-ft-unresolved-count-{1}-{2}";
+        public const string TopicUnanswered = "AF-{0}-ft-unanswered-{1}-{2}-{3}-{4}";
+        public const string TopicUnansweredCount = "AF-{0}-ft-unanswered-count-{1}-{2}";
+        public const string TaggedTopics = "AF-{0}-ft-tagged-{1}-{2}-{3}-{4}-{5}";
+        public const string TaggedTopicsCount = "AF-{0}-ft-tagged-count-{1}-{2}-{3}";
+        public const string TopicUnread = "AF-{0}-ft-unread-{1}-{2}-{3}-{4}-{5}";
+        public const string TopicUnreadCount = "AF-{0}-ft-unread-count-{1}-{2}-{3}";
+        public const string ActiveTopics = "AF-{0}-ft-active-{1}-{2}-{3}-{4}";
+        public const string ActiveTopicsCount = "AF-{0}-ft-active-count-{1}-{2}";
+        public const string MyTopics = "AF-{0}-ft-mytopics-{1}-{2}-{3}-{4}-{5}";
+        public const string MyTopicsCount = "AF-{0}-ft-mytopics-count-{1}-{2}-{3}";
     }
 
     public class SortColumns

@@ -1,4 +1,6 @@
 const gulp = require('gulp');
+const changed = require('gulp-changed');
+const newer = require('gulp-newer');
 const less = require('gulp-less');
 const cleanCSS = require('gulp-clean-css');
 const sourcemaps = require('gulp-sourcemaps');
@@ -45,9 +47,10 @@ function allTasks() {
 }
 
 function packageSource(cb) {
-  var srcPipe = gulp.src(['./**/*.*', "!./theme-source.zip.resources", "!./node_modules/**"])
-    .pipe(zip('theme-source.zip.resources'))
-    .pipe(gulp.dest('./'))
+    var srcPipe = gulp.src(['./**/*.*', "!./theme-source.zip.resources", "!./node_modules/**"])        
+        .pipe(changed('./theme-source.zip.resources'))  
+        .pipe(zip('theme-source.zip.resources'))
+        .pipe(gulp.dest('./'))
 
   cb();
 

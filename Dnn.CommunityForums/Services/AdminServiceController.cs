@@ -72,8 +72,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public HttpResponseMessage RunMaintenance(RunMaintenanceDTO dto)
         {
-            var moduleSettings = new ModuleSettings { ModuleId = dto.ModuleId, MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: dto.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger, true).ModuleSettings };
-            var rows = DataProvider.Instance().Forum_Maintenance(dto.ForumId, dto.OlderThan, dto.LastActive, dto.ByUserId, dto.WithNoReplies, dto.DryRun, (int)moduleSettings.DeleteBehavior);
+            var deleteBehavior = SettingsBase.GetModuleSettings(dto.ModuleId).DeleteBehavior;
+            var rows = DataProvider.Instance().Forum_Maintenance(dto.ForumId, dto.OlderThan, dto.LastActive, dto.ByUserId, dto.WithNoReplies, dto.DryRun, (int)deleteBehavior);
             if (dto.DryRun)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = string.Format(Utilities.GetSharedResource("[RESX:Maint:DryRunResults]", true), rows.ToString()) });

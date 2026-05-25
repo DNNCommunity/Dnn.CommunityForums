@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics.Eventing.Reader;
     using System.Text;
     using System.Web;
     using System.Web.UI;
@@ -56,6 +57,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public int TabID { get; set; }
+
+        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        public int ModuleID { get; set; }
 
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string Text { get; set; }
@@ -116,7 +120,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var qs = string.Empty;
             if (HttpContext.Current.Request.QueryString[ParamKeys.TimeSpan] != null)
             {
-                qs = $"?{ParamKeys.TimeSpan}={HttpContext.Current.Request.QueryString[ParamKeys.TimeSpan]}";
+                if (this.ModuleID > 0 && Utilities.UseFriendlyURLs(this.ModuleID))
+                {
+                    qs = $"{ParamKeys.TimeSpan}/{HttpContext.Current.Request.QueryString[ParamKeys.TimeSpan]}";
+                }
+                else
+                {
+                    qs = $"?{ParamKeys.TimeSpan}={HttpContext.Current.Request.QueryString[ParamKeys.TimeSpan]}";
+                }
             }
 
             if (this.PageCount > 1)
@@ -144,7 +155,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         else
                         {
                             sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + qs + "\" title=\"First Page\"> &lt;&lt; </a></td>");
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + (this.CurrentPage - 1) + "/" + qs + "\" title=\"Previous Page\"> &lt; </a></td>");
+                            if (this.ModuleID > 0 && Utilities.UseFriendlyURLs(this.ModuleID))
+                            {
+                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + qs + "/" + (this.CurrentPage - 1) + "/" + "\" title=\"Previous Page\"> &lt; </a></td>");
+                            }
+                            else
+                            {
+                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + (this.CurrentPage - 1) + "/" + qs + "\" title=\"Previous Page\"> &lt; </a></td>");
+                            }
                         }
                     }
                     else
@@ -202,7 +220,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             {
                                 if (i > 1)
                                 {
-                                    sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + i + "/" + qs + "\">" + i + "</a></td>");
+                                    if (this.ModuleID > 0 && Utilities.UseFriendlyURLs(this.ModuleID))
+                                    {
+                                        sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + qs + "/" + i + "\">" + i + "</a></td>");
+                                    }
+                                    else
+                                    {
+                                        sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + i + "/" + qs + "\">" + i + "</a></td>");
+                                    }
                                 }
                                 else
                                 {
@@ -233,8 +258,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                         else
                         {
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + (this.CurrentPage + 1) + "/" + qs + "\" title=\"Next Page\"> &gt;</a></td>");
-                            sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + this.PageCount + "/" + qs + "\" title=\"Last Page\"> &gt;&gt;</a></td>");
+                            if (this.ModuleID > 0 && Utilities.UseFriendlyURLs(this.ModuleID))
+                            {
+                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + qs + "/" + (this.CurrentPage + 1) + "\" title=\"Next Page\"> &gt;</a></td>");
+                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + qs + "/" + this.PageCount + "\" title=\"Last Page\"> &gt;&gt;</a></td>");
+                            }
+                            else
+                            {
+                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + (this.CurrentPage + 1) + "/" + qs + "\" title=\"Next Page\"> &gt;</a></td>");
+                                sb.Append("<td class=\"af_pagernumber\" style=\"text-align:center;\"><a href=\"" + this.BaseURL + this.PageCount + "/" + qs + "\" title=\"Last Page\"> &gt;&gt;</a></td>");
+                            }
                         }
                     }
                     else

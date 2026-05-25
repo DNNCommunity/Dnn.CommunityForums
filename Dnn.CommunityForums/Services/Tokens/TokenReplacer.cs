@@ -405,7 +405,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
             if (template.ToString().Contains("[AF:CONTROL:ADDFAVORITE]"))
             {
-                var forumUrl = new ControlUtils().BuildUrl(forum.PortalId, tabId, forum.ModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, -1, -1, string.Empty, 1, -1, forum.SocialGroupId);
+                var forumUrl = new ControlUtils().BuildUrl(portalId: forum.PortalId, tabId: tabId, moduleId: forum.ModuleId, groupPrefix: forum.ForumGroup.PrefixURL, forumPrefix: forum.PrefixURL, forumGroupId: forum.ForumGroupId, forumID: forum.ForumID, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: forum.SocialGroupId);
                 template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + forum.ForumName + "','" + forumUrl + "');\"><img src=\"" + moduleSettings.ThemeLocation + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>");
             }
 
@@ -466,7 +466,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         {
             if (!string.IsNullOrEmpty(body))
             {
-                body = Utilities.ManageImagePath(System.Net.WebUtility.HtmlDecode(body), uri);
+                body = Utilities.ManageImagePath(body, uri);
                 body = body.Replace("[", "&#91;").Replace("]", "&#93;");
                 if (body.ToUpper().Contains("&#91;CODE&#93;"))
                 {
@@ -476,7 +476,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
                 if (RegexUtils.GetCachedRegex("\\[CODE([^>]*)\\]", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).IsMatch(body))
                 {
-                    body = CodeParser.ParseCode(System.Net.WebUtility.HtmlDecode(body));
+                    body = CodeParser.ParseCode(body);
                 }
 
                 body = Utilities.StripExecCode(body);

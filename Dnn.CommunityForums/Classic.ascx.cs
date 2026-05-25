@@ -489,7 +489,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ShowToolbar = false;
             }
 
-            if (this.Request.QueryString["dnnprintmode"] == null)
+            if (this.Request.QueryString[Modes.DnnPrintMode] == null)
             {
                 if (HttpContext.Current.Items["ShowToolbar"] != null)
                 {

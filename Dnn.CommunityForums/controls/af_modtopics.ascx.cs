@@ -361,7 +361,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private string GetAttachments(int contentId, int portalID, int moduleID)
         {
             var portalSettings = new PortalSettingsHelper().GetPortalSettings(portalID);
-            var strHost = Utilities.ResolveUrl($"https://{portalSettings.DefaultPortalAlias}/", portalSettings.DefaultPortalAlias, portalSettings.SSLEnabled);
+            var strHost = Utilities.ResolveUrl($"https://{portalSettings.DefaultPortalAlias}/", portalSettings: portalSettings);
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             foreach (var attachment in new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetByContentId(contentId))
@@ -373,7 +373,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sb.Append("<br />");
                         int attachId = attachment.AttachmentId;
-                        var url = Utilities.ResolveUrl($"https://{portalSettings.DefaultPortalAlias}{DotNetNuke.Services.FileSystem.FileManager.Instance.GetUrl(file)}", portalSettings.DefaultPortalAlias, portalSettings.SSLEnabled);
+                        var url = Utilities.ResolveUrl($"https://{portalSettings.DefaultPortalAlias}{DotNetNuke.Services.FileSystem.FileManager.Instance.GetUrl(file)}", portalSettings: portalSettings);
 
                         switch (attachment.ContentType.ToLowerInvariant())
                         {

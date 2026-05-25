@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb.TabId = this.ForumTabId;
             if (tb.TabId <= 0)
             {
-                tb.TabId = int.Parse(this.Request.QueryString["TabID"]);
+                tb.TabId = int.Parse(this.Request.QueryString[ParamKeys.TabId]);
             }
 
             tb.ForumGroupId = this.ForumGroupId;

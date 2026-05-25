@@ -35,6 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
@@ -284,7 +285,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return this.Request.CreateResponse(HttpStatusCode.Accepted, "File not found");
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, Utilities.ResolveUrl($"https://{this.PortalSettings.DefaultPortalAlias}{fileManager.GetUrl(file)}", this.PortalSettings.DefaultPortalAlias, this.PortalSettings.SSLEnabled));
+            return this.Request.CreateResponse(HttpStatusCode.OK, Utilities.ResolveUrl($"https://{this.PortalSettings.DefaultPortalAlias}{fileManager.GetUrl(file)}", portalSettings: this.PortalSettings));
         }
     }
 }

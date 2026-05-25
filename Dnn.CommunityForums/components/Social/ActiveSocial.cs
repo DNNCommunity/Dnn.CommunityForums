@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ji.SocialGroupId = post.Forum.SocialGroupId;
                 }
 
-                JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(post.PortalId, post.Forum.GetTabId(), true));
+                JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(post.PortalId, post.Forum.GetTabId(), false));
             }
             catch (Exception ex)
             {
@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         Url = post.GetLink(),
                     };
                     ji.DateUpdated = DateTime.UtcNow;
-                    JournalController.Instance.UpdateJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(post.ModuleId, post.Forum.GetTabId(), true));
+                    JournalController.Instance.UpdateJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(post.ModuleId, post.Forum.GetTabId(), false));
                 }
             }
             catch (Exception ex)

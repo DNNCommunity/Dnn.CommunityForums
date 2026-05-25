@@ -62,19 +62,19 @@ namespace DotNetNuke.Modules.ActiveForums
             // PortalSettings.PortalId
             int intTabId = -1;
 
-            if (this.Request.QueryString["tabid"] != null)
+            if (this.Request.QueryString[ParamKeys.TabId] != null)
             {
-                if (Utilities.IsNumeric(this.Request.QueryString["tabid"]))
+                if (Utilities.IsNumeric(this.Request.QueryString[ParamKeys.TabId]))
                 {
-                    intTabId = Convert.ToInt32(this.Request.QueryString["tabid"]);
+                    intTabId = Convert.ToInt32(this.Request.QueryString[ParamKeys.TabId]);
                 }
             }
 
-            if (this.Request.QueryString["moduleid"] != null)
+            if (this.Request.QueryString[ParamKeys.ModuleId] != null)
             {
-                if (Utilities.IsNumeric(this.Request.QueryString["moduleid"]))
+                if (Utilities.IsNumeric(this.Request.QueryString[ParamKeys.ModuleId]))
                 {
-                    this.moduleID = Convert.ToInt32(this.Request.QueryString["moduleid"]);
+                    this.moduleID = Convert.ToInt32(this.Request.QueryString[ParamKeys.ModuleId]);
                 }
             }
 
@@ -82,11 +82,11 @@ namespace DotNetNuke.Modules.ActiveForums
             bool bolSecurity = false;
             bool bolBody = true;
             int forumID = -1;
-            if (this.Request.QueryString["ForumID"] != null)
+            if (this.Request.QueryString[Literals.ForumId] != null)
             {
-                if (Utilities.IsNumeric(this.Request.QueryString["ForumId"]))
+                if (Utilities.IsNumeric(this.Request.QueryString[Literals.ForumId]))
                 {
-                    forumID = Int32.Parse(this.Request.QueryString["ForumID"]);
+                    forumID = Int32.Parse(this.Request.QueryString[Literals.ForumId]);
                 }
             }
 

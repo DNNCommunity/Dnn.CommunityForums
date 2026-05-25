@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            09.07.00
+            09.08.00
         </h3>
 <!--       
         <p>
@@ -75,23 +75,25 @@
         <h4>New Features &amp; Enhancements</h4>
         <ul>
             
-            <li>NEW: Community Forums posts (from publicly-readable forums) are now included in DNN Portal site maps (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1558">Issue 1558</a>)</li>
-            <li>ENHANCED: Images can now be dropped/pasted into post editor and are stored in forum content folders in DNN file manager (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1833">Issue 1833</a>)</li>
-            <li>ENHANCED: Attachments handling has been refactored to use DAL2 and files are stored in forum content folders in DNN file manager (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1855">PR 1855</a>)</li>
-            <li>ENHANCED: Relocated image size options from "attachments" to "HTML" forum feature option in Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1852">Issue 1852</a>)</li>
+            <li>NEW: Community Forums now ships with its own editor (based on TipTap) to replace the outdated CKEditor used in DNN; enabled by default on new installs; must be enabled after upgrading existing sites (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Editor-Selection">Editor Selection wiki page</a>)</li>
+            <li>ENHANCED: Community Forums posts (from publicly-readable forums) included in DNN Portal site map now use algorithmic ranking for priority and frequency based on recency of post and replies, number of likes, etc. (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Site-Map">Site Map wiki page</a>)</li><li>ENHANCED: Images can now be dropped/pasted into post editor and are stored in forum content folders in DNN file manager (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1833">Issue 1833</a>)</li>
+            <li>ENHANCED: The "URL Rewriter" module used for friendly URLs has been significantly overhauled to address maintainability, scalability, and performance issues (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1885">PR 1885</a>)</li>
+            <li>ENHANCED: "Filtered topics" pages now include "time frame" dropdown (i.e. see only unread topics for past month), options are now more dynamic (e.g., "announcements" and "most likes" are only shown if applicable) and have much better performance (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1888">PR 1888</a>)</li>
+            <li>ENHANCED: Content shown using the "What's New" module is now cached to improve performance (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1890">PR 1890</a>)</li>
+
 <!--
             <li>None at this time.</li>
-            <li>NEW: Web API endpoints for forums search functionality (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1758">PR 1758</a>)</li>
-            <li>NEW: Require URL prefix for forum/forum groups in Control Panel when friendly URLs are enabled (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1765">PR 1765</a>)</li>
-            <li>NEW: During upgrade, ensure friendly URL/vanity names are properly populated when friendly URLs are enabled (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1767">PR 1767</a>)</li>
-            <li>NEW: In forums list in Control Panel, show labels for forums/forum groups that are hidden and/or not active (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1754">PR 1754</a>)</li>
-            <li>UPDATE: [FORUMAUTHOR:FIRSTNAME] and [FORUMAUTHOR:LASTNAME] tokens now honor DNN profile visibility settings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1740">PR 1740</a>)</li>
-            <li>UPDATE: Change icon in search popup from gray to blue to match toolbar icon (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1751">PR 1751</a>)</li>
+            <li>NEW: Web API endpoints for forums search functionality (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1758">PR 1758</a>)</li>
+            <li>NEW: Require URL prefix for forum/forum groups in Control Panel when friendly URLs are enabled (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1765">PR 1765</a>)</li>
+            <li>NEW: During upgrade, ensure friendly URL/vanity names are properly populated when friendly URLs are enabled (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1767">PR 1767</a>)</li>
+            <li>NEW: In forums list in Control Panel, show labels for forums/forum groups that are hidden and/or not active (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1754">PR 1754</a>)</li>
+            <li>UPDATE: [FORUMAUTHOR:FIRSTNAME] and [FORUMAUTHOR:LASTNAME] tokens now honor DNN profile visibility settings (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1740">PR 1740</a>)</li>
+            <li>UPDATE: Change icon in search popup from gray to blue to match toolbar icon (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1751">PR 1751</a>)</li>
 
 
-            <li>UPDATE: When upgrading, don't send notifications during initial backfill of badge awards (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1632">Issue 1632</a>)</li>
-            <li>UPDATE: When upgrading, don't install badges on forums in "Social Group" configuration; those can be added manually if desired (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1621">Issue 1621</a>)</li>
-            <li>UPDATE: If multiple instances of DNN Community Forums are installed, only display user badges associated with the specific module instance (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1637">Issue 1637</a>)</li>
+            <li>UPDATE: When upgrading, don't send notifications during initial backfill of badge awards (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1632">Issue 1632</a>)</li>
+            <li>UPDATE: When upgrading, don't install badges on forums in "Social Group" configuration; those can be added manually if desired (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1621">Issue 1621</a>)</li>
+            <li>UPDATE: If multiple instances of DNN Community Forums are installed, only display user badges associated with the specific module instance (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1637">Issue 1637</a>)</li>
             <li>NEW: (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/TBD">PR# TBD</a>)</li>
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
@@ -101,11 +103,11 @@
         <h4>Bug Fixes</h4>
 
         <ul>
-             <li>FIX: "Automatic Links" feature now works correctly when content contains multiple &lt;a&gt; tags  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1871">Issue 1871</a>)</li>
+          <li>None at this time.</li> 
+<!--
+             <li>FIX: "Automatic Links" feature now works correctly when content contains multiple &lt;a&gt; tags  (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1871">Issue 1871</a>)</li>
              <li>FIX: Localization now longer causes features from working when a translation resource contains a single quote character (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/84">Issue 84</a>)</li>
              <li>FIX: No longer get a popup error when emptying the Recycle Bin (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1858">Issue 1858</a>)</li>
-<!--
-          <li>None at this time.</li> 
              
               <li>FIX: Issues with  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1681">Issue 1681</a>)</li>
             
@@ -115,10 +117,9 @@
 
         <h4>Tasks / Development Updates (and Technical Debt Reduction)</h4>
         <ul>
-            <li>09.07.00 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1870">Issue 1870</a>)</li>
-            <li>Update Regex objects to use DNN cached regex API (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1849">Issue 1849</a>)</li>
-            <li>Removed unused legacy attachment manager inherited from Active Forums (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1844">Issue 1844</a>)</li>
-            <li>Address DNN Platform APIs being deprecated in (future) DNN 11 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1799">Issue 1799</a>)</li>
+            <li>09.08.00 Release Prep (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1893">Issue 1893</a>)</li>
+            <li>Improved consistency of encoding/decoding of HTML in subject and body (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1610">Issue 1610</a>)</li>
+            <li>Removed unused legacy files from Active Forums (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1886">Issue 1886</a>)</li>
 
 <!--
             <li>Forum Viewer should use DNN Resource Manager to load module.css not load it directly (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1792">Issue 1792</a>)</li>

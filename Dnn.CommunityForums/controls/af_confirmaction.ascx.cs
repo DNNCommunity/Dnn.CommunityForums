@@ -1,4 +1,4 @@
-// Copyright (c) by DNN Community
+﻿// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -32,24 +32,24 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 // Put user code to initialize the page here
-                if (this.Request.Params["afmsg"] != null)
+                if (this.Request.Params[ParamKeys.Message] != null)
                 {
-                    switch (this.Request.Params["afmsg"].ToUpper())
+                    switch (this.Request.Params[ParamKeys.Message])
                     {
-                        case "MOVE":
+                        case MessageTypes.Move:
                             this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Moved]", "Messages.ascx");
                             break;
-                        case "MODALERT":
+                        case MessageTypes.ModAlert:
                             this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Alert]", "Messages.ascx");
                             break;
-                        case "PENDINGMOD":
+                        case MessageTypes.PendingModeration:
                             this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:PendingMod]", "Messages.ascx");
                             this.hypPost.Visible = false;
                             break;
-                        case "EMAILSENT":
+                        case MessageTypes.EmailSent:
                             this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Email:Sent]", "Messages.ascx");
                             break;
-                        case "POSTSUBMIT":
+                        case MessageTypes.PostSubmit:
                             this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Submit]", "Messages.ascx");
                             break;
                     }

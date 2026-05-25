@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string ForumsAllowed { get; set; }
 
         [IgnoreColumn]
-        public HashSet<int> UserForums { get; set; }
+        public HashSet<int> UserForums => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, this, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
 
         [IgnoreColumn]
         public int PostCount => this.TopicCount + this.ReplyCount;
@@ -665,7 +665,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             width = length;
                         }
 
-                        return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(this.PortalSettings, this.UserId, width, height), format);
+                        return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatarImgTag(this.PortalSettings, this.UserId, width, height), format);
                     case "usercaption":
                         return PropertyAccess.FormatString(this.UserCaption, format);
                     case "displayname":

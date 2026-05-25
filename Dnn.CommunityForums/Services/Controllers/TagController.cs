@@ -81,20 +81,25 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     var matchingTags = DataCache.ContentCacheRetrieve(this.ForumModuleId, cachekey) as List<TagMatchDto>;
                     if (matchingTags == null)
                     {
-                        matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController()
+                        matchingTags = new List<TagMatchDto>();
+                        matchingTags.AddRange(
+                        new DotNetNuke.Modules.ActiveForums.Controllers.TagController()
                         .Find(
                             "WHERE PortalId = @0 AND ModuleId = @1 AND TagName <> '' AND TagName LIKE @2 ORDER By TagName",
                             this.ActiveModule.PortalID,
                             this.ForumModuleId,
                             $"{DotNetNuke.Modules.ActiveForums.Services.ServicesHelper.CleanAndChopString(matchString, 20)}%")
-                        .Select(t => new TagMatchDto { Id = t.TagId, Name = t.TagName })
-                        .ToList();
+                        .Select(t => new TagMatchDto {
+                            id = t.TagId,
+                            name = t.TagName,
+                            portalSettings = this.PortalSettings,
+                            }).ToList());
                         DataCache.ContentCacheStore(this.ForumModuleId, cachekey, matchingTags);
                     }
 
                     if (matchingTags.Count > 0)
                     {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, matchingTags);
+                        return this.Request.CreateResponse(HttpStatusCode.OK, matchingTags.Select(t => new { id = t.id, name = t.name, url = t.url, }));
                     }
                 }
 
@@ -110,11 +115,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
         private struct TagMatchDto
         {
-            [JsonProperty(propertyName: "id")]
-            public int Id { get; set; }
+            public int id { get; set; }
 
-            [JsonProperty(propertyName: "name")]
-            public string Name { get; set; }
+            public string name { get; set; }
+
+            public DotNetNuke.Entities.Portals.PortalSettings portalSettings { get; set; }
+
+            public string url => Utilities.NavigateURL(this.portalSettings.UserTabId, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.Search}", $"{ParamKeys.Tags}={this.name}", });
         }
     }
 }

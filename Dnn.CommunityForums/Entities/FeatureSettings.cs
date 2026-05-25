@@ -131,9 +131,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get
             {
                 EditorType parseValue;
-                return Enum.TryParse(Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.EditorType], EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS.ToString()), true, out parseValue)
+                return Enum.TryParse(Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.EditorType], EditorType.FORUMSTIPTAPEDITOR.ToString()), true, out parseValue)
                     ? parseValue
-                    : EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS;
+                    : EditorType.FORUMSTIPTAPEDITOR;
             }
         }
 

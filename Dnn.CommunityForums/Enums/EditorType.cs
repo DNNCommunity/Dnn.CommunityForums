@@ -26,6 +26,6 @@ namespace DotNetNuke.Modules.ActiveForums.Enums
         /*ACTIVEEDITOR = 1, Deprecated*/
         HTMLEDITORPROVIDER = 2,
         DNNCKEDITOR4PLUSFORUMSPLUGINS = 3,
-        /* FORUMSTIPTAPEDITOR = 4, coming soon! */
+        FORUMSTIPTAPEDITOR = 4,
     }
 }

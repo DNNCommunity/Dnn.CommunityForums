@@ -86,12 +86,12 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 }
 
                 var portalAliases = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
-                portalSettings.PortalAlias = portalAliases.FirstOrDefault(pa => pa.IsPrimary) ?? portalAliases.FirstOrDefault();
+                portalSettings.PortalAlias = portalAliases?.FirstOrDefault(pa => pa.IsPrimary) ?? portalAliases?.FirstOrDefault();
                 return portalSettings;
             }
             catch (Exception ex)
             {
-                Exceptions.LogException(ex);
+                    Exceptions.LogException(ex);
                 return null;
             }
         }

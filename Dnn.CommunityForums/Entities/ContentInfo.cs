@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Security.Policy;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Portals;
@@ -176,7 +177,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 }
                             }
 
-                            var tag = Utilities.ResolveUrlInTag($"<img src=\"https://{this.Post.Forum.PortalSettings.DefaultPortalAlias}{DotNetNuke.Services.FileSystem.FileManager.Instance.GetUrl(file)}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />", this.Post.Forum.PortalSettings.DefaultPortalAlias, this.Post.Forum.PortalSettings.SSLEnabled);
+                            var imgUrl = $"https://{this.Post.Forum.PortalSettings.DefaultPortalAlias}{DotNetNuke.Services.FileSystem.FileManager.Instance.GetUrl(file)}";
+                            imgUrl = Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl(imgUrl, this.Post.Forum.PortalSettings), this.Post.Forum.PortalSettings);
+                            var tag = $"<img src=\"{imgUrl}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />";
                             this.Body = this.Body.Replace(match.Groups["tag"].Value, tag);
                             new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().Save(this, this.ContentId);
                         }
@@ -188,6 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
             }
         }
+
 
         internal void RemoveAttachments()
         {

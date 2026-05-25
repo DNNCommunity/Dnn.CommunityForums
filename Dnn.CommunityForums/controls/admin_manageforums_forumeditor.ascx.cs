@@ -721,7 +721,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // if switching from HTML off to HTML on, switch editor to HTML editor, or vice versa
             if (this.rdHTMLOff.Checked && featureSettings.AllowHTML)
             {
-                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorType.DNNCKEDITOR4PLUSFORUMSPLUGINS);
+                Utilities.SelectListItemByValue(this.drpEditorTypes, (int)EditorType.FORUMSTIPTAPEDITOR);
             }
 
             if (this.rdHTMLOn.Checked && !featureSettings.AllowHTML)

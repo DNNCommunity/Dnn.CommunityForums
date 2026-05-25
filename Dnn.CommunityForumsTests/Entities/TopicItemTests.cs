@@ -20,9 +20,9 @@
 
 namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 {
-    using DotNetNuke.Modules.ActiveForums;
-    using DotNetNuke.Modules.ActiveForums.Entities;
-    using Moq;
+    using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -31,63 +31,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
         [Test]
         public void GetTopicStatusForUserTest1()
         {
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
-            {
-                Object =
-                {
-                    PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
-                    ForumID = 1,
-                    ForumName = "Test Forum",
-                    TotalTopics = 0,
-                    Security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.MockModule.Object.ModuleID),
-                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo { GroupName = "Test Forum Group" },
-                },
-            };
+            // Arrange — anonymous user cannot view a members-only topic → Forbidden
+            var topic = this.TopicReplyGraph.Find(t => t.TopicId == TopicReplyObjectGraph.MembersOnlyTopicId);
+            var forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId);
 
-            var mockTopic = new Mock<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
-            {
-                Object =
-                {
-                    ForumId = 1,
-                    TopicId = 1,
-                    Forum = mockForum.Object,
-                    Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
-                    {
-                        ContentId = 1,
-                        ModuleId = 1,
-                        Subject = "Test Topic",
-                        Body = "Test Topic",
-                    },
-                },
-            };
-
-            var mockUserInfo = new Mock<DotNetNuke.Entities.Users.UserInfo>
-            {
-                Object =
-                {
-                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12,
-                    IsSuperUser = false,
-                    Profile = new DotNetNuke.Entities.Users.UserProfile()
-                    {
-                        PreferredLocale = "en-US",
-                    },
-                },
-            };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.MockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
-            {
-                Object =
-                {
-                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserId = mockUserInfo.Object.UserID,
-                    UserInfo = mockUserInfo.Object,
-                },
-            };
-
-            var expectedResult = DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Forbidden;
+            var expectedResult = TopicStatus.Forbidden;
 
             // Act
-            var actualResult = mockTopic.Object.GetTopicStatusForUser(mockUser.Object);
+            var actualResult = topic.GetTopicStatusForUser(forumUser);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -96,66 +47,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
         [Test]
         public void GetTopicStatusForUserTest2()
         {
-            // Arrange
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
-            {
-                Object =
-                {
-                    PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
-                    ForumID = 1,
-                    ForumName = "Test Forum",
-                    TotalTopics = 0,
-                    Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo()
-                    {
-                        View = Globals.DefaultAnonRoles + "|-1;||",
-                    },
-                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo { GroupName = "Test Forum Group" },
-                },
-            };
+            // Arrange — registered user can view a public topic → Unread
+            var topic = this.TopicReplyGraph.Find(t => t.TopicId == TopicReplyObjectGraph.AnnouncementTopicId);
+            var forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.UserID_User12);
 
-            var mockTopic = new Mock<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
-            {
-                Object =
-                {
-                    ForumId = 1,
-                    TopicId = 1,
-                    Forum = mockForum.Object,
-                    Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
-                    {
-                        ContentId = 1,
-                        ModuleId = 1,
-                        Subject = "Test Topic",
-                        Body = "Test Topic",
-                    },
-                },
-            };
-
-            var mockUserInfo = new Mock<DotNetNuke.Entities.Users.UserInfo>
-            {
-                Object =
-                {
-                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserID = DotNetNuke.Tests.Utilities.Constants.UserID_User12,
-                    IsSuperUser = false,
-                    Profile = new DotNetNuke.Entities.Users.UserProfile()
-                    {
-                        PreferredLocale = "en-US",
-                    },
-                },
-            };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.MockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
-            {
-                Object =
-                {
-                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserId = mockUserInfo.Object.UserID,
-                    UserInfo = mockUserInfo.Object,
-                },
-            };
-            var expectedResult = DotNetNuke.Modules.ActiveForums.Enums.TopicStatus.Unread;
+            var expectedResult = TopicStatus.Unread;
 
             // Act
-            var actualResult = mockTopic.Object.GetTopicStatusForUser(mockUser.Object);
+            var actualResult = topic.GetTopicStatusForUser(forumUser);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));

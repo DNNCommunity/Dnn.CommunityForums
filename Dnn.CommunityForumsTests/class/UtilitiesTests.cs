@@ -23,17 +23,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     using System;
     using System.Collections;
     using System.Globalization;
-    using System.Security.Policy;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums;
-
-    using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-
-    using Moq;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs;
 
     using NUnit.Framework;
-
 
     [TestFixture]
     public partial class UtilitiesTests : DotNetNuke.Modules.ActiveForumsTests.TestBase
@@ -58,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         public void NullDateTest()
         {
             // Arrange
-            DateTime expectedResult = DateTime.Parse("1/1/1900", new CultureInfo("en-US", false).DateTimeFormat).ToUniversalTime();
+            DateTime expectedResult = DateTime.Parse("1/1/1900", new System.Globalization.CultureInfo("en-US", false).DateTimeFormat).ToUniversalTime();
 
             // Act
             var actualResult = Utilities.NullDate();
@@ -80,143 +77,105 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test]
-        [TestCase(0, 0, false, false, ExpectedResult = true)] // flood interval disables
-        [TestCase(20, 25, false, false, ExpectedResult = true)]
-        [TestCase(200, 25, false, true, ExpectedResult = true)] // user is an admin
-        [TestCase(200, null, false, false, ExpectedResult = true)] // user is an admin
-        [TestCase(200, 25, true, false, ExpectedResult = true)] // interval is 200, anonymous, last post is 25, expect true (anonymous users will require captcha)
-        [TestCase(200, 25, false, false, ExpectedResult = false)] // interval is 200, not anonymous, last post is 25, expect false
-        [TestCase(20, 25, false, false, ExpectedResult = true)] // interval is 20, not anonymous, last post is 25, expect true
-        public bool HasFloodIntervalPassedTest1(int floodInterval, object secondsSinceLastPost, bool isAnonymous, bool isSuperUser)
+        [TestCase(0, 0, false, false, false, ExpectedResult = true, TestName = "HasFloodIntervalPassedTest_FloodIntervalDisabled")] // flood interval disables
+        [TestCase(20, 25, false, false, false, ExpectedResult = true, TestName = "HasFloodIntervalPassedTest_FloodIntervalPassed_UntrustedUser")]
+        [TestCase(200, 25, false, true, true, ExpectedResult = true, TestName = "HasFloodIntervalPassedTest_FloodIntervalPassed_AdminByPass")] // user is an admin
+        [TestCase(200, null, false, false, true, ExpectedResult = true, TestName = "HasFloodIntervalPassedTest_FloodIntervalPassed_NoPreviousPostButAdminByPass")] // user is an admin
+        [TestCase(200, 25, true, false, false, ExpectedResult = true, TestName = "HasFloodIntervalPassedTest_FloodIntervalNotPassed_ButByPassforAnonymousWillRequireCaptcha")] // interval is 200, anonymous, last post is 25, expect true (anonymous users will require captcha)
+        [TestCase(200, 25, false, false, false, ExpectedResult = false, TestName = "HasFloodIntervalPassedTest_FloodIntervalNotPassed_UntrustedUser")] // interval is 200, not anonymous, last post is 25, expect false
+        [TestCase(200, 25, false, false, true, ExpectedResult = true, TestName = "HasFloodIntervalPassedTest_FloodIntervalNotPassed_ButTrustedUser")] // interval is 200, not anonymous, last post is 25, expect true
+        [TestCase(20, 25, false, false, true, ExpectedResult = true, TestName = "HasFloodIntervalPassedTest_FloodIntervalPassed_TrustedUser")] // interval is 20, not anonymous, trusted user, last post is 25, expect true
+        [TestCase(20, 25, false, false, false, ExpectedResult = true, TestName = "HasFloodIntervalPassedTest_FloodIntervalPassed_UntrustedUser")] // interval is 20, not anonymous, untrusted, last post is 25, expect true
+        public bool HasFloodIntervalPassedTest1(int floodInterval, object secondsSinceLastPost, bool isAnonymous, bool isSuperUser, bool isTrustedUser)
         {
-            //Arrange
-            var featureSettings = new System.Collections.Hashtable
+            // Arrange
+            var featureSettings = new Hashtable
             {
                 { ForumSettingKeys.DefaultTrustLevel, TrustTypes.NotTrusted },
             };
-            var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
+
+            // Use a public forum from the graph and apply FeatureSettings
+            var forum = this.ForumsGraph.Find(f => f.ForumID == ForumsObjectGraph.AnnouncementsForumId);
+            forum.FeatureSettings = new FeatureSettings(featureSettings);
+
+            // Resolve the forum user from the graph
+            ForumUserInfo forumUser;
+            if (isAnonymous)
             {
-                Object =
-                {
-                    PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
-                    ForumID = 1,
-                    ForumName = "Test Forum",
-                    TotalTopics = 0,
-                    Security = mockPermissions.Object,
-                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
-                    {
-                        GroupName = "Test Forum Group",
-                    },
-                    FeatureSettings = new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(featureSettings),
-                },
-            };
-            var mockUserInfo = new Mock<DotNetNuke.Entities.Users.UserInfo>
+                forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId);
+            }
+            else if (isSuperUser)
             {
-                Object =
-                {
-                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserID = isAnonymous ? DotNetNuke.Common.Utilities.Null.NullInteger : DotNetNuke.Tests.Utilities.Constants.UserID_User12,
-                    IsSuperUser = isSuperUser,
-                    Profile = new DotNetNuke.Entities.Users.UserProfile()
-                    {
-                        PreferredLocale = "en-US",
-                    },
-                },
-            };
-            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.MockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+                forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.UserID_Admin);
+                forumUser.UserInfo.IsSuperUser = true;
+            }
+            else if (isTrustedUser)
             {
-                Object =
-                {
-                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserId = mockUserInfo.Object.UserID,
-                    UserInfo = mockUserInfo.Object,
-                },
-            };
+                forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.UserID_User12);
+            }
+            else
+            {
+                forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.USER_TenId);
+            }
 
             if (secondsSinceLastPost != null)
             {
-                mockUser.Object.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * (int)secondsSinceLastPost);
-                mockUser.Object.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * (int)secondsSinceLastPost);
+                forumUser.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * (int)secondsSinceLastPost);
+                forumUser.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * (int)secondsSinceLastPost);
             }
 
             // Act
-            bool actualResult = DotNetNuke.Modules.ActiveForums.Utilities.HasFloodIntervalPassed(floodInterval, mockUser.Object, mockForum.Object);
+            bool actualResult = Utilities.HasFloodIntervalPassed(floodInterval, forumUser, forum);
 
             // Assert
             return actualResult;
         }
 
         [Test]
-        [TestCase(0, 0, false, false, ExpectedResult = true)] // edit interval disabled
-        [TestCase(20, 25, false, false, ExpectedResult = true)]
-        [TestCase(200, 25, false, true, ExpectedResult = true)] // user is a superuser; expect true
-        [TestCase(20, 25, true, false, ExpectedResult = true)] // interval is 20, anonymous, post created 25 minutes ago, expect true
-        [TestCase(30, 25, false, false, ExpectedResult = false)] // interval is 30, not anonymous, last post created 25 minutes ago, expect false
-        public bool HasEditIntervalPassedTest(int editInterval, int minutesSincePostCreated, bool isAnonymous, bool isSuperUser)
+        [TestCase(0, 0, false, false, true, ExpectedResult = true)] // edit interval disabled
+        [TestCase(20, 25, false, false, true, ExpectedResult = true)]
+        [TestCase(200, 25, false, true, true, ExpectedResult = true)] // user is a superuser; expect true
+        [TestCase(20, 25, true, false, false, ExpectedResult = true)] // interval is 20, anonymous, post created 25 minutes ago, expect true
+        [TestCase(30, 25, false, false, false, ExpectedResult = false)] // interval is 30, not anonymous but untrusted user, last post created 25 minutes ago, expect false
+        [TestCase(30, 25, false, false, true, ExpectedResult = true)] // interval is 30, not anonymous but trusted user, last post created 25 minutes ago, expect true
+        public bool HasEditIntervalPassedTest(int editInterval, int minutesSincePostCreated, bool isAnonymous, bool isSuperUser, bool isTrustedUser)
         {
-
             // Arrange
-            var featureSettings = new System.Collections.Hashtable
+            var featureSettings = new Hashtable
             {
                 { ForumSettingKeys.DefaultTrustLevel, TrustTypes.NotTrusted },
             };
-            var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings())
-            {
-                Object =
-                {
-                    PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(),
-                    ForumID = 1,
-                    ForumName = "Test Forum",
-                    TotalTopics = 0,
-                    Security = mockPermissions.Object,
-                    ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
-                    {
-                        GroupName = "Test Forum Group",
-                    },
-                    FeatureSettings = new DotNetNuke.Modules.ActiveForums.Entities.FeatureSettings(featureSettings),
-                },
-            };
 
-            var mockTopic = new Mock<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
-            {
-                Object =
-                {
-                    ForumId = 1,
-                    TopicId = 1,
-                    Forum = mockForum.Object,
-                    Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
-                    {
-                        ContentId = 1,
-                        ModuleId = 1,
-                        Subject = "Test Topic",
-                        Body = "Test Topic",
-                        DateCreated = DateTime.UtcNow.AddMinutes(-1 * minutesSincePostCreated),
-                    },
-                },
-            };
+            // Use a public forum from the graph and apply FeatureSettings
+            var forum = this.ForumsGraph.Find(f => f.ForumID == ForumsObjectGraph.AnnouncementsForumId);
+            forum.FeatureSettings = new FeatureSettings(featureSettings);
 
-            var mockUserInfo = new Mock<DotNetNuke.Entities.Users.UserInfo>
+            // Use the announcement topic from the graph; override DateCreated to match the test case
+            var topic = this.TopicReplyGraph.Find(t => t.TopicId == TopicReplyObjectGraph.AnnouncementTopicId);
+            topic.Content.DateCreated = DateTime.UtcNow.AddMinutes(-1 * minutesSincePostCreated);
+
+            // Resolve the forum user from the graph
+            ForumUserInfo forumUser;
+            if (isAnonymous)
             {
-                Object =
-                {
-                    PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserID = isAnonymous ? -1 : DotNetNuke.Tests.Utilities.Constants.UserID_User12,
-                    IsSuperUser = isSuperUser && !isAnonymous,
-                },
-            }; var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>(this.MockModule.Object.ModuleID, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), mockUserInfo.Object)
+                forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.USER_AnonymousUserId);
+            }
+            else if (isSuperUser)
             {
-                Object =
-                {
-                    PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId,
-                    UserId = mockUserInfo.Object.UserID,
-                    UserInfo = mockUserInfo.Object,
-                },
-            };
+                forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.UserID_Admin);
+                forumUser.UserInfo.IsSuperUser = true;
+            }
+            else if (isTrustedUser)
+            {
+                forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.UserID_User12);
+            }
+            else
+            {
+                forumUser = this.ForumUserGraph.Find(u => u.UserId == DotNetNuke.Tests.Utilities.Constants.USER_TenId);
+            }
 
             // Act
-            bool actualResult = DotNetNuke.Modules.ActiveForums.Utilities.HasEditIntervalPassed(editInterval, mockUser.Object, mockForum.Object, mockTopic.Object);
+            bool actualResult = Utilities.HasEditIntervalPassed(editInterval, forumUser, forum, topic);
 
             // Assert
             return actualResult;
@@ -244,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var expectedResult = "SELECT * 1  SELECT * 2";
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Utilities.Text.CheckSqlString(input);
+            var actualResult = Utilities.Text.CheckSqlString(input);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -262,11 +221,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         public bool IsNumericTest(object obj)
         {
             // Arrange
-
-            var expectedResult = true;
-
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Utilities.IsNumeric(obj);
+            var actualResult = Utilities.IsNumeric(obj);
 
             // Assert
             return actualResult;
@@ -451,6 +407,29 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             // Assert
             Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        [TestCase("A &amp; B", "A & B")]
+        [TestCase("&amp;lt;div&amp;gt;test&amp;lt;/div&amp;gt;", "&lt;div&gt;test&lt;/div&gt;")]
+        [TestCase("", "")]
+        public void NormalizeHtmlForStorage_DecodesHtmlOnce(string input, string expected)
+        {
+            // Act
+            var result = Utilities.NormalizeHtmlForStorage(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void NormalizeHtmlForStorage_WithNull_ReturnsEmptyString()
+        {
+            // Act
+            var result = Utilities.NormalizeHtmlForStorage(null);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(string.Empty));
         }
 
         [Test]
@@ -666,7 +645,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             // Arrange
 
             // Act
-            return Utilities.RemoveCultureFromUrl(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), url);
+            return Utilities.RemoveCultureFromUrl(url, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
 
             // Assert
         }
@@ -734,7 +713,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var template = $"<a href=\"{path}\">link</a><img src=\"{path}\" />";
             var expectedResult = $"<a href=\"https://{this.DefaultPortalAlias}{path}\">link</a><img src=\"https://{this.DefaultPortalAlias}{path}\" />".Replace("/en-us/en-us/", "/en-us/");
             // Act
-            var result = DotNetNuke.Modules.ActiveForums.Utilities.ResolveUrlInTag(template: template, defaultPortalAlias: this.DefaultPortalAlias, sslEnabled: true);
+            var result = DotNetNuke.Modules.ActiveForums.Utilities.ResolveUrlInTag(tag: template, defaultPortalAlias: this.DefaultPortalAlias, sslEnabled: true);
 
             // Assert
             Assert.That(result, Is.EqualTo(expectedResult));
