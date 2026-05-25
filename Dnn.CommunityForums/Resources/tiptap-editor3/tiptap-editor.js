@@ -114,9 +114,41 @@ export default class TipTapEditorController {
             }
 
             const hostRect = this.editorElement.getBoundingClientRect();
+            const scrollLeft = this.editorElement.scrollLeft;
+            const scrollTop = this.editorElement.scrollTop;
 
-            popup.style.left = `${caretRect.left - hostRect.left + this.editorElement.scrollLeft}px`;
-            popup.style.top = `${caretRect.bottom - hostRect.top + this.editorElement.scrollTop + 6}px`;
+            // Tunable spacing
+            const xOffset = 12;  // move right from caret
+            const yOffset = 8;   // move above caret
+            const edgePadding = 8;
+
+            const caretLeft = caretRect.left - hostRect.left + scrollLeft;
+            const caretTop = caretRect.top - hostRect.top + scrollTop;
+            const caretBottom = caretRect.bottom - hostRect.top + scrollTop;
+
+            const popupWidth = popup.offsetWidth || 240;
+            const popupHeight = popup.offsetHeight || 120;
+
+            const minLeft = scrollLeft + edgePadding;
+            const maxLeft = scrollLeft + this.editorElement.clientWidth - popupWidth - edgePadding;
+
+            // Prefer right of caret, flip left if it overflows
+            let left = caretLeft + xOffset;
+            if (left > maxLeft) {
+                left = caretLeft - popupWidth - xOffset;
+            }
+            left = Math.max(minLeft, Math.min(left, maxLeft));
+
+            const minTop = scrollTop + edgePadding;
+
+            // Prefer above caret, flip below if it overflows
+            let top = caretTop - popupHeight - yOffset;
+            if (top < minTop) {
+                top = caretBottom + yOffset;
+            }
+
+            popup.style.left = `${left}px`;
+            popup.style.top = `${top}px`;
         };
 
         this.editor = new Editor({
