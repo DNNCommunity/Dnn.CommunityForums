@@ -982,7 +982,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: topic.ForumId, moduleId: topic.ModuleId);
-            DotNetNuke.Modules.ActiveForums.Controllers.TagController.CleanUpTags(topic, forum);
+            topic.Content.Body = DotNetNuke.Modules.ActiveForums.Controllers.TagController.GetBodyWithTagsProcessed(topic, forum);
 
             // if editing existing topic, update associated journal item & tags
             if (topic.TopicId > 0)
