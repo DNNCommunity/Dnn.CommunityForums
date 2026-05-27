@@ -383,7 +383,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 urlText = string.Concat(url.Substring(0, maxLengthAutoLinkLabel - 22), "...", url.Substring(url.Length - 20));
             }
 
-            return url.ToLowerInvariant().Contains(currentSite.ToLowerInvariant()) ? string.Format(inSite, new Uri(url).AbsoluteUri, urlText) : string.Format(outSite, new Uri(url).AbsoluteUri, urlText);
+            var validUri = Uri.IsWellFormedUriString(url, UriKind.Absolute);
+            if (validUri)
+            {
+                return url.ToLowerInvariant().Contains(currentSite.ToLowerInvariant()) ? string.Format(inSite, new Uri(url).AbsoluteUri, urlText) : string.Format(outSite, new Uri(url).AbsoluteUri, urlText);
+            }
+
+            return match.Value;
         }
 
         public static string AutoLinks(string text, string currentSite)
