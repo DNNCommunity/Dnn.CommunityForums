@@ -942,6 +942,17 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test]
+        [TestCase("Visit https://.../en-us/internal and https://external.com", ExpectedResult = "Visit https://.../en-us/internal and <a href=\"https://external.com/\" target=\"_blank\" rel=\"nofollow\">https://external.com</a>")]
+        public string AutoLinks_WithInvalidUrl_ShouldSkipInvalidUrl(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result;
+        }
+
+        [Test]
         [TestCase("&lt;a href=\"https://example.com\"&gt;Link&lt;/a&gt;", ExpectedResult = true)]
         public bool AutoLinks_WithEncodedHref_ShouldDecodeAndProcess(string text)
         {
@@ -1165,6 +1176,26 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             // Assert
             return result == expected;
+        }
+
+        [Test]
+        public void ReplaceLink_WithInvalidUrl_ShouldSkipInvalidUrl()
+        {
+            // Arrange
+            string url = "https://.../en-us/internal";
+            string expected = url;
+
+            // Act
+            var match = System.Text.RegularExpressions.Regex.Match(url, UrlPattern, RegexOptions.IgnoreCase);
+            if (!match.Success)
+            {
+                Assert.Fail();
+            }
+
+            string result = Utilities.ReplaceLink(match, this.DefaultSite, url);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
         }
     }
 }
