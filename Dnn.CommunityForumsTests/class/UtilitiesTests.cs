@@ -982,7 +982,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var result = Utilities.AutoLinks(text, this.DefaultSite);
 
             // Assert
-            return result == string.Empty;
+            return  result == string.Empty;
         }
 
         [Test]
