@@ -1032,7 +1032,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                     case "lastpostauthordisplaynamelink":
                         return PropertyAccess.FormatString(
-                            this.LastReplyId > 0 && this.Author.AuthorId > 0
+                            this.LastReplyId > 0 && this.LastReply.Author.AuthorId > 0
                                 ? Controllers.ForumUserController.CanLinkToProfile(
                                     this.Forum.PortalSettings,
                                     this.Forum.MainSettings,
@@ -1040,7 +1040,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                     new Controllers.ForumUserController(this.ModuleId).GetByUserId(
                                         accessingUser.PortalID,
                                         accessingUser.UserID),
-                                    this.Author.ForumUser)
+                                    this.LastReply.Author.ForumUser)
                                     ? Utilities.NavigateURL(
                                         this.Forum.PortalSettings.UserTabId,
                                         string.Empty,
@@ -1067,19 +1067,19 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             var forumUser = forumUserController.GetByUserId(accessingUser.PortalID, accessingUser.UserID);
                             return PropertyAccess.FormatString(
                                 this.LastReplyId > 0
-                                    ? this.Author.AuthorId > 0
+                                    ? this.LastReply.Author.AuthorId > 0
                                         ? Controllers.ForumUserController.GetDisplayName(
                                                 this.Forum.PortalSettings,
                                                 this.Forum.MainSettings,
                                                 bModerate,
                                                 forumUser.IsAdmin || forumUser.IsSuperUser,
-                                                this.Author.AuthorId,
-                                                this.Author.Username,
-                                                this.Author.FirstName,
-                                                this.Author.LastName,
-                                                this.Author.DisplayName).Replace("&amp;#", "&#")
-                                            .Replace("Anonymous", this.Content.AuthorName)
-                                        : this.Content.AuthorName
+                                                this.LastReply.Author.AuthorId,
+                                                this.LastReply.Author.Username,
+                                                this.LastReply.Author.FirstName,
+                                                this.LastReply.Author.LastName,
+                                                this.LastReply.Author.DisplayName).Replace("&amp;#", "&#")
+                                            .Replace("Anonymous", this.LastReply.Content.AuthorName)
+                                        : this.LastReply.Content.AuthorName
                                     : this.Author.AuthorId > 0
                                         ? Controllers.ForumUserController.GetDisplayName(
                                                 this.Forum.PortalSettings,
