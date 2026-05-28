@@ -3,7 +3,6 @@
         <am:pagernav id="PagerTop" runat="server" />
         <h2 class="af-search-title">
             <asp:Label ID="lblHeader" runat="server" /></h2>
-        <button type="submit" runat="server" id="btnMarkRead" class="af-markread" visible="false" onclick="if(!af_confirmMarkAllRead()) return false;" />
         <asp:DropDownList ID="drpTimeFrame" runat="server" AutoPostBack="true" Visible="false">
             <asp:listitem value="15"></asp:listitem>
             <asp:ListItem Value="30"></asp:ListItem>
@@ -21,13 +20,16 @@
             <asp:listitem value="241920"></asp:listitem>
             <asp:listitem value="483840"></asp:listitem>
             <asp:listitem value="2147483647"></asp:listitem>
-        </asp:DropDownList>
+        </asp:DropDownList>        
+        <div style="float:right;">
+            <button type="submit" runat="server" id="btnMarkRead" class="af-markread dnnPrimaryAction" visible="false" onclick="if(!af_confirmMarkAllRead()) return false;" />
+        </div>
     </div>
     <asp:panel id="pnlMessage" runat="server" visible="true" cssclass="af-search-noresults">
         <asp:literal id="litMessage" runat="server" />
     </asp:panel>
     <div class="af-search-results" style="position: relative;">
-        
+
         <!-- Topic View -->
         <asp:repeater id="rptTopics" runat="server" visible="False">
             <HeaderTemplate>
