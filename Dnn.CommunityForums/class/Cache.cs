@@ -137,7 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
+                return Common.Utilities.DataCache.GetCache(cacheKey: cacheKey);
             }
             catch (Exception ex)
             {
@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
+                    return Common.Utilities.DataCache.GetCache(cacheKey: cacheKey);
                 }
                 catch (Exception ex)
                 {
@@ -180,7 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
+                return Common.Utilities.DataCache.GetCache(cacheKey: cacheKey);
             }
             catch (Exception ex)
             {
@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
+                Common.Utilities.DataCache.RemoveCache(cacheKey: cacheKey);
             }
             catch (Exception ex)
             {
@@ -206,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
+                Common.Utilities.DataCache.RemoveCache(cacheKey: cacheKey);
             }
             catch (Exception ex)
             {
@@ -220,7 +220,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
+                    Common.Utilities.DataCache.RemoveCache(cacheKey: cacheKey);
                 }
                 catch (Exception ex)
                 {
