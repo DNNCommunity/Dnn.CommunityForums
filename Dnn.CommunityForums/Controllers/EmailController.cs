@@ -55,9 +55,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this.hostSettingsService = hostSettingsService;
         }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Not Used.")]
-        public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author) => throw new NotImplementedException();
-
         internal static void SendEmail(Enums.TemplateType templateType, int tabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author)
         {
             DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = new PortalSettingsHelper().GetPortalSettings(fi.PortalId);
@@ -144,9 +141,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
             }
         }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 9.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body).")]
-        public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => throw new NotImplementedException();
 
         internal void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body)
         {

@@ -613,27 +613,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return text;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public static string GetCaseInsensitiveSearch(string strSearch)
-        {
-            var strReturn = string.Empty;
-            foreach (var chrCurrent in strSearch)
-            {
-                var chrLower = char.ToLower(chrCurrent);
-                var chrUpper = char.ToUpper(chrCurrent);
-                if (chrUpper == chrLower)
-                {
-                    strReturn = strReturn + chrCurrent;
-                }
-                else
-                {
-                    strReturn = string.Concat(strReturn, "[", chrLower, chrUpper, "]");
-                }
-            }
-
-            return strReturn;
-        }
-
         public static bool InputIsValid(string body)
         {
             if (string.IsNullOrEmpty(body))
@@ -1047,19 +1026,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return string.Empty;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        internal static string GetUserFormattedDateTime(DateTime? dateTime, int portalId, int userId)
-        {
-            if (dateTime != null)
-            {
-                CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
-                TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
-                return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset((DateTime)dateTime));
-            }
-
-            return string.Empty;
-        }
-
         internal static string GetUserFormattedDateTime(DateTime? dateTime, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             if (dateTime != null)
@@ -1097,38 +1063,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return string.Empty;
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
-        {
-            CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
-            TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
-            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset(dateTime), format);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId)
-        {
-            return GetUserFormattedDateTime((DateTime?)dateTime, portalId, userId);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
-        {
-            return GetUserFormattedDateTime((DateTime?)date, userCultureInfo, timeZoneOffset, "d");
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
-        {
-            return GetUserFormattedDateTime((DateTime?)date, userCultureInfo, timeZoneOffset, format);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
-        {
-            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, timeZoneOffset, format);
         }
 
         public static CultureInfo GetCultureInfoForUser(int portalId, int userId)
@@ -1241,12 +1175,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return GetTimeZoneOffsetForUser(new DotNetNuke.Entities.Users.UserController().GetUser(portalId, userId));
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
-        {
-            return displayDate.AddMinutes(offset.TotalMinutes);
-        }
-
         public static string GetLastPostSubject(int lastPostID, int parentPostID, int forumID, int tabID, string subject, int length, int pageSize, int replyCount, bool canRead)
         {
             if (lastPostID != 0)
@@ -1301,23 +1229,6 @@ namespace DotNetNuke.Modules.ActiveForums
             const string expression = @"\[SPACER\:(\d+)\:(\d+)\]";
 
             return DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(expression, RegexOptions.IgnoreCase).Replace(template, spacerTemplate);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        internal static string GetSqlString(string sqlFile)
-        {
-            var resourceLocation = sqlFile;
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceLocation);
-
-            if (stream == null)
-            {
-                return null;
-            }
-
-            var sr = new StreamReader(stream);
-            var contents = sr.ReadToEnd();
-            sr.Close();
-            return contents;
         }
 
         public static string LocalizeControl(string controlText)
@@ -1499,39 +1410,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return string.IsNullOrEmpty(sValue) ? key : sValue;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string FormatFileSize(int fileSize)
-        {
-            try
-            {
-                if (fileSize >= 1073741824)
-                {
-                    return (fileSize / 1024.0 / 1024.0 / 1024.0).ToString("#0.00") + " GB";
-                }
-
-                if (fileSize >= 1048576)
-                {
-                    return (fileSize / 1024.0 / 1024.0).ToString("#0.00") + " MB";
-                }
-
-                if (fileSize >= 1024)
-                {
-                    return (fileSize / 1024.0).ToString("#0.00") + " KB";
-                }
-
-                if (fileSize < 1024)
-                {
-                    return string.Concat(fileSize, " Bytes");
-                }
-            }
-            catch (Exception ex)
-            {
-                return "0 Bytes";
-            }
-
-            return "0 Bytes";
-        }
-
         public static object ConvertFromHashTableToObject(Hashtable ht, object infoObject)
         {
             var myType = infoObject.GetType();
@@ -1620,12 +1498,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return contents;
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int moduleId, int forumId).")]
-        public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, moduleId, forumId);
         }
 
         public static bool SafeConvertBool(object value, bool defaultValue = false)

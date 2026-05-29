@@ -164,9 +164,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetUserFromHttpContext() [renamed method]")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId) => throw new NotImplementedException();
-
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUserFromHttpContext(int portalId, int moduleId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = null;
@@ -227,32 +224,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, cu.UserID);
         }
 
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetDNNUser(int portalId, int userId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).GetByUserId(portalId, userId);
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetDNNUser(int portalId, string userName) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).GetByUserId(portalId, GetUserIdByUserName(portalId, userName));
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetUser(int portalId, int moduleId, string userName) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(-1).GetByUserId(portalId, GetUserIdByUserName(portalId, userName));
-
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user)
         {
             var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(user.ModuleId).Save<int>(user, user.ProfileId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(user.PortalId, user.UserId);
             return forumUser.UserId;
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
-        public bool GetUserIsAdmin(int portalId, int moduleId, int userId)
-        {
-            return this.GetByUserId(portalId, userId).IsAdmin;
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Needed.")]
-        public bool GetUserIsSuperUser(int portalId, int moduleId, int userId)
-        {
-            return this.GetByUserId(portalId, userId).IsSuperUser;
         }
 
         private class JournalContentForUser

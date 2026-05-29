@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        public User ForumUser { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser { get; set; }
 
         private int pageIndex = 1;
 

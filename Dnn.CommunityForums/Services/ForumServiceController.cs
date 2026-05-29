@@ -48,30 +48,6 @@ namespace DotNetNuke.Modules.ActiveForums
     [ValidateAntiForgeryToken]
     public class ForumServiceController : DnnApiController
     {
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public HttpResponseMessage CreateThumbnail(CreateThumbnailDTO dto)
-        {
-            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string EncryptTicket(EncryptTicketDTO dto) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Moved to Attachment Controller.")]
-        [HttpPost]
-        [IFrameSupportedValidateAntiForgeryToken]
-        public Task<HttpResponseMessage> UploadFile()
-        {
-            return new Task<HttpResponseMessage>(() => this.Request.CreateResponse(HttpStatusCode.BadRequest));
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Moved to Attachment Controller.")]
-        [HttpGet]
-        public HttpResponseMessage GetUserFileUrl(int fileId)
-        {
-            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
-        }
-
         [HttpGet]
         public HttpResponseMessage GetTopicList(int forumId)
         {
@@ -183,22 +159,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public class CreateThumbnailDTO
-        {
-            public int FileId { get; set; }
-
-            public int Height { get; set; }
-
-            public int Width { get; set; }
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public class EncryptTicketDTO
-        {
-            public string Url { get; set; }
         }
     }
 }

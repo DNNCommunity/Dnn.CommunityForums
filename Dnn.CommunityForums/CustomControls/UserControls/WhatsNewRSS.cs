@@ -227,7 +227,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append(RSSHeader + System.Environment.NewLine);
 
             // build channel
-            var ps = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+            var ps = new Helpers.PortalSettingsHelper().GetPortalSettings();
 
             var offSet = Convert.ToInt32(PortalSettings.Current.TimeZone.GetUtcOffset(DateTime.UtcNow).TotalMinutes);
 

@@ -49,13 +49,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Public Properties
 
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public XmlDocument ForumData
-        {
-            get => throw new NotImplementedException();// this.forumData ?? (this.forumData = this.ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.ControlConfig.PortalId, this.ControlConfig.ForumModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.PortalId, this.ForumModuleId));
-            set => throw new NotImplementedException(); // this.forumData = value;
-        }
-
         public ControlsConfig ControlConfig { get; set; }
 
         public string ThemePath => this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation);
@@ -75,32 +68,10 @@ namespace DotNetNuke.Modules.ActiveForums
             set
             {
                 this.forumIds = value;
-            }
+            } 
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int DefaultForumViewTemplateId { get; set; } = -1;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int DefaultTopicsViewTemplateId { get; set; } = -1;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int DefaultTopicViewTemplateId { get; set; } = -1;
 
         public string DefaultView { get; set; } = Views.ForumView;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public bool JumpToLastPost
-        {
-            get => throw new NotImplementedException();
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public DateTime UserLastAccess
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
 
         public int PostId
         {

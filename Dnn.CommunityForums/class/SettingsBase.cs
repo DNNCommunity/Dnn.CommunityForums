@@ -88,52 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool ShowToolbar { get; set; } = true;
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public UserController UserController => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public ForumsDB ForumsDB => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public CurrentUserTypes CurrentUserType => this.ForumUser.CurrentUserType;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserIsMod => this.ForumUser.GetIsMod(this.ForumModuleId);
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public string UserDefaultSort => this.UserId != -1 ? this.ForumUser.PrefDefaultSort : "ASC";
-
         public int UserDefaultPageSize => this.UserId != -1 ? this.ForumUser.PrefPageSize : this.ModuleSettings.PageSize;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserPrefHideSigs
-        {
-            get
-            {
-                if (this.UserId != -1)
-                {
-                    try
-                    {
-                        return this.ForumUser.PrefBlockSignatures;
-                    }
-                    catch (Exception ex)
-                    {
-                        return false;
-                    }
-                }
-
-                return false;
-            }
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserPrefHideAvatars => this.UserId != -1 ? this.ForumUser.PrefBlockAvatars : false;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserPrefJumpLastPost => this.UserId != -1 ? this.ForumUser.PrefJumpLastPost : false;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserPrefShowReplies => this.UserId != -1 ? this.ForumUser.PrefDefaultShowReplies : false;
 
         public bool UserPrefTopicSubscribe => this.UserId != -1 ? this.ForumUser.PrefTopicSubscribe : false;
 
@@ -177,9 +132,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         // Forums stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback
         public TimeSpan TimeZoneOffset => Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        protected DateTime GetUserDate(DateTime displayDate) => displayDate.AddMinutes(this.TimeZoneOffset.TotalMinutes);
 
         public string NavigateUrl(int tabId) => Utilities.NavigateURL(tabId);
 

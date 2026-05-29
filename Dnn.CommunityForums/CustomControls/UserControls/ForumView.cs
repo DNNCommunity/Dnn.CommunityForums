@@ -39,9 +39,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
         public bool SubsOnly { get; set; }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forums property.")]
-        public DataTable ForumTable { get; set; }
-
         public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> Forums { get; set; }
 
         public string DisplayTemplate { get; set; } = string.Empty;
@@ -133,12 +130,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Public Methods
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use BuildForumView()")]
-        public string BuildForumView(int forumTemplateId, int currentUserId, string themePath)
-        {
-            return this.BuildForumView();
-        }
-
         public string BuildForumView()
         {
             try
@@ -146,11 +137,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string sTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.ForumView, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this.ForumUser);
 
                 StringBuilder stringBuilder = new StringBuilder(sTemplate);
-                #region "Backward compatilbility -- remove in v10.00.00"
+                #region "Backward compatibility -- remove in v10.00.00"
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(stringBuilder);
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyUserTokenSynonyms(stringBuilder, this.PortalSettings, this.ModuleSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale);
                 stringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyForumTokenSynonyms(stringBuilder, this.PortalSettings, this.ForumUser.UserInfo?.Profile?.PreferredLocale);
-                #endregion "Backward compatilbility -- remove in v10.00.00"
+                #endregion "Backward compatibility -- remove in v10.00.00"
 
                 stringBuilder.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
                 stringBuilder.Replace("[STATISTICS]", "<am:Stats id=\"amStats\" MID=\"" + this.ModuleId + "\" PID=\"" + this.PortalId.ToString() + "\" runat=\"server\" />");
@@ -180,22 +171,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string sForums = string.Empty;
                     string sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
                     string tmpGroup = string.Empty;
-
-                    #region "backward compatibilty - remove when removing ForumTable property"
-#pragma warning disable CS0618
-                    /* this is for backward compatibility -- remove when removing ForumTable property in 10.00.00 */
-                    if (this.ForumTable != null)
-#pragma warning restore CS0618
-                    {
-                        this.Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-#pragma warning disable CS0618
-                        foreach (DataRow dr in this.ForumTable.DefaultView.ToTable().Rows)
-#pragma warning restore CS0618
-                        {
-                            this.Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"]), this.ForumModuleId));
-                        }
-                    }
-                    #endregion "backward compatibilty - remove when removing ForumTable property"
 
                     if (this.Forums == null)
                     {

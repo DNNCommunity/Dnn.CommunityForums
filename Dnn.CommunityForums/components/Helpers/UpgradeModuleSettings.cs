@@ -30,6 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
 
     internal static class UpgradeModuleSettings
     {

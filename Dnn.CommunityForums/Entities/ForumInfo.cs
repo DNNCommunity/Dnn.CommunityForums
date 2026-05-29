@@ -68,20 +68,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         private string cacheKeyTemplate => CacheKeys.ForumInfo;
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Abstractions.Portals.IPortalSettings)")]
-        public ForumInfo()
-            : this(new PortalSettingsHelper().GetPortalSettings())
-        {
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo(DotNetNuke.Abstractions.Portals.IPortalSettings)")]
-        public ForumInfo(int portalId)
-        {
-            this.PortalId = portalId;
-            this.PortalSettings = new PortalSettingsHelper().GetPortalSettings(portalId);
-            this.UpdateCache();
-        }
-
         public ForumInfo(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             this.PortalSettings = portalSettings;
@@ -334,21 +320,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return name;
             }
         }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn]
-        [JsonIgnore]
-        public int LastPostLastPostID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn]
-        [JsonIgnore]
-        public int LastPostParentPostID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn]
-        [JsonIgnore]
-        public int CustomFieldType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         [IgnoreColumn]
         public bool InheritSecurity => this.PermissionsId == this.ForumGroup.PermissionsId;

@@ -29,9 +29,6 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         protected DropDownList drpForums = new DropDownList();
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forums property.")]
-        public DataTable dtForums { get; set; } = null;
-
         public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> Forums { get; set; }
 
         protected override void OnLoad(EventArgs e)
@@ -60,18 +57,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindForums()
         {
-            #region "backward compatibilty - remove when removing dtForums property"
-            /* this is for backward compatibility -- remove when removing dtForums property */
-            if (this.dtForums != null)
-            {
-                this.Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DataRow dr in this.dtForums.DefaultView.ToTable().Rows)
-                {
-                    this.Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"]), this.ForumModuleId));
-                }
-            }
-            #endregion
-
             if (this.Forums == null)
             {
                 this.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId);

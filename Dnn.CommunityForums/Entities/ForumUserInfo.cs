@@ -144,14 +144,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool AttachDisabled { get; set; }
 
-        [IgnoreColumn]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public string Avatar { get; set; }
-
-        [IgnoreColumn]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public AvatarTypes AvatarType { get; set; }
-
         public bool AvatarDisabled { get; set; }
 
         public string PrefDefaultSort { get; set; } = "ASC";
@@ -187,20 +179,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public Uri RequestUri { get; set; }
 
         [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public string[] Roles => this.UserInfo?.Roles;
-
-        [IgnoreColumn]
         public string FirstName => this.UserInfo?.FirstName;
 
         [IgnoreColumn]
         public string LastName => string.IsNullOrEmpty(this.UserInfo?.LastName) ? string.Empty : this.UserInfo?.LastName;
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public string FullName => string.Concat(this.UserInfo?.FirstName, " ", this.UserInfo?.LastName);
 
         [IgnoreColumn]
         public string DisplayName => string.IsNullOrEmpty(this.UserInfo?.DisplayName) == null ? string.Empty : this.UserInfo?.DisplayName;
@@ -265,11 +247,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public string ForumsAllowed { get; set; }
-
-        [IgnoreColumn]
         public HashSet<int> UserForums => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, this, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
 
         [IgnoreColumn]
@@ -277,10 +254,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn]
         public DotNetNuke.Entities.Profile.ProfilePropertyDefinitionCollection Properties => this.UserInfo?.Profile?.ProfileProperties;
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        [IgnoreColumn]
-        TimeSpan TimeZoneOffsetForUser => Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.ModuleSettings ModuleSettings
@@ -429,15 +402,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 this.userPermSet = value;
             }
-        }
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public string UserRoles
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
         }
 
         internal int GetLastReplyRead(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)

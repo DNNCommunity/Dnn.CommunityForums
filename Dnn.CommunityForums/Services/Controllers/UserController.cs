@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
                 var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
                 string sOnlineList = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetUsersOnline(this.PortalSettings, SettingsBase.GetModuleSettings(this.ForumModuleId), this.ForumModuleId, user);
-                IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalSettings.PortalId, this.ForumModuleId, 2);
+                IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalSettings.PortalId, 2);
                 int anonCount = 0;
                 int memCount = 0;
                 int memTotal = 0;
