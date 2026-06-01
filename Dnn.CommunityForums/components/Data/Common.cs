@@ -109,13 +109,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         }
 
         #endregion
-        #region Tags
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        public int Tag_GetIdByName(int portalId, int moduleId, string tagName, bool isCategory)
-        {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Tags_GetByName", portalId, moduleId, tagName.Replace("-", " ").ToLowerInvariant(), isCategory));
-        }
-        #endregion
         #region TopMembers
         public IDataReader TopMembers_Get(int portalId, int rows)
         {
@@ -124,34 +117,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         #endregion
         #region CustomURLS
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        public Dictionary<string, string> GetPrefixes(int portalId)
-        {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            using (IDataReader dr = SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Forums_GetPrefixes", portalId))
-            {
-                while (dr.Read())
-                {
-                    string prefix = dr["PrefixURL"].ToString();
-                    string tabid = dr["TabId"].ToString();
-                    string forumid = dr["ForumId"].ToString();
-                    string moduleId = dr["ModuleId"].ToString();
-                    string archived = dr["Archived"].ToString();
-                    string forumgroupId = dr["ForumGroupId"].ToString();
-                    string groupPrefix = dr["GroupPrefixURL"].ToString();
-                    if (!string.IsNullOrEmpty(groupPrefix))
-                    {
-                        prefix = groupPrefix + "/" + prefix;
-                    }
-
-                    dict.Add(prefix, tabid + "|" + forumid + "|" + moduleId + "|" + archived + "|" + forumgroupId + "|" + groupPrefix);
-                }
-
-                dr.Close();
-            }
-
-            return dict;
-        }
 
         public string GetUrl(int moduleId, int forumGroupId, int forumId, int topicId, int userId, int contentId)
         {
@@ -163,18 +128,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             {
                 return string.Empty;
             }
-        }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        public IDataReader FindByURL(int portalId, string uRL)
-        {
-            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "FindByURL", portalId, uRL);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        public IDataReader URLSearch(int portalId, string uRL)
-        {
-            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "URL_Search", portalId, uRL);
         }
 
         public void ArchiveURL(int portalId, int forumGroupId, int forumId, int topicId, string uRL)
