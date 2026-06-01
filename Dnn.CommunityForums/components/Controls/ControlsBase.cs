@@ -86,22 +86,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int DataPageId
-        {
-            get
-            {
-                if (HttpContext.Current.Request.QueryString[ParamKeys.PageId] == null)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.PageId].ToString());
-                }
-            }
-        }
-
         protected override void OnInit(EventArgs e)
         {
             try

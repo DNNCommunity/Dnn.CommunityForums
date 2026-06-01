@@ -364,18 +364,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return roleString.ToHashSetFromDelimitedString<int>(";");
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        internal static HashSet<int> GetRoleIdsFromRoleIdArray(string[] roles)
-        {
-            return roles.Select(r => Convert.ToInt32(r)).ToHashSet();
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        internal static HashSet<int> GetRoleIdsFromRoleNameArray(int portalId, string[] roles)
-        {
-            return GetRoleIdsFromRoleString(GetPortalRoleIds(portalId: portalId, roles: roles));
-        }
-
         public static bool HasAccess(string authorizedRoles, string userRoles)
         {
             return !string.IsNullOrEmpty(authorizedRoles) && !string.IsNullOrEmpty(userRoles) && HasRequiredPerm(authorizedRoleIds: GetRoleIdsFromRoleString(authorizedRoles), userRoleIds: GetRoleIdsFromRoleString(userRoles));
@@ -463,10 +451,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return GetRoles(portalSettings).Where(r => r.RoleName.Equals(roleName)).Select(r => r.RoleID).FirstOrDefault();
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use GetPortalRoleIds(int PortalId, delimitedString[] Roles).")]
-        public static string GetRoleIds(string[] roles, int portalId) => GetPortalRoleIds(portalId, roles);
-
 
         internal static string GetPortalRoleIds(int portalId, string[] roles)
         {
@@ -567,24 +551,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return roleIds.Distinct().OrderBy(r => r).ToHashSet();
         }
 
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public static bool HasPerm(string authorizedPermSet, int userId, int portalId) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public static bool HasPerm(string authorizedRoles, DotNetNuke.Entities.Users.UserInfo user) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public static bool HasPerm(string authorizedPermSet, string userPermSet) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public static bool HasPerm(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string authorizedPermSet, DotNetNuke.Entities.Users.UserInfo user) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static bool HasPerm(string authorizedPermSet, int portalId, int moduleId, int userId) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetPermSet(int moduleId, int permissionsId, string requestedAccess) => throw new NotImplementedException();
-
         internal static string GetPermSetForRequestedAccess(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess)
         {
             var permission = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionsId, moduleId);
@@ -653,12 +619,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return GetRoleIdsFromPermSet(GetPermSetForRequestedAccess(permission, requestedAccess));
         }
 
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public string SavePermSet(int moduleId, int permissionsId, string requestedAccess, string permSet)
-        {
-            return this.SavePermSet(moduleId, permissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), requestedAccess), permSet);
-        }
-
         public string SavePermSet(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess, string permSet)
         {
             var permission = this.GetById(permissionsId, moduleId);
@@ -669,12 +629,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             return GetPermSetForRequestedAccess(permission, requestedAccess);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public static void AddObjectToPermissions(int moduleId, int permissionsId, string requestedAccess, string objectId, int objectType)
-        {
-            AddObjectToPermissions(moduleId, permissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), requestedAccess), objectId);
         }
 
         internal static void AddObjectToPermissions(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess, string objectId)
@@ -691,18 +645,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(objectId, permSet);
             SetPermSetForRequestedAccess(permissionInfo, requestedAccess, permSet);
             return permissionInfo;
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        internal static DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo AddObjectToPermSet(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess, string objectId, int objectType)
-        {
-            return AddObjectToPermSet(permissionInfo, requestedAccess, objectId);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public static void RemoveObjectFromPermissions(int moduleId, int permissionsId, string requestedAccess, string objectId, int objectType)
-        {
-            RemoveObjectFromPermissions(moduleId, permissionsId, (DotNetNuke.Modules.ActiveForums.SecureActions)Enum.Parse(typeof(DotNetNuke.Modules.ActiveForums.SecureActions), requestedAccess), objectId);
         }
 
         internal static void RemoveObjectFromPermissions(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess, string objectId)
@@ -722,37 +664,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             roleIds.Remove(roleId);
             return roleIds;
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public static string RemovePermFromSet(string objectId, int objectType, string permissionSet)
-        {
-            return RemovePermFromSet(objectId, permissionSet);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        internal static string SortPermissionSetMembers(string permissionSet)
-        {
-            if (string.IsNullOrEmpty(permissionSet))
-            {
-                return string.Empty;
-            }
-
-            var permSet = permissionSet;
-            var members = permSet.ToHashSetFromDelimitedString<int>(";").OrderBy(r => r);
-            permSet = string.Join(";", members);
-            if (!string.IsNullOrEmpty(permSet))
-            {
-                permSet += ";";
-            }
-
-            return permSet;
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public static string AddPermToSet(string objectId, int objectType, string permissionSet)
-        {
-            return AddPermToSet(objectId, permissionSet);
         }
 
         internal static string AddPermToSet(string objectId, string permissionSet)

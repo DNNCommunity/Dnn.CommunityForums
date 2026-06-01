@@ -201,23 +201,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int UPID => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public bool IsAuthenticated
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string Username
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
         {
             get
@@ -226,7 +209,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public virtual bool IsReusable
         {
             get

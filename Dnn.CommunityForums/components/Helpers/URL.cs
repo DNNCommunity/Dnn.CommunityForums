@@ -63,12 +63,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return sURL;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ForumLink(int tabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi).")]
-        public static string ForumLink(int tabId, DotNetNuke.Modules.ActiveForums.ForumInfo fi)
-        {
-            return ForumLink(tabId, (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo)fi);
-        }
-
         public static string TopicLink(int tabId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
             string sURL;

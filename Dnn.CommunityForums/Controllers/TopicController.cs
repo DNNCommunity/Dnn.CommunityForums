@@ -958,12 +958,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(ti.ModuleId, ti.ContentId);
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static void SaveToForum(int moduleId, int forumId, int topicId, int lastReplyId = -1)
-        {
-            SaveToForum(moduleId: moduleId, forumId: forumId, topicId: topicId);
-        }
-
         public static void SaveToForum(int moduleId, int forumId, int topicId)
         {
             new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(moduleId).Update(forumId: forumId, topicId: topicId);
@@ -1012,13 +1006,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(topic.ModuleId, topic.ForumId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(topic.ModuleId, topic.TopicId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(topic.ModuleId, topic.ContentId);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DeleteById(int topicId, DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior deleteBehavior)")]
-        public void DeleteById(int topicId)
-        {
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = this.GetById(topicId);
-            this.DeleteById(topicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
         }
 
         public void DeleteById(int topicId, DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior deleteBehavior)

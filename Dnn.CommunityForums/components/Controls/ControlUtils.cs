@@ -27,9 +27,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class ControlUtils
     {
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public string BuildPager(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int pageCount) => throw new NotImplementedException();
-
         public string BuildPager(int portalId, int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int pageCount)
         {
             if (pageCount == 1)
@@ -90,12 +87,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sb.ToString();
         }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public string BuildUrl(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public string BuildUrl(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int topicId, string topicURL, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId) => throw new NotImplementedException();
 
         public string BuildUrl(int portalId, int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId)
         {

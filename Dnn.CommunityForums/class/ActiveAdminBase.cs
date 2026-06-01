@@ -109,9 +109,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return template;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public void BindTemplateDropDown(DropDownList drp, DotNetNuke.Modules.ActiveForums.Templates.TemplateTypes templateType, string defaultText, string defaultValue) => throw new NotImplementedException();
-
         public string CurrentView
         {
             get

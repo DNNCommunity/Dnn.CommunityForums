@@ -144,9 +144,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forums;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use HashSet<int> GetForumIdsBySocialGroup(int moduleId, int socialGroupId)")]
-        public static string GetForumIdsBySocialGroup(int portalId, int moduleId, int socialGroupId) => GetForumIdsBySocialGroup(moduleId, socialGroupId).FromHashSetToDelimitedString<int>(";");
-
         internal static HashSet<int> GetForumIdsBySocialGroup(int moduleId, int socialGroupId)
         {
             return socialGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Find("WHERE SocialGroupId = @0 AND ModuleId = @1", socialGroupId, moduleId).Select(f => f.ForumID).Distinct().ToHashSet() : new HashSet<int>();
@@ -167,9 +164,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return forumId <= 0 ? null : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use HashSet<int> GetForumsForUser(int moduleId, ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SecureActions action)")]
-        public static string GetForumsForUser(int portalId, int moduleId, ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SecureActions action = DotNetNuke.Modules.ActiveForums.SecureActions.View, string permissionType = "CanView") => GetForumsForUser(moduleId: moduleId, forumUser: forumUser, action: action).FromHashSetToDelimitedString(";");
 
         internal static HashSet<int> GetForumsForUser(int moduleId, ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.SecureActions action = DotNetNuke.Modules.ActiveForums.SecureActions.View)
         {
@@ -262,13 +256,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumIds;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use  GetForumsHtmlOption(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser)")]
-        public static string GetForumsHtmlOption(int moduleId, DotNetNuke.Modules.ActiveForums.User currentUser)
-        {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, currentUser.UserId);
-            return GetForumsHtmlOption(moduleId, currentUser: user, includeHiddenForums: true);
-        }
-
         internal static string GetForumsHtmlOption(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser, bool includeHiddenForums)
         {
             var sb = new StringBuilder();
@@ -296,9 +283,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 includeInactiveForums: includeHiddenForums);
             return sb.ToString();
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public XmlDocument GetForumListXML(int portalId, int moduleId) => throw new NotImplementedException();
 
         public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo, bool isNew, bool useGroupFeatures, bool useGroupSecurity)
         {
@@ -377,9 +361,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumId;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public void Forums_Delete(int portalId, int forumId, int moduleId) => Forums_Delete(forumId: forumId, moduleId: moduleId);
-
         internal void Forums_Delete(int forumId, int moduleId)
         {
             var parentForumId = this.GetById(forumId, moduleId).ParentForumId;
@@ -418,12 +399,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
             }
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum (renamed method to be more descriptive).")]
-        public static int CreateGroupForum(int portalId, int moduleId, int socialGroupId, int forumGroupId, string forumName, string forumDescription, bool isPrivate, string forumConfig)
-        {
-            return CreateSocialGroupForum(portalId, moduleId, socialGroupId, forumGroupId, forumName, forumDescription, isPrivate, forumConfig);
         }
 
         public static int CreateSocialGroupForum(int portalId, int moduleId, int socialGroupId, int forumGroupId, string forumName, string forumDescription, bool isPrivate, string forumConfig)
@@ -544,12 +519,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheClear(moduleId, string.Format(CacheKeys.ForumListXml, moduleId));
 
             return forumId;
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static int Forum_GetByTopicId(int topicId)
-        {
-            return Forum_GetByTopicId(-1, topicId);
         }
 
         public static int Forum_GetByTopicId(int moduleId, int topicId)

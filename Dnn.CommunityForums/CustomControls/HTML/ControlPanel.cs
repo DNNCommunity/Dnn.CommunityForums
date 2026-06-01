@@ -36,9 +36,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.ModuleId = moduleId;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string TemplatesOptions(Enums.TemplateType templateType) => throw new NotImplementedException();
-
         public string ForumGroupOptions()
         {
             StringBuilder sb = new StringBuilder();

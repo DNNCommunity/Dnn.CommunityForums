@@ -50,12 +50,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return content;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use GetById(int contentId, int moduleId).")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetById(int contentId)
-        {
-            return this.GetById(contentId, -1);
-        }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
         public static int GetMostLikesCount(int moduleId, HashSet<int> forumIds, int timeFrameMinutes)
         {

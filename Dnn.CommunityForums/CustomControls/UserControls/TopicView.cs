@@ -36,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Constants;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Extensions.WebForms;
     using DotNetNuke.UI.Skins;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicView runat=server></{0}:TopicView>")]
@@ -625,7 +626,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ModuleConfiguration = this.ModuleConfiguration,
                     ForumModuleId = this.ForumModuleId,
                     ModuleId = this.ModuleId,
-                    dtForums = null,
                     ForumId = this.ForumId,
                     EnableViewState = false,
                     ForumInfo = this.ForumId > 0 ? this.ForumInfo : null,

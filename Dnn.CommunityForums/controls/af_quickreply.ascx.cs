@@ -59,24 +59,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool RequireCaptcha { get; set; } = true;
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v10.0.0.0. Not Used")]
-        public bool UseFilter => throw new NotImplementedException();
-
         public string Subject { get; set; } = string.Empty;
 
         public bool ModApprove { get; set; } = false;
 
         public bool CanTrust { get; set; } = false;
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v10.0.0.0. Not Used")]
-        public bool TrustDefault => throw new NotImplementedException();
-
         public bool AllowHTML => Utilities.CanUserPostHTML(this.ForumInfo, this.ForumUser);
 
         public bool AllowScripts => this.ForumInfo.FeatureSettings.AllowScript;
-
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v10.0.0.0. Not Used")]
-        public bool AllowSubscribe => throw new NotImplementedException();
 
         #region Event Handlers
         protected override void OnLoad(EventArgs e)

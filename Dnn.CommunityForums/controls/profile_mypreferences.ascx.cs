@@ -75,9 +75,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetString(string key) => Utilities.GetSharedResource(key);
-
         private void btnSave_Click(object sender, System.EventArgs e)
         {
             if (this.UserId == this.UID || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser)

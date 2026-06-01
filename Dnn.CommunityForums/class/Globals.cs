@@ -26,13 +26,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     #region Enumerations
 
-    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-    public enum AttachStores
-    {
-        FILESYSTEM,
-        DATABASE,
-    }
-
     public enum CurrentUserTypes
     {
         Anon,
@@ -51,15 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums
         Administrators,
     }
 
-    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-    public enum AvatarTypes
-    {
-        LocalFile,
-        ExternalLink,
-        MultipleLocalFile,
-        MultipleExternalLink,
-    }
-
     public enum SubscriptionTypes
     {
         Disabled,
@@ -72,13 +56,6 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         Topic,
         Poll,
-    }
-
-    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-    public enum EmailFormats
-    {
-        HTML,
-        PlainText,
     }
 
     public enum ProfileVisibilities
@@ -204,41 +181,24 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string UserNameDisplay = "USERNAMEDISPLAY";
         public const string DisableUserProfiles = "DISABLEUSERPROFILES";
         public const string ProfileTabId = "PROFILETABID";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string AllowAvatars = "ALLOWAVATARS";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string AllowAvatarLinks = "ALLOWAVATARLINKS";
         public const string AvatarRefresh = "AVATARREFRESH";
         public const string AvatarHeight = "AVATARHEIGHT";
         public const string AvatarWidth = "AVATARWIDTH";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string AvatarDefault = "AVATARDEFAULT";
         public const string AllowSignatures = "ALLOWSIGNATURES";
         public const string StatsEnabled = "STATSENABLED";
         public const string StatsTemplate = "STATSTEMPLATE";
         public const string StatsCache = "STATSCACHE";
         public const string DateFormatString = "DATEFORMATSTRING";
         public const string TimeFormatString = "TIMEFORMATSTRING";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string TimeZoneOffset = "TIMEZONEOFFSET";
         public const string UsersOnlineEnabled = "USERSONLINEENABLED";
         public const string MemberListMode = "MEMBERLISTMODE";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string ForumTemplateId = "FORUMTEMPLATEID";
         public const string DisableAccountTab = "DISABLEACCOUNTTAB";
         public const string Theme = "THEME";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string MailQueue = "MAILQUEUE";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string FullText = "FULLTEXT";
         public const string AllowSubTypes = "ALLOWSUBTYPES";
         public const string FloodInterval = "FLOODINTERVAL";
         public const string EditInterval = "EDITINTERVAL";
         public const string LoggingLevel = "LOGGINGLEVEL";
         public const string DeleteBehavior = "DELETEBEHAVIOR";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string ProdKey = "AMFORUMS";
-
         public const string EnablePoints = "ENABLEPOINTS";
         public const string TopicPointValue = "TOPICPOINTVALUE";
         public const string ReplyPointValue = "REPLYPOINTVALUE";
@@ -278,46 +238,18 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AllowEmoticons = "ALLOWEMOTICONS";
         public const string AllowPostIcon = "ALLOWPOSTICON";
         public const string EditorType = "EDITORTYPE";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string EditorWidth = "EDITORWIDTH";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string EditorHeight = "EDITORHEIGHT";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string EditorToolbar = "EDITORTOOLBAR";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string EditorStyle = "EDITORSTYLE";
         public const string EditorPermittedUsers = "EDITORPERMITTEDUSERS";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string EditorMobile = "EDITORMOBILE";
         public const string AttachCount = "ATTACHCOUNT";
         public const string AttachMaxSize = "ATTACHMAXSIZE";
         public const string AttachTypeAllowed = "ATTACHTYPEALLOWED";
         public const string AttachAllowBrowseSite = "ATTACHALLOWBROWSESITE";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string AttachMaxHeight = "ATTACHMAXHEIGHT";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string AttachMaxWidth = "ATTACHMAXWIDTH";
         public const string MaxImageWidth = "MAXIMAGEWIDTH";
         public const string MaxImageHeight = "MAXIMAGEHEIGHT";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string AttachInsertAllowed = "ATTACHINSERTALLOWED";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string ConvertingToJpegAllowed = "CONVERTINGTOJPEGALLOWED";
         public const string IndexContent = "INDEXCONTENT";
         public const string AllowRSS = "ALLOWRSS";
         public const string IsModerated = "ISMODERATED";
         public const string AutoTrustLevel = "AUTOTRUSTLEVEL";
         public const string DefaultTrustLevel = "DEFAULTTRUSTLEVEL";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string ModApproveTemplateId = "MODAPPROVETEMPLATEID";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string ModRejectTemplateId = "MODREJECTTEMPLATEID";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string ModMoveTemplateId = "MODMOVETEMPLATEID";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string ModDeleteTemplateId = "MODDELETETEMPLATEID";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string ModNotifyTemplateId = "MODNOTIFYTEMPLATEID";
         public const string EmailAddress = "EMAILADDRESS";
         public const string UseFilter = "USEFILTER";
         public const string AllowAttach = "ALLOWATTACH";
@@ -330,18 +262,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AllowLikes = "ALLOWLIKES";
         public const string TemplateFileNameSuffix = "TEMPLATEFILENAMESUFFIX";
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string TopicsTemplateId = "TOPICSTEMPLATEID";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string TopicTemplateId = "TOPICTEMPLATEID";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string TopicFormId = "TOPICFORMID";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string ReplyFormId = "REPLYFORMID";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string QuickReplyFormId = "QUICKREPLYFORMID";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string ProfileTemplateId = "PROFILETEMPLATEID";
         public const string EmailNotificationSubjectTemplate = "EMAILNOTIFICATIONSUBJECTTEMPLATE";
 
         public const string UserMentions = "USERMENTIONS";
@@ -377,16 +297,12 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public const string Tag = "tg";
         public const string Query = "q";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string SearchType = "k";
         public const string User = "uid";
         public const string Author = "author";
         public const string Search = "sid";
         public const string Sort = "srt";
         public const string ResultType = "rt";
         public const string TimeSpan = "ts";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string Columns = "c";
         public const string Forums = "f";
     }
 
@@ -639,12 +555,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AFForumGroupId = "AFForumGroupID";
         public const string AFForumGroup = "AFForumGroup";
         public const string AFViewType = "AFViewType";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string AFTopicsTemplate = "AFTopicsTemplate";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string AFForumViewTemplate = "AFForumViewTemplate";
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public const string AFTopicTemplate = "AFTopicTemplate";
     }
 
     public class ForumViewerViewType

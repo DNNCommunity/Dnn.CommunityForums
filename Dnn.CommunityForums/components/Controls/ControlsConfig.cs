@@ -29,13 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string AppPath { get; set; }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int ContentId { get; set; }
-
         public string DefaultViewRoles { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int ForumId { get; set; }
 
         public int ModuleId { get; set; }
 
@@ -52,9 +46,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public string TemplatePath { get; set; }
 
         public string ThemePath { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int TopicId { get; set; }
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo User { get; set; }
 

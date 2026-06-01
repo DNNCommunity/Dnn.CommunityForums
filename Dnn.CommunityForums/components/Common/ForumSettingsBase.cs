@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
 
     public class ForumSettingsBase : ModuleSettingsBase
     {
@@ -94,9 +95,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.UpdateModuleSettingCaseSensitive(SettingKeys.DateFormatString, value);
             }
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int TemplateId => throw new NotImplementedException();
 
         public int PageSize
         {
@@ -305,24 +303,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLLikes, value);
             }
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-
-        public bool FullTextSearch
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public bool MailQueue => true;
 
         public bool CacheTemplates
         {

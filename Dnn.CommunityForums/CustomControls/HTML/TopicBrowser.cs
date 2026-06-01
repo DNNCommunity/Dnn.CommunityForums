@@ -186,7 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 auth.FirstName = row[columnPrefix + "AuthorFirstName"].ToString();
                 auth.Username = row[columnPrefix + "AuthorUsername"].ToString();
 
-                DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(this.PortalId);
+                DotNetNuke.Entities.Portals.PortalSettings portalSettings = new Helpers.PortalSettingsHelper().GetPortalSettings(this.PortalId);
                 tmp = tmp.Replace("[TOPICURL]", cUtils.TopicURL(row, this.TabId, this.ModuleId));
                 tmp = tmp.Replace("[FORUMURL]", cUtils.ForumURL(row, this.TabId, this.ModuleId));
                 if (int.Parse(row["LastAuthorId"].ToString()) == -1)

@@ -18,51 +18,41 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Extensions
 {
     using System;
-    using System.Data;
+    using System.Collections;
 
-    public static class DataRowExtensions
+    public static class HashtableExtensions
     {
-        public static bool HasColumn(this DataRow dr, string columnName)
+        public static string GetString(this Hashtable ht, string key, string defaultValue = null)
         {
-            if (dr == null || string.IsNullOrWhiteSpace(columnName))
-            {
-                return false;
-            }
-
-            return dr.Table.Columns.Contains(columnName);
+            return string.IsNullOrWhiteSpace(key) || !ht.ContainsKey(key) ? defaultValue : Utilities.SafeConvertString(ht[key], defaultValue);
         }
 
-        public static string GetString(this DataRow dr, string columnName, string defaultValue = null)
+        public static int GetInt(this Hashtable ht, string key, int defaultValue = 0)
         {
-            return !dr.HasColumn(columnName) ? defaultValue : Utilities.SafeConvertString(dr[columnName], defaultValue);
+            return string.IsNullOrWhiteSpace(key) || !ht.ContainsKey(key) ? defaultValue : Utilities.SafeConvertInt(ht[key], defaultValue);
         }
 
-        public static int GetInt(this DataRow dr, string columnName, int defaultValue = 0)
+        public static double GetDouble(this Hashtable ht, string key, double defaultValue = 0)
         {
-            return !dr.HasColumn(columnName) ? defaultValue : Utilities.SafeConvertInt(dr[columnName], defaultValue);
+            return string.IsNullOrWhiteSpace(key) || !ht.ContainsKey(key) ? defaultValue : Utilities.SafeConvertDouble(ht[key], defaultValue);
         }
 
-        public static double GetDouble(this DataRow dr, string columnName, double defaultValue = 0)
+        public static bool GetBoolean(this Hashtable ht, string key, bool defaultValue = false)
         {
-            return !dr.HasColumn(columnName) ? defaultValue : Utilities.SafeConvertDouble(dr[columnName], defaultValue);
+            return string.IsNullOrWhiteSpace(key) || !ht.ContainsKey(key) ? defaultValue : Utilities.SafeConvertBool(ht[key], defaultValue);
         }
 
-        public static bool GetBoolean(this DataRow dr, string columnName, bool defaultValue = false)
+        public static DateTime GetDateTime(this Hashtable ht, string key, DateTime? defaultValue = null)
         {
-            return !dr.HasColumn(columnName) ? defaultValue : Utilities.SafeConvertBool(dr[columnName], defaultValue);
-        }
-
-        public static DateTime GetDateTime(this DataRow dr, string columnName, DateTime? defaultValue = null)
-        {
-            if (!dr.HasColumn(columnName))
+            if (string.IsNullOrWhiteSpace(key) || !ht.ContainsKey(key))
             {
                 return defaultValue.HasValue ? defaultValue.Value : Utilities.NullDate();
             }
 
-            return Utilities.SafeConvertDateTime(dr[columnName], defaultValue);
+            return Utilities.SafeConvertDateTime(ht[key], defaultValue);
         }
     }
 }
