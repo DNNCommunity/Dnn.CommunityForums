@@ -149,6 +149,36 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UserProfiles_Members]
 GO
 
+/*activeforums_UserProfiles_UpdateActivity*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles_UpdateActivity]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UserProfiles_UpdateActivity]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UserProfiles_UpdateActivity]
+@PortalId int,
+@UserId int
+
+AS
+If @UserId > 0 
+	IF NOT EXISTS(Select ProfileId FROM {databaseOwner}{objectQualifier}activeforums_UserProfiles WHERE UserId = @UserId AND PortalId = @PortalId)
+	BEGIN
+	    INSERT INTO {databaseOwner}{objectQualifier}activeforums_UserProfiles
+		    (UserId, PortalId, DateLastActivity)
+		    VALUES
+		    (@UserId, @PortalId, GETUTCDATE())
+	    DECLARE @TopicCount int 
+	    DECLARE @ReplyCount int
+	    SELECT @TopicCount = Count(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics as T INNER JOIN
+                          {databaseOwner}{objectQualifier}activeforums_Content as C ON T.ContentId = C.ContentId
+	    WHERE c.authorid = @UserId
+	    SELECT @ReplyCount = Count(*) FROM {databaseOwner}{objectQualifier}activeforums_Replies as R INNER JOIN
+                          {databaseOwner}{objectQualifier}activeforums_Content as C ON R.ContentId = C.ContentId
+	    WHERE c.authorid = @UserId
+	    UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles
+		    SET TopicCount = @TopicCount, ReplyCount = @ReplyCount WHERE UserId = @UserId AND PortalId = @PortalId
+	END
+	UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles SET DateLastActivity = GETUTCDATE() WHERE UserId = @UserId and PortalId = @PortalId
+GO
+
 /* issue 1909 - end - remove deprecated procedures */
 
 
