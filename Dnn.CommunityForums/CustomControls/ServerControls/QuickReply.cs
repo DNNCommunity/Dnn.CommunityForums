@@ -198,7 +198,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             Data.Topics db = new Data.Topics();
 
-            // im rc As New ReplyController
             int replyId = -1;
             string sUsername = string.Empty;
             if (HttpContext.Current.Request.IsAuthenticated)

@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 int categoryId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
                                 if (Utilities.IsNumeric(categoryId))
                                 {
-                                    new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().DeleteById(categoryId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.Instance.DeleteById(categoryId);
                                 }
 
                                 break;
@@ -89,11 +89,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
                                 if (!(categoryName == string.Empty))
                                 {
-                                    var categoryController = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController();
                                     DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo category = null;
                                     if (categoryId > 0)
                                     {
-                                        category = categoryController.GetById(categoryId);
+                                        category = DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.Instance.GetById(categoryId);
                                     }
 
                                     if (category != null)
@@ -103,8 +102,8 @@ namespace DotNetNuke.Modules.ActiveForums
                                         category.ForumGroupId = forumGroupId;
                                         category.PortalId = this.PortalId;
                                         category.ModuleId = this.ModuleId;
-                                        categoryController.Update(category);
-                                        categoryController.RecountItems(category.CategoryId);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.Instance.Update(category);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.Instance.RecountItems(category.CategoryId);
                                     }
                                     else
                                     {
@@ -117,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                             ModuleId = this.ModuleId,
                                             Items = 0,
                                         };
-                                        categoryController.Insert(category);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.Instance.Insert(category);
                                     }
                                 }
 
@@ -142,8 +141,8 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindGroups()
         {
             this.drpForums.Items.Add(new ListItem(Utilities.GetSharedResource("DropDownSelect"), "-1"));
-            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection allForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId);
-            var filteredForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).Where(f => f.ForumGroup.Active && f.Active && f.ParentForumId == 0);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection allForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(this.ModuleId);
+            var filteredForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(this.ModuleId).Where(f => f.ForumGroup.Active && f.Active && f.ParentForumId == 0);
             int tmpGroupId = -1;
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in filteredForums)
             {

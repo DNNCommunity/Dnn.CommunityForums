@@ -27,7 +27,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Collections;
     using DotNetNuke.Data;
 
-    internal class RepositoryControllerBase<T> where T : class
+    internal class RepositoryControllerBase<T>
+        where T : class
     {
         private IRepository<T> _repo;
 
@@ -51,8 +52,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return this._repo;
             }
         }
-
-        internal virtual string cacheKeyTemplate => string.Empty;
 
         internal RepositoryControllerBase()
         {
@@ -112,6 +111,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this.Repo.Update(item);
         }
 
+        internal void Update(string sqlCondition, params object[] args)
+        {
+            if (!string.IsNullOrEmpty(sqlCondition))
+            {
+                this.Repo.Find(sqlCondition, args).ToList().ForEach(_ => this.Repo.Update(sqlCondition, args));
+            }
+        }
+
         internal void Insert(T item)
         {
             this.Repo.Insert(item);
@@ -150,26 +157,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal IPagedList<T> GetPage<TScopeType>(TScopeType scopeValue, int pageIndex, int pageSize)
         {
             return this.Repo.GetPage(scopeValue, pageIndex, pageSize);
-        }
-
-        internal static T LoadFromSettingsCache(int moduleId, string cachekey)
-        {
-            return (T)DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, cachekey);
-        }
-
-        internal static void UpdateSettingsCache(int moduleId, string cachekey, T entity)
-        {
-            DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, entity);
-        }
-
-        internal static void ClearSettingsCache(int moduleId)
-        {
-            DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(moduleId);
-        }
-
-        internal string GetCacheKey<TProperty>(int moduleId, TProperty id)
-        {
-            return string.Format(this.cacheKeyTemplate, moduleId, id);
         }
     }
 }

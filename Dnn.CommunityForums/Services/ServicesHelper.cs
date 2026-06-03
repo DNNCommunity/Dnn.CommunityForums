@@ -35,12 +35,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 var roles = new HashSet<int>();
                 if (permissionRequired is SecureActions.ManageUsers)
                 {
-                    var moduleDefaultSecurity = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId: SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId, moduleId: moduleId);
+                    var moduleDefaultSecurity = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(permissionsId: SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId, moduleId: moduleId);
                     roles = moduleDefaultSecurity.ManageUsersRoleIds;
                 }
                 else
                 {
-                    var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
+                    var fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId, forumId);
                     switch (permissionRequired)
                     {
                         case SecureActions.View:
@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                     }
                 }
 
-                var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalSettings.PortalId, userInfo.UserID);
+                var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(portalSettings.PortalId, moduleId, userInfo.UserID);
                 return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(roles, forumUser.UserRoleIds);
             }
             catch (Exception ex)

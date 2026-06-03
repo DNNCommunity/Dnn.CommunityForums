@@ -45,11 +45,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ForumsSitemapProvider));
 
-        private readonly ForumController forumController;
+        private readonly IForumController forumController;
 
         public ForumsSitemapProvider()
         {
-            this.forumController = new ForumController();
+            this.forumController = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance;
         }
 
         public override List<SitemapUrl> GetUrls(int portalId, PortalSettings ps, string version)
@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     continue;
                 }
 
-                var forum = this.forumController.GetById(result.ForumId, module.ModuleID);
+                var forum = this.forumController.GetById(module.ModuleID, result.ForumId);
                 if (forum == null || forum.Security == null || !forum.IsPublicForum)
                 {
                     continue;

@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
             this.userid = this.Request.QueryString[ParamKeys.UserId] != null ? Convert.ToInt32(this.Request.QueryString[ParamKeys.UserId]) : -1;
-            this.forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, (int)this.userid);
+            this.forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ForumModuleId, (int)this.userid);
             this.lblBadgesAssigned.Text = string.Format(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserBadgesAssigned]"), this.forumUser.DisplayName);
             this.dgrdUserBadges.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Badge]");
             this.dgrdUserBadges.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Date]", isAdmin: true) + " (UTC)";
@@ -77,12 +77,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetBadges()
         {
-            var availableBadges = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Get(this.ForumModuleId).Select(badge =>
+            var availableBadges = DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.GetActiveBadges(this.ForumModuleId).Select(badge =>
             {
                 return new { badge.BadgeId, badge };
             });
 
-            var assignedBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ForumModuleId).GetForUser((int)this.userid);
+            var assignedBadges = DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.Instance.GetForUser(portalId: this.PortalId, moduleId: this.ForumModuleId, userId: (int)this.userid);
             var assignedBadgeIds = assignedBadges.Select(userBadge =>
             {
                 return new { userBadge.UserBadgeId, userBadge.BadgeId, userBadge.DateAssigned, };

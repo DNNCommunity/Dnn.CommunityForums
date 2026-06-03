@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Social.Notifications;
 
-    internal class ModerationController
+    internal static class ModerationController
     {
         internal static void RemoveModerationNotifications(int tabId, int moduleId, int forumId, int topicId, int replyId)
         {
@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static bool SendModerationNotification(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int AuthorId, Uri requestUri, string rawUrl)
         {
             var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portalId);
-            var adminUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, portalSettings.AdministratorId);
+            var adminUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(portalId, moduleId, portalSettings.AdministratorId);
             var mainSettings = SettingsBase.GetModuleSettings(moduleId);
             try
             {
@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 string body;
                 if (replyId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).GetById(replyId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(moduleId, replyId);
                     subject = Utilities.GetSharedResource("[RESX:NotificationSubjectReply]");
                     subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), reply, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), adminUser, requestUri, rawUrl).ToString();
                     body = Utilities.GetSharedResource("[RESX:NotificationBodyReply]");
@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
                     subject = Utilities.GetSharedResource("[RESX:NotificationSubjectTopic]");
                     subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplacePostTokens(new StringBuilder(subject), topic, portalSettings, mainSettings, new Services.URLNavigator().NavigationManager(), adminUser, requestUri, rawUrl).ToString();
                     body = Utilities.GetSharedResource("[RESX:NotificationBodyTopic]");
@@ -101,13 +101,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
         {
             var rp = RoleProvider.Instance();
-            var uc = new DotNetNuke.Entities.Users.UserController();
             var mods = new List<DotNetNuke.Entities.Users.UserInfo>();
             foreach (var role in DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetModeratorRoles(portalId, moduleId, forumId))
             {
                 foreach (DotNetNuke.Entities.Users.UserRoleInfo usr in rp.GetUserRoles(portalId, null, role.RoleName))
                 {
-                    var ui = uc.GetUser(portalId, usr.UserID);
+                    var ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, usr.UserID);
                     if (!mods.Contains(ui))
                     {
                         mods.Add(ui);
@@ -120,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static List<DotNetNuke.Security.Roles.RoleInfo> GetModeratorRoles(int portalId, int moduleId, int forumId)
         {
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);
+            var fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: moduleId, forumId: forumId);
             if (fi == null)
             {
                 return null;

@@ -26,16 +26,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Data;
-
-    class TopicRatingController
+    
+    internal partial class TopicRatingController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TopicRatingInfo, ITopicRatingController, TopicRatingController>, ITopicRatingController
     {
-        readonly IDataContext ctx;
-        IRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicRatingInfo> repo;
-
-        public TopicRatingController()
+        protected override Func<ITopicRatingController> GetFactory()
         {
-            this.ctx = DataContext.Instance();
-            this.repo = this.ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicRatingInfo>();
+            return () => new TopicRatingController();
         }
 
         public (int averageRating, int usersRating) Get(int userId, int topicId)
@@ -45,27 +41,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public List<DotNetNuke.Modules.ActiveForums.Entities.TopicRatingInfo> GetForTopicAndUser(int userId, int topicId)
         {
-            return this.repo.Find("WHERE TopicId = @0 AND UserId = @1", topicId, userId).ToList();
+            return this._repositoryControllerBase.Find("WHERE TopicId = @0 AND UserId = @1", topicId, userId).ToList();
         }
 
         public List<DotNetNuke.Modules.ActiveForums.Entities.TopicRatingInfo> GetForTopic(int topicId)
         {
-            return this.repo.Find("WHERE TopicId = @0", topicId).ToList();
+            return this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).ToList();
         }
 
         public List<DotNetNuke.Modules.ActiveForums.Entities.TopicRatingInfo> GetForUser(int userId)
         {
-            return this.repo.Find("WHERE UserId = @0", userId).ToList();
+            return this._repositoryControllerBase.Find("WHERE UserId = @0", userId).ToList();
         }
 
         public int Average(int topicId)
         {
-            return Utilities.SafeConvertInt(Math.Round(this.repo.Find("WHERE TopicId = @0", topicId).Average(r => r.Rating), 0));
+            return Utilities.SafeConvertInt(Math.Round(this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).Average(r => r.Rating), 0));
         }
 
         public int Count(int topicId)
         {
-            return this.repo.Find("WHERE TopicId = @0", topicId).Count();
+            return this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).Count();
         }
 
         public int Rate(int userId, int topicId, int rating, string ipAddress)
@@ -76,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topicRating.Rating = rating;
                 topicRating.IPAddress = ipAddress;
                 topicRating.DateUpdated = DateTime.UtcNow;
-                this.repo.Update(topicRating);
+                this._repositoryControllerBase.Update(topicRating);
             }
             else
             {
@@ -87,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topicRating.IPAddress = ipAddress;
                 topicRating.DateAdded = DateTime.UtcNow;
                 topicRating.DateUpdated = DateTime.UtcNow;
-                this.repo.Insert(topicRating);
+                this._repositoryControllerBase.Insert(topicRating);
             }
 
             return this.Average(topicId);

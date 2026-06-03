@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (this.ForumId > 0 && this.ForumModuleId == -1)
                 {
-                    this.fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ForumModuleId);
+                    this.fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, this.ForumId);
                     this.ForumModuleId = this.fi.ModuleId;
                 }
 

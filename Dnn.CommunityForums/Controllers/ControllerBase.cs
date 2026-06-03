@@ -22,6 +22,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal partial class ControllerBase<T> where T : class
     {
-        internal ControllerBase() : base() { }
+        internal ControllerBase()
+            : base()
+        {
+        }
     }
 }

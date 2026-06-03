@@ -298,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 badgeId = Convert.ToInt32(this.Params["BadgeId"]);
             }
 
-            var badge = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().GetById(badgeId, this.ModuleId);
+            var badge = DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.GetById(this.ModuleId, badgeId);
             var url = string.Empty;
             if (badge.FileId > 0)
             {
@@ -343,9 +343,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
         private void BadgeSave()
         {
-            var badgeController = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController();
             var badgeId = Utilities.SafeConvertInt(this.Params["BadgeId"]);
-            var badge = badgeController.GetById(badgeId, this.ModuleId);
+            var badge = DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.GetById(this.ModuleId, badgeId);
             if (badge == null)
             {
                 badge = new DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo();
@@ -414,11 +413,11 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
             if (badge.BadgeId == -1)
             {
-                badgeController.Insert(badge);
+                DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.Insert(badge);
             }
             else
             {
-                badgeController.Update(badge);
+                DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.Update(badge);
             }
         }
 
@@ -435,7 +434,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 return;
             }
 
-            new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().DeleteById(badgeId, this.ModuleId);
+            DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.DeleteById(this.ModuleId, badgeId);
         }
 
         private void PropertySave()
@@ -466,10 +465,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
 
             new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Save<int>(pi, pi.PropertyId);
-            var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(pi.ObjectOwnerId, this.ModuleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ModuleId, pi.ObjectOwnerId);
             fi.HasProperties = true;
-            fc.Forums_Save(this.PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Forums_Save(this.PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
         }
 
         private string PropertyList()
@@ -512,8 +510,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 pc.DeleteById(Convert.ToInt32(this.Params["propertyid"]));
                 if (!(pc.Count("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2", this.PortalId, prop.ObjectType, prop.ObjectOwnerId) > 0))
                 {
-                    var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(prop.ObjectOwnerId, this.ModuleId);
+                    var fc = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance;
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(this.ModuleId, prop.ObjectOwnerId);
                     fi.HasProperties = false;
                     fc.Forums_Save(this.PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
                 }

@@ -55,4 +55,7 @@
       </Reference>
       <Reference Include="System.Web" />
     </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
+    </ItemGroup>
 </Project>

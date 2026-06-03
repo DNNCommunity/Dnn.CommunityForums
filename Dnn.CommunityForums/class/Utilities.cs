@@ -147,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (forumId > 0)
             {
-                var forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, forumModuleId);
+                var forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(forumModuleId, forumId);
                 templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, forumInfo, new PortalSettingsHelper().GetPortalSettings(portalId), SettingsBase.GetModuleSettings(forumModuleId), new Services.URLNavigator().NavigationManager(), forumUser, tabId, forumUser.CurrentUserType, requestUri, rawUrl);
                 templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemovePrefixedToken(templateStringBuilder, "DCF:TOOLBAR-SEARCHTEXT");
             }
@@ -289,7 +289,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, additionalParameters);
             }
 
-            var ti = new TabController().GetTab(tabId, portalId, false);
+            var ti = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(tabId, portalId, false);
             var sURL = additionalParameters.ToList().Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + "&" + p);
 
             pageName = CleanStringForUrl(pageName);
@@ -1172,7 +1172,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static TimeSpan GetTimeZoneOffsetForUser(int portalId, int userId)
         {
-            return GetTimeZoneOffsetForUser(new DotNetNuke.Entities.Users.UserController().GetUser(portalId, userId));
+            return GetTimeZoneOffsetForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
         }
 
         public static string GetLastPostSubject(int lastPostID, int parentPostID, int forumID, int tabID, string subject, int length, int pageSize, int replyCount, bool canRead)
@@ -1944,9 +1944,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string RemoveCultureFromUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
-            if (!string.IsNullOrEmpty(portalSettings.PortalAlias?.CultureCode) && url.ToLowerInvariant().Contains($"/{portalSettings.PortalAlias?.CultureCode?.ToLowerInvariant()}/"))
+            return RemoveCultureFromUrl(url, portalSettings.PortalAlias);
+        }
+
+        internal static string RemoveCultureFromUrl(string url, DotNetNuke.Abstractions.Portals.IPortalAliasInfo portalAlias)
+        {
+            if (!string.IsNullOrEmpty(portalAlias?.CultureCode) && url.ToLowerInvariant().Contains($"/{portalAlias?.CultureCode?.ToLowerInvariant()}/"))
             {
-                url = url.ToLowerInvariant().Replace($"/{portalSettings.PortalAlias.CultureCode.ToLowerInvariant()}/", "/");
+                url = url.ToLowerInvariant().Replace($"/{portalAlias.CultureCode.ToLowerInvariant()}/", "/");
             }
 
             return url;

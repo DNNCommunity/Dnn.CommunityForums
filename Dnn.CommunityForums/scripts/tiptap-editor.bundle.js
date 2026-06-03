@@ -43556,7 +43556,7 @@ class TipTapEditorController {
         this.editorElement = document.querySelector('#' + editorID);
         this.actions = [
             { name: "bold", title: amaf.resx.BoldDesc, fontTag: "fa-bold", command: 'toggleBold', disable: true },
-            { name: "italic", title: amaf.resx.ItalicDesc, fontTag: "fa-italic", command: 'toggleItalic', disable: true },
+            { name: "italic", title: amaf.resx.ItalicsDesc, fontTag: "fa-italic", command: 'toggleItalic', disable: true },
             { name: "underline", title: amaf.resx.UnderlineDesc, fontTag: "fa-underline", command: 'toggleUnderline', disable: true },
             { name: "strike", title: amaf.resx.StrikeDesc, fontTag: "fa-strikethrough", command: 'toggleStrike', disable: true },
             { name: "undo", title: amaf.resx.UndoDesc, fontTag: "fa-undo", command: 'undo', disable: true },

@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             try
             {
                 ModuleSettings _mainSettings = SettingsBase.GetModuleSettings(moduleId);
-                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(forumGroupId, moduleId);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.GetById(forumGroupId, moduleId);
                 if (!string.IsNullOrEmpty(fg.PrefixURL))
                 {
                     vanityName = fg.PrefixURL + "/" + vanityName;

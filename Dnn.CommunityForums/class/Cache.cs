@@ -372,13 +372,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 ht = (Hashtable)SettingsCacheRetrieve(moduleId, cacheKey);
                 if (ht == null)
                 {
-                    ht = new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().GetSettingsHashTableForModuleIdSettingsKey(moduleId, settingsKey);
+                    ht = DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.GetSettingsHashTableForModuleIdSettingsKey(moduleId, settingsKey);
                     SettingsCacheStore(moduleId, cacheKey, ht);
                 }
             }
             else
             {
-                ht = new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().GetSettingsHashTableForModuleIdSettingsKey(moduleId, settingsKey);
+                ht = DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.GetSettingsHashTableForModuleIdSettingsKey(moduleId, settingsKey);
             }
 
             return ht;

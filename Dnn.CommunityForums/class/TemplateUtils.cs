@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
             templateStringbuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(templateStringbuilder, portalSettings, accessingUser?.UserInfo?.Profile?.PreferredLocale);
 
             // Load Subject and body from topic or reply
-            var postInfo = (topicId > 0 && replyId > 0) ? (IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleID).GetById(replyId) : new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleID).GetById(topicId);
+            var postInfo = (topicId > 0 && replyId > 0) ? (IPostInfo)DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(moduleID, replyId) : DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleID, topicId);
             postInfo.Forum.TabId = tabID;
             postInfo.Forum.ForumGroup.TabId = tabID;
             string subject = postInfo.Content.Subject;
@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(author.ForumUser.PortalId);
                 var mainSettings = SettingsBase.GetModuleSettings(moduleId);
-                var accessingUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(author.ForumUser.PortalId, currentUserId);
+                var accessingUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(author.ForumUser.PortalId, moduleId, currentUserId);
                 var templateStringbuilder = new StringBuilder(profileTemplate);
                 templateStringbuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyAuthorTokenSynonyms(templateStringbuilder, portalSettings, mainSettings, accessingUser?.UserInfo?.Profile?.PreferredLocale);
 

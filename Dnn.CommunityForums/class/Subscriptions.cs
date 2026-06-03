@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!sl.Contains(si))
                     {
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security.SubscribeRoleIds, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(forum.ModuleId).GetByUserId(forum.PortalId, si.UserId).UserRoleIds))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(forum.PortalId, forum.ModuleId, si.UserId).UserRoleIds))
                         {
                             sl.Add(si);
                         }
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums
         // TODO: move to new DAL2 subscription controller
         public static void SendSubscriptions(int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, int authorId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: moduleId, forumId: forumId);
             SendSubscriptions(portalId, moduleId, tabId, fi, topicId, replyId, authorId);
         }
 

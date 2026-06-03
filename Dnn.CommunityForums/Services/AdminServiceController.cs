@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpGet]
         public HttpResponseMessage GetUserProfile(int userId)
         {
-            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).GetByUserId(this.ActiveModule.PortalID, userId);
+            var up = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ActiveModule.ModuleID, userId);
 
             if (up == null)
             {
@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpPost]
         public HttpResponseMessage UpdateUserProfile(UserProfileDTO dto)
         {
-            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).GetByUserId(this.ActiveModule.PortalID, dto.UserId);
+            var up = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ActiveModule.ModuleID, dto.UserId);
 
             if (up == null)
             {
@@ -147,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 up.RewardPoints = dto.RewardPoints.Value;
             }
 
-            new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).Update(up);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.Update(up);
 
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }

@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
             var expected = this.TagsGraph.Find(t => t.TagId == ForumsObjectGraph.Tag3Id);
 
             // Act
-            var actual = this.MockTagController.Object.GetById(ForumsObjectGraph.Tag3Id);
+            var actual = this.mockTagController.Object.GetById(ForumsObjectGraph.Tag3Id);
 
             // Assert
             Assert.That(actual, Is.Not.Null);
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
             var expected = this.TagsGraph.Find(t => t.TagId == ForumsObjectGraph.Tag2Id);
 
             // Act
-            var actual = this.MockTagController.Object.GetByName(ForumsObjectGraph.ModuleId, expected.TagName);
+            var actual = this.mockTagController.Object.GetByName(ForumsObjectGraph.ModuleId, expected.TagName);
 
             // Assert
             Assert.That(actual, Is.Not.Null);
@@ -158,11 +158,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
         [Test]
         public void SetupTagInfo_BuildsTenTags_AndResolvesGlantonByName()
         {
-            // Arrange
-            var tagController = this.MockTagController.Object;
-
-            // Act
-            var glantonTag = tagController.GetByName(ForumsObjectGraph.ModuleId, "glanton");
+            // Act & Act
+            var glantonTag = this.mockTagController.Object.GetByName(ForumsObjectGraph.ModuleId, "glanton");
 
             using (Assert.EnterMultipleScope())
             {

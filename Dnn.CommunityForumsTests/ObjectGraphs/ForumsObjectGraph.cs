@@ -138,6 +138,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs
                     View = viewPermission ?? PublicForumPermission,
                     Read = readPermission ?? PublicForumPermission,
                 },
+                TabId = 1,
             };
 
         /// <summary>
@@ -158,6 +159,10 @@ namespace DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs
         /// Permission string controlling who can view the forum.
         /// Defaults to <see cref="PublicForumPermission"/> when <c>null</c>.
         /// </param>
+        /// <param name="tagPermission">
+        /// Permission string controlling who can use tags the forum.
+        /// Defaults to <see cref="PublicForumPermission"/> when <c>null</c>.
+        /// </param>
         /// <param name="totalTopics">Seed value for total topic count.</param>
         /// <param name="totalReplies">Seed value for total reply count.</param>
         /// <param name="active">Whether the forum is active. Defaults to <c>true</c>.</param>
@@ -172,6 +177,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs
             int sortOrder = 1,
             string viewPermission = null,
             string readPermission = null,
+            string tagPermission = null,
             int totalTopics = 0,
             int totalReplies = 0,
             bool active = true,
@@ -197,8 +203,10 @@ namespace DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs
                 {
                     View = viewPermission ?? PublicForumPermission,
                     Read = readPermission ?? PublicForumPermission,
+                    Tag = tagPermission ?? PublicForumPermission,
                 },
                 ForumGroup = group,
+                TabId = 1,
             };
 
         // -----------------------------------------------------------------------
@@ -335,8 +343,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs
                 BuildForum(portalSettings, AnnouncementsForumId,     generalGroup, "Announcements",      "announcements",      "Site-wide announcements.",      sortOrder: 1, totalTopics: 5,  totalReplies: 12),
                 BuildForum(portalSettings, GeneralDiscussionForumId, generalGroup, "General Discussion", "general-discussion", "Talk about anything.",          sortOrder: 2, totalTopics: 42, totalReplies: 137),
                 BuildForum(portalSettings, HelpAndSupportForumId,    generalGroup, "Help & Support",     "help-support",       "Get help from the community.",  sortOrder: 3, totalTopics: 20, totalReplies: 88),
-                BuildForum(portalSettings, MembersOnlyForumId, privateGroup, "Members Only", "members-only-forum", "For registered members.",   sortOrder: 1, viewPermission: RegisteredPermission, readPermission: RegisteredPermission, totalTopics: 8, totalReplies: 24),
-                BuildForum(portalSettings, AdministratorsOnlyForumId,     privateGroup, "Admin",      "admin-forum",      "Administrators only forum.",  sortOrder: 2, viewPermission: AdministratorsPermission, readPermission: AdministratorsPermission, totalTopics: 3, totalReplies: 7),
+                BuildForum(portalSettings, MembersOnlyForumId, privateGroup, "Members Only", "members-only-forum", "For registered members.",   sortOrder: 1, viewPermission: RegisteredPermission, readPermission: RegisteredPermission, tagPermission: RegisteredPermission, totalTopics: 8, totalReplies: 24),
+                BuildForum(portalSettings, AdministratorsOnlyForumId,     privateGroup, "Admin",      "admin-forum",      "Administrators only forum.",  sortOrder: 2, viewPermission: AdministratorsPermission, readPermission: AdministratorsPermission, tagPermission: AdministratorsPermission, totalTopics: 3, totalReplies: 7),
             };
         }
 

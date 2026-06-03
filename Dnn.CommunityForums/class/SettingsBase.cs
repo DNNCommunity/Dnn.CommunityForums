@@ -31,9 +31,9 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         private int forumModuleId = -1;
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UserId);
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ModuleId, this.UserId);
 
-        internal HashSet<int> UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumModuleId, this.ForumUser);
+        internal HashSet<int> UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsForUser(this.ForumModuleId, this.ForumUser);
 
         public int ForumModuleId
         {

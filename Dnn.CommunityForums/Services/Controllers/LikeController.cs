@@ -52,21 +52,24 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             try
             {
-                if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.ForumId, this.ForumModuleId).FeatureSettings.AllowLikes &&
+                if (DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, dto.ForumId).FeatureSettings.AllowLikes &&
                     ServicesHelper.IsAuthorized(this.PortalSettings, this.ForumModuleId, dto.ForumId, SecureActions.Reply, this.UserInfo))
                 {
-                    var post = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(dto.ContentId, this.ForumModuleId).Post;
+                    var post = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.GetById(this.ForumModuleId, dto.ContentId).Post;
                     if (post != null)
                     {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalSettings.PortalId, this.ForumModuleId).Like(contentId: dto.ContentId,
-                                                                                                                                                                                                    userId: this.UserInfo.UserID,
-                                                                                                                                                                                                    authorId: post.Author.AuthorId,
-                                                                                                                                                                                                    tabId: this.ActiveModule.TabID,
-                                                                                                                                                                                                    forumGroupId: post.Forum.ForumGroupId,
-                                                                                                                                                                                                    forumId: dto.ForumId,
-                                                                                                                                                                                                    topicId: post.TopicId,
-                                                                                                                                                                                                    replyId: post.ReplyId,
-                                                                                                                                                                                                    requestUrl: this.Request.RequestUri.ToString()));
+                        return this.Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Instance.Like(
+                            contentId: dto.ContentId,
+                            userId: this.UserInfo.UserID,
+                            authorId: post.Author.AuthorId,
+                            tabId: this.ActiveModule.TabID,
+                            forumGroupId: post.Forum.ForumGroupId,
+                            forumId: dto.ForumId,
+                            topicId: post.TopicId,
+                            replyId: post.ReplyId,
+                            portalId: this.PortalSettings.PortalId,
+                            moduleId: this.ForumModuleId,
+                            requestUrl: this.Request.RequestUri.ToString()));
                     }
                 }
             }
@@ -92,9 +95,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             try
             {
-                if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, this.ForumModuleId).FeatureSettings.AllowLikes)
+                if (DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, forumId).FeatureSettings.AllowLikes)
                 {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, value: new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(this.PortalSettings.PortalId, this.ForumModuleId).Get(this.UserInfo.UserID, contentId));
+                    return this.Request.CreateResponse(HttpStatusCode.OK, value: DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Instance.Get(this.PortalSettings.PortalId, this.ForumModuleId, this.UserInfo.UserID, contentId));
                 }
             }
             catch (Exception ex)

@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -46,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnInit(e);
 
             this.badgeId = this.Request.QueryString[ParamKeys.BadgeId] != null ? Convert.ToInt32(this.Request.QueryString[ParamKeys.BadgeId]) : -1;
-            this.badge = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().GetById((int)this.badgeId);
+            this.badge = DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.GetById(this.ForumModuleId, (int)this.badgeId);
             this.lblBadgesAssigned.Text = string.Format(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:BadgeUsersAssigned]"), this.badge.Name);
             this.dgrdBadgeUsers.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Username]");
             this.dgrdBadgeUsers.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Date]", isAdmin: true) + " (UTC)";
@@ -87,8 +88,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetBadges()
         {
-            var availableUsers = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetActiveUsers(this.PortalId).Select(u => new UserList { UserId = u.UserId, DisplayName = u.DisplayName }).ToList();
-            var assignedBadges = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalId, this.ForumModuleId).GetForBadge((int)this.badgeId);
+            var availableUsers = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetActiveUsers(this.PortalId, this.ForumModuleId).Select(u => new UserList { UserId = u.UserId, DisplayName = u.DisplayName }).ToList();
+            var assignedBadges = DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.Instance.GetForBadge(moduleId: this.ForumModuleId, badgeId: (int)this.badgeId);
             var assignedBadgeIds = assignedBadges.Select(userBadge =>
             {
                 return new { userBadge.UserBadgeId, userBadge.UserId, userBadge.DateAssigned, };

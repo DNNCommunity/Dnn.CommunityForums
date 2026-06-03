@@ -76,9 +76,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var portalSettings = this.PortalSettings;
             var userInfo = portalSettings.UserInfo;
-            var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).GetByUserId(this.ActiveModule.PortalID, userInfo.UserID);
+            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ActiveModule.ModuleID, userInfo.UserID);
             Dictionary<string, string> rows = new Dictionary<string, string>();
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(this.ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (this.UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security.ViewRoleIds, forumUser.UserRoleIds))))
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Get(this.ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (this.UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security.ViewRoleIds, forumUser.UserRoleIds))))
             {
                 rows.Add(fi.ForumID.ToString(), fi.ForumName.ToString());
             }
@@ -109,13 +109,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var portalSettings = this.PortalSettings;
             var userInfo = portalSettings.UserInfo;
-            var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ActiveModule.ModuleID).GetByUserId(this.ActiveModule.PortalID, userInfo.UserID);
+            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ActiveModule.ModuleID, userInfo.UserID);
 
             var oldForum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalSettings.PortalId, this.ActiveModule.ModuleID, 0, true, dto.OldTopicId);
-            var newForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.NewForumId, this.ActiveModule.ModuleID);
+            var newForum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ActiveModule.ModuleID, dto.NewForumId);
             if (oldForum != null && newForum != null)
             {
-                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ActiveModule.ModuleID).GetById(dto.OldTopicId);
+                var ti = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ActiveModule.ModuleID, dto.OldTopicId);
                 if (ti != null)
                 {
                     bool hasCreatePerm;
@@ -140,8 +140,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             var subject = Utilities.CleanString(portalSettings.PortalId, dto.Subject, false, EditorType.TEXTBOX, false, false, this.ActiveModule.ModuleID, string.Empty, false);
                             var replies = dto.Replies.Split('|');
-                            var firstReply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ActiveModule.ModuleID).GetById(Convert.ToInt32(replies[0]));
-                            var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId, this.ActiveModule.ModuleID);
+                            var firstReply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(this.ActiveModule.ModuleID, Convert.ToInt32(replies[0]));
+                            var firstContent = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.GetById(this.ActiveModule.ModuleID, firstReply.ContentId);
                             topicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalSettings.PortalId, this.ActiveModule.ModuleID, dto.NewForumId, subject, string.Empty, firstContent.AuthorId, firstContent.AuthorName, true, this.Request.GetIPAddress());
                             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(this.ActiveModule.ModuleID, oldForum.ForumID, newForum.ForumID, dto.OldTopicId, topicId, dto.Replies, true);
                         }

@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
@@ -37,34 +38,37 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.Social.Notifications;
 
-    internal class TopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
+    internal class TopicController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo, ITopicController, TopicController>, ITopicController
     {
-        private int moduleId = -1;
-
-        internal override string cacheKeyTemplate => CacheKeys.TopicInfo;
-
-        internal TopicController(int moduleId)
+        protected override Func<ITopicController> GetFactory()
         {
-            this.moduleId = moduleId;
+            return () => new TopicController();
         }
 
-        public virtual DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int topicId)
+        public virtual DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int moduleId, int topicId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = null)
         {
-            var cachekey = this.GetCacheKey(moduleId: this.moduleId, id: topicId);
-            var ti = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
+            var cachekey = string.Format(CacheKeys.TopicInfo, moduleId, topicId);
+            var ti = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
             if (ti == null)
             {
-                ti = base.GetById(topicId);
+                ti = this._repositoryControllerBase.GetById(topicId);
             }
 
             if (ti != null)
             {
-                ti.ModuleId = this.moduleId;
-                ti.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ti.ForumId, this.moduleId);
-
-                if (ti.Forum != null)
+                ti.ModuleId = moduleId;
+                if (forum != null)
                 {
-                    ti.PortalId = ti.Forum.PortalId;
+                    ti.Forum = forum;
+                    ti.PortalId = forum.PortalId;
+                }
+                else
+                {
+                    ti.Forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId, ti.ForumId);
+                    if (ti.Forum != null)
+                    {
+                        ti.PortalId = ti.Forum.PortalId;
+                    }
                 }
 
                 ti.GetContent();
@@ -79,38 +83,38 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
             }
 
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, ti);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, ti);
             return ti;
         }
 
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetByContentId(int contentId)
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetByContentId(int moduleId, int contentId)
         {
-            var cachekey = string.Format(CacheKeys.TopicInfoByContentId, this.moduleId, contentId);
-            var ti = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
+            var cachekey = string.Format(CacheKeys.TopicInfoByContentId, moduleId, contentId);
+            var ti = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
             if (ti == null)
             {
-                ti = this.Find("WHERE ContentId = @0", contentId).FirstOrDefault();
+                ti = this._repositoryControllerBase.Find("WHERE ContentId = @0", contentId).FirstOrDefault();
             }
 
             if (ti != null)
             {
-                ti = this.GetById(ti.TopicId);
+                ti = this.GetById(moduleId, ti.TopicId);
             }
 
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, ti);
+            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, ti);
             return ti;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public int GetAnnouncementsCount(HashSet<int> forumIds)
+        public int GetAnnouncementsCount(int moduleId, HashSet<int> forumIds)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return 0;
             }
 
-            string cachekey = string.Format(CacheKeys.TopicAnnouncementsCount, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"));
-            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as int?;
+            string cachekey = string.Format(CacheKeys.TopicAnnouncementsCount, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"));
+            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as int?;
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
@@ -125,27 +129,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                          AND t.AnnounceStart <= GETUTCDATE()
                          AND t.AnnounceEnd >= GETUTCDATE()",
                     forumsIdsList).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topicCount);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topicCount);
             }
 
             return topicCount.Value;
         }
 
-        public bool ShowAnnouncementsLink(HashSet<int> forumIds)
+        public bool ShowAnnouncementsLink(int moduleId, HashSet<int> forumIds)
         {
-            return this.GetAnnouncementsCount(forumIds: forumIds) > 0;
+            return this.GetAnnouncementsCount(moduleId: moduleId, forumIds: forumIds) > 0;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetAnnouncements(HashSet<int> forumIds, int pageId, int pageSize)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetAnnouncements(int moduleId, HashSet<int> forumIds, int pageId, int pageSize)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return Enumerable.Empty<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
             }
 
-            string cachekey = string.Format(CacheKeys.TopicAnnouncements, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize);
-            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
+            string cachekey = string.Format(CacheKeys.TopicAnnouncements, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize);
+            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
                 {
@@ -164,25 +168,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                            ORDER BY t.AnnounceStart DESC
                            OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
                         forumsIdsList);
-                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(topicId: topicId.Value));
+                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topics);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topics);
             }
 
             return topics;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public int GetMostRepliesCount(HashSet<int> forumIds, int timeFrameMinutes)
+        public int GetMostRepliesCount(int moduleId, HashSet<int> forumIds, int timeFrameMinutes)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return 0;
             }
 
-            string cachekey = string.Format(CacheKeys.TopicMostRepliesCount, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes);
-            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as int?;
+            string cachekey = string.Format(CacheKeys.TopicMostRepliesCount, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes);
+            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as int?;
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
@@ -200,22 +204,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                          AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)",
                     forumsIdsList,
                     timeFrameMinutes).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topicCount);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topicCount);
             }
 
             return topicCount.Value;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetMostReplies(HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetMostReplies(int moduleId, HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return Enumerable.Empty<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
             }
 
-            string cachekey = string.Format(CacheKeys.TopicMostReplies, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes);
-            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
+            string cachekey = string.Format(CacheKeys.TopicMostReplies, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes);
+            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
                 var skip = (pageId - 1) * pageSize;
@@ -236,23 +240,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
                     forumsIdsList,
                     timeFrameMinutes);
-                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(topicId: topicId.Value));
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topics);
+                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topics);
             }
 
             return topics;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public int GetUnresolvedCount(HashSet<int> forumIds, int timeFrameMinutes)
+        public int GetUnresolvedCount(int moduleId, HashSet<int> forumIds, int timeFrameMinutes)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return 0;
             }
 
-            string cachekey = string.Format(CacheKeys.TopicUnresolvedCount, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes);
-            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as int?;
+            string cachekey = string.Format(CacheKeys.TopicUnresolvedCount, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes);
+            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as int?;
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
@@ -271,27 +275,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                          AND (@1=0 OR DATEDIFF(mi, t.DateCreated, GETUTCDATE()) <= @1)",
                     forumsIdsList,
                     timeFrameMinutes).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topicCount);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topicCount);
             }
 
             return topicCount.Value;
         }
 
-        public bool ShowUnresolvedLink(HashSet<int> forumIds)
+        public bool ShowUnresolvedLink(int moduleId, HashSet<int> forumIds)
         {
-            return this.GetUnresolvedCount(forumIds: forumIds, 0) > 0;
+            return this.GetUnresolvedCount(moduleId, forumIds: forumIds, timeFrameMinutes: 0) > 0;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetUnresolved(HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetUnresolved(int moduleId, HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return Enumerable.Empty<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
             }
 
-            string cachekey = string.Format(CacheKeys.TopicUnresolved, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes);
-            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
+            string cachekey = string.Format(CacheKeys.TopicUnresolved, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes);
+            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
                 var skip = (pageId - 1) * pageSize;
@@ -313,23 +317,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
                     forumsIdsList,
                     timeFrameMinutes);
-                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(topicId: topicId.Value));
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topics);
+                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topics);
             }
 
             return topics;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public int GetUnansweredCount(HashSet<int> forumIds, int timeFrameMinutes)
+        public int GetUnansweredCount(int moduleId, HashSet<int> forumIds, int timeFrameMinutes)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return 0;
             }
 
-            string cachekey = string.Format(CacheKeys.TopicUnansweredCount, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes);
-            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as int?;
+            string cachekey = string.Format(CacheKeys.TopicUnansweredCount, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes);
+            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as int?;
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
@@ -349,22 +353,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                          AND (@1=0 OR DATEDIFF(mi, t.DateCreated, GETUTCDATE()) <= @1)",
                     forumsIdsList,
                     timeFrameMinutes).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topicCount);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topicCount);
             }
 
             return topicCount.Value;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetUnanswered(HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetUnanswered(int moduleId, HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return Enumerable.Empty<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
             }
 
-            string cachekey = string.Format(CacheKeys.TopicUnanswered, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes);
-            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
+            string cachekey = string.Format(CacheKeys.TopicUnanswered, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes);
+            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
                 var skip = (pageId - 1) * pageSize;
@@ -387,23 +391,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
                     forumsIdsList,
                     timeFrameMinutes);
-                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(topicId: topicId.Value));
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topics);
+                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topics);
             }
 
             return topics;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public int GetActiveTopicsCount(HashSet<int> forumIds, int timeFrameMinutes)
+        public int GetActiveTopicsCount(int moduleId, HashSet<int> forumIds, int timeFrameMinutes)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return 0;
             }
 
-            string cachekey = string.Format(CacheKeys.ActiveTopicsCount, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes);
-            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as int?;
+            string cachekey = string.Format(CacheKeys.ActiveTopicsCount, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes);
+            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as int?;
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
@@ -420,22 +424,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                          AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)",
                     forumsIdsList,
                     timeFrameMinutes).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topicCount);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topicCount);
             }
 
             return topicCount.Value;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetActiveTopics(HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetActiveTopics(int moduleId, HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return Enumerable.Empty<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
             }
 
-            string cachekey = string.Format(CacheKeys.ActiveTopics, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes);
-            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
+            string cachekey = string.Format(CacheKeys.ActiveTopics, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes);
+            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
                 {
@@ -456,25 +460,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                            OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
                         forumsIdsList,
                         timeFrameMinutes);
-                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(topicId: topicId.Value));
+                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topics);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topics);
             }
 
             return topics;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public int GetMyTopicsCount(HashSet<int> forumIds, int timeFrameMinutes, int authorId)
+        public int GetMyTopicsCount(int moduleId, HashSet<int> forumIds, int timeFrameMinutes, int authorId)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return 0;
             }
 
-            string cachekey = string.Format(CacheKeys.MyTopicsCount, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes, authorId);
-            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as int?;
+            string cachekey = string.Format(CacheKeys.MyTopicsCount, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes, authorId);
+            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as int?;
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
@@ -518,22 +522,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumsIdsList,
                     timeFrameMinutes,
                     authorId).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topicCount);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topicCount);
             }
 
             return topicCount.Value;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetMyTopics(HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize, int authorId)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetMyTopics(int moduleId, HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize, int authorId)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return Enumerable.Empty<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
             }
 
-            string cachekey = string.Format(CacheKeys.MyTopics, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes, authorId);
-            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
+            string cachekey = string.Format(CacheKeys.MyTopics, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes, authorId);
+            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
                 {
@@ -588,25 +592,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         forumsIdsList,
                         timeFrameMinutes,
                         authorId);
-                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(topicId: topicId.Value));
+                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topics);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topics);
             }
 
             return topics;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public int GetMyUnreadTopicsCount(HashSet<int> forumIds, int timeFrameMinutes, int authorId)
+        public int GetMyUnreadTopicsCount(int moduleId, HashSet<int> forumIds, int timeFrameMinutes, int authorId)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return 0;
             }
 
-            string cachekey = string.Format(CacheKeys.TopicUnreadCount, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes, authorId);
-            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as int?;
+            string cachekey = string.Format(CacheKeys.TopicUnreadCount, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes, authorId);
+            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as int?;
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
@@ -643,22 +647,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumsIdsList,
                     timeFrameMinutes,
                     authorId).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topicCount);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topicCount);
             }
 
             return topicCount.Value;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetMyUnreadTopics(HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize, int authorId)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetMyUnreadTopics(int moduleId, HashSet<int> forumIds, int timeFrameMinutes, int pageId, int pageSize, int authorId)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return Enumerable.Empty<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
             }
 
-            string cachekey = string.Format(CacheKeys.TopicUnread, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes, authorId);
-            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
+            string cachekey = string.Format(CacheKeys.TopicUnread, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes, authorId);
+            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
                 {
@@ -699,25 +703,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         forumsIdsList,
                         timeFrameMinutes,
                         authorId);
-                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(topicId: topicId.Value));
+                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topics);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topics);
             }
 
             return topics;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public int GetTaggedTopicsCount(HashSet<int> forumIds, int tagId, int timeFrameMinutes)
+        public int GetTaggedTopicsCount(int moduleId, HashSet<int> forumIds, int tagId, int timeFrameMinutes)
         {
             if (forumIds == null || forumIds.Count == 0)
             {
                 return 0;
             }
 
-            string cachekey = string.Format(CacheKeys.TaggedTopicsCount, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), tagId, timeFrameMinutes);
-            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as int?;
+            string cachekey = string.Format(CacheKeys.TaggedTopicsCount, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), tagId, timeFrameMinutes);
+            var topicCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as int?;
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
@@ -737,22 +741,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumsIdsList,
                     timeFrameMinutes,
                     tagId).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topicCount);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topicCount);
             }
 
             return topicCount.Value;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetTaggedTopics(HashSet<int> forumIds, int tagId, int timeFrameMinutes, int pageId, int pageSize)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> GetTaggedTopics(int moduleId, HashSet<int> forumIds, int tagId, int timeFrameMinutes, int pageId, int pageSize)
         {
             if (forumIds == null || forumIds.Count == 0 || tagId <= 0)
             {
                 return Enumerable.Empty<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
             }
 
-            string cachekey = string.Format(CacheKeys.TaggedTopics, this.moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), tagId, pageId, pageSize, timeFrameMinutes);
-            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
+            string cachekey = string.Format(CacheKeys.TaggedTopics, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), tagId, pageId, pageSize, timeFrameMinutes);
+            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
                 var skip = (pageId - 1) * pageSize;
@@ -780,18 +784,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumsIdsList,
                     timeFrameMinutes,
                     tagId);
-                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(topicId: topicId.Value));
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topics);
+                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topics);
             }
 
             return topics;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo FindByURL(int forumId, string topicUrl)
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo FindByURL(int moduleId, int forumId, string topicUrl)
         {
-            string cachekey = string.Format(CacheKeys.TopicByUrl, this.moduleId, forumId, topicUrl);
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
+            string cachekey = string.Format(CacheKeys.TopicByUrl, moduleId, forumId, topicUrl);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
             if (topicInfo == null)
             {
                 if (!string.IsNullOrWhiteSpace(topicUrl))
@@ -809,11 +813,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         topicUrl.Trim()).FirstOrDefault();
                     if (topicId.HasValue)
                     {
-                        topicInfo = this.GetById(topicId.Value);
+                        topicInfo = this.GetById(moduleId: moduleId, topicId: topicId.Value);
                     }
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, topicInfo);
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, topicInfo);
             }
 
             return topicInfo;
@@ -821,7 +825,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static int QuickCreate(int portalId, int moduleId, int forumId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress)
         {
-            var forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
+            var forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId, forumId);
             int topicId = -1;
             var ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo
             {
@@ -895,7 +899,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Approve(int moduleId, int topicId, int userId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
             if (ti == null)
             {
                 return null;
@@ -916,7 +920,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static void Move(int moduleId, int userId, int topicId, int newForumId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
             int oldForumId = (int)ti.ForumId;
             ModuleSettings settings = SettingsBase.GetModuleSettings(ti.ModuleId);
             if (settings.URLRewriteEnabled)
@@ -939,19 +943,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
             }
 
-            var oldForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(oldForumId, moduleId);
-            var newForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(newForumId, moduleId);
+            var oldForum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId, oldForumId);
+            var newForum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId, newForumId);
 
             DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Move(ti.PortalId, ti.ModuleId, newForumId, topicId);
-            ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+            ti = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
 
             if (oldForum.FeatureSettings.ModMoveNotify && ti?.Author?.AuthorId > 0)
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(TemplateType.ModMove, ti.Forum.GetTabId(), oldForum, topicId: ti.TopicId, replyId: -1, author: ti.Author);
             }
 
-            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: topicId, replyId: -1, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, requestUrl: null);
-            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: newForum.ForumGroupId, forumId: newForum.ForumID, topicId: topicId, replyId: -1, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, requestUrl: null);
+            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: topicId, replyId: -1, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, dateCreated: DateTime.UtcNow, requestUrl: null);
+            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: newForum.ForumGroupId, forumId: newForum.ForumID, topicId: topicId, replyId: -1, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, dateCreated: DateTime.UtcNow, requestUrl: null);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(moduleId, ti.ForumId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(moduleId, topicId);
@@ -960,7 +964,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static void SaveToForum(int moduleId, int forumId, int topicId)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController(moduleId).Update(forumId: forumId, topicId: topicId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController.Instance.Update(moduleId: moduleId, forumId: forumId, topicId: topicId);
             Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(forumId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(moduleId, forumId);
@@ -975,13 +979,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topic.Content.DateCreated = DateTime.UtcNow;
             }
 
-            var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: topic.ForumId, moduleId: topic.ModuleId);
-            topic.Content.Body = DotNetNuke.Modules.ActiveForums.Controllers.TagController.GetBodyWithTagsProcessed(topic, forum);
+            var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: topic.ModuleId, forumId: topic.ForumId);
+            topic.Content.Body = DotNetNuke.Modules.ActiveForums.Controllers.TagController.GetBodyWithTagsProcessed(topic, forum, new Services.URLNavigator().NavigationManager());
 
             // if editing existing topic, update associated journal item & tags
             if (topic.TopicId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(topic);
+                DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.UpdateTopicTags(topic);
                 Social.UpdateJournalItemForPost(topic);
 
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(topic.ModuleId, topic.TopicId);
@@ -995,22 +999,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Save(topic.Forum.PortalId, topic.ModuleId, topic.TopicId, topic.ViewCount, topic.ReplyCount, topic.IsLocked, topic.IsPinned, topic.TopicIcon, topic.StatusId, topic.IsApproved, topic.IsDeleted, topic.IsAnnounce, topic.IsArchived, topic.AnnounceStart ?? Utilities.NullDate(), topic.AnnounceEnd ?? Utilities.NullDate(), topic.Content.Subject.Trim(), topic.Content.Body.Trim(), topic.Content.Summary.Trim(), topic.Content.DateCreated, topic.Content.DateUpdated, topic.Content.AuthorId, topic.Content.AuthorName, topic.Content.IPAddress, (int)topic.TopicType, topic.Priority, topic.TopicUrl, topic.TopicData));
         }
 
-        public void Restore(int portalId, int forumId, int topicId)
+        public void Restore(int portalId, int moduleId, int forumId, int topicId)
         {
-            var topic = this.GetById(topicId);
+            var topic = this.GetById(moduleId, topicId);
             topic.IsDeleted = false;
-            this.Update(topic);
+            this._repositoryControllerBase.Update(topic);
             topic.Content.IsDeleted = false;
-            new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().Update(topic.Content);
+            DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.Update(topic.Content);
             SaveToForum(topic.ModuleId, forumId, topicId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(topic.ModuleId, topic.ForumId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(topic.ModuleId, topic.TopicId);
             DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForContent(topic.ModuleId, topic.ContentId);
         }
 
-        public void DeleteById(int topicId, DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior deleteBehavior)
+        public void DeleteById(int moduleId, int topicId, DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior deleteBehavior)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = this.GetById(topicId);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = this.GetById(moduleId, topicId);
             if (ti != null)
             {
                 Social.DeleteJournalItemForPost(ti);
@@ -1027,8 +1031,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searchDoc);
                 }
 
-                var replyController = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(ti.ModuleId);
-                replyController.GetByTopicId(topicId).ForEach(reply =>
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetByTopicId(ti.ModuleId, topicId).ForEach(reply =>
                 {
                     DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForReply(reply.ModuleId, reply.ReplyId);
                 });
@@ -1039,7 +1042,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     ti.Content.RemoveAttachments();
                 }
 
-                new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopic(topicId);
+                DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController.Instance.DeleteForTopic(topicId);
                 DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete(ti.ForumId, topicId, (int)deleteBehavior);
                 DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(ti.ForumId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(ti.ModuleId, ti.ForumId);
@@ -1052,19 +1055,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static bool QueueApprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.ApprovedTopicCreated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, requestUrl: HttpContext.Current.Request.Url.ToString());
+            return DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.Add(ProcessType.ApprovedTopicCreated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, dateCreated: DateTime.UtcNow, requestUrl: HttpContext.Current.Request.Url.ToString());
         }
 
         internal static bool QueueUnapprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UnapprovedTopicCreated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, requestUrl: HttpContext.Current.Request.Url.ToString());
+            return DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.Add(ProcessType.UnapprovedTopicCreated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, dateCreated: DateTime.UtcNow, requestUrl: HttpContext.Current.Request.Url.ToString());
         }
 
         internal static bool ProcessApprovedTopicAfterAction(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, string requestUrl)
         {
             try
             {
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
                 if (topic == null)
                 {
                     var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
@@ -1078,9 +1081,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Subscriptions.SendSubscriptions(-1, portalId, moduleId, tabId, topic.Forum, topicId, 0, topic.Content.AuthorId, new Uri(requestUrl));
                 Social.AddPostToJournal(topic);
 
-                var pqc = new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController();
-                pqc.Add(ProcessType.UpdateForumTopicPointers, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, requestUrl: requestUrl);
-                pqc.Add(ProcessType.UpdateForumLastUpdated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, requestUrl: requestUrl);
+                var pqc = DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance;
+                pqc.Add(ProcessType.UpdateForumTopicPointers, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, dateCreated: DateTime.UtcNow, requestUrl: requestUrl);
+                pqc.Add(ProcessType.UpdateForumLastUpdated, portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, dateCreated: DateTime.UtcNow, requestUrl: requestUrl);
 
                 Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
 
@@ -1090,7 +1093,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
 
                 topic.Content.ExtractEmbeddedImages();
-                DotNetNuke.Modules.ActiveForums.Controllers.TagController.UpdateTopicTags(topic);
+                DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.UpdateTopicTags(topic);
                 DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController.ProcessUserMentions(topic);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForForum(topic.ModuleId, topic.ForumId);
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClearForTopic(topic.ModuleId, topic.TopicId);
@@ -1114,7 +1117,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+                var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
                 if (topic == null)
                 {
                     var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };

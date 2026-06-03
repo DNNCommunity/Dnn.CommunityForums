@@ -62,19 +62,18 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 if (dto.BadgeId > 0 && dto.UserId > 0)
                 {
                     DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo userBadge = null;
-                    var userBadgeController = new DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController(this.PortalSettings.PortalId, this.ForumModuleId);
                     if (dto.UserBadgeId > 0)
                     {
-                        userBadge = userBadgeController.GetById(dto.UserBadgeId);
+                        userBadge = DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.Instance.GetById(this.PortalSettings.PortalId, this.ForumModuleId, dto.UserBadgeId);
                     }
                     else
                     {
-                        userBadge = userBadgeController.GetLatestForUserAndBadge(userId: dto.UserId, badgeId: dto.BadgeId);
+                        userBadge = DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.Instance.GetLatestForUserAndBadge(this.PortalSettings.PortalId, this.ForumModuleId, userId: dto.UserId, badgeId: dto.BadgeId);
                     }
 
                     if (userBadge == null && dto.Assign.Equals(true))
                     {
-                        DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.AssignUserBadge(portalId: this.PortalSettings.PortalId, moduleId: this.ForumModuleId, userId: dto.UserId, badgeId: dto.BadgeId, requestUrl: this.Request.RequestUri.ToString());
+                        DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.Instance.AssignUserBadge(portalId: this.PortalSettings.PortalId, moduleId: this.ForumModuleId, userId: dto.UserId, badgeId: dto.BadgeId, requestUrl: this.Request.RequestUri.ToString());
                         return this.Request.CreateResponse(HttpStatusCode.OK, true);
                     }
 
@@ -82,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     {
                         if (userBadge != null)
                         {
-                            userBadgeController.UnassignUserBadge(portalId: userBadge.PortalId, userId: userBadge.UserId, badgeId: userBadge.BadgeId, dateAssigned: userBadge.DateAssigned);
+                            DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.Instance.UnassignUserBadge(portalId: userBadge.PortalId, moduleId: userBadge.ModuleId, userId: userBadge.UserId, badgeId: userBadge.BadgeId, dateAssigned: userBadge.DateAssigned);
                         }
 
                         return this.Request.CreateResponse(HttpStatusCode.OK, false);

@@ -45,16 +45,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal static void Save(int moduleId, string settingsKey, FeatureSettings settings)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKey(moduleId, settingsKey);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.DeleteForModuleIdSettingsKey(moduleId, settingsKey);
             foreach (DictionaryEntry setting in settings.featureSettings)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, settingsKey, setting.Key.ToString(), setting.Value.ToString());
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.SaveSetting(moduleId, settingsKey, setting.Key.ToString(), setting.Value.ToString());
             }
         }
 
         internal static void Delete(int moduleId, string settingsKey, string settingName)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKeySettingName(moduleId, settingsKey, settingName);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.DeleteForModuleIdSettingsKeySettingName(moduleId, settingsKey, settingName);
         }
 
         [IgnoreColumn]

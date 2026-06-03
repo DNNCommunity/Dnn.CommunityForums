@@ -54,8 +54,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindForums()
         {
-            var groups = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(this.ModuleId).OrderBy(f => f.SortOrder).ToList();
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+            var groups = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.Get(this.ModuleId).OrderBy(f => f.SortOrder).ToList();
+            var forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
             var totalGroups = groups.Count;
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.Append("<table width=\"95%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "admin_check.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityOn]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityOn]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" />";
                     }
-                    else if (group.Security.EqualPermissions(new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId: SettingsBase.GetModuleSettings(this.ModuleId).DefaultPermissionId, moduleId: this.ModuleId)))
+                    else if (group.Security.EqualPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(permissionsId: SettingsBase.GetModuleSettings(this.ModuleId).DefaultPermissionId, moduleId: this.ModuleId)))
                     {
                         inheritance = "<img src=\"" + this.Page.ResolveUrl(Globals.ModuleImagesPath + "info32.png") + "\" class=\"dcf-controlpanel-inheritance-img\" alt=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityRecommended]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\" title=\"" + string.Format(this.GetSharedResource("[RESX:Tips:InheritSecurityRecommended]"), group.GroupName, this.GetSharedResource("[RESX:ModuleDefaults]")) + "\"/>";
                     }

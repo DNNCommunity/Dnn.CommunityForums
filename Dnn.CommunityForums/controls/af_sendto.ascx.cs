@@ -57,8 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string topicSubject = string.Empty;
             if (this.TopicId > 0)
             {
-                TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ForumModuleId, this.TopicId);
                 if (ti != null)
                 {
                     if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.ForumInfo.Security.ReadRoleIds, this.ForumUser.UserRoleIds))

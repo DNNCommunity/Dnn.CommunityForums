@@ -672,7 +672,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             /* not yet testable */
-            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(this.MockModule.Object.ModuleID, -1, string.Empty));        }
+            Assert.Throws<System.NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(this.MockModule.Object.ModuleID, -1, string.Empty));        }
 
         [Test]
         public void CheckForumIdsForViewForRSSTest()
@@ -682,7 +682,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Assert
             /* not yet testable */
             Assert.That(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, string.Empty, new HashSet<int>()), Is.EqualTo(string.Empty));
-            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, "1",  new HashSet<int>() { 1, 2, 3 }));
+            Assert.Throws<System.NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, "1",  new HashSet<int>() { 1, 2, 3 }));
         }
 
         [Test]

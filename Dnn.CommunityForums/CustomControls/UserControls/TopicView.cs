@@ -1156,7 +1156,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return string.Empty;
             }
 
-            var attachments = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetByContentId(contentId).Where(attachment => !attachment.DisplayInline);
+            var attachments = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(contentId).Where(attachment => !attachment.DisplayInline);
             if (!attachments.Any())
             {
                 return string.Empty;

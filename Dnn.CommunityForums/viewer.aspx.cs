@@ -70,8 +70,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Get the attachment using either the attachment id or the legacy file id.  If the attachment doesn't exist, return a 404.
             var attachment = attachmentId > 0 ?
-                new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetById(attachmentId) :
-                new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().Find("WHERE FileID = @0", attachFileId).FirstOrDefault();
+                DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetById(attachmentId) :
+                DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.Find("WHERE FileID = @0", attachFileId).FirstOrDefault();
             if (attachment == null)
             {
                 this.Response.StatusCode = 404;
@@ -82,8 +82,8 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 // Make sure the user has read access
-                var content = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(attachment.ContentId, moduleId);
-                var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId);
+                var content = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.GetById(moduleId, attachment.ContentId);
+                var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetUserFromHttpContext(portalId, moduleId);
                 if (forumUser == null || content == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(content.Post.Forum.Security.ReadRoleIds, forumUser.UserRoleIds))
                 {
                     this.Response.StatusCode = 401;

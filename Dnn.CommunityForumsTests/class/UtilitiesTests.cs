@@ -645,7 +645,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             // Arrange
 
             // Act
-            return Utilities.RemoveCultureFromUrl(url, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
+            return Utilities.RemoveCultureFromUrl(url, this.mockPortalAliasInfo.Object);
 
             // Assert
         }
@@ -982,7 +982,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var result = Utilities.AutoLinks(text, this.DefaultSite);
 
             // Assert
-            return  result == string.Empty;
+            return result == string.Empty;
         }
 
         [Test]

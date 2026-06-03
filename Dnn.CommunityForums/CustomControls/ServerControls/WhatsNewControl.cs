@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             IDataReader dr;
             if (this.ForumIds == string.Empty && this.FilterByUserId > 0)
             {
-                this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(-1, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(this.PortalId, this.UserId)).FromHashSetToDelimitedString(":");
+                this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(-1, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ModuleId, this.UserId)).FromHashSetToDelimitedString(":");
                 dr = DataProvider.Instance().GetPostsByUser(this.PortalId, this.Rows, this.UserInfo.IsSuperUser, this.UserId, this.FilterByUserId, this.TopicsOnly, this.ForumIds);
             }
             else
@@ -245,7 +245,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTempTemplate = sTempTemplate.Replace("[AUTHORLASTNAME]", lastName);
                     sTempTemplate = sTempTemplate.Replace("[AUTHORID]", authorId);
                     sTempTemplate = sTempTemplate.Replace("[AUTHORDISPLAYNAME]", displayName);
-                    sTempTemplate = sTempTemplate.Replace("[DATE]", Utilities.GetUserFormattedDateTime(Convert.ToDateTime(postDate), new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(Utilities.SafeConvertInt(this.ModuleId, DotNetNuke.Common.Utilities.Null.NullInteger)).GetByUserId(this.PortalId, this.UserId)));
+                    sTempTemplate = sTempTemplate.Replace("[DATE]", Utilities.GetUserFormattedDateTime(Convert.ToDateTime(postDate), DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ModuleId, this.UserId)));
                     sTempTemplate = sTempTemplate.Replace("[BODY]", body);
                     sTempTemplate = sTempTemplate.Replace("[BODYHTML]", bodyHTML);
                     sTempTemplate = sTempTemplate.Replace("[BODYTEXT]", Utilities.StripHTMLTag(bodyHTML));

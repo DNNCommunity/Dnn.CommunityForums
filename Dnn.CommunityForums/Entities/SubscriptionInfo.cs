@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool ForumSubscriber { get => this.ForumId > 0 && this.TopicId == 0; }
 
         [IgnoreColumn]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo User => this.user ?? (this.user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetByUserId(this.PortalId, this.UserId));
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo User => this.user ?? (this.user = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ModuleId, this.UserId));
 
         [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (this.forumInfo == null)
                 {
-                    this.forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId);
+                    this.forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ModuleId, this.ForumId);
 
                     // Break indirect cycle: if Topic is already loaded, inject this forum into it
                     // so TopicInfo.Forum does not trigger another ForumController.GetById call
@@ -107,7 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (this.topicInfo == null)
                 {
-                    this.topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.TopicId);
+                    this.topicInfo = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ModuleId, this.TopicId);
 
                     // Break indirect cycle: inject already-loaded forum (if available) into the topic
                     // so TopicInfo.Forum does not trigger another ForumController.GetById call,

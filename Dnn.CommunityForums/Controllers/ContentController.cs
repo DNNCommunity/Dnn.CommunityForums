@@ -24,19 +24,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Data;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
 
-    internal class ContentController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo>
+    internal class ContentController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo, IContentController, ContentController>, IContentController
     {
-        internal override string cacheKeyTemplate => CacheKeys.ContentInfo;
-
-        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetById(int contentId, int moduleId)
+        protected override Func<IContentController> GetFactory()
         {
-            var cachekey = this.GetCacheKey(moduleId: moduleId, id: contentId);
+            return () => new ContentController();
+        }
+
+        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetById(int moduleId, int contentId)
+        {
+            var cachekey = string.Format(CacheKeys.ContentInfo, moduleId, contentId);
             DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ContentInfo;
             if (content == null)
             {
-                content = base.GetById(contentId);
+                content = this._repositoryControllerBase.GetById(contentId);
                 if (moduleId.Equals(-1) && !content.Equals(null))
                 {
                     content.UpdateCache();
@@ -48,6 +53,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             return content;
+        }
+
+        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Save<TProperty>(DotNetNuke.Modules.ActiveForums.Entities.ContentInfo item, TProperty id)
+        {
+            if (id == null || id.Equals(0) || id.Equals(-1) || this._repositoryControllerBase.GetById(id) == null)
+            {
+                this._repositoryControllerBase.Insert(item);
+            }
+            else
+            {
+                this._repositoryControllerBase.Update(item);
+            }
+
+            return item;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
@@ -108,9 +127,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return Enumerable.Empty<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo>();
             }
 
-            var replyController = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId);
-            var topicController = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId);
-
             string cachekey = string.Format(CacheKeys.MostLikes, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes);
             IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo> posts = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo>;
             if (posts == null)
@@ -158,13 +174,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 posts = postInfo.Where(postinfo => postinfo.ContentId.HasValue).Select(post =>
                 {
-                    var topic = topicController.GetById(post.TopicId.Value);
+                    var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, post.TopicId.Value);
                     if (!post.ReplyId.HasValue)
                     {
                         return (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)topic;
                     }
 
-                    return (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)replyController.GetById(replyId: post.ReplyId.Value, topic: topic);
+                    return (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(moduleId: moduleId, replyId: post.ReplyId.Value, topic: topic);
                 });
 
                 DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, posts);

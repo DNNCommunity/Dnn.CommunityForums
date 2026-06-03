@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     SearchHours = DotNetNuke.Common.Utilities.Null.NullInteger,
                     AuthorUserId = DotNetNuke.Common.Utilities.Null.NullInteger,
                     AuthorUsername = null,
-                    ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumModuleId, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalSettings.PortalId, this.UserInfo.UserID), DotNetNuke.Modules.ActiveForums.SecureActions.Read).FromHashSetToDelimitedString(","),
+                    ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsForUser(this.ForumModuleId, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.PortalSettings.PortalId, this.ForumModuleId, this.UserInfo.UserID), DotNetNuke.Modules.ActiveForums.SecureActions.Read).FromHashSetToDelimitedString(","),
                     Tags = string.Empty,
                     ResultType = DotNetNuke.Modules.ActiveForums.Enums.SearchResultType.SearchByTopics,
                     SortResultsBy = DotNetNuke.Modules.ActiveForums.Enums.SearchSortType.SearchSortTypeRelevance,
@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     searchHours: dto.SearchHours,
                     authorUserId: dto.AuthorUserId,
                     authorUsername: dto.AuthorUsername,
-                    forumsToSearch: !string.IsNullOrEmpty(dto.ForumIds) ? dto.ForumIds : DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumModuleId, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalSettings.PortalId, this.UserInfo.UserID), DotNetNuke.Modules.ActiveForums.SecureActions.Read).FromHashSetToDelimitedString(","),
+                    forumsToSearch: !string.IsNullOrEmpty(dto.ForumIds) ? dto.ForumIds : DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsForUser(this.ForumModuleId, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.PortalSettings.PortalId, this.ForumModuleId, this.UserInfo.UserID), DotNetNuke.Modules.ActiveForums.SecureActions.Read).FromHashSetToDelimitedString(","),
                     tags: dto.Tags,
                     resultType: dto.ResultType,
                     sort: dto.SortResultsBy);

@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (this.Forums == null)
             {
-                this.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId);
+                this.Forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(this.ForumModuleId);
             }
 
             this.drpForums.Items.Clear();
