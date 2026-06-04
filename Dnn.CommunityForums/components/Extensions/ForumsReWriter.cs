@@ -533,7 +533,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else if (this.ViewUrlTypeValue.Equals(ViewUrlType.Likes) && this.ContentId > 0)
                 {
-                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.TabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}={Views.Likes}&{ParamKeys.ContentId}=" + this.ContentId + sPage + qs);
+                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.TabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}={Views.likes}&{ParamKeys.ContentId}=" + this.ContentId + sPage + qs);
                 }
                 else if ((this.TopicId > 0) || (this.ForumId > 0) || (this.ForumGroupId > 0))
                 {

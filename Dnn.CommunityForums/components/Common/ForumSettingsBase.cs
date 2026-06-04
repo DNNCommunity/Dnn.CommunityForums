@@ -239,19 +239,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public string PrefixURLBase
-        {
-            get
-            {
-                return this.Settings.GetString(SettingKeys.PrefixURLBase, string.Empty);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLBase, value);
-            }
-        }
-
         public string PrefixURLTag
         {
             get
@@ -295,7 +282,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this.Settings.GetString(SettingKeys.PrefixURLLikes, Views.Likes);
+                return this.Settings.GetString(SettingKeys.PrefixURLLikes, Views.likes);
             }
 
             set

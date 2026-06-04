@@ -612,7 +612,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 imgUrl = $"https://{portalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={avatarWidth}&w={avatarHeight}";
             }
 
-            return Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl(imgUrl, portalSettings), portalSettings.PrimaryAlias);
+            return Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl(imgUrl, portalSettings), portalSettings);
         }
 
         internal static void UpdateUserTopicCount(int portalId, int userId)

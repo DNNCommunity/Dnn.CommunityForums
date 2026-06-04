@@ -1945,14 +1945,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string RemoveCultureFromUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
-            return RemoveCultureFromUrl(url, portalSettings.PortalAlias);
-        }
-
-        internal static string RemoveCultureFromUrl(string url, DotNetNuke.Abstractions.Portals.IPortalAliasInfo portalAlias)
-        {
-            if (!string.IsNullOrEmpty(portalAlias?.CultureCode) && url.ToLowerInvariant().Contains($"/{portalAlias?.CultureCode?.ToLowerInvariant()}/"))
+            if (!string.IsNullOrEmpty(portalSettings?.CultureCode) && url.ToLowerInvariant().Contains($"/{portalSettings?.CultureCode?.ToLowerInvariant()}/"))
             {
-                url = url.ToLowerInvariant().Replace($"/{portalAlias.CultureCode.ToLowerInvariant()}/", "/");
+                url = url.ToLowerInvariant().Replace($"/{portalSettings.CultureCode.ToLowerInvariant()}/", "/");
             }
 
             return url;

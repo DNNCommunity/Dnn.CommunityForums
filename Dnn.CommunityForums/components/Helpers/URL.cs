@@ -36,11 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(mainSettings.PrefixURLBase))
-                {
-                    sURL = "/" + mainSettings.PrefixURLBase;
-                }
-
+                sURL = Utilities.NavigateURL(tabId);
                 if (!string.IsNullOrWhiteSpace(fi.ForumGroup.PrefixURL))
                 {
                     sURL += "/" + fi.ForumGroup.PrefixURL;

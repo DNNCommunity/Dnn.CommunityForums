@@ -1672,7 +1672,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (match.Groups["src"].Success && (match.Groups["src"].Value.EndsWith(originalAttachmentFileName, StringComparison.InvariantCultureIgnoreCase) || (!string.IsNullOrEmpty(originalUrl) && match.Groups["src"].Value.ToLowerInvariant().Contains(originalUrl.ToLowerInvariant()))))
                         {
-                            var url = Utilities.RemoveCultureFromUrl(url: Utilities.ResolveUrl($"https://{content.Post.Forum.PortalSettings.DefaultPortalAlias}{fileManager.GetUrl(file)}", content.Post.Forum.PortalSettings), portalAlias: content.Post.Forum.PortalSettings.PortalAlias);
+                            var url = Utilities.RemoveCultureFromUrl(url: Utilities.ResolveUrl($"https://{content.Post.Forum.PortalSettings.DefaultPortalAlias}{fileManager.GetUrl(file)}", content.Post.Forum.PortalSettings), portalSettings: content.Post.Forum.PortalSettings);
                             var tag = $"<img src=\"{url}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />";
                             content.Body = content.Body.Replace(match.Groups["tag"].Value, tag);
                             DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.Save(content, content.ContentId);

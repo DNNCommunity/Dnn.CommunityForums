@@ -155,23 +155,21 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool URLRewriteEnabled => this.MainSettings.GetBoolean(SettingKeys.EnableURLRewriter);
 
-        public string PrefixURLBase => this.MainSettings.GetString(SettingKeys.PrefixURLBase, string.Empty);
-
         public string PrefixURLOther => !this.URLRewriteEnabled
                            ? string.Empty
-                           : this.MainSettings.GetString(SettingKeys.PrefixURLOther, "other");
+                           : this.MainSettings.GetString(SettingKeys.PrefixURLOther, Views.views);
 
         public string PrefixURLTag => !this.URLRewriteEnabled
                            ? string.Empty
-                           : this.MainSettings.GetString(SettingKeys.PrefixURLTags, "tag");
+                           : this.MainSettings.GetString(SettingKeys.PrefixURLTags, Views.tag);
 
         public string PrefixURLCategory => !this.URLRewriteEnabled
                            ? string.Empty
-                           : this.MainSettings.GetString(SettingKeys.PrefixURLCategories, "category");
+                           : this.MainSettings.GetString(SettingKeys.PrefixURLCategories, Views.category);
 
         public string PrefixURLLikes => !this.URLRewriteEnabled
                     ? string.Empty
-                    : this.MainSettings.GetString(SettingKeys.PrefixURLLikes, Views.Likes);
+                    : this.MainSettings.GetString(SettingKeys.PrefixURLLikes, Views.likes);
 
         public int DefaultPermissionId => this.MainSettings.GetInt(SettingKeys.DefaultPermissionId);
 
