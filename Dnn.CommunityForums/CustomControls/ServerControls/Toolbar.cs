@@ -23,6 +23,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System;
     using System.Web.UI;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+
     [ToolboxData("<{0}:Toolbar runat=server></{0}:Toolbar>")]
     public class Toolbar : ControlsBase
     {
@@ -35,11 +37,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
             if (this.ControlConfig != null)
             {
-                object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.Toolbar, this.ForumModuleId, this.UserInfo?.Profile?.PreferredLocale));
+                object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(this.ModuleId, string.Format(CacheKeys.Toolbar, this.ForumModuleId, this.UserInfo?.Profile?.PreferredLocale));
                 if (obj == null)
                 {
                     sTemp = this.ParseTemplate();
-                    DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.Toolbar, this.ModuleId), sTemp);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.ModuleId, string.Format(CacheKeys.Toolbar, this.ModuleId), sTemp);
                 }
                 else
                 {

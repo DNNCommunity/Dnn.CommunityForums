@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Security.Permissions;
 
     public partial class _default : ForumBase
@@ -42,8 +43,8 @@ namespace DotNetNuke.Modules.ActiveForums
             if (init == true)
             {
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "AFINSTALLED", init.ToString());
-                DataCache.ClearAllCache(this.ModuleId);
-                DataCache.ClearAllCacheForTabId(this.TabId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(this.ModuleId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCacheForTabId(this.TabId);
                 this.Response.Redirect(this.EditUrl(), false);
                 this.Context.ApplicationInstance.CompleteRequest();
             }

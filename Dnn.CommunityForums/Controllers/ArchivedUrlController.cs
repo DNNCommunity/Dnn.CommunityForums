@@ -23,6 +23,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Linq;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+
     internal class ArchivedURLController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo, IArchivedURLController, ArchivedURLController>, IArchivedURLController
     {
         protected override Func<IArchivedURLController> GetFactory()
@@ -32,27 +34,31 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo FindByURL(int portalId, string url)
         {
-            string cachekey = string.Format(CacheKeys.ArchivedUrl, portalId, url);
-            DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo archivedURLInfo = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(portalId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo;
-            if (archivedURLInfo == null)
+
+            if (string.IsNullOrWhiteSpace(url))
             {
-                if (!string.IsNullOrWhiteSpace(url))
-                {
-                    var normalizedUrl = url.ToLowerInvariant();
-
-                    // archived URLs are stored with trailing slash; add for consistent matching
-                    if (!normalizedUrl.EndsWith("/"))
-                    {
-                        normalizedUrl = normalizedUrl + '/';
-                    }
-
-                    archivedURLInfo = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND URL_Hash = CONVERT(binary(16), HASHBYTES('MD5', CONVERT(varbinary(8000), @1))) AND URL = @1", portalId, normalizedUrl).FirstOrDefault();
-                }
-
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(portalId, cachekey, archivedURLInfo);
+                return null;
             }
 
-            return archivedURLInfo;
+            var cacheKey = string.Format(CacheKeys.ArchivedUrl, portalId, url);
+            var cached = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(portalId, cacheKey) as DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo>;
+            if (cached == null)
+            {
+                var normalizedUrl = url.ToLowerInvariant();
+
+                // archived URLs are stored with trailing slash; add for consistent matching
+                if (!normalizedUrl.EndsWith("/"))
+                {
+                    normalizedUrl = normalizedUrl + '/';
+                }
+
+                var archivedURLInfo = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND URL_Hash = CONVERT(binary(16), HASHBYTES('MD5', CONVERT(varbinary(8000), @1))) AND URL = @1", portalId, normalizedUrl).FirstOrDefault();
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(portalId, cacheKey, new CacheEntry<DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo>(archivedURLInfo, archivedURLInfo != null));
+
+                return archivedURLInfo;
+            }
+
+            return cached.HasValue ? cached.Value : null;
         }
     }
 }

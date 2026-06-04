@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Framework;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
 
     public partial class ForumSettings : ForumSettingsBase
@@ -237,7 +238,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 // Clear out the cache
-                DataCache.ClearSettingsCache(this.ModuleId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.ClearAll(this.ModuleId);
 
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.APPLICATION_SHUTTING_DOWN.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("ModuleId", this.ModuleId.ToString()));

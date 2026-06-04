@@ -24,6 +24,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+
     #region RewardInfo
     public class RewardInfo
     {
@@ -85,11 +87,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (useCache)
             {
-                rl = (List<RewardInfo>)DataCache.SettingsCacheRetrieve(moduleId, cacheKey);
+                rl = (List<RewardInfo>)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cacheKey);
                 if (rl == null)
                 {
                     rl = this.Reward_List(portalId, moduleId);
-                    DataCache.SettingsCacheStore(moduleId, cacheKey, rl);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cacheKey, rl);
                 }
             }
             else

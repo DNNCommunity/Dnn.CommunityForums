@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:QuickReply runat=server></{0}:QuickReply>")]
     public class QuickReply : ControlsBase
@@ -75,11 +76,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sTemp = string.Empty;
             if (this.ControlConfig != null)
             {
-                object obj = DataCache.SettingsCacheRetrieve(this.moduleId, string.Format(CacheKeys.QuickReply, this.moduleId));
+                object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(this.moduleId, string.Format(CacheKeys.QuickReply, this.moduleId));
                 if (obj == null)
                 {
                     sTemp = this.ParseTemplate();
-                    DataCache.SettingsCacheStore(this.moduleId, string.Format(CacheKeys.QuickReply, this.moduleId), sTemp);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.moduleId, string.Format(CacheKeys.QuickReply, this.moduleId), sTemp);
                 }
                 else
                 {

@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     internal class TagController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TagInfo, ITagController, TagController>, ITagController
     {
@@ -203,11 +204,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public virtual TagInfo GetByName(int moduleId, string tagName)
         {
             var cachekey = string.Format(CacheKeys.TagByName, moduleId, tagName);
-            var tagInfo = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as TagInfo;
+            var tagInfo = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as TagInfo;
             if (tagInfo == null)
             {
                 tagInfo = this._repositoryControllerBase.Find("WHERE ModuleId = @0 AND TagName = @1", moduleId, tagName.Trim()).OrderBy(t => t.TagId).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, tagInfo);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, tagInfo);
             }
 
             return tagInfo;

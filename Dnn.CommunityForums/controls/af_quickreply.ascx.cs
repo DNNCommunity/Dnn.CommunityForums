@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     using log4net.Plugin;
@@ -477,9 +478,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             int replyId = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.Reply_Save(this.PortalId, this.ModuleId, ri);
             ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(this.ForumModuleId, replyId);
-            DataCache.ContentCacheClearForForum(this.ModuleId, this.ForumId);
-            DataCache.ContentCacheClearForReply(this.ModuleId, replyId);
-            DataCache.ContentCacheClearForTopic(this.ModuleId, ri.TopicId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForForum(this.ModuleId, this.ForumId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForReply(this.ModuleId, replyId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForTopic(this.ModuleId, ri.TopicId);
 
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ForumModuleId, this.TopicId, this.ForumInfo);
             string fullURL = new ControlUtils().BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, replyId, this.SocialGroupId);

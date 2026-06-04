@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     using DotNetNuke.Collections;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
@@ -41,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.LikeInfo GetById(int portalId, int moduleId, int id)
         {
             var cachekey = string.Format(CacheKeys.LikeInfo, moduleId, id);
-            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.LikeInfo;
+            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.LikeInfo;
             if (like == null)
             {
                 like = this._repositoryControllerBase.GetById(id, moduleId);
@@ -53,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     like.Content?.GetPost();
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, like);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, like);
             }
 
             return like;
@@ -62,12 +63,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.LikeInfo GetForUser(int portalId, int moduleId, int userId, int postId)
         {
             var cacheKey = string.Format(CacheKeys.LikedByUser, moduleId, postId, userId);
-            var cached = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cacheKey) as CacheEntry<LikeInfo>;
+            var cached = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cacheKey) as DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<LikeInfo>;
 
             if (cached == null)
             {
                 var like = this._repositoryControllerBase.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).FirstOrDefault();
-                DataCache.ContentCacheStore(moduleId, cacheKey, new DotNetNuke.Modules.ActiveForums.CacheEntry<LikeInfo>(like, like != null));
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cacheKey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<LikeInfo>(like, like != null));
 
                 return like;
             }
@@ -107,11 +108,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public int Count(int moduleId, int postId)
         {
             var cachekey = string.Format(CacheKeys.LikeCount, moduleId, postId);
-            var count = (int?)DataCache.ContentCacheRetrieve(moduleId, cachekey);
+            var count = (int?)DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey);
             if (count == null)
             {
                 count = this._repositoryControllerBase.Count("WHERE PostId = @0 AND Checked = 1", postId);
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, count);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, count);
             }
 
             return (int)count;
@@ -160,9 +161,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     dateCreated: like.DateCreated);
             }
 
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.LikeInfo, moduleId, like.Id));
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.LikeCount, moduleId, contentId));
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.LikedByUser, moduleId, contentId, userId));
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.LikeInfo, moduleId, like.Id));
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.LikeCount, moduleId, contentId));
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.LikedByUser, moduleId, contentId, userId));
             return this.Count(moduleId, contentId);
         }
 

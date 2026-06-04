@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     public class ForumsReWriter : IHttpModule
     {
@@ -184,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             var urlRewriteCacheKey = string.Format(CacheKeys.UrlRewrites, app.Request.Url.ToString().ToLowerInvariant());
-            var sendTo = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(DotNetNuke.Common.Utilities.Null.NullInteger, urlRewriteCacheKey) as string;
+            var sendTo = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(DotNetNuke.Common.Utilities.Null.NullInteger, urlRewriteCacheKey) as string;
             if (!string.IsNullOrEmpty(sendTo))
             {
 #if DEBUG
@@ -206,11 +207,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             var portalAliasesCacheKey = CacheKeys.PortalAliases;
-            var portalAliases = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(DotNetNuke.Common.Utilities.Null.NullInteger, portalAliasesCacheKey) as IDictionary<string, IPortalAliasInfo>;
+            var portalAliases = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(DotNetNuke.Common.Utilities.Null.NullInteger, portalAliasesCacheKey) as IDictionary<string, IPortalAliasInfo>;
             if (portalAliases == null)
             {
                 portalAliases = this.portalAliasService.GetPortalAliases();
-                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(DotNetNuke.Common.Utilities.Null.NullInteger, portalAliasesCacheKey, portalAliases);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(DotNetNuke.Common.Utilities.Null.NullInteger, portalAliasesCacheKey, portalAliases);
             }
 
             var portalAliasInfo = portalAliases.Values
@@ -236,7 +237,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.PortalId = portalAliasInfo.PortalId;
 
             var tabPathsCacheKey = string.Format(CacheKeys.TabPaths, this.PortalId);
-            var tabpaths = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(DotNetNuke.Common.Utilities.Null.NullInteger, tabPathsCacheKey) as List<(int ModuleId, int ForumModuleId, int TabId, string Path, bool RunningInViewer)>;
+            var tabpaths = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(DotNetNuke.Common.Utilities.Null.NullInteger, tabPathsCacheKey) as List<(int ModuleId, int ForumModuleId, int TabId, string Path, bool RunningInViewer)>;
             if (tabpaths == null)
             {
                 var forumModuleInstances = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(this.PortalId)
@@ -298,7 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 .OrderByDescending(tp => tp.Path.Length)
                 .ToList();
 
-                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(DotNetNuke.Common.Utilities.Null.NullInteger, tabPathsCacheKey, tabpaths);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(DotNetNuke.Common.Utilities.Null.NullInteger, tabPathsCacheKey, tabpaths);
             }
 
             if (tabpaths.Count < 1)
@@ -553,7 +554,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 st.Stop();
                 System.Diagnostics.Debug.WriteLine($"url rewriter processing time: {st.ElapsedMilliseconds} ms; from: {rawUrlLower} to: {sendTo}");
 #endif
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(DotNetNuke.Common.Utilities.Null.NullInteger, urlRewriteCacheKey, sendTo);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(DotNetNuke.Common.Utilities.Null.NullInteger, urlRewriteCacheKey, sendTo);
                 RewriteUrl(app.Context, sendTo);
             }
         }

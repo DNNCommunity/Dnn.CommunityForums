@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
 
@@ -391,7 +392,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             if (this.subforums == null)
             {
                 this.subforums = Controllers.ForumController.Instance.GetSubForums(this.ModuleId, this.ForumID).ToList();
-                DataCache.SettingsCacheStore(this.ModuleId, this.GetCacheKey(), this);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.ModuleId, this.GetCacheKey(), this);
             }
 
             return this.subforums;
@@ -1000,6 +1001,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ForumID);
 
-        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(this.ModuleId, this.GetCacheKey(), this);
+        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.ModuleId, this.GetCacheKey(), this);
     }
 }

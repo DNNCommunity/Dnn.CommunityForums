@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     using DotNetNuke.Collections;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     internal partial class CategoryController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo, ICategoryController, CategoryController>, ICategoryController
     {
@@ -97,12 +98,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public virtual DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo GetByName(int moduleId, string categoryName)
         {
             string cachekey = string.Format(CacheKeys.CategoryByName, moduleId, categoryName);
-            DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo categoryInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo;
+            DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo categoryInfo = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo;
             if (categoryInfo == null)
             {
                 // this accommodates duplicates which may exist since currently no uniqueness applied in database
                 categoryInfo = this._repositoryControllerBase.Find("WHERE ModuleId = @0 AND CategoryName = @1", moduleId, categoryName.Trim()).OrderBy(t => t.CategoryId).FirstOrDefault();
-                DataCache.ContentCacheStore(moduleId, cachekey, categoryInfo);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, categoryInfo);
             }
 
             return categoryInfo;

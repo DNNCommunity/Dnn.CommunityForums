@@ -25,6 +25,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Text;
     using System.Web.UI;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+
     [ToolboxData("<{0}:forumdisplay runat=server></{0}:forumdisplay>")]
     public class ForumDisplay : ControlsBase
     {
@@ -44,11 +46,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sTemp;
 
             // pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
-            object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId));
+            object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId));
             if (obj == null)
             {
                 sTemp = this.ParseTemplate();
-                DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId), sTemp);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId), sTemp);
             }
             else
             {

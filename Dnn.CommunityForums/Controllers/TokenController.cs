@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Collections.Generic;
 
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     internal class TokenController
     {
@@ -32,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             try
             {
                 List<Token> li =
-                    (List<Token>)DataCache.SettingsCacheRetrieve(moduleId,
+                    (List<Token>)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId,
                         string.Format(CacheKeys.Tokens, moduleId, group));
                 if (li == null)
                 {
@@ -76,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         }
                     }
 
-                    DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.Tokens, moduleId, group), li);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, string.Format(CacheKeys.Tokens, moduleId, group), li);
                 }
 
                 return li;

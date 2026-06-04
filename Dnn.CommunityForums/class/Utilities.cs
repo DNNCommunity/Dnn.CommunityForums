@@ -49,6 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Web.UI.WebControls;
 
@@ -124,14 +125,14 @@ namespace DotNetNuke.Modules.ActiveForums
         internal static string BuildToolbar(int portalId, int forumModuleId, int forumTabId, int moduleId, int tabId, ForumUserInfo forumUser, Uri requestUri, string rawUrl, string locale)
         {
             string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, forumUser.CurrentUserType, locale);
-            string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : string.Empty;
+            string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cacheKey)) : string.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
                 sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix, forumUser);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser, requestUri: requestUri, rawUrl: rawUrl);
                 if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
                 {
-                    DataCache.SettingsCacheStore(moduleId: moduleId, cacheKey: cacheKey, sToolbar);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId: moduleId, cacheKey: cacheKey, sToolbar);
                 }
             }
 
@@ -1076,7 +1077,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 string cacheKey = string.Format(CacheKeys.CultureInfoForUser, userInfo?.UserID == null ? -1 : userInfo?.UserID);
-                object obj = DataCache.SettingsCacheRetrieve(moduleId: -1, cacheKey);
+                object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId: -1, cacheKey);
                 if (obj == null)
                 {
                     if (userInfo?.Profile?.PreferredLocale != null)
@@ -1099,7 +1100,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         cultureInfo = CultureInfo.CurrentCulture;
                     }
 
-                    DataCache.SettingsCacheStore(moduleId: -1, cacheKey, cacheObj: cultureInfo);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId: -1, cacheKey, cacheObj: cultureInfo);
                 }
                 else
                 {
@@ -1127,7 +1128,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 string cacheKey = string.Format(CacheKeys.TimeZoneInfoForUser, userInfo?.UserID == null ? -1 : userInfo?.UserID);
-                object obj = DataCache.SettingsCacheRetrieve(moduleId: -1, cacheKey);
+                object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId: -1, cacheKey);
                 if (obj == null)
                 {
                     if (userInfo?.Profile?.PreferredTimeZone != null)
@@ -1150,7 +1151,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         timeZoneInfo = TimeZoneInfo.Utc;
                     }
 
-                    DataCache.SettingsCacheStore(moduleId: -1, cacheKey, cacheObj: timeZoneInfo);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId: -1, cacheKey, cacheObj: timeZoneInfo);
                 }
                 else
                 {

@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Data;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     internal class ContentController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo, IContentController, ContentController>, IContentController
     {
@@ -38,7 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetById(int moduleId, int contentId)
         {
             var cachekey = string.Format(CacheKeys.ContentInfo, moduleId, contentId);
-            DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ContentInfo;
+            DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ContentInfo;
             if (content == null)
             {
                 content = this._repositoryControllerBase.GetById(contentId);
@@ -48,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, content);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, content);
                 }
             }
 
@@ -78,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             string cachekey = string.Format(CacheKeys.MostLikesCount, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes);
-            var postCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as int?;
+            var postCount = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as int?;
             if (postCount == null || !postCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
@@ -113,7 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         ) AS ContentIds",
                     forumsIdsList,
                     timeFrameMinutes).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, postCount);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, postCount);
             }
 
             return postCount.Value;
@@ -128,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             string cachekey = string.Format(CacheKeys.MostLikes, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes);
-            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo> posts = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo>;
+            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo> posts = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo>;
             if (posts == null)
             {
                 var skip = (pageId - 1) * pageSize;
@@ -183,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     return (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(moduleId: moduleId, replyId: post.ReplyId.Value, topic: topic);
                 });
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, posts);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, posts);
             }
 
             return posts;

@@ -23,13 +23,15 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections.Generic;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+
     public class UserRolesDictionary
     {
         internal static string GetRoles(int portalId, int userId)
         {
             try
             {
-                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.UserRoles, portalId));
+                Dictionary<string, string> dict = (Dictionary<string, string>)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(-1, string.Format(CacheKeys.UserRoles, portalId));
                 return (dict != null && dict.ContainsKey(userId.ToString())) ? dict[userId.ToString()] : string.Empty;
             }
             catch
@@ -42,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.UserRoles, portalId));
+                Dictionary<string, string> dict = (Dictionary<string, string>)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(-1, string.Format(CacheKeys.UserRoles, portalId));
                 if (dict == null)
                 {
                     dict = new Dictionary<string, string>();
@@ -57,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     dict.Add(userId.ToString(), roles);
                 }
 
-                DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.UserRoles, portalId), dict, DateTime.UtcNow.AddMinutes(3));
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(-1, string.Format(CacheKeys.UserRoles, portalId), dict, DateTime.UtcNow.AddMinutes(3));
                 return true;
             }
             catch

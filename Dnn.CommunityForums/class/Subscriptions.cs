@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Data;
     using System.Globalization;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.UI.UserControls;
 
     public class SubscriptionController
@@ -44,13 +45,13 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (topicId != -1)
                 {
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicSubscriber, moduleId, forumId, topicId, forumUser.UserId));
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicSubscriberCount, moduleId, forumId, topicId));
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.TopicSubscriber, moduleId, forumId, topicId, forumUser.UserId));
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.TopicSubscriberCount, moduleId, forumId, topicId));
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumSubscriber, moduleId, forumId, forumUser.UserId));
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumSubscriberCount, moduleId, forumId));
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.ForumSubscriber, moduleId, forumId, forumUser.UserId));
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.ForumSubscriberCount, moduleId, forumId));
                 }
 
                 return Convert.ToInt32(DataProvider.Instance().Subscription_Update(portalId, moduleId, forumId, topicId, mode, forumUser.UserId));

@@ -23,6 +23,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Linq;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+
     internal class ForumTopicController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo, IForumTopicController, ForumTopicController>, IForumTopicController
     {
         protected override Func<IForumTopicController> GetFactory()
@@ -33,12 +35,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetByTopicId(int moduleId, int topicId)
         {
             var cachekey = string.Format(CacheKeys.ForumTopicInfo, moduleId, topicId);
-            var forumTopic = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo;
+            var forumTopic = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo;
             if (forumTopic == null)
             {
                 forumTopic = this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).FirstOrDefault();
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, forumTopic);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, forumTopic);
             }
 
             return forumTopic;
@@ -79,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public void DeleteForForum(int moduleId, int forumId)
         {
             this._repositoryControllerBase.Delete("WHERE ForumId = @0", forumId);
-            DataCache.CacheClearPrefix(moduleId, CacheKeys.ForumTopicInfoPrefix);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(CacheKeys.ForumTopicInfoPrefix);
         }
     }
 }

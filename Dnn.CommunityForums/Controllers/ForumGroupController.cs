@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Linq;
 
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     internal class ForumGroupController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo, IForumGroupController, ForumGroupController>, IForumGroupController
     {
@@ -35,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public virtual DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetById(int forumGroupId, int moduleId)
         {
             var cachekey = string.Format(CacheKeys.ForumGroupInfo, moduleId, forumGroupId);
-            var forumGroup = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
+            var forumGroup = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
             if (forumGroup == null)
             {
                 forumGroup = this._repositoryControllerBase.GetById(forumGroupId, moduleId);
@@ -45,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumGroup.LoadFeatureSettings();
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, forumGroup);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cachekey, forumGroup);
             }
 
             return forumGroup;
@@ -54,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal virtual DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetByUrlPrefix(int moduleId, string groupPrefix)
         {
             string cachekey = string.Format(CacheKeys.ForumGroupByUrlPrefix, moduleId, groupPrefix);
-            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
+            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
             if (forumGroupInfo == null)
             {
                 // this accommodates duplicates which may exist since currently no uniqueness applied in database
@@ -64,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumGroupInfo = this.GetById(forumGroupId.Value, moduleId);
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, forumGroupInfo);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cachekey, forumGroupInfo);
             }
 
             return forumGroupInfo;
@@ -179,7 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.DeleteForModuleIdSettingsKey(forumGroupInfo.ModuleId, $"G{forumGroupInfo.ForumGroupId}");
             }
 
-            DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(forumGroupInfo.ModuleId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.ClearAll(forumGroupInfo.ModuleId);
             return forumGroupInfo.ForumGroupId;
         }
 
@@ -191,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             this._repositoryControllerBase.DeleteById(forumGroupId);
-            DotNetNuke.Modules.ActiveForums.DataCache.ClearSettingsCache(moduleId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.ClearAll(moduleId);
         }
 
         ForumGroupInfo IForumGroupController.GetByUrlPrefix(int moduleId, string groupPrefix)

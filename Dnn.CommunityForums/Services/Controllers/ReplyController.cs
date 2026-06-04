@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -68,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(r.Topic.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds))
                         {
                             DataProvider.Instance().Reply_UpdateStatus(this.ActiveModule.PortalID, this.ForumModuleId, r.TopicId, replyId, this.UserInfo.UserID, 1, r.Forum.GetIsMod(forumUser));
-                            DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, this.ForumModuleId));
+                            DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(string.Format(CacheKeys.TopicViewPrefix, this.ForumModuleId));
                             return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                         }
 

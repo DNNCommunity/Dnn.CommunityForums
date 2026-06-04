@@ -574,7 +574,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                                         templateInfo.Subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(templateInfo.Subject), portalSettings, portalSettings.DefaultLanguage).ToString();
                                         DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.SaveSetting(module.ModuleID, $"M{module.ModuleID}", ForumSettingKeys.EmailNotificationSubjectTemplate, templateInfo.Subject);
-                                        DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(module.ModuleID);
+                                        DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(module.ModuleID);
                                     }
                                     catch (Exception ex)
                                     {
@@ -708,7 +708,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.SaveSetting(moduleId, sKey, ForumSettingKeys.ModDeleteNotify, "0");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.SaveSetting(moduleId, sKey, ForumSettingKeys.ModAlertNotify, "0");
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ClearAllCache(moduleId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(moduleId);
             }
             catch (Exception ex)
             {

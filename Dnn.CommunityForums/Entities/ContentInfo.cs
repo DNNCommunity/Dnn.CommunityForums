@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
 
@@ -98,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ContentId);
 
-        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
+        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(this.ModuleId, this.GetCacheKey(), this);
 
         internal void ExtractEmbeddedImages()
         {
@@ -202,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             var embeddedImagesFolder = folderManager.GetFolder(this.Post.PortalId, string.Format(Globals.EmbeddedImagesFolderNameFormatString, this.ModuleId, this.ContentId));
             var legacyAttachmentFolder = folderManager.GetFolder(this.Post.PortalId, DotNetNuke.Modules.ActiveForums.Globals.LegacyAttachmentsFolderName);
 
-            foreach (var attachment in DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(this.ContentId))
+            foreach (var attachment in DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(this.ModuleId, this.ContentId))
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.Delete(attachment);
 

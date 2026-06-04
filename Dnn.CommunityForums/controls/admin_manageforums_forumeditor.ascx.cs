@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -499,8 +500,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
             }
 
-            DataCache.ClearAllCache(this.ModuleId);
-            DataCache.ClearAllCacheForTabId(this.TabId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(this.ModuleId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCacheForTabId(this.TabId);
 
             this.hidEditorResult.RenderControl(e.Output);
         }

@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
 
     public partial class admin_manageforums_home : ActiveAdminBase
@@ -313,8 +314,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     break;
             }
 
-            DataCache.ClearAllCache(this.ModuleId);
-            DataCache.ClearAllCacheForTabId(this.TabId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(this.ModuleId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCacheForTabId(this.TabId);
             this.BindForums();
             this.litForums.RenderControl(e.Output);
         }
