@@ -156,26 +156,11 @@
   <data name="MarkAnswerPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Segna la risposta</value>
   </data>
-  <data name="MessagingCore.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Messaggistica predefinita</value>
-  </data>
   <data name="MessagingDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Disabile</value>
   </data>
-  <data name="MessagingTab.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Seleziona la scheda contenente il modulo di messaggistica privata</value>
-  </data>
-  <data name="MessagingTab.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Scheda Messaggi</value>
-  </data>
-  <data name="MessagingType.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Seleziona un sistema di messaggistica privato.</value>
-  </data>
   <data name="MessagingType.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Tipo di messaggistica</value>
-  </data>
-  <data name="MessagingVentrian.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Messaggi Ventriani</value>
   </data>
   <data name="Mode.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Utilizzare sempre la modalità Standard, a meno che non si stia utilizzando il modulo in una pagina per i gruppi social.  La modalità Gruppo social deve essere utilizzata solo quando si sa che un GroupId sarà sempre presente nell'URL.</value>
@@ -245,12 +230,6 @@
   </data>
   <data name="TopicPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Nuovo argomento</value>
-  </data>
-  <data name="URLPrefixBase.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Questo è il testo che verrà utilizzato come parte iniziale di tutti gli URL del forum.  Nella maggior parte dei casi vorrai solo entrare in "forum"</value>
-  </data>
-  <data name="URLPrefixBase.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Percorso di base</value>
   </data>
   <data name="URLPrefixCategory.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Questo è il testo che verrà utilizzato come parte dell'URL per identificare le categorie del forum.</value>

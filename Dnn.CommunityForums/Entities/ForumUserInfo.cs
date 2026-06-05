@@ -732,7 +732,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "useremail":
                         return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Email) ? string.Empty : this.Email, format);
                     case "useridforpmlink":
-                        return PropertyAccess.FormatString(accessingUser.UserID > 0 && this.UserId > 0 ? this.UserId.ToString() : string.Empty, format);
+                        return moduleSettings.PMType.Equals(PMTypes.Disabled) ? string.Empty : PropertyAccess.FormatString(accessingUser.UserID > 0 && this.UserId > 0 ? this.UserId.ToString() : string.Empty, format);
                     case "useridforeditlink":
                         return PropertyAccess.FormatString((accessingUser.IsAdmin || accessingUser.IsSuperUser) && this.UserId > 0 ? this.UserId.ToString() : string.Empty, format);
                     case "displaynameforjson":

@@ -71,7 +71,6 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         Disabled = 0,
         Core = 1,
-        Ventrian = 2,
     }
 
     public enum TrustTypes
@@ -206,7 +205,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ModPointValue = "MODPOINTVALUE";
         public const string MarkAnswerPointValue = "MARKANSWERPOINTVALUE";
         public const string PMType = "PMTYPE";
-        public const string PMTabId = "PMTABID";
         public const string InstallDate = "INSTALLDATE";
         public const string IsInstalled = "INSTALLED";
         public const string ProfileVisibility = "PROFILEVISIBILITY";

@@ -685,9 +685,6 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   <data name="[RESX:PleaseWait].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Caricamento...  Attendere prego.</value>
   </data>
-  <data name="[RESX:PMPage].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Pagina di messaggistica privata</value>
-  </data>
   <data name="[RESX:PointsOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Opzioni per il sistema di punti</value>
   </data>
@@ -1035,9 +1032,6 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
   </data>
   <data name="[RESX:Tips:PageSize].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Immettere il numero predefinito di elementi che si desidera visualizzare nella pagina degli argomenti e delle risposte.</value>
-  </data>
-  <data name="[RESX:Tips:PMTabId].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Seleziona la pagina in cui hai installato il modulo di messaggistica privata.</value>
   </data>
   <data name="[RESX:Tips:POP3Address].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Indirizzo e-mail specifico per questo forum.  Questo sovrascriverà l'indirizzo e-mail del sito e l'indirizzo e-mail che potrebbe essere stato inserito nelle impostazioni del forum.</value>

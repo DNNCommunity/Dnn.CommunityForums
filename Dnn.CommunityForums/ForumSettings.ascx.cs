@@ -188,11 +188,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.EnableUsersOnline = Utilities.SafeConvertBool(this.rdUsersOnline.SelectedValue);
                 this.UseSkinBreadCrumb = Utilities.SafeConvertBool(this.rdUseSkinBreadCrumb.SelectedValue);
 
-                if (this.drpMessagingTab.SelectedItem != null)
-                {
-                    this.MessagingTabId = Utilities.SafeConvertInt(this.drpMessagingTab.SelectedValue);
-                }
-
                 this.PrefixURLCategory = this.txtURLPrefixCategory.Text;
                 this.PrefixURLOther = this.txtURLPrefixOther.Text;
                 this.PrefixURLLikes = this.txtURLPrefixLikes.Text;
@@ -267,39 +262,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (selectedMessagingType != null)
             {
                 selectedMessagingType.Selected = true;
-            }
-
-            this.BindPrivateMessagingTab();
-        }
-
-        private void BindPrivateMessagingTab()
-        {
-            this.drpMessagingTab.Items.Clear();
-            this.drpMessagingTab.ClearSelection();
-
-            foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(this.PortalId))
-            {
-                if (!mi.DesktopModule.ModuleName.Contains("DnnForge - PrivateMessages") || mi.IsDeleted)
-                {
-                    continue;
-                }
-
-                var ti = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(mi.TabID, this.PortalId, false);
-                if (ti != null && !ti.IsDeleted)
-                {
-                    this.drpMessagingTab.Items.Add(new ListItem
-                    {
-                        Text = ti.TabName + " - Ventrian Messages",
-                        Value = ti.TabID.ToString(),
-                        Selected = ti.TabID == this.MessagingTabId,
-                    });
-                }
-            }
-
-            if (this.drpMessagingTab.Items.Count == 0)
-            {
-                this.drpMessagingTab.Items.Add(new ListItem("No Messaging Tabs Found", "-1"));
-                this.drpMessagingTab.Enabled = false;
             }
         }
 

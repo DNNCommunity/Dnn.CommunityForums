@@ -688,9 +688,6 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:PleaseWait].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Chargement...  Veuillez patienter.</value>
   </data>
-  <data name="[RESX:PMPage].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Page de messagerie privée</value>
-  </data>
   <data name="[RESX:PointsOptions].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Options pour le système de points</value>
   </data>
@@ -1038,9 +1035,6 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   </data>
   <data name="[RESX:Tips:PageSize].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Entrez le nombre par défaut d’éléments que vous souhaitez voir apparaître sur la page des rubriques et des réponses.</value>
-  </data>
-  <data name="[RESX:Tips:PMTabId].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Sélectionnez la page sur laquelle vous avez installé le module de messagerie privée.</value>
   </data>
   <data name="[RESX:Tips:POP3Address].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Adresse e-mail spécifique pour ce forum.  Cela remplacera l’adresse e-mail du site et l’adresse e-mail qui a pu être saisie dans les paramètres du forum.</value>

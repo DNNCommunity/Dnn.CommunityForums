@@ -515,6 +515,19 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     }
                 }
             }
+
+            /* remove PMTABID and update PMTYPE from 2 to 1 if needed */
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+            {
+                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                {
+                    if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant().Equals(Globals.ModuleName.ToLowerInvariant()))
+                    {
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "PMTABID");
+                        DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "UPDATE {databaseOwner}{objectQualifier}ModuleSettings SET SettingValue = 1 WHERE ModuleId = @0 AND SettingName = 'PMTYPE' AND SettingValue = 2", module.ModuleID);
+                    }
+                }
+            }
         }
     }
 }

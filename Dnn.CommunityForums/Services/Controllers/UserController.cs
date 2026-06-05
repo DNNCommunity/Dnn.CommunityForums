@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="forumId" type="int"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/User/GetUsersForEditorMentions?ForumId=xxx&query={encodedQuery}</remarks>
+        /// <remarks>https://dnndev.me/API/ActiveForums/User/GetUsersForEditorMentions?ForumId=xxx&query=\{encodedQuery\}.</remarks>
         [HttpGet]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Mention)]

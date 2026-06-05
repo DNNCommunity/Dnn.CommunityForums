@@ -227,22 +227,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpMessagingType;
         /// <summary>
-        /// lblMessagingTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UserControl lblMessagingTab;
-        /// <summary>
-        /// drpMessagingTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drpMessagingTab;
-        /// <summary>
         /// lblAvatarSize control.
         /// </summary>
         /// <remarks>

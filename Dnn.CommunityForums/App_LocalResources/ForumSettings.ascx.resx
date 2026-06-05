@@ -252,12 +252,6 @@
   <data name="TopicPointValue.Text" xml:space="preserve">
     <value>New Topic</value>
   </data>
-  <data name="URLPrefixBase.Help" xml:space="preserve">
-    <value>This is the text that will be used as the initial part of all forum URLs.  In most cases you will just want to enter "forums"</value>
-  </data>
-  <data name="URLPrefixBase.Text" xml:space="preserve">
-    <value>Base Path</value>
-  </data>
   <data name="URLPrefixCategory.Help" xml:space="preserve">
     <value>This is the text that will be used as part of the URL to identify forum categories.</value>
   </data>
@@ -331,25 +325,16 @@
     <value>Width</value>
   </data>
   <data name="MessagingCore.Text" xml:space="preserve">
-    <value>Default Messaging</value>
+    <value>DNN Messaging</value>
   </data>
   <data name="MessagingDisabled.Text" xml:space="preserve">
     <value>Disabled</value>
   </data>
-  <data name="MessagingTab.Text" xml:space="preserve">
-    <value>Messaging Tab</value>
-  </data>
   <data name="MessagingType.Text" xml:space="preserve">
     <value>Messaging Type</value>
   </data>
-  <data name="MessagingVentrian.Text" xml:space="preserve">
-    <value>Ventrian Messages</value>
-  </data>
-  <data name="MessagingTab.Help" xml:space="preserve">
-    <value>Select the tab containing the private message module</value>
-  </data>
   <data name="MessagingType.Help" xml:space="preserve">
-    <value>Select a private messaging system.</value>
+    <value>Enable or disable DNN messaging.</value>
   </data>
   <data name="ControlTitle_settings.Text" xml:space="preserve">
     <value>DNN Community Forums Settings</value>
