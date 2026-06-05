@@ -4,7 +4,8 @@
         <AssemblyName>DotNetNuke.Modules.ActiveForums</AssemblyName>
         <OutputType>Library</OutputType>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
-        <TargetFramework>net472</TargetFramework>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <ImplicitUsings>disable</ImplicitUsings>
         <Copyright>Copyright © DNN Community</Copyright>
         <PackageProjectUrl>dnncommunity.org</PackageProjectUrl>
