@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+    using System.Security.Policy;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -502,11 +503,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.ModuleSettings.URLRewriteEnabled)
             {
-                if (!string.IsNullOrEmpty(this.ModuleSettings.PrefixURLBase))
-                {
-                    pager.BaseURL = "/" + this.ModuleSettings.PrefixURLBase;
-                }
-
+                pager.BaseURL = Utilities.NavigateURL(this.TabId);
                 if (!string.IsNullOrEmpty(this.ModuleSettings.PrefixURLOther))
                 {
                     pager.BaseURL += "/" + this.ModuleSettings.PrefixURLOther;

@@ -195,11 +195,6 @@ namespace DotNetNuke.Modules.ActiveForums
             if (mainSettings.URLRewriteEnabled && !string.IsNullOrEmpty(dr["FullUrl"].ToString()))
             {
                 string sTopicURL = string.Empty;
-                if (!string.IsNullOrEmpty(mainSettings.PrefixURLBase))
-                {
-                    sTopicURL = "/" + mainSettings.PrefixURLBase;
-                }
-
                 sTopicURL += dr["FullUrl"].ToString();
 
                 uRL = sTopicURL;

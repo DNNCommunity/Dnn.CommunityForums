@@ -834,7 +834,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                     topicURL: this.TopicUrl,
                                     tagId: -1,
                                     categoryId: -1,
-                                    otherPrefix: Views.Likes,
+                                    otherPrefix: Views.likes,
                                     pageId: 1,
                                     contentId: this.ContentId,
                                     socialGroupId: this.Forum.SocialGroupId);
@@ -843,7 +843,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 {
                                     var @params = new List<string>
                                     {
-                                        $"{ParamKeys.ViewType}={Views.Grid}", $"{ParamKeys.GridType}={Views.Likes}", $"{ParamKeys.ContentId}={this.ContentId}",
+                                        $"{ParamKeys.ViewType}={Views.Grid}", $"{ParamKeys.GridType}={Views.likes}", $"{ParamKeys.ContentId}={this.ContentId}",
                                     };
 
                                     if (this.Forum.SocialGroupId > 0)

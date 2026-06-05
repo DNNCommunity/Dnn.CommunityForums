@@ -645,7 +645,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             // Arrange
 
             // Act
-            return Utilities.RemoveCultureFromUrl(url, this.mockPortalAliasInfo.Object);
+            return Utilities.RemoveCultureFromUrl(url: url, portalSettings: this.mockPortalSettings.Object);
 
             // Assert
         }

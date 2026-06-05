@@ -187,10 +187,6 @@
 			</asp:RadioButtonList>
 			  <span class="urlToggle"><asp:Literal ID="litToggleConfig" runat="server" /></span>
 			  <div class="urlOptions">
-					<div class="dnnFormItem">
-						 <dnn:label ID="lblUrlPrefix" runat="server" resourcekey="URLPrefixBase" Suffix=":" />
-						 <asp:TextBox ID="txtURLPrefixBase" runat="server" MaxLength="50" />
-					</div>
 					 <div class="dnnFormItem">
 						 <dnn:label runat="server" resourcekey="URLPrefixCategory" Suffix=":" />
 						 <asp:TextBox ID="txtURLPrefixCategory" runat="server" MaxLength="50" />

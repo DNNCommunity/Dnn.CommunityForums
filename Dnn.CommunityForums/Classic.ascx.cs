@@ -112,9 +112,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctl = Views.RecycleBin;
                     }
-                    else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.Likes)
+                    else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.likes)
                     {
-                        ctl = Views.Likes;
+                        ctl = Views.likes;
                         if (this.Request.QueryString[ParamKeys.ContentId] != null)
                         {
                             opts = $"{ParamKeys.ContentId}={this.Request.QueryString[ParamKeys.ContentId]}";

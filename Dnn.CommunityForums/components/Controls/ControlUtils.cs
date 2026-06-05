@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (contentId > 0)
                 {
-                    if (!string.IsNullOrEmpty(otherPrefix) && otherPrefix.Equals(Views.Likes))
+                    if (!string.IsNullOrEmpty(otherPrefix) && otherPrefix.Equals(Views.likes))
                     {
                         @params.Add($"{ParamKeys.ContentId}={contentId}");
                     }
@@ -157,12 +157,6 @@ namespace DotNetNuke.Modules.ActiveForums
             var sURL = Utilities.NavigateURL(tabId, portalSettings, string.Empty, @params.ToArray());
             var tabInfo = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(tabId, portalId);
             var moduleInfo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId, tabId, false);
-
-            /* ONLY include prefix if main forum module, prefix isn't same as tab name, and prefix is filled, e.g. don't include running in viewer module */
-            if (moduleInfo != null && moduleInfo.TabID.Equals(tabId) && !mainSettings.PrefixURLBase.Trim().Equals(tabInfo.TabName.Trim(), StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(mainSettings.PrefixURLBase))
-            {
-                sURL += "/" + mainSettings.PrefixURLBase;
-            }
 
             if (!string.IsNullOrEmpty(groupPrefix))
             {
@@ -187,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sURL += "/" + mainSettings.PrefixURLCategory + "/" + otherPrefix;
             }
-            else if (!string.IsNullOrEmpty(otherPrefix) && (otherPrefix.Equals(Views.Likes, StringComparison.InvariantCultureIgnoreCase) && contentId > 0))
+            else if (!string.IsNullOrEmpty(otherPrefix) && (otherPrefix.Equals(Views.likes, StringComparison.InvariantCultureIgnoreCase) && contentId > 0))
             {
                 sURL += "/" + mainSettings.PrefixURLLikes + "/" + contentId;
             }
@@ -227,11 +221,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (!string.IsNullOrEmpty(forumPrefixUrl) && !string.IsNullOrEmpty(topicUrl) && mainSettings.URLRewriteEnabled)
             {
-                if (!string.IsNullOrWhiteSpace(mainSettings.PrefixURLBase))
-                {
-                    sURL += "/" + mainSettings.PrefixURLBase;
-                }
-
+                sURL = Utilities.NavigateURL(tabId);
                 if (!string.IsNullOrWhiteSpace(forumGroupPrefixUrl))
                 {
                     sURL += "/" + forumGroupPrefixUrl;
@@ -276,10 +266,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (!string.IsNullOrWhiteSpace(forumPrefix) && mainSettings.URLRewriteEnabled)
             {
-                if (!string.IsNullOrWhiteSpace(mainSettings.PrefixURLBase))
-                {
-                    sURL += "/" + mainSettings.PrefixURLBase;
-                }
+                sURL = Utilities.NavigateURL(tabId);
 
                 if (!string.IsNullOrWhiteSpace(groupPrefix))
                 {

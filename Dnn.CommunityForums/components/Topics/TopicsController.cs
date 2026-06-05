@@ -379,6 +379,19 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     break;
+                case "10.00.00":
+                    try
+                    {
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_100000();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
                 default:
                     break;
             }

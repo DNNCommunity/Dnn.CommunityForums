@@ -85,18 +85,9 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.DeleteBehavior, currSettings.DeleteBehavior.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.EnableAutoLink, currSettings.AutoLinkEnabled.ToString());
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.EnableURLRewriter, currSettings.URLRewriteEnabled.ToString());
-            if (string.IsNullOrEmpty(currSettings.PrefixURLBase))
-            {
-                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLBase, "forums");
-            }
-            else
-            {
-                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLBase, currSettings.PrefixURLBase);
-            }
-
             if (string.IsNullOrEmpty(currSettings.PrefixURLOther))
             {
-                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLOther, "views");
+                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLOther, Views.views);
             }
             else
             {
@@ -105,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
             if (string.IsNullOrEmpty(currSettings.PrefixURLTag))
             {
-                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLTags, "tag");
+                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLTags, Views.tag);
             }
             else
             {
@@ -114,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
             if (string.IsNullOrEmpty(currSettings.PrefixURLCategory))
             {
-                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLCategories, "category");
+                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLCategories, Views.category);
             }
             else
             {
@@ -267,7 +258,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 {
                     if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName, System.StringComparison.InvariantCultureIgnoreCase))
                     {
-                        DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.PrefixURLLikes, module.ModuleSettings.GetString(SettingKeys.PrefixURLLikes, Views.Likes));
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, SettingKeys.PrefixURLLikes, module.ModuleSettings.GetString(SettingKeys.PrefixURLLikes, Views.likes));
                     }
                 }
             }
@@ -498,6 +489,29 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant().Equals(Globals.ModuleName.ToLowerInvariant()))
                     {
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "FULLTEXT");
+                    }
+                }
+            }
+        }
+
+        internal static void DeleteObsoleteModuleSettings_100000()
+        {
+            /* remove URLBASE depending on how old the install is, it might be in ModuleSettings or it might be in activeforums_Settings, or both */
+
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+            {
+                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                {
+                    if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant().Equals(Globals.ModuleName.ToLowerInvariant()))
+                    {
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "URLBASE");
+                        foreach (var settingName in new string[]
+                        {
+                            "URLBASE",
+                        })
+                        {
+                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
+                        }
                     }
                 }
             }

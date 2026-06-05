@@ -115,7 +115,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.txtMarkAnswerPointValue.Text = this.MarkAsAnswerPointValue.ToString();
                 this.txtModPointValue.Text = this.ModPointValue.ToString();
 
-                this.txtURLPrefixBase.Text = this.PrefixURLBase;
                 this.txtURLPrefixCategory.Text = this.PrefixURLCategory;
                 this.txtURLPrefixOther.Text = this.PrefixURLOther;
                 this.txtURLPrefixLikes.Text = this.PrefixURLLikes;
@@ -194,7 +193,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     this.MessagingTabId = Utilities.SafeConvertInt(this.drpMessagingTab.SelectedValue);
                 }
 
-                this.PrefixURLBase = this.txtURLPrefixBase.Text;
                 this.PrefixURLCategory = this.txtURLPrefixCategory.Text;
                 this.PrefixURLOther = this.txtURLPrefixOther.Text;
                 this.PrefixURLLikes = this.txtURLPrefixLikes.Text;

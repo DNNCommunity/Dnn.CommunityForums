@@ -394,12 +394,15 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ModerateTopics = "modtopics";
         public const string ModerateBan = "modban";
         public const string ModerateReport = "modreport";
-        public const string Likes = "likes";
         public const string RecycleBin = "recyclebin";
         public const string BadgeUsers = "badgeusers";
         public const string UserBadges = "userbadges";
         public const string SendTo = "sendto";
         public const string ConfirmAction = "confirmaction";
+        public const string tag = "tag";
+        public const string likes = "likes";
+        public const string category = "category";
+        public const string views = "views";
     }
 
     internal static class GridTypes

@@ -351,7 +351,7 @@ namespace DotNetNuke.Modules.ActiveForums
             pager.ContentId = this.ContentId;
             pager.PageText = Utilities.GetSharedResource("[RESX:Page]");
             pager.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
-            pager.View = Views.Likes;
+            pager.View = Views.likes;
             pager.PageMode = PagerNav.Mode.Links;
             pager.BaseURL = URL.ForumLink(this.TabId, this.post.Forum) + this.post.Topic.TopicUrl + "/" + this.ModuleSettings.PrefixURLLikes + "/" + this.ContentId;
 

@@ -431,11 +431,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         {
                             if (this.Forum.FeatureSettings.AllowLikes)
                             {
-                                string linkUrl = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, tabId: this.GetTabId(), moduleId: this.Forum.ModuleId, groupPrefix: this.Forum.ForumGroup.PrefixURL, forumPrefix: this.Forum.PrefixURL, forumGroupId: this.Forum.ForumGroupId, forumID: this.Forum.ForumID, topicId: this.TopicId, topicURL: this.Topic.TopicUrl, tagId: -1, categoryId: -1, otherPrefix: Views.Likes, pageId: 1, contentId: this.ContentId, socialGroupId: this.Forum.SocialGroupId);
+                                string linkUrl = new ControlUtils().BuildUrl(this.Forum.PortalSettings.PortalId, tabId: this.GetTabId(), moduleId: this.Forum.ModuleId, groupPrefix: this.Forum.ForumGroup.PrefixURL, forumPrefix: this.Forum.PrefixURL, forumGroupId: this.Forum.ForumGroupId, forumID: this.Forum.ForumID, topicId: this.TopicId, topicURL: this.Topic.TopicUrl, tagId: -1, categoryId: -1, otherPrefix: Views.likes, pageId: 1, contentId: this.ContentId, socialGroupId: this.Forum.SocialGroupId);
 
                                 if (string.IsNullOrEmpty(linkUrl))
                                 {
-                                    var @params = new List<string> { $"{ParamKeys.ViewType}={Views.Grid}", $"{ParamKeys.GridType}={Views.Likes}", $"{ParamKeys.ContentId}={this.ContentId}", };
+                                    var @params = new List<string> { $"{ParamKeys.ViewType}={Views.Grid}", $"{ParamKeys.GridType}={Views.likes}", $"{ParamKeys.ContentId}={this.ContentId}", };
 
                                     if (this.Forum.SocialGroupId > 0)
                                     {

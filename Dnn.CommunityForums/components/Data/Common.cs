@@ -73,11 +73,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                     vanityName = fg.PrefixURL + "/" + vanityName;
                 }
 
-                if (!string.IsNullOrEmpty(_mainSettings.PrefixURLBase))
-                {
-                    vanityName = _mainSettings.PrefixURLBase + "/" + vanityName;
-                }
-
                 int tmpForumId = -1;
                 tmpForumId = Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "URL_CheckForumVanity", portalId, vanityName));
                 if (tmpForumId > 0 && forumId == -1)
@@ -106,11 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             try
             {
                 ModuleSettings _mainSettings = SettingsBase.GetModuleSettings(moduleId);
-                if (!string.IsNullOrEmpty(_mainSettings.PrefixURLBase))
-                {
-                    vanityName = _mainSettings.PrefixURLBase + "/" + vanityName;
-                }
-
+                
                 int tmpForumGroupId = -1;
                 tmpForumGroupId = Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "URL_CheckGroupVanity", portalId, vanityName));
                 if (tmpForumGroupId > 0 && forumGroupId == -1)
