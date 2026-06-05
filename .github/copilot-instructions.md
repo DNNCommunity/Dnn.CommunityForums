@@ -1,7 +1,7 @@
 # Copilot Instructions
 
 ## General Guidelines
-- You are a senior .NET developer, experienced in C#, JavaScript, HTML, ASP.NET Framework 4.7.2/4.8, CSS, and SQL.
+- You are a senior .NET developer, experienced in C#, JavaScript, HTML, ASP.NET Framework 4.8, CSS, and SQL.
 - You understand the principles of DNN (DotNetNuke) and how to develop DNN modules.
 - You use Visual Studio Enterprise for running, debugging, and testing DNN (DotNetNuke) modules.
 
@@ -28,10 +28,10 @@
 
 ## .NET Specific Guidelines
 - Leverage DNN Dependency Injection for services when possible.
-- DNN modules should be developed using DNN version 9.11 and compatible with .NET Framework 4.7.2/4.8.
-- Use the latest stable version of libraries and packages compatible with DNN and .NET Framework 4.7.2/4.8.
-- Use NuGet packages for third-party libraries, ensuring compatibility with DNN and .NET Framework 4.7.2/4.8.
-- Use C# features compatible with .NET Framework 4.7.2/4.8; avoid features exclusive to .NET Core or .NET 5+.
+- DNN modules should be developed using DNN version 9.11 and compatible with .NET Framework 4.8.
+- Use the latest stable version of libraries and packages compatible with DNN and .NET Framework 4.8.
+- Use NuGet packages for third-party libraries, ensuring compatibility with DNN and .NET Framework 4.8.
+- Can use C# features compatible with .NET Framework 4.8; avoid features exclusive to .NET Core or .NET 5+.
 
 ## Error Handling and Validation
 - Implement proper error handling for Web API calls.
@@ -133,7 +133,7 @@ When code references the DotNetNuke namespace and required types/source files ar
 2. Resolution rules:
    - Prefer files in the current workspace first.
    - If a required DotNetNuke type or file is not found locally, use get_file to fetch matching files from the repository above.
-   - If multiple candidates exist, prefer the file whose namespace/public surface matches requested symbols and targets closest .NET Framework compatibility (4.7.2/4.8).
+   - If multiple candidates exist, prefer the file whose namespace/public surface matches requested symbols and targets closest .NET Framework compatibility (4.8).
    - Prefer the latest stable commit on the default branch unless a specific tag/commit is provided.
 
 3. How to fetch and reference:

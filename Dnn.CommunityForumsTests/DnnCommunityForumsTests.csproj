@@ -3,7 +3,7 @@
     <PropertyGroup>
         <AssemblyName>DotNetNuke.Modules.ActiveForumsTests</AssemblyName>
         <RootNamespace>DotNetNuke.Modules.ActiveForumsTests</RootNamespace>
-        <TargetFramework>net472</TargetFramework>
+        <TargetFramework>net48</TargetFramework>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
