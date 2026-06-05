@@ -201,22 +201,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     pt = ParseRoles(pt, (author.ForumUser.UserId == -1) ? string.Empty : author.ForumUser.UserPermSet);
                 }
 
-#region "Backward compatilbility -- remove in v09.00.00"
-                var pmUrl = string.Empty;
-                var pmLink = string.Empty;
-                if (pt.Contains("[AF:PROFILE:PMURL]") && mainSettings.PMType == PMTypes.Ventrian)
-                {
-                    if (author.ForumUser.UserId > 0 && currentUserId >= 0 && author.ForumUser.UserId != currentUserId)
-                    {
-                        pmUrl = Utilities.NavigateURL(mainSettings.PMTabId, string.Empty, new[] { "type=compose", string.Concat("sendto=", author.ForumUser.UserId) });
-                        pmLink = string.Concat("<a href=\"", pmUrl, "\"><img src=\"", imagePath, "/icon_pm.png\" alt=\"[RESX:SendPM]\" border=\"0\" /></a>");
-                    }
-                }
-
-                pt = pt.Replace("[AF:PROFILE:PMLINK]", pmLink);
-                pt = pt.Replace("[AF:PROFILE:PMURL]", pmUrl);
-#endregion "Backward compatilbility -- remove in v09.00.00"
-
                 return pt;
             }
             catch (Exception ex)

@@ -97,8 +97,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public int PMTabId => this.MainSettings.GetInt(SettingKeys.PMTabId, -1);
-
         public bool DisableAccountTab => this.MainSettings.GetBoolean(SettingKeys.DisableAccountTab);
 
         public string Theme

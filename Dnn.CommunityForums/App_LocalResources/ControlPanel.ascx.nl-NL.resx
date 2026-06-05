@@ -835,9 +835,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:PleaseWait].Text" xml:space="preserve">
     <value>Laden...  Ogenblik s.v.p.</value>
   </data>
-  <data name="[RESX:PMPage].Text" xml:space="preserve">
-    <value>Pagina Privé Berichtgeving</value>
-  </data>
   <data name="[RESX:PointsOptions].Text" xml:space="preserve">
     <value>Opties voor Punten systeem</value>
   </data>
@@ -1185,9 +1182,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:Tips:PageSize].Text" xml:space="preserve">
     <value>Geef het standaard aantal items op welke u wilt tonen op de onderwerp en antwoord pagina.</value>
-  </data>
-  <data name="[RESX:Tips:PMTabId].Text" xml:space="preserve">
-    <value>Selecteer de pagina waar de privé berichtgeving module staat geïnstalleerd.</value>
   </data>
   <data name="[RESX:Tips:POP3Address].Text" xml:space="preserve">
     <value>Specificeer het e-mailadres voor het forum. Dit overstemt het website e-mailadres en het e-mailadres wat is ingegeven on de forum instellingen.</value>

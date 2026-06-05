@@ -187,19 +187,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public int MessagingTabId
-        {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.PMTabId);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.PMTabId, value.ToString());
-            }
-        }
-
         public int Signatures
         {
             get

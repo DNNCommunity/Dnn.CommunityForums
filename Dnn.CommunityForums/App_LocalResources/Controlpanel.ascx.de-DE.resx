@@ -790,9 +790,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:PleaseWait].Text" xml:space="preserve">
     <value>Laden...  Bitte warten.</value>
   </data>
-  <data name="[RESX:PMPage].Text" xml:space="preserve">
-    <value>Seite "Private Nachrichten"</value>
-  </data>
   <data name="[RESX:PointsOptions].Text" xml:space="preserve">
     <value>Optionen für das Punktesystem</value>
   </data>
@@ -1140,9 +1137,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   </data>
   <data name="[RESX:Tips:PageSize].Text" xml:space="preserve">
     <value>Geben Sie die Standardanzahl der Elemente ein, die auf der Seite "Themen und Antworten" angezeigt werden sollen.</value>
-  </data>
-  <data name="[RESX:Tips:PMTabId].Text" xml:space="preserve">
-    <value>Wählen Sie die Seite aus, auf der Sie das Modul für private Nachrichten installiert haben.</value>
   </data>
   <data name="[RESX:Tips:POP3Address].Text" xml:space="preserve">
     <value>Spezifische E-Mail-Adresse für dieses Forum.  Dadurch werden die E-Mail-Adresse der Website und die E-Mail-Adresse, die möglicherweise in den Foreneinstellungen eingegeben wurde, überschrieben.</value>
