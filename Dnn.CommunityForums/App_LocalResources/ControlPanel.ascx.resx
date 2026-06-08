@@ -246,12 +246,6 @@
   <data name="[RESX:Status].Text" xml:space="preserve">
     <value>Enable and/or Disable Features</value>
   </data>
-  <data name="[RESX:TopicsTemplate].Text" xml:space="preserve">
-    <value>Topics Display</value>
-  </data>
-  <data name="[RESX:TopicTemplate].Text" xml:space="preserve">
-    <value>Topic Display</value>
-  </data>
   <data name="[RESX:UniqueFileNames].Text" xml:space="preserve">
     <value>Unique Filenames</value>
   </data>
@@ -285,9 +279,6 @@
   <data name="[RESX:ForumStatSettings].Text" xml:space="preserve">
     <value>Statistics Settings</value>
   </data>
-  <data name="[RESX:ForumTemplate].Text" xml:space="preserve">
-    <value>Template</value>
-  </data>
   <data name="[RESX:ForumTheme].Text" xml:space="preserve">
     <value>Theme</value>
   </data>
@@ -308,9 +299,6 @@
   </data>
   <data name="[RESX:StatsInterval].Text" xml:space="preserve">
     <value>Update Interval</value>
-  </data>
-  <data name="[RESX:StatsTemplate].Text" xml:space="preserve">
-    <value>Template</value>
   </data>
   <data name="[RESX:TimeFormat].Text" xml:space="preserve">
     <value>Time Format</value>
@@ -444,17 +432,8 @@
   <data name="[RESX:Tips:TopicForm].Text" xml:space="preserve">
     <value>Select the template for the form users will use when creating a new topic.</value>
   </data>
-  <data name="[RESX:Tips:TopicsTemplate].Text" xml:space="preserve">
-    <value>Select the template for displaying the list of topics</value>
-  </data>
-  <data name="[RESX:Tips:TopicTemplate].Text" xml:space="preserve">
-    <value>Select the template for displaying the topic and replies</value>
-  </data>
   <data name="[RESX:TopicForm].Text" xml:space="preserve">
     <value>Topic Form</value>
-  </data>
-  <data name="[RESX:AddTemplate].Text" xml:space="preserve">
-    <value>Add Template</value>
   </data>
   <data name="[RESX:All].Text" xml:space="preserve">
     <value>All</value>
@@ -485,9 +464,6 @@
   </data>
   <data name="[RESX:System].Text" xml:space="preserve">
     <value>System</value>
-  </data>
-  <data name="[RESX:TemplateType].Text" xml:space="preserve">
-    <value>Type</value>
   </data>
   <data name="[RESX:Title].Text" xml:space="preserve">
     <value>Title</value>
@@ -648,9 +624,6 @@
   <data name="[RESX:FloodControl:Intro].Text" xml:space="preserve">
     <value>Number of seconds a user must wait between posts.</value>
   </data>
-  <data name="[RESX:Tips:ForumTemplate].Text" xml:space="preserve">
-    <value>Select the template for the page that will display all your forums.</value>
-  </data>
   <data name="[RESX:Tips:ForumTheme].Text" xml:space="preserve">
     <value>Select the graphic theme for your forum.</value>
   </data>
@@ -666,14 +639,8 @@
   <data name="[RESX:Tips:ServerTimeZone].Text" xml:space="preserve">
     <value>The time zone offset allows you to adjust the time calculations as necessary.  In most situations you will leave this set to 0.</value>
   </data>
-  <data name="[RESX:Tips:UserProfileTemplate].Text" xml:space="preserve">
-    <value>Select the template for displaying the author information for a topic or reply.</value>
-  </data>
   <data name="[RESX:Trusted].Text" xml:space="preserve">
     <value>Trusted</value>
-  </data>
-  <data name="[RESX:UserProfileTemplate].Text" xml:space="preserve">
-    <value>Profile Display</value>
   </data>
   <data name="[RESX:Yes].Text" xml:space="preserve">
     <value>Yes</value>
@@ -788,9 +755,6 @@
   </data>
   <data name="[RESX:ProfileDisabled].Text" xml:space="preserve">
     <value>Disabled</value>
-  </data>
-  <data name="[RESX:ProfileTemplate].Text" xml:space="preserve">
-    <value>Profile Template</value>
   </data>
   <data name="[RESX:ProfileType].Text" xml:space="preserve">
     <value>Profile Type</value>
@@ -1276,12 +1240,6 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:DeleteActionSelect].Text" xml:space="preserve">
     <value>Select Action</value>
   </data>
-  <data name="[RESX:DesignAndTemplates:Intro].Text" xml:space="preserve">
-    <value>The settings below will help you adjust forum appearance.</value>
-  </data>
-  <data name="[RESX:DesignAndTemplates].Text" xml:space="preserve">
-    <value>Design and Layout</value>
-  </data>
   <data name="[RESX:EditControl].Text" xml:space="preserve">
     <value>Content Edit Control</value>
   </data>
@@ -1362,9 +1320,6 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   </data>
   <data name="[RESX:AllowLikes].Text" xml:space="preserve">
     <value>Allow Likes</value>
-  </data>
-  <data name="[RESX:Template].Text" xml:space="preserve">
-    <value>Template</value>
   </data>
   <data name="[RESX:Theme].Text" xml:space="preserve">
     <value>Theme</value>
