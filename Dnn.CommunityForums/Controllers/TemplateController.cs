@@ -31,73 +31,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     public class TemplateController
     {
-        public void Template_Save(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.TemplateInfo templateInfo)
-        {
-            // now save to the template file
-            try
-            {
-                string templatePathFileName = Globals.TemplatesPath + templateInfo.FileName;
-
-                ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(moduleId);
-                templatePathFileName = moduleSettings.TemplatePath + templateInfo.FileName;
-                if (!System.IO.Directory.Exists(Utilities.MapPath(moduleSettings.TemplatePath)))
-                {
-                    System.IO.Directory.CreateDirectory(Utilities.MapPath(moduleSettings.TemplatePath));
-                }
-
-                System.IO.File.WriteAllText(Utilities.MapPath(templatePathFileName), templateInfo.Template);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-        }
-
-        public void Template_Delete(int moduleId, Enums.TemplateType templateType, string templateFileNameSuffix)
-        {
-            string fileNameBase = templateType.ToString().ToLowerInvariant();
-            ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(moduleId);
-            try
-            {
-                if (!string.IsNullOrEmpty(templateFileNameSuffix))
-                {
-                    /* look first in templates folder within theme using - (dash) plus suffix */
-                    string fileName = $"{fileNameBase}-{templateFileNameSuffix}.ascx";
-                    string templateFilePathFileName = Utilities.MapPath(moduleSettings.TemplatePath + fileName);
-                    if (System.IO.File.Exists(templateFilePathFileName))
-                    {
-                        System.IO.File.Delete(templateFilePathFileName);
-                    }
-
-                    /* look next in templates folder within theme without - (dash) but with suffix */
-                    fileName = $"{fileNameBase}{templateFileNameSuffix}.ascx";
-                    templateFilePathFileName = Utilities.MapPath(moduleSettings.TemplatePath + fileName);
-                    if (System.IO.File.Exists(templateFilePathFileName))
-                    {
-                        System.IO.File.Delete(templateFilePathFileName);
-                    }
-                }
-                else
-                {
-                     /* look in templates folder within theme without suffix at all */
-                     string fileName = $"{fileNameBase}.ascx";
-                     string templateFilePathFileName = Utilities.MapPath(moduleSettings.TemplatePath + fileName);
-                     if (System.IO.File.Exists(templateFilePathFileName))
-                     {
-                         System.IO.File.Delete(templateFilePathFileName);
-                     }
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-
-        public static string Template_Get(int moduleId, Enums.TemplateType templateType, string templateFileNameSuffix)
-        {
-            return Template_Get(moduleId, templateType.ToString(), templateFileNameSuffix, null);
-        }
-
         internal static string Template_Get(int moduleId, Enums.TemplateType templateType, string templateFileNameSuffix, ForumUserInfo forumUser)
         {
             return Template_Get(moduleId, templateType.ToString(), templateFileNameSuffix, forumUser);
@@ -105,16 +38,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         private static string Template_Get(int moduleId, string templateBaseFileName, string templateFileNameSuffix, ForumUserInfo forumUser)
         {
-            bool fileFound = false;
-            string sTemplate = string.Empty;
-            string fileName = string.Empty;
-            string templateFilePathFileName = string.Empty;
-            ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(moduleId);
             templateBaseFileName = templateBaseFileName.ToLowerInvariant();
-            bool isAuthenticated = forumUser?.IsAuthenticated ?? false;
-            string cacheKey = string.Format(CacheKeys.Template, moduleId, templateBaseFileName, templateFileNameSuffix, isAuthenticated);
+
+            var fileFound = false;
+            var sTemplate = string.Empty;
+            var templateFilePathFileName = string.Empty;
+            var moduleSettings = SettingsBase.GetModuleSettings(moduleId);
+            var isAuthenticated = forumUser?.IsAuthenticated ?? false;
+            var cacheKey = string.Format(CacheKeys.Template, moduleId, templateBaseFileName, templateFileNameSuffix, isAuthenticated);
             object obj = null;
-            if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
+            if (moduleSettings.CacheTemplates)
             {
                 obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cacheKey);
             }
@@ -126,6 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             try
             {
+                string fileName;
                 if (!string.IsNullOrEmpty(templateFileNameSuffix))
                 {
                     /* look first in templates folder within theme using - (dash) plus suffix */

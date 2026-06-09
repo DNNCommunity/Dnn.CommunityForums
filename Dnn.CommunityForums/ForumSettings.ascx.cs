@@ -297,10 +297,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     this.ForumConfig.Contains("modpin") ||
                     this.ForumConfig.Contains("modlock"))
                 {
-                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080100();
-                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
-                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090201();
-                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
+                    DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_080100();
+                    DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_080200();
+                    DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_090201();
+                    DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_090300();
                 }
 
                 xDoc.LoadXml(this.ForumConfig);

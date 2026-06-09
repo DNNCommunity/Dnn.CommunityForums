@@ -26,9 +26,11 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlTypes;
+    using System.Drawing.Printing;
     using System.IO;
     using System.Linq;
     using System.Net.Mail;
+    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web.Razor.Generator;
@@ -48,6 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.UserControls;
 
     using log4net;
@@ -270,74 +273,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal void Upgrade_Templates_080000()
-        {
-            if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.TemplatesPath)))
-            {
-                System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.TemplatesPath));
-            }
-
-            if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.DefaultTemplatePath)))
-            {
-                System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.DefaultTemplatePath));
-            }
-
-            var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath));
-            System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
-            foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
-            {
-                if (!System.IO.Directory.Exists(themeFolder.FullName + "/templates"))
-                {
-                    System.IO.Directory.CreateDirectory(themeFolder.FullName + "/templates");
-                    TemplateController tc = new TemplateController();
-                    foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
-                    {
-                        /* during upgrade, explicitly (re-)load template text from database rather than Template_List API since API loads template using fallback/default logic and doesn't yet have the upgraded template text */
-                        /* if installing version 8.2 or greater, only convert specific templates */
-                        if ((Globals.ModuleVersion < new Version(8, 2)) || 
-                            ((templateInfo.TemplateType == Templates.TemplateTypes.ForumView) || 
-                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicView) || 
-                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicsView) || 
-                             (templateInfo.TemplateType == Templates.TemplateTypes.TopicForm) || 
-                             (templateInfo.TemplateType == Templates.TemplateTypes.ReplyForm) || 
-                             (templateInfo.TemplateType == Templates.TemplateTypes.Profile) || 
-                             (templateInfo.TemplateType == Templates.TemplateTypes.PostInfo) || 
-                             (templateInfo.TemplateType == Templates.TemplateTypes.QuickReplyForm))
-                            )
-                        {
-                            IDataReader dr = DataProvider.Instance().Templates_Get(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId);
-                            while (dr.Read())
-                            {
-                                try
-                                {
-                                    /* convert only legacy html portion of the template and save without encoding */
-                                    var template = Convert.ToString(dr["Template"]).Replace("[TRESX:", "[RESX:");
-                                    if (template.Contains("<html>"))
-                                    {
-                                        string sHTML;
-                                        var xDoc = new System.Xml.XmlDocument();
-                                        xDoc.LoadXml(template);
-                                        System.Xml.XmlNode xNode;
-                                        System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                                        xNode = xRoot.SelectSingleNode("/template/html");
-                                        sHTML = xNode.InnerText;
-                                        template = sHTML;
-                                    }
-
-                                    templateInfo.Template = System.Net.WebUtility.HtmlDecode(template);
-                                    tc.Template_Save(templateInfo);
-                                }
-                                catch (Exception ex)
-                                {
-                                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         internal void ArchiveOrphanedAttachments_070007()
         {
             var di = new System.IO.DirectoryInfo(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/portals"));
@@ -547,51 +482,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return newSet;
-        }
-
-        internal static void Upgrade_EmailNotificationSubjectTokens_080200()
-        {
-            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
-            {
-                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
-                {
-                    if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName.Trim(), StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        try
-                        {
-                            TemplateController tc = new TemplateController();
-                            foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
-                            {
-                                if (templateInfo.TemplateType == Templates.TemplateTypes.Email)
-                                {
-                                    try
-                                    {
-                                        var portalSettings = PortalSettings.Current;
-                                        if (portalSettings == null)
-                                        {
-                                            portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portal.PortalId);
-                                        }
-
-                                        templateInfo.Subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(templateInfo.Subject), portalSettings, portalSettings.DefaultLanguage).ToString();
-                                        DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.SaveSetting(module.ModuleID, $"M{module.ModuleID}", ForumSettingKeys.EmailNotificationSubjectTemplate, templateInfo.Subject);
-                                        DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(module.ModuleID);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Logger.Error(ex.Message, ex);
-                                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex.Message, ex);
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        }
-                    }
-                }
-            }
         }
 
         internal static void Upgrade_RelocateSqlFiles_080200()
