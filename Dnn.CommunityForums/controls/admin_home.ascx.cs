@@ -98,8 +98,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     sb.Append("<tr>");
 
-                    // TODO - Fix date time format
-                    sb.Append("<td class=\"dashRow\">" + Convert.ToDateTime(dr["CreatedDate"]).ToShortDateString() + "</td>");
+                    if (dr["CreatedDate"] != DBNull.Value)
+                    {
+                        sb.Append("<td class=\"dashRow\">" + Convert.ToDateTime(dr["CreatedDate"]).ToShortDateString() + "</td>");
+                    }
+                    else
+                    {
+                        sb.Append("<td class=\"dashRow\">&nbsp;</td>");
+                    }
+
                     sb.Append("<td class=\"dashRow\">" + dr["FirstName"].ToString() + " " + dr["LastName"].ToString() + "</td>");
                     sb.Append("<td class=\"dashRow\">" + dr["Username"].ToString() + "</td>");
                     sb.Append("</tr>");
