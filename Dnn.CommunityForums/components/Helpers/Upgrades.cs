@@ -23,19 +23,25 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
     using System;
     using System.Collections;
     using System.Linq;
+    using System.Text;
+    using System.Web.UI;
     using System.Xml;
 
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
+    using DotNetNuke.Services.Log.EventLog;
 
-    internal static class UpgradeModuleSettings
+    internal static class Upgrades
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradeModuleSettings));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Upgrades));
 
         internal static void MoveSettings_070011()
         {
@@ -119,6 +125,105 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(forumModuleId, string.Format(CacheKeys.MainSettings, forumModuleId));
         }
 
+        private enum ConversionTemplateTypes : int
+        {
+            All, // 0
+            System, // 1
+            ForumView, // 2
+            TopicView, // 3
+            TopicsView, // 4
+            TopicForm, // 5
+            ReplyForm, // 6
+            QuickReplyForm, // 7
+            Email, // 8
+            Profile, // 9
+            ModEmail, // 10
+            PostInfo, // 11
+        }
+
+        private class TemplateInfoForConversion
+        {
+            public int ModuleId { get; set; }
+
+            public ConversionTemplateTypes TemplateType { get; set; }
+
+            public string Template { get; set; }
+
+            public string FileName { get; set; }
+        }
+
+        internal static void Upgrade_Templates_080000()
+        {
+            if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.TemplatesPath)))
+            {
+                System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.TemplatesPath));
+            }
+
+            if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.DefaultTemplatePath)))
+            {
+                System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.DefaultTemplatePath));
+            }
+
+            var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath));
+            System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
+            foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
+            {
+                if (!System.IO.Directory.Exists(themeFolder.FullName + "/templates"))
+                {
+                    System.IO.Directory.CreateDirectory(themeFolder.FullName + "/templates");
+                }
+            }
+
+            var templates = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<TemplateInfoForConversion>(
+            System.Data.CommandType.Text,
+            @"SELECT ModuleId, TemplateType, FileName, Template FROM {databaseOwner}[{objectQualifier}activeforums_Templates]");
+            foreach (var templateInfo in templates)
+            {
+                ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId);
+                string templatePathFileName = moduleSettings.TemplatePath + templateInfo.FileName;
+                if (!System.IO.Directory.Exists(Utilities.MapPath(moduleSettings.TemplatePath)))
+                {
+                    System.IO.Directory.CreateDirectory(Utilities.MapPath(moduleSettings.TemplatePath));
+                }
+
+                /* only convert specific templates */
+                if ((templateInfo.TemplateType == ConversionTemplateTypes.ForumView) ||
+                    (templateInfo.TemplateType == ConversionTemplateTypes.TopicView) ||
+                    (templateInfo.TemplateType == ConversionTemplateTypes.TopicsView) ||
+                    (templateInfo.TemplateType == ConversionTemplateTypes.TopicForm) ||
+                    (templateInfo.TemplateType == ConversionTemplateTypes.ReplyForm) ||
+                    (templateInfo.TemplateType == ConversionTemplateTypes.Profile) ||
+                    (templateInfo.TemplateType == ConversionTemplateTypes.PostInfo) ||
+                    (templateInfo.TemplateType == ConversionTemplateTypes.QuickReplyForm))
+                {
+                    try
+                    {
+                        /* convert only legacy html portion of the template and save without encoding */
+                        var template = Convert.ToString(templateInfo.Template).Replace("[TRESX:", "[RESX:");
+                        if (template.Contains("<html>"))
+                        {
+                            string sHTML;
+                            var xDoc = new System.Xml.XmlDocument();
+                            xDoc.LoadXml(template);
+                            System.Xml.XmlNode xNode;
+                            System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                            xNode = xRoot.SelectSingleNode("/template/html");
+                            sHTML = xNode.InnerText;
+                            template = sHTML;
+                        }
+
+                        templateInfo.Template = System.Net.WebUtility.HtmlDecode(template);
+
+                        System.IO.File.WriteAllText(Utilities.MapPath(templatePathFileName), templateInfo.Template);
+                    }
+                    catch (Exception ex)
+                    {
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    }
+                }
+            }
+        }
+
         internal static void DeleteObsoleteModuleSettings_080100()
         {
             /* remove TIMEZONEOFFSE, AMFORUMS, MAILQUEUE */
@@ -179,6 +284,48 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCacheForTabId(module.TabID);
                                 DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(module.ModuleID);
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        internal static void Upgrade_EmailNotificationSubjectTokens_080200()
+        {
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+            {
+                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                {
+                    if (module.DesktopModule.ModuleName.Trim().Equals(Globals.ModuleName.Trim(), StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        try
+                        {
+                            var subject = DotNetNuke.Data.DataContext.Instance().ExecuteScalar<string>(
+                            System.Data.CommandType.Text,
+                            @"SELECT TOP 1 Subject FROM {databaseOwner}[{objectQualifier}activeforums_Templates] WHERE TemplateType = 8 & ModuleId = @0",
+                            module.ModuleID);
+                            try
+                            {
+                                var portalSettings = PortalSettings.Current;
+                                if (portalSettings == null)
+                                {
+                                    portalSettings = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings(portal.PortalId);
+                                }
+
+                                subject = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.MapLegacyEmailNotificationTokenSynonyms(new StringBuilder(subject), portalSettings, portalSettings.DefaultLanguage).ToString();
+                                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.SaveSetting(module.ModuleID, $"M{module.ModuleID}", ForumSettingKeys.EmailNotificationSubjectTemplate, subject);
+                                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(module.ModuleID);
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Error(ex.Message, ex);
+                                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex.Message, ex);
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                         }
                     }
                 }
@@ -276,7 +423,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         var modTemplateToggles = new string[] { "MODAPPROVENOTIFY", "MODREJECTNOTIFY", "MODMOVENOTIFY", "MODDELETENOTIFY", "MODNOTIFYNOTIFY", };
                         for (int i = 0; i < modTemplateIds.Length -1; i++)
                         {
-                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "INSERT INTO {databaseOwner}{objectQualifier}activeforums_Settings SELECT [ModuleId],[GroupKey],'@2', CASE WHEN [SettingValue] <> '0' THEN 1 ELSE 0 END FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND [SettingName] = '@1'", module.ModuleID, modTemplateIds[i], modTemplateToggles[i]);
+                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "INSERT INTO {databaseOwner}{objectQualifier}activeforums_Settings SELECT [ModuleId],[SettingsKey],'@2', CASE WHEN [SettingValue] <> '0' THEN 1 ELSE 0 END FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND [SettingName] = '@1'", module.ModuleID, modTemplateIds[i], modTemplateToggles[i]);
                         }
 
                         foreach (var settingName in new string[]
@@ -346,7 +493,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 }
             }
         }
-        
+
         internal static void UpgradeSocialGroupForumConfigModuleSettings_090201()
         {
             foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
@@ -527,6 +674,53 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "UPDATE {databaseOwner}{objectQualifier}ModuleSettings SET SettingValue = 1 WHERE ModuleId = @0 AND SettingName = 'PMTYPE' AND SettingValue = 2", module.ModuleID);
                     }
                 }
+            }
+        }
+
+        internal static void Remove_TemplatesTable_100000()
+        {
+            try
+            {
+                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                var message = $"dropping table activeforums_Templates table";
+                log.AddProperty("Message", message);
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+
+                DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates]') AND type in (N'U')) DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Templates]");
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+            }
+        }
+
+        internal static void Upgrade_PermissionSets_100000()
+        {
+            foreach (var perms in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.Get())
+            {
+                perms.Announce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Announce) ? string.Empty : perms.Announce.Replace(":", ";")));
+                perms.Attach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Attach) ? string.Empty : perms.Attach.Replace(":", ";")));
+                perms.Categorize = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Categorize) ? string.Empty : perms.Categorize.Replace(":", ";")));
+                perms.Create = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Create) ? string.Empty : perms.Create.Replace(":", ";")));
+                perms.Delete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Delete) ? string.Empty : perms.Delete.Replace(":", ";")));
+                perms.Edit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Edit) ? string.Empty : perms.Edit.Replace(":", ";")));
+                perms.Lock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Lock) ? string.Empty : perms.Lock.Replace(":", ";")));
+                perms.ManageUsers = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.ManageUsers) ? string.Empty : perms.ManageUsers.Replace(":", ";")));
+                perms.Moderate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Moderate) ? string.Empty : perms.Moderate.Replace(":", ";")));
+                perms.Move = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Move) ? string.Empty : perms.Move.Replace(":", ";")));
+                perms.Pin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Pin) ? string.Empty : perms.Pin.Replace(":", ";")));
+                perms.Poll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Poll) ? string.Empty : perms.Poll.Replace(":", ";")));
+                perms.Prioritize = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Prioritize) ? string.Empty : perms.Prioritize.Replace(":", ";")));
+                perms.Read = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Read) ? string.Empty : perms.Read.Replace(":", ";")));
+                perms.Reply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Reply) ? string.Empty : perms.Reply.Replace(":", ";")));
+                perms.Split = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Split) ? string.Empty : perms.Split.Replace(":", ";")));
+                perms.Subscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Subscribe) ? string.Empty : perms.Subscribe.Replace(":", ";")));
+                perms.Tag = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Tag) ? string.Empty : perms.Tag.Replace(":", ";")));
+                perms.Trust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Trust) ? string.Empty : perms.Trust.Replace(":", ";")));
+                perms.View = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.View) ? string.Empty : perms.View.Replace(":", ";")));
+                perms.Mention = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(string.IsNullOrEmpty(perms.Mention) ? string.Empty : perms.Mention.Replace(":", ";")));
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.Update(perms);
             }
         }
     }

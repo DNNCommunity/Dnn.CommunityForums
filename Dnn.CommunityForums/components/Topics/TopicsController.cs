@@ -33,6 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Search.Entities;
 
     #region Topics Controller
@@ -193,7 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "07.00.11":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.MoveSettings_070011();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.MoveSettings_070011();
                     }
                     catch (Exception ex)
                     {
@@ -219,8 +220,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "08.00.00":
                     try
                     {
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.Upgrade_Templates_080000();
                         var fc = new ForumsConfig();
-                        fc.Upgrade_Templates_080000();
                         fc.Install_Or_Upgrade_RenameThemeCssFiles_080000();
                         fc.Install_Or_Upgrade_RelocateDefaultThemeToLegacy_080000();
                         ForumsConfig.FillMissingTopicUrls_070012(); /* for anyone upgrading from 07.00.12-> 08.00.00 */
@@ -236,8 +237,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "08.01.00":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_080100();
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080100();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_080100();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_080100();
                         ForumsConfig.Install_BanUser_NotificationType_080100();
                     }
                     catch (Exception ex)
@@ -252,11 +253,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         ForumsConfig.Merge_Permissions_080200();
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
-                        ForumsConfig.Upgrade_EmailNotificationSubjectTokens_080200();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_080200();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.Upgrade_EmailNotificationSubjectTokens_080200();
                         ForumsConfig.Upgrade_RelocateSqlFiles_080200();
                         ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.AddUrlPrefixLikes_080200();
                         ForumsConfig.Install_LikeNotificationType_080200();
                         ForumsConfig.Install_PinNotificationType_080200();
                     }
@@ -271,7 +272,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "09.00.00":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
+                        var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                        log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                        var message = $"Removing obsolete module settings for {Version}";
+                        log.AddProperty("Message", message);
+                        DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_090000();
+                        log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                        log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                        message = $"Upgrading permissions for {Version}";
+                        log.AddProperty("Message", message);
+                        DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
                         ForumsConfig.Upgrade_PermissionSets_090000();
                     }
                     catch (Exception ex)
@@ -285,8 +296,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "09.01.00":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090100();
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_090100();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.AddAvatarModuleSettings_090100();
                     }
                     catch (Exception ex)
                     {
@@ -312,7 +323,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "09.02.01":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090201();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_090201();
                         new ForumsConfig().Install_DefaultBadges_090201(upgrading: true);
                     }
                     catch (Exception ex)
@@ -327,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         ForumsConfig.Install_UserMentionNotificationType_090300();
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_090300();
                     }
                     catch (Exception ex)
                     {
@@ -353,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "09.06.00":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090600();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_090600();
                         ForumsConfig.Upgrade_EnsureVanityNames_090600();
                     }
                     catch (Exception ex)
@@ -382,7 +393,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "10.00.00":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_100000();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_100000();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.Remove_TemplatesTable_100000();
+
+                        /* ensure permissions are upgraded anyone upgrading from earlier than 09.00.00 to 10.00.00; 
+                         * "GroupKey" on settings table was changed to "SettingsKey" in 09.02.00 so the 09.00.00 upgrade task failed for anyone upgrading from earlier than 09.00.00 to 09.02.00->09.08.00;
+                         * ALSO handles additional "Mention" permission */
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.Upgrade_PermissionSets_100000();
                     }
                     catch (Exception ex)
                     {
