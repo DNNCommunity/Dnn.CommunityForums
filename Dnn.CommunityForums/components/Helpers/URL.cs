@@ -70,8 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var db = new Data.Common();
-                sURL = "/" + db.GetUrl(moduleId, -1, -1, ti.TopicId, -1, -1);
+                sURL = "/" + DotNetNuke.Modules.ActiveForums.Controllers.UrlController.GetUrl(moduleId, -1, -1, ti.TopicId, -1, -1);
             }
 
             var sHost = Utilities.GetHost();
@@ -97,8 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return sURL;
             }
 
-            var db = new Data.Common();
-            sURL = db.GetUrl(-1, -1, -1, ti.TopicId, userId, replyId);
+            sURL = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.GetUrl(-1, -1, -1, ti.TopicId, userId, replyId);
             if (!string.IsNullOrEmpty(sURL))
             {
                 var sHost = Utilities.GetHost();

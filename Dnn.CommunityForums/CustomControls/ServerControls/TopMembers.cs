@@ -105,40 +105,42 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void Render(HtmlTextWriter writer)
         {
             string sHeaderTemplate = string.Empty;
-            string sFooterTemplate = string.Empty;
             if (this.HeaderTemplate != null)
             {
                 sHeaderTemplate = this.HeaderTemplate.Text;
             }
 
+            string sFooterTemplate = string.Empty;
             if (this.FooterTemplate != null)
             {
                 sFooterTemplate = this.FooterTemplate.Text;
             }
 
             string sTemplate = "[DISPLAYNAME]";
-            Data.Common db = new Data.Common();
-            IDataReader dr = db.TopMembers_Get(this.PortalId, this.Rows);
             if (this.ItemTemplate != null)
             {
                 sTemplate = this.ItemTemplate.Text;
             }
 
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
             if (string.IsNullOrEmpty(this.CssClass))
             {
                 this.CssClass = "aflist2";
             }
 
-            while (dr.Read())
+            var sb = new System.Text.StringBuilder();
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("activeforums_UI_TopMembers", this.PortalId, this.Rows))
             {
-                string sOut = sTemplate;
-                sOut = sOut.Replace("[DISPLAYNAME]", dr["DisplayName"].ToString());
-                sb.Append(sOut);
+                while (dr.Read())
+                {
+                    string sOut = sTemplate;
+                    sOut = sOut.Replace("[DISPLAYNAME]", dr["DisplayName"].ToString());
+                    sb.Append(sOut);
+                }
+
+                dr.Close();
+                dr.Dispose();
             }
 
-            dr.Close();
-            dr.Dispose();
             if (!string.IsNullOrEmpty(sb.ToString()))
             {
                 writer.Write(sHeaderTemplate);

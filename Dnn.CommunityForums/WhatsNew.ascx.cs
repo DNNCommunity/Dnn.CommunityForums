@@ -22,16 +22,13 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
-    using System.Drawing.Printing;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web.UI;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     public partial class WhatsNew : PortalModuleBase, IActionable

@@ -176,7 +176,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void cb_Callback(object sender, CallBackEventArgs e)
         {
-            Data.Topics db = new Data.Topics();
             if (e.Parameters.Length > 0)
             {
                 int rate = Convert.ToInt32(e.Parameter);

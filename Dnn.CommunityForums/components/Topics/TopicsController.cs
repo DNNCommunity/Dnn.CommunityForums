@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Search.Entities;
@@ -125,8 +126,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     string permittedRolesCanView = string.Empty;
                     if (!authorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
                     {
-                        string canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
-                        permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(portalSettings, string.Join(";", canView.Split(":".ToCharArray())));
+                        var delimiter = ";";
+                        var viewRolesAsDelimitedString = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess(moduleId: moduleInfo.ModuleID, permissionsId: forumid, requestedAccess: SecureActions.View).FromHashSetToDelimitedString(delimiter);
+                        permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(portalSettings: portalSettings, roles: viewRolesAsDelimitedString, delimiter: delimiter);
                         authorizedRolesForForum.Add(forumid, permittedRolesCanView);
                     }
 

@@ -25,12 +25,8 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Data;
-    using System.Globalization;
-    using System.IO;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -38,11 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Abstractions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Modules.ActiveForums.Entities;
-    using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
-
-    using Microsoft.ApplicationBlocks.Data;
 
     public class TemplateUtils
     {
@@ -107,25 +99,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             long itemID = -1;
 
-            DotNetNuke.Framework.Providers.ProviderConfiguration _providerConfiguration = DotNetNuke.Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
-            string connectionString;
-            string objectQualifier;
-            string databaseOwner;
-            connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
-            var objProvider = (DotNetNuke.Framework.Providers.Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
-
-            objectQualifier = objProvider.Attributes["objectQualifier"];
-            if (objectQualifier != string.Empty && objectQualifier.EndsWith("_") == false)
-            {
-                objectQualifier += "_";
-            }
-
-            databaseOwner = objProvider.Attributes["databaseOwner"];
-            if (databaseOwner != string.Empty && databaseOwner.EndsWith(".") == false)
-            {
-                databaseOwner += ".";
-            }
-
             StringBuilder userIds = new StringBuilder();
             userIds.Append("(");
 
@@ -143,8 +116,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            // dbPrefix = databaseOwner + objectQualifier + databaseObjectPrefix;
-            IDataReader dataReader = (IDataReader)SqlHelper.ExecuteReader(connectionString, databaseOwner + objectQualifier + "ActiveForumsEmailConnector_GetEmailInfo", portalId, moduleId, forumID, topicID, ipAddress, userIds.ToString());
+            // TODO: this stored procedure no longer exists and needs to be addressed as part of the Email Connector plug-in work #1448, but is left here for reference and updated to remove direct dependency on Microsoft.ApplicationBlocks.Data.
+            IDataReader dataReader = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("ActiveForumsEmailConnector_GetEmailInfo", portalId, moduleId, forumID, topicID, ipAddress, userIds.ToString());
             if (dataReader.Read())
             {
                 itemID = Convert.ToInt32(dataReader["RecordID"]);
