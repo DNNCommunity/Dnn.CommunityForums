@@ -42,11 +42,12 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetNamesForRolesTest()
         {
             // Arrange
-            var roles = $"{Common.Globals.glbRoleAllUsers};{Common.Globals.glbRoleUnauthUser}";
-            var expectedResult = $"{Common.Globals.glbRoleAllUsersName};{Common.Globals.glbRoleUnauthUserName};";
+            var delimiter = ";";
+            var roles = $"{Common.Globals.glbRoleAllUsers}{delimiter}{Common.Globals.glbRoleUnauthUser}";
+            var expectedResult = $"{Common.Globals.glbRoleAllUsersName}{delimiter}{Common.Globals.glbRoleUnauthUserName}{delimiter}";
 
             // Act
-            var actualResult = PermissionController.GetNamesForRoles(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), roles);
+            var actualResult = PermissionController.GetNamesForRoles(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), roles, delimiter);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -664,15 +665,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             /* not yet testable */
             Assert.Throws<NullReferenceException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveIfUnused(-1, this.MockModule.Object.ModuleID));
         }
-
-        [Test]
-        public void WhichRolesCanViewForumTest()
-        {
-            // Arrange
-            // Act
-            // Assert
-            /* not yet testable */
-            Assert.Throws<System.NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(this.MockModule.Object.ModuleID, -1, string.Empty));        }
 
         [Test]
         public void CheckForumIdsForViewForRSSTest()

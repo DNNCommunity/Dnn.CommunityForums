@@ -62,40 +62,40 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            ModuleSettings _mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
-            Data.Common db = new Data.Common();
-            IDataReader dr = db.TagCloud_Get(this.PortalId, this.ModuleId, this.ForumIds, this.TagCount);
-            ControlUtils ctlUtils = new ControlUtils();
-            string sURL = string.Empty;
-            while (dr.Read())
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("activeforums_UI_TagCloud", this.PortalId, this.ModuleId, this.ForumIds, this.TagCount))
             {
-                int priority = 1;
-                string tagName = string.Empty;
-                string css = string.Empty;
-                priority = int.Parse(dr["Priority"].ToString());
-                tagName = dr["TagName"].ToString();
-                switch (priority)
+                ControlUtils ctlUtils = new ControlUtils();
+                string sURL = string.Empty;
+                while (dr.Read())
                 {
-                    case 1:
-                        css = this.CSSOne;
-                        break;
-                    case 2:
-                        css = this.CSSTwo;
-                        break;
-                    case 3:
-                        css = this.CSSThree;
-                        break;
+                    int priority = 1;
+                    string tagName = string.Empty;
+                    string css = string.Empty;
+                    priority = int.Parse(dr["Priority"].ToString());
+                    tagName = dr["TagName"].ToString();
+                    switch (priority)
+                    {
+                        case 1:
+                            css = this.CSSOne;
+                            break;
+                        case 2:
+                            css = this.CSSTwo;
+                            break;
+                        case 3:
+                            css = this.CSSThree;
+                            break;
+                    }
+
+                    writer.Write("<span class=\"" + css + "\">");
+                    writer.Write("<a href=\"");
+                    sURL = ctlUtils.BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: int.Parse(dr["TagID"].ToString()), categoryId: -1, otherPrefix: Utilities.CleanName(tagName), pageId: 1, contentId: -1, socialGroupId: -1);
+                    writer.Write(sURL);
+                    writer.Write("\" title=\"" + System.Net.WebUtility.HtmlEncode(tagName) + "\">" + tagName + "</a></span> ");
                 }
 
-                writer.Write("<span class=\"" + css + "\">");
-                writer.Write("<a href=\"");
-                sURL = ctlUtils.BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: -1, forumID: -1, tagId: int.Parse(dr["TagID"].ToString()), categoryId: -1, otherPrefix: Utilities.CleanName(tagName), pageId: 1, contentId: -1, socialGroupId: -1);
-                writer.Write(sURL);
-                writer.Write("\" title=\"" + System.Net.WebUtility.HtmlEncode(tagName) + "\">" + tagName + "</a></span> ");
+                dr.Close();
+                dr.Dispose();
             }
-
-            dr.Close();
-            dr.Dispose();
         }
 
         protected override void OnInit(EventArgs e)

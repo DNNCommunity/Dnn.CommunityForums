@@ -377,8 +377,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.ModuleSettings.URLRewriteEnabled && !string.IsNullOrEmpty(this.topic.TopicUrl))
             {
-                var db = new Data.Common();
-                sURL = db.GetUrl(this.ModuleId, this.ForumGroupId, this.ForumId, this.TopicId, this.UserId, contentJumpId);
+                sURL = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.GetUrl(this.ModuleId, this.ForumGroupId, this.ForumId, this.TopicId, this.UserId, contentJumpId);
 
                 if (!sURL.StartsWith("/"))
                 {

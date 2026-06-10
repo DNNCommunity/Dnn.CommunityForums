@@ -921,20 +921,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public static void Move(int moduleId, int userId, int topicId, int newForumId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
-            int oldForumId = (int)ti.ForumId;
-            ModuleSettings settings = SettingsBase.GetModuleSettings(ti.ModuleId);
-            if (settings.URLRewriteEnabled)
+            var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
+            var oldForumId = topic.ForumId;
+            var moduleSettings = SettingsBase.GetModuleSettings(topic.ModuleId);
+            if (moduleSettings.URLRewriteEnabled)
             {
                 try
                 {
-                    if (!string.IsNullOrEmpty(ti.Forum.PrefixURL))
+                    if (!string.IsNullOrEmpty(topic.Forum.PrefixURL))
                     {
-                        Data.Common dbC = new Data.Common();
-                        string sURL = dbC.GetUrl(ti.ModuleId, ti.Forum.ForumGroupId, oldForumId, topicId, -1, -1);
+                        var sURL = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.GetUrl(topic.ModuleId, topic.Forum.ForumGroupId, oldForumId, topicId, -1, -1);
                         if (!string.IsNullOrEmpty(sURL))
                         {
-                            dbC.ArchiveURL(ti.PortalId, ti.Forum.ForumGroupId, newForumId, topicId, sURL);
+                            DotNetNuke.Modules.ActiveForums.Controllers.UrlController.ArchiveURL(topic.PortalId, topic.Forum.ForumGroupId, newForumId, topicId, sURL);
                         }
                     }
                 }
@@ -947,20 +946,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var oldForum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId, oldForumId);
             var newForum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId, newForumId);
 
-            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Move(ti.PortalId, ti.ModuleId, newForumId, topicId);
-            ti = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
+            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Move(topic.PortalId, topic.ModuleId, newForumId, topicId);
+            topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
 
-            if (oldForum.FeatureSettings.ModMoveNotify && ti?.Author?.AuthorId > 0)
+            if (oldForum.FeatureSettings.ModMoveNotify && topic?.Author?.AuthorId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(TemplateType.ModMove, ti.Forum.GetTabId(), oldForum, topicId: ti.TopicId, replyId: -1, author: ti.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(TemplateType.ModMove, topic.Forum.GetTabId(), oldForum, topicId: topic.TopicId, replyId: -1, author: topic.Author);
             }
 
-            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: topicId, replyId: -1, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, dateCreated: DateTime.UtcNow, requestUrl: null);
-            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: newForum.ForumGroupId, forumId: newForum.ForumID, topicId: topicId, replyId: -1, contentId: ti.ContentId, authorId: ti.Content.AuthorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, dateCreated: DateTime.UtcNow, requestUrl: null);
-            Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
-            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForForum(moduleId, ti.ForumId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.Add(ProcessType.UpdateForumLastUpdated, topic.PortalId, tabId: -1, moduleId: topic.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: topicId, replyId: -1, contentId: topic.ContentId, authorId: topic.Content.AuthorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, dateCreated: DateTime.UtcNow, requestUrl: null);
+            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.Add(ProcessType.UpdateForumLastUpdated, topic.PortalId, tabId: -1, moduleId: topic.ModuleId, forumGroupId: newForum.ForumGroupId, forumId: newForum.ForumID, topicId: topicId, replyId: -1, contentId: topic.ContentId, authorId: topic.Content.AuthorId, userId: userId, badgeId: DotNetNuke.Common.Utilities.Null.NullInteger, dateCreated: DateTime.UtcNow, requestUrl: null);
+            Utilities.UpdateModuleLastContentModifiedOnDate(topic.ModuleId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForForum(moduleId, topic.ForumId);
             DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForTopic(moduleId, topicId);
-            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForContent(ti.ModuleId, ti.ContentId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForContent(topic.ModuleId, topic.ContentId);
         }
 
         public static void SaveToForum(int moduleId, int forumId, int topicId)

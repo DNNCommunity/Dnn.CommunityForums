@@ -406,29 +406,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return roles;
         }
 
-        internal static string GetNamesForRoles(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string roles)
+        internal static string GetNamesForRoles(DotNetNuke.Entities.Portals.PortalSettings portalSettings, string roles, string delimiter)
         {
             try
             {
                 string roleNames = string.Empty;
                 string roleName;
-                foreach (string role in roles.Split(new[] { ';' }))
+                foreach (string role in roles.Split(delimiter.ToCharArray()))
                 {
                     if (!string.IsNullOrEmpty(role))
                     {
                         switch (role)
                         {
                             case DotNetNuke.Common.Globals.glbRoleAllUsers:
-                                roleNames = string.Concat(roleNames + DotNetNuke.Common.Globals.glbRoleAllUsersName, ";");
+                                roleNames = string.Concat(roleNames + DotNetNuke.Common.Globals.glbRoleAllUsersName, delimiter);
                                 break;
                             case DotNetNuke.Common.Globals.glbRoleUnauthUser:
-                                roleNames = string.Concat(roleNames + DotNetNuke.Common.Globals.glbRoleUnauthUserName, ";");
+                                roleNames = string.Concat(roleNames + DotNetNuke.Common.Globals.glbRoleUnauthUserName, delimiter);
                                 break;
                             default:
                                 roleName = GetRoleName(portalSettings: portalSettings, roleId: Utilities.SafeConvertInt(role));
                                 if (roleName != null)
                                 {
-                                    roleNames = string.Concat(roleNames + roleName, ";");
+                                    roleNames = string.Concat(roleNames + roleName, delimiter);
                                 }
 
                                 break;
@@ -834,30 +834,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         break;
                 }
             }
-        }
-
-        public static string WhichRolesCanViewForum(int moduleId, int forumId, string userRoles)
-        {
-            string cacheKey = string.Format(CacheKeys.ViewRolesForForum, moduleId, forumId);
-            string sRoles = (string)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cacheKey);
-
-            if (string.IsNullOrEmpty(sRoles))
-            {
-                var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId, forumId);
-                var permission = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId, forumId).PermissionsId, moduleId);
-
-                foreach (string role in userRoles.Split(";".ToCharArray()))
-                {
-                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(permission.ViewRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleString(userRoles)))
-                    {
-                        sRoles += role + ":";
-                    }
-                }
-
-                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cacheKey, sRoles);
-            }
-
-            return sRoles;
         }
 
         public static string CheckForumIdsForViewForRSS(int moduleId, string forumIds, HashSet<int> userRoleIds)
