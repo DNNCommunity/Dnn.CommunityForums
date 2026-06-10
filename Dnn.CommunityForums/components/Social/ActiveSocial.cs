@@ -22,14 +22,9 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Linq;
-    using System.Reflection;
 
-    using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Journal;
-    using DotNetNuke.Services.Sitemap;
 
     internal static class Social
     {

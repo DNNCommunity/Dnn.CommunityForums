@@ -408,8 +408,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         fi.PrefixURL = e.Parameters[10];
                         if (!string.IsNullOrEmpty(fi.PrefixURL))
                         {
-                            var db = new Data.Common();
-                            if (!db.CheckForumURL(this.PortalId, this.ModuleId, fi.PrefixURL, fi.ForumID, fi.ForumGroupId))
+                            if (!DotNetNuke.Modules.ActiveForums.Controllers.UrlController.CheckForumURL(this.PortalId, this.ModuleId, fi.PrefixURL, fi.ForumID, fi.ForumGroupId))
                             {
                                 fi.PrefixURL = string.Empty;
                             }
@@ -441,8 +440,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         gi.PrefixURL = e.Parameters[10];
                         if (!string.IsNullOrEmpty(gi.PrefixURL))
                         {
-                            var db = new Data.Common();
-                            if (!db.CheckGroupURL(this.PortalId, this.ModuleId, gi.PrefixURL, gi.ForumGroupId))
+                            if (!DotNetNuke.Modules.ActiveForums.Controllers.UrlController.CheckGroupURL(this.PortalId, this.ModuleId, gi.PrefixURL, gi.ForumGroupId))
                             {
                                 gi.PrefixURL = string.Empty;
                             }

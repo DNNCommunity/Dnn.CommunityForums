@@ -25,7 +25,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     public class SettingsBase : PortalModuleBase

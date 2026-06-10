@@ -26,7 +26,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Web;
 
     using DotNetNuke.Collections;
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
@@ -218,7 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var replyId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Save(portalId, reply.TopicId, reply.ReplyId, reply.ReplyToId, reply.StatusId, reply.IsApproved, reply.IsDeleted, reply.Content.Subject.Trim(), reply.Content.Body.Trim(), reply.Content.DateCreated, reply.Content.DateUpdated, reply.Content.AuthorId, reply.Content.AuthorName, reply.Content.IPAddress));
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, reply.ForumId, reply.TopicId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(reply.ForumId);
-            
+
             DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForForum(reply.ModuleId, reply.ForumId);
             DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForReply(reply.ModuleId, reply.ReplyId);
             DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForTopic(reply.ModuleId, reply.TopicId);

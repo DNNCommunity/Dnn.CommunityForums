@@ -470,7 +470,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return this.ForumUser == null
                 ? false
-                : DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess( this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoleIds);
+                : DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess(this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoleIds);
         }
 
         protected string GetSharedResource(string key)

@@ -30,7 +30,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI;
 
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Modules.ActiveForums.Data;
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     using Newtonsoft.Json.Bson;
