@@ -26,38 +26,18 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlTypes;
-    using System.Drawing.Printing;
     using System.IO;
     using System.Linq;
-    using System.Net.Mail;
-    using System.Reflection;
-    using System.Text;
     using System.Text.RegularExpressions;
-    using System.Web.Razor.Generator;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Collections;
-    using DotNetNuke.Common.Controls;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
-    using DotNetNuke.UI.Skins;
-    using DotNetNuke.UI.UserControls;
-
-    using log4net;
-
-    using Microsoft.ApplicationBlocks.Data;
-
-    using static System.ComponentModel.Design.ObjectSelectorEditor;
 
     public class ForumsConfig
     {
@@ -308,10 +288,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static void FillMissingTopicUrls_070012()
         {
-            var connectionString = new Connection().connectionString;
-            var dbPrefix = new Connection().dbPrefix;
-
-            using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT f.PortalId,f.ModuleId,ft.ForumId,t.topicId,c.Subject FROM {dbPrefix}Topics t INNER JOIN {dbPrefix}ForumTopics ft ON ft.TopicId = t.TopicId INNER JOIN {dbPrefix}Content c ON c.ContentId = t.ContentId INNER JOIN {dbPrefix}Forums f ON f.ForumId = ft.ForumId WHERE t.URL = ''"))
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteSQL("SELECT f.PortalId,f.ModuleId,ft.ForumId,t.topicId,c.Subject FROM {databaseOwner}{objectQualifier}activeforums_Topics t INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics ft ON ft.TopicId = t.TopicId INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content c ON c.ContentId = t.ContentId INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums f ON f.ForumId = ft.ForumId WHERE t.URL = ''"))
             {
                 while (dr.Read())
                 {

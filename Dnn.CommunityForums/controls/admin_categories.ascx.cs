@@ -23,7 +23,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Linq;
     using System.Web.UI.WebControls;
-    using DotNetNuke.Modules.ActiveForums.Data;
 
     public partial class admin_categories : ActiveAdminBase
     {
