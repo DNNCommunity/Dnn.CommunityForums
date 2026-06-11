@@ -44,7 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class TopicView : ForumBase
     {
         private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic;
-        private int topicTemplateId;
         private DataRow drForum;
         private DataRow drSecurity;
         private DataTable dtTopic;
@@ -353,7 +352,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.LastReply.Author.ForumUser.ModuleId = this.ForumModuleId;
             this.topic.UpdateCache();
 
-            this.topicTemplateId = Utilities.SafeConvertInt(this.drForum["TopicTemplateId"]);
             this.tags = this.drForum["Tags"].ToString();
             this.rowCount = Utilities.SafeConvertInt(this.drForum["ReplyCount"]) + 1;
             this.isSubscribedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumInfo.ForumID, this.TopicId);
