@@ -219,7 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo Save(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user)
         {
-            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.Save(user);
+            var forumUser = this._repositoryControllerBase.Save(user, user.UserId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(forumUser.PortalId, forumUser.ProfileId);
             return forumUser;
         }
