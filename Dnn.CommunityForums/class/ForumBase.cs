@@ -52,7 +52,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public ControlsConfig ControlConfig { get; set; }
 
-        public string ThemePath => this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation);
+        public string ThemePath => string.Concat(Globals.ThemesPath, "/", this.Theme, "/");
+
+        new public string ImagePath => string.Concat(this.ThemePath, "images/");
 
         internal HashSet<int> ForumIds
         {
@@ -69,17 +71,15 @@ namespace DotNetNuke.Modules.ActiveForums
             set
             {
                 this.forumIds = value;
-            } 
+            }
         }
 
-               public string Theme
+        public string Theme
         {
-            get => _theme ?? (_theme = MainSettings.Theme);
-            set => _theme = value;
+            get => this._theme ?? (this._theme = this.ModuleSettings.Theme);
+            set => this._theme = value;
         }
-        new public string ImagePath => string.Concat(ThemePath, "images/");
-        public string ThemePath => string.Concat(Globals.ThemesPath, "/", Theme, "/");
-        public string ForumIds { get; set; } = string.Empty; 
+
         public string DefaultView { get; set; } = Views.ForumView;
 
         public int PostId

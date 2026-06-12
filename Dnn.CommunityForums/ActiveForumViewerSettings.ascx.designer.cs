@@ -35,29 +35,5 @@ namespace DotNetNuke.Modules.ActiveForums
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpThemes;
 
-        ///<summary>
-		///drpForumViewTemplate control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.DropDownList drpForumViewTemplate;
-		///<summary>
-		///drpTopicsTemplate control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.DropDownList drpTopicsTemplate;
-		///<summary>
-		///drpTopicTemplate control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.DropDownList drpTopicTemplate;
 	}
 }

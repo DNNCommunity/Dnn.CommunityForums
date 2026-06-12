@@ -1,6 +1,6 @@
 # A way to overule Forum Theme Styles 
 
-**New DNN Community Forums Module v 08.00.00**
+**New DNN Community Forums Module v 08.00.00 and newer **
 
 To overrule a Forum Themes Styling, you can create a folder named "custom" and place a file "theme.css" in it.
 The Forums module will load this custom/theme.css Styleheet if it exists. 

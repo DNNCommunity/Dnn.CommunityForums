@@ -60,10 +60,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.LoadForumGroups(Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]));
                     }
 
-                    if (!(Convert.ToString(Settings[ForumViewerSettingsKeys.AFTheme]) == null))
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTheme]) == null))
                     {
-                        BindThemes();
-                        Utilities.SelectListItemByValue(this.drpThemes, Settings[ForumViewerSettingsKeys.AFTheme]);
+                        this.BindThemes();
+                        Utilities.SelectListItemByValue(this.drpThemes, this.Settings[ForumViewerSettingsKeys.AFTheme]);
                     }
 
                     if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumGroup]) == null))
@@ -168,17 +168,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
         private void drpForumInstance_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.LoadForumGroups(Convert.ToInt32(this.drpForumInstance.SelectedItem.Value));
         }
-        
+
         private void BindThemes()
         {
-            var di = new System.IO.DirectoryInfo(Server.MapPath(Globals.ModulePath + "themes"));
+            var di = new System.IO.DirectoryInfo(this.Server.MapPath(Globals.ModulePath + "themes"));
             this.drpThemes.DataSource = di.GetDirectories();
             this.drpThemes.DataBind();
         }
     }
-}
 }

@@ -697,7 +697,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[AF:CONTROL:POSTICONS]") && this.ForumInfo.FeatureSettings.AllowPostIcon)
             {
                 template = template.Replace("[AF:UI:FIELDSET:POSTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:PostIcons]</legend><div class=\"affieldsetnote\">[RESX:PostIcons:Note]</div>");
-                template = template.Replace("[AF:CONTROL:POSTICONS]", "<af:posticons id=\"afposticons\" runat=\"server\" Theme=\"" + Theme + "\" />");
+                template = template.Replace("[AF:CONTROL:POSTICONS]", "<af:posticons id=\"afposticons\" runat=\"server\" Theme=\"" + this.Theme + "\" />");
                 template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", "</fieldset>");
                 /* tokens [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] can now surround post icons to support removing entire section; if using post icons, just remove the tokens*/
                 template = template.Replace("[AF:UI:SECTION:POSTICONS]", string.Empty);
@@ -1024,7 +1024,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.LinkControls(this.Controls);
 
             this.txtSubject.CssClass = "aftextbox dcf-topic-edit-subject";
-            string MyTheme = Theme;
+            string MyTheme = this.Theme;
             string myThemePath = this.Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MyTheme);
             this.txtSubject.MaxLength = 255;
             this.txtSummary.MaxLength = 2000;
