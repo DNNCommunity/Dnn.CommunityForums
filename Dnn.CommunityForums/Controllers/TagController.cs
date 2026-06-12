@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void UpdateTopicTags(IPostInfo post)
         {
-            if (post == null || topicTagController == null)
+            if (post == null || this.topicTagController == null)
             {
                 return;
             }

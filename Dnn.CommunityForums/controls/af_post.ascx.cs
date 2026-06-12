@@ -121,6 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.ctlForm.PostButton.ClientSideScript = "amPostback();";
             this.ctlForm.PostButton.PostBack = false;
+            this.ctlForm.Theme = this.Theme;
 
             this.ctlForm.AttachmentsClientId = this.hidAttachments.ClientID;
 
@@ -506,6 +507,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             this.ctlForm.Template = template;
+            this.ctlForm.Theme = this.Theme;
             this.ctlForm.IsApproved = this.isApproved;
         }
 

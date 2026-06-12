@@ -1215,9 +1215,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsDisplay]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UI_TopicsDisplay]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_TopicIdByURL]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_TopicIdByURL]
-GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Properties_List]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Properties_List]
 GO
@@ -1230,9 +1227,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Properties_Get]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Properties_Get]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL_CheckForumVanity]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_URL_CheckForumVanity]
-GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_DeleteRelated]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_DeleteRelated]
 GO
@@ -1242,14 +1236,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_ListRelated]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_ListRelated]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL_CheckGroupVanity]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_URL_CheckGroupVanity]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Util_GetUrl]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Util_GetUrl]
-GO
-
-
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]
@@ -1437,6 +1423,36 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Functions_Split]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION {databaseOwner}[{objectQualifier}activeforums_Functions_Split]
 GO
+
+/* activeforums_Util_GetUrl -- update function reference fn_activeforums_GetURL to activeforums_GetURL */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Util_GetUrl]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Util_GetUrl]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Util_GetUrl]
+ @ModuleId int,
+ @ForumGroupId int,
+ @ForumId int,
+ @TopicId int,
+ @UserId int,
+ @ContentId int
+AS
+IF @ForumId = -1 AND @TopicId > 0
+	BEGIN
+		SET @ForumId = (SELECT ForumId from {databaseOwner}{objectQualifier}activeforums_ForumTopics WHERE TopicId = @TopicId)
+	END
+IF @ForumGroupId = -1 AND @ForumId > 0
+	BEGIN
+		SET @ForumGroupId = (SELECT ForumGroupId from {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId)
+	END
+IF @ModuleId < 1 AND @ForumId > 0
+	BEGIN
+		SET @ModuleId = (SELECT ModuleId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId)
+	END
+DECLARE @url nvarchar(max)
+SET @url = {databaseOwner}{objectQualifier}activeforums_GetURL(@ModuleId,@ForumGroupId,@ForumId,@TopicId,@UserId,@ContentId)
+SELECT ISNULL(@url,'')
+GO
+
 
 /* activeforums_Forum_Save -- update function reference fn_activeforums_GetURL to activeforums_GetURL */
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forum_Save]') AND type in (N'P', N'PC'))

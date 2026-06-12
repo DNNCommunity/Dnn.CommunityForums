@@ -62,6 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         objModule.ForumGroupId = this.ForumGroupId;
                         objModule.ParentForumId = this.ParentForumId;
                         objModule.ForumIds = this.ForumIds;
+                        objModule.Theme = this.Theme;
                         this.Controls.Add(objModule);
                     }
                 }

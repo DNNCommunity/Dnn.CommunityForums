@@ -440,6 +440,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AFForumGroupId = "AFForumGroupID";
         public const string AFForumGroup = "AFForumGroup";
         public const string AFViewType = "AFViewType";
+        public const string AFTheme = "AFTheme";
     }
 
     public class ForumViewerViewType

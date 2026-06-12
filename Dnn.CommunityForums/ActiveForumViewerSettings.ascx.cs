@@ -60,6 +60,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.LoadForumGroups(Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]));
                     }
 
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTheme]) == null))
+                    {
+                        this.BindThemes();
+                        Utilities.SelectListItemByValue(this.drpThemes, this.Settings[ForumViewerSettingsKeys.AFTheme]);
+                    }
+
                     if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumGroup]) == null))
                     {
                         this.drpForum.SelectedIndex = this.drpForum.Items.IndexOf(this.drpForum.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumGroup])));
@@ -82,6 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Update ModuleSettings
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumModuleId, this.drpForumInstance.SelectedItem.Value);
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumGroup, this.drpForum.SelectedItem.Value);
+                objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFTheme, this.drpThemes.SelectedItem.Value);
 
                 // objModules.UpdateModuleSetting(ModuleId, "AFEnableToolbar", CType(chkEnableToolbar.Checked, String))
                 string forumGroup;
@@ -165,6 +172,13 @@ namespace DotNetNuke.Modules.ActiveForums
         private void drpForumInstance_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.LoadForumGroups(Convert.ToInt32(this.drpForumInstance.SelectedItem.Value));
+        }
+
+        private void BindThemes()
+        {
+            var di = new System.IO.DirectoryInfo(this.Server.MapPath(Globals.ModulePath + "themes"));
+            this.drpThemes.DataSource = di.GetDirectories();
+            this.drpThemes.DataBind();
         }
     }
 }

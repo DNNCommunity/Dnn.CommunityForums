@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 {
                     return this.NotFound();
                 }
-                return Ok(settings.featureSettings[key]);
+                return this.Ok(settings.featureSettings[key]);
             }
             catch (Exception ex)
             {

@@ -52,15 +52,28 @@ namespace DotNetNuke.Modules.ActiveForums
                         viewType = Views.ForumView;
                         this.ctlForumLoader.ForumGroupId = tmpForumOrGroupId;
                     }
-
                     this.ctlForumLoader.DefaultView = viewType;
                     this.ctlForumLoader.ForumModuleId = tmpModuleId;
-                    this.ctlForumLoader.ForumTabId = this.ForumTabId;
+                    this.ctlForumLoader.ForumTabId = this.ForumTabId; 
                     int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(tmpModuleId).FirstOrDefault().TabID;
                     if (tmpForumTabId <= 0) { tmpForumTabId = this.TabId; }
                     this.ctlForumLoader.ForumTabId = tmpForumTabId;
-                    this.ctlForumLoader.ModuleConfiguration = this.ModuleConfiguration;
-                    ClientResourceManager.RegisterStyleSheet(this.Page, this.Page.ResolveUrl(Globals.ModulePath + "module.css"), FileOrder.Css.ModuleCss);
+                    this.ctlForumLoader.ModuleConfiguration = this.ModuleConfiguration; 
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTheme]) == null))
+                    {
+                        this.ctlForumLoader.Theme = Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTheme]);
+                    }
+                    System.Web.UI.HtmlControls.HtmlGenericControl oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
+                    oLink.Attributes["rel"] = "stylesheet";
+                    oLink.Attributes["type"] = "text/css"; 
+                    oLink.Attributes["href"] = this.Page.ResolveUrl(Globals.ModulePath + "module.css");
+                    System.Web.UI.Control oCSS = this.Page.FindControl("CSS");
+                    if (oCSS != null)
+                        {
+                        int iControlIndex = 0;
+                        iControlIndex = oCSS.Controls.Count;
+                        oCSS.Controls.AddAt(0, oLink);
+                    }
                 }
                 else
                 {

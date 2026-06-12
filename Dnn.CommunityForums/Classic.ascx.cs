@@ -343,7 +343,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ControlsConfig cc = new ControlsConfig();
                 cc.AppPath = this.Page.ResolveUrl(Globals.ModulePath);
-                cc.ThemePath = this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation);
+                cc.ThemePath = this.Page.ResolveUrl(this.ThemePath);
                 cc.TemplatePath = this.Page.ResolveUrl(this.ModuleSettings.TemplatePath + "/");
                 cc.PortalId = this.PortalId;
                 cc.PageId = this.TabId;
@@ -415,27 +415,27 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "theme.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(this.ThemePath + "theme.min.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "theme.min.css", priority: 12);
+                ClientResourceManager.RegisterStyleSheet(this.Page, this.ThemePath + "theme.min.css", priority: 12);
             }
             else
             {
-                if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "theme.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(this.ThemePath + "theme.css")))
                 {
-                    ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "theme.css", priority: 12);
+                    ClientResourceManager.RegisterStyleSheet(this.Page, this.ThemePath + "theme.css", priority: 12);
                 }
             }
 
-            if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "custom/theme.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(this.ThemePath + "custom/theme.min.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "custom/theme.min.css", priority: 13);
+                ClientResourceManager.RegisterStyleSheet(this.Page, this.ThemePath + "custom/theme.min.css", priority: 13);
             }
             else
             {
-                if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "custom/theme.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(this.ThemePath + "custom/theme.css")))
                 {
-                    ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "custom/theme.css", priority: 13);
+                    ClientResourceManager.RegisterStyleSheet(this.Page, this.ThemePath + "custom/theme.css", priority: 13);
                 }
             }
 

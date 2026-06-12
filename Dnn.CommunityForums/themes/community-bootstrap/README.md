@@ -1,6 +1,6 @@
 # About DNN Community Forums "community-bootstrap" Theme
 
-## New Bootstrap 4/5 Theme for Module Version 8.1.0
+## New Bootstrap 4/5 Theme for Module Version 8.1.0 and newer
 
 You need to use a Bootstrap 4 or 5 based Theme for the styling of this Theme to work correctly.
 * The Xcillion Theme is based on Bootstrap 3. This Forum Theme will probably not render correctly on Xcillion. We advise you to use the "community-default forum theme" in combination with DNN Bootstrap 3 Themes

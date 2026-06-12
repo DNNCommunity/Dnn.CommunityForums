@@ -1,6 +1,6 @@
 # About Dnn Community Forums "community-default" Theme
 
-## New default Theme for Version 8.0.0
+## New default Theme for Version 8.0.0 and newer
 This Theme replaces the old Modules default Theme. 
 We advise you to start using this Theme instead of the old one as the legacy Theme will not be supported any more in the Future.
 When you find any issues, please [https://github.com/DNNCommunity/Dnn.CommunityForums/issues](report them).
