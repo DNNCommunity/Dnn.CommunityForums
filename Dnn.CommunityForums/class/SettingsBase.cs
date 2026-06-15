@@ -21,7 +21,9 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
 
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
@@ -94,16 +96,37 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public Framework.CDefault BasePage => (Framework.CDefault)this.Page;
 
-        public static DotNetNuke.Modules.ActiveForums.ModuleSettings GetModuleSettings(int moduleId)
+        public static DotNetNuke.Modules.ActiveForums.ModuleSettings GetTabModuleSettings(int moduleId, int tabModuleId)
         {
-            DotNetNuke.Modules.ActiveForums.ModuleSettings objSettings = (ModuleSettings)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, string.Format(CacheKeys.MainSettings, moduleId));
-            if (objSettings == null && moduleId > 0)
+            var cacheKey = string.Format(CacheKeys.TabModuleSettings, tabModuleId);
+            var tabModuleSettings = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(tabModuleId, cacheKey) as DotNetNuke.Modules.ActiveForums.ModuleSettings;
+            if (tabModuleSettings == null)
             {
-                objSettings = new DotNetNuke.Modules.ActiveForums.ModuleSettings { ModuleId = moduleId, MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleId).ModuleSettings };
-                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, string.Format(CacheKeys.MainSettings, moduleId), objSettings);
+                var moduleSettings = GetModuleSettings(moduleId);
+
+                // Create a new hashtable copy to avoid mutating the shared module settings
+                var consolidatedSettings = new Hashtable(moduleSettings.MainSettings);
+
+                // Overlay TabModuleSettings on top (tab/instance-specific settings take precedence)
+                var tabModuleSettingsToOverlay = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModule(tabModuleId).TabModuleSettings;
+                tabModuleSettings = moduleSettings.CreateMergedTabModuleSettings(tabModuleSettingsToOverlay);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(tabModuleId, cacheKey, tabModuleSettings);
             }
 
-            return objSettings;
+            return tabModuleSettings;
+        }
+
+        public static DotNetNuke.Modules.ActiveForums.ModuleSettings GetModuleSettings(int moduleId)
+        {
+            var cacheKey = string.Format(CacheKeys.MainSettings, moduleId);
+            var settings = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cacheKey) as ModuleSettings;
+            if (settings == null && moduleId > 0)
+            {
+                settings = new DotNetNuke.Modules.ActiveForums.ModuleSettings { ModuleId = moduleId, MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleId).ModuleSettings };
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cacheKey, settings);
+            }
+
+            return settings;
         }
 
         public DotNetNuke.Modules.ActiveForums.ModuleSettings ModuleSettings
@@ -111,7 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 this.ForumModuleId = this.forumModuleId <= 0 ? this.ForumModuleId : this.forumModuleId;
-                return GetModuleSettings(this.ForumModuleId);
+                return GetTabModuleSettings(this.ForumModuleId, this.TabModuleId);
             }
         }
 

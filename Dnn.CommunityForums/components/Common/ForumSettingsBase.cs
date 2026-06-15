@@ -44,420 +44,208 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, key, newValue);
         }
 
-        public string Mode
+        private void UpdateTabModuleSettingCaseSensitive(string key, string newValue)
         {
-            get
+            var oldValue = this.Settings.GetString(key);
+            if (oldValue != null && oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
             {
-                return this.Settings.GetString(SettingKeys.Mode, ModuleModes.Standard);
+                // changed but case-insensitive identical: empty the setting first
+                this.UpdateTabModuleSettingCaseSensitive(key, string.Empty);
             }
 
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.Mode, value);
-            }
+            DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, key, newValue);
+        }
+
+        public string Mode
+        {
+            get => this.Settings.GetString(SettingKeys.Mode, ModuleModes.Standard);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.Mode, value);
         }
 
         public string Theme
         {
-            get
-            {
-                return this.Settings.GetString(SettingKeys.Theme, "_legacy");
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.Theme, value);
-            }
+            get => this.Settings.GetString(SettingKeys.Theme, "_legacy");
+            set => this.UpdateTabModuleSettingCaseSensitive(SettingKeys.Theme, value);
         }
 
         public string TimeFormatString
         {
-            get
-            {
-                return this.Settings.GetString(SettingKeys.TimeFormatString, "h:mm tt");
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.TimeFormatString, value);
-            }
+            get => this.Settings.GetString(SettingKeys.TimeFormatString, "h:mm tt");
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.TimeFormatString, value);
         }
 
         public string DateFormatString
         {
-            get
-            {
-                return this.Settings.GetString(SettingKeys.DateFormatString, "MM/dd/yyyy");
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.DateFormatString, value);
-            }
+            get => this.Settings.GetString(SettingKeys.DateFormatString, "MM/dd/yyyy");
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.DateFormatString, value);
         }
 
         public int PageSize
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.PageSize, 25);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.PageSize, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.PageSize, 25);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.PageSize, value.ToString());
         }
 
         public int FloodInterval
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.FloodInterval);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.FloodInterval, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.FloodInterval);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.FloodInterval, value.ToString());
         }
 
         public int EditInterval
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.EditInterval);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.EditInterval, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.EditInterval);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.EditInterval, value.ToString());
         }
 
         public bool AutoLink
         {
-            get
-            {
-                return this.Settings.GetBoolean(SettingKeys.EnableAutoLink, true);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.EnableAutoLink, value.ToString());
-            }
+            get => this.Settings.GetBoolean(SettingKeys.EnableAutoLink, true);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.EnableAutoLink, value.ToString());
         }
 
         public int DeleteBehavior
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.DeleteBehavior);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.DeleteBehavior, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.DeleteBehavior);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.DeleteBehavior, value.ToString());
         }
 
         public int ProfileVisibility
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.ProfileVisibility, (int)ProfileVisibilities.Everyone);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.ProfileVisibility, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.ProfileVisibility, (int)ProfileVisibilities.Everyone);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.ProfileVisibility, value.ToString());
         }
 
         public int MessagingType
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.PMType);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.PMType, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.PMType);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.PMType, value.ToString());
         }
 
         public int Signatures
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.AllowSignatures, 1);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.AllowSignatures, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.AllowSignatures, 1);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.AllowSignatures, value.ToString());
         }
 
         public string UserNameDisplay
         {
-            get
-            {
-                return this.Settings.GetString(SettingKeys.UserNameDisplay, "Username");
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.UserNameDisplay, value);
-            }
+            get => this.Settings.GetString(SettingKeys.UserNameDisplay, "Username");
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.UserNameDisplay, value);
         }
 
         public bool FriendlyURLs
         {
-            get
-            {
-                return this.Settings.GetBoolean(SettingKeys.EnableURLRewriter);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.EnableURLRewriter, value.ToString());
-            }
+            get => this.Settings.GetBoolean(SettingKeys.EnableURLRewriter);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.EnableURLRewriter, value.ToString());
         }
 
         public string PrefixURLTag
         {
-            get
-            {
-                return this.Settings.GetString(SettingKeys.PrefixURLTags, "tag");
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLTags, value);
-            }
+            get => this.Settings.GetString(SettingKeys.PrefixURLTags, "tag");
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLTags, value);
         }
 
         public string PrefixURLCategory
         {
-            get
-            {
-                return this.Settings.GetString(SettingKeys.PrefixURLCategories, "category");
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLCategories, value);
-            }
+            get => this.Settings.GetString(SettingKeys.PrefixURLCategories, "category");
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLCategories, value);
         }
 
         public string PrefixURLOther
         {
-            get
-            {
-                return this.Settings.GetString(SettingKeys.PrefixURLOther, "views");
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLOther, value);
-            }
+            get => this.Settings.GetString(SettingKeys.PrefixURLOther, "views");
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLOther, value);
         }
 
         public string PrefixURLLikes
         {
-            get
-            {
-                return this.Settings.GetString(SettingKeys.PrefixURLLikes, Views.likes);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLLikes, value);
-            }
+            get => this.Settings.GetString(SettingKeys.PrefixURLLikes, Views.likes);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLLikes, value);
         }
 
         public bool CacheTemplates
         {
-            get
-            {
-                return this.Settings.GetBoolean(SettingKeys.CacheTemplates, true);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.CacheTemplates, value.ToString());
-            }
+            get => this.Settings.GetBoolean(SettingKeys.CacheTemplates, true);
+            set => this.UpdateTabModuleSettingCaseSensitive(SettingKeys.CacheTemplates, value.ToString());
         }
 
         public bool EnablePoints
         {
-            get
-            {
-                return this.Settings.GetBoolean(SettingKeys.EnablePoints);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.EnablePoints, value.ToString());
-            }
+            get => this.Settings.GetBoolean(SettingKeys.EnablePoints);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.EnablePoints, value.ToString());
         }
 
         public int TopicPointValue
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.TopicPointValue, 1);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.TopicPointValue, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.TopicPointValue, 1);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.TopicPointValue, value.ToString());
         }
 
         public int ReplyPointValue
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.ReplyPointValue, 1);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.ReplyPointValue, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.ReplyPointValue, 1);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.ReplyPointValue, value.ToString());
         }
 
         public int AnswerPointValue
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.AnswerPointValue, 1);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.AnswerPointValue, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.AnswerPointValue, 1);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.AnswerPointValue, value.ToString());
         }
 
         public int MarkAsAnswerPointValue
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.MarkAnswerPointValue, 1);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.MarkAnswerPointValue, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.MarkAnswerPointValue, 1);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.MarkAnswerPointValue, value.ToString());
         }
 
         public int ModPointValue
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.ModPointValue, 1);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.ModPointValue, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.ModPointValue, 1);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.ModPointValue, value.ToString());
         }
 
         public int ForumGroupTemplate
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.SocialGroupModeForumGroupTemplate, -1);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.SocialGroupModeForumGroupTemplate, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.SocialGroupModeForumGroupTemplate, -1);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.SocialGroupModeForumGroupTemplate, value.ToString());
         }
 
         public string ForumConfig
         {
-            get
-            {
-                return this.Settings.GetString(SettingKeys.SocialGroupModeForumConfig, string.Empty);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.SocialGroupModeForumConfig, value);
-            }
+            get => this.Settings.GetString(SettingKeys.SocialGroupModeForumConfig, string.Empty);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.SocialGroupModeForumConfig, value);
         }
 
         public int AvatarHeight
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.AvatarHeight, 48);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.AvatarHeight, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.AvatarHeight, 48);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.AvatarHeight, value.ToString());
         }
-        
+
         public int AvatarWidth
         {
-            get
-            {
-                return this.Settings.GetInt(SettingKeys.AvatarWidth, 48);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.AvatarWidth, value.ToString());
-            }
+            get => this.Settings.GetInt(SettingKeys.AvatarWidth, 48);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.AvatarWidth, value.ToString());
         }
 
         public string AvatarRefresh
         {
-            get
-            {
-                return this.Settings.GetString(SettingKeys.AvatarRefresh, Globals.AvatarRefreshGravatar);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.AvatarRefresh, value.ToString());
-            }
+            get => this.Settings.GetString(SettingKeys.AvatarRefresh, Globals.AvatarRefreshGravatar);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.AvatarRefresh, value.ToString());
         }
 
         public bool EnableUsersOnline
         {
-            get
-            {
-                return this.Settings.GetBoolean(SettingKeys.UsersOnlineEnabled);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.UsersOnlineEnabled, value.ToString());
-            }
+            get => this.Settings.GetBoolean(SettingKeys.UsersOnlineEnabled);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.UsersOnlineEnabled, value.ToString());
         }
 
         public bool UseSkinBreadCrumb
         {
-            get
-            {
-                return this.Settings.GetBoolean(SettingKeys.UseSkinBreadCrumb);
-            }
-
-            set
-            {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.UseSkinBreadCrumb, value.ToString());
-            }
+            get => this.Settings.GetBoolean(SettingKeys.UseSkinBreadCrumb);
+            set => this.UpdateModuleSettingCaseSensitive(SettingKeys.UseSkinBreadCrumb, value.ToString());
         }
     }
 }
