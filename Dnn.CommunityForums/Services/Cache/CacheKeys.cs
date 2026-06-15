@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
         internal const string ForumInfoWithUser = "AF-{0}-fi-{1}-{2}";
         internal const string HostUrl = "AF-{0}-url";
         internal const string MainSettings = "AF-{0}-ms";
+        internal const string TabModuleSettings = "AF-{0}-tms";
         internal const string DefaultSettingsByKey = "AF-{0}-dsk";
         internal const string ForumSettingsByKey = "AF-{0}-fsk-{1}";
         internal const string GroupSettingsByKey = "AF-{0}-gsk-{1}";

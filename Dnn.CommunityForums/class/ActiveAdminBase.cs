@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return SettingsBase.GetModuleSettings(this.ModuleId);
+                return SettingsBase.GetTabModuleSettings(this.ModuleId, this.TabModuleId);
             }
         }
 

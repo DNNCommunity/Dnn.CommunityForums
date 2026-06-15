@@ -22,12 +22,9 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
-    using System.Reflection;
 
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
-
-    using Newtonsoft.Json;
 
     public class ModuleSettings
     {
@@ -46,6 +43,18 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.MainSettings = new Hashtable();
             this.ModuleId = moduleId;
+        }
+
+        public ModuleSettings CreateMergedTabModuleSettings(Hashtable tabModuleSettingsToOverlay)
+        {
+            var consolidatedSettings = new Hashtable(this.MainSettings);
+
+            foreach (string key in tabModuleSettingsToOverlay.Keys)
+            {
+                consolidatedSettings[key] = tabModuleSettingsToOverlay[key];
+            }
+
+            return new ModuleSettings { ModuleId = this.ModuleId, MainSettings = consolidatedSettings };
         }
 
         public int PageSize => this.MainSettings.GetInt(SettingKeys.PageSize, 20);
