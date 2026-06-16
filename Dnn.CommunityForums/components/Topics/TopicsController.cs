@@ -54,6 +54,8 @@ namespace DotNetNuke.Modules.ActiveForums
             "groups",
             "tags",
             "badges",
+            "permissions",
+            "settings",
             "forums",
             "categories",
             "contents",
@@ -213,6 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
+                var moduleSettings = SettingsBase.GetModuleSettings(moduleId);
                 var groups = ((IRepository<ForumGroupInfo>)ForumGroupController.Instance)
                     .Get(moduleId)
                     .OrderBy(g => g.SortOrder)
@@ -247,6 +250,50 @@ namespace DotNetNuke.Modules.ActiveForums
                     .Get(moduleId)
                     .OrderBy(b => b.SortOrder)
                     .ThenBy(b => b.BadgeId)
+                    .ToList();
+
+                var permissions = ((IRepository<PermissionInfo>)PermissionController.Instance)
+                    .Get(moduleId)
+                    .OrderBy(p => p.PermissionsId)
+                    .Select(p => new PermissionPortable
+                    {
+                        PermissionsId = p.PermissionsId,
+                        View = p.View,
+                        Read = p.Read,
+                        Create = p.Create,
+                        Reply = p.Reply,
+                        Edit = p.Edit,
+                        Delete = p.Delete,
+                        Lock = p.Lock,
+                        Pin = p.Pin,
+                        Attach = p.Attach,
+                        Poll = p.Poll,
+                        Trust = p.Trust,
+                        Subscribe = p.Subscribe,
+                        Announce = p.Announce,
+                        Tag = p.Tag,
+                        Categorize = p.Categorize,
+                        Prioritize = p.Prioritize,
+                        Moderate = p.Moderate,
+                        Move = p.Move,
+                        Split = p.Split,
+                        ManageUsers = p.ManageUsers,
+                        Mention = p.Mention,
+                    })
+                    .ToList();
+
+                var settings = ((IRepository<SettingsInfo>)SettingsController.Instance)
+                    .Get(moduleId)
+                    .OrderBy(s => s.SettingsKey)
+                    .ThenBy(s => s.SettingName)
+                    .ThenBy(s => s.SettingsId)
+                    .Select(s => new SettingsPortable
+                    {
+                        SettingsId = s.SettingsId,
+                        SettingsKey = s.SettingsKey,
+                        SettingName = s.SettingName,
+                        SettingValue = s.SettingValue,
+                    })
                     .ToList();
 
                 var forums = ForumController.Instance.GetForums(moduleId)
@@ -456,6 +503,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 var document = new XDocument(
                     new XElement("forumsExport",
                         new XAttribute("schemaVersion", "1.0"),
+                        new XAttribute("defaultPermissionId", moduleSettings?.DefaultPermissionId ?? -1),
+                        new XAttribute("defaultSettingsKey", moduleSettings?.DefaultSettingsKey ?? string.Empty),
                         TopicsController.SerializeEntities("groups", groups, g =>
                             new XElement("group",
                                 new XAttribute("forumGroupId", g.ForumGroupId),
@@ -488,6 +537,36 @@ namespace DotNetNuke.Modules.ActiveForums
                                 new XAttribute("sendAwardNotification", b.SendAwardNotification),
                                 new XAttribute("initialBackfillCompletedDate", this.ToPortableDate(b.InitialBackfillCompletedDate)),
                                 new XAttribute("suppressAwardNotificationOnBackfill", b.SuppresssAwardNotificationOnBackfill))),
+                        TopicsController.SerializeEntities("permissions", permissions, p =>
+                            new XElement("permission",
+                                new XAttribute("permissionsId", p.PermissionsId),
+                                new XAttribute("view", p.View ?? string.Empty),
+                                new XAttribute("read", p.Read ?? string.Empty),
+                                new XAttribute("create", p.Create ?? string.Empty),
+                                new XAttribute("reply", p.Reply ?? string.Empty),
+                                new XAttribute("edit", p.Edit ?? string.Empty),
+                                new XAttribute("delete", p.Delete ?? string.Empty),
+                                new XAttribute("lock", p.Lock ?? string.Empty),
+                                new XAttribute("pin", p.Pin ?? string.Empty),
+                                new XAttribute("attach", p.Attach ?? string.Empty),
+                                new XAttribute("poll", p.Poll ?? string.Empty),
+                                new XAttribute("trust", p.Trust ?? string.Empty),
+                                new XAttribute("subscribe", p.Subscribe ?? string.Empty),
+                                new XAttribute("announce", p.Announce ?? string.Empty),
+                                new XAttribute("tag", p.Tag ?? string.Empty),
+                                new XAttribute("categorize", p.Categorize ?? string.Empty),
+                                new XAttribute("prioritize", p.Prioritize ?? string.Empty),
+                                new XAttribute("moderate", p.Moderate ?? string.Empty),
+                                new XAttribute("move", p.Move ?? string.Empty),
+                                new XAttribute("split", p.Split ?? string.Empty),
+                                new XAttribute("manageUsers", p.ManageUsers ?? string.Empty),
+                                new XAttribute("mention", p.Mention ?? string.Empty))),
+                        TopicsController.SerializeEntities("settings", settings, s =>
+                            new XElement("setting",
+                                new XAttribute("settingsId", s.SettingsId),
+                                new XAttribute("settingsKey", s.SettingsKey ?? string.Empty),
+                                new XAttribute("settingName", s.SettingName ?? string.Empty),
+                                new XAttribute("settingValue", s.SettingValue ?? string.Empty))),
                         TopicsController.SerializeEntities("forums", forums, f =>
                             new XElement("forum",
                                 new XAttribute("forumId", f.ForumId),
@@ -737,6 +816,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 var moduleSettings = SettingsBase.GetModuleSettings(moduleId);
                 var defaultPermissionId = moduleSettings?.DefaultPermissionId ?? -1;
                 var defaultSettingsKey = moduleSettings?.DefaultSettingsKey ?? string.Empty;
+                var sourceDefaultPermissionId = this.GetInt(root, "defaultPermissionId");
+                var sourceDefaultSettingsKey = this.GetString(root, "defaultSettingsKey");
 
                 var groupMap = new Dictionary<int, int>();
                 var forumMap = new Dictionary<int, int>();
@@ -746,9 +827,65 @@ namespace DotNetNuke.Modules.ActiveForums
                 var tagMap = new Dictionary<int, int>();
                 var categoryMap = new Dictionary<int, int>();
                 var badgeMap = new Dictionary<int, int>();
+                var permissionMap = new Dictionary<int, int>();
+                var settingsKeyMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                 var importedForums = new Dictionary<int, ForumInfo>();
                 var pendingForumParents = new Dictionary<int, int>();
                 var pendingReplyParents = new Dictionary<int, int>();
+
+                if (sourceDefaultPermissionId > 0 && defaultPermissionId > 0)
+                {
+                    permissionMap[sourceDefaultPermissionId] = defaultPermissionId;
+                }
+
+                if (!string.IsNullOrWhiteSpace(sourceDefaultSettingsKey) && !string.IsNullOrWhiteSpace(defaultSettingsKey))
+                {
+                    settingsKeyMap[sourceDefaultSettingsKey] = defaultSettingsKey;
+                }
+
+                var defaultPermission = defaultPermissionId > 0 ? PermissionController.Instance.GetById(defaultPermissionId, moduleId) : null;
+                foreach (var sourcePermission in TopicsController.GetElements(root, "permissions", "permission"))
+                {
+                    var oldPermissionId = this.GetInt(sourcePermission, "permissionsId");
+                    if (oldPermissionId <= 0)
+                    {
+                        continue;
+                    }
+
+                    if (oldPermissionId == sourceDefaultPermissionId && defaultPermission != null)
+                    {
+                        this.PopulatePermission(defaultPermission, moduleId, sourcePermission);
+                        defaultPermission = PermissionController.Instance.Update(defaultPermission);
+                        permissionMap[oldPermissionId] = defaultPermission.PermissionsId;
+                        continue;
+                    }
+
+                    var permission = this.CreatePermission(moduleId, sourcePermission);
+                    permission = PermissionController.Instance.Insert(permission);
+                    permissionMap[oldPermissionId] = permission.PermissionsId;
+                }
+
+                if (defaultPermissionId <= 0 && sourceDefaultPermissionId > 0 && permissionMap.TryGetValue(sourceDefaultPermissionId, out var mappedDefaultPermissionId))
+                {
+                    ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.DefaultPermissionId, mappedDefaultPermissionId.ToString(CultureInfo.InvariantCulture));
+                    defaultPermissionId = mappedDefaultPermissionId;
+                }
+
+                foreach (var sourceSetting in TopicsController.GetElements(root, "settings", "setting"))
+                {
+                    var sourceSettingsKey = this.GetString(sourceSetting, "settingsKey");
+                    var mappedSettingsKey = this.GetMappedSettingsKey(settingsKeyMap, sourceSettingsKey, sourceDefaultSettingsKey, defaultSettingsKey);
+                    if (string.IsNullOrWhiteSpace(mappedSettingsKey))
+                    {
+                        continue;
+                    }
+
+                    SettingsController.Instance.SaveSetting(
+                        moduleId,
+                        mappedSettingsKey,
+                        this.GetString(sourceSetting, "settingName"),
+                        this.GetString(sourceSetting, "settingValue"));
+                }
 
                 foreach (var sourceGroup in TopicsController.GetElements(root, "groups", "group"))
                 {
@@ -759,8 +896,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         SortOrder = this.GetInt(sourceGroup, "sortOrder"),
                         Active = this.GetBool(sourceGroup, "active"),
                         Hidden = this.GetBool(sourceGroup, "hidden"),
-                        GroupSettingsKey = defaultSettingsKey,
-                        PermissionsId = defaultPermissionId,
+                        GroupSettingsKey = this.GetMappedSettingsKey(settingsKeyMap, this.GetString(sourceGroup, "groupSettingsKey"), sourceDefaultSettingsKey, defaultSettingsKey),
+                        PermissionsId = this.GetMappedPermissionId(permissionMap, this.GetInt(sourceGroup, "permissionsId"), defaultPermissionId),
                         PrefixURL = this.GetString(sourceGroup, "prefixUrl"),
                     };
 
@@ -822,12 +959,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         Hidden = this.GetBool(sourceForum, "hidden"),
                         TotalTopics = this.GetInt(sourceForum, "totalTopics"),
                         TotalReplies = this.GetInt(sourceForum, "totalReplies"),
-                        ForumSettingsKey = defaultSettingsKey,
+                        ForumSettingsKey = this.GetMappedSettingsKey(settingsKeyMap, this.GetString(sourceForum, "forumSettingsKey"), sourceDefaultSettingsKey, defaultSettingsKey),
                         DateCreated = this.GetDateTime(sourceForum, "dateCreated", DateTime.UtcNow),
                         DateUpdated = this.GetDateTime(sourceForum, "dateUpdated", DateTime.UtcNow),
                         LastTopicId = 0,
                         LastReplyId = 0,
-                        PermissionsId = defaultPermissionId,
+                        PermissionsId = this.GetMappedPermissionId(permissionMap, this.GetInt(sourceForum, "permissionsId"), defaultPermissionId),
                         PrefixURL = this.GetString(sourceForum, "prefixUrl"),
                         SocialGroupId = this.GetInt(sourceForum, "socialGroupId"),
                         HasProperties = this.GetBool(sourceForum, "hasProperties"),
@@ -1359,6 +1496,65 @@ namespace DotNetNuke.Modules.ActiveForums
             return root.Element(containerName)?.Elements(elementName) ?? Enumerable.Empty<XElement>();
         }
 
+        private PermissionInfo CreatePermission(int moduleId, XElement sourcePermission)
+        {
+            var permission = new PermissionInfo();
+            this.PopulatePermission(permission, moduleId, sourcePermission);
+            return permission;
+        }
+
+        private int GetMappedPermissionId(IDictionary<int, int> permissionMap, int sourcePermissionId, int defaultPermissionId)
+        {
+            return permissionMap.TryGetValue(sourcePermissionId, out var mappedPermissionId) ? mappedPermissionId : defaultPermissionId;
+        }
+
+        private string GetMappedSettingsKey(IDictionary<string, string> settingsKeyMap, string sourceSettingsKey, string sourceDefaultSettingsKey, string defaultSettingsKey)
+        {
+            if (string.IsNullOrWhiteSpace(sourceSettingsKey))
+            {
+                return defaultSettingsKey;
+            }
+
+            if (string.Equals(sourceSettingsKey, sourceDefaultSettingsKey, StringComparison.OrdinalIgnoreCase))
+            {
+                return defaultSettingsKey;
+            }
+
+            if (settingsKeyMap.TryGetValue(sourceSettingsKey, out var mappedSettingsKey))
+            {
+                return mappedSettingsKey;
+            }
+
+            settingsKeyMap[sourceSettingsKey] = sourceSettingsKey;
+            return sourceSettingsKey;
+        }
+
+        private void PopulatePermission(PermissionInfo permission, int moduleId, XElement sourcePermission)
+        {
+            permission.ModuleId = moduleId;
+            permission.View = this.GetString(sourcePermission, "view");
+            permission.Read = this.GetString(sourcePermission, "read");
+            permission.Create = this.GetString(sourcePermission, "create");
+            permission.Reply = this.GetString(sourcePermission, "reply");
+            permission.Edit = this.GetString(sourcePermission, "edit");
+            permission.Delete = this.GetString(sourcePermission, "delete");
+            permission.Lock = this.GetString(sourcePermission, "lock");
+            permission.Pin = this.GetString(sourcePermission, "pin");
+            permission.Attach = this.GetString(sourcePermission, "attach");
+            permission.Poll = this.GetString(sourcePermission, "poll");
+            permission.Trust = this.GetString(sourcePermission, "trust");
+            permission.Subscribe = this.GetString(sourcePermission, "subscribe");
+            permission.Announce = this.GetString(sourcePermission, "announce");
+            permission.Tag = this.GetString(sourcePermission, "tag");
+            permission.Categorize = this.GetString(sourcePermission, "categorize");
+            permission.Prioritize = this.GetString(sourcePermission, "prioritize");
+            permission.Moderate = this.GetString(sourcePermission, "moderate");
+            permission.Move = this.GetString(sourcePermission, "move");
+            permission.Split = this.GetString(sourcePermission, "split");
+            permission.ManageUsers = this.GetString(sourcePermission, "manageUsers");
+            permission.Mention = this.GetString(sourcePermission, "mention");
+        }
+
         private int ResolveAuthorId(int portalId, int sourceAuthorId, int importingUserId)
         {
             if (sourceAuthorId < 1)
@@ -1455,6 +1651,64 @@ namespace DotNetNuke.Modules.ActiveForums
         private string ToPortableBytes(byte[] value)
         {
             return value != null && value.Length > 0 ? Convert.ToBase64String(value) : string.Empty;
+        }
+
+        private class PermissionPortable
+        {
+            public int PermissionsId { get; set; }
+
+            public string View { get; set; }
+
+            public string Read { get; set; }
+
+            public string Create { get; set; }
+
+            public string Reply { get; set; }
+
+            public string Edit { get; set; }
+
+            public string Delete { get; set; }
+
+            public string Lock { get; set; }
+
+            public string Pin { get; set; }
+
+            public string Attach { get; set; }
+
+            public string Poll { get; set; }
+
+            public string Trust { get; set; }
+
+            public string Subscribe { get; set; }
+
+            public string Announce { get; set; }
+
+            public string Tag { get; set; }
+
+            public string Categorize { get; set; }
+
+            public string Prioritize { get; set; }
+
+            public string Moderate { get; set; }
+
+            public string Move { get; set; }
+
+            public string Split { get; set; }
+
+            public string ManageUsers { get; set; }
+
+            public string Mention { get; set; }
+        }
+
+        private class SettingsPortable
+        {
+            public int SettingsId { get; set; }
+
+            public string SettingsKey { get; set; }
+
+            public string SettingName { get; set; }
+
+            public string SettingValue { get; set; }
         }
 
         private class GroupPortable

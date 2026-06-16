@@ -38,6 +38,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                 "groups",
                 "tags",
                 "badges",
+                "permissions",
+                "settings",
                 "forums",
                 "categories",
                 "contents",
