@@ -24,23 +24,43 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlTypes;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI.WebControls;
+    using System.Xml.Linq;
 
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Search.Entities;
 
     #region Topics Controller
-    public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
+    public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable, DotNetNuke.Entities.Modules.IPortable
     {
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
+        internal static readonly IReadOnlyList<string> PortableEntityDependencyOrder = new[]
+        {
+            "groups",
+            "tags",
+            "forums",
+            "contents",
+            "topics",
+            "replies",
+            "forumTopics",
+            "topicTags",
+        };
+
         private readonly IPortalAliasService portalAliasService;
         private readonly IPortalSettings portalSettings;
         private readonly IPortalController portalController;
@@ -171,6 +191,844 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
             }
+        }
+        #endregion
+
+        #region "IPortable"
+        public string ExportModule(int moduleId)
+        {
+            try
+            {
+                var groups = ((IRepository<ForumGroupInfo>)ForumGroupController.Instance)
+                    .Get(moduleId)
+                    .OrderBy(g => g.SortOrder)
+                    .ThenBy(g => g.ForumGroupId)
+                    .Select(g => new GroupPortable
+                    {
+                        ForumGroupId = g.ForumGroupId,
+                        GroupName = g.GroupName,
+                        SortOrder = g.SortOrder,
+                        Active = g.Active,
+                        Hidden = g.Hidden,
+                        GroupSettingsKey = g.GroupSettingsKey,
+                        PermissionsId = g.PermissionsId,
+                        PrefixURL = g.PrefixURL,
+                    })
+                    .ToList();
+
+                var tags = ((IRepository<TagInfo>)TagController.Instance)
+                    .Get(moduleId)
+                    .OrderBy(t => t.TagId)
+                    .Select(t => new TagPortable
+                    {
+                        TagId = t.TagId,
+                        PortalId = t.PortalId,
+                        ModuleId = t.ModuleId,
+                        TagName = t.TagName,
+                        Items = t.Items,
+                    })
+                    .ToList();
+
+                var forums = ForumController.Instance.GetForums(moduleId)
+                    .OrderBy(f => f.ForumGroupId)
+                    .ThenBy(f => f.SortOrder)
+                    .ThenBy(f => f.ForumID)
+                    .Select(f => new ForumPortable
+                    {
+                        ForumId = f.ForumID,
+                        PortalId = f.PortalId,
+                        ModuleId = f.ModuleId,
+                        ForumGroupId = f.ForumGroupId,
+                        ParentForumId = f.ParentForumId,
+                        ForumName = f.ForumName,
+                        ForumDesc = f.ForumDesc,
+                        SortOrder = f.SortOrder,
+                        Active = f.Active,
+                        Hidden = f.Hidden,
+                        TotalTopics = f.TotalTopics,
+                        TotalReplies = f.TotalReplies,
+                        ForumSettingsKey = f.ForumSettingsKey,
+                        DateCreated = f.DateCreated,
+                        DateUpdated = f.DateUpdated,
+                        LastTopicId = f.LastTopicId,
+                        LastReplyId = f.LastReplyId,
+                        PermissionsId = f.PermissionsId,
+                        PrefixURL = f.PrefixURL,
+                        SocialGroupId = f.SocialGroupId,
+                        HasProperties = f.HasProperties,
+                    })
+                    .ToList();
+
+                var forumIds = forums.Select(f => f.ForumId).ToHashSet();
+                var forumTopics = ((IRepository<ForumTopicInfo>)ForumTopicController.Instance)
+                    .Get()
+                    .Where(ft => forumIds.Contains(ft.ForumId))
+                    .OrderBy(ft => ft.ForumTopicId)
+                    .Select(ft => new ForumTopicPortable
+                    {
+                        ForumTopicId = ft.ForumTopicId,
+                        ForumId = ft.ForumId,
+                        TopicId = ft.TopicId,
+                        LastReplyId = ft.LastReplyId,
+                    })
+                    .ToList();
+
+                var topicIds = forumTopics.Select(ft => ft.TopicId).Distinct().ToList();
+                var topics = topicIds
+                    .Select(topicId => TopicController.Instance.GetById(moduleId, topicId))
+                    .Where(t => t != null)
+                    .OrderBy(t => t.TopicId)
+                    .Select(t => new TopicPortable
+                    {
+                        TopicId = t.TopicId,
+                        ContentId = t.ContentId,
+                        ViewCount = t.ViewCount,
+                        ReplyCount = t.ReplyCount,
+                        IsLocked = t.IsLocked,
+                        IsPinned = t.IsPinned,
+                        TopicIcon = t.TopicIcon,
+                        StatusId = t.StatusId,
+                        IsApproved = t.IsApproved,
+                        IsRejected = t.IsRejected,
+                        IsDeleted = t.IsDeleted,
+                        IsAnnounce = t.IsAnnounce,
+                        IsArchived = t.IsArchived,
+                        AnnounceStart = t.AnnounceStart,
+                        AnnounceEnd = t.AnnounceEnd,
+                        TopicType = (int)t.TopicType,
+                        Priority = t.Priority,
+                        TopicUrl = t.TopicUrl,
+                        PrevTopic = t.PrevTopic,
+                        NextTopic = t.NextTopic,
+                        TopicData = t.TopicData,
+                    })
+                    .ToList();
+
+                var replies = topicIds
+                    .SelectMany(topicId => ReplyController.Instance.GetByTopicId(moduleId, topicId))
+                    .OrderBy(r => r.ReplyId)
+                    .Select(r => new ReplyPortable
+                    {
+                        ReplyId = r.ReplyId,
+                        TopicId = r.TopicId,
+                        ReplyToId = r.ReplyToId,
+                        ContentId = r.ContentId,
+                        IsApproved = r.IsApproved,
+                        IsRejected = r.IsRejected,
+                        StatusId = r.StatusId,
+                        IsDeleted = r.IsDeleted,
+                    })
+                    .ToList();
+
+                var contentIds = topics.Select(t => t.ContentId).Concat(replies.Select(r => r.ContentId)).Distinct().ToList();
+                var contents = contentIds
+                    .Select(contentId => ContentController.Instance.GetById(moduleId, contentId))
+                    .Where(c => c != null)
+                    .OrderBy(c => c.ContentId)
+                    .Select(c => new ContentPortable
+                    {
+                        ContentId = c.ContentId,
+                        Subject = c.Subject,
+                        Summary = c.Summary,
+                        Body = c.Body,
+                        DateCreated = c.DateCreated,
+                        DateUpdated = c.DateUpdated,
+                        AuthorId = c.AuthorId,
+                        AuthorName = c.AuthorName,
+                        IsDeleted = c.IsDeleted,
+                        IPAddress = c.IPAddress,
+                        ContentItemId = c.ContentItemId,
+                        ModuleId = c.ModuleId,
+                    })
+                    .ToList();
+
+                var topicTags = topicIds
+                    .SelectMany(topicId => TopicTagController.Instance.GetForTopic(topicId))
+                    .OrderBy(tt => tt.TopicTagId)
+                    .Select(tt => new TopicTagPortable
+                    {
+                        TopicTagId = tt.TopicTagId,
+                        TopicId = tt.TopicId,
+                        TagId = tt.TagId,
+                    })
+                    .ToList();
+
+                var document = new XDocument(
+                    new XElement("forumsExport",
+                        new XAttribute("schemaVersion", "1.0"),
+                        TopicsController.SerializeEntities("groups", groups, g =>
+                            new XElement("group",
+                                new XAttribute("forumGroupId", g.ForumGroupId),
+                                new XAttribute("groupName", g.GroupName ?? string.Empty),
+                                new XAttribute("sortOrder", g.SortOrder),
+                                new XAttribute("active", g.Active),
+                                new XAttribute("hidden", g.Hidden),
+                                new XAttribute("groupSettingsKey", g.GroupSettingsKey ?? string.Empty),
+                                new XAttribute("permissionsId", g.PermissionsId),
+                                new XAttribute("prefixUrl", g.PrefixURL ?? string.Empty))),
+                        TopicsController.SerializeEntities("tags", tags, t =>
+                            new XElement("tag",
+                                new XAttribute("tagId", t.TagId),
+                                new XAttribute("portalId", t.PortalId),
+                                new XAttribute("moduleId", t.ModuleId),
+                                new XAttribute("tagName", t.TagName ?? string.Empty),
+                                new XAttribute("items", t.Items))),
+                        TopicsController.SerializeEntities("forums", forums, f =>
+                            new XElement("forum",
+                                new XAttribute("forumId", f.ForumId),
+                                new XAttribute("portalId", f.PortalId),
+                                new XAttribute("moduleId", f.ModuleId),
+                                new XAttribute("forumGroupId", f.ForumGroupId),
+                                new XAttribute("parentForumId", f.ParentForumId),
+                                new XAttribute("forumName", f.ForumName ?? string.Empty),
+                                new XAttribute("forumDesc", f.ForumDesc ?? string.Empty),
+                                new XAttribute("sortOrder", f.SortOrder),
+                                new XAttribute("active", f.Active),
+                                new XAttribute("hidden", f.Hidden),
+                                new XAttribute("totalTopics", f.TotalTopics),
+                                new XAttribute("totalReplies", f.TotalReplies),
+                                new XAttribute("forumSettingsKey", f.ForumSettingsKey ?? string.Empty),
+                                new XAttribute("dateCreated", f.DateCreated.ToString("o", CultureInfo.InvariantCulture)),
+                                new XAttribute("dateUpdated", f.DateUpdated.ToString("o", CultureInfo.InvariantCulture)),
+                                new XAttribute("lastTopicId", f.LastTopicId),
+                                new XAttribute("lastReplyId", f.LastReplyId),
+                                new XAttribute("permissionsId", f.PermissionsId),
+                                new XAttribute("prefixUrl", f.PrefixURL ?? string.Empty),
+                                new XAttribute("socialGroupId", f.SocialGroupId),
+                                new XAttribute("hasProperties", f.HasProperties))),
+                        TopicsController.SerializeEntities("contents", contents, c =>
+                            new XElement("content",
+                                new XAttribute("contentId", c.ContentId),
+                                new XAttribute("subject", c.Subject ?? string.Empty),
+                                new XAttribute("summary", c.Summary ?? string.Empty),
+                                new XAttribute("body", c.Body ?? string.Empty),
+                                new XAttribute("dateCreated", c.DateCreated.ToString("o", CultureInfo.InvariantCulture)),
+                                new XAttribute("dateUpdated", c.DateUpdated.ToString("o", CultureInfo.InvariantCulture)),
+                                new XAttribute("authorId", c.AuthorId),
+                                new XAttribute("authorName", c.AuthorName ?? string.Empty),
+                                new XAttribute("isDeleted", c.IsDeleted),
+                                new XAttribute("ipAddress", c.IPAddress ?? string.Empty),
+                                new XAttribute("contentItemId", c.ContentItemId),
+                                new XAttribute("moduleId", c.ModuleId))),
+                        TopicsController.SerializeEntities("topics", topics, t =>
+                            new XElement("topic",
+                                new XAttribute("topicId", t.TopicId),
+                                new XAttribute("contentId", t.ContentId),
+                                new XAttribute("viewCount", t.ViewCount),
+                                new XAttribute("replyCount", t.ReplyCount),
+                                new XAttribute("isLocked", t.IsLocked),
+                                new XAttribute("isPinned", t.IsPinned),
+                                new XAttribute("topicIcon", t.TopicIcon ?? string.Empty),
+                                new XAttribute("statusId", t.StatusId),
+                                new XAttribute("isApproved", t.IsApproved),
+                                new XAttribute("isRejected", t.IsRejected),
+                                new XAttribute("isDeleted", t.IsDeleted),
+                                new XAttribute("isAnnounce", t.IsAnnounce),
+                                new XAttribute("isArchived", t.IsArchived),
+                                new XAttribute("announceStart", this.ToPortableDate(t.AnnounceStart)),
+                                new XAttribute("announceEnd", this.ToPortableDate(t.AnnounceEnd)),
+                                new XAttribute("topicType", t.TopicType),
+                                new XAttribute("priority", t.Priority),
+                                new XAttribute("topicUrl", t.TopicUrl ?? string.Empty),
+                                new XAttribute("prevTopic", t.PrevTopic),
+                                new XAttribute("nextTopic", t.NextTopic),
+                                new XAttribute("topicData", t.TopicData ?? string.Empty))),
+                        TopicsController.SerializeEntities("replies", replies, r =>
+                            new XElement("reply",
+                                new XAttribute("replyId", r.ReplyId),
+                                new XAttribute("topicId", r.TopicId),
+                                new XAttribute("replyToId", r.ReplyToId),
+                                new XAttribute("contentId", r.ContentId),
+                                new XAttribute("isApproved", r.IsApproved),
+                                new XAttribute("isRejected", r.IsRejected),
+                                new XAttribute("statusId", r.StatusId),
+                                new XAttribute("isDeleted", r.IsDeleted))),
+                        TopicsController.SerializeEntities("forumTopics", forumTopics, ft =>
+                            new XElement("forumTopic",
+                                new XAttribute("forumTopicId", ft.ForumTopicId),
+                                new XAttribute("forumId", ft.ForumId),
+                                new XAttribute("topicId", ft.TopicId),
+                                new XAttribute("lastReplyId", ft.LastReplyId.HasValue ? ft.LastReplyId.Value.ToString(CultureInfo.InvariantCulture) : string.Empty))),
+                        TopicsController.SerializeEntities("topicTags", topicTags, tt =>
+                            new XElement("topicTag",
+                                new XAttribute("topicTagId", tt.TopicTagId),
+                                new XAttribute("topicId", tt.TopicId),
+                                new XAttribute("tagId", tt.TagId)))));
+
+                return document.ToString(SaveOptions.DisableFormatting);
+            }
+            catch (Exception ex)
+            {
+                this.LogError(ex.Message, ex);
+                Exceptions.LogException(ex);
+                return string.Empty;
+            }
+        }
+
+        public void ImportModule(int moduleId, string content, string version, int userId)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return;
+            }
+
+            try
+            {
+                var document = XDocument.Parse(content);
+                var root = document.Element("forumsExport");
+                if (root == null)
+                {
+                    return;
+                }
+
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
+                var portalId = moduleInfo?.PortalID ?? Null.NullInteger;
+                var moduleSettings = SettingsBase.GetModuleSettings(moduleId);
+                var defaultPermissionId = moduleSettings?.DefaultPermissionId ?? -1;
+                var defaultSettingsKey = moduleSettings?.DefaultSettingsKey ?? string.Empty;
+
+                var groupMap = new Dictionary<int, int>();
+                var forumMap = new Dictionary<int, int>();
+                var contentMap = new Dictionary<int, int>();
+                var topicMap = new Dictionary<int, int>();
+                var replyMap = new Dictionary<int, int>();
+                var tagMap = new Dictionary<int, int>();
+                var importedForums = new Dictionary<int, ForumInfo>();
+                var pendingForumParents = new Dictionary<int, int>();
+                var pendingReplyParents = new Dictionary<int, int>();
+
+                foreach (var sourceGroup in TopicsController.GetElements(root, "groups", "group"))
+                {
+                    var forumGroup = new ForumGroupInfo
+                    {
+                        ModuleId = moduleId,
+                        GroupName = this.GetString(sourceGroup, "groupName"),
+                        SortOrder = this.GetInt(sourceGroup, "sortOrder"),
+                        Active = this.GetBool(sourceGroup, "active"),
+                        Hidden = this.GetBool(sourceGroup, "hidden"),
+                        GroupSettingsKey = defaultSettingsKey,
+                        PermissionsId = defaultPermissionId,
+                        PrefixURL = this.GetString(sourceGroup, "prefixUrl"),
+                    };
+
+                    ((IRepository<ForumGroupInfo>)ForumGroupController.Instance).Insert(forumGroup);
+                    groupMap[this.GetInt(sourceGroup, "forumGroupId")] = forumGroup.ForumGroupId;
+                }
+
+                foreach (var sourceTag in TopicsController.GetElements(root, "tags", "tag"))
+                {
+                    var tag = new TagInfo
+                    {
+                        ModuleId = moduleId,
+                        PortalId = portalId,
+                        TagName = this.GetString(sourceTag, "tagName"),
+                        Items = this.GetInt(sourceTag, "items"),
+                    };
+
+                    ((IRepository<TagInfo>)TagController.Instance).Insert(tag);
+                    tagMap[this.GetInt(sourceTag, "tagId")] = tag.TagId;
+                }
+
+                foreach (var sourceForum in TopicsController.GetElements(root, "forums", "forum"))
+                {
+                    var oldForumId = this.GetInt(sourceForum, "forumId");
+                    var oldParentForumId = this.GetInt(sourceForum, "parentForumId");
+                    var forum = new ForumInfo
+                    {
+                        PortalId = portalId,
+                        ModuleId = moduleId,
+                        ForumGroupId = groupMap.TryGetValue(this.GetInt(sourceForum, "forumGroupId"), out var newForumGroupId) ? newForumGroupId : 0,
+                        ParentForumId = 0,
+                        ForumName = this.GetString(sourceForum, "forumName"),
+                        ForumDesc = this.GetString(sourceForum, "forumDesc"),
+                        SortOrder = this.GetInt(sourceForum, "sortOrder"),
+                        Active = this.GetBool(sourceForum, "active"),
+                        Hidden = this.GetBool(sourceForum, "hidden"),
+                        TotalTopics = this.GetInt(sourceForum, "totalTopics"),
+                        TotalReplies = this.GetInt(sourceForum, "totalReplies"),
+                        ForumSettingsKey = defaultSettingsKey,
+                        DateCreated = this.GetDateTime(sourceForum, "dateCreated", DateTime.UtcNow),
+                        DateUpdated = this.GetDateTime(sourceForum, "dateUpdated", DateTime.UtcNow),
+                        LastTopicId = 0,
+                        LastReplyId = 0,
+                        PermissionsId = defaultPermissionId,
+                        PrefixURL = this.GetString(sourceForum, "prefixUrl"),
+                        SocialGroupId = this.GetInt(sourceForum, "socialGroupId"),
+                        HasProperties = this.GetBool(sourceForum, "hasProperties"),
+                    };
+
+                    ((IRepository<ForumInfo>)ForumController.Instance).Insert(forum);
+                    forumMap[oldForumId] = forum.ForumID;
+                    importedForums[oldForumId] = forum;
+                    pendingForumParents[oldForumId] = oldParentForumId;
+                }
+
+                foreach (var pendingForum in pendingForumParents.Where(p => p.Value > 0))
+                {
+                    if (importedForums.TryGetValue(pendingForum.Key, out var forum) && forumMap.TryGetValue(pendingForum.Value, out var newParentForumId))
+                    {
+                        forum.ParentForumId = newParentForumId;
+                        ((IRepository<ForumInfo>)ForumController.Instance).Update(forum);
+                    }
+                }
+
+                foreach (var sourceContent in TopicsController.GetElements(root, "contents", "content"))
+                {
+                    var authorId = this.GetInt(sourceContent, "authorId");
+                    var importedContent = new ContentInfo
+                    {
+                        Subject = this.GetString(sourceContent, "subject"),
+                        Summary = this.GetString(sourceContent, "summary"),
+                        Body = this.GetString(sourceContent, "body"),
+                        DateCreated = this.GetDateTime(sourceContent, "dateCreated", DateTime.UtcNow),
+                        DateUpdated = this.GetDateTime(sourceContent, "dateUpdated", DateTime.UtcNow),
+                        AuthorId = this.ResolveAuthorId(portalId, authorId, userId),
+                        AuthorName = this.GetString(sourceContent, "authorName"),
+                        IsDeleted = this.GetBool(sourceContent, "isDeleted"),
+                        IPAddress = this.GetString(sourceContent, "ipAddress"),
+                        ContentItemId = this.GetInt(sourceContent, "contentItemId"),
+                        ModuleId = moduleId,
+                    };
+
+                    ((IRepository<ContentInfo>)ContentController.Instance).Insert(importedContent);
+                    contentMap[this.GetInt(sourceContent, "contentId")] = importedContent.ContentId;
+                }
+
+                foreach (var sourceTopic in TopicsController.GetElements(root, "topics", "topic"))
+                {
+                    if (!contentMap.TryGetValue(this.GetInt(sourceTopic, "contentId"), out var newContentId))
+                    {
+                        continue;
+                    }
+
+                    var topic = new TopicInfo
+                    {
+                        ContentId = newContentId,
+                        ViewCount = this.GetInt(sourceTopic, "viewCount"),
+                        ReplyCount = this.GetInt(sourceTopic, "replyCount"),
+                        IsLocked = this.GetBool(sourceTopic, "isLocked"),
+                        IsPinned = this.GetBool(sourceTopic, "isPinned"),
+                        TopicIcon = this.GetString(sourceTopic, "topicIcon"),
+                        StatusId = this.GetInt(sourceTopic, "statusId"),
+                        IsApproved = this.GetBool(sourceTopic, "isApproved"),
+                        IsRejected = this.GetBool(sourceTopic, "isRejected"),
+                        IsDeleted = this.GetBool(sourceTopic, "isDeleted"),
+                        IsAnnounce = this.GetBool(sourceTopic, "isAnnounce"),
+                        IsArchived = this.GetBool(sourceTopic, "isArchived"),
+                        AnnounceStart = this.GetNullableDateTime(sourceTopic, "announceStart"),
+                        AnnounceEnd = this.GetNullableDateTime(sourceTopic, "announceEnd"),
+                        TopicType = (TopicTypes)this.GetInt(sourceTopic, "topicType"),
+                        Priority = this.GetInt(sourceTopic, "priority"),
+                        TopicUrl = this.GetString(sourceTopic, "topicUrl"),
+                        PrevTopic = this.GetInt(sourceTopic, "prevTopic"),
+                        NextTopic = this.GetInt(sourceTopic, "nextTopic"),
+                        TopicData = this.GetString(sourceTopic, "topicData"),
+                    };
+
+                    ((IRepository<TopicInfo>)TopicController.Instance).Insert(topic);
+                    topicMap[this.GetInt(sourceTopic, "topicId")] = topic.TopicId;
+                }
+
+                foreach (var sourceReply in TopicsController.GetElements(root, "replies", "reply"))
+                {
+                    if (!topicMap.TryGetValue(this.GetInt(sourceReply, "topicId"), out var newTopicId))
+                    {
+                        continue;
+                    }
+
+                    if (!contentMap.TryGetValue(this.GetInt(sourceReply, "contentId"), out var newContentId))
+                    {
+                        continue;
+                    }
+
+                    var oldReplyId = this.GetInt(sourceReply, "replyId");
+                    var oldReplyToId = this.GetInt(sourceReply, "replyToId");
+                    var reply = new ReplyInfo
+                    {
+                        TopicId = newTopicId,
+                        ReplyToId = 0,
+                        ContentId = newContentId,
+                        IsApproved = this.GetBool(sourceReply, "isApproved"),
+                        IsRejected = this.GetBool(sourceReply, "isRejected"),
+                        StatusId = this.GetInt(sourceReply, "statusId"),
+                        IsDeleted = this.GetBool(sourceReply, "isDeleted"),
+                    };
+
+                    ((IRepository<ReplyInfo>)ReplyController.Instance).Insert(reply);
+                    replyMap[oldReplyId] = reply.ReplyId;
+                    if (oldReplyToId > 0)
+                    {
+                        pendingReplyParents[reply.ReplyId] = oldReplyToId;
+                    }
+                }
+
+                foreach (var pendingReply in pendingReplyParents)
+                {
+                    var reply = ((IRepository<ReplyInfo>)ReplyController.Instance).GetById(pendingReply.Key);
+                    if (reply == null)
+                    {
+                        continue;
+                    }
+
+                    if (replyMap.TryGetValue(pendingReply.Value, out var newReplyToId))
+                    {
+                        reply.ReplyToId = newReplyToId;
+                        ((IRepository<ReplyInfo>)ReplyController.Instance).Update(reply);
+                    }
+                }
+
+                foreach (var sourceForumTopic in TopicsController.GetElements(root, "forumTopics", "forumTopic"))
+                {
+                    if (!forumMap.TryGetValue(this.GetInt(sourceForumTopic, "forumId"), out var newForumId))
+                    {
+                        continue;
+                    }
+
+                    if (!topicMap.TryGetValue(this.GetInt(sourceForumTopic, "topicId"), out var newTopicId))
+                    {
+                        continue;
+                    }
+
+                    var forumTopic = new ForumTopicInfo
+                    {
+                        ForumId = newForumId,
+                        TopicId = newTopicId,
+                        LastReplyId = null,
+                    };
+
+                    var oldLastReplyId = this.GetNullableInt(sourceForumTopic, "lastReplyId");
+                    if (oldLastReplyId.HasValue && replyMap.TryGetValue(oldLastReplyId.Value, out var newLastReplyId))
+                    {
+                        forumTopic.LastReplyId = newLastReplyId;
+                    }
+
+                    ((IRepository<ForumTopicInfo>)ForumTopicController.Instance).Insert(forumTopic);
+                }
+
+                foreach (var sourceTopicTag in TopicsController.GetElements(root, "topicTags", "topicTag"))
+                {
+                    if (!topicMap.TryGetValue(this.GetInt(sourceTopicTag, "topicId"), out var newTopicId))
+                    {
+                        continue;
+                    }
+
+                    if (!tagMap.TryGetValue(this.GetInt(sourceTopicTag, "tagId"), out var newTagId))
+                    {
+                        continue;
+                    }
+
+                    ((IRepository<TopicTagInfo>)TopicTagController.Instance).Insert(new TopicTagInfo
+                    {
+                        TopicId = newTopicId,
+                        TagId = newTagId,
+                    });
+                }
+
+                foreach (var sourceForum in TopicsController.GetElements(root, "forums", "forum"))
+                {
+                    var oldForumId = this.GetInt(sourceForum, "forumId");
+                    if (!forumMap.TryGetValue(oldForumId, out var newForumId))
+                    {
+                        continue;
+                    }
+
+                    var forum = ((IRepository<ForumInfo>)ForumController.Instance).GetById(newForumId, moduleId);
+                    if (forum == null)
+                    {
+                        continue;
+                    }
+
+                    var oldLastTopicId = this.GetInt(sourceForum, "lastTopicId");
+                    var oldLastReplyId = this.GetInt(sourceForum, "lastReplyId");
+
+                    forum.LastTopicId = topicMap.TryGetValue(oldLastTopicId, out var newLastTopicId) ? newLastTopicId : 0;
+                    forum.LastReplyId = replyMap.TryGetValue(oldLastReplyId, out var newLastReplyId) ? newLastReplyId : 0;
+                    ((IRepository<ForumInfo>)ForumController.Instance).Update(forum);
+                }
+
+                SettingsCache.ClearAll(moduleId);
+            }
+            catch (Exception ex)
+            {
+                this.LogError(ex.Message, ex);
+                Exceptions.LogException(ex);
+            }
+        }
+
+        internal static XContainer SerializeEntities<T>(string containerName, IEnumerable<T> items, Func<T, XElement> elementFactory)
+        {
+            var container = new XElement(containerName);
+            foreach (var item in items)
+            {
+                container.Add(elementFactory(item));
+            }
+
+            return container;
+        }
+
+        private static IEnumerable<XElement> GetElements(XElement root, string containerName, string elementName)
+        {
+            return root.Element(containerName)?.Elements(elementName) ?? Enumerable.Empty<XElement>();
+        }
+
+        private int ResolveAuthorId(int portalId, int sourceAuthorId, int importingUserId)
+        {
+            if (sourceAuthorId < 1)
+            {
+                return importingUserId;
+            }
+
+            return UserController.Instance.GetUserById(portalId, sourceAuthorId) != null ? sourceAuthorId : importingUserId;
+        }
+
+        private int GetInt(XElement element, string attributeName)
+        {
+            if (int.TryParse(element?.Attribute(attributeName)?.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value))
+            {
+                return value;
+            }
+
+            return 0;
+        }
+
+        private int? GetNullableInt(XElement element, string attributeName)
+        {
+            var value = element?.Attribute(attributeName)?.Value;
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
+
+            return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed) ? parsed : (int?)null;
+        }
+
+        private string GetString(XElement element, string attributeName)
+        {
+            return element?.Attribute(attributeName)?.Value ?? string.Empty;
+        }
+
+        private bool GetBool(XElement element, string attributeName)
+        {
+            if (bool.TryParse(element?.Attribute(attributeName)?.Value, out var value))
+            {
+                return value;
+            }
+
+            return false;
+        }
+
+        private DateTime GetDateTime(XElement element, string attributeName, DateTime defaultValue)
+        {
+            if (DateTime.TryParse(element?.Attribute(attributeName)?.Value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var value))
+            {
+                return value;
+            }
+
+            return defaultValue;
+        }
+
+        private DateTime? GetNullableDateTime(XElement element, string attributeName)
+        {
+            var value = element?.Attribute(attributeName)?.Value;
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
+
+            return DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var parsed) ? parsed : (DateTime?)null;
+        }
+
+        private string ToPortableDate(DateTime? value)
+        {
+            return value.HasValue ? value.Value.ToString("o", CultureInfo.InvariantCulture) : string.Empty;
+        }
+
+        private class GroupPortable
+        {
+            public int ForumGroupId { get; set; }
+
+            public string GroupName { get; set; }
+
+            public int SortOrder { get; set; }
+
+            public bool Active { get; set; }
+
+            public bool Hidden { get; set; }
+
+            public string GroupSettingsKey { get; set; }
+
+            public int PermissionsId { get; set; }
+
+            public string PrefixURL { get; set; }
+        }
+
+        private class TagPortable
+        {
+            public int TagId { get; set; }
+
+            public int PortalId { get; set; }
+
+            public int ModuleId { get; set; }
+
+            public string TagName { get; set; }
+
+            public int Items { get; set; }
+        }
+
+        private class ForumPortable
+        {
+            public int ForumId { get; set; }
+
+            public int PortalId { get; set; }
+
+            public int ModuleId { get; set; }
+
+            public int ForumGroupId { get; set; }
+
+            public int ParentForumId { get; set; }
+
+            public string ForumName { get; set; }
+
+            public string ForumDesc { get; set; }
+
+            public int SortOrder { get; set; }
+
+            public bool Active { get; set; }
+
+            public bool Hidden { get; set; }
+
+            public int TotalTopics { get; set; }
+
+            public int TotalReplies { get; set; }
+
+            public string ForumSettingsKey { get; set; }
+
+            public DateTime DateCreated { get; set; }
+
+            public DateTime DateUpdated { get; set; }
+
+            public int LastTopicId { get; set; }
+
+            public int LastReplyId { get; set; }
+
+            public int PermissionsId { get; set; }
+
+            public string PrefixURL { get; set; }
+
+            public int SocialGroupId { get; set; }
+
+            public bool HasProperties { get; set; }
+        }
+
+        private class ContentPortable
+        {
+            public int ContentId { get; set; }
+
+            public string Subject { get; set; }
+
+            public string Summary { get; set; }
+
+            public string Body { get; set; }
+
+            public DateTime DateCreated { get; set; }
+
+            public DateTime DateUpdated { get; set; }
+
+            public int AuthorId { get; set; }
+
+            public string AuthorName { get; set; }
+
+            public bool IsDeleted { get; set; }
+
+            public string IPAddress { get; set; }
+
+            public int ContentItemId { get; set; }
+
+            public int ModuleId { get; set; }
+        }
+
+        private class TopicPortable
+        {
+            public int TopicId { get; set; }
+
+            public int ContentId { get; set; }
+
+            public int ViewCount { get; set; }
+
+            public int ReplyCount { get; set; }
+
+            public bool IsLocked { get; set; }
+
+            public bool IsPinned { get; set; }
+
+            public string TopicIcon { get; set; }
+
+            public int StatusId { get; set; }
+
+            public bool IsApproved { get; set; }
+
+            public bool IsRejected { get; set; }
+
+            public bool IsDeleted { get; set; }
+
+            public bool IsAnnounce { get; set; }
+
+            public bool IsArchived { get; set; }
+
+            public DateTime? AnnounceStart { get; set; }
+
+            public DateTime? AnnounceEnd { get; set; }
+
+            public int TopicType { get; set; }
+
+            public int Priority { get; set; }
+
+            public string TopicUrl { get; set; }
+
+            public int PrevTopic { get; set; }
+
+            public int NextTopic { get; set; }
+
+            public string TopicData { get; set; }
+        }
+
+        private class ReplyPortable
+        {
+            public int ReplyId { get; set; }
+
+            public int TopicId { get; set; }
+
+            public int ReplyToId { get; set; }
+
+            public int ContentId { get; set; }
+
+            public bool IsApproved { get; set; }
+
+            public bool IsRejected { get; set; }
+
+            public int StatusId { get; set; }
+
+            public bool IsDeleted { get; set; }
+        }
+
+        private class ForumTopicPortable
+        {
+            public int ForumTopicId { get; set; }
+
+            public int ForumId { get; set; }
+
+            public int TopicId { get; set; }
+
+            public int? LastReplyId { get; set; }
+        }
+
+        private class TopicTagPortable
+        {
+            public int TopicTagId { get; set; }
+
+            public int TopicId { get; set; }
+
+            public int TagId { get; set; }
         }
         #endregion
 

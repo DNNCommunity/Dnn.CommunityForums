@@ -25,6 +25,7 @@
             <supportedFeatures>
               <supportedFeature type="Searchable" />
               <supportedFeature type="Upgradeable" />
+              <supportedFeature type="Portable" />
             </supportedFeatures>
             <shareable>Unsupported</shareable>
             <moduleDefinitions>
