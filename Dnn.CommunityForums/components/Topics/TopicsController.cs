@@ -53,12 +53,25 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             "groups",
             "tags",
+            "badges",
             "forums",
+            "categories",
             "contents",
             "topics",
+            "attachments",
+            "likes",
+            "userMentions",
             "replies",
-            "forumTopics",
             "topicTags",
+            "topicCategories",
+            "topicRatings",
+            "topicTracking",
+            "subscriptions",
+            "archivedUrls",
+            "forumTopics",
+            "userProfiles",
+            "forumTracking",
+            "userBadges",
         };
 
         private readonly IPortalAliasService portalAliasService;
@@ -199,6 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
                 var groups = ((IRepository<ForumGroupInfo>)ForumGroupController.Instance)
                     .Get(moduleId)
                     .OrderBy(g => g.SortOrder)
@@ -227,6 +241,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         TagName = t.TagName,
                         Items = t.Items,
                     })
+                    .ToList();
+
+                var badges = ((IRepository<BadgeInfo>)BadgeController.Instance)
+                    .Get(moduleId)
+                    .OrderBy(b => b.SortOrder)
+                    .ThenBy(b => b.BadgeId)
                     .ToList();
 
                 var forums = ForumController.Instance.GetForums(moduleId)
@@ -260,6 +280,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     .ToList();
 
                 var forumIds = forums.Select(f => f.ForumId).ToHashSet();
+                var categories = ((IRepository<CategoryInfo>)CategoryController.Instance)
+                    .Get(moduleId)
+                    .OrderBy(c => c.Priority)
+                    .ThenBy(c => c.CategoryId)
+                    .ToList();
+
                 var forumTopics = ((IRepository<ForumTopicInfo>)ForumTopicController.Instance)
                     .Get()
                     .Where(ft => forumIds.Contains(ft.ForumId))
@@ -342,6 +368,23 @@ namespace DotNetNuke.Modules.ActiveForums
                     })
                     .ToList();
 
+                var attachments = contentIds
+                    .SelectMany(contentId => DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(moduleId, contentId) ?? Enumerable.Empty<AttachmentInfo>())
+                    .OrderBy(a => a.AttachmentId)
+                    .ToList();
+
+                var likes = ((IRepository<LikeInfo>)LikeController.Instance)
+                    .Get()
+                    .Where(l => contentIds.Contains(l.PostId))
+                    .OrderBy(l => l.Id)
+                    .ToList();
+
+                var userMentions = ((IRepository<UserMentionInfo>)UserMentionController.Instance)
+                    .Get(moduleId)
+                    .Where(um => contentIds.Contains(um.ContentId))
+                    .OrderBy(um => um.UserMentionId)
+                    .ToList();
+
                 var topicTags = topicIds
                     .SelectMany(topicId => TopicTagController.Instance.GetForTopic(topicId))
                     .OrderBy(tt => tt.TopicTagId)
@@ -351,6 +394,63 @@ namespace DotNetNuke.Modules.ActiveForums
                         TopicId = tt.TopicId,
                         TagId = tt.TagId,
                     })
+                    .ToList();
+
+                var topicCategories = topicIds
+                    .SelectMany(topicId => TopicCategoryController.Instance.GetForTopic(topicId))
+                    .OrderBy(tc => tc.TopicCategoryId)
+                    .ToList();
+
+                var topicRatings = topicIds
+                    .SelectMany(topicId => TopicRatingController.Instance.GetForTopic(topicId))
+                    .OrderBy(tr => tr.RatingId)
+                    .ToList();
+
+                var topicTracking = ((IRepository<TopicTrackingInfo>)TopicTrackingController.Instance)
+                    .Get()
+                    .Where(tt => topicIds.Contains(tt.TopicId))
+                    .OrderBy(tt => tt.TrackingId)
+                    .ToList();
+
+                var subscriptions = ((IRepository<SubscriptionInfo>)DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.Instance)
+                    .Get()
+                    .Where(s => s.ModuleId == moduleId && (topicIds.Contains(s.TopicId) || forumIds.Contains(s.ForumId)))
+                    .OrderBy(s => s.Id)
+                    .ToList();
+
+                var archivedUrls = ((IRepository<ArchivedURLInfo>)ArchivedURLController.Instance)
+                    .Get()
+                    .Where(a => forumIds.Contains(a.ForumId) || topicIds.Contains(a.TopicId))
+                    .OrderBy(a => a.Id)
+                    .ToList();
+
+                var forumTracking = ((IRepository<ForumTrackingInfo>)ForumTrackingController.Instance)
+                    .Get()
+                    .Where(ft => ft.ModuleId == moduleId && forumIds.Contains(ft.ForumId))
+                    .OrderBy(ft => ft.TrackingId)
+                    .ToList();
+
+                var userBadges = ((IRepository<UserBadgeInfo>)UserBadgeController.Instance)
+                    .Get(moduleId)
+                    .OrderBy(ub => ub.UserBadgeId)
+                    .ToList();
+
+                var exportedUserIds = new HashSet<int>(
+                    contents.Select(c => c.AuthorId)
+                        .Concat(attachments.Select(a => a.UserId))
+                        .Concat(likes.Select(l => l.UserId))
+                        .Concat(userMentions.Select(um => um.UserId))
+                        .Concat(topicRatings.Select(tr => tr.UserId))
+                        .Concat(topicTracking.Select(tt => tt.UserId))
+                        .Concat(subscriptions.Select(s => s.UserId))
+                        .Concat(forumTracking.Select(ft => ft.UserId))
+                        .Concat(userBadges.Select(ub => ub.UserId))
+                        .Where(id => id > 0));
+
+                var userProfiles = ((IRepository<ForumUserInfo>)ForumUserController.Instance)
+                    .Get()
+                    .Where(up => up.PortalId == moduleInfo.PortalID && exportedUserIds.Contains(up.UserId))
+                    .OrderBy(up => up.ProfileId)
                     .ToList();
 
                 var document = new XDocument(
@@ -373,6 +473,21 @@ namespace DotNetNuke.Modules.ActiveForums
                                 new XAttribute("moduleId", t.ModuleId),
                                 new XAttribute("tagName", t.TagName ?? string.Empty),
                                 new XAttribute("items", t.Items))),
+                        TopicsController.SerializeEntities("badges", badges, b =>
+                            new XElement("badge",
+                                new XAttribute("badgeId", b.BadgeId),
+                                new XAttribute("name", b.Name ?? string.Empty),
+                                new XAttribute("description", b.Description ?? string.Empty),
+                                new XAttribute("imageMarkup", b.ImageMarkup ?? string.Empty),
+                                new XAttribute("fileId", b.FileId),
+                                new XAttribute("sortOrder", b.SortOrder),
+                                new XAttribute("oneTimeAward", b.OneTimeAward),
+                                new XAttribute("badgeMetric", (int)b.BadgeMetric),
+                                new XAttribute("threshold", b.Threshold),
+                                new XAttribute("intervalDays", b.IntervalDays),
+                                new XAttribute("sendAwardNotification", b.SendAwardNotification),
+                                new XAttribute("initialBackfillCompletedDate", this.ToPortableDate(b.InitialBackfillCompletedDate)),
+                                new XAttribute("suppressAwardNotificationOnBackfill", b.SuppresssAwardNotificationOnBackfill))),
                         TopicsController.SerializeEntities("forums", forums, f =>
                             new XElement("forum",
                                 new XAttribute("forumId", f.ForumId),
@@ -396,6 +511,17 @@ namespace DotNetNuke.Modules.ActiveForums
                                 new XAttribute("prefixUrl", f.PrefixURL ?? string.Empty),
                                 new XAttribute("socialGroupId", f.SocialGroupId),
                                 new XAttribute("hasProperties", f.HasProperties))),
+                        TopicsController.SerializeEntities("categories", categories, c =>
+                            new XElement("category",
+                                new XAttribute("categoryId", c.CategoryId),
+                                new XAttribute("portalId", c.PortalId),
+                                new XAttribute("moduleId", c.ModuleId),
+                                new XAttribute("categoryName", c.CategoryName ?? string.Empty),
+                                new XAttribute("clicks", c.Clicks),
+                                new XAttribute("items", c.Items),
+                                new XAttribute("priority", c.Priority),
+                                new XAttribute("forumId", c.ForumId),
+                                new XAttribute("forumGroupId", c.ForumGroupId))),
                         TopicsController.SerializeEntities("contents", contents, c =>
                             new XElement("content",
                                 new XAttribute("contentId", c.ContentId),
@@ -433,6 +559,33 @@ namespace DotNetNuke.Modules.ActiveForums
                                 new XAttribute("prevTopic", t.PrevTopic),
                                 new XAttribute("nextTopic", t.NextTopic),
                                 new XAttribute("topicData", t.TopicData ?? string.Empty))),
+                        TopicsController.SerializeEntities("attachments", attachments, a =>
+                            new XElement("attachment",
+                                new XAttribute("attachmentId", a.AttachmentId),
+                                new XAttribute("contentId", a.ContentId),
+                                new XAttribute("userId", a.UserId),
+                                new XAttribute("fileName", a.FileName ?? string.Empty),
+                                new XAttribute("fileId", a.FileId.HasValue ? a.FileId.Value.ToString(CultureInfo.InvariantCulture) : string.Empty),
+                                new XAttribute("contentType", a.ContentType ?? string.Empty),
+                                new XAttribute("dateAdded", this.ToPortableDate(a.DateAdded)),
+                                new XAttribute("dateUpdated", this.ToPortableDate(a.DateUpdated)),
+                                new XAttribute("fileSize", a.FileSize),
+                                new XAttribute("displayInline", a.DisplayInline))),
+                        TopicsController.SerializeEntities("likes", likes, l =>
+                            new XElement("like",
+                                new XAttribute("id", l.Id),
+                                new XAttribute("postId", l.PostId),
+                                new XAttribute("userId", l.UserId),
+                                new XAttribute("checked", l.Checked),
+                                new XAttribute("dateCreated", l.DateCreated.ToString("o", CultureInfo.InvariantCulture)))),
+                        TopicsController.SerializeEntities("userMentions", userMentions, um =>
+                            new XElement("userMention",
+                                new XAttribute("userMentionId", um.UserMentionId),
+                                new XAttribute("contentId", um.ContentId),
+                                new XAttribute("userId", um.UserId),
+                                new XAttribute("portalId", um.PortalId),
+                                new XAttribute("moduleId", um.ModuleId),
+                                new XAttribute("dateMentioned", um.DateMentioned.ToString("o", CultureInfo.InvariantCulture)))),
                         TopicsController.SerializeEntities("replies", replies, r =>
                             new XElement("reply",
                                 new XAttribute("replyId", r.ReplyId),
@@ -453,7 +606,105 @@ namespace DotNetNuke.Modules.ActiveForums
                             new XElement("topicTag",
                                 new XAttribute("topicTagId", tt.TopicTagId),
                                 new XAttribute("topicId", tt.TopicId),
-                                new XAttribute("tagId", tt.TagId)))));
+                                new XAttribute("tagId", tt.TagId))),
+                        TopicsController.SerializeEntities("topicCategories", topicCategories, tc =>
+                            new XElement("topicCategory",
+                                new XAttribute("topicCategoryId", tc.TopicCategoryId),
+                                new XAttribute("topicId", tc.TopicId),
+                                new XAttribute("categoryId", tc.CategoryId))),
+                        TopicsController.SerializeEntities("topicRatings", topicRatings, tr =>
+                            new XElement("topicRating",
+                                new XAttribute("ratingId", tr.RatingId),
+                                new XAttribute("topicId", tr.TopicId),
+                                new XAttribute("userId", tr.UserId),
+                                new XAttribute("rating", tr.Rating),
+                                new XAttribute("helpful", tr.Helpful),
+                                new XAttribute("comments", tr.Comments ?? string.Empty),
+                                new XAttribute("ipAddress", tr.IPAddress ?? string.Empty),
+                                new XAttribute("dateAdded", tr.DateAdded.ToString("o", CultureInfo.InvariantCulture)),
+                                new XAttribute("dateUpdated", tr.DateUpdated.ToString("o", CultureInfo.InvariantCulture)))),
+                        TopicsController.SerializeEntities("topicTracking", topicTracking, tt =>
+                            new XElement("topicTracking",
+                                new XAttribute("trackingId", tt.TrackingId),
+                                new XAttribute("forumId", tt.ForumId),
+                                new XAttribute("topicId", tt.TopicId),
+                                new XAttribute("lastReplyId", tt.LastReplyId),
+                                new XAttribute("userId", tt.UserId),
+                                new XAttribute("dateAdded", tt.DateAdded.ToString("o", CultureInfo.InvariantCulture)))),
+                        TopicsController.SerializeEntities("subscriptions", subscriptions, s =>
+                            new XElement("subscription",
+                                new XAttribute("id", s.Id),
+                                new XAttribute("portalId", s.PortalId),
+                                new XAttribute("moduleId", s.ModuleId),
+                                new XAttribute("forumId", s.ForumId),
+                                new XAttribute("topicId", s.TopicId),
+                                new XAttribute("mode", s.Mode),
+                                new XAttribute("userId", s.UserId))),
+                        TopicsController.SerializeEntities("archivedUrls", archivedUrls, a =>
+                            new XElement("archivedUrl",
+                                new XAttribute("id", a.Id),
+                                new XAttribute("url", a.Url ?? string.Empty),
+                                new XAttribute("portalId", a.PortalId),
+                                new XAttribute("forumId", a.ForumId),
+                                new XAttribute("topicId", a.TopicId),
+                                new XAttribute("forumGroupId", a.ForumGroupId),
+                                new XAttribute("urlHash", this.ToPortableBytes(a.UrlHash)))),
+                        TopicsController.SerializeEntities("userProfiles", userProfiles, up =>
+                            new XElement("userProfile",
+                                new XAttribute("profileId", up.ProfileId),
+                                new XAttribute("userId", up.UserId),
+                                new XAttribute("portalId", up.PortalId),
+                                new XAttribute("topicCount", up.TopicCount),
+                                new XAttribute("replyCount", up.ReplyCount),
+                                new XAttribute("viewCount", up.ViewCount),
+                                new XAttribute("answerCount", up.AnswerCount),
+                                new XAttribute("rewardPoints", up.RewardPoints),
+                                new XAttribute("userCaption", up.UserCaption ?? string.Empty),
+                                new XAttribute("avatarLastRefresh", this.ToPortableDate(up.AvatarLastRefresh)),
+                                new XAttribute("avatarSourceLastModified", this.ToPortableDate(up.AvatarSourceLastModified)),
+                                new XAttribute("avatarFileId", up.AvatarFileId.HasValue ? up.AvatarFileId.Value.ToString(CultureInfo.InvariantCulture) : string.Empty),
+                                new XAttribute("dateCreated", up.DateCreated.ToString("o", CultureInfo.InvariantCulture)),
+                                new XAttribute("dateUpdated", this.ToPortableDate(up.DateUpdated)),
+                                new XAttribute("dateLastActivity", this.ToPortableDate(up.DateLastActivity)),
+                                new XAttribute("dateLastPost", this.ToPortableDate(up.DateLastPost)),
+                                new XAttribute("dateLastReply", this.ToPortableDate(up.DateLastReply)),
+                                new XAttribute("signature", up.Signature ?? string.Empty),
+                                new XAttribute("signatureDisabled", up.SignatureDisabled),
+                                new XAttribute("trustLevel", up.TrustLevel),
+                                new XAttribute("adminWatch", up.AdminWatch),
+                                new XAttribute("attachDisabled", up.AttachDisabled),
+                                new XAttribute("avatarDisabled", up.AvatarDisabled),
+                                new XAttribute("prefDefaultSort", up.PrefDefaultSort ?? string.Empty),
+                                new XAttribute("prefDefaultShowReplies", up.PrefDefaultShowReplies),
+                                new XAttribute("prefJumpLastPost", up.PrefJumpLastPost),
+                                new XAttribute("prefTopicSubscribe", up.PrefTopicSubscribe),
+                                new XAttribute("prefSubscriptionType", (int)up.PrefSubscriptionType),
+                                new XAttribute("prefBlockAvatars", up.PrefBlockAvatars),
+                                new XAttribute("prefBlockSignatures", up.PrefBlockSignatures),
+                                new XAttribute("prefPageSize", up.PrefPageSize),
+                                new XAttribute("likeNotificationsEnabled", up.LikeNotificationsEnabled),
+                                new XAttribute("pinNotificationsEnabled", up.PinNotificationsEnabled),
+                                new XAttribute("enableNotificationsForOwnContent", up.EnableNotificationsForOwnContent),
+                                new XAttribute("badgeNotificationsEnabled", up.BadgeNotificationsEnabled),
+                                new XAttribute("userMentionNotificationsEnabled", up.UserMentionNotificationsEnabled))),
+                        TopicsController.SerializeEntities("forumTracking", forumTracking, ft =>
+                            new XElement("forumTracking",
+                                new XAttribute("trackingId", ft.TrackingId),
+                                new XAttribute("moduleId", ft.ModuleId),
+                                new XAttribute("userId", ft.UserId),
+                                new XAttribute("forumId", ft.ForumId),
+                                new XAttribute("lastAccessDateTime", ft.LastAccessDateTime.ToString("o", CultureInfo.InvariantCulture)),
+                                new XAttribute("maxTopicRead", ft.MaxTopicRead),
+                                new XAttribute("maxReplyRead", ft.MaxReplyRead))),
+                        TopicsController.SerializeEntities("userBadges", userBadges, ub =>
+                            new XElement("userBadge",
+                                new XAttribute("userBadgeId", ub.UserBadgeId),
+                                new XAttribute("badgeId", ub.BadgeId),
+                                new XAttribute("userId", ub.UserId),
+                                new XAttribute("portalId", ub.PortalId),
+                                new XAttribute("moduleId", ub.ModuleId),
+                                new XAttribute("dateAssigned", ub.DateAssigned.ToString("o", CultureInfo.InvariantCulture))))
+                    ));
 
                 return document.ToString(SaveOptions.DisableFormatting);
             }
@@ -493,6 +744,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 var topicMap = new Dictionary<int, int>();
                 var replyMap = new Dictionary<int, int>();
                 var tagMap = new Dictionary<int, int>();
+                var categoryMap = new Dictionary<int, int>();
+                var badgeMap = new Dictionary<int, int>();
                 var importedForums = new Dictionary<int, ForumInfo>();
                 var pendingForumParents = new Dictionary<int, int>();
                 var pendingReplyParents = new Dictionary<int, int>();
@@ -529,6 +782,29 @@ namespace DotNetNuke.Modules.ActiveForums
                     tagMap[this.GetInt(sourceTag, "tagId")] = tag.TagId;
                 }
 
+                foreach (var sourceBadge in TopicsController.GetElements(root, "badges", "badge"))
+                {
+                    var badge = new BadgeInfo
+                    {
+                        ModuleId = moduleId,
+                        Name = this.GetString(sourceBadge, "name"),
+                        Description = this.GetString(sourceBadge, "description"),
+                        ImageMarkup = this.GetString(sourceBadge, "imageMarkup"),
+                        FileId = this.GetInt(sourceBadge, "fileId"),
+                        SortOrder = this.GetInt(sourceBadge, "sortOrder"),
+                        OneTimeAward = this.GetBool(sourceBadge, "oneTimeAward"),
+                        BadgeMetric = (Enums.BadgeMetric)this.GetInt(sourceBadge, "badgeMetric"),
+                        Threshold = this.GetInt(sourceBadge, "threshold"),
+                        IntervalDays = this.GetInt(sourceBadge, "intervalDays"),
+                        SendAwardNotification = this.GetBool(sourceBadge, "sendAwardNotification"),
+                        InitialBackfillCompletedDate = this.GetNullableDateTime(sourceBadge, "initialBackfillCompletedDate"),
+                        SuppresssAwardNotificationOnBackfill = this.GetBool(sourceBadge, "suppressAwardNotificationOnBackfill"),
+                    };
+
+                    ((IRepository<BadgeInfo>)BadgeController.Instance).Insert(badge);
+                    badgeMap[this.GetInt(sourceBadge, "badgeId")] = badge.BadgeId;
+                }
+
                 foreach (var sourceForum in TopicsController.GetElements(root, "forums", "forum"))
                 {
                     var oldForumId = this.GetInt(sourceForum, "forumId");
@@ -561,6 +837,25 @@ namespace DotNetNuke.Modules.ActiveForums
                     forumMap[oldForumId] = forum.ForumID;
                     importedForums[oldForumId] = forum;
                     pendingForumParents[oldForumId] = oldParentForumId;
+                }
+
+                foreach (var sourceCategory in TopicsController.GetElements(root, "categories", "category"))
+                {
+                    var oldCategoryId = this.GetInt(sourceCategory, "categoryId");
+                    var category = new CategoryInfo
+                    {
+                        PortalId = portalId,
+                        ModuleId = moduleId,
+                        CategoryName = this.GetString(sourceCategory, "categoryName"),
+                        Clicks = this.GetInt(sourceCategory, "clicks"),
+                        Items = this.GetInt(sourceCategory, "items"),
+                        Priority = this.GetInt(sourceCategory, "priority"),
+                        ForumId = forumMap.TryGetValue(this.GetInt(sourceCategory, "forumId"), out var newForumId) ? newForumId : 0,
+                        ForumGroupId = groupMap.TryGetValue(this.GetInt(sourceCategory, "forumGroupId"), out var newForumGroupId) ? newForumGroupId : 0,
+                    };
+
+                    ((IRepository<CategoryInfo>)CategoryController.Instance).Insert(category);
+                    categoryMap[oldCategoryId] = category.CategoryId;
                 }
 
                 foreach (var pendingForum in pendingForumParents.Where(p => p.Value > 0))
@@ -627,6 +922,72 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     ((IRepository<TopicInfo>)TopicController.Instance).Insert(topic);
                     topicMap[this.GetInt(sourceTopic, "topicId")] = topic.TopicId;
+                }
+
+                foreach (var sourceAttachment in TopicsController.GetElements(root, "attachments", "attachment"))
+                {
+                    if (!contentMap.TryGetValue(this.GetInt(sourceAttachment, "contentId"), out var newContentId))
+                    {
+                        continue;
+                    }
+
+                    DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.Insert(new AttachmentInfo
+                    {
+                        ContentId = newContentId,
+                        UserId = this.ResolveAuthorId(portalId, this.GetInt(sourceAttachment, "userId"), userId),
+                        FileName = this.GetString(sourceAttachment, "fileName"),
+                        FileId = this.GetNullableInt(sourceAttachment, "fileId"),
+                        ContentType = this.GetString(sourceAttachment, "contentType"),
+                        DateAdded = this.GetNullableDateTime(sourceAttachment, "dateAdded"),
+                        DateUpdated = this.GetNullableDateTime(sourceAttachment, "dateUpdated"),
+                        FileSize = this.GetLong(sourceAttachment, "fileSize"),
+                        DisplayInline = this.GetBool(sourceAttachment, "displayInline"),
+                    });
+                }
+
+                foreach (var sourceLike in TopicsController.GetElements(root, "likes", "like"))
+                {
+                    if (!contentMap.TryGetValue(this.GetInt(sourceLike, "postId"), out var newPostId))
+                    {
+                        continue;
+                    }
+
+                    var resolvedUserId = this.ResolveUserIdOrDefault(portalId, this.GetInt(sourceLike, "userId"));
+                    if (!resolvedUserId.HasValue)
+                    {
+                        continue;
+                    }
+
+                    ((IRepository<LikeInfo>)LikeController.Instance).Insert(new LikeInfo
+                    {
+                        PostId = newPostId,
+                        UserId = resolvedUserId.Value,
+                        Checked = this.GetBool(sourceLike, "checked"),
+                        DateCreated = this.GetDateTime(sourceLike, "dateCreated", DateTime.UtcNow),
+                    });
+                }
+
+                foreach (var sourceUserMention in TopicsController.GetElements(root, "userMentions", "userMention"))
+                {
+                    if (!contentMap.TryGetValue(this.GetInt(sourceUserMention, "contentId"), out var newMentionContentId))
+                    {
+                        continue;
+                    }
+
+                    var resolvedUserId = this.ResolveUserIdOrDefault(portalId, this.GetInt(sourceUserMention, "userId"));
+                    if (!resolvedUserId.HasValue)
+                    {
+                        continue;
+                    }
+
+                    ((IRepository<UserMentionInfo>)UserMentionController.Instance).Insert(new UserMentionInfo
+                    {
+                        ContentId = newMentionContentId,
+                        UserId = resolvedUserId.Value,
+                        PortalId = portalId,
+                        ModuleId = moduleId,
+                        DateMentioned = this.GetDateTime(sourceUserMention, "dateMentioned", DateTime.UtcNow),
+                    });
                 }
 
                 foreach (var sourceReply in TopicsController.GetElements(root, "replies", "reply"))
@@ -724,6 +1085,136 @@ namespace DotNetNuke.Modules.ActiveForums
                     });
                 }
 
+                foreach (var sourceTopicCategory in TopicsController.GetElements(root, "topicCategories", "topicCategory"))
+                {
+                    if (!topicMap.TryGetValue(this.GetInt(sourceTopicCategory, "topicId"), out var newTopicId))
+                    {
+                        continue;
+                    }
+
+                    if (!categoryMap.TryGetValue(this.GetInt(sourceTopicCategory, "categoryId"), out var newCategoryId))
+                    {
+                        continue;
+                    }
+
+                    ((IRepository<TopicCategoryInfo>)TopicCategoryController.Instance).Insert(new TopicCategoryInfo
+                    {
+                        TopicId = newTopicId,
+                        CategoryId = newCategoryId,
+                    });
+                }
+
+                foreach (var sourceTopicRating in TopicsController.GetElements(root, "topicRatings", "topicRating"))
+                {
+                    if (!topicMap.TryGetValue(this.GetInt(sourceTopicRating, "topicId"), out var newTopicId))
+                    {
+                        continue;
+                    }
+
+                    var resolvedUserId = this.ResolveUserIdOrDefault(portalId, this.GetInt(sourceTopicRating, "userId"));
+                    if (!resolvedUserId.HasValue)
+                    {
+                        continue;
+                    }
+
+                    ((IRepository<TopicRatingInfo>)TopicRatingController.Instance).Insert(new TopicRatingInfo
+                    {
+                        TopicId = newTopicId,
+                        UserId = resolvedUserId.Value,
+                        Rating = this.GetInt(sourceTopicRating, "rating"),
+                        Helpful = this.GetBool(sourceTopicRating, "helpful"),
+                        Comments = this.GetString(sourceTopicRating, "comments"),
+                        IPAddress = this.GetString(sourceTopicRating, "ipAddress"),
+                        DateAdded = this.GetDateTime(sourceTopicRating, "dateAdded", DateTime.UtcNow),
+                        DateUpdated = this.GetDateTime(sourceTopicRating, "dateUpdated", DateTime.UtcNow),
+                    });
+                }
+
+                foreach (var sourceTopicTracking in TopicsController.GetElements(root, "topicTracking", "topicTracking"))
+                {
+                    if (!topicMap.TryGetValue(this.GetInt(sourceTopicTracking, "topicId"), out var newTopicId))
+                    {
+                        continue;
+                    }
+
+                    if (!forumMap.TryGetValue(this.GetInt(sourceTopicTracking, "forumId"), out var newTrackingForumId))
+                    {
+                        continue;
+                    }
+
+                    var resolvedUserId = this.ResolveUserIdOrDefault(portalId, this.GetInt(sourceTopicTracking, "userId"));
+                    if (!resolvedUserId.HasValue)
+                    {
+                        continue;
+                    }
+
+                    ((IRepository<TopicTrackingInfo>)TopicTrackingController.Instance).Insert(new TopicTrackingInfo
+                    {
+                        ForumId = newTrackingForumId,
+                        TopicId = newTopicId,
+                        LastReplyId = replyMap.TryGetValue(this.GetInt(sourceTopicTracking, "lastReplyId"), out var newLastReplyId) ? newLastReplyId : 0,
+                        UserId = resolvedUserId.Value,
+                        DateAdded = this.GetDateTime(sourceTopicTracking, "dateAdded", DateTime.UtcNow),
+                    });
+                }
+
+                foreach (var sourceSubscription in TopicsController.GetElements(root, "subscriptions", "subscription"))
+                {
+                    var resolvedUserId = this.ResolveUserIdOrDefault(portalId, this.GetInt(sourceSubscription, "userId"));
+                    if (!resolvedUserId.HasValue)
+                    {
+                        continue;
+                    }
+
+                    var oldForumId = this.GetInt(sourceSubscription, "forumId");
+                    var oldTopicId = this.GetInt(sourceSubscription, "topicId");
+                    var newSubscriptionForumId = 0;
+                    var newSubscriptionTopicId = 0;
+                    var hasForum = oldForumId <= 0 || forumMap.TryGetValue(oldForumId, out newSubscriptionForumId);
+                    var hasTopic = oldTopicId <= 0 || topicMap.TryGetValue(oldTopicId, out newSubscriptionTopicId);
+                    if (!hasForum || !hasTopic)
+                    {
+                        continue;
+                    }
+
+                    ((IRepository<SubscriptionInfo>)DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.Instance).Insert(new SubscriptionInfo
+                    {
+                        PortalId = portalId,
+                        ModuleId = moduleId,
+                        ForumId = oldForumId > 0 ? newSubscriptionForumId : 0,
+                        TopicId = oldTopicId > 0 ? newSubscriptionTopicId : 0,
+                        Mode = this.GetInt(sourceSubscription, "mode"),
+                        UserId = resolvedUserId.Value,
+                    });
+                }
+
+                foreach (var sourceArchivedUrl in TopicsController.GetElements(root, "archivedUrls", "archivedUrl"))
+                {
+                    var oldForumId = this.GetInt(sourceArchivedUrl, "forumId");
+                    var oldTopicId = this.GetInt(sourceArchivedUrl, "topicId");
+                    var oldForumGroupId = this.GetInt(sourceArchivedUrl, "forumGroupId");
+                    var newArchivedForumId = 0;
+                    var newArchivedTopicId = 0;
+                    var newArchivedForumGroupId = 0;
+                    var hasForum = oldForumId <= 0 || forumMap.TryGetValue(oldForumId, out newArchivedForumId);
+                    var hasTopic = oldTopicId <= 0 || topicMap.TryGetValue(oldTopicId, out newArchivedTopicId);
+                    var hasForumGroup = oldForumGroupId <= 0 || groupMap.TryGetValue(oldForumGroupId, out newArchivedForumGroupId);
+                    if (!hasForum || !hasTopic || !hasForumGroup)
+                    {
+                        continue;
+                    }
+
+                    ((IRepository<ArchivedURLInfo>)ArchivedURLController.Instance).Insert(new ArchivedURLInfo
+                    {
+                        Url = this.GetString(sourceArchivedUrl, "url"),
+                        PortalId = portalId,
+                        ForumId = oldForumId > 0 ? newArchivedForumId : 0,
+                        TopicId = oldTopicId > 0 ? newArchivedTopicId : 0,
+                        ForumGroupId = oldForumGroupId > 0 ? newArchivedForumGroupId : 0,
+                        UrlHash = this.GetBytes(sourceArchivedUrl, "urlHash"),
+                    });
+                }
+
                 foreach (var sourceForum in TopicsController.GetElements(root, "forums", "forum"))
                 {
                     var oldForumId = this.GetInt(sourceForum, "forumId");
@@ -744,6 +1235,103 @@ namespace DotNetNuke.Modules.ActiveForums
                     forum.LastTopicId = topicMap.TryGetValue(oldLastTopicId, out var newLastTopicId) ? newLastTopicId : 0;
                     forum.LastReplyId = replyMap.TryGetValue(oldLastReplyId, out var newLastReplyId) ? newLastReplyId : 0;
                     ((IRepository<ForumInfo>)ForumController.Instance).Update(forum);
+                }
+
+                foreach (var sourceUserProfile in TopicsController.GetElements(root, "userProfiles", "userProfile"))
+                {
+                    var resolvedUserId = this.ResolveUserIdOrDefault(portalId, this.GetInt(sourceUserProfile, "userId"));
+                    if (!resolvedUserId.HasValue || resolvedUserId.Value <= 0)
+                    {
+                        continue;
+                    }
+
+                    var forumUser = ForumUserController.Instance.GetByUserId(portalId, moduleId, resolvedUserId.Value);
+                    if (forumUser == null)
+                    {
+                        continue;
+                    }
+
+                    forumUser.TopicCount = this.GetInt(sourceUserProfile, "topicCount");
+                    forumUser.ReplyCount = this.GetInt(sourceUserProfile, "replyCount");
+                    forumUser.ViewCount = this.GetInt(sourceUserProfile, "viewCount");
+                    forumUser.AnswerCount = this.GetInt(sourceUserProfile, "answerCount");
+                    forumUser.RewardPoints = this.GetInt(sourceUserProfile, "rewardPoints");
+                    forumUser.UserCaption = this.GetString(sourceUserProfile, "userCaption");
+                    forumUser.AvatarLastRefresh = this.GetNullableDateTime(sourceUserProfile, "avatarLastRefresh");
+                    forumUser.AvatarSourceLastModified = this.GetNullableDateTime(sourceUserProfile, "avatarSourceLastModified");
+                    forumUser.AvatarFileId = this.GetNullableInt(sourceUserProfile, "avatarFileId");
+                    forumUser.DateCreated = this.GetDateTime(sourceUserProfile, "dateCreated", forumUser.DateCreated);
+                    forumUser.DateUpdated = this.GetNullableDateTime(sourceUserProfile, "dateUpdated");
+                    forumUser.DateLastActivity = this.GetNullableDateTime(sourceUserProfile, "dateLastActivity");
+                    forumUser.DateLastPost = this.GetNullableDateTime(sourceUserProfile, "dateLastPost");
+                    forumUser.DateLastReply = this.GetNullableDateTime(sourceUserProfile, "dateLastReply");
+                    forumUser.Signature = this.GetString(sourceUserProfile, "signature");
+                    forumUser.SignatureDisabled = this.GetBool(sourceUserProfile, "signatureDisabled");
+                    forumUser.TrustLevel = this.GetInt(sourceUserProfile, "trustLevel");
+                    forumUser.AdminWatch = this.GetBool(sourceUserProfile, "adminWatch");
+                    forumUser.AttachDisabled = this.GetBool(sourceUserProfile, "attachDisabled");
+                    forumUser.AvatarDisabled = this.GetBool(sourceUserProfile, "avatarDisabled");
+                    forumUser.PrefDefaultSort = this.GetString(sourceUserProfile, "prefDefaultSort");
+                    forumUser.PrefDefaultShowReplies = this.GetBool(sourceUserProfile, "prefDefaultShowReplies");
+                    forumUser.PrefJumpLastPost = this.GetBool(sourceUserProfile, "prefJumpLastPost");
+                    forumUser.PrefTopicSubscribe = this.GetBool(sourceUserProfile, "prefTopicSubscribe");
+                    forumUser.PrefSubscriptionType = (SubscriptionTypes)this.GetInt(sourceUserProfile, "prefSubscriptionType");
+                    forumUser.PrefBlockAvatars = this.GetBool(sourceUserProfile, "prefBlockAvatars");
+                    forumUser.PrefBlockSignatures = this.GetBool(sourceUserProfile, "prefBlockSignatures");
+                    forumUser.PrefPageSize = this.GetInt(sourceUserProfile, "prefPageSize");
+                    forumUser.LikeNotificationsEnabled = this.GetBool(sourceUserProfile, "likeNotificationsEnabled");
+                    forumUser.PinNotificationsEnabled = this.GetBool(sourceUserProfile, "pinNotificationsEnabled");
+                    forumUser.EnableNotificationsForOwnContent = this.GetBool(sourceUserProfile, "enableNotificationsForOwnContent");
+                    forumUser.BadgeNotificationsEnabled = this.GetBool(sourceUserProfile, "badgeNotificationsEnabled");
+                    forumUser.UserMentionNotificationsEnabled = this.GetBool(sourceUserProfile, "userMentionNotificationsEnabled");
+                    ((IRepository<ForumUserInfo>)ForumUserController.Instance).Update(forumUser);
+                }
+
+                foreach (var sourceForumTracking in TopicsController.GetElements(root, "forumTracking", "forumTracking"))
+                {
+                    if (!forumMap.TryGetValue(this.GetInt(sourceForumTracking, "forumId"), out var newForumId))
+                    {
+                        continue;
+                    }
+
+                    var resolvedUserId = this.ResolveUserIdOrDefault(portalId, this.GetInt(sourceForumTracking, "userId"));
+                    if (!resolvedUserId.HasValue)
+                    {
+                        continue;
+                    }
+
+                    ((IRepository<ForumTrackingInfo>)ForumTrackingController.Instance).Insert(new ForumTrackingInfo
+                    {
+                        ModuleId = moduleId,
+                        UserId = resolvedUserId.Value,
+                        ForumId = newForumId,
+                        LastAccessDateTime = this.GetDateTime(sourceForumTracking, "lastAccessDateTime", DateTime.UtcNow),
+                        MaxTopicRead = topicMap.TryGetValue(this.GetInt(sourceForumTracking, "maxTopicRead"), out var newMaxTopicRead) ? newMaxTopicRead : 0,
+                        MaxReplyRead = replyMap.TryGetValue(this.GetInt(sourceForumTracking, "maxReplyRead"), out var newMaxReplyRead) ? newMaxReplyRead : 0,
+                    });
+                }
+
+                foreach (var sourceUserBadge in TopicsController.GetElements(root, "userBadges", "userBadge"))
+                {
+                    if (!badgeMap.TryGetValue(this.GetInt(sourceUserBadge, "badgeId"), out var newBadgeId))
+                    {
+                        continue;
+                    }
+
+                    var resolvedUserId = this.ResolveUserIdOrDefault(portalId, this.GetInt(sourceUserBadge, "userId"));
+                    if (!resolvedUserId.HasValue || resolvedUserId.Value <= 0)
+                    {
+                        continue;
+                    }
+
+                    ((IRepository<UserBadgeInfo>)UserBadgeController.Instance).Insert(new UserBadgeInfo
+                    {
+                        BadgeId = newBadgeId,
+                        UserId = resolvedUserId.Value,
+                        PortalId = portalId,
+                        ModuleId = moduleId,
+                        DateAssigned = this.GetDateTime(sourceUserBadge, "dateAssigned", DateTime.UtcNow),
+                    });
                 }
 
                 SettingsCache.ClearAll(moduleId);
@@ -781,6 +1369,16 @@ namespace DotNetNuke.Modules.ActiveForums
             return UserController.Instance.GetUserById(portalId, sourceAuthorId) != null ? sourceAuthorId : importingUserId;
         }
 
+        private int? ResolveUserIdOrDefault(int portalId, int sourceUserId)
+        {
+            if (sourceUserId < 1)
+            {
+                return sourceUserId;
+            }
+
+            return UserController.Instance.GetUserById(portalId, sourceUserId) != null ? sourceUserId : (int?)null;
+        }
+
         private int GetInt(XElement element, string attributeName)
         {
             if (int.TryParse(element?.Attribute(attributeName)?.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value))
@@ -800,6 +1398,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed) ? parsed : (int?)null;
+        }
+
+        private long GetLong(XElement element, string attributeName)
+        {
+            return long.TryParse(element?.Attribute(attributeName)?.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value) ? value : 0L;
         }
 
         private string GetString(XElement element, string attributeName)
@@ -841,6 +1444,17 @@ namespace DotNetNuke.Modules.ActiveForums
         private string ToPortableDate(DateTime? value)
         {
             return value.HasValue ? value.Value.ToString("o", CultureInfo.InvariantCulture) : string.Empty;
+        }
+
+        private byte[] GetBytes(XElement element, string attributeName)
+        {
+            var value = element?.Attribute(attributeName)?.Value;
+            return string.IsNullOrWhiteSpace(value) ? null : Convert.FromBase64String(value);
+        }
+
+        private string ToPortableBytes(byte[] value)
+        {
+            return value != null && value.Length > 0 ? Convert.ToBase64String(value) : string.Empty;
         }
 
         private class GroupPortable

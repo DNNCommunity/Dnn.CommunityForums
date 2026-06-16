@@ -86,7 +86,6 @@ Enforced FK constraints are noted as **FK**. Columns that reference another tabl
 |---|---|
 | `activeforums_UserProfiles` | UserId + PortalId **logical** → DNN `UserPortals` |
 | `activeforums_Forums_Tracking` | ForumId **logical** → `activeforums_Forums.ForumId`; UserId **logical** → DNN `Users` |
-| `activeforums_AuditLog` | UserId **logical** → DNN `Users`; RelatedId is type-discriminated (no FK) |
 
 ### Wave 9 — Depends on Badges + UserProfiles (Waves 1, 8)
 
@@ -111,6 +110,7 @@ Enforced FK constraints are noted as **FK**. Columns that reference another tabl
 | `activeforums_Content_Attachments` | Dropped in `09.07.00.SqlDataProvider` after attachment migration |
 | `activeforums_URL` | Renamed to `activeforums_ArchivedURLs` in `09.08.00.SqlDataProvider` |
 | `activeforums_Templates` | Legacy table retained in history but no longer used |
+| `activeforums_AuditLog` | Legacy table retained in history but no longer used |
 
 ## Recommended export/import order for referential integrity
 
@@ -151,7 +151,6 @@ Wave 7:  activeforums_Poll_Options
 
 Wave 8:  activeforums_UserProfiles
          activeforums_Forums_Tracking
-         activeforums_AuditLog
 
 Wave 9:  activeforums_UserBadges
 

@@ -33,7 +33,30 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         [Test]
         public void PortableEntityDependencyOrder_UsesExpectedDependencySequence()
         {
-            var expected = new[] { "groups", "tags", "forums", "contents", "topics", "replies", "forumTopics", "topicTags" };
+            var expected = new[]
+            {
+                "groups",
+                "tags",
+                "badges",
+                "forums",
+                "categories",
+                "contents",
+                "topics",
+                "attachments",
+                "likes",
+                "userMentions",
+                "replies",
+                "topicTags",
+                "topicCategories",
+                "topicRatings",
+                "topicTracking",
+                "subscriptions",
+                "archivedUrls",
+                "forumTopics",
+                "userProfiles",
+                "forumTracking",
+                "userBadges",
+            };
 
             Assert.That(TopicsController.PortableEntityDependencyOrder, Is.EqualTo(expected));
         }
