@@ -157,8 +157,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             text = text.Trim();
             text = text.Replace(":", string.Empty);
-            text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"[^\w]", RegexOptions.Compiled & RegexOptions.IgnoreCase).Replace(text, "-");
-            text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"([-]+)", RegexOptions.Compiled & RegexOptions.IgnoreCase).Replace(text, "-");
+            text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"[^\w]", RegexOptions.Compiled | RegexOptions.IgnoreCase).Replace(text, "-");
+            text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"([-]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase).Replace(text, "-");
             if (text.EndsWith("-"))
             {
                 text = text.Substring(0, text.Length - 1);
@@ -479,14 +479,14 @@ namespace DotNetNuke.Modules.ActiveForums
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
             string strMessage = text;
-            if (!String.IsNullOrEmpty(strMessage))
+            if (!string.IsNullOrEmpty(strMessage))
             {
                 if (strMessage.ToUpper().Contains("[CODE]") | strMessage.ToUpper().Contains("<CODE"))
                 {
                     var codes = new List<string>();
                     var i = 0;
                     var pattern = @"(\[CODE\](.*?)\[\/CODE\])";
-                    foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern, RegexOptions.Singleline & RegexOptions.IgnoreCase).Matches(strMessage))
+                    foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern, RegexOptions.Singleline | RegexOptions.IgnoreCase).Matches(strMessage))
                     {
                         strMessage = strMessage.Replace(m.Value, string.Concat("[CODEHOLDER", i, "]"));
                         codes.Add(m.Value);
@@ -499,7 +499,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
                     }
 
-                    //strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
                     strMessage = ReplaceNewLineWithHtmlBreakTag(strMessage);
 
                     i = 0;
@@ -521,8 +520,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     strMessage = ReplaceNewLineWithHtmlBreakTag(strMessage);
                 }
-
-                //strMessage = EncodeBrackets(strMessage);
             }
 
             return strMessage;
@@ -531,12 +528,12 @@ namespace DotNetNuke.Modules.ActiveForums
         internal static string EncodeCodeBlocks(string text)
         {
             string strMessage = text;
-            if (!String.IsNullOrEmpty(strMessage) && (strMessage.ToUpperInvariant().Contains("[CODE]") || strMessage.ToUpperInvariant().Contains("<CODE")))
+            if (!string.IsNullOrEmpty(strMessage) && (strMessage.ToUpperInvariant().Contains("[CODE]") || strMessage.ToUpperInvariant().Contains("<CODE")))
             {
                 var pattern = @"[\[<]code[\]>](?<codeblock>(?s:.)*?)[\[<]\/code[\]>]";
-                foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(strMessage))
+                foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Matches(strMessage))
                 {
-                    strMessage = strMessage.Replace(m.Value, System.Web.HttpUtility.HtmlEncode(m.Value));
+                    strMessage = strMessage.Replace(m.Value, $"<code>{System.Web.HttpUtility.HtmlEncode(m.Groups["codeblock"])}</code>");
                 }
             }
 

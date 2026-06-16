@@ -465,38 +465,51 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test]
-        public void EncodeCodeBlocks_WithCodeTags_EncodesBlock()
+        public void EncodeCodeBlocks_WithCodeTags_EncodesBlock1()
         {
-            var input = "Some text [code]int x = 1;[/code] more text";
-            var expectedEncoded = System.Net.WebUtility.HtmlEncode("[code]int x = 1;[/code]");
+            var codeBlock = "int x = 1;";
+            var input = $"Some text [code]{codeBlock}[/code] more text";
+            var expectedEncoded = $"<code>{System.Net.WebUtility.HtmlEncode(codeBlock)}</code>";
             var result = Utilities.EncodeCodeBlocks(input);
-            Assert.That(result.Contains(expectedEncoded), Is.True);
+            Assert.That(result, Does.Contain(expectedEncoded));
         }
 
         [Test]
-        public void EncodeCodeBlocks_WithAngleCodeTags_EncodesBlock()
+        public void EncodeCodeBlocks_WithCodeTags_EncodesBlock2()
         {
-            var input = "Some text <code>int y = 2;</code> more text";
-            var expectedEncoded = System.Net.WebUtility.HtmlEncode("<code>int y = 2;</code>");
+            var codeBlock = "<div>this is <strong>strong</strong> text</div>";
+            var input = $"Some text [code]{codeBlock}[/code] more text";
+            var expectedEncoded = $"Some text <code>{System.Net.WebUtility.HtmlEncode(codeBlock)}</code> more text";
+            var result = Utilities.EncodeCodeBlocks(input);
+            Assert.That(result, Does.Contain(expectedEncoded));
+        }
+
+        [Test]
+        public void EncodeCodeBlocks_WithAngleCodeTags_EncodesBlock1()
+        {
+            var codeBlock = "int x = 1;";
+            var input = $"Some text <code>{codeBlock}</code> more text";
+            var expectedEncoded = $"<code>{System.Net.WebUtility.HtmlEncode(codeBlock)}</code>";
             var result = Utilities.EncodeCodeBlocks(input);
             Assert.Multiple(() =>
             {
-                Assert.That(result.Contains(expectedEncoded), Is.True);
-                Assert.That(result.Contains("<code>int y = 2;</code>"), Is.False);
+                Assert.That(result, Does.Contain(expectedEncoded));
             });
         }
 
         [Test]
         public void EncodeCodeBlocks_MultipleCodeBlocks_EncodesAll()
         {
-            var input = "[code]a[/code] and <code>b</code>";
-            var expected1 = System.Net.WebUtility.HtmlEncode("[code]a[/code]");
-            var expected2 = System.Net.WebUtility.HtmlEncode("<code>b</code>");
+            var codeBlock1 = "<div>this is <em>strong</em> text</div>";
+            var codeBlock2 = "<div>this is <strong>strong</strong> text</div>";
+            var input = $"[code]{codeBlock1}[/code] and <code>{codeBlock2}</code>";
+            var expected1 = $"<code>{System.Net.WebUtility.HtmlEncode(codeBlock1)}</code>";
+            var expected2 = $"<code>{System.Net.WebUtility.HtmlEncode(codeBlock2)}</code>";
             var result = Utilities.EncodeCodeBlocks(input);
             Assert.Multiple(() =>
             {
-                Assert.That(result.Contains(expected1), Is.True);
-                Assert.That(result.Contains(expected2), Is.True);
+                Assert.That(result, Does.Contain(expected1));
+                Assert.That(result, Does.Contain(expected2));
             });
         }
 

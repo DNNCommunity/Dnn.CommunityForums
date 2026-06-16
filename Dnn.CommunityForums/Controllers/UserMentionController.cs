@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             try
             {
                 var userIds = new List<int>();
-                var matches = RegexUtils.GetCachedRegex(Pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace, 5).Matches(post.Content.Body);
+                var matches = RegexUtils.GetCachedRegex(Pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace, 5).Matches(post.Content.Body);
                 if (matches.Count > 0)
                 {
                     foreach (Match match in matches)
