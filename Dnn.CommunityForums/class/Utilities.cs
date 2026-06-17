@@ -29,29 +29,21 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Net;
     using System.Reflection;
     using System.Security.Cryptography;
-    using System.Security.Policy;
-    using System.Security.Principal;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
-    using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Providers;
-    using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Helpers;
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Web.UI.WebControls;
 
     public abstract partial class Utilities
     {
@@ -1702,31 +1694,40 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static int GetForumModuleId(int ModuleId, int tabId)
+        internal static int GetForumModuleId(DotNetNuke.Entities.Modules.ModuleInfo moduleInfo)
         {
-            int moduleId = ModuleId;
-            if (ModuleId > 0)
+            var cacheKey = string.Format(CacheKeys.ForumModuleId, moduleInfo.ModuleID, moduleInfo.TabID);
+            var forumModuleId = (int?)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleInfo.ModuleID, cacheKey);
+            if (forumModuleId == null || !forumModuleId.HasValue)
             {
-                if (tabId > 0)
+                forumModuleId = moduleInfo.ModuleID;
+                if (moduleInfo.ModuleID > 0 && moduleInfo.TabID > 0)
                 {
-                    if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: tabId, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
+                    if (moduleInfo.DesktopModule?.ModuleName == $"{Globals.ModuleName} Viewer")
                     {
-                        moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, tabId, false).ModuleSettings[ForumViewerSettingsKeys.AFForumModuleId]);
+                        forumModuleId = Utilities.SafeConvertInt(moduleInfo.ModuleSettings[ForumViewerSettingsKeys.AFForumModuleId]);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleInfo.ModuleID, cacheKey, forumModuleId);
                     }
                 }
             }
 
-            return moduleId;
+            return (int)forumModuleId;
         }
 
-        internal static bool RunningInViewer(int moduleId, int tabId)
+        internal static bool RunningInViewer(DotNetNuke.Entities.Modules.ModuleInfo moduleInfo)
         {
-            if (moduleId > 0 && tabId > 0)
+            var cacheKey = string.Format(CacheKeys.RunningInViewer, moduleInfo.ModuleID, moduleInfo.TabID);
+            var runningInViewer = (bool?)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleInfo.ModuleID, cacheKey);
+            if (runningInViewer == null || !runningInViewer.HasValue)
             {
-                return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: moduleId, tabId: tabId, ignoreCache: false).DesktopModule?.ModuleName == string.Concat(Globals.ModuleName, " Viewer");
+            if (moduleInfo.ModuleID > 0 && moduleInfo.TabID > 0)
+                {
+                    runningInViewer = moduleInfo.DesktopModule?.ModuleName == $"{Globals.ModuleName} Viewer";
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleInfo.ModuleID, cacheKey, runningInViewer);
+                }
             }
 
-            return false;
+            return (bool)runningInViewer;
         }
 
         internal static void CopyFolder(DirectoryInfo source, DirectoryInfo target)

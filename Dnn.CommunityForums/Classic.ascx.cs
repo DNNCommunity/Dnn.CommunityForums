@@ -181,6 +181,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.plhLoader.Controls.Add(ctlDefault);
                 }
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 // Response.Write(ex.Message)
@@ -371,6 +375,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 Literal lit = new Literal();
                 lit.Text = sOut;
                 this.plhLoader.Controls.Add(lit);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
             }
             catch (Exception ex)
             {

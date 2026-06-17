@@ -41,6 +41,48 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
 
         public int PermissionsId => this.permissions.PermissionsId;
 
+        public string View => this.permissions.View;
+
+        public string Read => this.permissions.Read;
+
+        public string Create => this.permissions.Create;
+
+        public string Reply => this.permissions.Reply;
+
+        public string Edit => this.permissions.Edit;
+
+        public string Delete => this.permissions.Delete;
+
+        public string Lock => this.permissions.Lock;
+
+        public string Pin => this.permissions.Pin;
+
+        public string Attach => this.permissions.Attach;
+
+        public string Poll => this.permissions.Poll;
+
+        public string Trust => this.permissions.Trust;
+
+        public string Subscribe => this.permissions.Subscribe;
+
+        public string Announce => this.permissions.Announce;
+
+        public string Tag => this.permissions.Tag;
+
+        public string Categorize => this.permissions.Categorize;
+
+        public string Prioritize => this.permissions.Prioritize;
+
+        public string Moderate => this.permissions.Moderate;
+
+        public string Move => this.permissions.Move;
+
+        public string Split => this.permissions.Split;
+
+        public string ManageUsers => this.permissions.ManageUsers;
+
+        public string Mention => this.permissions.Mention;
+
         public HashSet<int> ViewRoleIds => this.permissions.ViewRoleIds;
 
         public HashSet<int> ReadRoleIds => this.permissions.ReadRoleIds;

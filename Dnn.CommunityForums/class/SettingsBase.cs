@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return this.forumModuleId > 0
                     ? this.forumModuleId
-                    : DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ModuleId, this.TabId);
+                    : DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ModuleContext.Configuration);
             }
 
             set
@@ -103,9 +103,6 @@ namespace DotNetNuke.Modules.ActiveForums
             if (tabModuleSettings == null)
             {
                 var moduleSettings = GetModuleSettings(moduleId);
-
-                // Create a new hashtable copy to avoid mutating the shared module settings
-                var consolidatedSettings = new Hashtable(moduleSettings.MainSettings);
 
                 // Overlay TabModuleSettings on top (tab/instance-specific settings take precedence)
                 var tabModuleSettingsToOverlay = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModule(tabModuleId).TabModuleSettings;

@@ -32,6 +32,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
         [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Ranks")]
         internal const string Rewards = "AF-{0}-rwd";
 
+        internal const string RunningInViewer = "AF-{0}-inviewer-{1}";
+        internal const string ForumModuleId = "AF-{0}-forummoduleid-{1}";
         internal const string ProfileInfo = "AF-{0}-pi";
         internal const string ForumInfo = "AF-{0}-fi-{1}";
         internal const string ForumInfoWithUser = "AF-{0}-fi-{1}-{2}";

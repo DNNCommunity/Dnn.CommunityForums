@@ -57,6 +57,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
-        internal int ForumModuleId => DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ActiveModule.ModuleID, this.ActiveModule.TabID);
+        internal int ForumModuleId => DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ActiveModule);
     }
 }
