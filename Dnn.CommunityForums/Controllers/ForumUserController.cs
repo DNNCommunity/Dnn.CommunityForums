@@ -334,8 +334,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     totalPoints = (user.TopicCount * mainSettings.TopicPointValue) + (user.ReplyCount * mainSettings.ReplyPointValue) + (user.AnswerCount * mainSettings.AnswerPointValue) + user.RewardPoints;
 
                     var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
-                    var rc = new RewardController();
-                    foreach (var ri in rc.Reward_List(user.PortalId, moduleId, true).Where(ri => ri.MinPosts <= totalPoints && ri.MaxPosts > totalPoints))
+                    foreach (var ri in DotNetNuke.Modules.ActiveForums.Controllers.RankController.Instance.Get(moduleId).Where(ri => ri.MinPosts <= totalPoints && ri.MaxPosts > totalPoints))
                     {
                         if (returnType == 0)
                         {

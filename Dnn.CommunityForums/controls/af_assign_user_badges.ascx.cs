@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetBadges()
         {
-            var availableBadges = DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.GetActiveBadges(this.ForumModuleId).Select(badge =>
+            var availableBadges = DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.Get(this.ForumModuleId).Select(badge =>
             {
                 return new { badge.BadgeId, badge };
             });

@@ -99,12 +99,18 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Ranks
-        public abstract int Ranks_Save(int portalId, int moduleId, int rankId, string rankName, int minPosts, int maxPosts, string display);
+        public abstract IDataReader Ranks_List(int moduleId);
 
-        public abstract IDataReader Ranks_Get(int portalId, int moduleId, int rankId);
-
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Use Ranks_List(int moduleId)")]
         public abstract IDataReader Ranks_List(int portalId, int moduleId);
 
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Controllers.RankController() and using DAL2")]
+        public abstract int Ranks_Save(int portalId, int moduleId, int rankId, string rankName, int minPosts, int maxPosts, string display);
+
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Controllers.RankController() and using DAL2")]
+        public abstract IDataReader Ranks_Get(int portalId, int moduleId, int rankId);
+
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Controllers.RankController() and using DAL2")]
         public abstract void Ranks_Delete(int portalId, int moduleId, int rankId);
         #endregion
 

@@ -107,21 +107,30 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Data.SqlDataProvider.Instance().ExecuteNonQuery("activeforums_Mod_Reject", PortalId, ModuleId, UserId, ForumId, TopicId, ReplyId, Reason, Comment);
         }
 
+        public override IDataReader Ranks_List(int ModuleId)
+        {
+            return DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("activeforums_Ranks_List", ModuleId);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Use Ranks_List(int ModuleId)")]
+        public override IDataReader Ranks_List(int PortalId, int ModuleId)
+        {
+            return DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("activeforums_Ranks_List", ModuleId);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Controllers.RankController() and using DAL2")]
         public override void Ranks_Delete(int PortalId, int ModuleId, int RankId)
         {
             DotNetNuke.Data.SqlDataProvider.Instance().ExecuteNonQuery("activeforums_Ranks_Delete", PortalId, ModuleId, RankId);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Controllers.RankController() and using DAL2")]
         public override IDataReader Ranks_Get(int PortalId, int ModuleId, int RankId)
         {
             return DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("activeforums_Ranks_Get", PortalId, ModuleId, RankId);
         }
 
-        public override IDataReader Ranks_List(int PortalId, int ModuleId)
-        {
-            return DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("activeforums_Ranks_List", PortalId, ModuleId);
-        }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Controllers.RankController() and using DAL2")]
         public override int Ranks_Save(int PortalId, int ModuleId, int RankId, string RankName, int MinPosts, int MaxPosts, string Display)
         {
             return DotNetNuke.Data.SqlDataProvider.Instance().ExecuteScalar<int>("activeforums_Ranks_Save", PortalId, ModuleId, RankId, RankName, MinPosts, MaxPosts, Display);

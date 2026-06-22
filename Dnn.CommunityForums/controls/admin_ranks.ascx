@@ -33,7 +33,7 @@ function loadEdit(data) {
 	$('#txtRankName').val(data.RankName);
 	$('#txtMinPoints').val(data.MinPosts);
 	$('#txtMaxPoints').val(data.MaxPosts);
-	$('#<%=drpRankImages.ClientID%>').val(data.Display);
+	$('#<%=drpRankImages.ClientID%>').val((data.Display || '').toLowerCase());
 	am.UI.LoadDiv('afRankEdit', rankOptions);
 }
 var rank = {};

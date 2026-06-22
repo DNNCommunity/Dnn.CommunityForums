@@ -147,14 +147,23 @@ namespace DotNetNuke.Modules.ActiveForums
                         int i;
                         for (i = 0; i < xNodeList.Count; i++)
                         {
-                            DataProvider.Instance().Ranks_Save(portalId, moduleId, -1, xNodeList[i].Attributes["rankname"].Value, Convert.ToInt32(xNodeList[i].Attributes["rankmin"].Value), Convert.ToInt32(xNodeList[i].Attributes["rankmax"].Value), xNodeList[i].Attributes["rankimage"].Value);
+                            var rank = new DotNetNuke.Modules.ActiveForums.Entities.RankInfo()
+                            {
+                                RankId = -1,
+                                ModuleId = moduleId,
+                                RankName = xNodeList[i].Attributes["rankname"].Value,
+                                MinPosts = Convert.ToInt32(xNodeList[i].Attributes["rankmin"].Value),
+                                MaxPosts = Convert.ToInt32(xNodeList[i].Attributes["rankmax"].Value),
+                                Display = xNodeList[i].Attributes["rankimage"].Value,
+                            };
+                            DotNetNuke.Modules.ActiveForums.Controllers.RankController.Instance.Insert(rank);
                         }
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // do nothing?
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
 
@@ -662,7 +671,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             if (SettingsBase.GetModuleSettings(module.ModuleID).ModeIsStandard)
                             {
-                                if (!DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.Get(module.ModuleID).Any())
+                                if (!DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.Get<int>(module.ModuleID).Any())
                                 {
                                     var defaultBadgesFolder = DotNetNuke.Services.FileSystem.FolderManager.Instance.GetFolder(portal.PortalId, Globals.DefaultBadgesFolderName) ?? DotNetNuke.Services.FileSystem.FolderManager.Instance.AddFolder(portal.PortalId, Globals.DefaultBadgesFolderName);
                                     var xDoc = new System.Xml.XmlDocument();
